@@ -1,0 +1,2 @@
+subdir('liblzma')
+subdir('xz')
