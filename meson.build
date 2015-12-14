@@ -1,4 +1,5 @@
-project('enet', 'c')
+project('enet', 'c', version : '1.3.13', license : 'mit')
+
 cc = meson.get_compiler('c')
 c_args = []
 
@@ -40,16 +41,9 @@ src = [
 ]
 
 incdir = include_directories('include')
-if get_option('shared_lib')
-  enetlib = shared_library(
-    'enet',
-    sources : src,
-    include_directories : incdir,
-    c_args : c_args)
-else
-  enetlib = static_library(
-    'enet',
-    sources : src,
-    include_directories : incdir,
-    c_args : c_args)
-endif
+enetlib = library(
+  'enet',
+  sources : src,
+  include_directories : incdir,
+  c_args : c_args)
+
