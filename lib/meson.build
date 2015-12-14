@@ -8,24 +8,21 @@ vorbisfile_sources = ['vorbisfile.c']
 
 vorbisenc_sources = ['vorbisenc.c']
 
-vorbis_lib = build_target('vorbis', vorbis_sources,
+vorbis_lib = library('vorbis', vorbis_sources,
   include_directories : [incdir, ogg_inc],
   link_with : ogg_lib,
   dependencies : ogg_dep,
-  target_type : libtype,
 )
 
-vorbisfile_lib = build_target('vorbisfile', vorbisfile_sources,
+vorbisfile_lib = library('vorbisfile', vorbisfile_sources,
   include_directories : [incdir, ogg_inc],
   link_with : vorbis_lib,
-  target_type : libtype,
   dependencies : ogg_dep,
 )
 
-vorbisenc_lib = build_target('vorbisenc', vorbisenc_sources,
+vorbisenc_lib = library('vorbisenc', vorbisenc_sources,
   include_directories : [incdir, ogg_inc],
   link_with : vorbis_lib,
-  target_type : libtype,
   dependencies : ogg_dep,
 )
 
@@ -34,4 +31,5 @@ test_sharedbook = executable('test_sharedbook', 'sharedbook.c',
   include_directories : [incdir, ogg_inc],
   link_with : vorbis_lib,
 )
+
 test('sharedbook', test_sharedbook)
