@@ -121,11 +121,10 @@ endif
 lzmainc = include_directories('api', 'common',
   'check', 'lz', 'rangecoder', 'lzma', 'delta', 'simple', '../common')
 
-liblzma = build_target('lzma', lzma_sources,
+liblzma = library('lzma', lzma_sources,
   main_dec_sources, main_enc_sources, check_sources,
   simplefilter_sources, lzma1_sources,
   lz_sources, delta_sources,
   include_directories : [confinc, lzmainc],
   c_args : ['-DHAVE_CONFIG_H', '-DTUKLIB_SYMBOL_PREFIX=lzma_'],
-  target_type : libtype,
 )
