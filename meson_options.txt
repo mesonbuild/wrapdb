@@ -1,5 +1,3 @@
-option('shared_lib', type : 'boolean', value : false)
-
 option('decoder_arm', type : 'boolean', value : false)
 option('decoder_armthumb', type : 'boolean', value : false)
 option('decoder_delta', type : 'boolean', value : true)

@@ -1,5 +1,5 @@
 # liblzma is what upstream uses for their pkg-config name
-project('liblzma', 'c')
+project('liblzma', 'c', version : '5.2.1', license : 'pd/lgpl2/gpl2/gpl3')
 
 cc = meson.get_compiler('c')
 cdata = configuration_data()
@@ -76,11 +76,6 @@ configure_file(input : 'config.h.meson',
   configuration : cdata
 )
 
-if get_option('shared_lib')
-  libtype = 'shared_library'
-else
-  libtype = 'static_library'
-endif
-
 confinc = include_directories('.')
 subdir('src')
+
