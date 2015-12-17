@@ -1,4 +1,4 @@
-project('vorbis', 'c')
+project('vorbis', 'c', version : '1.3.5', license : 'bsd-style')
 
 ogg_dep = dependency('ogg', required : false)
 
@@ -9,12 +9,6 @@ if not ogg_dep.found()
 else
   ogg_inc = []
   ogg_lib = []
-endif
-
-if get_option('shared_lib')
-  libtype = 'shared_library'
-else
-  libtype = 'static_library'
 endif
 
 incdir = include_directories('include')
