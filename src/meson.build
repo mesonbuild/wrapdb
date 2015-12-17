@@ -1,15 +1,8 @@
 sources = ['bitwise.c', 'framing.c']
 
-if get_option('shared_lib')
-  libtype = 'shared_library'
-else
-  libtype = 'static_library'
-endif
-
-libogg = build_target('ogg',
+libogg = library('ogg',
   sources,
   include_directories : incdir,
-  target_type : libtype
 )
 
 bw_test = executable('bitwise', 'bitwise.c',
