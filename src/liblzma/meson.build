@@ -128,3 +128,6 @@ liblzma = library('lzma', lzma_sources,
   include_directories : [confinc, lzmainc],
   c_args : ['-DHAVE_CONFIG_H', '-DTUKLIB_SYMBOL_PREFIX=lzma_'],
 )
+
+lzma_dep = declare_dependency(link_with : liblzma,
+  include_directories : include_directories('api'))
