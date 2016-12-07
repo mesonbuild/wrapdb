@@ -1,0 +1,6 @@
+subdir('f9')
+subdir('hmac')
+subdir('omac')
+subdir('pelican')
+subdir('pmac')
+subdir('xcbc')
