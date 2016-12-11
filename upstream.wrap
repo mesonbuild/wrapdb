@@ -1,0 +1,6 @@
+[wrap-file]
+directory = rang-2.0
+
+source_url = https://github.com/agauniyal/rang/archive/v2.0.tar.gz
+source_filename = rang-2.0.tar.gz
+source_hash = 09f4d8c939b8658d7097dd709682695ed51054665c74d3fb033f9444508c0677
