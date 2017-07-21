@@ -14,17 +14,26 @@ vorbis_lib = library('vorbis', vorbis_sources,
   dependencies : ogg_dep,
 )
 
+vorbis_dep = declare_dependency(link_with : vorbis_lib,
+  include_directories : incdir)
+
 vorbisfile_lib = library('vorbisfile', vorbisfile_sources,
   include_directories : [incdir, ogg_inc],
   link_with : vorbis_lib,
   dependencies : ogg_dep,
 )
 
+vorbisfile_dep = declare_dependency(link_with : vorbisfile_lib,
+  include_directories : incdir)
+
 vorbisenc_lib = library('vorbisenc', vorbisenc_sources,
   include_directories : [incdir, ogg_inc],
   link_with : vorbis_lib,
   dependencies : ogg_dep,
 )
+
+vorbisenc_dep = declare_dependency(link_with : vorbisenc_lib,
+  include_directories : incdir)
 
 test_sharedbook = executable('test_sharedbook', 'sharedbook.c',
   c_args : '-D_V_SELFTEST',
