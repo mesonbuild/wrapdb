@@ -16,3 +16,6 @@ framing_test = executable('framing', 'framing.c',
 
 test('bitwise', bw_test)
 test('framing', framing_test)
+
+libogg_dep = declare_dependency(link_with : libogg,
+  include_directories : incdir)
