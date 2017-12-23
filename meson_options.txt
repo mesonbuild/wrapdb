@@ -1,0 +1,1 @@
+option('egl', type : 'boolean', value : false, description : 'build support for egl')
