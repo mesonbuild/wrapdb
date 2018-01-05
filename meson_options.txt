@@ -1,0 +1,3 @@
+option('mmap', type: 'boolean', value: true)
+option('compat', type: 'boolean', value: false)
+option('debug', type: 'boolean', value: false)
