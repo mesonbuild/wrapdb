@@ -139,7 +139,11 @@ if (thread_dep.found())
    c_args = ['-D_REENTRANT']
 endif
 
-zlib_dep = dependency('zlib', required: false)
+if host_machine.system() == 'darwin'
+    zlib_dep = cc.find_library('z', required: false)
+else
+    zlib_dep = dependency('zlib', required: false)
+endif
 if zlib_dep.found()
   cdata.set('HAVE_LIBZ', 1)
 endif
