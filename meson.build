@@ -159,6 +159,10 @@ endif
 
 deps = [math_lib, iconv_lib, dl_lib, lzma_dep, thread_dep, zlib_dep, readline_lib, history_lib]
 
+if target_machine.system() == 'windows'
+  deps += cc.find_library('ws2_32')
+endif
+
 configure_file(input : 'config.h.meson',
   output : 'config.h',
   configuration : cdata)
@@ -233,7 +237,7 @@ withcdata.set10('WITH_LZMA', lzma_dep.found())
 
 subdir('include/libxml')
 
-trio_sources = [ 'triostr.c', 'trio.c' ]
+trio_sources = [ 'triostr.c', 'trio.c', 'trionan.c' ]
 sources = [
   'SAX.c',
   'entities.c',
