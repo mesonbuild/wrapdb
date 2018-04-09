@@ -1,4 +1,3 @@
-This repository contains the Meson Wrap build definitions for Lua.
+This repository contains a Meson build definition for project lua.
 
-For more info see http://mesonbuild.com.
-
+For more information please see http://mesonbuild.com.
