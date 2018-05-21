@@ -1,2 +1,3 @@
-This is a repository that provides Wrap packaging to Zlib. The exact
-format is not yet clear so this is flying at the seats of pants.
+This repository contains a Meson build definition for project zlib.
+
+For more information please see http://mesonbuild.com.
