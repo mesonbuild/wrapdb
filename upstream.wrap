@@ -1,0 +1,5 @@
+[wrap-file]
+directory = utfcpp-2.3.5
+source_url = https://github.com/nemtrif/utfcpp/archive/v2.3.5.zip
+source_filename = utfcpp-2.3.5.zip
+source_hash = 1d5cb7d908202d734ec35b84087400013f352ffb4612e978ffb948986b76df14
