@@ -44,6 +44,10 @@ dftables = executable('dftables',
   'dftables.c',
   c_args : '-DHAVE_CONFIG_H',
   include_directories : conf_inc,
+  # For cross-compilation this target needs to run on the build machine. It is
+  # only used for the custom_target below. See:
+  # http://mesonbuild.com/Cross-compilation.html#mixing-host-and-build-targets
+  native : true,
 )
 
 char_tables = custom_target('chartables',
