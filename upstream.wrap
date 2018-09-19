@@ -1,0 +1,6 @@
+[wrap-file]
+directory = Chipmunk2D-Chipmunk-6.2.2
+
+source_url = https://github.com/slembcke/Chipmunk2D/archive/Chipmunk-6.2.2.tar.gz
+source_filename = Chipmunk2D-Chipmunk-6.2.2.tar.gz
+source_hash = c51f0e3a30770f6b940de3228bee40a871aaf7611a1b5ec546a7d2b9e1041f97
