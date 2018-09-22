@@ -1,5 +1,5 @@
 conf = configuration_data()
-conf.set('GDBM_DEBUG_ENABLE', get_option('debug') ? 1 : 0)
+conf.set('GDBM_DEBUG_ENABLE', get_option('gdbm_debug') ? 1 : 0)
 count_t = 'unsigned long'
 if cc.has_type('unsigned long long int')
     count_t = 'unsigned long long int'
@@ -43,7 +43,7 @@ src = [
     'update.c',
     'version.c',
 ]
-if get_option('debug')
+if get_option('gdbm_debug')
     src += 'debug.c'
 endif
 libgdbm = library('gdbm', src, include_directories: autoconf_include)
