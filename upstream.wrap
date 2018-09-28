@@ -1,0 +1,6 @@
+[wrap-file]
+directory = rapidjson-1.1.0
+
+source_url = https://github.com/Tencent/rapidjson/archive/v1.1.0.zip
+source_filename = rapidjson-1.1.0.zip
+source_hash = 8e00c38829d6785a2dfb951bb87c6974fa07dfe488aa5b25deec4b8bc0f6a3ab
