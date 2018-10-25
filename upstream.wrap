@@ -1,0 +1,6 @@
+[wrap-file]
+directory=gc-7.6.8
+
+source_url=https://github.com/ivmai/bdwgc/releases/download/v7.6.8/gc-7.6.8.tar.gz
+source_filename=gc-7.6.8.tar.gz
+source_hash=040ac5cdbf1bebc7c8cd4928996bbae0c54497c151ea5639838fa0128102e258
