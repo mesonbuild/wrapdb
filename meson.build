@@ -181,14 +181,15 @@ withcdata.set('LIBXML_VERSION_STRING', '@0@'.format(version_number))
 withcdata.set('LIBXML_VERSION_EXTRA', '')
 
 need_trio = false
-if (not cc.has_function('printf') or
-    not cc.has_function('sprintf') or
-    not cc.has_function('fprintf') or
-    not cc.has_function('snprintf') or
-    not cc.has_function('vfprintf') or
-    not cc.has_function('vsprintf') or
-    not cc.has_function('vsnprintf') or
-    not cc.has_function('sscanf'))
+pprefix = '#include <stdio.h>'
+if (not cc.has_function('printf', prefix: pprefix) or
+    not cc.has_function('sprintf', prefix: pprefix) or
+    not cc.has_function('fprintf', prefix: pprefix) or
+    not cc.has_function('snprintf', prefix: pprefix) or
+    not cc.has_function('vfprintf', prefix: pprefix) or
+    not cc.has_function('vsprintf', prefix: pprefix) or
+    not cc.has_function('vsnprintf', prefix: pprefix) or
+    not cc.has_function('sscanf', prefix: pprefix))
     need_trio = true
 endif
 withcdata.set10('WITH_TRIO', need_trio)
@@ -292,14 +293,27 @@ endif
 incdir = include_directories('include')
 
 xml2lib = library('xml2', sources,
-		  c_args : c_args,
-		  include_directories : incdir,
-		  dependencies: deps)
+                  c_args : c_args,
+                  include_directories : incdir,
+                  dependencies: deps,
+                  install: true)
 xml2lib_dep = declare_dependency(link_with: xml2lib,
-				 include_directories: incdir,
-				 dependencies: deps)
+                                 include_directories: incdir,
+                                 dependencies: deps)
+pkg = import('pkgconfig')
+pkg.generate(name : 'libXML',
+             description: 'libXML library version2.',
+             filebase: 'libxml-2.0',
+             libraries: xml2lib,
+             subdirs: 'libxml2',
+             variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')))
+
+
+executable('xmllint', 'xmllint.c',
+           dependencies: xml2lib_dep,
+           install: true)
 
 dictexe = executable('testdict', 'testdict.c',
-		     dependencies : xml2lib_dep)
+                     dependencies : xml2lib_dep)
 
 test('dict', dictexe)
