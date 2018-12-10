@@ -1,4 +1,3 @@
-This repository contains the Meson build definitions for Box2D.
+This repository contains a Meson build definition for project box2d.
 
-For more info see http://mesonbuild.com.
-
+For more information please see http://mesonbuild.com.
