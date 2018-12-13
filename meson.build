@@ -84,5 +84,5 @@ jansson_lib = library('jansson',
 
 jansson_dep = declare_dependency(
   link_with : jansson_lib,
-  include_directories : include_directories('src')
+  include_directories : [include_directories('src'), include_directories('.')]
 )
