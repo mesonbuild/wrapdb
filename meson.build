@@ -48,13 +48,25 @@ foreach f : check_functions
   endif
 endforeach
 
+foreach f : ['inline', '__inline', '']
+  if cc.compiles(f + ' void func() {}')
+    cdata.set('json_inline', f)
+    break
+  endif
+endforeach
+
+if cc.sizeof('long long int') > 0
+  cdata.set('json_have_long_long', 1)
+  cdata.set('HAVE_LONG_LONG_INT', 1)
+else
+  cdata.set('json_have_long_long', 0)
+endif
+
 # FIXME: These variables set features to be explicitly disabled. The tests for
 # these are missing from the check_functions block above and are also prefixed
 # by 'json_'. Also these are used by an extra 'src/jansson_config.h.in' file.
 # This means we may miss out on some platform specific performance improvemnts.
 cdata.set('var', 'var') # avoid warning; bogus variable found in comment.
-cdata.set('json_inline', '')
-cdata.set('json_have_long_long', 0)
 cdata.set('json_have_localeconv', 0)
 cdata.set('json_have_atomic_builtins', 0)
 cdata.set('json_have_sync_builtins', 0)
