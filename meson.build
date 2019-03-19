@@ -65,6 +65,6 @@ install_headers(headers)
 
 pkg = import('pkgconfig')
 
-pkg.generate(name: 'zlib',
-             description: 'zlib compression library',
-             libraries: zlib)
+pkg.generate(zlib,
+             name: 'zlib',
+             description: 'zlib compression library')
