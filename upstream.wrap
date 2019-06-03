@@ -1,0 +1,6 @@
+[wrap-file]
+directory = RxCpp-4.1.0
+
+source_url = https://github.com/ReactiveX/RxCpp/archive/4.1.0.zip
+source_filename = RxCpp-4.1.0.zip
+source_hash = d2ee5579b81b3676c0fb7efd02aae58575f2e9148a6d8f2b469cf9c020760ccb
