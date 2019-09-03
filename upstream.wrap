@@ -1,0 +1,6 @@
+[wrap-file]
+directory = span-lite-0.5.0
+
+source_url = https://codeload.github.com/martinmoene/span-lite/tar.gz/v0.5.0
+source_filename = span-lite-0.5.0.tar.gz
+source_hash = 405ae095bca3c63da28c72a3528369b9ba3996f1992f3ae90fcb01a9d8bdef38
