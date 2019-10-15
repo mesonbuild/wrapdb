@@ -1,0 +1,6 @@
+[wrap-file]
+directory = observer-ptr-lite-0.4.0
+
+source_url = https://codeload.github.com/martinmoene/observer-ptr-lite/tar.gz/v0.4.0
+source_filename = observer-ptr-lite-0.4.0.tar.gz
+source_hash = 812eafbdaccfb44ffd2536692b668cd1f16228e8d7609de56b60320c8c57cc67
