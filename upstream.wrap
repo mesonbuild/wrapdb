@@ -1,0 +1,6 @@
+[wrap-file]
+directory = byte-lite-0.2.0
+
+source_url = https://codeload.github.com/martinmoene/byte-lite/tar.gz/v0.2.0
+source_filename = byte-lite-0.2.0.tar.gz
+source_hash = 34221fba6800b3a5af4a17a274fc024afb2d49b3b4ec9ac61588305375891a20
