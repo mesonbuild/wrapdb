@@ -1,0 +1,6 @@
+[wrap-file]
+directory = hedley-11
+
+source_url = https://codeload.github.com/nemequ/hedley/tar.gz/v11
+source_filename = hedley-11.tar.gz
+source_hash = 7a8cc16a66afc1ac22c4b99b7b798fc4326d217dd4f97facb43181e84fa82f88
