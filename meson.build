@@ -139,7 +139,7 @@ if (thread_dep.found())
    c_args = ['-D_REENTRANT']
 endif
 
-zlib_dep = dependency('zlib', required: false)
+zlib_dep = dependency('zlib', required: false, fallback: ['zlib', 'zlib_dep'])
 if not zlib_dep.found()
   zlib_dep = cc.find_library('z', required: false)
 endif
