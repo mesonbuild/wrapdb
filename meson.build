@@ -60,31 +60,17 @@ foreach h : ['byteswap.h', 'stddef.h', 'stdint.h', 'sys/endian.h',
   endif
 endforeach
 
-dep_zlib = dependency('zlib', required : false, fallback : ['zlib', 'zlib_dep'])
-if dep_zlib.found()
-  conf.set('HAVE_LIBZ', 1)
-endif
-
-dep_lzo2 = dependency('lzo2', required : false)
-if dep_lzo2.found()
-  if cpp.has_function('lzo1x_1_15_compress', dependencies : dep_lzo2)
-    conf.set('HAVE_LIBLZO2', 1)
-  else
-    dep_lzo2 = dep_null
-  endif
-endif
-
 foreach f : ['expect', 'ctzll']
   if cpp.has_function(f)
     conf.set('HAVE_BULITIN_' + f.to_upper(), 1)
   endif
 endforeach
-if conf.get('HAVE_SYS_MMAN_H') == 1
+if conf.get('HAVE_SYS_MMAN_H', 0) == 1
   if cpp.has_function('mmap', prefix : '#include <sys/mman.h>')
     conf.set('HAVE_FUNC_MMAP', 1)
   endif
 endif
-if conf.get('HAVE_UNISTD_H') == 1
+if conf.get('HAVE_UNISTD_H', 0) == 1
   if cpp.has_function('sysconf', prefix : '#include <unistd.h>')
     conf.set('HAVE_FNC_SYSCONF', 1)
   endif
@@ -96,7 +82,7 @@ configure_file(
 )
 
 foreach h : ['HAVE_STDINT_H', 'HAVE_STDDEF_H', 'HAVE_SYS_UIO_H']
-  pconf.set10(h + '_01', conf.get(h) == 1)
+  pconf.set(h + '_01', conf.get(h, 0))
 endforeach
 
 version = meson.project_version().split('.')
