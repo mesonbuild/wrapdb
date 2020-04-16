@@ -28,4 +28,19 @@ libcmocka = library(
   version : lib_version,
   install : get_option('buildtype') != 'static',
   override_options : _overrides,
+  build_by_default: false,
+)
+
+libcmocka_native = library(
+  'cmocka_native',
+  ['cmocka.c'],
+  c_args : '-DHAVE_CONFIG_H=1',
+  include_directories : [inc_include, inc_private_native],
+  vs_module_defs : 'cmocka.def',
+  soversion : build_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
+  version : lib_version,
+  install : false, # Cannot install native targets in cross builds
+  override_options : _overrides,
+  native: true,
+  build_by_default: false,
 )

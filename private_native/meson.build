@@ -15,9 +15,9 @@
 
 ## This file sets the config.h header for standard builds (e.g., not native: true)
 
-config_h = configure_file(
-  configuration : conf,
+config_h_native = configure_file(
+  configuration : conf_native,
   output : 'config.h',
 )
 
-inc_private = include_directories('.')
+inc_private_native = include_directories('.')
