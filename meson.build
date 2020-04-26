@@ -1,6 +1,9 @@
 project('chipmunk', 'c', version : '6.2.2', license : 'MIT')
 
 cc = meson.get_compiler('c')
+add_project_arguments(cc.get_supported_arguments([
+	'-Wno-unused-parameter',
+]), language : 'c')
 m_dep = cc.find_library('m', required : false)
 
 inc = include_directories('include/chipmunk')
