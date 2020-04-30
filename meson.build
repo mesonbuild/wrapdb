@@ -32,20 +32,17 @@ inc_include = include_directories('include')
 # Config Generation #
 #####################
 
-conf = configuration_data()
-conf_native = configuration_data()
-
 cc_dict = {
     'compiler': meson.get_compiler('c'),
     'machine': host_machine,
-    'config': conf,
+    'config_h_subdir': 'private',
     'native': false
 }
 
 cc_native_dict = {
     'compiler': meson.get_compiler('c', native: true),
     'machine': build_machine,
-    'config': conf_native,
+    'config_h_subdir': 'private_native',
     'native': true
 }
 
@@ -53,9 +50,10 @@ configurations = [cc_dict, cc_native_dict]
 
 foreach entry : configurations
   compiler = entry.get('compiler')
-  config = entry.get('config')
   is_native = entry.get('native')
   machine = entry.get('machine')
+
+  config = configuration_data()
 
   if ['gcc', 'clang'].contains(compiler.get_id())
     add_project_arguments(
@@ -181,14 +179,17 @@ endif
     config.set('WORDS_BIGENDIAN', 1)
   endif
 
+  # Execute subdir to create config.h for this pass
+  # This requires the use of the variable named "config" for configuration_data(),
+  # as this variable is used in each configuration header subdirectory.
+  subdir(entry.get('config_h_subdir'))
+
 endforeach
 
 ###########################
 # Subdirectory Processing #
 ###########################
 
-subdir('private')  # someplace safe to put the generated config.h file
-subdir('private_native') # someplace safe to put the generated config.h file for native: true
 subdir('src')
 
 ######################

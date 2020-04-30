@@ -16,7 +16,7 @@
 ## This file sets the config.h header for standard builds (e.g., not native: true)
 
 config_h_native = configure_file(
-  configuration : conf_native,
+  configuration : config,
   output : 'config.h',
 )
 
