@@ -1,0 +1,4 @@
+option('decoder', type : 'boolean', value : false,
+       description : 'Build the decoder')
+option('tools', type : 'boolean', value : false,
+       description : 'Build command-line tools')
