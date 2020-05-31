@@ -1,0 +1,5 @@
+subdir('EEPROM/')
+subdir('HID/')
+subdir('SoftwareSerial/')
+subdir('SPI/')
+subdir('Wire/')
