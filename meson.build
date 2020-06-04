@@ -18,9 +18,8 @@ miniz_dep = declare_dependency(
 pkg = import('pkgconfig')
 
 pkg.generate(
+    miniz_lib,
     name : 'miniz',
-    libraries : miniz_lib,
     version : meson.project_version(),
     description : 'Single C source file zlib-replacement library'
 )
-
