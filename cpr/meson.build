@@ -1,0 +1,16 @@
+cpr_src = files(
+    'auth.cpp',
+    'cookies.cpp',
+    'cprtypes.cpp',
+    'curlholder.cpp',
+    'digest.cpp',
+    'error.cpp',
+    'multipart.cpp',
+    'ntlm.cpp',
+    'parameters.cpp',
+    'payload.cpp',
+    'proxies.cpp',
+    'session.cpp',
+    'timeout.cpp',
+    'unix_socket.cpp',
+    'util.cpp')
