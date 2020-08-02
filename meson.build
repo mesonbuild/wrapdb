@@ -48,9 +48,11 @@ endif
 
 if get_option('loguru_use_fmtlib').enabled()
   loguru_deps_internal += dependency('fmt', required: true)
+  compile_opts += ['-DLOGURU_USE_FMTLIB=1']
 endif
 flags = cxx.get_supported_arguments(compile_opts)
 
+loguru_lib_soversion = meson.project_version().split('.')[0]
 emilk_loguru_lib = library(
   'loguru',
   files(
@@ -59,7 +61,20 @@ emilk_loguru_lib = library(
   include_directories: include_directories('.'),
   cpp_args: flags,
   dependencies: loguru_deps_internal,
+  soversion: loguru_lib_soversion,
+  version: meson.project_version(),
+  install: true,
 )
+
+install_headers('loguru.hpp')
+
+pkgc = import('pkgconfig')
+pkgc.generate(emilk_loguru_lib,
+    name: 'loguru',
+    version: meson.project_version(),
+    description: 'A lightweight and flexible C++ logging library',
+)
+
 emilk_loguru_dep = declare_dependency(
   include_directories: include_directories('.'),
   link_with: emilk_loguru_lib,
