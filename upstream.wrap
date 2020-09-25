@@ -1,0 +1,6 @@
+[wrap-file]
+directory = cpputest-4.0
+source_url = https://github.com/cpputest/cpputest/archive/v4.0.zip
+source_filename = cpputest-4.0.zip
+source_hash = b81d0c34f300bc1ed39e152fb92e178555a784e294e1f1cefe074326c2588339
+

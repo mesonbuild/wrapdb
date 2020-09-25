@@ -1,0 +1,5 @@
+option('extinctions',
+    type : 'boolean',
+    value : 'true',
+    description : 'Use the CppUTest extension library'
+)
