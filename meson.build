@@ -119,21 +119,12 @@ config_h = configure_file(
 )
 install_headers('lib/expat.h', 'lib/expat_external.h')
 
-# pkg-config file
-pkgdata = configuration_data()
-pkgdata.set('prefix', get_option('prefix'))
-pkgdata.set('exec_prefix', get_option('prefix'))
-pkgdata.set('libdir', '${prefix}/' + get_option('libdir'))
-pkgdata.set('includedir', '${prefix}/' + get_option('includedir'))
-pkgdata.set('PACKAGE_VERSION', meson.project_version())
-
-configure_file(
-  input : 'expat.pc.in',
-  output : 'expat.pc',
-  configuration : pkgdata,
-  install_dir : join_paths(get_option('libdir'), 'pkgconfig'),
-  install: true
-)
+if get_option('build_tests')
+  visibility = 'default'
+else
+  visibility = 'hidden'
+  add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language : ['c'])
+endif
 
 add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language : ['c'])
 if cc.has_argument('-fno-strict-aliasing')
@@ -157,41 +148,34 @@ _files = [
     'lib/xmlrole.c',
     'lib/xmltok.c',
   ),
-  config_h,
 ]
 
 # the lib/libexpat.def file is not valid with mingw, only with mvsc, intel-cl,
 # and clang-cl
+extra_kwargs = {}
 if cc.get_id() != 'gcc'
-  libexpat = library(
-    'expat',
-    _files,
-    vs_module_defs : 'lib/libexpat.def',
-    include_directories : include_directories('lib'),
-    dependencies : dep_libbsd,
-    version : '1.6.11',
-    soversion : host_machine.system() != 'windows' ? '1' : '',
-    install : true,
-    gnu_symbol_visibility : 'hidden',
-  )
-else
-  libexpat = library(
-    'expat',
-    _files,
-    include_directories : include_directories('lib'),
-    dependencies : dep_libbsd,
-    version : '1.6.11',
-    soversion : host_machine.system() != 'windows' ? '1' : '',
-    install : true,
-    gnu_symbol_visibility : get_option('build_tests') ? 'default' : 'hidden',
-  )
+  extra_kwargs += {'vs_module_defs' : 'lib/libexpat.def'}
 endif
 
+libexpat = library(
+  'expat',
+  _files,
+  include_directories : include_directories('lib'),
+  dependencies : dep_libbsd,
+  version : '1.6.11',
+  soversion : host_machine.system() != 'windows' ? '1' : '',
+  install : true,
+  gnu_symbol_visibility : visibility,
+  kwargs : extra_kwargs,
+)
+
 expat_dep = declare_dependency(
-  sources : config_h,
   link_with : libexpat,
   include_directories : include_directories('lib'),
 )
+
+pkg = import('pkgconfig')
+pkg.generate(libexpat)
 
 if get_option('build_tests')
   add_languages('cpp')
