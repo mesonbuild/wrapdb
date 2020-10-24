@@ -14,12 +14,12 @@ include = include_directories('.')
 if cc.get_define('__ANDROID__') != ''
   zlib_dep = cc.find_library('z')
 else
-  zlib_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
+  zlib_dep = dependency('zlib')
 endif
 
 c_args = []
 
-if host_machine.system() == 'windows'
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   c_args += ['-DPNG_BUILD_DLL']
 endif
 
@@ -107,11 +107,11 @@ configure_file(
     install : true,
 )
 
-png_dep = declare_dependency(
+libpng_dep = declare_dependency(
     include_directories : include,
     link_with : libpng,
     dependencies : libpng_deps,
 )
 
-png_test = executable('pngtest', 'pngtest.c', dependencies : png_dep)
+png_test = executable('pngtest', 'pngtest.c', dependencies : libpng_dep)
 test('pngtest', png_test, args : files('pngtest.png'))
