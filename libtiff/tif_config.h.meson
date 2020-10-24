@@ -1,0 +1,368 @@
+/* libtiff/tif_config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define if building universal (internal helper macro) */
+#mesondefine AC_APPLE_UNIVERSAL_BUILD
+
+/* Support CCITT Group 3 & 4 algorithms */
+#mesondefine CCITT_SUPPORT
+
+/* Pick up YCbCr subsampling info from the JPEG data stream to support files
+   lacking the tag (default enabled). */
+#mesondefine CHECK_JPEG_YCBCR_SUBSAMPLING
+
+/* enable partial strip reading for large strips (experimental) */
+#mesondefine CHUNKY_STRIP_READ_SUPPORT
+
+/* Support C++ stream API (requires C++ compiler) */
+#mesondefine CXX_SUPPORT
+
+/* Treat extra sample as alpha (default enabled). The RGBA interface will
+   treat a fourth sample with no EXTRASAMPLE_ value as being ASSOCALPHA. Many
+   packages produce RGBA files but don't mark the alpha properly. */
+#mesondefine DEFAULT_EXTRASAMPLE_AS_ALPHA
+
+/* enable deferred strip/tile offset/size loading */
+#mesondefine DEFER_STRILE_LOAD
+
+/* Define to 1 if you have the <assert.h> header file. */
+#mesondefine HAVE_ASSERT_H
+
+/* Define to 1 if you have the declaration of `optarg', and to 0 if you don't.
+   */
+#mesondefine HAVE_DECL_OPTARG
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#mesondefine HAVE_FCNTL_H
+
+/* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
+#mesondefine HAVE_FSEEKO
+
+/* Define to 1 if you have the `getopt' function. */
+#mesondefine HAVE_GETOPT
+
+/* Define to 1 if you have the <GLUT/glut.h> header file. */
+#mesondefine HAVE_GLUT_GLUT_H
+
+/* Define to 1 if you have the <GL/glut.h> header file. */
+#mesondefine HAVE_GL_GLUT_H
+
+/* Define to 1 if you have the <GL/glu.h> header file. */
+#mesondefine HAVE_GL_GLU_H
+
+/* Define to 1 if you have the <GL/gl.h> header file. */
+#mesondefine HAVE_GL_GL_H
+
+/* Define as 0 or 1 according to the floating point format suported by the
+   machine */
+#mesondefine HAVE_IEEEFP
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <io.h> header file. */
+#mesondefine HAVE_IO_H
+
+/* Define to 1 if you have the `jbg_newlen' function. */
+#mesondefine HAVE_JBG_NEWLEN
+
+/* Define to 1 if you have the `lfind' function. */
+#mesondefine HAVE_LFIND
+
+/* Define to 1 if you have the <memory.h> header file. */
+#mesondefine HAVE_MEMORY_H
+
+/* Define to 1 if you have the `mmap' function. */
+#mesondefine HAVE_MMAP
+
+/* Define to 1 if you have the <OpenGL/glu.h> header file. */
+#mesondefine HAVE_OPENGL_GLU_H
+
+/* Define to 1 if you have the <OpenGL/gl.h> header file. */
+#mesondefine HAVE_OPENGL_GL_H
+
+/* Define if you have POSIX threads libraries and header files. */
+#mesondefine HAVE_PTHREAD
+
+/* Define to 1 if you have the <search.h> header file. */
+#mesondefine HAVE_SEARCH_H
+
+/* Define to 1 if you have the `setmode' function. */
+#mesondefine HAVE_SETMODE
+
+/* Define to 1 if you have the `snprintf' function. */
+#mesondefine HAVE_SNPRINTF
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strcasecmp' function. */
+#mesondefine HAVE_STRCASECMP
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if you have the `strtol' function. */
+#mesondefine HAVE_STRTOL
+
+/* Define to 1 if you have the `strtoll' function. */
+#mesondefine HAVE_STRTOLL
+
+/* Define to 1 if you have the `strtoul' function. */
+#mesondefine HAVE_STRTOUL
+
+/* Define to 1 if you have the `strtoull' function. */
+#mesondefine HAVE_STRTOULL
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#mesondefine HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Use nonstandard varargs form for the GLU tesselator callback */
+#mesondefine HAVE_VARARGS_GLU_TESSCB
+
+/* Define to 1 if you have the <windows.h> header file. */
+#mesondefine HAVE_WINDOWS_H
+
+/* Native cpu byte order: 1 if big-endian (Motorola) or 0 if little-endian
+   (Intel) */
+#mesondefine HOST_BIGENDIAN
+
+/* Set the native cpu bit order (FILLORDER_LSB2MSB or FILLORDER_MSB2LSB) */
+#mesondefine HOST_FILLORDER
+
+/* Support ISO JBIG compression (requires JBIG-KIT library) */
+#mesondefine JBIG_SUPPORT
+
+/* 8/12 bit libjpeg dual mode enabled */
+#mesondefine JPEG_DUAL_MODE_8_12
+
+/* Support JPEG compression (requires IJG JPEG library) */
+#mesondefine JPEG_SUPPORT
+
+/* 12bit libjpeg primary include file with path */
+#mesondefine LIBJPEG_12_PATH
+
+/* Support LogLuv high dynamic range encoding */
+#mesondefine LOGLUV_SUPPORT
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Support LZMA2 compression */
+#mesondefine LZMA_SUPPORT
+
+/* Support LZW algorithm */
+#mesondefine LZW_SUPPORT
+
+/* Support Microsoft Document Imaging format */
+#mesondefine MDI_SUPPORT
+
+/* Support NeXT 2-bit RLE algorithm */
+#mesondefine NEXT_SUPPORT
+
+/* Support Old JPEG compresson (read-only) */
+#mesondefine OJPEG_SUPPORT
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+/* Support Macintosh PackBits algorithm */
+#mesondefine PACKBITS_SUPPORT
+
+/* Support Pixar log-format algorithm (requires Zlib) */
+#mesondefine PIXARLOG_SUPPORT
+
+/* Define to necessary symbol if this constant uses a non-standard name on
+   your system. */
+#mesondefine PTHREAD_CREATE_JOINABLE
+
+/* The size of `signed int', as computed by sizeof. */
+#mesondefine SIZEOF_SIGNED_INT
+
+/* The size of `signed long', as computed by sizeof. */
+#mesondefine SIZEOF_SIGNED_LONG
+
+/* The size of `signed long long', as computed by sizeof. */
+#mesondefine SIZEOF_SIGNED_LONG_LONG
+
+/* The size of `size_t', as computed by sizeof. */
+#mesondefine SIZEOF_SIZE_T
+
+/* The size of `unsigned char *', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_CHAR_P
+
+/* The size of `unsigned int', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_INT
+
+/* The size of `unsigned long', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_LONG
+
+/* The size of `unsigned long long', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_LONG_LONG
+
+/* Define to 1 if you have the ANSI C header files. */
+#mesondefine STDC_HEADERS
+
+/* Support strip chopping (whether or not to convert single-strip uncompressed
+   images to mutiple strips of specified size to reduce memory usage) */
+#mesondefine STRIPCHOP_DEFAULT
+
+/* Default size of the strip in bytes (when strip chopping enabled) */
+#mesondefine STRIP_SIZE_DEFAULT
+
+/* Enable SubIFD tag (330) support */
+#mesondefine SUBIFD_SUPPORT
+
+/* Support ThunderScan 4-bit RLE algorithm */
+#mesondefine THUNDER_SUPPORT
+
+/* Signed 16-bit type */
+#mesondefine TIFF_INT16_T
+
+/* Signed 32-bit type formatter */
+#mesondefine TIFF_INT32_FORMAT
+
+/* Signed 32-bit type */
+#mesondefine TIFF_INT32_T
+
+/* Signed 64-bit type formatter */
+#mesondefine TIFF_INT64_FORMAT
+
+/* Signed 64-bit type */
+#mesondefine TIFF_INT64_T
+
+/* Signed 8-bit type */
+#mesondefine TIFF_INT8_T
+
+/* Pointer difference type formatter */
+#mesondefine TIFF_PTRDIFF_FORMAT
+
+/* Pointer difference type */
+#mesondefine TIFF_PTRDIFF_T
+
+/* Size type formatter */
+#mesondefine TIFF_SIZE_FORMAT
+
+/* Unsigned size type */
+#mesondefine TIFF_SIZE_T
+
+/* Signed size type formatter */
+#mesondefine TIFF_SSIZE_FORMAT
+
+/* Signed size type */
+#mesondefine TIFF_SSIZE_T
+
+/* Unsigned 16-bit type */
+#mesondefine TIFF_UINT16_T
+
+/* Unsigned 32-bit type formatter */
+#mesondefine TIFF_UINT32_FORMAT
+
+/* Unsigned 32-bit type */
+#mesondefine TIFF_UINT32_T
+
+/* Unsigned 64-bit type formatter */
+#mesondefine TIFF_UINT64_FORMAT
+
+/* Unsigned 64-bit type */
+#mesondefine TIFF_UINT64_T
+
+/* Unsigned 8-bit type */
+#mesondefine TIFF_UINT8_T
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#mesondefine TIME_WITH_SYS_TIME
+
+/* Define to 1 if your <sys/time.h> declares `struct tm'. */
+#mesondefine TM_IN_SYS_TIME
+
+/* define to use win32 IO system */
+#mesondefine USE_WIN32_FILEIO
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* Support webp compression */
+#mesondefine WEBP_SUPPORT
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#mesondefine WORDS_BIGENDIAN
+# endif
+#endif
+
+/* Define to 1 if the X Window System is missing or not being used. */
+#mesondefine X_DISPLAY_MISSING
+
+/* Support Deflate compression */
+#mesondefine ZIP_SUPPORT
+
+/* Support zstd compression */
+#mesondefine ZSTD_SUPPORT
+
+/* Enable large inode numbers on Mac OS X 10.5.  */
+#ifndef _DARWIN_USE_64_BIT_INODE
+# define _DARWIN_USE_64_BIT_INODE 1
+#endif
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#mesondefine _FILE_OFFSET_BITS
+
+/* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
+#mesondefine _LARGEFILE_SOURCE
+
+/* Define for large files, on AIX-style hosts. */
+#mesondefine _LARGE_FILES
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#mesondefine const
+
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#mesondefine inline
+#endif
+
+/* Define to `long int' if <sys/types.h> does not define. */
+#mesondefine off_t
+
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#mesondefine size_t
