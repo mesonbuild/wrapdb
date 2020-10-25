@@ -1,8 +1,9 @@
+c_args = meson.get_compiler('c').get_id() == 'msvc' ? ['-D_USE_MATH_DEFINES'] : []
+
 testexe = executable('testbin',
   'util.c', 'write_read.c', 'test.c',
-  include_directories : [incdir, ogg_inc],
-  link_with : [vorbisenc_lib, vorbis_lib, ogg_lib],
-  dependencies : ogg_dep,
+  c_args: c_args,
+  dependencies : [vorbisenc_dep, vorbis_dep, ogg_dep],
 )
 
 test('vorbistest', testexe)
