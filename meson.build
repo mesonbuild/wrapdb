@@ -140,12 +140,33 @@ else
     add_project_link_arguments('-lpthread', language: 'c')
 endif
 
+nng_args = [
+    '-DNNG_HAVE_BUS0',
+    '-DNNG_HAVE_PAIR0',
+    '-DNNG_HAVE_PAIR1',
+    '-DNNG_HAVE_PUB0',
+    '-DNNG_HAVE_PULL0',
+    '-DNNG_HAVE_PUSH0',
+    '-DNNG_HAVE_REP0',
+    '-DNNG_HAVE_REQ0',
+    '-DNNG_HAVE_RESPONDENT0',
+    '-DNNG_HAVE_SUB0',
+    '-DNNG_HAVE_SURVEYOR0',
+    '-DNNG_TRANSPORT_INPROC',
+    '-DNNG_TRANSPORT_IPC',
+    '-DNNG_TRANSPORT_TCP',
+    '-DNNG_TRANSPORT_TLS',
+]
+
+add_project_arguments(nng_args, language: 'c')
+
 nng = library('nng',
     nng_src,
     include_directories : include_dirs
 )
 
 nng_dep = declare_dependency(
+    compile_args: nng_args,
     link_with : nng,
     version : meson.project_version(),
     include_directories : include_dirs,
