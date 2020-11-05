@@ -119,7 +119,7 @@ config_h = configure_file(
 )
 install_headers('lib/expat.h', 'lib/expat_external.h')
 
-if get_option('build_tests')
+if get_option('build_tests') or cc.get_id() == 'msvc'
   visibility = 'default'
 else
   visibility = 'hidden'
