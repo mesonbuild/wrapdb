@@ -112,6 +112,9 @@ libpng_dep = declare_dependency(
     link_with : libpng,
     dependencies : libpng_deps,
 )
+# Keep the older dependency name for backwards-compat with old-style
+# dependency(..., fallback ['libpng': 'png_dep'])
+png_dep = libpng_dep
 
 png_test = executable('pngtest', 'pngtest.c', dependencies : libpng_dep)
 test('pngtest', png_test, args : files('pngtest.png'))
