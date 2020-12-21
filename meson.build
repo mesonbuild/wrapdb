@@ -226,3 +226,22 @@ protoc = executable(
   include_directories: include_directories('src'),
   link_with: [libprotobuf_lite, libprotoc]
 )
+
+
+if meson.is_cross_build()
+  protoc_native = executable(
+    'protoc-native',
+    [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
+    native: true,
+    cpp_args: flags,
+    include_directories: include_directories('src'),
+    dependencies: dependency('threads', native: true),
+  )
+else
+  protoc_native = protoc
+endif
+
+protoc_gen = generator(protoc_native,
+  output: ['@BASENAME@.pb.cc', '@BASENAME@.pb.h'],
+  arguments: ['@EXTRA_ARGS@', '--proto_path=' + meson.current_source_dir()/'src', '--cpp_out=@BUILD_DIR@', '@INPUT@']
+)
