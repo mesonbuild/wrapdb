@@ -29,6 +29,8 @@ project(
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
 
+user_args = []
+
 c_args = [
   '-DGLEW_NO_GLU',
 ]
@@ -44,6 +46,7 @@ if get_option('default_library') == 'shared'
   c_args += '-DGLEW_BUILD'
 else
   c_args += '-DGLEW_STATIC'
+  user_args += '-DGLEW_STATIC'
 endif
 
 if host_system == 'windows'
@@ -109,5 +112,6 @@ install_headers(
 
 glew_dep = declare_dependency(
   link_with : libglew,
+  compile_args: user_args,
   include_directories : glew_include,
 )
