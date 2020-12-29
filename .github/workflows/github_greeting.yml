@@ -1,0 +1,16 @@
+name: Greet Developer
+
+on: [issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: >
+          Hi there.
+
+          Congratulations on opening your first issue! We well get back to you
+          as soon as possible. Thanks! 🙏🏼
