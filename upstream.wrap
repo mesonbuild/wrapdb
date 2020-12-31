@@ -6,4 +6,4 @@ source_filename = Catch2-2.13.3.zip
 source_hash = 1804feb72bc15c0856b4a43aa586c661af9c3685a75973b6a8fc0b950c7cfd13
 
 [provide]
-dependency_names = catch2_dep
+catch2 = catch2_dep
