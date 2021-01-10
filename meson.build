@@ -300,7 +300,11 @@ libmpdecpp = library(
 install_headers(mpdecimal_h, 'libmpdec++/decimal.hh')
 
 mpdec_dep = declare_dependency(
-  link_with : libmpdec)
+  link_with : libmpdec,
+  # mpdecimal.h is generated in the project root directory
+  include_directories : include_directories('.'))
 
 mpdecpp_dep = declare_dependency(
-  link_with : libmpdecpp)
+  link_with : libmpdecpp,
+  include_directories : include_directories('libmpdec++'),
+  dependencies : mpdec_dep)
