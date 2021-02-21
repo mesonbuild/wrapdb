@@ -4,3 +4,6 @@ directory = freetype-2.9.1
 source_url = https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.gz
 source_filename = freetype-2.9.1.tar.gz
 source_hash = ec391504e55498adceb30baceebd147a6e963f636eb617424bcfc47a169898ce
+
+[provide]
+freetype2 = freetype_dep
