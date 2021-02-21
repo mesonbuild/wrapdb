@@ -188,6 +188,10 @@ elif host_machine.system() == 'windows'
   cdata.set('SDL_AUDIO_DRIVER_WINMM', 1)
 #  core_args += '
   core_deps += [cc.find_library('winmm'), cc.find_library('version'), cc.find_library('imm32')]
+  if cc.sizeof('void*') == 4
+    # Seems to be only needed on 32 bit platforms. Don't know why.
+    core_args += ['-DHAVE_LIBC']
+  endif
 elif host_machine.system() == 'darwin'
   cdata.set('HAVE_GCC_ATOMICS', 1)
   cdata.set('HAVE_GCC_SYNC_LOCK_TEST_AND_SET', 1)
