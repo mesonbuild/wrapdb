@@ -1,10 +1,15 @@
 project('sdl2-image', 'c')
 
-feature_args = ['-DLOAD_BMP', '-DLOAD_PNG', '-DLOAD_JPG', '-DLOAD_TIF']
+feature_args = ['-DLOAD_BMP', '-DLOAD_PNG', '-DLOAD_JPG']
+
 sdl2_dep = dependency('sdl2')
 png_dep = dependency('libpng')
 jpeg_dep = dependency('libjpeg')
-tif_dep = dependency('libtiff-4')
+tif_dep = dependency('libtiff-4', required: false)
+
+if tif_dep.found()
+  feature_args += ['-DLOAD_TIF']
+endif
 
 sdl2_image_lib = library('sdl2image',
   'IMG.c',
