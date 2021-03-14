@@ -1,0 +1,57 @@
+# Options disabled by default
+
+option('enable-floats', type : 'boolean', value : false,
+       description : 'enable type float instead of double for DSP samples')
+
+option('enable-threads', type : 'boolean', value : true,
+       description : 'enable multi-threading support (such as parallel voice synthesis)')
+
+# TODO enable-fpe-check   'enable Floating Point Exception checks and debug messages'
+# TODO enable-portaudio   'compile PortAudio support'
+# TODO enable-profiling   'profile the dsp code'
+# TODO enable-trap-on-fpe 'enable SIGFPE trap on Floating Point Exceptions'
+
+# Options enabled by default
+
+# TODO enable-aufile       'compile support for sound file output'
+# TODO BUILD_SHARED_LIBS   'Build a shared object or DLL'
+# TODO enable-dbus         'compile DBUS support (if it is available)'
+# TODO enable-ipv6         'enable ipv6 support'
+# TODO enable-jack         'compile JACK support (if it is available)'
+# TODO enable-ladspa       'enable LADSPA effect units'
+# TODO enable-libinstpatch 'use libinstpatch (if available) to load DLS and GIG files'
+# TODO enable-libsndfile   'compile libsndfile support (if it is available)'
+# TODO enable-midishare    'compile MidiShare support (if it is available)'
+# TODO enable-opensles     'compile OpenSLES support (if it is available)'          # upstream has it disabled!
+# TODO enable-oboe         'compile Oboe support (requires OpenSLES and/or AAudio)' # upstream has it disabled!
+# TODO enable-network      'enable network support (requires BSD sockets)'
+# TODO enable-oss          'compile OSS support (if it is available)'
+# TODO enable-dsound       'compile DirectSound support (if it is available)'
+# TODO enable-waveout      'compile Windows WaveOut support (if it is available)'
+# TODO enable-winmidi      'compile Windows MIDI support (if it is available)'
+# TODO enable-sdl2         'compile SDL2 audio support (if it is available)'
+# TODO enable-pkgconfig    'use pkg-config to locate fluidsynth\'s (mostly optional) dependencies'
+# TODO enable-pulseaudio   'compile PulseAudio support (if it is available)'
+# TODO enable-readline     'compile readline lib line editing (if it is available)'
+
+# Platform specific options
+
+# Linux|FreeBSD|DragonFly
+# TODO enable-lash 'compile LASH support (if it is available)'
+# TODO enable-alsa 'compile ALSA support (if it is available)'
+#
+# Linux
+# TODO enable-systemd 'compile systemd support (if it is available)'
+#
+# Darwin
+# TODO enable-coreaudio 'compile CoreAudio support (if it is available)'
+# TODO enable-coremidi  'compile CoreMIDI support (if it is available)'
+# TODO enable-framework 'create a Mac OSX style FluidSynth.framework'
+#
+# OS2
+# TODO enable-dart 'compile DART support (if it is available)'
+
+# Wrap-specific options
+
+option('try-static-deps', type : 'boolean', value : false,
+       description : 'try using static linking for FluidSynth dependencies')
