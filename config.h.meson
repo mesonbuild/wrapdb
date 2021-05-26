@@ -1,0 +1,120 @@
+/* API declaration export attribute */
+#mesondefine AL_API
+#mesondefine ALC_API
+
+/* Define if HRTF data is embedded in the library */
+#mesondefine ALSOFT_EMBED_HRTF_DATA
+
+/* Define if we have the std::aligned_alloc function */
+#mesondefine HAVE_STD_ALIGNED_ALLOC
+
+/* Define if we have the posix_memalign function */
+#mesondefine HAVE_POSIX_MEMALIGN
+
+/* Define if we have the _aligned_malloc function */
+#mesondefine HAVE__ALIGNED_MALLOC
+
+/* Define if we have the proc_pidpath function */
+#mesondefine HAVE_PROC_PIDPATH
+
+/* Define if we have the getopt function */
+#mesondefine HAVE_GETOPT
+
+/* Define if we have SSE CPU extensions */
+#mesondefine HAVE_SSE
+#mesondefine HAVE_SSE2
+#mesondefine HAVE_SSE3
+#mesondefine HAVE_SSE4_1
+
+/* Define if we have ARM Neon CPU extensions */
+#mesondefine HAVE_NEON
+
+/* Define if we have the ALSA backend */
+#mesondefine HAVE_ALSA
+
+/* Define if we have the OSS backend */
+#mesondefine HAVE_OSS
+
+/* Define if we have the Solaris backend */
+#mesondefine HAVE_SOLARIS
+
+/* Define if we have the SndIO backend */
+#mesondefine HAVE_SNDIO
+
+/* Define if we have the WASAPI backend */
+#mesondefine HAVE_WASAPI
+
+/* Define if we have the DSound backend */
+#mesondefine HAVE_DSOUND
+
+/* Define if we have the Windows Multimedia backend */
+#mesondefine HAVE_WINMM
+
+/* Define if we have the PortAudio backend */
+#mesondefine HAVE_PORTAUDIO
+
+/* Define if we have the PulseAudio backend */
+#mesondefine HAVE_PULSEAUDIO
+
+/* Define if we have the JACK backend */
+#mesondefine HAVE_JACK
+
+/* Define if we have the CoreAudio backend */
+#mesondefine HAVE_COREAUDIO
+
+/* Define if we have the OpenSL backend */
+#mesondefine HAVE_OPENSL
+
+/* Define if we have the Oboe backend */
+#mesondefine HAVE_OBOE
+
+/* Define if we have the Wave Writer backend */
+#mesondefine HAVE_WAVE
+
+/* Define if we have the SDL2 backend */
+#mesondefine HAVE_SDL2
+
+/* Define if we have dlfcn.h */
+#mesondefine HAVE_DLFCN_H
+
+/* Define if we have pthread_np.h */
+#mesondefine HAVE_PTHREAD_NP_H
+
+/* Define if we have malloc.h */
+#mesondefine HAVE_MALLOC_H
+
+/* Define if we have cpuid.h */
+#mesondefine HAVE_CPUID_H
+
+/* Define if we have intrin.h */
+#mesondefine HAVE_INTRIN_H
+
+/* Define if we have guiddef.h */
+#mesondefine HAVE_GUIDDEF_H
+
+/* Define if we have initguid.h */
+#mesondefine HAVE_INITGUID_H
+
+/* Define if we have GCC's __get_cpuid() */
+#mesondefine HAVE_GCC_GET_CPUID
+
+/* Define if we have the __cpuid() intrinsic */
+#mesondefine HAVE_CPUID_INTRINSIC
+
+/* Define if we have SSE intrinsics */
+#mesondefine HAVE_SSE_INTRINSICS
+
+/* Define if we have pthread_setschedparam() */
+#mesondefine HAVE_PTHREAD_SETSCHEDPARAM
+
+/* Define if we have pthread_setname_np() */
+#mesondefine HAVE_PTHREAD_SETNAME_NP
+
+/* Define if pthread_setname_np() only accepts one parameter */
+#mesondefine PTHREAD_SETNAME_NP_ONE_PARAM
+
+/* Define if pthread_setname_np() accepts three parameters */
+#mesondefine PTHREAD_SETNAME_NP_THREE_PARAMS
+
+/* Define if we have pthread_set_name_np() */
+#mesondefine HAVE_PTHREAD_SET_NAME_NP
