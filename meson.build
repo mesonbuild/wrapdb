@@ -10,6 +10,15 @@ cpp = meson.get_compiler('cpp')
 cpp_flags = [
   '-Wno-sign-compare'
 ]
+
+if host_machine.cpu_family() == 'x86_64'
+  cpp_flags += [ '-maes', '-msse4.1' ]
+elif host_machine.cpu_family() == 'aarch64' and cpp.sizeof('void*') == 8
+  cpp_flags += [ '-march=armv8-a+crypto' ]
+elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
+  cpp_flags += [ '-mfpu=neon' ]
+endif
+
 flags = cpp.get_supported_arguments(cpp_flags)
 
 add_project_arguments(flags, language: 'cpp')
