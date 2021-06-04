@@ -1,0 +1,6 @@
+[wrap-file]
+directory = any-lite-0.2.0
+
+source_url = https://codeload.github.com/martinmoene/any-lite/tar.gz/v0.2.0
+source_filename = any-lite-0.2.0.tar.gz
+source_hash = 945ac39f14273be742c8a060af100182e38920f641e5d8fa16699e74a09e9850
