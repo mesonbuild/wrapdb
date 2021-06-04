@@ -1,0 +1,6 @@
+[wrap-file]
+directory = string-view-lite-1.3.0
+
+source_url = https://codeload.github.com/martinmoene/string-view-lite/tar.gz/v1.3.0
+source_filename = string-view-lite-1.3.0.tar.gz
+source_hash = d83adb0495ccfba50ae5a1af70bde04f33a26dc40599b0ce9e55f09c075daf23
