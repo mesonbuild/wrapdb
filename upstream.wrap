@@ -1,0 +1,6 @@
+[wrap-file]
+directory = Vulkan-ValidationLayers-1.2.158
+
+source_url = https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/v1.2.158.tar.gz
+source_filename = vulkan-validationlayers-1.2.158.tar.gz
+source_hash = 9d7a6eba2db88b8af6457acce0b638324ca03cde2e9589ae96749114091c6e9e
