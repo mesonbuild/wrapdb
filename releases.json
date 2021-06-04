@@ -1,0 +1,1225 @@
+{
+  "abseil-cpp": {
+    "dependency_names": [
+      "absl_base",
+      "absl_container",
+      "absl_debugging",
+      "absl_flags",
+      "absl_hash",
+      "absl_numeric",
+      "absl_random",
+      "absl_status",
+      "absl_strings",
+      "absl_synchronization",
+      "absl_time",
+      "absl_types"
+    ],
+    "program_names": [],
+    "versions": [
+      "20210324.1-2",
+      "20210324.1-1",
+      "20200923.2-1",
+      "20200225.2-3",
+      "20200225.2-2",
+      "20200225.2-1"
+    ]
+  },
+  "arduinocore-avr": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.8.2-1",
+      "1.6.20-1"
+    ]
+  },
+  "bdwgc": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "7.6.8-1"
+    ]
+  },
+  "box2d": {
+    "dependency_names": [
+      "box2d"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.4.1-1",
+      "2.3.1-7",
+      "2.3.1-5",
+      "2.3.1-4",
+      "2.3.1-2"
+    ]
+  },
+  "catch": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.2.2-1",
+      "2.2.1-2",
+      "2.2.1-1"
+    ]
+  },
+  "catch2": {
+    "dependency_names": [
+      "catch2"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.13.3-2",
+      "2.13.3-1",
+      "2.11.3-1",
+      "2.11.1-1",
+      "2.9.0-1",
+      "2.8.0-1",
+      "2.7.2-1",
+      "2.5.0-1",
+      "2.4.1-1"
+    ]
+  },
+  "catchorg-clara": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.5-1"
+    ]
+  },
+  "cereal": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.0-1",
+      "1.2.2-1"
+    ]
+  },
+  "check": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.14.0-1"
+    ]
+  },
+  "chipmunk": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "6.2.2-2",
+      "6.2.2-1"
+    ]
+  },
+  "cmocka": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.5-3",
+      "1.1.5-2",
+      "1.1.5-1",
+      "1.1.2-1"
+    ]
+  },
+  "cpputest": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "4.0-1"
+    ]
+  },
+  "cpr": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.5.0-1",
+      "1.3.0-1"
+    ]
+  },
+  "cxxopts": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.2.1-1",
+      "2.2.0-2",
+      "2.2.0-1"
+    ]
+  },
+  "docopt": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.6.3-1"
+    ]
+  },
+  "eigen": {
+    "dependency_names": [
+      "eigen3"
+    ],
+    "program_names": [],
+    "versions": [
+      "3.3.9-1",
+      "3.3.8-1",
+      "3.3.7-3",
+      "3.3.7-2",
+      "3.3.7-1",
+      "3.3.5-1",
+      "3.3.4-1"
+    ]
+  },
+  "emilk-loguru": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.1.0-2",
+      "2.1.0-1"
+    ]
+  },
+  "enet": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.13-4",
+      "1.3.13-2"
+    ]
+  },
+  "expat": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.2.9-3",
+      "2.2.9-2",
+      "2.2.9-1",
+      "2.2.6-1",
+      "2.2.5-5",
+      "2.2.5-4",
+      "2.2.5-3",
+      "2.2.5-1"
+    ]
+  },
+  "facil": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.7.5-1"
+    ]
+  },
+  "flac": {
+    "dependency_names": [
+      "flac"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.3.3-1"
+    ]
+  },
+  "flatbuffers": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.11.0-1"
+    ]
+  },
+  "fluidsynth": {
+    "dependency_names": [
+      "fluidsynth"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.2.0-1",
+      "2.1.8-1",
+      "2.1.7-1"
+    ]
+  },
+  "fmt": {
+    "dependency_names": [
+      "fmt"
+    ],
+    "program_names": [],
+    "versions": [
+      "7.1.3-1",
+      "7.0.1-1",
+      "6.2.0-2",
+      "6.2.0-1",
+      "6.0.0-1",
+      "5.3.0-1",
+      "5.2.1-1",
+      "5.2.0-1",
+      "4.1.0-1"
+    ]
+  },
+  "freetype2": {
+    "dependency_names": [
+      "freetype2"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.9.1-2",
+      "2.9.1-1"
+    ]
+  },
+  "gdbm": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.14.1-2",
+      "1.14.1-1"
+    ]
+  },
+  "glew": {
+    "dependency_names": [
+      "glew"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.1.0-3",
+      "2.1.0-2",
+      "2.1.0-1"
+    ]
+  },
+  "glib": {
+    "dependency_names": [
+      "gthread-2.0",
+      "gobject-2.0",
+      "gmodule-no-export-2.0",
+      "gmodule-export-2.0",
+      "gmodule-2.0",
+      "glib-2.0",
+      "gio-2.0",
+      "gio-win32-2.0",
+      "gio-unix-2.0"
+    ],
+    "program_names": [
+      "glib-genmarshal",
+      "glib-mkenums",
+      "glib-compile-schemas",
+      "glib-compile-resources",
+      "gio-querymodules",
+      "gdbus-codegen"
+    ],
+    "versions": [
+      "2.68.1-1",
+      "2.66.7-1"
+    ]
+  },
+  "glm": {
+    "dependency_names": [
+      "glm"
+    ],
+    "program_names": [],
+    "versions": [
+      "0.9.9.8-2",
+      "0.9.9.8-1"
+    ]
+  },
+  "google-benchmark": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.5.2-1",
+      "1.4.1-1"
+    ]
+  },
+  "google-brotli": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.0.7-1"
+    ]
+  },
+  "google-snappy": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.7-2",
+      "1.1.7-1"
+    ]
+  },
+  "google-woff2": {
+    "dependency_names": [
+      "libwoff2common",
+      "libwoff2dec",
+      "libwoff2enc"
+    ],
+    "program_names": [
+      "woff2_decompress",
+      "woff2_compress",
+      "woff2_info"
+    ],
+    "versions": [
+      "1.0.2-1"
+    ]
+  },
+  "gtest": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.10.0-1",
+      "1.8.1-1",
+      "1.8.0-5",
+      "1.8.0-4",
+      "1.8.0-3",
+      "1.8.0-2",
+      "1.8.0-1",
+      "1.7.0-5",
+      "1.7.0-4",
+      "1.7.0-2"
+    ]
+  },
+  "hedley": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "11-1"
+    ]
+  },
+  "hinnant-date": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.0.0-1",
+      "2.4.1-1"
+    ]
+  },
+  "htslib": {
+    "dependency_names": [
+      "htslib"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.11-1",
+      "1.10.2-1",
+      "1.9-1"
+    ]
+  },
+  "icu": {
+    "dependency_names": [
+      "icu-uc",
+      "icu-io",
+      "icu-i18n"
+    ],
+    "program_names": [],
+    "versions": [
+      "67.1-1",
+      "55.2-1"
+    ]
+  },
+  "imgui": {
+    "dependency_names": [
+      "imgui"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.81-1",
+      "1.80-1",
+      "1.79-2",
+      "1.79-1",
+      "1.78-2",
+      "1.78-1",
+      "1.76-2",
+      "1.76-1"
+    ]
+  },
+  "imgui-sfml": {
+    "dependency_names": [
+      "imgui-sfml"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.3-1",
+      "2.1-1"
+    ]
+  },
+  "inih": {
+    "dependency_names": [
+      "inih",
+      "inireader"
+    ],
+    "program_names": [],
+    "versions": [
+      "r53-1",
+      "r52-1",
+      "r51-1"
+    ]
+  },
+  "jansson": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.11-3",
+      "2.11-2",
+      "2.11-1"
+    ]
+  },
+  "json": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.2.0-1",
+      "2.1.1-1",
+      "2.0.5-1",
+      "2.0.3-1"
+    ]
+  },
+  "json-c": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.13.1-1"
+    ]
+  },
+  "jsoncpp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.8.4-1"
+    ]
+  },
+  "lame": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.100-1",
+      "3.99.5-1"
+    ]
+  },
+  "libexif": {
+    "dependency_names": [
+      "libexif"
+    ],
+    "program_names": [],
+    "versions": [
+      "0.6.22-1"
+    ]
+  },
+  "libjpeg-turbo": {
+    "dependency_names": [
+      "libjpeg"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.1.0-1"
+    ]
+  },
+  "liblbfgs": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.10-1"
+    ]
+  },
+  "liblzma": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "5.2.1-5",
+      "5.2.1-4",
+      "5.2.1-2"
+    ]
+  },
+  "libopenjp2": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.3.1-3",
+      "2.3.1-1"
+    ]
+  },
+  "libpng": {
+    "dependency_names": [
+      "libpng"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.6.37-3",
+      "1.6.37-2",
+      "1.6.37-1",
+      "1.6.35-6",
+      "1.6.35-5",
+      "1.6.35-4",
+      "1.6.34-3",
+      "1.6.34-2",
+      "1.6.34-1",
+      "1.6.17-8",
+      "1.6.17-7",
+      "1.6.17-6",
+      "1.6.17-5",
+      "1.6.17-4",
+      "1.6.17-2"
+    ]
+  },
+  "libsrtp2": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.2.0-1"
+    ]
+  },
+  "libtiff": {
+    "dependency_names": [
+      "libtiff-4"
+    ],
+    "program_names": [],
+    "versions": [
+      "4.1.0-2",
+      "4.1.0-1"
+    ]
+  },
+  "libtomcrypt": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.17-1"
+    ]
+  },
+  "libuv": {
+    "dependency_names": [
+      "libuv"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.41.0-1",
+      "1.18.0-3",
+      "1.18.0-2",
+      "1.18.0-1"
+    ]
+  },
+  "libwebsockets": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "4.0.13-1"
+    ]
+  },
+  "libxml2": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.9.7-6",
+      "2.9.7-5",
+      "2.9.7-4",
+      "2.9.7-3",
+      "2.9.7-2",
+      "2.9.7-1",
+      "2.9.2-5",
+      "2.9.2-4",
+      "2.9.2-2"
+    ]
+  },
+  "libxmlpp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.0.1-1"
+    ]
+  },
+  "lua": {
+    "dependency_names": [
+      "lua-5.3"
+    ],
+    "program_names": [],
+    "versions": [
+      "5.3.6-2",
+      "5.3.6-1",
+      "5.3.0-6",
+      "5.3.0-5",
+      "5.3.0-4",
+      "5.3.0-2"
+    ]
+  },
+  "ludocode-mpack": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.0-1"
+    ]
+  },
+  "lz4": {
+    "dependency_names": [
+      "liblz4"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.9.3-1",
+      "1.9.2-1"
+    ]
+  },
+  "mdds": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.6.0-1"
+    ]
+  },
+  "microsoft-gsl": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.1.0-1",
+      "2.0.0-1"
+    ]
+  },
+  "miniz": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.1.0-2",
+      "2.1.0-1"
+    ]
+  },
+  "mocklibc": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.0-2"
+    ]
+  },
+  "mpdecimal": {
+    "dependency_names": [
+      "mpdec",
+      "mpdecpp"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.5.0-2",
+      "2.5.0-1"
+    ]
+  },
+  "mt32emu": {
+    "dependency_names": [
+      "mt32emu"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.5.0-1",
+      "2.4.2-2",
+      "2.4.2-1"
+    ]
+  },
+  "muellan-clipp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.2.3-1"
+    ]
+  },
+  "nlohmann_json": {
+    "dependency_names": [
+      "nlohmann_json"
+    ],
+    "program_names": [],
+    "versions": [
+      "3.9.1-1",
+      "3.7.0-1",
+      "3.4.0-2",
+      "3.4.0-1",
+      "3.3.0-1"
+    ]
+  },
+  "nng": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.2-2",
+      "1.3.2-1"
+    ]
+  },
+  "nonstd-any-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.2.0-1"
+    ]
+  },
+  "nonstd-byte-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.2.0-1"
+    ]
+  },
+  "nonstd-expected-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.3.0-1"
+    ]
+  },
+  "nonstd-observer-ptr-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.4.0-1"
+    ]
+  },
+  "nonstd-optional-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.2.0-1"
+    ]
+  },
+  "nonstd-span-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.5.0-1"
+    ]
+  },
+  "nonstd-status-value-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.0-1"
+    ]
+  },
+  "nonstd-string-view-lite": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
+  "ogg": {
+    "dependency_names": [
+      "ogg"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.3.2-7",
+      "1.3.2-6",
+      "1.3.2-5",
+      "1.3.2-4",
+      "1.3.2-2"
+    ]
+  },
+  "onqtam-doctest": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.4.0-1",
+      "2.3.7-1"
+    ]
+  },
+  "openal-soft": {
+    "dependency_names": [
+      "openal"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.21.0-1"
+    ]
+  },
+  "openh264": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.7.0-1"
+    ]
+  },
+  "pcg": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.98.1-2",
+      "0.98.1-1"
+    ]
+  },
+  "pcre": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "8.37-1"
+    ]
+  },
+  "pcre2": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "10.23-1"
+    ]
+  },
+  "protobuf": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "3.12.2-2",
+      "3.12.2-1",
+      "3.5.1-3",
+      "3.5.1-2",
+      "3.5.0-4",
+      "3.5.0-3",
+      "3.5.0-2"
+    ]
+  },
+  "protobuf-c": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
+  "pybind11": {
+    "dependency_names": [
+      "pybind11"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.6.1-1",
+      "2.6.0-1",
+      "2.3.0-2",
+      "2.3.0-1",
+      "2.2.4-1",
+      "2.2.3-1",
+      "2.2.2-1"
+    ]
+  },
+  "quazip": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.7.3-1"
+    ]
+  },
+  "rang": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.0-1"
+    ]
+  },
+  "range-v3": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.10.0-1",
+      "0.3.6-1"
+    ]
+  },
+  "rapidjson": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.0-1"
+    ]
+  },
+  "rdkafka": {
+    "dependency_names": [
+      "rdkafka",
+      "rdkafka++"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.5.2-1",
+      "1.5.0-1",
+      "1.4.4-1",
+      "1.4.0-1"
+    ]
+  },
+  "re2": {
+    "dependency_names": [
+      "re2"
+    ],
+    "program_names": [],
+    "versions": [
+      "20201101-1"
+    ]
+  },
+  "reflex": {
+    "dependency_names": [
+      "reflex"
+    ],
+    "program_names": [],
+    "versions": [
+      "3.0.1-1"
+    ]
+  },
+  "rxcpp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "4.1.0-1"
+    ]
+  },
+  "sdl2": {
+    "dependency_names": [
+      "sdl2"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.0.12-2",
+      "2.0.12-1",
+      "2.0.3-6",
+      "2.0.3-5",
+      "2.0.3-4"
+    ]
+  },
+  "sdl2_image": {
+    "dependency_names": [
+      "sdl2_image"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.0.5-2",
+      "2.0.5-1"
+    ]
+  },
+  "sdl2_mixer": {
+    "dependency_names": [
+      "sdl2_mixer"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.0.4-1"
+    ]
+  },
+  "sdl2_net": {
+    "dependency_names": [
+      "sdl2_net"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.0.1-3",
+      "2.0.1-2",
+      "2.0.1-1"
+    ]
+  },
+  "sdl2_ttf": {
+    "dependency_names": [
+      "sdl2_ttf"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.0.12-3",
+      "2.0.12-2",
+      "2.0.12-1"
+    ]
+  },
+  "sergiusthebest-plog": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.1.4-1"
+    ]
+  },
+  "sfml": {
+    "dependency_names": [
+      "sfml"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.5.1-1"
+    ]
+  },
+  "spdlog": {
+    "dependency_names": [
+      "spdlog"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.8.5-1",
+      "1.8.2-1",
+      "1.8.1-1",
+      "1.8.0-1",
+      "1.4.2-1",
+      "1.3.1-1",
+      "1.1.0-1",
+      "0.17.0-2",
+      "0.17.0-1",
+      "0.16.3-1",
+      "0.11.0-1"
+    ]
+  },
+  "spng": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.5.0-1",
+      "0.4.5-1",
+      "0.4.4-1",
+      "0.4.3-1",
+      "0.4.2-2",
+      "0.4.2-1"
+    ]
+  },
+  "sqlite3": {
+    "dependency_names": [
+      "sqlite3"
+    ],
+    "program_names": [],
+    "versions": [
+      "3.34.1-1"
+    ]
+  },
+  "tclap": {
+    "dependency_names": [
+      "tclap"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.2.4-1",
+      "1.2.2-1",
+      "1.2.1-1"
+    ]
+  },
+  "termbox": {
+    "dependency_names": [
+      "termbox"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.1.2-1"
+    ]
+  },
+  "tinyply": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.2-1",
+      "2.1-2",
+      "2.1-1",
+      "2.0-1"
+    ]
+  },
+  "tinyxml2": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "7.0.1-1"
+    ]
+  },
+  "trompeloeil": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "39-1",
+      "38-1"
+    ]
+  },
+  "tronkko-dirent": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.23.2-1"
+    ]
+  },
+  "turtle": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.3.2-1",
+      "1.3.1-1"
+    ]
+  },
+  "unittest-cpp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.0.0-1"
+    ]
+  },
+  "utf8proc": {
+    "dependency_names": [
+      "libutf8proc"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.6.0-1"
+    ]
+  },
+  "utfcpp": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "2.3.5-1"
+    ]
+  },
+  "vorbis": {
+    "dependency_names": [
+      "vorbis",
+      "vorbisfile",
+      "vorbisenc"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.3.5-7",
+      "1.3.5-6",
+      "1.3.5-5",
+      "1.3.5-4",
+      "1.3.5-2"
+    ]
+  },
+  "vulkan-headers": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.2.158-2",
+      "1.2.158-1",
+      "1.2.142-1"
+    ]
+  },
+  "vulkan-validationlayers": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "1.2.158-2",
+      "1.2.158-1"
+    ]
+  },
+  "wren": {
+    "dependency_names": [
+      "wren"
+    ],
+    "program_names": [],
+    "versions": [
+      "0.4.0-1",
+      "0.3.0-1"
+    ]
+  },
+  "xxhash": {
+    "dependency_names": [
+      "libxxhash"
+    ],
+    "program_names": [],
+    "versions": [
+      "0.8.0-1",
+      "0.6.5-1"
+    ]
+  },
+  "yajl": {
+    "dependency_names": [
+      "yajl"
+    ],
+    "program_names": [],
+    "versions": [
+      "2.1.0-2",
+      "2.1.0-1"
+    ]
+  },
+  "zlib": {
+    "dependency_names": [
+      "zlib"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.2.11-5",
+      "1.2.11-4",
+      "1.2.11-3",
+      "1.2.11-2",
+      "1.2.11-1",
+      "1.2.8-8",
+      "1.2.8-7",
+      "1.2.8-6",
+      "1.2.8-4",
+      "1.2.8-2"
+    ]
+  },
+  "zstd": {
+    "dependency_names": [
+      "libzstd"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.4.5-1",
+      "1.3.3-2",
+      "1.3.3-1"
+    ]
+  }
+}
