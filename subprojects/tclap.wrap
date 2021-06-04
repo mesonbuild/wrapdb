@@ -3,6 +3,8 @@ directory = tclap-1.2.4
 source_url = https://sourceforge.net/projects/tclap/files/tclap-1.2.4.tar.gz
 source_filename = tclap-1.2.4.tar.gz
 source_hash = 634c5b59dbb1ccbc9d6a5f6de494a257e29a3f59dcb6fc30445ff39b45188574
+patch_directory = tclap
 
 [provide]
 tclap = tclap_dep
+
