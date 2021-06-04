@@ -1,0 +1,9 @@
+[wrap-file]
+directory = SDL2_net-2.0.1
+
+source_url = https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.0.1.zip
+source_filename = SDL2_net-2.0.1.zip
+source_hash = 52031ed9d08a5eb1eda40e9a0409248bf532dde5e8babff5780ef1925657d59f
+
+[provide]
+SDL2_net = sdl2_net_dep
