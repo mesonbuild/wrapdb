@@ -1,9 +1,10 @@
 [wrap-file]
 directory = eigen-3.3.9
-
 source_url = https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.bz2
 source_filename = eigen-3.3.9.tar.bz2
 source_hash = 0fa5cafe78f66d2b501b43016858070d52ba47bd9b1016b0165a7b8e04675677
+patch_directory = eigen
 
 [provide]
 eigen3 = eigen_dep
+
