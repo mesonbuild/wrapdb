@@ -1,0 +1,6 @@
+[wrap-file]
+directory = Vulkan-Headers-1.2.158
+
+source_url = https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.2.158.tar.gz
+source_filename = vulkan-headers-1.2.158.tar.gz
+source_hash = 53361271cfe274df8782e1e47bdc9e61b7af432ba30acbfe31723f9df2c257f3
