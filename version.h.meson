@@ -1,0 +1,9 @@
+/* Define to the library version */
+#mesondefine ALSOFT_VERSION 
+#mesondefine ALSOFT_VERSION_NUM
+
+/* Define the branch being built */
+#mesondefine ALSOFT_GIT_BRANCH
+
+/* Define the hash of the head commit */
+#mesondefine ALSOFT_GIT_COMMIT_HASH

@@ -1,0 +1,9 @@
+[wrap-file]
+directory = openal-soft-openal-soft-1.21.0
+
+source_url = https://github.com/kcat/openal-soft/archive/refs/tags/openal-soft-1.21.0.tar.gz
+source_filename = openal-soft-1.21.0.tar.gz
+source_hash = cd3650530866f3906058225f4bfbe0052be19e0a29dcc6df185a460f9948feec
+
+[provide]
+openal = openal_dep
