@@ -1,0 +1,6 @@
+subdir('System')
+subdir('Main')
+subdir('Window')
+subdir('Network')
+subdir('Graphics')
+subdir('Audio')
