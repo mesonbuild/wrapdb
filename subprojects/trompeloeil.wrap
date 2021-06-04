@@ -1,6 +1,7 @@
 [wrap-file]
 directory = trompeloeil-39
-
 source_url = https://github.com/rollbear/trompeloeil/archive/v39.zip
 source_filename = trompeloeil-39.zip
 source_hash = 62c92f13f08d349fdd955de09bc7a2b14ae957b08f7b2356494090b62bb39309
+patch_directory = trompeloeil
+
