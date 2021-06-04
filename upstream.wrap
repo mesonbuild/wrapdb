@@ -1,0 +1,6 @@
+[wrap-file]
+directory = liblbfgs-1.10
+
+source_url = https://github.com/chokkan/liblbfgs/archive/v1.10.tar.gz
+source_filename = v1.10.tar.gz
+source_hash = 95c1997e6c215c58738f5f723ca225d64c8070056081a23d636160ff2169bd2f
