@@ -1,0 +1,1 @@
+option('solo', type: 'boolean', value: false, description: 'Build a minimal zlib without file I/O API')
