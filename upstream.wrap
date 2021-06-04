@@ -1,0 +1,6 @@
+[wrap-file]
+directory = optional-lite-3.2.0
+
+source_url = https://codeload.github.com/martinmoene/optional-lite/tar.gz/v3.2.0
+source_filename = optional-lite-3.2.0.tar.gz
+source_hash = 069c92f6404878588be761d609b917a111b0231633a91f7f908288fc77eb24c8
