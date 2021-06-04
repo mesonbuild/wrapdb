@@ -1,0 +1,8 @@
+[wrap-file]
+directory = SDL2_ttf-2.0.12
+source_url = https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.zip
+source_filename = SDL2_ttf-2.0.12.zip
+source_hash = eb909b4e5717b86e87dad7ee15adbbc5f26a33bd2dc22b93a77517bb0ba7fec8
+
+[provide]
+sdl2_ttf = sdl2_ttf_dep
