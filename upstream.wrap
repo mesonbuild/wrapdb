@@ -1,0 +1,6 @@
+[wrap-file]
+directory = expected-lite-0.3.0
+
+source_url = https://codeload.github.com/martinmoene/expected-lite/tar.gz/v0.3.0
+source_filename = expected-lite-0.3.0.tar.gz
+source_hash = fc942ce0614e9498bff6f35f1ee8d58f83026bac904d9ab427a2e822b5bdfcbd
