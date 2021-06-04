@@ -1,6 +1,7 @@
 [wrap-file]
 directory = cpr-1.5.0
-
-source_url = https://github.com/whoshuu/cpr/archive/1.5.0.zip 
+source_url = https://github.com/whoshuu/cpr/archive/1.5.0.zip
 source_filename = cpr-1.5.0.zip
 source_hash = e4805a5897acceab4c159f5dd47b92f9bbfc91bd984eed29af8b69ec6c368052
+patch_directory = cpr
+
