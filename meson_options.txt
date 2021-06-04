@@ -1,0 +1,1 @@
+option('disable_deprecated', type: 'boolean', value: false)
