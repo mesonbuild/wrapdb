@@ -1,0 +1,9 @@
+[wrap-file]
+directory = SDL2-2.0.12
+
+source_url = https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+source_filename = SDL2-2.0.12.tar.gz
+source_hash = 349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863
+
+[provide]
+sdl2 = sdl2_dep
