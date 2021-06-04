@@ -1,9 +1,10 @@
 [wrap-file]
 directory = libexif-0.6.22
-
 source_url = https://github.com/libexif/libexif/releases/download/libexif-0_6_22-release/libexif-0.6.22.tar.gz
 source_filename = libexif-0.6.22.tar.gz
 source_hash = 75dc5c135c61b5e0b15f3911b4de4b3070dd1a1683b9fc08d9ce3518d54d758d
+patch_directory = libexif
 
 [provide]
 libexif = exif_dep
+
