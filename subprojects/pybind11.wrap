@@ -3,6 +3,8 @@ directory = pybind11-2.6.1
 source_url = https://github.com/pybind/pybind11/archive/v2.6.1.tar.gz
 source_filename = pybind11-2.6.1.tar.gz
 source_hash = cdbe326d357f18b83d10322ba202d69f11b2f49e2d87ade0dc2be0c5c34f8e2a
+patch_directory = pybind11
 
 [provide]
 pybind11 = pybind11_dep
+
