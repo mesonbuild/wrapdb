@@ -1,0 +1,10 @@
+[wrap-file]
+directory = imgui-sfml-2.3
+
+source_url = https://github.com/eliasdaler/imgui-sfml/archive/refs/tags/v2.3.tar.gz
+source_filename = v2.3.tar.gz
+source_hash = 4e2f520916d1d676a4553f5c266ed869e32808b0f4681b9b603280257323a45b
+
+[provide]
+imgui-sfml = imgui_sfml_dep
+
