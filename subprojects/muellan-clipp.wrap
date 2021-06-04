@@ -1,6 +1,7 @@
 [wrap-file]
 directory = clipp-1.2.3
-
 source_url = https://github.com/muellan/clipp/archive/v1.2.3.zip
 source_filename = clipp-1.2.3.zip
 source_hash = 51f820de9f04866a9a94235258ec51ebfee12f3f3d0ca86a84cf4ddfe50411a3
+patch_directory = muellan-clipp
+
