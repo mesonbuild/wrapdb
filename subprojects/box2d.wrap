@@ -1,9 +1,10 @@
 [wrap-file]
 directory = box2d-2.4.1
-
 source_url = https://github.com/erincatto/box2d/archive/v2.4.1/box2d-2.4.1.tar.gz
 source_filename = box2d-2.4.1.tar.gz
 source_hash = d6b4650ff897ee1ead27cf77a5933ea197cbeef6705638dd181adc2e816b23c2
+patch_directory = box2d
 
 [provide]
 box2d = box2d_dep
+
