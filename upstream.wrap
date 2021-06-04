@@ -1,0 +1,6 @@
+[wrap-file]
+directory = libtomcrypt-1.17
+
+source_url = https://github.com/libtom/libtomcrypt/releases/download/1.17/crypt-1.17.zip
+source_filename = crypt-1.17.zip
+source_hash = e860ae8057e5bef12e544d38e097ccf9372509d3487a56dd01fb57224c5a3343

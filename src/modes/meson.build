@@ -1,0 +1,8 @@
+subdir('cbc')
+subdir('cfb')
+subdir('ctr')
+subdir('ecb')
+subdir('f8')
+subdir('lrw')
+subdir('ofb')
+subdir('xts')
