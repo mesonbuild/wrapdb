@@ -1,6 +1,7 @@
 [wrap-file]
 directory = mpack-1.0
-
 source_url = https://github.com/ludocode/mpack/archive/v1.0.tar.gz
 source_filename = ludocode-mpack-1.0.tar.gz
 source_hash = f80fc0539554dc58eaa22f6260e91709366475b01b2d004372e98a59d08388ac
+patch_directory = ludocode-mpack
+
