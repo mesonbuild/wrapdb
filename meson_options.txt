@@ -1,0 +1,1 @@
+option('rdrand', type: 'boolean', value: false, description: 'Enable RDRAND Hardware RNG Hash Seed')
