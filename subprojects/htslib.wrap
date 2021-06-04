@@ -1,9 +1,10 @@
 [wrap-file]
 directory = htslib-1.11
-
 source_url = https://github.com/samtools/htslib/archive/1.11.zip
 source_filename = 1.11.zip
 source_hash = 8b1c56c212b0b6c823d6136f364aa372c5f6f6c1666c701d1e84bf928ee82853
+patch_directory = htslib
 
 [provide]
 htslib = htslib_dep
+
