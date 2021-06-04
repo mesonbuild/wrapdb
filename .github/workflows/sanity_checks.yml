@@ -1,0 +1,23 @@
+name: Sanity checks
+
+on: [push, pull_request]
+
+jobs:
+  sanity_checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install package
+        run: |
+          sudo apt-get -y install build-essential python3-pip ninja-build
+          pip install meson
+
+      - uses: trilom/file-changes-action@v1.2.3
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py

@@ -1,0 +1,16 @@
+name: Prepare release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Upload release assets
+        run: |
+          git fetch --unshallow --tags
+          ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
