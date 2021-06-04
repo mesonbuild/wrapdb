@@ -1,0 +1,14 @@
+option('use_system_tzdb', type: 'boolean', value: false,
+       description: 'Use the operating system\'s timezone database')
+
+option('use_tzdb_in_dot', type: 'boolean', value: false,
+       description: 'Save the timezone database in the current folder')
+
+option('use_manual_tzdb', type: 'boolean', value: false,
+       description: 'User will set TZ DB manually by invoking set_install in their code')
+
+option('only_c_locale', type: 'boolean', value: false,
+       description: 'Use built-in date and time formatting facets (implemented only for C locale)')
+
+option('string_view', type: 'boolean', value: true,
+       description: 'Use string_view on compilers with C++17 support')
