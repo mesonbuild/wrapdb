@@ -1,10 +1,11 @@
 [wrap-file]
 directory = librdkafka-1.5.2
-
 source_url = https://github.com/edenhill/librdkafka/archive/v1.5.2.tar.gz
 source_filename = rdkafka-1.5.2.tgz
 source_hash = ca3db90d04ef81ca791e55e9eed67e004b547b7adedf11df6c24ac377d4840c6
+patch_directory = rdkafka
 
 [provide]
 rdkafka = rdkafka_dep
 rdkafka++ = rdkafkapp_dep
+
