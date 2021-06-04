@@ -1,0 +1,9 @@
+[wrap-file]
+directory = utf8proc-2.6.0
+
+source_url = https://github.com/JuliaStrings/utf8proc/archive/v2.6.0.tar.gz
+source_filename = v2.6.0.tar.gz
+source_hash = b36ce1534b8035e7febd95c031215ed279ee9d31cf9b464e28b4c688133b22c5
+
+[provide]
+libutf8proc = utf8proc_dep
