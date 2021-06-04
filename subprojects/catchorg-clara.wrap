@@ -1,6 +1,7 @@
 [wrap-file]
 directory = Clara-1.1.5
-
 source_url = https://github.com/catchorg/Clara/archive/v1.1.5.zip
 source_filename = Clara-1.1.5.zip
 source_hash = 9649045c0f151d5854533507631214dfc8b1a6cb055b5985d987ed3b6f3dfbd2
+patch_directory = catchorg-clara
+
