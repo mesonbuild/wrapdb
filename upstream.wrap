@@ -1,0 +1,6 @@
+[wrap-file]
+directory = check-0.14.0
+
+source_url = https://github.com/libcheck/check/archive/0.14.0.tar.gz
+source_filename = check-0.14.0.tar.gz
+source_hash = d55782b36827e36472b77d577953795403fb708f94a202558ffaa054bd328c60

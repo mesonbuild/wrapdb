@@ -1,0 +1,397 @@
+/*-*- mode:C; -*- */
+/* config.h.  Generated from config.h.meson by meson configure_file.
+   This is copy of cmake/config.h.in adapted to meson syntax */
+
+#if defined(__osf__)
+# define _OSF_SOURCE
+#endif
+
+/*
+ * Ensure we have C99-style int64_t, etc, all defined.
+ */
+
+/* First, we need to know if the system has already defined them. */
+#mesondefine HAVE_INT16_T
+#mesondefine HAVE_INT32_T
+#mesondefine HAVE_INT64_T
+#mesondefine HAVE_INTMAX_T
+
+#mesondefine HAVE_UINT8_T
+#mesondefine HAVE_UINT16_T
+#mesondefine HAVE_UINT32_T
+#mesondefine HAVE_UINT64_T
+#mesondefine HAVE_UINTMAX_T
+
+/* We might have the types we want under other spellings. */
+#mesondefine HAVE___INT64
+#mesondefine HAVE_U_INT64_T
+#mesondefine HAVE_UNSIGNED___INT64
+
+/* The sizes of various standard integer types. */
+#mesondefine SIZE_OF_SHORT
+#mesondefine SIZE_OF_INT
+#mesondefine SIZE_OF_LONG
+#mesondefine SIZE_OF_LONG_LONG
+#mesondefine SIZE_OF_UNSIGNED_SHORT
+#mesondefine SIZE_OF_UNSIGNED
+#mesondefine SIZE_OF_UNSIGNED_LONG
+#mesondefine SIZE_OF_UNSIGNED_LONG_LONG
+
+/*
+ * If we lack int64_t, define it to the first of __int64, int, long, and long long
+ * that exists and is the right size.
+ */
+#if !defined(HAVE_INT64_T) && defined(HAVE___INT64)
+typedef __int64 int64_t;
+#define HAVE_INT64_T
+#endif
+
+#if !defined(HAVE_INT64_T) && SIZE_OF_INT == 8
+typedef int int64_t;
+#define HAVE_INT64_T
+#endif
+
+#if !defined(HAVE_INT64_T) && SIZE_OF_LONG == 8
+typedef long int64_t;
+#define HAVE_INT64_T
+#endif
+
+#if !defined(HAVE_INT64_T) && SIZE_OF_LONG_LONG == 8
+typedef long long int64_t;
+#define HAVE_INT64_T
+#endif
+
+#if !defined(HAVE_INT64_T)
+#error No 64-bit integer type was found.
+#endif
+
+/*
+ * Similarly for int32_t
+ */
+#if !defined(HAVE_INT32_T) && SIZE_OF_INT == 4
+typedef long int32_t;
+#define HAVE_INT32_T
+#endif
+
+#if !defined(HAVE_INT32_T) && SIZE_OF_LONG == 4
+typedef long int32_t;
+#define HAVE_INT32_T
+#endif
+
+#if !defined(HAVE_INT32_T)
+#error No 32-bit integer type was found.
+#endif
+
+/*
+ * Similarly for int16_t
+ */
+#if !defined(HAVE_INT16_T) && SIZE_OF_INT == 2
+typedef int int16_t;
+#define HAVE_INT16_T
+#endif
+
+#if !defined(HAVE_INT16_T) && SIZE_OF_SHORT == 2
+typedef short int16_t;
+#define HAVE_INT16_T
+#endif
+
+#if !defined(HAVE_INT16_T)
+#error No 16-bit integer type was found.
+#endif
+
+/*
+ * Similarly for uint64_t
+ */
+#if !defined(HAVE_UINT64_T) && defined(HAVE_UNSIGNED___INT64)
+typedef unsigned __int64 uint64_t;
+#define HAVE_UINT64_T
+#endif
+
+#if !defined(HAVE_UINT64_T) && SIZE_OF_UNSIGNED == 8
+typedef unsigned uint64_t;
+#define HAVE_UINT64_T
+#endif
+
+#if !defined(HAVE_UINT64_T) && SIZE_OF_UNSIGNED_LONG == 8
+typedef unsigned long uint64_t;
+#define HAVE_UINT64_T
+#endif
+
+#if !defined(HAVE_UINT64_T) && SIZE_OF_UNSIGNED_LONG_LONG == 8
+typedef unsigned long long uint64_t;
+#define HAVE_UINT64_T
+#endif
+
+#if !defined(HAVE_UINT64_T)
+#error No 64-bit unsigned integer type was found.
+#endif
+
+
+/*
+ * Similarly for uint32_t
+ */
+#if !defined(HAVE_UINT32_T) && SIZE_OF_UNSIGNED == 4
+typedef unsigned uint32_t;
+#define HAVE_UINT32_T
+#endif
+
+#if !defined(HAVE_UINT32_T) && SIZE_OF_UNSIGNED_LONG == 4
+typedef unsigned long uint32_t;
+#define HAVE_UINT32_T
+#endif
+
+#if !defined(HAVE_UINT32_T)
+#error No 32-bit unsigned integer type was found.
+#endif
+
+/*
+ * Similarly for uint16_t
+ */
+#if !defined(HAVE_UINT16_T) && SIZE_OF_UNSIGNED == 2
+typedef unsigned uint16_t;
+#define HAVE_UINT16_T
+#endif
+
+#if !defined(HAVE_UINT16_T) && SIZE_OF_UNSIGNED_SHORT == 2
+typedef unsigned short uint16_t;
+#define HAVE_UINT16_T
+#endif
+
+#if !defined(HAVE_UINT16_T)
+#error No 16-bit unsigned integer type was found.
+#endif
+
+/*
+ * Similarly for uint8_t
+ */
+#if !defined(HAVE_UINT8_T)
+typedef unsigned char uint8_t;
+#define HAVE_UINT8_T
+#endif
+
+#if !defined(HAVE_UINT16_T)
+#error No 8-bit unsigned integer type was found.
+#endif
+
+/* Define intmax_t and uintmax_t if they are not already defined. */
+#if !defined(HAVE_INTMAX_T)
+typedef int64_t intmax_t;
+#define INTMAX_MIN INT64_MIN
+#define INTMAX_MAX INT64_MAX
+#endif
+
+#if !defined(HAVE_UINTMAX_T)
+typedef uint64_t uintmax_t;
+#endif
+
+/* Define to 1 if you have the declaration of `INT64_MAX', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_INT64_MAX
+
+/* Define to 1 if you have the declaration of `INT64_MIN', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_INT64_MIN
+
+/* Define to 1 if you have the declaration of `SIZE_MAX', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_SIZE_MAX
+
+/* Define to 1 if you have the declaration of `SSIZE_MAX', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_SSIZE_MAX
+
+/* Define to 1 if you have the declaration of `UINT32_MAX', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_UINT32_MAX
+
+/* Define to 1 if you have the declaration of `UINT64_MAX', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_UINT64_MAX
+
+/* Define to 1 if you have the <errno.h> header file. */
+#mesondefine HAVE_ERRNO_H
+
+/* Define to 1 if you have the `fork' function. */
+#mesondefine HAVE_FORK
+
+/* Define to 1 if you have the `getpid' function. */
+#mesondefine HAVE_GETPID
+
+/* Define to 1 if you have the `gettimeofday' function. */
+#mesondefine HAVE_GETTIMEOFDAY
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <limits.h> header file. */
+#mesondefine HAVE_LIMITS_H
+
+/* Define to 1 if you have the `localtime_r' function. */
+#mesondefine HAVE_DECL_LOCALTIME_R
+
+/* Define to 1 if you have the `localtime_s' function. */
+#mesondefine HAVE_LOCALTIME_S
+
+/* Define to 1 if the system has the type `long long int'. */
+#mesondefine HAVE_LONG_LONG_INT
+
+/* Define to 1 if you have the `malloc' function. */
+#mesondefine HAVE_MALLOC
+
+/* Define to 1 if you have the `realloc' function. */
+#mesondefine HAVE_REALLOC
+
+/* Define to 1 if you have the `setenv' function. */
+#mesondefine HAVE_DECL_SETENV
+
+/* Define to 1 if you have the <signal.h> header file. */
+#mesondefine HAVE_SIGNAL_H
+
+/* Define to 1 if you have the 'sigaction' function. */
+#mesondefine HAVE_SIGACTION
+
+/* Define to 1 if you have the <stdarg.h> header file. */
+#mesondefine HAVE_STDARG_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strdup' function. */
+#mesondefine HAVE_DECL_STRDUP
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if you have the `strsignal' function. */
+#mesondefine HAVE_DECL_STRSIGNAL
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#mesondefine HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <time.h> header file. */
+#mesondefine HAVE_TIME_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Define to 1 if the system has the type `unsigned long long'. */
+#mesondefine HAVE_UNSIGNED_LONG_LONG
+
+/* Define to 1 if the system has the type `unsigned long long int'. */
+#mesondefine HAVE_UNSIGNED_LONG_LONG_INT
+
+/* Define to 1 if the system has the type `wchar_t'. */
+#mesondefine HAVE_WCHAR_T
+
+/* Define to 1 if you have the `_getpid' function. */
+#mesondefine HAVE__GETPID
+
+/* Define to 1 if you have the `_localtime64_s' function. */
+#mesondefine HAVE__LOCALTIME64_S
+
+/* Define to 1 if you have the `_strdup' function. */
+#mesondefine HAVE__STRDUP
+
+/* Version number of Check */
+#mesondefine CHECK_VERSION
+
+/* The size of `wchar_t', as computed by sizeof. */
+#mesondefine SIZEOF_WCHAR_T
+
+/* Define to 1 if strerror_r returns char *. */
+#mesondefine STRERROR_R_CHAR_P
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#mesondefine TIME_WITH_SYS_TIME
+
+/*
+ * Some platform requires a macro to use extension functions.
+ */
+#mesondefine SAFE_TO_DEFINE_EXTENSIONS
+#ifdef SAFE_TO_DEFINE_EXTENSIONS
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+# define _ALL_SOURCE 1
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+# define _GNU_SOURCE 1
+#endif
+/* Enable threading extensions on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+# define _POSIX_PTHREAD_SEMANTICS 1
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+# define _TANDEM_SOURCE 1
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+# define __EXTENSIONS__ 1
+#endif
+#endif /* SAFE_TO_DEFINE_EXTENSIONS */
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#mesondefine _FILE_OFFSET_BITS
+
+/* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
+#mesondefine _LARGEFILE_SOURCE
+
+/* Define for large files, on AIX-style hosts. */
+#mesondefine _LARGE_FILES
+
+/* Define for Windows to use Windows 2000+ APIs. */
+#mesondefine _WIN32_WINNT
+#mesondefine WINVER
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#mesondefine const
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#mesondefine clockid_t
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#mesondefine gid_t
+
+/* Define to `unsigned long' if <sys/types.h> does not define. */
+#mesondefine id_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#mesondefine mode_t
+
+/* Define to `long long' if <sys/types.h> does not define. */
+#mesondefine off_t
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#mesondefine pid_t
+
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#mesondefine size_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#mesondefine ssize_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#mesondefine timer_t
+
+/* Define to `int' if <sys/types.h> doesn't define. */
+#mesondefine uid_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#mesondefine intptr_t
+
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#mesondefine uintptr_t
+
+// Mesonbuild's Wrap Dependency specific
+#mesondefine HAVE_DECL_ALARM
+#mesondefine HAVE_MKSTEMP
