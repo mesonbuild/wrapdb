@@ -1,6 +1,7 @@
 [wrap-file]
 directory = jansson-2.11
-
 source_url = http://www.digip.org/jansson/releases/jansson-2.11.tar.bz2
 source_filename = jansson-2.11.tar.bz2
 source_hash = 783132e2fc970feefc2fa54199ef65ee020bd8e0e991a78ea44b8586353a0947
+patch_directory = jansson
+
