@@ -1,6 +1,7 @@
 [wrap-file]
 directory = enet-1.3.13
-
 source_url = http://enet.bespin.org/download/enet-1.3.13.tar.gz
 source_filename = enet-1.3.13.tar.gz
 source_hash = e36072021faa28731b08c15b1c3b5b91b911baf5f6abcc7fe4a6d425abada35c
+patch_directory = enet
+
