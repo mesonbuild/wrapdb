@@ -1,0 +1,6 @@
+[wrap-file]
+directory = cereal-1.3.0
+
+source_url = https://github.com/USCiLab/cereal/archive/v1.3.0.tar.gz
+source_filename = cereal-1.3.0.tar.gz
+source_hash = 329ea3e3130b026c03a4acc50e168e7daff4e6e661bc6a7dfec0d77b570851d5
