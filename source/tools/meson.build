@@ -1,0 +1,5 @@
+subdir('toolutil')
+subdir('icupkg')
+subdir('pkgdata')
+subdir('icuinfo')
+subdir('ctestfw')
