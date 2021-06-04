@@ -3,7 +3,9 @@ directory = mpdecimal-2.5.0
 source_url = http://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.0.tar.gz
 source_filename = mpdecimal-2.5.0.tar.gz
 source_hash = 15417edc8e12a57d1d9d75fa7e3f22b158a3b98f44db9d694cfd2acde8dfa0ca
+patch_directory = mpdecimal
 
 [provide]
 mpdec = mpdec_dep
 mpdecpp = mpdecpp_dep
+
