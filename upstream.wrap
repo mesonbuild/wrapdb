@@ -1,0 +1,7 @@
+[wrap-file]
+directory = loguru-2.1.0
+
+source_url = https://github.com/emilk/loguru/archive/v2.1.0.zip
+source_filename = loguru_2.1.0.zip
+source_hash = 8d2d28969a4e91f8ef71ae4c1ba140097d274f75b6587fb4f465ce9434402fd2
+
