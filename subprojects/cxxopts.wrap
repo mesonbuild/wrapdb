@@ -1,6 +1,7 @@
 [wrap-file]
 directory = cxxopts-2.2.1
-
 source_url = https://github.com/jarro2783/cxxopts/archive/v2.2.1.tar.gz
 source_filename = cxxopts-2.2.1.tar.gz
 source_hash = 984aa3c8917d649b14d7f6277104ce38dd142ce378a9198ec926f03302399681
+patch_directory = cxxopts
+
