@@ -7,4 +7,4 @@ project(
 
 cpp_httplib_dep = declare_dependency(include_directories: include_directories('.'))
 
-meson.override_dependency('cpp-httplib', httplib_dep)
+meson.override_dependency('cpp-httplib', cpp_httplib_dep)
