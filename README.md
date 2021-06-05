@@ -6,7 +6,7 @@ any Meson project that needs them as dependency.
 
 ## How to test a wrap
 
-Clone this repository locally, and set the `wraps` option with a coma separated
+Clone this repository locally, and set the `wraps` option with a comma separated
 list of wraps that needs to be built.
 
 For example to test libjpeg-turbo and zlib:
@@ -41,9 +41,6 @@ meson compile -C builddir
   - `skip_ci`: (Optional) If set to `true` indicates that the wrap cannot be built
     as part of the CI, for example if specific environment or dependencies are
     required.
-  - `skip_ci`: (Optional) If set to `true` indicates that the wrap cannot be built
-    as part of the CI, for example if specific environment or dependencies are
-    required.
   - `build_options`: (Optional) List of `option=value` strings that will be used
     to build the project on the CI.
 
@@ -52,5 +49,5 @@ meson compile -C builddir
 ## How to import one of those wraps into my project
 
 Run `meson wrap install <name>` on the top source dir of your project. It
-will install `subprojects/<name>.wrap` file used by meson to download the
+will install `subprojects/<name>.wrap` file used by Meson to download the
 dependency.
