@@ -378,6 +378,13 @@
       "2.4.1-1"
     ]
   },
+  "httplib": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.8.9-1"
+    ]
+  },
   "htslib": {
     "dependency_names": [
       "htslib"
