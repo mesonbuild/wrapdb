@@ -108,6 +108,15 @@
       "6.2.2-1"
     ]
   },
+  "cli11": {
+    "dependency_names": [
+      "cli11"
+    ],
+    "program_names": [],
+    "versions": [
+      "1.9.1-1"
+    ]
+  },
   "cmocka": {
     "dependency_names": [],
     "program_names": [],
