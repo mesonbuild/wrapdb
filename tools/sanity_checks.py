@@ -55,16 +55,27 @@ class TestReleases(unittest.TestCase):
                 self.changed_wraps.add(f.split('/')[2])
 
         for name, info in releases.items():
+            print('Checking', name)
+
             # Make sure we can load wrap file
             config = configparser.ConfigParser()
             config.read(f'subprojects/{name}.wrap')
-            self.assertEqual(config.sections()[0], 'wrap-file')
-            wrap_section = config['wrap-file']
-            self.check_has_no_path_separators(wrap_section['directory'])
-            self.check_has_no_path_separators(wrap_section['source_filename'])
 
             # Basic checks
             self.assertTrue(re.fullmatch('[a-z][a-z0-9._-]*', name))
+            self.assertEqual(config.sections()[0], 'wrap-file')
+            wrap_section = config['wrap-file']
+            self.assertIn('directory', wrap_section)
+            self.check_has_no_path_separators(wrap_section['directory'])
+            self.assertIn('source_filename', wrap_section)
+            self.check_has_no_path_separators(wrap_section['source_filename'])
+            self.assertIn('source_url', wrap_section)
+            self.assertIn('source_hash', wrap_section)
+
+            # FIXME: Not all wraps currently complies, only check for wraps we modify.
+            if name in self.changed_wraps:
+                self.assertIn('provide', config.sections())
+
             patch_directory = wrap_section.get('patch_directory')
             if patch_directory:
                 patch_path = Path('subprojects', 'packagefiles', patch_directory)
