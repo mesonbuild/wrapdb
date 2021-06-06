@@ -127,13 +127,13 @@ class TestReleases(unittest.TestCase):
 
     def check_new_release(self, name, info, wrap_section):
         if not info.get('skip_ci', False):
-            options = []
+            options = ['--fatal-meson-warnings', f'-Dwraps={name}']
             for o in info.get('build_options', []):
                 if ':' not in o:
                     options.append(f'-D{name}:{o}')
                 else:
                     options.append(f'-D{o}')
-            subprocess.check_call(['meson', 'setup', '_build', f'-Dwraps={name}'] + options)
+            subprocess.check_call(['meson', 'setup', '_build'] + options)
             subprocess.check_call(['meson', 'compile', '-C', '_build'])
             subprocess.check_call(['meson', 'test', '-C', '_build'])
         else:
