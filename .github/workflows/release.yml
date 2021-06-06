@@ -14,3 +14,14 @@ jobs:
         run: |
           git fetch --unshallow --tags
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+  update_website:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger website update
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/mesonbuild/meson/actions/workflows/website.yml/dispatches \
+            -d '{"ref":"master"}'
