@@ -118,6 +118,13 @@
       "1.1.2-1"
     ]
   },
+  "cpp-httplib": {
+    "dependency_names": [],
+    "program_names": [],
+    "versions": [
+      "0.8.9-1"
+    ]
+  },
   "cpputest": {
     "dependency_names": [],
     "program_names": [],
