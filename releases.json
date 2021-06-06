@@ -119,9 +119,10 @@
     ]
   },
   "cpp-httplib": {
-    "dependency_names": [],
+    "dependency_names": ["cpp-httplib"],
     "program_names": [],
     "versions": [
+      "0.8.9-2",
       "0.8.9-1"
     ]
   },
