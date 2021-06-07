@@ -14,14 +14,30 @@ jobs:
         run: |
           git fetch --unshallow --tags
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+  # Ideally we should trigger Meson's CI to update the website, but unfortunately
+  # it requires a Personal Access Token. Instead clone meson and do it ourself.
+  # This job is copied from Meson's workflows.
   update_website:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger website update
+      - name: Install package
         run: |
-          curl \
-            -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/mesonbuild/meson/actions/workflows/website.yml/dispatches \
-            -d '{"ref":"master"}'
+          sudo apt-get -y install python3-pip ninja-build libjson-glib-dev
+          pip install meson hotdoc
+      - name: Setup SSH Keys and known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.WEBSITE_PRIV_KEY }}"
+      - name: Update website
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git clone https://github.com/mesonbuild/meson.git
+          cd meson/docs
+          meson setup _build
+          ninja -C _build
+          ninja -C _build upload
