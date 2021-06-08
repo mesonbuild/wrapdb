@@ -1,6 +1,9 @@
-[wrap-git]
-url = https://github.com/CLIUtils/CLI11.git
-revision = v1.9.1
+[wrap-file]
+directory = CLI11-1.9.1
+
+source_url = https://github.com/CLIUtils/CLI11/archive/refs/tags/v1.9.1.tar.gz
+source_filename = CLI11-1.9.1.tar.gz
+source_hash = c780cf8cf3ba5ec2648a7eeb20a47e274493258f38a9b417628e0576f473a50b
 
 [provide]
 cli11 = cli11_dep
