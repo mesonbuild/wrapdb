@@ -97,8 +97,8 @@ class TestReleases(unittest.TestCase):
                         deps.append(k.strip())
             progs = [i for i in progs if i]
             deps = [i for i in deps if i]
-            self.assertEqual(sorted(progs), sorted(info['program_names']))
-            self.assertEqual(sorted(deps), sorted(info['dependency_names']))
+            self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
+            self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
 
             # Verify versions are sorted
             versions = info['versions']
