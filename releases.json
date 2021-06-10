@@ -693,6 +693,9 @@
     ]
   },
   "pcre": {
+    "dependency_names": [
+      "libpcre"
+    ],
     "versions": [
       "8.37-1"
     ]
