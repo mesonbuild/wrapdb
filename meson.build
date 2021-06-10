@@ -1,4 +1,6 @@
-project('wrapdb')
+project('wrapdb',
+  meson_version: '>=0.55.0'
+)
 
 wraps = get_option('wraps')
 
