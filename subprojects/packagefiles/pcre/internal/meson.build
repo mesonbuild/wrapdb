@@ -68,6 +68,8 @@ cdata.set('MAX_NAME_SIZE', 32)
 cdata.set('PARENS_NEST_LIMIT', 100)
 cdata.set('NEWLINE', 10) # Currently unix only.
 cdata.set('POSIX_MALLOC_THRESHOLD', 100)
+cdata.set('SUPPORT_UCP', 1)
+cdata.set('SUPPORT_UTF', 1)
 
 configure_file(input : 'config.h.meson',
   output : 'config.h',
