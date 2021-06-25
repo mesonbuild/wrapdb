@@ -1,8 +1,8 @@
 project(
-  'lua-5.3', 'c',
+  'lua-5.4', 'c',
   license: 'MIT',
   meson_version: '>=0.49.2',
-  version: '5.3.6',
+  version: '5.4.3',
 )
 
 lua_versions = meson.project_version().split('.')
@@ -53,7 +53,6 @@ lua_lib = library('lua',
   'src/lapi.c',
   'src/lauxlib.c',
   'src/lbaselib.c',
-  'src/lbitlib.c',
   'src/lcode.c',
   'src/lcorolib.c',
   'src/lctype.c',
