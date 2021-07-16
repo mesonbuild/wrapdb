@@ -65,12 +65,11 @@ cdata.set('SIZE_T', size_t)
 cdata.set('HAVE_UNSIGNED_CHAR', cc.sizeof('unsigned char') != -1)
 cdata.set('HAVE_UNSIGNED_SHORT', cc.sizeof('unsigned short') != -1)
 if size_t == unsigned_long
-  code = 'int main(int argc, char **argv) { unsigned long a = argc;  return __builtin_ctzl(a); }'
-  cdata.set('HAVE_BUILTIN_CTZL', cc.compiles(code))
+  cdata.set('HAVE_BUILTIN_CTZL', cc.has_function('__builtin_ctzl'))
 endif
 
 code = 'int main(void) { typedef struct undefined_structure *undef_struct_ptr;  undef_struct_ptr ptr = 0;  return ptr != 0; }'
-cdata.set('INCOMPLETE_TYPES_BROKEN', not cc.compiles(code))
+cdata.set('INCOMPLETE_TYPES_BROKEN', not cc.links(code))
 
 if meson.can_run_host_binaries()
   code = '''
