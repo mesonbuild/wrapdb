@@ -91,6 +91,14 @@
       "6.2.2-1"
     ]
   },
+  "cjson": {
+    "dependency_names": [
+      "libcjson"
+    ],
+    "versions": [
+      "1.7.14-1"
+    ]
+  },
   "cli11": {
     "dependency_names": [
       "cli11"
