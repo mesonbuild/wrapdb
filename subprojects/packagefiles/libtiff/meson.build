@@ -22,22 +22,51 @@ if cc.get_id() == 'msvc'
     cdata.set('TIFF_SSIZE_FORMAT', '"%d"')
   endif
 else
+  # Detect type size assuming 8-bit chars
   cdata.set('TIFF_INT8_T', 'char')
   cdata.set('TIFF_UINT8_T', 'unsigned char')
-  cdata.set('TIFF_INT16_T', 'short')
-  cdata.set('TIFF_UINT16_T', 'unsigned short')
-  cdata.set('TIFF_INT32_T', 'int')
-  cdata.set('TIFF_UINT32_T', 'unsigned int')
-  cdata.set('TIFF_INT64_T', 'long')
-  cdata.set('TIFF_UINT64_T', 'unsigned long')
-  cdata.set('TIFF_UINT64_FORMAT', '"%uld"')
-  if is_64
-    cdata.set('TIFF_SSIZE_T', 'long')
-    cdata.set('TIFF_SSIZE_FORMAT', '"%ld"')
-  else
-    cdata.set('TIFF_SSIZE_T', 'int')
-    cdata.set('TIFF_SSIZE_FORMAT', '"%d"')
-  endif
+  
+  compiler_sizeofs = {
+    'short'    : [cc.sizeof('short')    ,'h' ],
+    'int'      : [cc.sizeof('int')      ,''  ],
+    'long'     : [cc.sizeof('long')     ,'l' ],
+    'long long': [cc.sizeof('long long'),'ll'],
+  }
+  signed_tiff_types_sizes = {
+    'TIFF_INT16' : 2,
+    'TIFF_INT32' : 4,
+    'TIFF_INT64' : 8,
+    'TIFF_SSIZE' : cc.sizeof('void*'),
+  }
+  unsigned_tiff_types_sizes = {
+    'TIFF_UINT16' : 2,
+    'TIFF_UINT32' : 4,
+    'TIFF_UINT64' : 8,
+  }
+  
+  foreach tiff_type, target_size: signed_tiff_types_sizes
+    foreach type_name, infos: compiler_sizeofs
+      type_size   = infos[0]
+      type_printf = infos[1]
+      if type_size == target_size
+        cdata.set(tiff_type+'_T',type_name)
+        cdata.set(tiff_type+'_FORMAT', '"%'+type_printf+'d"')
+        break
+      endif
+    endforeach
+  endforeach
+  
+  foreach tiff_type, target_size: unsigned_tiff_types_sizes
+    foreach type_name, infos: compiler_sizeofs
+      type_size   = infos[0]
+      type_printf = infos[1]
+      if type_size == target_size
+        cdata.set(tiff_type+'_T','unsigned '+type_name)
+        cdata.set(tiff_type+'_FORMAT', '"%'+type_printf+'ud"')
+        break
+      endif
+    endforeach
+  endforeach
 endif
 
 check_headers = [
