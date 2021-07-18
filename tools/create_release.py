@@ -53,6 +53,11 @@ class CreateRelease:
         directory = self.wrap_section.get('directory', self.name)
         srcdir = Path('subprojects', 'packagefiles', patch_directory)
         destdir = Path(self.tempdir, directory)
+
+        generator = Path(srcdir, 'generator.sh')
+        if generator.exists():
+            subprocess.check_call([generator])
+
         shutil.copytree(srcdir, destdir)
         base_name = Path(self.tempdir, f'{self.tag}_patch')
         shutil.make_archive(base_name.as_posix(), 'zip', root_dir=self.tempdir, base_dir=directory)
