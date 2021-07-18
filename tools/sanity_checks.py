@@ -24,7 +24,17 @@ import re
 from pathlib import Path
 from utils import Version
 
-PERMITTED_FILES = ['meson.build', 'meson_options.txt', 'LICENSE.build']
+PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
+PER_PROJECT_PERMITTED_FILES = {
+    'openssl': [
+        'bn_conf.h',
+        'dso_conf.h',
+        'buildinf.h',
+        'generate_gypi.pl.patch',
+        'meson.build.tmpl',
+        'README.md',
+    ],
+}
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 
 
@@ -78,11 +88,12 @@ class TestReleases(unittest.TestCase):
             patch_directory = wrap_section.get('patch_directory')
             if patch_directory:
                 patch_path = Path('subprojects', 'packagefiles', patch_directory)
+
                 self.assertTrue(patch_path.is_dir())
                 # FIXME: Not all wraps currently complies, only check for wraps we modify.
                 if extra_checks:
                     self.assertTrue(Path(patch_path, 'LICENSE.build').is_file())
-                    self.check_files(patch_path)
+                    self.check_files(name, patch_path)
 
             # Make sure it has the same deps/progs provided
             progs = []
@@ -154,20 +165,22 @@ class TestReleases(unittest.TestCase):
         else:
             subprocess.check_call(['meson', 'subprojects', 'download', name])
 
-    def is_permitted_file(self, filename):
+    def is_permitted_file(self, subproject, filename):
         if filename in PERMITTED_FILES:
             return True
         if filename.endswith('.h.meson'):
             return True
+        if subproject in PER_PROJECT_PERMITTED_FILES and filename in PER_PROJECT_PERMITTED_FILES[subproject]:
+            return True
         return False
 
-    def check_files(self, patch_path):
+    def check_files(self, subproject, patch_path):
         tabs = []
         not_permitted = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
-            elif not self.is_permitted_file(f.name):
+            elif not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
             elif f.name in NO_TABS_FILES and '\t' in f.read_text():
                 tabs.append(f)

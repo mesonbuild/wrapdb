@@ -11,9 +11,9 @@ jobs:
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
 
-      - name: Install package
+      - name: Install packages
         run: |
-          sudo apt-get -y install build-essential python3-pip ninja-build
+          sudo apt-get -y install build-essential python3-pip ninja-build nasm
           pip install meson
 
       - name: Sanity Checks
