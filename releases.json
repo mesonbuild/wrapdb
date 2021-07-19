@@ -626,6 +626,14 @@
       "1.2.3-1"
     ]
   },
+  "netstring-c": {
+    "dependency_names": [
+      "netstring-c"
+    ],
+    "versions": [
+      "0.0.0-1"
+    ]
+  },
   "nlohmann_json": {
     "dependency_names": [
       "nlohmann_json"
