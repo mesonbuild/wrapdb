@@ -19,19 +19,25 @@ elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
   cpp_flags += [ '-mfpu=neon' ]
 endif
 
+if cpp.get_id() == 'msvc'
+  flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
+endif
+
 flags = cpp.get_supported_arguments(cpp_flags)
 
 add_project_arguments(flags, language: 'cpp')
 
 libatomic = dependency('', required: false)
-if not cpp.links('''#include <stdint.h>
-                   int main() {
-                     struct {
-                       uint64_t *v;
-                     } x;
-                     return (int)__atomic_load_n(x.v, __ATOMIC_ACQUIRE) &
-                            (int)__atomic_add_fetch(x.v, (uint64_t)1, __ATOMIC_ACQ_REL);
-                   }''',
+if cpp.get_id() == 'msvc'
+    # VS does not not need args for atomic ops.
+elif not cpp.links('''#include <stdint.h>
+                      int main() {
+                        struct {
+                          uint64_t *v;
+                        } x;
+                        return (int)__atomic_load_n(x.v, __ATOMIC_ACQUIRE) &
+                               (int)__atomic_add_fetch(x.v, (uint64_t)1, __ATOMIC_ACQ_REL);
+                      }''',
                 name : 'GCC atomic builtins')
   libatomic = cpp.find_library('atomic')
 endif
