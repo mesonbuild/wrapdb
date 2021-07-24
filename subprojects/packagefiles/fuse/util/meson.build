@@ -25,10 +25,11 @@ if udevrulesdir == ''
   udevrulesdir = join_paths(udev.get_pkgconfig_variable('udevdir'), 'rules.d')
 endif
 
-meson.add_install_script('install_helper.sh',
-                         join_paths(get_option('prefix'), get_option('sysconfdir')),
-                         join_paths(get_option('prefix'), get_option('bindir')),
-                         udevrulesdir,
-                         '@0@'.format(get_option('useroot')))
-
-
+# Unable to include the `install_helper.sh` from the fuse3 branch since it is
+# not in the allowed files of `sanity_check.py`
+#
+# meson.add_install_script('install_helper.sh',
+#                          join_paths(get_option('prefix'), get_option('sysconfdir')),
+#                          join_paths(get_option('prefix'), get_option('bindir')),
+#                          udevrulesdir,
+#                          '@0@'.format(get_option('useroot')))
