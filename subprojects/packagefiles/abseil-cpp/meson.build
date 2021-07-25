@@ -19,11 +19,11 @@ elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
   cpp_flags += [ '-mfpu=neon' ]
 endif
 
+flags = cpp.get_supported_arguments(cpp_flags)
+
 if cpp.get_id() == 'msvc'
   flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
 endif
-
-flags = cpp.get_supported_arguments(cpp_flags)
 
 add_project_arguments(flags, language: 'cpp')
 
