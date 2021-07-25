@@ -237,6 +237,14 @@
       "2.9.1-1"
     ]
   },
+  "fuse": {
+    "dependency_names": [
+      "fuse"
+    ],
+    "versions": [
+      "2.9.9-1"
+    ]
+  },
   "gdbm": {
     "versions": [
       "1.14.1-2",
