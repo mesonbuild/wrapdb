@@ -3,7 +3,7 @@ project(
   'c',
   version: '0.0.0',
   license : 'Unlicense',
-  meson_version: '>= 0.55',
+  meson_version: '>= 0.40',
 )
 
 # libm (glibc)
