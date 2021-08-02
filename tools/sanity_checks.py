@@ -46,16 +46,15 @@ class TestReleases(unittest.TestCase):
         # Verify keys are sorted
         self.assertEqual(sorted(releases.keys()), list(releases.keys()))
 
-        # Get the list of wraps that has modified packagefiles
-        with open(Path.home() / 'files.json', 'r') as f:
-            changed_files = json.load(f)
-        self.changed_wraps = set()
-        for f in changed_files:
-            if f.startswith('subprojects/packagefiles'):
-                self.changed_wraps.add(f.split('/')[2])
-
         for name, info in releases.items():
             print('Checking', name)
+
+            # We do extra checks in the case a new release is being made. This
+            # is because some wraps are not passing all tests but we force making
+            # them compliant next time we do a release.
+            versions = info['versions']
+            latest_tag = f'{name}_{versions[0]}'
+            extra_checks = latest_tag not in tags
 
             # Make sure we can load wrap file
             config = configparser.ConfigParser()
@@ -73,7 +72,7 @@ class TestReleases(unittest.TestCase):
             self.assertIn('source_hash', wrap_section)
 
             # FIXME: Not all wraps currently complies, only check for wraps we modify.
-            if name in self.changed_wraps:
+            if extra_checks:
                 self.assertIn('provide', config.sections())
 
             patch_directory = wrap_section.get('patch_directory')
@@ -81,7 +80,7 @@ class TestReleases(unittest.TestCase):
                 patch_path = Path('subprojects', 'packagefiles', patch_directory)
                 self.assertTrue(patch_path.is_dir())
                 # FIXME: Not all wraps currently complies, only check for wraps we modify.
-                if name in self.changed_wraps:
+                if extra_checks:
                     self.assertTrue(Path(patch_path, 'LICENSE.build').is_file())
                     self.check_files(patch_path)
 
