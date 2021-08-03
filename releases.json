@@ -423,6 +423,21 @@
       "2.11-1"
     ]
   },
+  "jbigkit": {
+    "versions": [
+      "2.1-1"
+    ],
+    "dependency_names": [
+      "libjbig",
+      "libjbig85"
+    ],
+    "program_names": [
+      "jbgtopbm",
+      "pbmtojbg",
+      "jbgtopbm85",
+      "pbmtojbg85"
+    ]
+  },
   "json": {
     "versions": [
       "3.2.0-1",
