@@ -1,0 +1,13 @@
+[wrap-file]
+directory = jbigkit-2.1
+
+source_url = https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-2.1.tar.gz
+source_filename = jbigkit-2.1.tar.gz
+source_hash = de7106b6bfaf495d6865c7dd7ac6ca1381bd12e0d81405ea81e7f2167263d932
+patch_directory = jbigkit
+
+[provide]
+# dependency_names = libjbig, libjbig85
+libjbig = libjbig_dep
+libjbig85 = libjbig85_dep
+program_names = jbgtopbm, pbmtojbg, jbgtopbm85, pbmtojbg85
