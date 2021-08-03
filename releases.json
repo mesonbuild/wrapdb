@@ -979,6 +979,17 @@
       "1.3.1-1"
     ]
   },
+  "unit-system": {
+    "dependency_names": [
+      "unit-system-full",
+      "unit-system-generic",
+      "unit-system-base",
+      "unit-system-common"
+    ],
+    "versions": [
+      "0.5.0-1"
+    ]
+  },
   "unittest-cpp": {
     "versions": [
       "2.0.0-1"
