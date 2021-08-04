@@ -987,6 +987,7 @@
       "unit-system-common"
     ],
     "versions": [
+      "0.5.2-1",
       "0.5.0-1"
     ]
   },
