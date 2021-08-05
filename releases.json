@@ -565,6 +565,14 @@
       "1.17-1"
     ]
   },
+  "liburing": {
+    "dependency_names": [
+      "uring"
+    ],
+    "versions": [
+      "2.0-1"
+    ]
+  },
   "libuv": {
     "dependency_names": [
       "libuv"
