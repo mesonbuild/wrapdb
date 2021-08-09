@@ -114,4 +114,5 @@ glew_dep = declare_dependency(
   link_with : libglew,
   compile_args: user_args,
   include_directories : glew_include,
+  dependencies : [dep_gl, dep_egl],
 )
