@@ -199,4 +199,3 @@ common_lib = library('uc',
 icuuc_dep = declare_dependency(link_with: common_lib,
     compile_args: usage_args,
     include_directories: incdir)
-meson.override_dependency('icu-uc', icuuc_dep)

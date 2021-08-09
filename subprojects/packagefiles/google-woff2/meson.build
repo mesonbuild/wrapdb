@@ -61,14 +61,15 @@ woff2_common_dep = declare_dependency(
   include_directories : inc,
   version : meson.project_version(),
 )
-meson.override_dependency('libwoff2common', woff2_common_dep)
 
 woff2_info = executable(
   'woff2_info',
   ['src/woff2_info.cc'],
   include_directories : inc,
   link_with : libwoff2_common)
-meson.override_find_program('woff2_info', woff2_info)
+if meson.version().version_compare('>=0.46.0')
+  meson.override_find_program('woff2_info', woff2_info)
+endif
 
 libwoff2_decoder = library(
   'woff2_decoder',
@@ -86,14 +87,15 @@ woff2_decoder_dep = declare_dependency(
   include_directories : inc,
   version : meson.project_version(),
 )
-meson.override_dependency('libwoff2dec', woff2_decoder_dep)
 
 woff2_decompress = executable(
   'woff2_decompress',
   ['src/woff2_decompress.cc'],
   include_directories : inc,
   link_with : [libwoff2_common, libwoff2_decoder])
-meson.override_find_program('woff2_decompress', woff2_decompress)
+if meson.version().version_compare('>=0.46.0')
+  meson.override_find_program('woff2_decompress', woff2_decompress)
+endif
 
 libwoff2_encoder = library(
   'woff2_encoder',
@@ -117,11 +119,12 @@ woff2_encoder_dep = declare_dependency(
   include_directories : inc,
   version : meson.project_version(),
 )
-meson.override_dependency('libwoff2enc', woff2_encoder_dep)
 
 woff2_compress = executable(
   'woff2_compress',
   ['src/woff2_compress.cc'],
   include_directories : inc,
   link_with : [libwoff2_common, libwoff2_encoder])
-meson.override_find_program('woff2_compress', woff2_compress)
+if meson.version().version_compare('>=0.46.0')
+  meson.override_find_program('woff2_compress', woff2_compress)
+endif
