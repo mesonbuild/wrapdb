@@ -1,6 +1,5 @@
 project('imgui-sfml', 'cpp',
         version: '2.1',
-        meson_version: '>=0.55.0',
         license: 'MIT')
 
 imgui_dep = dependency('imgui')
@@ -20,4 +19,3 @@ is_lib = library('imgui-sfml', 'imgui-SFML.cpp',
 imgui_sfml_dep = declare_dependency(include_directories: '.',
                                     dependencies: imgui_dep,
                                     link_with: is_lib)
-meson.override_dependency('imgui-sfml', imgui_sfml_dep)
