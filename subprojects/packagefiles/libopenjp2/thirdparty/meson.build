@@ -55,7 +55,7 @@ else
   # Try to find libtiff first
   cappdata.set('OPJ_HAVE_LIBTIFF', 1)
   cappdata.set('OPJ_HAVE_TIFF_H', 1)
-  libtiff_dep = dependency('libtiff', required : false)
+  libtiff_dep = dependency('libtiff-4', required : false)
   if libtiff_dep.found()
     message('STATUS: Your system seems to have a tiff lib available, we will use it instead of thirdparty')
   else
@@ -79,4 +79,3 @@ endif
 #if get_option('WITH_ASTYLE')
 #  subdir('astyle')
 #endif
-
