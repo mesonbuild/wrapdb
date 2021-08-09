@@ -144,7 +144,11 @@
     ]
   },
   "docopt": {
+    "dependency_names": [
+     "docopt"
+    ],
     "versions": [
+      "0.6.3-2",
       "0.6.3-1"
     ]
   },
