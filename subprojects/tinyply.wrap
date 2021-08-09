@@ -5,3 +5,5 @@ directory = tinyply-2.2
 source_hash = f9e4078a1f82557bf1d5c80525492c569e3ef8a4f5b28a847996ee91a2e8f4e6
 patch_directory = tinyply
 
+[provide]
+tinyply = tinyply_dep

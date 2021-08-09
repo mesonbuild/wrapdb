@@ -1036,7 +1036,11 @@
     ]
   },
   "tinyply": {
+    "dependency_names": [
+      "tinyply"
+    ],
     "versions": [
+      "2.2-2",
       "2.2-1",
       "2.1-2",
       "2.1-1",
