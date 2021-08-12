@@ -1,0 +1,12 @@
+[wrap-file]
+directory = libgpiod-1.6.3
+
+source_url = https://git.kernel.org/pub/scm/libs/libgpiod/libgpiod.git/snapshot/libgpiod-1.6.3.tar.gz
+source_filename = libgpiod-1.6.3.tar.gz
+source_hash = eb446070be1444fd7d32d32bbca53c2f3bbb0a21193db86198cf6050b7a28441
+
+patch_directory = libgpiod
+
+[provide]
+libgpiod = gpiod_dep
+libgpiodcxx = gpiodcxx_dep
