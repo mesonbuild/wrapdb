@@ -1,4 +1,0 @@
-option('debug-logging', type: 'boolean', value: false,
-  description: 'Enable debug logging in all modules')
-option('openssl', type: 'feature', value: 'disabled',
-  description: 'Compile in OpenSSL crypto engine')

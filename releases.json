@@ -498,7 +498,11 @@
     ]
   },
   "libsrtp2": {
+    "dependency_names": [
+      "libsrtp2"
+    ],
     "versions": [
+      "2.4.0-1",
       "2.2.0-1"
     ]
   },
