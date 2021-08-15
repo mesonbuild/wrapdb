@@ -146,6 +146,8 @@ class TestReleases(unittest.TestCase):
                     options.append(f'-D{name}:{o}')
                 else:
                     options.append(f'-D{o}')
+            if Path('_build', 'meson-private', 'cmd_line.txt').exists():
+                options.append('--wipe')
             subprocess.check_call(['meson', 'setup', '_build'] + options)
             subprocess.check_call(['meson', 'compile', '-C', '_build'])
             subprocess.check_call(['meson', 'test', '-C', '_build'])
