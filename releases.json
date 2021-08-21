@@ -1044,6 +1044,14 @@
       "2.3.5-1"
     ]
   },
+  "uthash": {
+    "dependency_names": [
+      "uthash"
+    ],
+    "versions": [
+      "2.3.0-1"
+    ]
+  },
   "vorbis": {
     "dependency_names": [
       "vorbis",
