@@ -46,7 +46,7 @@ c_tiffconf_data = configuration_data()
 
 libtiff_c_args = []
 
-if host_system == 'linux'
+if host_system != 'windows'
   libtiff_srcs +=  ['tif_unix.c']
   libtiff_c_args += ['-D_FILE_OFFSET_BITS=64']
   # Large file support
