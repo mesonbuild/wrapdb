@@ -336,7 +336,14 @@
     ]
   },
   "gtest": {
+    "dependency_names": [
+      "gtest",
+      "gtest_main",
+      "gmock",
+      "gmock_main"
+    ],
     "versions": [
+      "1.11.0-1",
       "1.10.0-1",
       "1.8.1-1",
       "1.8.0-5",
