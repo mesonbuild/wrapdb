@@ -48,11 +48,7 @@ libtiff_c_args = []
 
 if host_system != 'windows'
   libtiff_srcs +=  ['tif_unix.c']
-  libtiff_c_args += ['-D_FILE_OFFSET_BITS=64']
-  # Large file support
-  # This might not catch every possibility catered for by
-  # AC_SYS_LARGEFILE.
-  c_tif_config_data.set('_FILE_OFFSET_BITS',64)
+  c_tif_config_data.set('_FILE_OFFSET_BITS', 64)
 else
   libtiff_srcs +=  ['tif_win32.c']
 endif
