@@ -141,10 +141,20 @@ foreach f : check_functions
 endforeach
 
 cdata.set('HAVE_LIBC', 1)
+
 if cc.compiles('''#include<math.h>
 double dummy = M_PI
 ''', name : 'M_PI')
   cdata.set('HAVE_M_PI', 1)
+endif
+
+if cc.compiles('''#include <pthread.h>
+int main() {
+  pthread_mutexattr_t attr;
+  pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+  return 0;
+}''', name : 'pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE)')
+  cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)
 endif
 
 core_args = []#'-DUSING_GENERATED_CONFIG_H']

@@ -1,0 +1,1 @@
+option('asm', type : 'feature', value : 'auto', description : 'Enable platform-specific assembly optimizations')
