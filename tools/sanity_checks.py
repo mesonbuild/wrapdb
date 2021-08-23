@@ -39,96 +39,107 @@ NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 
 
 class TestReleases(unittest.TestCase):
-    def test_releases(self):
+    @classmethod
+    def setUpClass(cls):
         # Take list of git tags
         stdout = subprocess.check_output(['git', 'tag'])
-        tags = [t.strip() for t in stdout.decode().splitlines()]
+        cls.tags = [t.strip() for t in stdout.decode().splitlines()]
 
         with open('releases.json', 'r') as f:
-            releases = json.load(f)
+            cls.releases = json.load(f)
 
+    def test_releases_json(self):
         # All tags must be in the releases file
-        for t in tags:
+        for t in self.tags:
             name, version = t.rsplit('_', 1)
-            self.assertIn(name, releases)
-            self.assertIn(version, releases[name]['versions'])
+            self.assertIn(name, self.releases)
+            self.assertIn(version, self.releases[name]['versions'])
 
         # Verify keys are sorted
-        self.assertEqual(sorted(releases.keys()), list(releases.keys()))
+        self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
 
-        for name, info in releases.items():
-            print('Checking', name)
+    def test_releases(self):
+        for name, info in self.releases.items():
+            with self.subTest(name=name):
+                # We do extra checks in the case a new release is being made. This
+                # is because some wraps are not passing all tests but we force making
+                # them compliant next time we do a release.
+                versions = info['versions']
+                latest_tag = f'{name}_{versions[0]}'
+                extra_checks = latest_tag not in self.tags
 
-            # We do extra checks in the case a new release is being made. This
-            # is because some wraps are not passing all tests but we force making
-            # them compliant next time we do a release.
-            versions = info['versions']
-            latest_tag = f'{name}_{versions[0]}'
-            extra_checks = latest_tag not in tags
+                # Make sure we can load wrap file
+                config = configparser.ConfigParser()
+                config.read(f'subprojects/{name}.wrap')
 
-            # Make sure we can load wrap file
-            config = configparser.ConfigParser()
-            config.read(f'subprojects/{name}.wrap')
+                # Basic checks
+                with self.subTest(step='basic'):
+                    self.assertTrue(re.fullmatch('[a-z][a-z-1-9._-]*', name))
+                    self.assertEqual(config.sections()[0], 'wrap-file')
+                    wrap_section = config['wrap-file']
+                    self.assertIn('directory', wrap_section)
+                    self.check_has_no_path_separators(wrap_section['directory'])
+                    self.assertIn('source_filename', wrap_section)
+                    self.check_has_no_path_separators(wrap_section['source_filename'])
+                    self.assertIn('source_url', wrap_section)
+                    self.assertIn('source_hash', wrap_section)
 
-            # Basic checks
-            self.assertTrue(re.fullmatch('[a-z][a-z0-9._-]*', name))
-            self.assertEqual(config.sections()[0], 'wrap-file')
-            wrap_section = config['wrap-file']
-            self.assertIn('directory', wrap_section)
-            self.check_has_no_path_separators(wrap_section['directory'])
-            self.assertIn('source_filename', wrap_section)
-            self.check_has_no_path_separators(wrap_section['source_filename'])
-            self.assertIn('source_url', wrap_section)
-            self.assertIn('source_hash', wrap_section)
-
-            # FIXME: Not all wraps currently complies, only check for wraps we modify.
-            if extra_checks:
-                self.assertIn('provide', config.sections())
-
-            patch_directory = wrap_section.get('patch_directory')
-            if patch_directory:
-                patch_path = Path('subprojects', 'packagefiles', patch_directory)
-
-                self.assertTrue(patch_path.is_dir())
                 # FIXME: Not all wraps currently complies, only check for wraps we modify.
                 if extra_checks:
-                    self.assertTrue(Path(patch_path, 'LICENSE.build').is_file())
-                    self.check_files(name, patch_path)
+                    with self.subTest(step='provide'):
+                        self.assertIn('provide', config.sections())
 
-            # Make sure it has the same deps/progs provided
-            progs = []
-            deps = []
-            if 'provide' in config.sections():
-                provide = config['provide']
-                progs = [i.strip() for i in provide.get('program_names', '').split(',')]
-                deps = [i.strip() for i in provide.get('dependency_names', '').split(',')]
-                for k in provide:
-                    if k not in {'dependency_names', 'program_names'}:
-                        deps.append(k.strip())
-            progs = [i for i in progs if i]
-            deps = [i for i in deps if i]
-            self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
-            self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+                patch_directory = wrap_section.get('patch_directory')
+                if patch_directory:
+                    with self.subTest(step='patch_directory'):
+                        patch_path = Path('subprojects', 'packagefiles', patch_directory)
 
-            # Verify versions are sorted
-            versions = info['versions']
-            self.assertGreater(len(versions), 0)
-            versions_obj = [Version(v) for v in versions]
-            self.assertEqual(sorted(versions_obj, reverse=True), versions_obj)
+                        self.assertTrue(patch_path.is_dir())
+                        # FIXME: Not all wraps currently complies, only check for wraps we modify.
+                        if extra_checks:
+                            self.assertTrue(Path(patch_path, 'LICENSE.build').is_file())
+                            self.check_files(name, patch_path)
 
-            # The first version could be a new release, all others must have
-            # a corresponding tag already.
-            for i, v in enumerate(versions):
-                t = f'{name}_{v}'
-                ver, rev = v.rsplit('-', 1)
-                self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
-                self.assertTrue(re.fullmatch('[0-9]+', rev))
-                if i == 0:
-                    self.check_source_url(name, wrap_section, ver)
-                if i == 0 and t not in tags:
-                    self.check_new_release(name, info, wrap_section)
-                else:
-                    self.assertIn(t, tags)
+                # Make sure it has the same deps/progs provided
+                with self.subTest(step='have_same_provides'):
+                    progs = []
+                    deps = []
+                    if 'provide' in config.sections():
+                        provide = config['provide']
+                        progs = [i.strip() for i in provide.get('program_names', '').split(',')]
+                        deps = [i.strip() for i in provide.get('dependency_names', '').split(',')]
+                        for k in provide:
+                            if k not in {'dependency_names', 'program_names'}:
+                                deps.append(k.strip())
+                    progs = [i for i in progs if i]
+                    deps = [i for i in deps if i]
+                    self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
+                    self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+
+                # Verify versions are sorted
+                with self.subTest(step='sorted versions'):
+                    versions = info['versions']
+                    self.assertGreater(len(versions), 0)
+                    versions_obj = [Version(v) for v in versions]
+                    self.assertEqual(sorted(versions_obj, reverse=True), versions_obj)
+
+                # The first version could be a new release, all others must have
+                # a corresponding tag already.
+                for i, v in enumerate(versions):
+                    t = f'{name}_{v}'
+                    ver, rev = v.rsplit('-', 1)
+                    with self.subTest(step='valid release name'):
+                        self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
+                        self.assertTrue(re.fullmatch('[0-9]+', rev))
+                    if i == 0:
+                        with self.subTest(step='check_source_url'):
+                            self.check_source_url(name, wrap_section, ver)
+                    if i == 0 and t not in self.tags:
+                        with self.subTest(step='check_new_release'):
+                            self.check_new_release(name, info, wrap_section)
+                    else:
+                        with self.subTest(step='version is tagged'):
+                            self.assertIn(t, self.tags)
 
     def check_has_no_path_separators(self, value):
         self.assertNotIn('/', value)
