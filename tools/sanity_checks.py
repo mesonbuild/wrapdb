@@ -88,6 +88,7 @@ class TestReleases(unittest.TestCase):
                 if extra_checks:
                     with self.subTest(step='provide'):
                         self.assertIn('provide', config.sections())
+                        self.assertTrue(config.items('provide'))
 
                 patch_directory = wrap_section.get('patch_directory')
                 if patch_directory:
