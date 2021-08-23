@@ -1,4 +1,4 @@
-project('gtest', 'cpp', version : '1.10.0', license : 'bsd')
+project('gtest', 'cpp', version : '1.11.0', license : 'bsd')
 
 subdir('googletest')
 

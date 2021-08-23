@@ -196,26 +196,26 @@ absl_types_sources = files(
 
 # Libraries
 absl_base_lib = library(
-  'absl_base_lib',
+  'absl_base',
   absl_base_sources,
   include_directories: absl_include_dir,
   dependencies: [dependency('threads'), libatomic],
 )
 
 absl_hash_lib = library(
-  'absl_hash_lib',
+  'absl_hash',
   absl_hash_sources,
   include_directories: absl_include_dir,
 )
 
 absl_numeric_lib = library(
-  'absl_numeric_lib',
+  'absl_numeric',
   absl_numeric_sources,
   include_directories: absl_include_dir,
 )
 
 absl_strings_lib = library(
-  'absl_strings_lib',
+  'absl_strings',
   absl_strings_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -225,7 +225,7 @@ absl_strings_lib = library(
 )
 
 absl_debugging_lib = library(
-  'absl_debugging_lib',
+  'absl_debugging',
   absl_debugging_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -236,7 +236,7 @@ absl_debugging_lib = library(
 )
 
 absl_random_lib = library(
-  'absl_random_lib',
+  'absl_random',
   absl_random_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -247,7 +247,7 @@ absl_random_lib = library(
 )
 
 absl_time_lib = library(
-  'absl_time_lib',
+  'absl_time',
   absl_time_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -260,13 +260,13 @@ absl_time_lib = library(
 )
 
 absl_types_lib = library(
-  'absl_types_lib',
+  'absl_types',
   absl_types_sources,
   include_directories: absl_include_dir,
 )
 
 absl_synchronization_lib = library(
-  'absl_synchronization_lib',
+  'absl_synchronization',
   absl_synchronization_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -277,7 +277,7 @@ absl_synchronization_lib = library(
 )
 
 absl_container_lib = library(
-  'absl_container_lib',
+  'absl_container',
   absl_container_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -290,7 +290,7 @@ absl_container_lib = library(
 )
 
 absl_flags_lib = library(
-  'absl_flags_lib',
+  'absl_flags',
   absl_flags_sources,
   include_directories: absl_include_dir,
   link_with: [
@@ -304,7 +304,7 @@ absl_flags_lib = library(
 )
 
 absl_status_lib = library(
-  'absl_status_lib',
+  'absl_status',
   absl_status_sources,
   include_directories: absl_include_dir,
   link_with: [
