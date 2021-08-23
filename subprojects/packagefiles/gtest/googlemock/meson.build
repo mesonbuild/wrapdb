@@ -16,13 +16,13 @@ gmock_libsources = files('src/gmock-all.cc')
 gmock_mainsources = files('src/gmock_main.cc')
 
 gmock_dep = declare_dependency(
-	include_directories : [gtest_incdir, gmock_incdir],
-	sources : [gtest_libsources, gmock_libsources],
-	dependencies : dependency('threads')
+    include_directories : [gtest_incdir, gmock_incdir],
+    sources : [gtest_libsources, gmock_libsources],
+    dependencies : dependency('threads')
 )
 
 gmock_main_dep = declare_dependency(
-	include_directories : [gtest_incdir, gmock_incdir],
-	sources : [gtest_libsources, gmock_libsources, gmock_mainsources],
-	dependencies : dependency('threads')
+    include_directories : [gtest_incdir, gmock_incdir],
+    sources : [gtest_libsources, gmock_libsources, gmock_mainsources],
+    dependencies : dependency('threads')
 )
