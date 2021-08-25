@@ -1,0 +1,9 @@
+[wrap-file]
+directory = lzo-2.10
+source_url = https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
+source_filename = lzo-2.10.tar.gz
+source_hash = c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072
+patch_directory = lzo
+
+[provide]
+lzo2 = lzo2_dep

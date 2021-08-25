@@ -1,0 +1,15 @@
+headers = files(
+  'lzo/lzo1a.h',
+  'lzo/lzo1b.h',
+  'lzo/lzo1c.h',
+  'lzo/lzo1f.h',
+  'lzo/lzo1.h',
+  'lzo/lzo1x.h',
+  'lzo/lzo1y.h',
+  'lzo/lzo1z.h',
+  'lzo/lzo2a.h',
+  'lzo/lzo_asm.h',
+  'lzo/lzoconf.h',
+  'lzo/lzodefs.h',
+  'lzo/lzoutil.h',
+)
