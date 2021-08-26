@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '1.1.1k',
+  version: '1.1.1l',
   license : 'Apache-2.0',
   meson_version: '>= 0.55',
   default_options: [
