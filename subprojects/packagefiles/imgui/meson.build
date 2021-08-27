@@ -30,7 +30,7 @@ if dx12_dep.found()
     sources += 'backends/imgui_impl_dx12.cpp'
     dependencies += dx12_dep
 endif
-metal_dep = cpp.find_library('metal', required: get_option('metal'))
+metal_dep = dependency('metal', required: get_option('metal'))
 if get_option('metal').enabled()
     sources += 'backends/imgui_impl_metal.mm'
     dependencies += metal_dep
