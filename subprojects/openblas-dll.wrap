@@ -1,0 +1,12 @@
+[wrap-file]
+directory = openblas-dll-0.3.7
+
+source_url = https://netactuate.dl.sourceforge.net/project/openblas/v0.3.7/OpenBLAS-0.3.7-x64.zip
+source_filename = openblas-dll-0.3.7.zip
+source_hash = 564bad9234583b6f1b7da865f8beb6ee9043a7a22054447952d31db08fc19bea
+lead_directory_missing = true
+
+patch_directory = openblas-dll
+
+[provide]
+openblas_dll = openblas_dll_dep

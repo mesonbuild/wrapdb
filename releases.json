@@ -752,6 +752,14 @@
       "1.21.0-1"
     ]
   },
+  "openblas-dll": {
+    "dependency_names": [
+      "openblas_dll"
+    ],
+    "versions": [
+      "0.3.7-1"
+    ]
+  },
   "openh264": {
     "versions": [
       "1.7.0-1"
