@@ -1,0 +1,9 @@
+[wrap-file]
+directory = mathjax-2.7.5
+source_url = https://github.com/mathjax/MathJax/archive/2.7.5.tar.gz
+source_filename = matjax-2.7.5.tar.gz
+source_hash = a25e5736553eef7b05ba00df133ad36d8f7b3b967f1e32d2f7505ac77427946f
+patch_directory = mathjax
+
+[provide]
+mathjax = mathjax_dep
