@@ -16,7 +16,6 @@ conf_data.set('libmt32emu_EXPORTS_TYPE',  mt32emu_exports_type)
 
 conf_data.set('libmt32emu_SHARED_DEFINITION',     '#undef MT32EMU_SHARED')
 conf_data.set('libmt32emu_WITH_VERSION_TAGGING',  0)
-conf_data.set('libmt32emu_WITH_VERSION_TAGGING',  0)
 conf_data.set('libmt32emu_RUNTIME_VERSION_CHECK', 0)
 
 subdir('mt32emu/src')     # all source files

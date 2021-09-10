@@ -111,8 +111,6 @@ option('LWS_WITH_LWSAC', type: 'boolean', value: true, description: 'lwsac Chunk
 option('LWS_WITH_CUSTOM_HEADERS', type: 'boolean', value: true, description: 'Store and allow querying custom HTTP headers (H1 only)')
 option('LWS_WITH_DISKCACHE', type: 'boolean', value: false, description: 'Hashed cache directory with lazy LRU deletion to size limit')
 option('LWS_WITH_ASAN', type: 'boolean', value: false, description: 'Build with gcc runtime sanitizer options enabled (needs libasan)')
-option('LWS_WITH_DIR', type: 'boolean', value: false, description: 'Directory scanning api support')
-option('LWS_WITH_LEJP_CONF', type: 'boolean', value: false, description: 'With LEJP configuration parser as used by lwsws')
 option('LWS_WITH_ZLIB', type: 'boolean', value: false, description: 'Include zlib support (required for extensions)')
 option('LWS_WITH_BUNDLED_ZLIB', type: 'boolean', value: false, description: 'Use bundled zlib version (Windows only)')
 option('LWS_WITH_MINIZ', type: 'boolean', value: false, description: 'Use miniz instead of zlib')

@@ -87,7 +87,7 @@ if get_option('egl')
   dep_egl = dependency('egl')
   c_args += '-DGLEW_EGL'
 else
-  dep_egl = []
+  dep_egl = dependency('', required: false)
 endif
 
 glew_include = include_directories('include')

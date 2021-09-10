@@ -27,7 +27,7 @@ sdl2_mixer_lib = library('sdl2mixer',
   'music_timidity.c',
   'music_wav.c',
   'music.c',
-  c_args: [feature_args],
+  c_args: feature_args,
   dependencies: [vorbisfile_dep, vorbis_dep, ogg_dep, sdl2_dep],
 )
 
