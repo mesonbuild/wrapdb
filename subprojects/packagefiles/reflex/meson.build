@@ -1,6 +1,7 @@
 project('reflex', 'cpp',
         version : '3.0.1',
-        license : 'BSD-3-Clause')
+        license : 'BSD-3-Clause',
+        meson_version: '>=0.43.0')
 
 includes = include_directories('include')
 
@@ -61,4 +62,6 @@ reflex_dep = declare_dependency(
   link_with : libreflex,
   include_directories : includes)
 
-meson.override_find_program('reflex', reflex)
+if meson.version().version_compare('>=0.46.0')
+  meson.override_find_program('reflex', reflex)
+endif
