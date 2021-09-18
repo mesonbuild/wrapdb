@@ -506,7 +506,11 @@
     ]
   },
   "liblzma": {
+    "dependency_names": [
+      "liblzma"
+    ],
     "versions": [
+      "5.2.1-6",
       "5.2.1-5",
       "5.2.1-4",
       "5.2.1-2"
