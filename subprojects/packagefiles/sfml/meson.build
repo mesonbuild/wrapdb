@@ -6,7 +6,6 @@ project('sfml', 'cpp',
 
 cpp = meson.get_compiler('cpp')
 
-stb_dep = dependency('stb')
 openal_dep = dependency('openal')
 thread_dep = dependency('threads')
 gl_dep = dependency('gl')
@@ -19,6 +18,7 @@ vorbis_dep = dependency('vorbis')
 vorbisenc_dep = dependency('vorbisenc')
 vorbisfile_dep = dependency('vorbisfile')
 
+stb_inc = include_directories('extlibs/headers/stb_image')
 pub_inc = include_directories('include')
 priv_inc = include_directories('src')
 
