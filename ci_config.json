@@ -1,0 +1,8 @@
+{
+  "rdkafka": {
+    "build_options": [
+      "WITH_SASL=disabled",
+      "WITH_ZSTD=disabled"
+    ]
+  }
+}
