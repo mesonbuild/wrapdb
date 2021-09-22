@@ -22,7 +22,7 @@ import configparser
 import re
 
 from pathlib import Path
-from utils import Version
+from utils import Version, is_ci, is_debianlike
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -36,6 +36,7 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
+PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 
 
 class TestReleases(unittest.TestCase):
@@ -47,6 +48,8 @@ class TestReleases(unittest.TestCase):
 
         with open('releases.json', 'r') as f:
             cls.releases = json.load(f)
+        with open('ci_config.json', 'r') as f:
+            cls.ci_config = json.load(f)
 
     def test_releases_json(self):
         # All tags must be in the releases file
@@ -57,6 +60,10 @@ class TestReleases(unittest.TestCase):
 
         # Verify keys are sorted
         self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
+
+        for name, info in self.releases.items():
+            for k in info.keys():
+                self.assertIn(k, PERMITTED_KEYS)
 
     def test_releases(self):
         for name, info in self.releases.items():
@@ -162,20 +169,25 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
 
     def check_new_release(self, name, info, wrap_section):
-        if not info.get('skip_ci', False):
-            options = ['--fatal-meson-warnings', f'-Dwraps={name}']
-            for o in info.get('build_options', []):
-                if ':' not in o:
-                    options.append(f'-D{name}:{o}')
-                else:
-                    options.append(f'-D{o}')
-            if Path('_build', 'meson-private', 'cmd_line.txt').exists():
-                options.append('--wipe')
-            subprocess.check_call(['meson', 'setup', '_build'] + options)
-            subprocess.check_call(['meson', 'compile', '-C', '_build'])
-            subprocess.check_call(['meson', 'test', '-C', '_build'])
-        else:
-            subprocess.check_call(['meson', 'subprojects', 'download', name])
+        ci = self.ci_config.get(name, {})
+        options = ['--fatal-meson-warnings', f'-Dwraps={name}']
+        for o in ci.get('build_options', []):
+            if ':' not in o:
+                options.append(f'-D{name}:{o}')
+            else:
+                options.append(f'-D{o}')
+        if Path('_build', 'meson-private', 'cmd_line.txt').exists():
+            options.append('--wipe')
+        debian_packages = ci.get('debian_packages', [])
+        if debian_packages and is_debianlike():
+            if is_ci():
+                subprocess.check_call(['apt', 'install'] + debian_packages)
+            else:
+                s = ', '.join(debian_packages)
+                print(f'The following packages could be required: {s}')
+        subprocess.check_call(['meson', 'setup', '_build'] + options)
+        subprocess.check_call(['meson', 'compile', '-C', '_build'])
+        subprocess.check_call(['meson', 'test', '-C', '_build'])
 
     def is_permitted_file(self, subproject, filename):
         if filename in PERMITTED_FILES:

@@ -42,11 +42,19 @@ meson compile -C builddir
     `[provide]` section.
   - `program_names`: (Optional) List of program names (e.g. `glib-compile-resources`)
     provided by the wrap. It must match information from wrap's `[provide]` section.
-  - `skip_ci`: (Optional) If set to `true` indicates that the wrap cannot be built
-    as part of the CI, for example if specific environment or dependencies are
-    required.
+
+- Configure CI in `ci_config.json`. It is a dictionary where the key is the wrap
+  name and the value is a dictionary containing with the following keys:
   - `build_options`: (Optional) List of `option=value` strings that will be used
     to build the project on the CI.
+  - `debian_packages`: (Optional) List of extra packages that will be installed
+    on debian-like CI runners. Dependencies that can be provided by other wraps
+    should not be added here because it's better to test that fallbacks works.
+    When running `tools/sanity_checks.py` locally, this list will be printed
+    but not installed.
+
+- Test locally by running `tools/sanity_checks.py` script. It will be executed
+  on the CI and must always return success before merging any PR.
 
 - Create Pull Request with your changes.
 

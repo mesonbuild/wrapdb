@@ -892,10 +892,6 @@
       "1.5.0-1",
       "1.4.4-1",
       "1.4.0-1"
-    ],
-    "build_options": [
-      "WITH_SASL=disabled",
-      "WITH_ZSTD=disabled"
     ]
   },
   "re2": {

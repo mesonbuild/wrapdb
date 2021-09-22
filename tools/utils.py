@@ -14,6 +14,7 @@
 
 import operator
 import re
+import os
 import typing as T
 
 # a helper class which implements the same version ordering as RPM
@@ -83,3 +84,9 @@ class Version:
         # if equal length, all components have matched, so equal
         # otherwise, the version with a suffix remaining is greater
         return comparator(len(self._v), len(other._v))
+
+def is_ci() -> bool:
+    return 'CI' in os.environ
+
+def is_debianlike() -> bool:
+    return os.path.isfile('/etc/debian_version')
