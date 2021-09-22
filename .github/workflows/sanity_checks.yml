@@ -3,7 +3,7 @@ name: Sanity checks
 on: [push, pull_request]
 
 jobs:
-  sanity_checks:
+  Ubuntu:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,3 +19,21 @@ jobs:
       - name: Sanity Checks
         run: |
           ./tools/sanity_checks.py
+
+  VisualStudio:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install packages
+        run: |
+          pip install meson
+
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Sanity Checks
+        run: |
+          python tools/sanity_checks.py
