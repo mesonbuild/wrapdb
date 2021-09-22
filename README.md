@@ -27,6 +27,10 @@ meson compile -C builddir
   copied onto the upstream's source tree, but it is generally not accepted to
   override upstream files.
 
+- It is often easier to develop in `subprojects/my-project` directory and update
+  packagefiles directory at the end. This can be done using
+  `tools/update-packagefiles.py` script.
+
 - Add your release information in `releases.json`. It is a dictionary where the
   key is the wrap name and the value is a dictionary containing with the following
   keys:
