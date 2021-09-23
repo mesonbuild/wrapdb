@@ -84,6 +84,8 @@ class CreateRelease:
         self.upload(filename, 'text/plain')
 
     def find_upload_url(self):
+        if not self.repo or not self.token:
+            return
         api = f'https://api.github.com/repos/{self.repo}/releases'
         headers = { 'Authorization': f'token {self.token}' }
         response = requests.get(api, headers=headers)
@@ -104,6 +106,11 @@ class CreateRelease:
         print('Created release:', self.upload_url)
 
     def upload(self, path, mimetype):
+        if not self.repo or not self.token:
+            # Write files locally when not run on CI
+            with Path('subprojects', 'packagecache', path.name).open('wb') as f:
+                f.write(path.read_bytes())
+            return
         headers = {
             'Authorization': f'token {self.token}',
             'Content-Type': mimetype,
@@ -124,5 +131,8 @@ def run(repo, token):
             CreateRelease(repo, token, latest_tag)
 
 if __name__ == '__main__':
-    repo, token = sys.argv[1:]
+    # Support local testing when passing no arguments
+    repo = token = None
+    if len(sys.argv) > 1:
+        repo, token = sys.argv[1:]
     run(repo, token)
