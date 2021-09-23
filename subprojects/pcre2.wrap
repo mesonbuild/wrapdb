@@ -1,7 +1,6 @@
 [wrap-file]
 directory = pcre2-10.23
-source_url = https://ftp.pcre.org/pub/pcre/pcre2-10.23.zip
-source_filename = pcre2-10.23.zip
-source_hash = 6301a525a8a7e63a5fac0c2fbfa0374d3eb133e511d886771e097e427707094a
+source_url = https://ftp.pcre.org/pub/pcre/pcre2-10.23.tar.bz2
+source_filename = pcre2-10.23.tar.bz2
+source_hash = dfc79b918771f02d33968bd34a749ad7487fa1014aeb787fad29dd392b78c56e
 patch_directory = pcre2
-
