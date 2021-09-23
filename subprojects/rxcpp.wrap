@@ -1,7 +1,6 @@
 [wrap-file]
 directory = RxCpp-4.1.0
-source_url = https://github.com/ReactiveX/RxCpp/archive/4.1.0.zip
-source_filename = RxCpp-4.1.0.zip
-source_hash = d2ee5579b81b3676c0fb7efd02aae58575f2e9148a6d8f2b469cf9c020760ccb
+source_url = https://github.com/ReactiveX/RxCpp/archive/4.1.0.tar.gz
+source_filename = RxCpp-4.1.0.tar.gz
+source_hash = d3bb49c7ac6b5c43235df710510fce87d827bb88a1b78242017f190d2acbbdea
 patch_directory = rxcpp
-

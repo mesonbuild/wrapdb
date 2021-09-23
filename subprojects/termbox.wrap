@@ -1,10 +1,9 @@
 [wrap-file]
 directory = termbox-1.1.2
-source_url = https://github.com/nsf/termbox/archive/v1.1.2.zip
-source_filename = v1.1.2.zip
-source_hash = 428dc9559243f4ddf2ca52015b01c8334c1a1eb55f974b68468c309d24dc0dfd
+source_url = https://github.com/nsf/termbox/archive/v1.1.2.tar.gz
+source_filename = v1.1.2.tar.gz
+source_hash = 61c9940b42b3ac44bf0cba67eacba75e3c02088b8c695149528c77def04d69b1
 patch_directory = termbox
 
 [provide]
 termbox = termbox_dep
-

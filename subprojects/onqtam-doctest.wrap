@@ -1,6 +1,6 @@
 
 [wrap-file]
 directory = doctest-2.4.0
-source_url = https://github.com/onqtam/doctest/archive/2.4.0.zip
-source_filename = doctest-2.4.0.zip
-source_hash = 7af678dc5d4b1780478f1ab071c8f19cac6cfcfbe2793dd9f5ba498648ae4e6b
+source_url = https://github.com/onqtam/doctest/archive/2.4.0.tar.gz
+source_filename = doctest-2.4.0.tar.gz
+source_hash = f689f48e92c088928d88d8481e769c8e804f0a608b484ab8ef3d6ab6045b5444
