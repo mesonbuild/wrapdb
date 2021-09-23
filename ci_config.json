@@ -341,14 +341,14 @@
     ]
   },
   "openssl": {
-    "_comment": "- The NodeJS generator requires Linux",
-    "build_on": {
-      "darwin": false,
-      "windows": false
-    },
-    "debian_packages": [
-      "libtext-template-perl",
+    "choco_packages": [
       "nasm"
+    ],
+    "brew_packages": [
+      "cpanminus"
+    ],
+    "cpanm_packages": [
+      "JSON"
     ],
     "build_options": [
       "openssl:build_cli=true"
