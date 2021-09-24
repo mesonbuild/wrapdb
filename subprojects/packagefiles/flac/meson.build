@@ -32,8 +32,8 @@ foreach h : check_headers
   endif
 endforeach
 
-cdata.set('CPU_IS_BIG_ENDIAN', 0)
-cdata.set('CPU_IS_LITTLE_ENDIAN', 1)
+cdata.set10('CPU_IS_BIG_ENDIAN', host_machine.endian() == 'big')
+cdata.set10('CPU_IS_LITTLE_ENDIAN', host_machine.endian() == 'little')
 cdata.set10('OGG_FOUND', ogg_dep.found())
 cdata.set10('FLAC__HAS_X86INTRIN', cc.has_header('x86intrin.h'))
 cdata.set('FLAC__SYS_DARWIN', host_machine.system() == 'darein')
