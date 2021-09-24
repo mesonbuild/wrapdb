@@ -24,7 +24,7 @@ priv_inc = include_directories('src')
 
 subdir('src/SFML')
 
-sfml_dep = declare_dependency(include_directories: 'include',
+sfml_dep = declare_dependency(include_directories: pub_inc,
     link_with: [audio_lib,
                 graphics_lib,
                 network_lib,
