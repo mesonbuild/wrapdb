@@ -32,6 +32,7 @@ foreach h : check_headers
   endif
 endforeach
 
+cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set10('CPU_IS_BIG_ENDIAN', host_machine.endian() == 'big')
 cdata.set10('CPU_IS_LITTLE_ENDIAN', host_machine.endian() == 'little')
 cdata.set10('OGG_FOUND', ogg_dep.found())

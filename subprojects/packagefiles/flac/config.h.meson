@@ -153,7 +153,7 @@
 #mesondefine PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "@PROJECT_VERSION@"
+#mesondefine PACKAGE_VERSION
 
 /* The size of `off_t', as computed by sizeof. */
 #mesondefine SIZEOF_OFF_T
