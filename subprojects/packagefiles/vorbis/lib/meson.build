@@ -40,7 +40,7 @@ vorbis_lib = library('vorbis', vorbis_sources,
 
 vorbis_dep = declare_dependency(link_with : vorbis_lib,
   include_directories : incdir,
-  dependencies: math_dep)
+  dependencies: [ogg_dep, math_dep])
 
 vorbisfile_lib = library('vorbisfile', vorbisfile_sources,
   include_directories : [incdir],
