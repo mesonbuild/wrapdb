@@ -181,7 +181,7 @@ class TestReleases(unittest.TestCase):
         debian_packages = ci.get('debian_packages', [])
         if debian_packages and is_debianlike():
             if is_ci():
-                subprocess.check_call(['apt', 'install'] + debian_packages)
+                subprocess.check_call(['sudo', 'apt', 'install'] + debian_packages)
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
