@@ -17,7 +17,6 @@
 import unittest
 import json
 import subprocess
-import collections
 import configparser
 import re
 import typing as T
