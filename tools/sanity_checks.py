@@ -91,7 +91,7 @@ class TestReleases(unittest.TestCase):
                     self.assertIn('source_url', wrap_section)
                     self.assertIn('source_hash', wrap_section)
 
-                # FIXME: Not all wraps currently complies, only check for wraps we modify.
+                # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks:
                     with self.subTest(step='provide'):
                         self.assertIn('provide', config.sections())
