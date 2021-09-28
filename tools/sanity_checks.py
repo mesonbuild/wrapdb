@@ -20,6 +20,7 @@ import subprocess
 import collections
 import configparser
 import re
+import typing as T
 
 from pathlib import Path
 from utils import Version, is_ci, is_debianlike
@@ -71,7 +72,7 @@ class TestReleases(unittest.TestCase):
                 # We do extra checks in the case a new release is being made. This
                 # is because some wraps are not passing all tests but we force making
                 # them compliant next time we do a release.
-                versions = info['versions']
+                versions: T.List[str] = info['versions']
                 latest_tag = f'{name}_{versions[0]}'
                 extra_checks = latest_tag not in self.tags
 
@@ -125,7 +126,7 @@ class TestReleases(unittest.TestCase):
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
-                    versions = info['versions']
+                    versions: T.List[str] = info['versions']
                     self.assertGreater(len(versions), 0)
                     versions_obj = [Version(v) for v in versions]
                     self.assertEqual(sorted(versions_obj, reverse=True), versions_obj)
@@ -148,11 +149,11 @@ class TestReleases(unittest.TestCase):
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
 
-    def check_has_no_path_separators(self, value):
+    def check_has_no_path_separators(self, value: str) -> None:
         self.assertNotIn('/', value)
         self.assertNotIn('\\', value)
 
-    def check_source_url(self, name, wrap_section, version):
+    def check_source_url(self, name: str, wrap_section: configparser.SectionProxy, version: str):
         if name == 'sqlite3':
             segs = version.split('.')
             assert(len(segs) == 3)
@@ -167,7 +168,7 @@ class TestReleases(unittest.TestCase):
         self.assertTrue(version in source_url or version_ in source_url,
                         f'Version {version} not found in {source_url}')
 
-    def check_new_release(self, name, info, wrap_section):
+    def check_new_release(self, name: str, info: T.Dict[str, T.Union[T.List[str], str, bool]], wrap_section: configparser.SectionProxy):
         ci = self.ci_config.get(name, {})
         options = ['--fatal-meson-warnings', f'-Dwraps={name}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
@@ -184,7 +185,7 @@ class TestReleases(unittest.TestCase):
         subprocess.check_call(['meson', 'compile', '-C', '_build'])
         subprocess.check_call(['meson', 'test', '-C', '_build'])
 
-    def is_permitted_file(self, subproject, filename):
+    def is_permitted_file(self, subproject: str, filename: str):
         if filename in PERMITTED_FILES:
             return True
         if filename.endswith('.h.meson'):
@@ -193,9 +194,9 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
-    def check_files(self, subproject, patch_path):
-        tabs = []
-        not_permitted = []
+    def check_files(self, subproject: str, patch_path: Path) -> None:
+        tabs: T.List[Path] = []
+        not_permitted: T.List[Path] = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue

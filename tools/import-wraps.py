@@ -21,6 +21,7 @@ import configparser
 import requests
 import json
 import io
+import typing as T
 
 from utils import Version
 
@@ -30,8 +31,8 @@ def get_wrap_list():
     stdout = subprocess.check_output(['meson', 'wrap', 'list'])
     return stdout.decode().splitlines()
 
-def get_wrap_info(wrap):
-    versions = []
+def get_wrap_info(wrap: str) -> T.List[T.Tuple[str, str]]:
+    versions: T.List[T.Tuple[str, str]] = []
     try:
         stdout = subprocess.check_output(['meson', 'wrap', 'info', wrap])
         for line in stdout.decode().splitlines()[1:]:
@@ -42,7 +43,7 @@ def get_wrap_info(wrap):
        pass
     return versions
 
-def rewrite_wrap(wrap):
+def rewrite_wrap(wrap: str):
     # Add 'patch_directory' key info wrap file
     filename = f'subprojects/{wrap}.wrap'
     config = configparser.ConfigParser(interpolation=None)
@@ -52,7 +53,7 @@ def rewrite_wrap(wrap):
     with open(filename, 'w') as f:
         config.write(f)
 
-def fetch_git(wrap, branch):
+def fetch_git(wrap: str, branch: str):
     # Fetch history from legacy repository and move files to new location
     os.makedirs(f'subprojects/packagefiles/{wrap}', exist_ok=True)
     subprocess.check_call(['git', 'fetch', f'https://github.com/mesonbuild/{wrap}', branch])
@@ -73,10 +74,10 @@ def fetch_git(wrap, branch):
         subprocess.check_call(['git', 'rm', 'LICENSE.build'])
     subprocess.check_call(['git', 'commit', '-m', f'Move {wrap} files'])
 
-def create_release(tag, token):
+def create_release(tag: str, token: str):
     api = f'https://api.github.com/repos/{upload_repo}/releases'
     headers = { 'Authorization': f'token {token}' }
-    json = {
+    json: T.Dict[str, str] = {
         'tag_name': tag,
         'name': tag,
     }
@@ -87,7 +88,7 @@ def create_release(tag, token):
     response.raise_for_status()
     return response.json()['upload_url'].replace(u'{?name,label}','')
 
-def upload(upload_url, content, mimetype, name, token):
+def upload(upload_url: str, content: T.AnyStr, mimetype: str, name: str, token: str):
     headers = {
         'Authorization': f'token {token}',
         'Content-Type': mimetype,
@@ -96,7 +97,7 @@ def upload(upload_url, content, mimetype, name, token):
     response = requests.post(upload_url, headers=headers, params=params, data=content)
     response.raise_for_status()
 
-def import_release(wrap, version, revision, token):
+def import_release(wrap: str, version: str, revision: str, token: str):
     # Create a release and copy files from the old repository
     tag = f'{wrap}_{version}-{revision}'
     upload_url = create_release(tag, token)
@@ -121,7 +122,7 @@ def import_release(wrap, version, revision, token):
     response.raise_for_status()
     upload(upload_url, response.content, 'application/zip', f'{tag}_patch.zip', token)
 
-def get_provide(wrap):
+def get_provide(wrap: str):
     progs = []
     deps = []
     config = configparser.ConfigParser()
@@ -137,14 +138,14 @@ def get_provide(wrap):
     deps = [i for i in deps if i]
     return progs, deps
 
-def add_to_db(wrap, versions, releases):
+def add_to_db(wrap: str, versions: T.List[T.Tuple[str, str]], releases: T.Dict[str, T.Dict[str, T.List[str]]]):
     releases.setdefault(wrap, {})
     releases[wrap].setdefault('versions', [])
     releases[wrap].setdefault('dependency_names', [])
     releases[wrap].setdefault('program_names', [])
-    versions = [Version(f'{version}-{revision}') for version, revision in versions]
+    versions: T.List[Version] = [Version(f'{version}-{revision}') for version, revision in versions]
     versions = sorted(versions, reverse=True)
-    versions = [v._s for v in versions]
+    versions: T.List[str] = [v._s for v in versions]
     progs, deps = get_provide(wrap)
     releases[wrap]['versions'] = versions
     releases[wrap]['program_names'] = progs
@@ -152,7 +153,7 @@ def add_to_db(wrap, versions, releases):
 
 if __name__ == '__main__':
     token = sys.argv[1]
-    releases = {}
+    releases: T.Dict[str, T.Dict[str, T.List[str]]] = {}
     # - Don't import sqlite, it has been replaced by sqlite3.
     # - Don't import libjpeg, it has been replaced by libjpeg-turbo.
     # - openh264 is special because it contains "subprojects/gtest.wrap" that
@@ -166,7 +167,7 @@ if __name__ == '__main__':
         versions = get_wrap_info(wrap)
         if not versions:
             continue
-        latest_branch, latest_revision = versions[0]
+        latest_branch, _ = versions[0]
         fetch_git(wrap, latest_branch)
         for version, revision in versions:
             import_release(wrap, version, revision, token)
