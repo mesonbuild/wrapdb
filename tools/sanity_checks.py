@@ -76,7 +76,7 @@ class TestReleases(unittest.TestCase):
                 extra_checks = latest_tag not in self.tags
 
                 # Make sure we can load wrap file
-                config = configparser.RawConfigParser()
+                config = configparser.ConfigParser(interpolation=None)
                 config.read(f'subprojects/{name}.wrap')
 
                 # Basic checks
