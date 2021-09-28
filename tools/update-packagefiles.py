@@ -14,19 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import subprocess
 import configparser
 import tarfile
 import zipfile
 import shutil
 from pathlib import Path
 
-def read_wrap(filename):
+def read_wrap(filename: Path):
     wrap = configparser.ConfigParser(interpolation=None)
     wrap.read(filename)
     return wrap[wrap.sections()[0]]
 
-def read_archive_files(path, base_path):
+def read_archive_files(path: Path, base_path: Path):
     if path.suffix == '.zip':
         with zipfile.ZipFile(path, 'r') as archive:
             archive_files = set(base_path / i for i in archive.namelist())
@@ -47,7 +46,7 @@ if __name__ == '__main__':
         archive_path = Path('subprojects', 'packagecache', wrap_section['source_filename'])
         if not archive_path.exists():
             continue
-        lead_directory_missing = bool(wrap_section.get('lead_directory_missing', False))
+        lead_directory_missing = bool(wrap_section.get('lead_directory_missing', False)) # type: ignore
         base_path = directory if lead_directory_missing else Path('subprojects')
         archive_files = read_archive_files(archive_path, base_path)
         directory_files = set(directory.glob('**/*'))

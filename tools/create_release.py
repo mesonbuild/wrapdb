@@ -20,13 +20,14 @@ import shutil
 import hashlib
 import requests
 import tempfile
+import typing as T
 import subprocess
 import json
 
 from pathlib import Path
 
 class CreateRelease:
-    def __init__(self, repo, token, tag):
+    def __init__(self, repo: T.Optional[str], token: T.Optional[str], tag: str):
         print('Preparing release for:', tag)
         self.tag = tag
         self.name, self.version = self.tag.rsplit('_', 1)
@@ -110,7 +111,7 @@ class CreateRelease:
         self.upload_url = response.json()['upload_url'].replace(u'{?name,label}','')
         print('Created release:', self.upload_url)
 
-    def upload(self, path, mimetype):
+    def upload(self, path: Path, mimetype: str):
         if not self.repo or not self.token:
             # Write files locally when not run on CI
             with Path('subprojects', 'packagecache', path.name).open('wb') as f:
@@ -124,7 +125,7 @@ class CreateRelease:
         response = requests.post(self.upload_url, headers=headers, params=params, data=path.read_bytes())
         response.raise_for_status()
 
-def run(repo, token):
+def run(repo: T.Optional[str], token: T.Optional[str]):
     with open('releases.json', 'r') as f:
         releases = json.load(f)
     stdout = subprocess.check_output(['git', 'tag'])
