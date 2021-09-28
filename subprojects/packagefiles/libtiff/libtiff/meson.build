@@ -54,6 +54,7 @@ tiff4_lib = library('tiff4',
     'tif_zip.c',
     'tif_zstd.c',
     platform_src,
+    install: true,
     dependencies: cc.find_library('m', required: false),
     vs_module_defs: 'libtiff.def',
 )
