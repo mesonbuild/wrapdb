@@ -58,6 +58,11 @@ class CreateRelease:
         if generator.exists():
             subprocess.check_call([generator])
 
+        # If no specific license is specified, copy wrapdb's
+        license_file = srcdir / 'LICENSE.build'
+        if not license_file.exists():
+            shutil.copyfile('COPYING', license_file)
+
         shutil.copytree(srcdir, destdir)
         base_name = Path(self.tempdir, f'{self.tag}_patch')
         shutil.make_archive(base_name.as_posix(), 'zip', root_dir=self.tempdir, base_dir=directory)
