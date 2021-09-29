@@ -5,5 +5,5 @@ source_url = https://github.com/randy408/libspng/archive/refs/tags/v0.7.0.tar.gz
 source_filename = libspng-0.7.0.tar.gz
 source_hash = 969fb8beda61a2f5089b6acc9f9547acb4acc45000b84f5dcf17a1504f782c55
 
-[provides]
+[provide]
 spng = spng_dep
