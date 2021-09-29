@@ -12,5 +12,10 @@
       "libudev-dev",
       "libxrandr-dev"
     ]
+  },
+  "spng": {
+    "build_options": [
+      "force_fallback_for=zlib"  
+    ]
   }
 }
