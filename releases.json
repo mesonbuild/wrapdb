@@ -1015,6 +1015,9 @@
     "dependency_names": [
       "spng"
     ],
+    "build_options": [
+      "force_fallback_for=zlib"  
+    ],
     "versions": [
       "0.7.0-1",
       "0.5.0-1",
