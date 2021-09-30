@@ -1,8 +1,8 @@
 {
   "rdkafka": {
     "build_options": [
-      "WITH_SASL=disabled",
-      "WITH_ZSTD=disabled"
+      "rdkafka:WITH_SASL=disabled",
+      "rdkafka:WITH_ZSTD=disabled"
     ]
   },
   "sfml": {
