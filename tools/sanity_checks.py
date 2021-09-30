@@ -171,11 +171,7 @@ class TestReleases(unittest.TestCase):
     def check_new_release(self, name, info, wrap_section):
         ci = self.ci_config.get(name, {})
         options = ['--fatal-meson-warnings', f'-Dwraps={name}']
-        for o in ci.get('build_options', []):
-            if ':' not in o:
-                options.append(f'-D{name}:{o}')
-            else:
-                options.append(f'-D{o}')
+        options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path('_build', 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
         debian_packages = ci.get('debian_packages', [])
