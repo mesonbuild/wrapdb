@@ -1064,7 +1064,11 @@
     ]
   },
   "tinyxml2": {
+    "dependency_names": [
+      "tinyxml2"
+    ],
     "versions": [
+      "9.0.0-1",
       "7.0.1-1"
     ]
   },
