@@ -105,7 +105,6 @@ class TestReleases(unittest.TestCase):
                         self.assertTrue(patch_path.is_dir())
                         # FIXME: Not all wraps currently complies, only check for wraps we modify.
                         if extra_checks:
-                            self.assertTrue(Path(patch_path, 'LICENSE.build').is_file())
                             self.check_files(name, patch_path)
 
                 # Make sure it has the same deps/progs provided
