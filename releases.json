@@ -627,6 +627,15 @@
       "3.0.1-1"
     ]
   },
+  "lodepng": {
+    "dependency_names": [
+      "lodepng",
+      "lodepng_c"
+    ],
+    "versions": [
+      "20210627-1"
+    ]
+  },
   "lua": {
     "dependency_names": [
       "lua-5.4"
