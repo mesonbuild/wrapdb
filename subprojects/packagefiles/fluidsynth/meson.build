@@ -12,6 +12,18 @@ summary('Install prefix', get_option('prefix'),    section : 'Build Summary')
 # Is a shared library being built? Can "both" be handled somehow?
 is_shared_lib = get_option('default_library') == 'shared'
 
+# Set global WIN32 define if windows
+if host_machine.system() == 'windows'
+  add_project_arguments('-DWIN32=1', language : ['c', 'cpp'])
+endif
+
+# Detect if compiling in an MSYS2-based MinGW/Clang environment
+host_is_msys2 = false
+if host_machine.system() == 'windows'
+  shell_cmd = find_program('sh', required : false, disabler: true)
+  host_is_msys2 = run_command('sh', '-c', '[ ! -z "$MSYSTEM" ] && [ "$MSYSTEM" != "MSYS" ] && exit 0; exit 1', check: false).returncode() == 0
+endif
+
 # config file
 #
 # TODO there are many, many more options to set/detect in upstream template
@@ -84,6 +96,11 @@ lib_args = []
 if host_machine.system() == 'windows'
   if is_shared_lib
     lib_args = ['-DFLUIDSYNTH_DLL_EXPORTS']
+  endif
+  # Specific workaround on MSYS2 to obtain static dependencies of intl, such as iconv
+  # This is required as of meson 0.59
+  if get_option('try-static-deps') and host_is_msys2
+    ext_deps += [dependency('intl' , static : true)]
   endif
 endif
 
