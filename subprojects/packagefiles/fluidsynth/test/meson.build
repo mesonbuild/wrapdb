@@ -18,9 +18,16 @@ fluid_tests = [
   'test_seq_event_queue_sort', # this test takes ~70s
 ]
 
+test_args = []
+if host_machine.system() == 'windows'
+  test_args += ['-DFLUIDSYNTH_NOT_A_DLL']
+endif
+
 foreach name : fluid_tests
-  exe = executable(name, name + '.c',
-                   dependencies : [fluidsynth_dep, glib_dep],
-                   include_directories : lib_includes)
+  exe = executable(name, name + '.c', 
+                   objects : fluidsynth_obj , 
+                   dependencies : ext_deps,
+                   include_directories : lib_includes,
+                   c_args : test_args)
   test(name, exe, timeout : 100)
 endforeach
