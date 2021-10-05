@@ -77,6 +77,16 @@ gthread_dep = dependency('gthread-2.0', static : get_option('try-static-deps'))
 openmp_dep  = dependency('openmp', required : false, language : 'c',
                          version : '>= 4.0')
 
+ext_deps = [m_dep, glib_dep, gthread_dep, openmp_dep]
+
+# Windows specific options
+lib_args = []
+if host_machine.system() == 'windows'
+  if is_shared_lib
+    lib_args = ['-DFLUIDSYNTH_DLL_EXPORTS']
+  endif
+endif
+
 if openmp_dep.found()
   conf.set('HAVE_OPENMP', 1)
 endif
@@ -107,8 +117,12 @@ lib_includes = [include_directories('.', 'include'), src_includes]
 dep_includes = include_directories('include')
 
 fluidsynth_lib = library('fluidsynth', fluidsynth_sources, gen_tables,
-                         dependencies : [m_dep, glib_dep, gthread_dep, openmp_dep],
-                         include_directories : lib_includes)
+                         dependencies : ext_deps,
+                         include_directories : lib_includes,
+                         c_args: lib_args,
+                         cpp_args: lib_args)
+
+fluidsynth_obj = fluidsynth_lib.extract_objects(fluidsynth_sources)
 
 fluidsynth_dep = declare_dependency(link_with : fluidsynth_lib,
                                     include_directories : dep_includes)
