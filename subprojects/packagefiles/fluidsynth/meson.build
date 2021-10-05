@@ -9,6 +9,8 @@ cc = meson.get_compiler('c')
 summary('Build type',     get_option('buildtype'), section : 'Build Summary')
 summary('Install prefix', get_option('prefix'),    section : 'Build Summary')
 
+# Is a shared library being built? Can "both" be handled somehow?
+is_shared_lib = get_option('default_library') == 'shared'
 
 # config file
 #
