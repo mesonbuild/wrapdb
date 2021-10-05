@@ -52,7 +52,9 @@ headers_to_check = [
 ]
 
 foreach h : headers_to_check 
-  conf.set10('HAVE_' + h.underscorify().to_upper(), cc.has_header(h))
+  if cc.has_header(h)
+    conf.set10('HAVE_' + h.underscorify().to_upper(), true)
+  endif
 endforeach
 
 if cc.has_function('inet_ntop', prefix : '#include <arpa/inet.h>')
@@ -60,9 +62,10 @@ if cc.has_function('inet_ntop', prefix : '#include <arpa/inet.h>')
 endif
 
 foreach fun : ['sinf', 'cosf', 'fabsf', 'powf', 'sqrtf', 'logf']
-  conf.set10('HAVE_' + fun.to_upper(), cc.has_function(fun))
+  if cc.has_function(fun)
+    conf.set10('HAVE_' + fun.to_upper(), true)
+  endif
 endforeach
-
 
 # external dependencies
 
