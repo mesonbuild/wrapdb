@@ -20,6 +20,8 @@ import subprocess
 import configparser
 import re
 import typing as T
+import os
+import tempfile
 
 from pathlib import Path
 from utils import Version, is_ci, is_debianlike
@@ -143,10 +145,25 @@ class TestReleases(unittest.TestCase):
                             self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
-                            self.check_new_release(name, info, wrap_section)
+                            self.check_new_release(name)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
+
+    @unittest.skipUnless('TEST_BUILD_ALL' in os.environ, 'Run manually only')
+    def test_build_all(self):
+        passed = []
+        failed = []
+        for name, info in self.releases.items():
+            try:
+                with tempfile.TemporaryDirectory() as d:
+                    self.check_new_release(name, d)
+                passed.append(name)
+            except subprocess. CalledProcessError:
+                failed.append(name)
+        print('Passed:', ', '.join(passed))
+        print('Failed:', ', '.join(failed))
+        self.assertFalse(failed)
 
     def check_has_no_path_separators(self, value: str) -> None:
         self.assertNotIn('/', value)
@@ -167,11 +184,11 @@ class TestReleases(unittest.TestCase):
         self.assertTrue(version in source_url or version_ in source_url,
                         f'Version {version} not found in {source_url}')
 
-    def check_new_release(self, name: str, info: T.Dict[str, T.Union[T.List[str], str, bool]], wrap_section: configparser.SectionProxy):
+    def check_new_release(self, name: str, builddir: str = '_build'):
         ci = self.ci_config.get(name, {})
         options = ['--fatal-meson-warnings', f'-Dwraps={name}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
-        if Path('_build', 'meson-private', 'cmd_line.txt').exists():
+        if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
         debian_packages = ci.get('debian_packages', [])
         if debian_packages and is_debianlike():
@@ -180,9 +197,9 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
-        subprocess.check_call(['meson', 'setup', '_build'] + options)
-        subprocess.check_call(['meson', 'compile', '-C', '_build'])
-        subprocess.check_call(['meson', 'test', '-C', '_build'])
+        subprocess.check_call(['meson', 'setup', builddir] + options)
+        subprocess.check_call(['meson', 'compile', '-C', builddir])
+        subprocess.check_call(['meson', 'test', '-C', builddir])
 
     def is_permitted_file(self, subproject: str, filename: str):
         if filename in PERMITTED_FILES:
