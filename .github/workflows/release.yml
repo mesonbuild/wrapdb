@@ -47,6 +47,6 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          cd docs
+          cd meson/docs
           ninja -C _build upload
         if: env.HAS_SSH_KEY == 'true'
