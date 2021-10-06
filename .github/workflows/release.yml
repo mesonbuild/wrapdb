@@ -20,26 +20,33 @@ jobs:
   # it requires a Personal Access Token. Instead clone meson and do it ourself.
   # This job is copied from Meson's workflows.
   update_website:
+    env:
+      HAS_SSH_KEY: ${{ secrets.WEBSITE_PRIV_KEY != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Install package
         run: |
           sudo apt-get -y install python3-pip ninja-build libjson-glib-dev
-          pip install meson hotdoc
+          pip install hotdoc chevron strictyaml
       - name: Setup SSH Keys and known_hosts
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.WEBSITE_PRIV_KEY }}"
-      - name: Update website
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        if: env.HAS_SSH_KEY == 'true'
+      - name: Build website
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git clone https://github.com/mesonbuild/meson.git
           cd meson/docs
-          meson setup _build
+          ../meson.py setup _build
           ninja -C _build
+      - name: Update website
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          cd docs
           ninja -C _build upload
+        if: env.HAS_SSH_KEY == 'true'
