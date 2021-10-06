@@ -1,0 +1,41 @@
+name: Build all
+on: workflow_dispatch
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    env:
+      TEST_BUILD_ALL: 1
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install packages
+        run: |
+          sudo apt-get -y install build-essential python3-pip ninja-build nasm
+          pip install git+https://github.com/mesonbuild/meson
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py
+
+  VisualStudio:
+    runs-on: windows-latest
+    env:
+      TEST_BUILD_ALL: 1
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install packages
+        run: |
+          pip install git+https://github.com/mesonbuild/meson
+
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Sanity Checks
+        run: |
+          python tools/sanity_checks.py
