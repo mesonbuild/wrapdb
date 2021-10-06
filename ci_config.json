@@ -1,4 +1,9 @@
 {
+  "libxmlpp": {
+    "debian_packages": [
+      "libglibmm-2.4-dev"
+    ]
+  },
   "rdkafka": {
     "build_options": [
       "rdkafka:WITH_SASL=disabled",
@@ -15,7 +20,7 @@
   },
   "spng": {
     "build_options": [
-      "force_fallback_for=zlib"  
+      "force_fallback_for=zlib"
     ]
   }
 }

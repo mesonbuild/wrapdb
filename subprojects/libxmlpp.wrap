@@ -1,7 +1,6 @@
 [wrap-file]
 directory = libxml++-3.0.1
-source_url = ftp://ftp.gnome.org/pub/GNOME/sources/libxml++/3.0/libxml++-3.0.1.tar.xz
+source_url = https://download.gnome.org/sources/libxml++/3.0/libxml++-3.0.1.tar.xz
 source_filename = libxml++-3.0.1.tar.xz
 source_hash = 19dc8d21751806c015179bc0b83f978e65c878724501bfc0b6c1bcead29971a6
 patch_directory = libxmlpp
-
