@@ -22,6 +22,7 @@ import re
 import typing as T
 import os
 import tempfile
+import platform
 
 from pathlib import Path
 from utils import Version, is_ci, is_debianlike
@@ -52,6 +53,9 @@ class TestReleases(unittest.TestCase):
             cls.releases = json.load(f)
         with open('ci_config.json', 'r') as f:
             cls.ci_config = json.load(f)
+
+        system = platform.system().lower()
+        cls.skip = cls.ci_config[f'skip_{system}']
 
     def test_releases_json(self):
         # All tags must be in the releases file
@@ -145,6 +149,7 @@ class TestReleases(unittest.TestCase):
                             self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
+                            self.assertNotIn(name, self.skip)
                             self.check_new_release(name)
                     else:
                         with self.subTest(step='version is tagged'):
@@ -153,16 +158,21 @@ class TestReleases(unittest.TestCase):
     @unittest.skipUnless('TEST_BUILD_ALL' in os.environ, 'Run manually only')
     def test_build_all(self):
         passed = []
+        skipped = []
         failed = []
         for name, info in self.releases.items():
+            if name in self.skip:
+                skipped.append(name)
+                continue
             try:
                 with tempfile.TemporaryDirectory() as d:
                     self.check_new_release(name, d)
                 passed.append(name)
             except subprocess. CalledProcessError:
                 failed.append(name)
-        print('Passed:', ', '.join(passed))
-        print('Failed:', ', '.join(failed))
+        print(f'{len(passed)} passed:', ', '.join(passed))
+        print(f'{len(skipped)} skipped:', ', '.join(skipped))
+        print(f'{len(failed)} failed:', ', '.join(failed))
         self.assertFalse(failed)
 
     def check_has_no_path_separators(self, value: str) -> None:
