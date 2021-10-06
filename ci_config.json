@@ -1,4 +1,22 @@
 {
+  "skip_linux": [
+    "arduinocore-avr", "cpr", "glew", "glib", "hinnant-date", "imgui-sfml",
+    "jsoncpp", "libtomcrypt", "libxmlpp", "openal-soft", "openh264", "pcre2",
+    "protobuf-c", "pugixml", "quazip", "sdl2", "sdl2_image", "sdl2_mixer",
+    "sdl2_net", "sdl2_ttf", "zstd"
+  ],
+  "skip_windows":[
+    "abseil-cpp", "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
+    "emilk-loguru", "enet", "facil", "flatbuffers", "fluidsynth", "freetype2",
+    "fuse", "gdbm", "glib", "google-benchmark", "google-snappy", "google-woff2",
+    "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit", "json-c",
+    "jsoncpp", "libexif", "libgpiod", "libjpeg-turbo", "liblbfgs", "liblzma",
+    "libopenjp2", "libpng", "libtomcrypt", "liburing", "libuv", "libwebsockets",
+    "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
+    "nng", "openh264", "openssl", "pcre2", "protobuf", "protobuf-c", "pugixml",
+    "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
+    "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
+  ],
   "libxmlpp": {
     "debian_packages": [
       "libglibmm-2.4-dev"
