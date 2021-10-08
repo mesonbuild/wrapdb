@@ -4,17 +4,16 @@ cc = meson.get_compiler('c')
 
 link_args = []
 compile_args = []
-if cc.get_id() == 'msvc'
+if cc.get_argument_syntax() == 'msvc' or (cc.get_id() == 'clang' and host_machine.system() == 'windows')
   add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE',
     '-D_CRT_NONSTDC_NO_DEPRECATE', language : 'c')
-else
-  # Don't spam consumers of this wrap with these warnings
-  compile_args += cc.get_supported_arguments(['-Wno-implicit-fallthrough',
-                                              '-Wno-implicit-function-declaration'])
-  if cc.get_id() == 'gcc' and host_machine.system() != 'windows'
-    vflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
-    link_args += [vflag]
-  endif
+endif
+# Don't spam consumers of this wrap with these warnings
+compile_args += cc.get_supported_arguments(['-Wno-implicit-fallthrough',
+                                            '-Wno-implicit-function-declaration'])
+if cc.get_id() == 'gcc' and host_machine.system() != 'windows'
+  vflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
+  link_args += [vflag]
 endif
 
 src = files([
