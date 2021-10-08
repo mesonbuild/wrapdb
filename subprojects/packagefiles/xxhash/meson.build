@@ -24,6 +24,8 @@ vector = {
 }
 
 c_args = []
+c_build_args = []
+c_use_args = []
 
 if get_option('inline-all')
     c_args += '-DXXH_INLINE_ALL'
@@ -75,8 +77,13 @@ elif get_option('cpu-little-endian').disabled()
     c_args += '-DXXH_CPU_LITTLE_ENDIAN=0'
 endif
 
+if host_machine.system() == 'windows'
+    c_args += '-DWIN32'
+endif
+
 if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
-    c_args += 'XXH_IMPORT'
+    c_build_args += '-DXXH_EXPORT'
+    c_use_args += '-DXXH_IMPORT'
 endif
 
 pkgconfig_data = configuration_data({
@@ -104,7 +111,7 @@ xxhash = library(
     'xxhash',
     ['xxhash.c'],
     version: meson.project_version(),
-    c_args: c_args,
+    c_args: c_args + c_build_args,
     include_directories: [
         inc,
     ],
@@ -114,7 +121,7 @@ xxhash = library(
 # For use is xxhsum only
 xxhash_internal_dep = declare_dependency(
     link_with: xxhash,
-    compile_args: c_args,
+    compile_args: c_args + c_use_args,
     include_directories: [
         inc,
     ],
