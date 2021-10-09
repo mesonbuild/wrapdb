@@ -122,6 +122,14 @@
       "1.1.2-1"
     ]
   },
+  "cmph": {
+    "dependency_names": [
+      "cmph"
+    ],
+    "versions": [
+      "2.0-1"
+    ]
+  },
   "cpp-httplib": {
     "dependency_names": ["cpp-httplib"],
     "versions": [

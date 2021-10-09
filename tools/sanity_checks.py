@@ -41,6 +41,10 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'cmph': [
+        'cmph.def',
+        'stdlib_pch.h',
+    ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
