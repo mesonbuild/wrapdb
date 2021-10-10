@@ -33,7 +33,7 @@ LANG=C make -C config
 # Copy generated files back into correct place
 find config/archs -name 'meson.build' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
 find config/archs -name '*.h' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
-find config/archs -name '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
+find config/archs -iname '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
 
 # AIX is not supported by Meson
 rm -rf ../../../generated-config/archs/aix*
