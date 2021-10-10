@@ -100,7 +100,6 @@ absl_flags_sources = files(
 absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
-  'absl/hash/internal/print_hash_of.cc',
   'absl/hash/internal/wyhash.cc',
 )
 
@@ -195,26 +194,26 @@ absl_types_sources = files(
 )
 
 # Libraries
-absl_base_lib = library(
+absl_base_lib = static_library(
   'absl_base',
   absl_base_sources,
   include_directories: absl_include_dir,
   dependencies: [dependency('threads'), libatomic],
 )
 
-absl_hash_lib = library(
+absl_hash_lib = static_library(
   'absl_hash',
   absl_hash_sources,
   include_directories: absl_include_dir,
 )
 
-absl_numeric_lib = library(
+absl_numeric_lib = static_library(
   'absl_numeric',
   absl_numeric_sources,
   include_directories: absl_include_dir,
 )
 
-absl_strings_lib = library(
+absl_strings_lib = static_library(
   'absl_strings',
   absl_strings_sources,
   include_directories: absl_include_dir,
@@ -224,7 +223,7 @@ absl_strings_lib = library(
   ],
 )
 
-absl_debugging_lib = library(
+absl_debugging_lib = static_library(
   'absl_debugging',
   absl_debugging_sources,
   include_directories: absl_include_dir,
@@ -235,7 +234,7 @@ absl_debugging_lib = library(
   dependencies: libatomic,
 )
 
-absl_random_lib = library(
+absl_random_lib = static_library(
   'absl_random',
   absl_random_sources,
   include_directories: absl_include_dir,
@@ -246,7 +245,7 @@ absl_random_lib = library(
   dependencies: libatomic,
 )
 
-absl_time_lib = library(
+absl_time_lib = static_library(
   'absl_time',
   absl_time_sources,
   include_directories: absl_include_dir,
@@ -259,13 +258,13 @@ absl_time_lib = library(
   dependencies : [dependency('CoreFoundation', required : false)],
 )
 
-absl_types_lib = library(
+absl_types_lib = static_library(
   'absl_types',
   absl_types_sources,
   include_directories: absl_include_dir,
 )
 
-absl_synchronization_lib = library(
+absl_synchronization_lib = static_library(
   'absl_synchronization',
   absl_synchronization_sources,
   include_directories: absl_include_dir,
@@ -276,7 +275,7 @@ absl_synchronization_lib = library(
   ],
 )
 
-absl_container_lib = library(
+absl_container_lib = static_library(
   'absl_container',
   absl_container_sources,
   include_directories: absl_include_dir,
@@ -289,7 +288,7 @@ absl_container_lib = library(
   ],
 )
 
-absl_flags_lib = library(
+absl_flags_lib = static_library(
   'absl_flags',
   absl_flags_sources,
   include_directories: absl_include_dir,
@@ -303,7 +302,7 @@ absl_flags_lib = library(
   dependencies: libatomic,
 )
 
-absl_status_lib = library(
+absl_status_lib = static_library(
   'absl_status',
   absl_status_sources,
   include_directories: absl_include_dir,

@@ -6,7 +6,7 @@
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
   "skip_windows":[
-    "abseil-cpp", "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
+    "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers", "fluidsynth", "freetype2",
     "fuse", "gdbm", "glib", "google-benchmark", "google-snappy", "google-woff2",
     "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit", "json-c",
