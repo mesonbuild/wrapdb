@@ -1,0 +1,9 @@
+[wrap-file]
+directory = xtl-0.6.12
+source_url = https://github.com/xtensor-stack/xtl/archive/0.6.12.tar.gz
+source_filename = xtl-0.6.12.tar.gz
+source_hash = 25a16958195f939e6fb7c8feccad89b3e450a18124be6aee119c69a1ee2b308c
+patch_directory = xtl
+
+[provide]
+xtl = xtl_dep
