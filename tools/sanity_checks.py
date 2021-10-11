@@ -149,8 +149,8 @@ class TestReleases(unittest.TestCase):
                             self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
-                            self.assertNotIn(name, self.skip)
                             self.check_new_release(name)
+                            self.assertNotIn(name, self.skip)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
