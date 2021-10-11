@@ -1183,6 +1183,22 @@
       "0.3.0-1"
     ]
   },
+  "xtensor": {
+    "dependency_names": [
+      "xtensor"
+    ],
+    "versions": [
+      "0.21.5-1"
+    ]
+  },
+  "xtl": {
+    "dependency_names": [
+      "xtl"
+    ],
+    "versions": [
+      "0.6.12-1"
+    ]
+  },
   "xxhash": {
     "dependency_names": [
       "libxxhash"

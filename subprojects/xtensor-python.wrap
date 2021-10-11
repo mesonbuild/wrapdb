@@ -1,0 +1,9 @@
+[wrap-file]
+directory = xtensor-python-0.24.1
+source_url = https://github.com/QuantStack/xtensor-python/archive/0.24.1.tar.gz
+source_filename = xtensor-python-0.24.1.tar.gz
+source_hash = e2e251721b9afd6f5229fec58be519179205b8d54bf0e2cd79aa97cacf0c9915
+patch_directory = xtensor-python
+
+[provide]
+xtensor_python = xtensor_python_dep

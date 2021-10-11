@@ -1,0 +1,9 @@
+[wrap-file]
+directory = xtensor-0.21.5
+source_url = https://github.com/xtensor-stack/xtensor/archive/0.21.5.tar.gz
+source_filename = xtensor-0.21.5.tar.gz
+source_hash = 30cb896b6686683ddaefb12c98bf1109fdfe666136dd027aba1a1e9aa825c241
+patch_directory = xtensor
+
+[provide]
+xtensor = xtensor_dep
