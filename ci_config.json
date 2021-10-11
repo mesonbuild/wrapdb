@@ -43,5 +43,10 @@
     "build_options": [
       "force_fallback_for=zlib"
     ]
+  },
+  "xtensor-python": {
+    "pip_packages": [
+      "numpy"
+    ]
   }
 }

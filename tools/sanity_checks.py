@@ -215,6 +215,14 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
+        pip_packages = ci.get('pip_packages', [])
+        if pip_packages:
+            if is_ci():
+                subprocess.check_call(['pip', 'install'] + pip_packages)
+            else:
+                s = ', '.join(pip_packages)
+                print(f'The following packages could be required: {s}')
+
         subprocess.check_call(['meson', 'setup', builddir] + options)
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         subprocess.check_call(['meson', 'test', '-C', builddir])
