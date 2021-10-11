@@ -1,0 +1,6 @@
+
+option('subproj_includedir',
+    type: 'string',
+    value: 'include',
+    description: 'Header file directory when built as subproject',
+    yield: true)
