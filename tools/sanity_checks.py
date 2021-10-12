@@ -25,7 +25,7 @@ import tempfile
 import platform
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike
+from utils import Version, is_ci, is_debianlike, is_linux
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -196,6 +196,8 @@ class TestReleases(unittest.TestCase):
 
     def check_new_release(self, name: str, builddir: str = '_build'):
         ci = self.ci_config.get(name, {})
+        if ci.get('linux_only', False) and not is_linux():
+            return
         options = ['--fatal-meson-warnings', f'-Dwraps={name}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
