@@ -16,6 +16,7 @@ import operator
 import re
 import os
 import typing as T
+import platform
 
 # a helper class which implements the same version ordering as RPM
 class Version:
@@ -90,3 +91,6 @@ def is_ci() -> bool:
 
 def is_debianlike() -> bool:
     return os.path.isfile('/etc/debian_version')
+
+def is_linux() -> bool:
+    return platform.system().lower() == 'linux'
