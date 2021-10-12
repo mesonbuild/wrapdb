@@ -23,9 +23,10 @@ import typing as T
 import os
 import tempfile
 import platform
+import sysconfig
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux
+from utils import Version, is_ci, is_debianlike, is_linux, is_windows
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -199,6 +200,11 @@ class TestReleases(unittest.TestCase):
         if ci.get('linux_only', False) and not is_linux():
             return
         options = ['--fatal-meson-warnings', f'-Dwraps={name}']
+        if is_windows():
+            # On Windows we need to install python modules outside of prefix.
+            for i in {'purelib', 'platlib'}:
+                path = sysconfig.get_paths()[i]
+                options += [f'-Dpython.{i}dir={path}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')

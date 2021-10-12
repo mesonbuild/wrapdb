@@ -94,3 +94,7 @@ def is_debianlike() -> bool:
 
 def is_linux() -> bool:
     return platform.system().lower() == 'linux'
+
+def is_windows() -> bool:
+    platname = platform.system().lower()
+    return platname == 'windows'
