@@ -14,7 +14,7 @@
     "fuse", "gdbm", "glib", "google-benchmark", "google-snappy", "google-woff2",
     "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit", "json-c",
     "jsoncpp", "libexif", "libgpiod", "libjpeg-turbo", "liblbfgs", "liblzma",
-    "libpng", "libtomcrypt", "libuv", "libwebsockets",
+    "libtomcrypt", "libuv", "libwebsockets",
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "pcre2", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
