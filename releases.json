@@ -488,7 +488,12 @@
     ]
   },
   "lame": {
+    "dependency_names": [
+      "mp3lame",
+      "mpglib"
+    ],
     "versions": [
+      "3.100-2",
       "3.100-1",
       "3.99.5-1"
     ]
