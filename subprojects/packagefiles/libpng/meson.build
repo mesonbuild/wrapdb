@@ -52,9 +52,27 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
         'arm/arm_init.c',
         'arm/filter_neon_intrinsics.c',
         'arm/palette_neon_intrinsics.c',
-        'arm/filter_neon.S'
+        
     ])
-    
+    if cc.get_id() == 'msvc'
+        cl = find_program('cl')
+        msvc_preprocessed_asm_files = custom_target(
+            'MSVC assembly preprocessing',
+            output : ['@BASENAME@.i'],
+            input : 'arm/filter_neon.S',
+            command : [cl, '/Fi@OUTPUT@', '/P', '@INPUT@', '-I@OUTDIR@', c_args]
+        )
+        msvc_armasm = find_program('armasm64')
+        png_src += custom_target(
+            'MSVC assembly compilation',
+            output : ['@BASENAME@.obj'],
+            input : msvc_preprocessed_asm_files,
+            command : [msvc_armasm, '@INPUT@', '/Fo@OUTPUT@', '-I@OUTDIR@'],
+        )
+    else
+        png_src += files(['arm/filter_neon.S'])    
+    endif
+
     c_args += ['-DPNG_ARM_NEON_OPT=2']
 endif
 
