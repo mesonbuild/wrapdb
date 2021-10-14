@@ -1,0 +1,9 @@
+[wrap-file]
+directory = Little-CMS-2.12
+source_url = https://github.com/mm2/Little-CMS/archive/refs/tags/2.12.tar.gz
+source_filename = lcms2-2.12.tar.gz
+source_hash = e501f1482fc424550ef3abbf86bf1c66090e1661249e89552d39ed5bf935df66
+patch_directory = lcms2
+
+[provide]
+lcms2 = liblcms2_dep
