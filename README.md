@@ -52,6 +52,8 @@ meson compile -C builddir
     should not be added here because it's better to test that fallbacks works.
     When running `tools/sanity_checks.py` locally, this list will be printed
     but not installed.
+  - `linux_only`: (Optional) If set to `true`, indicates the wrap should be tested
+    only on Linux CI.
 
 - Test locally by running `tools/sanity_checks.py` script. It will be executed
   on the CI and must always return success before merging any PR.

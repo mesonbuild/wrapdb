@@ -1,4 +1,7 @@
 {
+  "_comment": ["skip_linux and skip_windows are lists of wraps that are known",
+               "to fail on the CI and should get repaired whenever possible.",
+               "Please remove projects from those lists once they are updated."],
   "skip_linux": [
     "arduinocore-avr", "cpr", "glew", "glib", "hinnant-date", "imgui-sfml",
     "jsoncpp", "libtomcrypt", "libxmlpp", "openal-soft", "openh264", "pcre2",
@@ -17,6 +20,7 @@
     "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
+
   "liburing": {
     "linux_only": true
   },
