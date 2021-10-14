@@ -1192,6 +1192,14 @@
       "0.21.5-1"
     ]
   },
+  "xtensor-python": {
+    "dependency_names": [
+      "xtensor_python"
+    ],
+    "versions": [
+      "0.24.1-1"
+    ]
+  },
   "xtl": {
     "dependency_names": [
       "xtl"

@@ -9,7 +9,7 @@ xtl_dep = declare_dependency(
 
 extra_cflags = []
 
-# Workaround from issue: https://github.com/mesonbuild/meson/issues/2550
+# Install subprojects in different directory
 if meson.is_subproject()
     install_dir = get_option('subproj_includedir')
     extra_cflags += '-I' + get_option('prefix') / install_dir
