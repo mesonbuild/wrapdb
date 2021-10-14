@@ -492,6 +492,14 @@
       "3.99.5-1"
     ]
   },
+  "lcms2": {
+    "dependency_names": [
+      "lcms2"
+    ],
+    "versions": [
+      "2.12-1"
+    ]
+},
   "libexif": {
     "dependency_names": [
       "libexif"
