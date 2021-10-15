@@ -12,7 +12,6 @@ option('build_jpip_server', type : 'boolean', value : false, description : 'Buil
 option('build_viewer', type : 'boolean', value : false, description : 'Build the OPJViewer executable (C++)')
 option('build_java', type : 'boolean', value : false, description : 'Build the openjpeg jar (Java)')
 option('build_jp3d', type : 'boolean', value : false, description : 'Build the JP3D comp')
-option('build_thirdparty', type : 'boolean', value : false, description : 'Build the thirdparty executables if it is needed')
 option('build_testing', type : 'boolean', value : false, description : 'Build the tests.')
 option('build_pkgconfig_files', type : 'boolean', value : true, description : 'Build and install pkg-config files')
 option('with_astyle', type : 'boolean', value : false, description : 'Build with astyle')
