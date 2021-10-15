@@ -159,15 +159,18 @@ endif
 #################################################################################
 cmake_thread_prefer_pthread = 'TRUE'
 if not get_option('opj_use_thread')
+  message('Use stub thread implementation')
   openjp2_c_args += ('-DMUTEX_stub')
 endif
 
-if get_option('opj_use_thread') and host_system == 'windows' and not thread_dep.found()
+if get_option('opj_use_thread') and host_system == 'windows'
   # add_definitions('-DMUTEX_win32')
+  message('Use win32 thread implementation')
   openjp2_c_args += ('-DMUTEX_win32')
 endif
 
 if get_option('opj_use_thread') and thread_dep.found()
+  message('Use pthread implementation')
   openjp2_c_args += ('-DMUTEX_pthread')
 endif
 
