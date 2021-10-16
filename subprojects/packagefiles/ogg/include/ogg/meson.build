@@ -12,6 +12,7 @@ cdata.set('USIZE16', 'uint16_t')
 cdata.set('SIZE32', 'int32_t')
 cdata.set('USIZE32', 'uint32_t')
 cdata.set('SIZE64', 'int64_t')
+cdata.set('USIZE64', 'uint64_t')
 
 configure_file(input: 'config_types.h.meson',
     output: 'config_types.h',
