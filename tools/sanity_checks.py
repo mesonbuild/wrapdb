@@ -63,7 +63,7 @@ class TestReleases(unittest.TestCase):
         for t in self.tags:
             name, version = t.rsplit('_', 1)
             self.assertIn(name, self.releases)
-            self.assertIn(version, self.releases[name]['versions'])
+            self.assertIn(version, self.releases[name]['versions'], f"for {name}")
 
         # Verify keys are sorted
         self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
@@ -71,6 +71,21 @@ class TestReleases(unittest.TestCase):
         for name, info in self.releases.items():
             for k in info.keys():
                 self.assertIn(k, PERMITTED_KEYS)
+
+    def get_patch_path(self, wrap_section):
+        patch_directory = wrap_section.get('patch_directory')
+        if patch_directory:
+            return Path('subprojects', 'packagefiles', patch_directory)
+
+        return None
+
+    def check_meson_version(self, name: str, version: str, patch_path: str, builddir: str = '_build'):
+        with self.subTest(step="check_meson_version"):
+            with open(Path(builddir) / "meson-info/intro-projectinfo.json") as project_info_file:
+                project_info = json.load(project_info_file)
+                subproject, = [subproj for subproj in project_info["subprojects"] if subproj["name"] == name]
+                if subproject['version'] != 'undefined' and patch_path:
+                    self.assertEqual(subproject['version'], version)
 
     def test_releases(self):
         for name, info in self.releases.items():
@@ -104,11 +119,9 @@ class TestReleases(unittest.TestCase):
                         self.assertIn('provide', config.sections())
                         self.assertTrue(config.items('provide'))
 
-                patch_directory = wrap_section.get('patch_directory')
-                if patch_directory:
+                patch_path = self.get_patch_path(wrap_section)
+                if patch_path:
                     with self.subTest(step='patch_directory'):
-                        patch_path = Path('subprojects', 'packagefiles', patch_directory)
-
                         self.assertTrue(patch_path.is_dir())
                         # FIXME: Not all wraps currently complies, only check for wraps we modify.
                         if extra_checks:
@@ -152,6 +165,7 @@ class TestReleases(unittest.TestCase):
                         with self.subTest(step='check_new_release'):
                             self.check_new_release(name)
                             self.assertNotIn(name, self.skip)
+                            self.check_meson_version(name, ver, patch_path)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -165,10 +179,17 @@ class TestReleases(unittest.TestCase):
             if name in self.skip:
                 skipped.append(name)
                 continue
+            current_version, _ = info['versions'][0].split('-')
+
+            config = configparser.ConfigParser(interpolation=None)
+            config.read(f'subprojects/{name}.wrap')
+            wrap_section = config['wrap-file']
             try:
                 with tempfile.TemporaryDirectory() as d:
                     self.check_new_release(name, d)
-                passed.append(name)
+                    passed.append(name)
+                    self.check_meson_version(name, current_version,
+                        self.get_patch_path(wrap_section), d)
             except subprocess. CalledProcessError:
                 failed.append(name)
         print(f'{len(passed)} passed:', ', '.join(passed))

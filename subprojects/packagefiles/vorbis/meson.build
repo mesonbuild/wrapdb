@@ -1,4 +1,4 @@
-project('vorbis', 'c', version : '1.3.5', license : 'bsd-style')
+project('vorbis', 'c', version : '1.3.7', license : 'bsd-style')
 
 ogg_dep = dependency('ogg')
 
