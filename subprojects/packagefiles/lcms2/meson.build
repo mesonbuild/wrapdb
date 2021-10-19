@@ -1,6 +1,6 @@
 project('Little-CMS', 'c',
   version: '2.12',
-  meson_version: '>=0.55.0',
+  meson_version: '>=0.48.0',
 )
 
 library_version = '2.0.12'
@@ -46,16 +46,26 @@ inc_dirs = include_directories('include')
 deps = [
   cc.find_library('m', required: false),
   dependency('threads'),
-  dependency('zlib'),
-  dependency('libtiff-4'),
 ]
 
-cargs = ['-DHasTHREADS=1', '-DHasZLIB=1', '-DHasTIFF=1']
+cargs = ['-DHasTHREADS=1']
 
-if cc.has_argument('-fvisibility')
+# Check for threadsafe variants of gmtime
+if cc.has_function('gmtime_r', prefix: '#include <time.h>')
+  cargs += '-DHAVE_GMTIME_R=1'
+elif cc.has_function('gmtime_s', prefix: '#include <time.h>')
+  cargs += '-DHAVE_GMTIME_S=1'
+endif
+
+if cc.has_function_attribute('visibility:hidden')
   cargs +='-DHAVE_FUNC_ATTRIBUTE_VISIBILITY=1'
 elif cc.get_id() == 'msvc'
   cargs += '-DCMS_DLL_BUILD=1'
+endif
+
+if host_machine.system() == 'windows'
+  win = import('windows')
+  lcms2_srcs += win.compile_resources('Projects/VC2019/lcms2.rc')
 endif
 
 liblcms2_lib = library('lcms2', lcms2_srcs,
@@ -64,6 +74,7 @@ liblcms2_lib = library('lcms2', lcms2_srcs,
   dependencies: deps,
   c_args: cargs,
   version: library_version,
+  vs_module_defs: 'src/lcms2.def',
   install: true,
 )
 
