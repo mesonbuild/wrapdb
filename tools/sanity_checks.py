@@ -191,9 +191,7 @@ class TestReleases(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as d:
                     self.check_new_release(name, d)
                     passed.append(name)
-                    self.check_meson_version(name, current_version,
-                        self.get_patch_path(wrap_section), d)
-            except subprocess. CalledProcessError:
+            except subprocess.CalledProcessError:
                 failed.append(name)
         print(f'{len(passed)} passed:', ', '.join(passed))
         print(f'{len(skipped)} skipped:', ', '.join(skipped))
