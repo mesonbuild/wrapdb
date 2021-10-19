@@ -1,5 +1,5 @@
 project('libuv', 'c',
-  version : '1.41.0',
+  version : '1.42.0',
   license : 'libuv',
   default_options : [ 'c_std=c89' ],
 )
@@ -76,9 +76,6 @@ if cc_msvc
 endif
 
 cc_other_cargs_all = [
-  '-Wno-unused-parameter',  # no_unused_parameter
-  '-Wstrict-prototypes',    # strict_prototypes
-  '-Wextra',                # extra
   '-fno-strict-aliasing',   # f_strict_aliasing
 ]
 foreach flag : cc_other_cargs_all
@@ -144,9 +141,6 @@ else
     '-D_FILE_OFFSET_BITS=64',
     '-D_LARGEFILE_SOURCE',
   ]
-  if not (android or os390 or qnx)
-    libuv_libs += 'pthread'
-  endif
   libuv_src += [
     'src/unix/async.c',
     'src/unix/core.c',
@@ -178,6 +172,7 @@ if aix
     '-D_LINUX_SOURCE_COMPAT',
     '-D_THREAD_SAFE',
     '-D_XOPEN_SOURCE=500',
+    '-D_REENTRANT',
     '-DHAVE_SYS_AHAFS_EVPRODS_H',
   ]
   libuv_libs += 'perfstat'
@@ -200,6 +195,7 @@ if android
     'src/unix/random-getentropy.c',
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
+    'src/unix/epoll.c',
   ]
 endif
 
@@ -258,6 +254,7 @@ if linux
     'src/unix/procfs-exepath.c',
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
+    'src/unix/epoll.c',
   ]
 endif
 
@@ -318,13 +315,12 @@ endif
 # test-depending config
 if libuv_build_tests and (apple or dragonfly or freebsd or linux or netbsd or openbsd)
   libuv_test_libs += 'util'
-
-  # TODO: tests seem to require pthread, but they are not linked in the original CMake file?
-  libuv_test_libs += 'pthread'
 endif
 
 # convert libs to dependencies
-libuv_deps = []
+libuv_deps = [
+  dependency('threads'),
+]
 foreach lib : libuv_libs
   libuv_deps += cc.find_library(lib, required: true)
 endforeach
@@ -339,7 +335,6 @@ libuv_private_inc = include_directories('src')
 libuv_inc = [libuv_public_inc, libuv_private_inc]
 
 # libraries and respective dependency declarations
-libuv_comp_args = []
 libuv_test_lflags = []
 if cc_msvc
   # TODO: workaround for msvc, because of __declspec(dllexport)
@@ -347,7 +342,6 @@ if cc_msvc
     error('default_library=both is not supported with MSVC')
   elif get_option('default_library') == 'shared'
     libuv_cargs += '-DBUILDING_UV_SHARED=1'
-    libuv_comp_args += '-DUSING_UV_SHARED=1'
   endif
 endif
 if libuv_qemu and get_option('default_library') == 'static'
@@ -360,8 +354,11 @@ libuv = library('uv',
   dependencies: libuv_deps,
   include_directories: libuv_inc,
 )
-libuv_dep = declare_dependency(link_with: libuv, include_directories: libuv_public_inc,
-  compile_args: libuv_comp_args)
+libuv_dep = declare_dependency(
+  dependencies: libuv_deps,
+  link_with: libuv,
+  include_directories: libuv_public_inc,
+)
 
 # benchmark & test config
 if libuv_build_bench
@@ -385,7 +382,6 @@ if libuv_build_bench
     'test/benchmark-thread.c',
     'test/benchmark-udp-pummel.c',
     'test/blackhole-server.c',
-    'test/dns-server.c',
     'test/echo-server.c',
     'test/run-benchmarks.c',
     'test/runner.c',
@@ -459,6 +455,9 @@ if libuv_build_tests
     'test/test-metrics.c',
     'test/test-multiple-listen.c',
     'test/test-mutexes.c',
+    'test/test-not-readable-nor-writable-on-read-error.c',
+    'test/test-not-readable-on-eof.c',
+    'test/test-not-writable-after-shutdown.c',
     'test/test-osx-select.c',
     'test/test-pass-always.c',
     'test/test-ping-pong.c',
@@ -491,6 +490,7 @@ if libuv_build_tests
     'test/test-semaphore.c',
     'test/test-shutdown-close.c',
     'test/test-shutdown-eof.c',
+    'test/test-shutdown-simultaneous.c',
     'test/test-shutdown-twice.c',
     'test/test-signal-multiple-loops.c',
     'test/test-signal-pending-on-close.c',
@@ -561,15 +561,31 @@ if libuv_build_tests
     'test/test-walk-handles.c',
     'test/test-watcher-cross-stop.c',
   ]
-  if win32
-    # TODO: not sure if this works like that, it doesn't on linux
-    libuv_test_src += meson.source_root() + '/uv_win_longpath.manifest'
+  libuv_test_cargs = []
+  if cc_msvc
+    if get_option('default_library') == 'both'
+      error('default_library=both is not supported with MSVC')
+    elif get_option('default_library') == 'shared'
+      libuv_test_cargs += [
+        '-DUSING_UV_SHARED',
+      ]
+    endif
+    libuv_test_lflags += [
+      '/MANIFEST:EMBED',
+      '/MANIFESTINPUT:' + join_paths(meson.current_source_dir(), 'uv_win_longpath.manifest')
+    ]
   endif
   libuv_test_exe = executable('uv_run_tests', libuv_test_src,
-    dependencies: [libuv_dep, libuv_test_deps], c_args: libuv_cargs,
+    dependencies: [libuv_dep, libuv_test_deps], c_args: libuv_test_cargs,
     link_args: libuv_test_lflags)
-  test('libuv_run_tests', libuv_test_exe, workdir: meson.current_source_dir(),
-    protocol: 'tap', timeout: 100, is_parallel: false)
+  test(
+    'libuv_run_tests',
+     libuv_test_exe,
+     workdir: meson.current_source_dir(),
+     protocol: 'tap',
+     timeout: 300,
+     is_parallel: false,
+  )
 endif
 
 # TODO: install
