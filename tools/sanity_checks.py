@@ -182,14 +182,11 @@ class TestReleases(unittest.TestCase):
             if name in self.skip:
                 skipped.append(name)
                 continue
-            current_version, _ = info['versions'][0].split('-')
-
-            config = configparser.ConfigParser(interpolation=None)
-            config.read(f'subprojects/{name}.wrap')
-            wrap_section = config['wrap-file']
             try:
                 with tempfile.TemporaryDirectory() as d:
-                    self.check_new_release(name, d)
+                    # Disable --fatal-meson-warnings because Meson could have added
+                    # warnings/deprecations since last time this wrap has been updated.
+                    self.check_new_release(name, d, fatal_warnings=False)
                     passed.append(name)
             except subprocess.CalledProcessError:
                 failed.append(name)
@@ -217,11 +214,13 @@ class TestReleases(unittest.TestCase):
         self.assertTrue(version in source_url or version_ in source_url,
                         f'Version {version} not found in {source_url}')
 
-    def check_new_release(self, name: str, builddir: str = '_build'):
+    def check_new_release(self, name: str, builddir: str = '_build', fatal_warnings=True):
         ci = self.ci_config.get(name, {})
         if ci.get('linux_only', False) and not is_linux():
             return
-        options = ['--fatal-meson-warnings', f'-Dwraps={name}']
+        options = [f'-Dwraps={name}']
+        if fatal_warnings and ci.get('fatal_warnings', True):
+            options.append('--fatal-meson-warnings')
         if is_windows():
             # On Windows we need to install python modules outside of prefix.
             for i in {'purelib', 'platlib'}:
