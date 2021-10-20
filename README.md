@@ -54,6 +54,8 @@ meson compile -C builddir
     but not installed.
   - `linux_only`: (Optional) If set to `true`, indicates the wrap should be tested
     only on Linux CI.
+  - `fatal_warnings`: (Optional) If set to `false` removes --fatal-meson-warning.
+    Use this only when there is no other way to fix the warning.
 
 - Test locally by running `tools/sanity_checks.py` script. It will be executed
   on the CI and must always return success before merging any PR.

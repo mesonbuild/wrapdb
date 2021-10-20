@@ -60,6 +60,7 @@ class TestReleases(unittest.TestCase):
 
         system = platform.system().lower()
         cls.skip = cls.ci_config[f'skip_{system}']
+        cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', True)
 
     def test_releases_json(self):
         # All tags must be in the releases file
@@ -216,7 +217,9 @@ class TestReleases(unittest.TestCase):
         ci = self.ci_config.get(name, {})
         if ci.get('linux_only', False) and not is_linux():
             return
-        options = ['--fatal-meson-warnings', f'-Dwraps={name}']
+        options = [f'-Dwraps={name}']
+        if ci.get('fatal_warnings', True) and self.fatal_warnings:
+            options.append('--fatal-meson-warnings')
         if is_windows():
             # On Windows we need to install python modules outside of prefix.
             for i in {'purelib', 'platlib'}:
