@@ -21,6 +21,9 @@
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
 
+  "fluidsynth": {
+    "fatal_warnings": false
+  },
   "glib": {
     "_comment": ["- Disable fatal warnings: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2304",
                  "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
