@@ -235,9 +235,19 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
-        subprocess.check_call(['meson', 'setup', builddir] + options)
+        try:
+            subprocess.check_call(['meson', 'setup', builddir] + options)
+        except subprocess.CalledProcessError:
+            log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
+            print('\n\n==== meson-logs.txt ====\n', log_file.read_text(encoding='utf-8'))
+            raise
         subprocess.check_call(['meson', 'compile', '-C', builddir])
-        subprocess.check_call(['meson', 'test', '-C', builddir])
+        try:
+            subprocess.check_call(['meson', 'test', '-C', builddir])
+        except subprocess.CalledProcessError:
+            log_file = Path(builddir, 'meson-logs', 'testlog.txt')
+            print('\n\n==== testlog.txt ====\n', log_file.read_text(encoding='utf-8'))
+            raise
 
     def is_permitted_file(self, subproject: str, filename: str):
         if filename in PERMITTED_FILES:
