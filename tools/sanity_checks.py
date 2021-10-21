@@ -182,11 +182,6 @@ class TestReleases(unittest.TestCase):
             if name in self.skip:
                 skipped.append(name)
                 continue
-            current_version, _ = info['versions'][0].split('-')
-
-            config = configparser.ConfigParser(interpolation=None)
-            config.read(f'subprojects/{name}.wrap')
-            wrap_section = config['wrap-file']
             try:
                 with tempfile.TemporaryDirectory() as d:
                     self.check_new_release(name, d)
