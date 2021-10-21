@@ -239,14 +239,18 @@ class TestReleases(unittest.TestCase):
             subprocess.check_call(['meson', 'setup', builddir] + options)
         except subprocess.CalledProcessError:
             log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
-            print('\n\n==== meson-logs.txt ====\n', log_file.read_text(encoding='utf-8'))
+            print('::group::==== meson-log.txt ====')
+            print(log_file.read_text(encoding='utf-8'))
+            print('::endgroup::')
             raise
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
-            subprocess.check_call(['meson', 'test', '-C', builddir])
+            subprocess.check_call(['meson', 'test', '-C', builddir, '--print-errorlogs'])
         except subprocess.CalledProcessError:
             log_file = Path(builddir, 'meson-logs', 'testlog.txt')
-            print('\n\n==== testlog.txt ====\n', log_file.read_text(encoding='utf-8'))
+            print('::group::==== testlog.txt ====')
+            print(log_file.read_text(encoding='utf-8'))
+            print('::endgroup::')
             raise
 
     def is_permitted_file(self, subproject: str, filename: str):
