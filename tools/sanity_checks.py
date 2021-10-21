@@ -60,7 +60,7 @@ class TestReleases(unittest.TestCase):
 
         system = platform.system().lower()
         cls.skip = cls.ci_config[f'skip_{system}']
-        cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', True)
+        cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
 
     def test_releases_json(self):
         # All tags must be in the releases file

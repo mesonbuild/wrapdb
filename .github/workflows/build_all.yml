@@ -3,9 +3,8 @@ on:
   workflow_dispatch:
     inputs:
       fatal_warnings:
-        description: 'Build with --fatal-meson-warning'
-        required: true
-        default: false
+        description: 'Build with --fatal-meson-warning (yes/no)'
+        default: 'no'
 
 jobs:
   Ubuntu:
