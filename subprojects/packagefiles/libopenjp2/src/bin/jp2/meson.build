@@ -25,7 +25,7 @@ openjp2_c_args = []
 foreach exe :  ['opj_decompress', 'opj_compress', 'opj_dump']
   exe_c = exe + '.c'
   exe_src = [exe_c] + common_srcs
-  exe_deps = [libopenjp2_dep, libpng_dep, libtiff_dep, liblcms2_dep, zlib_dep, rt_dep, m_dep]
+  exe_deps = [libopenjp2_dep, libpng_dep, libtiff_dep, liblcms2_dep, rt_dep, m_dep]
   exe_exe = executable (exe, exe_src
                         , c_args : openjp2_c_args
                         , include_directories : inc_dirs
