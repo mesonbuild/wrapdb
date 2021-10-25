@@ -1,10 +1,9 @@
 [wrap-file]
-directory = fluidsynth-2.2.3
-source_url = https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.2.3.tar.gz
-source_filename = fluidsynth-2.2.3.tar.gz
-source_hash = b31807cb0f88e97f3096e2b378c9815a6acfdc20b0b14f97936d905b536965c4
+directory = fluidsynth-staging-2.2.3-msvc-math-defines-1
+source_url = https://github.com/dosbox-staging/fluidsynth/archive/refs/heads/staging/2.2.3-msvc-math-defines-1.tar.gz
+source_filename = 2.2.3-msvc-math-defines-1.tar.gz
+source_hash = bc5aacbf30b15cffaaed27d6baa7b7621ba2405eccf076da101e8c140e87ae19
 patch_directory = fluidsynth
 
 [provide]
 fluidsynth = fluidsynth_dep
-
