@@ -22,7 +22,6 @@ conf.set('DEFAULT_SOUNDFONT', get_option('datadir') / 'soundfonts' / 'default.sf
 conf.set('TEST_SOUNDFONT', meson.current_source_dir() / 'sf2' / 'VintageDreamsWaves-v2.sf2')
 conf.set('TEST_SOUNDFONT_SF3', meson.current_source_dir() / 'sf2' / 'VintageDreamsWaves-v2.sf3')
 conf.set('STDC_HEADERS', 1)
-conf.set('SUPPORTS_VLA', 1) # some check for ancient compilers
 
 if host_machine.system() == 'darwin'
   conf.set('DARWIN', 1)
@@ -72,16 +71,42 @@ gthread_dep = dependency('gthread-2.0', static : get_option('try-static-deps'))
 openmp_dep  = dependency('openmp', required : false, language : 'c',
                          version : '>= 4.0')
 
+
+# OpenMP
+
 if openmp_dep.found()
   conf.set('HAVE_OPENMP', 1)
 endif
 summary('OpenMP 4.0', openmp_dep.found().to_string('yes', 'no'),
         section : 'Developer nerds info')
 
+
+# Threads
+
 if get_option('enable-threads')
   conf.set('ENABLE_MIXER_THREADS', 1)
 endif
 summary('Multi-threading', conf.has('ENABLE_MIXER_THREADS').to_string('yes', 'no'),
+        section : 'Developer nerds info')
+
+
+# Variable-size arrays, which MSVC doesn't support
+
+variable_size_arrays_msg = 'C99 variable-size arrays'
+if cc.compiles('''int main(int argc, char *argv[]) {
+                      int zero_arr[0];
+                      int arr[argc + 1];
+                      arr[argc] = argc;
+                      return arr[argc];
+               }''',
+               name : variable_size_arrays_msg)
+  conf.set10('SUPPORTS_VLA', 1)
+else
+  conf.set10('SUPPORTS_VLA', 0)
+endif
+
+summary(variable_size_arrays_msg,
+        conf.has('SUPPORTS_VLA').to_string('yes', 'no'),
         section : 'Developer nerds info')
 
 # config.h
