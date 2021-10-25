@@ -70,7 +70,7 @@ subdir('src/lib')
 #-----------------------------------------------------------------------------
 # Build Applications
 
-if get_option('build_codec') or  get_option('build_mj2')
+if get_option('build_codec')
   # OFF: It will only build 3rd party libs if they are not found on the system
   # ON: 3rd party libs will ALWAYS be build, and used
   subdir('src/bin')
@@ -111,34 +111,7 @@ endif
   # install(['FILES', 'LICENSE', 'DESTINATION', openjpeg_install_doc_dir])
 #endif
 #-----------------------------------------------------------------------------
-# pkgconfig support
 
-if get_option('build_pkgconfig_files')
-  pkgconfig = import('pkgconfig')
-  pkgconfig.generate(openjp2_lib, name: 'libopenjp2',
-                       description: 'JPEG2000 library (Part 1 and 2)',
-                       version: meson.project_version(),
-                       libraries: openjp2_lib,
-                       extra_cflags: opj_static_args)
-  if get_option('build_jpwl')
-    pkgconfig.generate(openjpwl_lib, name: 'libopenjpwl',
-                       description: 'JPEG2000 Wireless library (Part 11)',
-                       version: meson.project_version(),
-                       libraries: openjpwl_lib)
-  endif
-  if get_option('build_jpip')
-    pkgconfig.generate(openjpip_lib, name: 'libopenjpip',
-                       description: 'JPEG2000 Interactivity tools, APIs and protocols (Part 9)',
-                       version: meson.project_version(),
-                       libraries: openjpip_lib)
-  endif
-  if get_option('build_jp3d')
-      pkgconfig.generate(openjp3d_lib, name: 'libopenjp3d',
-                       description: 'JPEG2000 Extensions for three-dimensional data (Part 10)',
-                       version: meson.project_version(),
-                       libraries: openjp3d_lib)
-  endif
-endif
 #-----------------------------------------------------------------------------
 # build our version of astyle
 #with_astyle = ['FALSE', 'CACHE', 'BOOL', 'If you plan to contribute you should reindent with scripts/prepare-commit.sh (using 'our' astyle)']

@@ -10,9 +10,6 @@
   # Java module should not have a SONAME:
   # set_property(['TARGET', 'openjpegjni', 'PROPERTY', 'NO_SONAME', '1'])
   # FIXME (need to use old API):
-  if get_option('build_mj2')
-    # target_link_libraries(['openjpegjni', 'openmj2'])
-  endif
   # target_link_libraries(['openjpegjni', png_libname, tiff_libname, lcms_libname, z_libname])
   if host_system == 'linux'
     # target_link_libraries(['openjpegjni', 'm'])
