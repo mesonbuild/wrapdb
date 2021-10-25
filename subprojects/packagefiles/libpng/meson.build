@@ -69,6 +69,11 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
             input : msvc_preprocessed_asm_files,
             command : [msvc_armasm, '@INPUT@', '/Fo@OUTPUT@', '-I@OUTDIR@'],
         )
+        # The additional __aarch64__ flag is a work-around to get the same
+        # behavior for arm64 on Windows as on Linux.
+        # This work-around should be eliminated if the this issue is fixed:
+        # https://github.com/glennrp/libpng/issues/398
+        c_args += ['-D__aarch64__']
     else
         png_src += files(['arm/filter_neon.S'])    
     endif
