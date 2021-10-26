@@ -1,8 +1,11 @@
 project('fluidsynth', 'c', 'cpp',
         version : '2.2.3',
         license : 'LGPL-2.1-or-later',
-        default_options : ['b_ndebug=if-release'],
-        meson_version : '>= 0.53.0')
+        meson_version : '>= 0.53.0',
+        default_options : [
+          'b_ndebug=if-release',
+          'glib:tests=false',
+        ])
 
 cc = meson.get_compiler('c')
 
