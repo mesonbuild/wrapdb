@@ -10,7 +10,7 @@
   ],
   "skip_windows":[
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
-    "emilk-loguru", "enet", "facil", "flatbuffers", "fluidsynth", "freetype2",
+    "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
     "fuse", "gdbm", "google-benchmark", "google-snappy", "google-woff2",
     "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit", "json-c",
     "jsoncpp", "libexif", "libgpiod", "libjpeg-turbo", "liblbfgs", "liblzma",
@@ -21,6 +21,11 @@
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
 
+  "fluidsynth": {
+    "build_options": [
+      "glib:tests=false"
+    ]
+  },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
     "build_options": [
