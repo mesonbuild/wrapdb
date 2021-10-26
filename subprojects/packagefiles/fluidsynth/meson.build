@@ -136,5 +136,7 @@ fluidsynth_dep = declare_dependency(link_with : fluidsynth_lib,
                                     include_directories : dep_includes)
 
 # unit tests
+if host_machine.system() != 'windows'
+  subdir('test')
+endif
 
-subdir('test')
