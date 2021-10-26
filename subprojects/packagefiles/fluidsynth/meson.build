@@ -36,7 +36,6 @@ conf.set('DEFAULT_SOUNDFONT', get_option('datadir') / 'soundfonts' / 'default.sf
 conf.set('TEST_SOUNDFONT', meson.current_source_dir() / 'sf2' / 'VintageDreamsWaves-v2.sf2')
 conf.set('TEST_SOUNDFONT_SF3', meson.current_source_dir() / 'sf2' / 'VintageDreamsWaves-v2.sf3')
 conf.set('STDC_HEADERS', 1)
-conf.set('SUPPORTS_VLA', 1) # some check for ancient compilers
 
 if host_machine.system() == 'darwin'
   conf.set('DARWIN', 1)
@@ -80,6 +79,13 @@ foreach fun : ['sinf', 'cosf', 'fabsf', 'powf', 'sqrtf', 'logf']
     conf.set10('HAVE_' + fun.to_upper(), true)
   endif
 endforeach
+
+# Some compilers such as msvc may not support VLA, the following test
+# is adapted from upstream CMake
+vla_code = 'int main(int argc, char *argv[]){int arr[argc]; return 0;}'
+if cc.compiles(vla_code, name: 'VLA check')
+  conf.set('SUPPORTS_VLA', 1)
+endif
 
 # external dependencies
 
