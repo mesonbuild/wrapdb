@@ -25,6 +25,8 @@ conf.set('STDC_HEADERS', 1)
 
 if host_machine.system() == 'darwin'
   conf.set('DARWIN', 1)
+elif host_machine.system() == 'windows'
+  conf.set('WIN32', 1)
 endif
 
 if host_machine.endian() == 'big'
