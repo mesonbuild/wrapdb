@@ -22,9 +22,7 @@
   ],
 
   "glib": {
-    "_comment": ["- Disable fatal warnings: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2304",
-                 "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
-    "fatal_warnings": false,
+    "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
     "build_options": [
       "glib:tests=false"
     ]

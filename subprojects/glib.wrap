@@ -1,9 +1,9 @@
 [wrap-file]
-directory = glib-2.70.0
+directory = glib-2.70.1
 
-source_url = https://download.gnome.org/sources/glib/2.70/glib-2.70.0.tar.xz
-source_filename = glib-2.70.0.tar.xz
-source_hash = 200d7df811c5ba634afbf109f14bb40ba7fde670e89389885da14e27c0840742
+source_url = https://download.gnome.org/sources/glib/2.70/glib-2.70.1.tar.xz
+source_filename = glib-2.70.1.tar.xz
+source_hash = f9b7bce7f51753a1f43853bbcaca8bf09e15e994268e29cfd7a76f65636263c0
 
 [provide]
 dependency_names = gthread-2.0, gobject-2.0, gmodule-no-export-2.0, gmodule-export-2.0, gmodule-2.0, glib-2.0, gio-2.0, gio-win32-2.0, gio-unix-2.0
