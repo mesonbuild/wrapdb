@@ -70,7 +70,7 @@ subdir('src/lib')
 #-----------------------------------------------------------------------------
 # Build Applications
 
-if get_option('build_codec')
+if get_option('build_codec_apps')
   # OFF: It will only build 3rd party libs if they are not found on the system
   # ON: 3rd party libs will ALWAYS be build, and used
   subdir('src/bin')
@@ -91,7 +91,7 @@ subdir('wrapping')
 #-----------------------------------------------------------------------------
 # Buld Testing
 if get_option('build_testing')
-  if get_option('build_codec')
+  if get_option('build_codec_apps')
     # Search openjpeg data needed for the tests
     # They could be found via git on the OpenJPEG GitHub code project
     # git clone https://github.com/uclouvain/openjpeg-data.git
