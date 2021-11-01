@@ -43,6 +43,24 @@
       "rdkafka:WITH_ZSTD=disabled"
     ]
   },
+  "sdl2": {
+    "debian_packages": [
+      "libwayland-dev",
+      "libx11-dev",
+      "libxcursor-dev",
+      "libxext-dev",
+      "libxi-dev",
+      "libxinerama-dev",
+      "libxkbcommon-dev",
+      "libxkbfile-dev",
+      "libxrandr-dev",
+      "libxt-dev",
+      "libxv-dev",
+      "libxxf86vm-dev",
+      "pkg-config",
+      "wayland-protocols"
+    ]
+  },
   "sfml": {
     "debian_packages": [
       "libgl-dev",

@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-  version : '2.0.12',
+  version : '2.0.16',
   license : 'zlib',
   default_options: [])
 
@@ -162,6 +162,13 @@ core_ldflags = []
 
 cdata.set('SDL_SENSOR_DUMMY', 1)
 
+# TODO:
+# Replace these rigid and limited assumptions with configurable
+# options and setup-time checks for dependencies, for the
+# corresponding "set_option" and "dep_options" found in
+# SDL2 cmake list:
+# https://github.com/libsdl-org/SDL/blob/main/CMakeLists.txt
+#
 if host_machine.system() == 'linux'
   cdata.set('HAVE_GCC_ATOMICS', 1)
   cdata.set('HAVE_GCC_SYNC_LOCK_TEST_AND_SET', 1)
