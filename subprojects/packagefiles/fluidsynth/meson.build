@@ -9,7 +9,13 @@ cc = meson.get_compiler('c')
 summary('Build type',     get_option('buildtype'), section : 'Build Summary')
 summary('Install prefix', get_option('prefix'),    section : 'Build Summary')
 
-# Is a shared library being built? Can "both" be handled somehow?
+# Due to symbol visibility issues, don't allow building 'both' library
+# types on MSVC
+if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
+  error('default_library=both not supported when compiling with MSVC')
+endif
+
+# Is a shared library being built?
 is_shared_lib = get_option('default_library') == 'shared'
 
 # Set global WIN32 define if windows
