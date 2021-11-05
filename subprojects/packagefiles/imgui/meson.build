@@ -1,5 +1,5 @@
 project('imgui', 'cpp',
-    version: '1.81',
+    version: '1.85',
     license: 'MIT',
 )
 
@@ -30,20 +30,28 @@ if dx12_dep.found()
     sources += 'backends/imgui_impl_dx12.cpp'
     dependencies += dx12_dep
 endif
-metal_dep = dependency('metal', required: get_option('metal'))
-if get_option('metal').enabled()
+metal_dep = dependency('appleframeworks', modules : 'metal', required: get_option('metal'))
+if metal_dep.found()
     sources += 'backends/imgui_impl_metal.mm'
     dependencies += metal_dep
 endif
-glew_dep = dependency('glew', required: get_option('opengl'))
-if glew_dep.found()
+libdl_dep = cpp.find_library('dl', required: get_option('opengl'))
+if libdl_dep.found()
     sources += 'backends/imgui_impl_opengl3.cpp'
-    dependencies += glew_dep
+    dependencies += libdl_dep
+endif
+sdl2_renderer_dep = dependency('sdl2', version: '>=2.0.17', required: get_option('sdl_renderer'))
+if sdl2_renderer_dep.found()
+    sources += 'backends/imgui_impl_sdlrenderer.cpp'
+    dependencies += sdl2_renderer_dep
 endif
 vulkan_dep = dependency('vulkan', required: get_option('vulkan'))
 if vulkan_dep.found()
     sources += 'backends/imgui_impl_vulkan.cpp'
     dependencies += vulkan_dep
+endif
+if cpp.has_header('webgpu/webgpu.h', required: get_option('webgpu'))
+    sources += 'backends/imgui_impl_wgpu.cpp'
 endif
 
 # platform backends
@@ -65,10 +73,11 @@ if get_option('win').enabled() or (get_option('win').auto() and target_machine.s
 endif
 
 # frameworks
-allegro5_dep = dependency('allegro5', required: get_option('allegro5'))
-if allegro5_dep.found()
+allegro5_dep = dependency('allegro-5', required: get_option('allegro5'))
+allegro5_primitives_dep = dependency('allegro_primitives-5', required: get_option('allegro5'))
+if allegro5_dep.found() and allegro5_primitives_dep.found()
     sources += 'backends/imgui_impl_allegro5.cpp'
-    dependencies += allegro5_dep
+    dependencies += [allegro5_dep, allegro5_primitives_dep]
 endif
 marmalade_dep = cpp.find_library('marmalade', required: get_option('marmalade'))
 if marmalade_dep.found()
