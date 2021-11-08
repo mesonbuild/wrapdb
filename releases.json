@@ -329,7 +329,11 @@
     ]
   },
   "google-benchmark": {
+    "dependency_names": [
+      "benchmark"
+    ],
     "versions": [
+      "1.6.0-1",
       "1.5.2-1",
       "1.4.1-1"
     ]
