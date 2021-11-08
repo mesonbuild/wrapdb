@@ -1,5 +1,5 @@
 project('benchmark', 'cpp',
-  version : '1.5.2',
+  version : '1.6.0',
   default_options : ['cpp_std=c++11'],
   license : 'Apache-2.0')
 
@@ -17,6 +17,7 @@ benchmark_sources = [
  'src/counter.cc',
  'src/csv_reporter.cc',
  'src/json_reporter.cc',
+ 'src/perf_counters.cc',
  'src/reporter.cc',
  'src/sleep.cc',
  'src/statistics.cc',
