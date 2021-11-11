@@ -365,6 +365,29 @@
       "1.0.2-1"
     ]
   },
+  "gstreamer-full": {
+    "dependency_names": [
+      "gstreamer-1.0",
+      "gstreamer-base-1.0",
+      "gstreamer-pbutils-1.0",
+      "gstreamer-rtsp-1.0",
+      "gstreamer-allocators-1.0",
+      "gstreamer-controller-1.0",
+      "gstreamer-plugins-base-1.0",
+      "gstreamer-sdp-1.0",
+      "gstreamer-app-1.0",
+      "gstreamer-fft-1.0",
+      "gstreamer-riff-1.0",
+      "gstreamer-tag-1.0",
+      "gstreamer-audio-1.0",
+      "gstreamer-net-1.0",
+      "gstreamer-rtp-1.0",
+      "gstreamer-video-1.0"
+    ],
+    "versions": [
+      "1.19.3-1"
+    ]
+  },
   "gtest": {
     "dependency_names": [
       "gtest",
