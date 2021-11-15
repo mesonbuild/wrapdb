@@ -1,4 +1,4 @@
-project('spdlog', 'cpp', version : '1.8.5', license: 'MIT',
+project('spdlog', 'cpp', version : '1.9.2', license: 'MIT',
         default_options : ['cpp_std=c++11'])
 
 inc = include_directories('include')
