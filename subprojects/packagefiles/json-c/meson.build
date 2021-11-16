@@ -1,5 +1,5 @@
 project('json-c', 'c',
-  version: '0.13.1',
+  version: '0.15',
   license: 'MIT',
   meson_version: '>=0.37',
   default_options: ['c_std=gnu99'],
@@ -62,7 +62,7 @@ libjson_c = library(meson.project_name(), json_config_h, config_h, sources,
   install: true,
 )
 
-json_c = declare_dependency(
+json_c_dep = declare_dependency(
   link_with: libjson_c,
   include_directories: include_directories('.'),
   dependencies: [math, threads],

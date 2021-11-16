@@ -93,16 +93,22 @@ if cc.get_id() == 'msvc'
 endif
 
 check_types = ['int', 'int64_t', 'long', 'long long', 'size_t']
+if cc.get_id() == 'msvc'
+  size = cc.sizeof('SSIZE_T', prefix: '#include <BaseTsd.h>')
+  conf.set('SIZEOF_SSIZE_T', size)
+else
+  check_types += 'ssize_t'
+endif
 foreach type : check_types
   size = cc.sizeof(type, prefix: '#include <stdint.h>')
   conf.set('SIZEOF_' + type.underscorify().to_upper(), size)
 endforeach
 
-if cc.compiles('int main() { int i, x = 0; i = __sync_add_and_fetch(&x,1); return x; }')
+if cc.links('int main() { int i, x = 0; i = __sync_add_and_fetch(&x,1); return x; }', name : 'atomic builtins')
   conf.set10('HAVE_ATOMIC_BUILTINS', true)
 endif
 
-if cc.compiles('__thread int x = 0; int main() { return 0; }')
+if cc.compiles('__thread int x = 0; int main() { return 0; }', name : '__thread')
   conf.set10('HAVE___THREAD', true)
 endif
 

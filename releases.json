@@ -488,7 +488,11 @@
   },
   "json-c": {
     "versions": [
+      "0.15-1",
       "0.13.1-1"
+    ],
+    "dependency_names": [
+      "json-c"
     ]
   },
   "jsoncpp": {
