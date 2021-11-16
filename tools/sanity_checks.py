@@ -168,7 +168,8 @@ class TestReleases(unittest.TestCase):
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
                             self.check_new_release(name)
-                            self.assertNotIn(name, self.skip)
+                            with self.subTest(f'If this works now, please remove it from skip_{platform.system().lower()}!'):
+                                self.assertNotIn(name, self.skip)
                             self.check_meson_version(name, ver, patch_path)
                     else:
                         with self.subTest(step='version is tagged'):
