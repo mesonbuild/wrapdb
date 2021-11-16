@@ -12,7 +12,7 @@
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
     "fuse", "gdbm", "google-snappy", "google-woff2",
-    "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit", "json-c",
+    "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit",
     "jsoncpp", "libexif", "libgpiod", "libjpeg-turbo", "liblbfgs", "liblzma",
     "libtomcrypt", "libuv", "libwebsockets",
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
