@@ -1,7 +1,7 @@
 project('json-c', 'c',
   version: '0.15',
   license: 'MIT',
-  meson_version: '>=0.37',
+  meson_version: '>=0.46',
   default_options: ['c_std=gnu99'],
 )
 
@@ -73,9 +73,8 @@ header_subdir = 'json-c'
 install_headers(public_headers, subdir: header_subdir)
 
 pkgconfig = import('pkgconfig')
-pkgconfig.generate(
+pkgconfig.generate(libjson_c,
   description: 'A JSON implementation in C',
-  libraries: libjson_c,
   version: meson.project_version(),
   filebase: meson.project_name(),
   name: meson.project_name(),
