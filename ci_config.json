@@ -54,6 +54,13 @@
       "rdkafka:WITH_ZSTD=disabled"
     ]
   },
+  "rtaudio": {
+    "debian_packages": [
+      "libpulse-dev",
+      "libasound2-dev",
+      "libjack-dev"
+    ]
+  },
   "sfml": {
     "debian_packages": [
       "libgl-dev",
