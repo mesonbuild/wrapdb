@@ -981,6 +981,14 @@
       "3.0.1-1"
     ]
   },
+  "rtaudio": {
+    "dependency_names": [
+      "rtaudio"
+    ],
+    "versions": [
+      "5.2.0-1"
+    ]
+  },
   "rxcpp": {
     "versions": [
       "4.1.0-1"
