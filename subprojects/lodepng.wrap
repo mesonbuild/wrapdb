@@ -1,0 +1,9 @@
+[wrap-file]
+directory = lodepng-8c6a9e30576f07bf470ad6f09458a2dcd7a6a84a
+source_url = https://github.com/lvandeve/lodepng/archive/8c6a9e30576f07bf470ad6f09458a2dcd7a6a84a.tar.gz
+source_filename = 8c6a9e30576f07bf470ad6f09458a2dcd7a6a84a.tar.gz
+source_hash = f45359be529f5f478ebeb3159859a8f49462df35866e227c12d1440f17451a82
+patch_directory = lodepng
+
+[provide]
+dependency_names = lodepng, lodepng_c

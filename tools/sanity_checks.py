@@ -206,8 +206,8 @@ class TestReleases(unittest.TestCase):
             version = segs[0] + segs[1] + '0' + segs[2]
         elif name == 're2':
             version = f'{version[:4]}-{version[4:6]}-{version[6:8]}'
-        elif name == 'netstring-c':
-            # There is no specific version for netstring-c
+        elif name in ['netstring-c', 'lodepng']:
+            # There is no specific version for these libraries
             return True
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
