@@ -1,7 +1,7 @@
 project('libjpeg-turbo', 'c', version : '2.1.0', license : 'bsd-like')
 
 pkg = import('pkgconfig')
-python = import('python').find_installation()
+python = find_program('python')
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()

@@ -36,7 +36,6 @@ project(
 )
 
 cpp = meson.get_compiler('cpp')
-py = import('python').find_installation()
 conf = configuration_data()
 pconf = configuration_data()
 dep_null = dependency('', required : false)
