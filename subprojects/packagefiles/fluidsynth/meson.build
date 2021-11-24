@@ -27,7 +27,7 @@ endif
 host_is_msys2 = false
 if host_machine.system() == 'windows'
   shell_cmd = find_program('sh', required : false, disabler: true)
-  host_is_msys2 = run_command('sh', '-c', '[ ! -z "$MSYSTEM" ] && [ "$MSYSTEM" != "MSYS" ] && exit 0; exit 1', check: false).returncode() == 0
+  host_is_msys2 = run_command(shell_cmd, '-c', '[ ! -z "$MSYSTEM" ] && [ "$MSYSTEM" != "MSYS" ] && exit 0; exit 1', check: false).returncode() == 0
 endif
 
 # config file
