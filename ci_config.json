@@ -13,7 +13,7 @@
     "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
     "fuse", "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit",
-    "jsoncpp", "libexif", "libgpiod", "libjpeg-turbo", "liblbfgs", "liblzma",
+    "jsoncpp", "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libuv", "libwebsockets",
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "pcre2", "protobuf", "protobuf-c", "pugixml",
