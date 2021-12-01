@@ -1,0 +1,9 @@
+[wrap-file]
+directory = cmph-2.0
+source_url = https://sourceforge.net/projects/cmph/files/cmph/cmph-2.0.tar.gz
+source_filename = cmph-2.0.tar.gz
+source_hash = ad6c9a75ff3da1fb1222cac0c1d9877f4f2366c5c61c92338c942314230cba76
+patch_directory = cmph
+
+[provide]
+cmph = cmph_dep

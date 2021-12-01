@@ -68,5 +68,10 @@
       "libudev-dev",
       "libxrandr-dev"
     ]
+  },
+  "cmph": {
+    "build_options": [
+      "cmph:build_tests=true"
+    ]
   }
 }
