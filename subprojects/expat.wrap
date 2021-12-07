@@ -5,3 +5,5 @@ source_filename = expat-2.2.9.tar.bz2
 source_hash = 1ea6965b15c2106b6bbe883397271c80dfa0331cdf821b2c319591b55eadc0a4
 patch_directory = expat
 
+[provide]
+expat = expat_dep

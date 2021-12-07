@@ -119,6 +119,8 @@ config_h = configure_file(
 )
 install_headers('lib/expat.h', 'lib/expat_external.h')
 
+expat_static_args = []
+
 if get_option('build_tests') or cc.get_id() == 'msvc'
   visibility = 'default'
 else
@@ -134,6 +136,7 @@ if cc.get_id() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language : ['c'])
   if get_option('default_library') == 'static'
     add_project_arguments('-DXML_STATIC', language : ['c'])
+    expat_static_args += ['-DXML_STATIC']
   endif
 endif
 if not ['windows', 'cygwin'].contains(host_machine.system())
@@ -172,6 +175,7 @@ libexpat = library(
 expat_dep = declare_dependency(
   link_with : libexpat,
   include_directories : include_directories('lib'),
+  compile_args: expat_static_args,
 )
 
 pkg = import('pkgconfig')
