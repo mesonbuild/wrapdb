@@ -85,11 +85,14 @@ class TestReleases(unittest.TestCase):
 
     def check_meson_version(self, name: str, version: str, patch_path: str, builddir: str = '_build'):
         with self.subTest(step="check_meson_version"):
-            with open(Path(builddir) / "meson-info/intro-projectinfo.json") as project_info_file:
-                project_info = json.load(project_info_file)
-                subproject, = [subproj for subproj in project_info["subprojects"] if subproj["name"] == name]
-                if subproject['version'] != 'undefined' and patch_path:
-                    self.assertEqual(subproject['version'], version)
+            json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
+            # don't check if the build was skipped
+            if json_file.exists():
+                with open(json_file) as project_info_file:
+                    project_info = json.load(project_info_file)
+                    subproject, = [subproj for subproj in project_info["subprojects"] if subproj["name"] == name]
+                    if subproject['version'] != 'undefined' and patch_path:
+                        self.assertEqual(subproject['version'], version)
 
     def test_releases(self):
         for name, info in self.releases.items():
