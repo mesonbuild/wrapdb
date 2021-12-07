@@ -1227,6 +1227,14 @@
       "1.2.158-1"
     ]
   },
+  "wayland-protocols": {
+    "dependency_names": [
+      "wayland-protocols"
+    ],
+    "versions": [
+        "1.24-1"
+    ]
+  },
   "wren": {
     "dependency_names": [
       "wren"

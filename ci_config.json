@@ -68,5 +68,12 @@
       "libudev-dev",
       "libxrandr-dev"
     ]
+  },
+  "wayland-protocols": {
+    "linux_only": true,
+    "debian_packages": [
+      "libwayland-bin",
+      "libwayland-dev"
+    ]
   }
 }
