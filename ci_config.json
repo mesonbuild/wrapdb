@@ -8,7 +8,7 @@
     "protobuf-c", "pugixml", "quazip", "sdl2", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
-  "skip_windows":[
+  "skip_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
     "fuse", "gdbm", "google-snappy", "google-woff2",
