@@ -1067,6 +1067,14 @@
       "2.5.1-1"
     ]
   },
+  "slirp": {
+    "dependency_names": [
+      "slirp"
+    ],
+    "versions": [
+      "4.6.1-1"
+    ]
+  },
   "spdlog": {
     "dependency_names": [
       "spdlog"
