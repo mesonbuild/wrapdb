@@ -69,6 +69,13 @@
       "libxrandr-dev"
     ]
   },
+  "slirp": {
+    "_comment": ["- Limited to linux_only pending the addition of other POSIX-ish environments to the test matrix."],
+    "linux_only": true,
+    "build_options": [
+      "glib:tests=false"
+    ]
+  },
   "wayland-protocols": {
     "linux_only": true,
     "debian_packages": [
