@@ -4,7 +4,7 @@ project('frozen',
   license : 'Apache-2.0',
 )
 
-install_headers([
+install_headers(
   'include/frozen/algorithm.h',
   'include/frozen/map.h',
   'include/frozen/random.h',
@@ -12,6 +12,10 @@ install_headers([
   'include/frozen/string.h',
   'include/frozen/unordered_map.h',
   'include/frozen/unordered_set.h',
+  subdir : 'frozen',
+)
+
+install_headers(
   'include/frozen/bits/algorithms.h',
   'include/frozen/bits/basic_types.h',
   'include/frozen/bits/constexpr_assert.h',
@@ -20,7 +24,8 @@ install_headers([
   'include/frozen/bits/exceptions.h',
   'include/frozen/bits/pmh.h',
   'include/frozen/bits/version.h',
-])
+  subdir : 'frozen/bits',
+)
 
 pkgc = import('pkgconfig')
 pkgc.generate(name: 'frozen',
