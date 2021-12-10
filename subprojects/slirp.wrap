@@ -6,4 +6,4 @@ source_hash = 69ad4df0123742a29cc783b35de34771ed74d085482470df6313b6abeb799b11
 
 # the libslirp project uses a pkg-config name of slirp instead of libslirp
 [provide]
-slirp = slirp_dep
+slirp = libslirp_dep
