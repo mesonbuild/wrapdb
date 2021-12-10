@@ -1,5 +1,5 @@
 project('fluidsynth', 'c', 'cpp',
-        version : '2.2.3',
+        version : '2.2.4',
         license : 'LGPL-2.1-or-later',
         default_options : ['b_ndebug=if-release'],
         meson_version : '>= 0.53.0')
