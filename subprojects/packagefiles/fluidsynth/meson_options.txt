@@ -6,6 +6,9 @@ option('enable-floats', type : 'boolean', value : false,
 option('enable-threads', type : 'boolean', value : true,
        description : 'enable multi-threading support (such as parallel voice synthesis)')
 
+option('openmp', type : 'feature', value : 'auto',
+       description : 'enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)')
+
 # TODO enable-fpe-check   'enable Floating Point Exception checks and debug messages'
 # TODO enable-portaudio   'compile PortAudio support'
 # TODO enable-profiling   'profile the dsp code'
