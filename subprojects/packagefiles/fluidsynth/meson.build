@@ -48,7 +48,7 @@ if host_machine.system() == 'darwin'
 endif
 
 if host_machine.endian() == 'big'
-  conf_data.set('WORDS_BIGENDIAN', 1)
+  conf.set('WORDS_BIGENDIAN', 1)
 endif
 
 if get_option('enable-floats')
