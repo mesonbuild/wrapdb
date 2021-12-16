@@ -1,8 +1,8 @@
 [wrap-file]
-directory = htslib-1.11
-source_url = https://github.com/samtools/htslib/archive/1.11.tar.gz
-source_filename = 1.11.tar.gz
-source_hash = 9977f388eb28191bd57e47df5a4b7d61b1ccfe97e9717d12cd283e6faf2e1e34
+directory = htslib-1.14
+source_url = https://github.com/samtools/htslib/releases/download/1.14/htslib-1.14.tar.bz2
+source_filename = htslib-1.14.tar.bz2
+source_hash = ed221b8f52f4812f810eebe0cc56cd8355a5c9d21c62d142ac05ad0da147935f
 patch_directory = htslib
 
 [provide]
