@@ -1,7 +1,7 @@
 project(
   'htslib',
   'c',
-  version : '1.11',
+  version : '1.14',
   default_options : [
     'buildtype=release',
     # -Wall produces way
@@ -10,7 +10,7 @@ project(
     'c_std=c99',
     'b_ndebug=if-release'],
   license : 'MIT',
-  meson_version : '>= 0.46.0')
+  meson_version : '>= 0.48.0')
 
 # htslib uses
 #   - usleep()
@@ -39,24 +39,29 @@ htslib_sources = files([
   'cram/cram_external.c',
   'cram/cram_index.c',
   'cram/cram_io.c',
-  'cram/cram_samtools.c',
   'cram/cram_stats.c',
   'cram/mFILE.c',
   'cram/open_trace_file.c',
   'cram/pooled_alloc.c',
-  'cram/rANS_static.c',
   'cram/string_alloc.c',
+  'htscodecs/htscodecs/arith_dynamic.c',
+  'htscodecs/htscodecs/fqzcomp_qual.c',
+  'htscodecs/htscodecs/htscodecs.c',
+  'htscodecs/htscodecs/pack.c',
+  'htscodecs/htscodecs/rANS_static4x16pr.c',
+  'htscodecs/htscodecs/rANS_static.c',
+  'htscodecs/htscodecs/rle.c',
+  'htscodecs/htscodecs/tokenise_name3.c',
   'bcf_sr_sort.c',
   'bgzf.c',
   'errmod.c',
   'faidx.c',
-  'hfile.c',
   'header.c',
-  'hfile_net.c',
+  'hfile.c',
   'hts.c',
+  'hts_expr.c',
   'hts_os.c',
   'kfunc.c',
-  'knetfile.c',
   'kstring.c',
   'md5.c',
   'multipart.c',
@@ -80,6 +85,15 @@ htslib_config_h = configure_file(
   output : 'config.h',
   configuration : htslib_config_h_config)
 
+htslib_config_vars_h_config = configuration_data()
+htslib_config_vars_h_config.set('HTS_CC', '""')
+htslib_config_vars_h_config.set('HTS_CFLAGS', '""')
+htslib_config_vars_h_config.set('HTS_LDFLAGS', '""')
+htslib_config_vars_h_config.set('HTS_CPPFLAGS', '""')
+htslib_config_vars_h = configure_file(
+  output : 'config_vars.h',
+  configuration : htslib_config_vars_h_config)
+
 htslib_version_h_config = configuration_data()
 htslib_version_h_config.set_quoted('HTS_VERSION_TEXT', meson.project_version())
 htslib_version_h = configure_file(
@@ -94,6 +108,7 @@ htslib_lib_install = (not meson.is_subproject()) or (get_option('default_library
 htslib_lib = library(
   'hts', [
     htslib_config_h,
+    htslib_config_vars_h,
     htslib_version_h,
     htslib_sources],
   soversion : 3,
@@ -103,6 +118,7 @@ htslib_lib = library(
     libm_dep,
     thread_dep,
     zlib_dep],
+  gnu_symbol_visibility : 'hidden',
   override_options : [
     'warning_level=0',
     'c_std=c99'])
@@ -115,3 +131,12 @@ htslib_dep = declare_dependency(
   include_directories : htslib_incdir,
   link_with : htslib_lib,
   version : meson.project_version())
+
+#########
+# tests #
+#########
+
+if get_option('tests')
+  htslib_source_root = meson.current_source_dir()
+  subdir('test')
+endif

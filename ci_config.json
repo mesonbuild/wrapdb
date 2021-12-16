@@ -12,7 +12,7 @@
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
     "fuse", "gdbm", "google-snappy", "google-woff2",
-    "hinnant-date", "htslib", "icu", "imgui-sfml", "inih", "jbigkit",
+    "hinnant-date", "icu", "imgui-sfml", "inih", "jbigkit",
     "jsoncpp", "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libuv", "libwebsockets",
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
@@ -30,6 +30,13 @@
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
     "build_options": [
       "glib:tests=false"
+    ]
+  },
+  "htslib": {
+    "_comment": ["- relies on lots of POSIX interfaces"],
+    "linux_only": true,
+    "build_options": [
+      "htslib:tests=true"
     ]
   },
   "imgui": {
