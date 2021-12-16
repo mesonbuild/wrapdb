@@ -76,6 +76,12 @@
       "glib:tests=false"
     ]
   },
+  "wayland": {
+    "linux_only": true,
+    "build_options": [
+      "wayland:documentation=false"
+    ]
+  },
   "wayland-protocols": {
     "linux_only": true,
     "debian_packages": [

@@ -1,0 +1,11 @@
+[wrap-file]
+directory = wayland-1.20.0
+source_url = https://wayland.freedesktop.org/releases/wayland-1.20.0.tar.xz
+source_filename = wayland-1.20.0.tar.xz
+source_hash = b8a034154c7059772e0fdbd27dbfcda6c732df29cae56a82274f6ec5d7cd8725
+
+[provide]
+wayland-cursor = wayland_cursor_dep
+wayland-egl = wayland_egl_dep
+wayland-server = wayland_server_dep
+wayland-client = wayland_client_dep

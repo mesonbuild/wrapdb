@@ -1246,6 +1246,17 @@
       "1.2.158-1"
     ]
   },
+  "wayland": {
+    "dependency_names": [
+      "wayland-client",
+      "wayland-cursor",
+      "wayland-egl",
+      "wayland-server"
+    ],
+    "versions": [
+      "1.20.0-1"
+    ]
+  },
   "wayland-protocols": {
     "dependency_names": [
       "wayland-protocols"
