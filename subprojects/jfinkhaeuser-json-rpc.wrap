@@ -1,0 +1,9 @@
+[wrap-file]
+directory = jfinkhaeuser-json-rpc-v0.1.0
+source_url = https://codeberg.org/jfinkhaeuser/json-rpc/archive/v0.1.0.tar.gz
+source_filename = jfinkhaeuser-json-rpc-v0.1.0.tar.gz
+source_hash = c185bf37686b055fc38c0be83238673e5ebaf3a9fe7f2bf7a9432775ae628a65
+patch_directory = jfinkhaeuser-json-rpc
+
+[provide]
+json_rpc = json_rpc_dep
