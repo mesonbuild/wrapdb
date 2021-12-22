@@ -490,6 +490,14 @@
       "pbmtojbg85"
     ]
   },
+  "jfinkhaeuser-json-rpc": {
+    "versions": [
+      "0.1.1"
+    ],
+    "dependency_names": [
+      "json_rpc"
+    ]
+  },
   "json": {
     "versions": [
       "3.2.0-1",
