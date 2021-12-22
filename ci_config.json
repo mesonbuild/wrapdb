@@ -50,7 +50,8 @@
   "jfinkhaeuser-json-rpc": {
     "build_options": [
       "cpp_std=c++17"
-    ]
+    ],
+    "fatal_warnings": false
   },
   "liburing": {
     "linux_only": true
