@@ -1,9 +1,8 @@
 [wrap-file]
-directory = jfinkhaeuser-json-rpc-v0.1.0
-source_url = https://codeberg.org/jfinkhaeuser/json-rpc/archive/v0.1.0.tar.gz
-source_filename = jfinkhaeuser-json-rpc-v0.1.0.tar.gz
-source_hash = c185bf37686b055fc38c0be83238673e5ebaf3a9fe7f2bf7a9432775ae628a65
-patch_directory = jfinkhaeuser-json-rpc
+directory = json_rpc-0.1.1
+source_url = https://codeberg.org/attachments/b5c02c12-f656-4530-8b09-41e81f8cdad1
+source_filename = json_rpc-0.1.1.tar.xz
+source_hash = 749be0c27f12b88171212609c2f93c5414b97825b8c460860f8f43c82ccf5f42
 
 [provide]
 json_rpc = json_rpc_dep
