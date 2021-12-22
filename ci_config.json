@@ -47,6 +47,11 @@
       "libvulkan-dev"
     ]
   },
+  "jfinkhaeuser-json-rpc": {
+    "build_options": [
+      "cpp_std=c++17"
+    ]
+  },
   "liburing": {
     "linux_only": true
   },
