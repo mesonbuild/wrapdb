@@ -18,7 +18,8 @@
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "pcre2", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
-    "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
+    "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd",
+    "jfinkhaeuser-json-rpc"
   ],
 
   "fluidsynth": {
