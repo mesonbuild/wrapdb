@@ -1,19 +1,19 @@
-project('pcre2', 'c', version: '10.23', license: 'BSD-3')
+project('pcre2', 'c', version: '10.39', license: 'BSD-3')
 
 c_compiler = meson.get_compiler('c')
 
 pcre2_h = configure_file(input : 'src/pcre2.h.generic',
   output : 'pcre2.h',
-  configuration : configuration_data())
+  copy: true)
 
 chartables = configure_file(input : 'src/pcre2_chartables.c.dist',
   output : 'pcre2_chartables.c',
-  configuration : configuration_data())
+  copy: true)
 
 
 config_h = configure_file(input : 'src/config.h.generic',
   output : 'config.h',
-  configuration : configuration_data())
+  copy: true)
 
 sources = [
   'src/pcre2_auto_possess.c',
@@ -22,8 +22,10 @@ sources = [
   'src/pcre2_compile.c',
   'src/pcre2_config.c',
   'src/pcre2_context.c',
+  'src/pcre2_convert.c',
   'src/pcre2_dfa_match.c',
   'src/pcre2_error.c',
+  'src/pcre2_extuni.c',
   'src/pcre2_find_bracket.c',
   'src/pcre2_jit_compile.c',
   'src/pcre2_maketables.c',
@@ -32,6 +34,7 @@ sources = [
   'src/pcre2_newline.c',
   'src/pcre2_ord2utf.c',
   'src/pcre2_pattern_info.c',
+  'src/pcre2_script_run.c',
   'src/pcre2_serialize.c',
   'src/pcre2_string_utils.c',
   'src/pcre2_study.c',

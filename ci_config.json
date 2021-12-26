@@ -4,7 +4,7 @@
                "Please remove projects from those lists once they are updated."],
   "skip_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
-    "libtomcrypt", "libxmlpp", "openal-soft", "openh264", "pcre2",
+    "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
     "protobuf-c", "pugixml", "quazip", "sdl2", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
@@ -16,7 +16,7 @@
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libuv", "libwebsockets",
     "libxml2", "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
-    "nng", "openh264", "openssl", "pcre2", "protobuf", "protobuf-c", "pugixml",
+    "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],

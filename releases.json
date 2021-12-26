@@ -920,7 +920,14 @@
     ]
   },
   "pcre2": {
+    "dependency_names": [
+      "libpcre2-8",
+      "libpcre2-16",
+      "libpcre2-32",
+      "libpcre2-posix"
+    ],
     "versions": [
+      "10.39-1",
       "10.23-1"
     ]
   },
