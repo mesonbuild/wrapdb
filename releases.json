@@ -510,7 +510,11 @@
     ]
   },
   "jsoncpp": {
+    "dependency_names": [
+      "jsoncpp"
+    ],
     "versions": [
+      "1.9.5-1",
       "1.8.4-1"
     ]
   },
