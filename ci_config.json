@@ -10,7 +10,7 @@
   ],
   "skip_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
-    "emilk-loguru", "enet", "facil", "flatbuffers", "freetype2",
+    "emilk-loguru", "enet", "facil", "flatbuffers",
     "fuse", "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "icu", "imgui-sfml", "inih", "jbigkit",
     "jsoncpp", "libexif", "libgpiod", "liblbfgs", "liblzma",
