@@ -4,28 +4,29 @@ project('liblzma', 'c', version : '5.2.1', license : 'pd/lgpl2/gpl2/gpl3')
 cc = meson.get_compiler('c')
 cdata = configuration_data()
 
-check_headers = [['byteswap.h', 'HAVE_BYTESWAP_H'],
-  ['CommonCrypto/CommonDigest.h', 'HAVE_COMMONCRYPTO_COMMONDIGEST_H'],
-  ['dlfcn.h', 'HAVE_DLFCN_H'],
-  ['fcntlh', 'HAVE_FCNTL_H'],
-  ['getopt.h', 'HAVE_GETOPT_H'],
-  ['immintrin.h', 'HAVE_IMMINTRIN_H'],
-  ['inttypes.h', 'HAVE_INTTYPES_H'],
-  ['limits.h', 'HAVE_LIMITS_H'],
-  ['memory.h', 'HAVE_MEMORY_H'],
-  ['minix/sha2.h', 'HAVE_MINIX_SHA2_H'],
-  ['sha256.h', 'HAVE_SHA256_H'],
-  ['sha2.h', 'HAVE_SHA_2_H'],
-  ['stdint.h', 'HAVE_STDINT_H'],
-  ['stdlib.h', 'HAVE_STDLIB_H'],
-  ['strings.h', 'HAVE_STRINGS_H'],
-  ['sys/byteorder.h', 'HAVE_SYS_BYTEORDER_H'],
-  ['sys/endian.h', 'HAVE_SYS_ENDIAN_H'],
-  ['sys/param.h', 'HAVE_SYS_PARAM_H'],
-  ['sys/stat.h', 'HAVE_SYS_STAT_H'],
-  ['sys/time.h', 'HAVE_SYS_TIME_H'],
-  ['sys/types.h', 'HAVE_SYS_TYPES_H'],
-  ['unistd.h', 'HAVE_UNISTD_H'],
+check_headers = [
+  'byteswap.h',
+  'CommonCrypto/CommonDigest.h',
+  'dlfcn.h',
+  'fcntlh',
+  'getopt.h',
+  'immintrin.h',
+  'inttypes.h',
+  'limits.h',
+  'memory.h',
+  'minix/sha2.h',
+  'sha256.h',
+  'sha2.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'sys/byteorder.h',
+  'sys/endian.h',
+  'sys/param.h',
+  'sys/stat.h',
+  'sys/time.h',
+  'sys/types.h',
+  'unistd.h',
 ]
 
 check_coders = [['decoder_arm', 'HAVE_DECODER_ARM'],
@@ -47,8 +48,8 @@ check_coders = [['decoder_arm', 'HAVE_DECODER_ARM'],
 ]
 
 foreach i : check_headers
-  if cc.has_header(i.get(0))
-    cdata.set(i.get(1), 1)
+  if cc.has_header(i)
+    cdata.set('HAVE_' + i.underscorify().to_upper(), 1)
   endif
 endforeach
 
@@ -78,4 +79,3 @@ configure_file(input : 'config.h.meson',
 
 confinc = include_directories('.')
 subdir('src')
-

@@ -1,32 +1,32 @@
 cdata = configuration_data()
 
 check_headers = [
-  ['HAVE_BITS_TYPE_TRAITS_H', 'bits/type/traits.h'],
-  ['HAVE_BZLIB_H', 'bzlib.h'],
-  ['HAVE_DIRENT_H', 'dirent.h'],
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_EDITLINE_READLINE_H', 'editline/readline.h'],
-  ['HAVE_EDIT_READLINE_READLINE_H', 'edit/readline/readline.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_LIMITS_H', 'limits.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_READLINE_HISTORY_H', 'readline/history.h'],
-  ['HAVE_READLINE_READLINE_H', 'readline/readline.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_TYPE_TRAITS_H', 'type/traits.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-  ['HAVE_WINDOWS_H', 'windows.h'],
-  ['HAVE_ZLIB_H', 'zlib.h'],
+  'bits/type/traits.h',
+  'bzlib.h',
+  'dirent.h',
+  'dlfcn.h',
+  'editline/readline.h',
+  'edit/readline/readline.h',
+  'inttypes.h',
+  'limits.h',
+  'memory.h',
+  'readline/history.h',
+  'readline/readline.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'type/traits.h',
+  'unistd.h',
+  'windows.h',
+  'zlib.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 
@@ -74,4 +74,3 @@ cdata.set('SUPPORT_UTF', 1)
 configure_file(input : 'config.h.meson',
   output : 'config.h',
   configuration : cdata)
-

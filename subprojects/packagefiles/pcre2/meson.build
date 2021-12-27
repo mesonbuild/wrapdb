@@ -46,26 +46,26 @@ sources = [
 includes = [include_directories('.'), include_directories('src')]
 
 check_headers = [
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_BZLIB_H', 'bzlib.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_SYS_WAIT_H', 'sys/wait.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_DIRENT_H', 'dirent.h'],
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_LIMITS_H', 'limits.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_WINDOWS_H', 'windows.h'],
-  ['HAVE_UNISTD_H', 'unistd.h']
+  'inttypes.h',
+  'bzlib.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'sys/wait.h',
+  'inttypes.h',
+  'dirent.h',
+  'dlfcn.h',
+  'limits.h',
+  'stdint.h',
+  'stdlib.h',
+  'string.h',
+  'windows.h',
+  'unistd.h'
 ]
 
 config_h_defs = []
 foreach h : check_headers
-  if c_compiler.has_header(h.get(1))
-    config_h_defs += ['-D' + h.get(0)]
+  if c_compiler.has_header(h)
+    config_h_defs += ['-DHAVE_' + h.underscorify().to_upper(]
   endif
 endforeach
 

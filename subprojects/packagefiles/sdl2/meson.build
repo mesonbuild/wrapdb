@@ -22,32 +22,32 @@ endif
 cc = meson.get_compiler('c')
 cdata = configuration_data()
 check_headers = [
-  ['HAVE_ALLOCA_H', 'alloca.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_STDIO_H', 'stdio.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STDARG_H', 'stdarg.h'],
-  ['HAVE_MALLOC_H', 'malloc.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_CTYPE_H', 'ctype.h'],
-  ['HAVE_MATH_H', 'math.h'],
-  ['HAVE_ICONV_H', 'iconv.h'],
-  ['HAVE_SIGNAL_H', 'signal.h'],
-  ['HAVE_ALTIVEC_H', 'altivec.h'],
-  ['HAVE_PTHREAD_NP_H', 'pthread/np.h'],
-  ['HAVE_LIBUDEV_H', 'libudev.h'],
-  ['HAVE_DBUS_DBUS_H', 'dbus/dbus.h'],
-  ['HAVE_STDARG_H', 'stdarg.h'],
-  ['HAVE_STDDEF_H', 'stddef.h'],
+  'alloca.h',
+  'sys/types.h',
+  'stdio.h',
+  'stdlib.h',
+  'stdarg.h',
+  'malloc.h',
+  'memory.h',
+  'string.h',
+  'strings.h',
+  'inttypes.h',
+  'stdint.h',
+  'ctype.h',
+  'math.h',
+  'iconv.h',
+  'signal.h',
+  'altivec.h',
+  'pthread/np.h',
+  'libudev.h',
+  'dbus/dbus.h',
+  'stdarg.h',
+  'stddef.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 

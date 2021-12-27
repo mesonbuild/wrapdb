@@ -10,25 +10,25 @@ m_dep = cc.find_library('m', required: false)
 cdata = configuration_data()
 
 check_headers = [
-  ['HAVE_BYTESWAP_H', 'byteswap.h'],
-  ['HAVE_CPUID_H', 'cpuid.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_IOCTL_H', 'sys/ioctl.h'],
-  ['HAVE_SYS_PARAM_H', 'sys/param.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_TERMIOS_H', 'termios.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-  ['HAVE_X86INTRIN_H', 'x86intrin.h'],
+  'byteswap.h',
+  'cpuid.h',
+  'inttypes.h',
+  'memory.h',
+  'stdint.h',
+  'stdlib.h',
+  'string.h',
+  'sys/ioctl.h',
+  'sys/param.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'termios.h',
+  'unistd.h',
+  'x86intrin.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 

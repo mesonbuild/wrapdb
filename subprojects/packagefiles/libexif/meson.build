@@ -20,21 +20,21 @@ foreach f : check_functions
 endforeach
 
 check_headers = [
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
+  'dlfcn.h',
+  'inttypes.h',
+  'memory.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'unistd.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 

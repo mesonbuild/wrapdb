@@ -25,7 +25,7 @@ else
   # Detect type size assuming 8-bit chars
   cdata.set('TIFF_INT8_T', 'char')
   cdata.set('TIFF_UINT8_T', 'unsigned char')
-  
+
   compiler_sizeofs = {
     'short'    : [cc.sizeof('short')    ,'h' ],
     'int'      : [cc.sizeof('int')      ,''  ],
@@ -43,7 +43,7 @@ else
     'TIFF_UINT32' : 4,
     'TIFF_UINT64' : 8,
   }
-  
+
   foreach tiff_type, target_size: signed_tiff_types_sizes
     foreach type_name, infos: compiler_sizeofs
       type_size   = infos[0]
@@ -55,7 +55,7 @@ else
       endif
     endforeach
   endforeach
-  
+
   foreach tiff_type, target_size: unsigned_tiff_types_sizes
     foreach type_name, infos: compiler_sizeofs
       type_size   = infos[0]
@@ -70,32 +70,32 @@ else
 endif
 
 check_headers = [
-  ['HAVE_ASSERT_H', 'assert.h'],
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_FCNTL_H', 'fcntl.h'],
-  ['HAVE_GLUT_GLUT_H', 'glut/glut.h'],
-  ['HAVE_GL_GLUT_H', 'gl/glut.h'],
-  ['HAVE_GL_GLU_H', 'gl/glu.h'],
-  ['HAVE_GL_GL_H', 'gl/gl.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_IO_H', 'io.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_OPENGL_GLU_H', 'opengl/glu.h'],
-  ['HAVE_OPENGL_GL_H', 'opengl/gl.h'],
-  ['HAVE_SEARCH_H', 'search.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-  ['HAVE_WINDOWS_H', 'windows.h'],
+  'assert.h',
+  'dlfcn.h',
+  'fcntl.h',
+  'glut/glut.h',
+  'gl/glut.h',
+  'gl/glu.h',
+  'gl/gl.h',
+  'inttypes.h',
+  'io.h',
+  'memory.h',
+  'opengl/glu.h',
+  'opengl/gl.h',
+  'search.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'unistd.h',
+  'windows.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 
@@ -141,4 +141,3 @@ subdir('libtiff')
 
 libtiff4_dep = declare_dependency(include_directories: 'libtiff',
   link_with: tiff4_lib)
-

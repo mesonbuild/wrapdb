@@ -34,33 +34,33 @@ endif
 
 ###############################################################################
 check_headers = [
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_ERRNO_H', 'errno.h'],
-  ['HAVE_FCNTL_H', 'fcntl.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_LIMITS_H', 'limits.h'],
-  ['HAVE_LOCALE_H', 'locale.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_REGEX_H', 'regex.h'],
-  ['HAVE_SIGNAL_H', 'signal.h'],
-  ['HAVE_STDARG_H', 'stdarg.h'],
-  ['HAVE_STDDEF_H', 'stddef.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TIME_H', 'sys/time.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_SYS_WAIT_H', 'sys/wait.h'],
-  ['HAVE_TIME_H', 'time.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-  ['HAVE_VARARGS_H', 'varargs.h'],
+  'dlfcn.h',
+  'errno.h',
+  'fcntl.h',
+  'inttypes.h',
+  'limits.h',
+  'locale.h',
+  'memory.h',
+  'regex.h',
+  'signal.h',
+  'stdarg.h',
+  'stddef.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/stat.h',
+  'sys/time.h',
+  'sys/types.h',
+  'sys/wait.h',
+  'time.h',
+  'unistd.h',
+  'varargs.h',
 ]
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 

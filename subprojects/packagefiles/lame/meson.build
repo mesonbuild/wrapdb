@@ -10,34 +10,34 @@ build_decoder = get_option('decoder')
 
 cdata = configuration_data()
 check_headers = [
-  ['HAVE_CTYPE_H', 'ctype.h'],
-  ['HAVE_ERRNO_H', 'errno.h'],
-  ['HAVE_FCNTL_H', 'fcntl.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_LIMITS_H', 'limits.h'],
+  'ctype.h',
+  'errno.h',
+  'fcntl.h',
+  'inttypes.h',
+  'limits.h',
   # used by misc/*.c which we don't build right now
-  #['HAVE_LINUX_SOUNDCARD_H', 'linux/soundcard.h'],
-  #['HAVE_SYS_SOUNDCARD_H', 'sys/soundcard.h'],
-  ['HAVE_STDARG_H', 'stdarg.h'],
-  ['HAVE_STDDEF_H', 'stddef.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDIO_H', 'stdio.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_XMMINTRIN_H', 'xmmintrin.h'],
+  #'linux/soundcard.h',
+  #'sys/soundcard.h',
+  'stdarg.h',
+  'stddef.h',
+  'stdint.h',
+  'stdio.h',
+  'stdlib.h',
+  'string.h',
+  'xmmintrin.h',
 ]
 
 if build_tools
   check_headers += [
-    ['HAVE_NCURSES_TERMCAP_H', 'ncurses/termcap.h'],
-    ['HAVE_TERMCAP_H', 'termcap.h'],
-    ['HAVE_UNISTD_H', 'unistd.h'],
+    'ncurses/termcap.h',
+    'termcap.h',
+    'unistd.h',
   ]
 endif
 
 foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
+  if cc.has_header(h)
+    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
 
