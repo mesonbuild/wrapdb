@@ -34,7 +34,7 @@ checked_headers = [
   ['ieeefp.h', 'HAVE_IEEEFP_H'],
   ['ieeefp.h', 'HAVE_IEEEFP_H'],
   ['inttypes.h', 'HAVE_INTTYPES_H'],
-  ['ip_class.h', 'HAVE_FP_CLASS_H'],
+  ['fp_class.h', 'HAVE_FP_CLASS_H'],
   ['limits.h', 'HAVE_LIMITS_H'],
   ['lzma.h', 'HAVE_LZMA_H'],
   ['malloc.h', 'HAVE_MALLOC_H'],
