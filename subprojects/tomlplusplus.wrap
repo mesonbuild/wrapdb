@@ -1,0 +1,9 @@
+[wrap-file]
+directory = tomlplusplus-2.5.0
+
+source_url = https://github.com/marzer/tomlplusplus/archive/v2.5.0.tar.gz
+source_filename = tomlplusplus-2.5.0.tar.gz
+source_hash = 2e246ee126cfb7bd68edd7285d5bb5c8c5296121ce809306ee71cfd6127c76a6
+
+[provide]
+tomlplusplus = tomlplusplus_dep
