@@ -868,6 +868,14 @@
       "1.21.0-1"
     ]
   },
+  "opencl-headers": {
+    "dependency_names": [
+      "openclheaders"
+    ],
+    "versions": [
+      "2021.06.30-1"
+    ]
+  },
   "openh264": {
     "versions": [
       "1.7.0-1"
