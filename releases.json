@@ -689,6 +689,14 @@
       "3.0.1-1"
     ]
   },
+  "libyaml": {
+    "dependency_names": [
+      "yaml-0.1"
+    ],
+    "versions": [
+      "0.2.5-1"
+    ]
+  },
   "lua": {
     "dependency_names": [
       "lua-5.4"
