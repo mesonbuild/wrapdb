@@ -1,0 +1,10 @@
+[wrap-file]
+directory = yaml-0.2.5
+source_url = https://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz
+source_filename = yaml-0.2.5.tar.gz
+source_hash = c642ae9b75fee120b2d96c712538bd2cf283228d2337df2cf2988e3c02678ef4
+patch_directory = libyaml
+
+[provide]
+yaml-0.1 = yaml_dep
+
