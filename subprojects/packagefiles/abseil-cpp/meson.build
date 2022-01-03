@@ -25,6 +25,10 @@ if cpp.get_id() == 'msvc'
   flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
 endif
 
+if cpp.get_id() == 'clang'
+  flags += ['-Wno-gcc-compat']
+endif
+
 add_project_arguments(flags, language: 'cpp')
 
 libatomic = dependency('', required: false)
