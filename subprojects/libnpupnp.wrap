@@ -1,0 +1,10 @@
+[wrap-file]
+directory = libnpupnp-4.2.1
+source_url = https://www.lesbonscomptes.com/upmpdcli/downloads/libnpupnp-4.2.1.tar.gz
+source_filename = libnpupnp-4.2.1.tar.gz
+source_hash = e0e59eb2d3d024e827050428e0e7eb228355912a38c85eb30bfeb2f0926eca4c
+patch_directory = libnpupnp
+
+[provide]
+libnpupnp = libnpupnp_dep
+
