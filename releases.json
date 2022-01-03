@@ -641,6 +641,14 @@
       "1.6.3-1"
     ]
   },
+  "libnpupnp": {
+    "dependency_names": [
+      "libnpupnp"
+    ],
+    "versions": [
+      "4.2.1-1"
+    ]
+  },
   "libopenjp2": {
     "dependency_names": [
       "libopenjp2"

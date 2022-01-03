@@ -57,6 +57,14 @@
     "_comment": ["- upstream does not support building with MSVC"],
     "linux_only": true
   },
+  "libnpupnp": {
+    "debian_packages": [
+      "libcurl4-gnutls-dev",
+      "libmicrohttpd-dev"
+    ],
+    "_comment": ["libmicrohttpd is not available with MSVC CI"],
+    "linux_only": true
+  },
   "liburing": {
     "linux_only": true
   },
