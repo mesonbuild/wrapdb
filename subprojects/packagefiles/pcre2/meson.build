@@ -68,7 +68,7 @@ check_headers = [
 config_h_defs = []
 foreach h : check_headers
   if c_compiler.has_header(h)
-    config_h_defs += ['-DHAVE_' + h.underscorify().to_upper(]
+    config_h_defs += ['-DHAVE_' + h.underscorify().to_upper()]
   endif
 endforeach
 
