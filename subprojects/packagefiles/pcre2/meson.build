@@ -147,10 +147,16 @@ pkg.generate(libraries : pcre2_32_lib,
 #### tests
 
 if not meson.is_cross_build() # wine wrappers are not bat-friendly, this would need better testing
+  link_args = []
+  if host_machine.system() == 'windows'
+    link_args += '/STACK:2500000'
+  endif
+
   pcre2test = executable('pcre2test', ['src/pcre2test.c'],
     include_directories: includes,
     link_with: [pcre2_8_lib, pcre2_posix_lib, pcre2_16_lib, pcre2_32_lib],
-    c_args: config_h_defs + ['-DHAVE_CONFIG_H'])
+    c_args: config_h_defs + ['-DHAVE_CONFIG_H'],
+    link_args: link_args)
 
   if host_machine.system() == 'windows'
     runtest = find_program('RunTest.bat')
