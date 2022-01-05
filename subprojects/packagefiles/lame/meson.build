@@ -4,6 +4,7 @@ project('lame', 'c',
         license: 'LGPL-2.1+')
 
 cc = meson.get_compiler('c')
+cpu_family = host_machine.cpu_family()
 
 build_tools = get_option('tools')
 build_decoder = get_option('decoder')
@@ -24,8 +25,11 @@ check_headers = [
   'stdio.h',
   'stdlib.h',
   'string.h',
-  'xmmintrin.h',
 ]
+
+if cpu_family == 'x86_64' or cpu_family == 'x86'
+  check_headers += ['xmmintrin.h']
+endif
 
 if build_tools
   check_headers += [
