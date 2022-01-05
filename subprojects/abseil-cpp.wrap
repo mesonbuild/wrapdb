@@ -1,8 +1,8 @@
 [wrap-file]
-directory = abseil-cpp-20210324.2
-source_url = https://github.com/abseil/abseil-cpp/archive/20210324.2.tar.gz
-source_filename = abseil-cpp-20210324.2.tar.gz
-source_hash = 59b862f50e710277f8ede96f083a5bb8d7c9595376146838b9580be90374ee1f
+directory = abseil-cpp-20211102.0
+source_url = https://github.com/abseil/abseil-cpp/archive/20211102.0.tar.gz
+source_filename = abseil-cpp-20211102.0.tar.gz
+source_hash = dcf71b9cba8dc0ca9940c4b316a0c796be8fab42b070bb6b7cab62b48f0e66c4
 patch_directory = abseil-cpp
 
 [provide]
