@@ -1,5 +1,5 @@
 project('abseil-cpp', 'cpp',
-  version : '20210324.2',
+  version : '20211102.0',
   license : 'Apache-2.0',
   default_options : [
     'cpp_std=c++11',
@@ -51,15 +51,13 @@ absl_include_dir = include_directories('.')
 # Group files by the containing library
 absl_base_sources = files(
   'absl/base/internal/cycleclock.cc',
-  'absl/base/internal/exponential_biased.cc',
   'absl/base/internal/low_level_alloc.cc',
-  'absl/base/internal/periodic_sampler.cc',
   'absl/base/internal/raw_logging.cc',
   'absl/base/internal/scoped_set_env.cc',
-  'absl/base/internal/spinlock_wait.cc',
   'absl/base/internal/spinlock.cc',
-  'absl/base/internal/sysinfo.cc',
+  'absl/base/internal/spinlock_wait.cc',
   'absl/base/internal/strerror.cc',
+  'absl/base/internal/sysinfo.cc',
   'absl/base/internal/thread_identity.cc',
   'absl/base/internal/throw_delegate.cc',
   'absl/base/internal/unscaledcycleclock.cc',
@@ -67,8 +65,8 @@ absl_base_sources = files(
 )
 
 absl_container_sources = files(
-  'absl/container/internal/hashtablez_sampler_force_weak_definition.cc',
   'absl/container/internal/hashtablez_sampler.cc',
+  'absl/container/internal/hashtablez_sampler_force_weak_definition.cc',
   'absl/container/internal/raw_hash_set.cc',
 )
 
@@ -80,8 +78,8 @@ absl_debugging_sources = files(
   'absl/debugging/internal/examine_stack.cc',
   'absl/debugging/internal/stack_consumption.cc',
   'absl/debugging/internal/vdso_support.cc',
-  'absl/debugging/leak_check_disable.cc',
   'absl/debugging/leak_check.cc',
+  'absl/debugging/leak_check_disable.cc',
   'absl/debugging/stacktrace.cc',
   'absl/debugging/symbolize.cc',
 )
@@ -91,45 +89,51 @@ absl_flags_sources = files(
   'absl/flags/flag.cc',
   'absl/flags/internal/commandlineflag.cc',
   'absl/flags/internal/flag.cc',
-  'absl/flags/internal/program_name.cc',
   'absl/flags/internal/private_handle_accessor.cc',
+  'absl/flags/internal/program_name.cc',
   'absl/flags/internal/usage.cc',
   'absl/flags/marshalling.cc',
   'absl/flags/parse.cc',
   'absl/flags/reflection.cc',
-  'absl/flags/usage_config.cc',
   'absl/flags/usage.cc',
+  'absl/flags/usage_config.cc',
 )
 
 absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
-  'absl/hash/internal/wyhash.cc',
+  'absl/hash/internal/low_level_hash.cc',
+  'absl/hash/internal/print_hash_of.cc',
 )
 
 absl_numeric_sources = files(
   'absl/numeric/int128.cc',
 )
 
+absl_profiling_sources = files(
+  'absl/profiling/internal/exponential_biased.cc',
+  'absl/profiling/internal/periodic_sampler.cc',
+)
+
 absl_random_sources = files(
   'absl/random/discrete_distribution.cc',
   'absl/random/gaussian_distribution.cc',
   'absl/random/internal/chi_square.cc',
-  'absl/random/internal/distribution_test_util.cc',
+  'absl/random/internal/gaussian_distribution_gentables.cc',
   'absl/random/internal/pool_urbg.cc',
+  'absl/random/internal/randen.cc',
   'absl/random/internal/randen_detect.cc',
   'absl/random/internal/randen_hwaes.cc',
-  'absl/random/internal/randen_slow.cc',
   'absl/random/internal/randen_round_keys.cc',
-  'absl/random/internal/randen.cc',
+  'absl/random/internal/randen_slow.cc',
   'absl/random/internal/seed_material.cc',
   'absl/random/seed_gen_exception.cc',
   'absl/random/seed_sequences.cc',
 )
 
 absl_status_sources = files(
-  'absl/status/status_payload_printer.cc',
   'absl/status/status.cc',
+  'absl/status/status_payload_printer.cc',
   'absl/status/statusor.cc',
 )
 
@@ -141,7 +145,15 @@ absl_strings_sources = files(
   'absl/strings/internal/charconv_bigint.cc',
   'absl/strings/internal/charconv_parse.cc',
   'absl/strings/internal/cord_internal.cc',
+  'absl/strings/internal/cord_rep_btree.cc',
+  'absl/strings/internal/cord_rep_btree_navigator.cc',
+  'absl/strings/internal/cord_rep_btree_reader.cc',
+  'absl/strings/internal/cord_rep_consume.cc',
   'absl/strings/internal/cord_rep_ring.cc',
+  'absl/strings/internal/cordz_functions.cc',
+  'absl/strings/internal/cordz_handle.cc',
+  'absl/strings/internal/cordz_info.cc',
+  'absl/strings/internal/cordz_sample_token.cc',
   'absl/strings/internal/escaping.cc',
   'absl/strings/internal/memutil.cc',
   'absl/strings/internal/ostringstream.cc',
@@ -217,6 +229,12 @@ absl_numeric_lib = static_library(
   include_directories: absl_include_dir,
 )
 
+absl_profiling_lib = static_library(
+  'absl_profiling',
+  absl_profiling_sources,
+  include_directories: absl_include_dir,
+)
+
 absl_strings_lib = static_library(
   'absl_strings',
   absl_strings_sources,
@@ -224,6 +242,7 @@ absl_strings_lib = static_library(
   link_with: [
     absl_base_lib,
     absl_numeric_lib,
+    absl_profiling_lib,
   ],
 )
 
