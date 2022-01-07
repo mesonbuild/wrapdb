@@ -1,0 +1,248 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* The normal alignment of `void *', in bytes. */
+#mesondefine ALIGNOF_VOID_P
+
+/* Predefined possible va_copy() implementation (id: ASP) */
+#define __VA_COPY_USE_ASP(d, s) do { *(d) = *(s); } while (0)
+
+/* Predefined possible va_copy() implementation (id: ASS) */
+#define __VA_COPY_USE_ASS(d, s) do { (d) = (s); } while (0)
+
+/* Predefined possible va_copy() implementation (id: C99) */
+#define __VA_COPY_USE_C99(d, s) va_copy((d), (s))
+
+/* Predefined possible va_copy() implementation (id: CPP) */
+#define __VA_COPY_USE_CPP(d, s) memcpy((void *)(d), (void *)(s), sizeof(*(s)))
+
+/* Predefined possible va_copy() implementation (id: CPS) */
+#define __VA_COPY_USE_CPS(d, s) memcpy((void *)&(d), (void *)&(s), sizeof((s)))
+
+/* Define if debugging is enabled */
+#mesondefine ENABLE_DEBUG
+
+/* Use modules */
+#mesondefine ENABLE_MODULE
+
+/* Predefined possible va_copy() implementation (id: GCB) */
+#define __VA_COPY_USE_GCB(d, s) __builtin_va_copy((d), (s))
+
+/* Predefined possible va_copy() implementation (id: GCH) */
+#define __VA_COPY_USE_GCH(d, s) __va_copy((d), (s))
+
+/* Predefined possible va_copy() implementation (id: GCM) */
+#define __VA_COPY_USE_GCM(d, s) VA_COPY((d), (s))
+
+/* Define to 1 if you have the `backtrace' function. */
+#mesondefine HAVE_BACKTRACE
+
+/* Define to 1 if you have the <dirent.h> header file. */
+#mesondefine HAVE_DIRENT_H
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if you have the <execinfo.h> header file. */
+#mesondefine HAVE_EXECINFO_H
+
+/* Define to 1 if you have the `getegid' function. */
+#mesondefine HAVE_GETEGID
+
+/* Define to 1 if you have the `geteuid' function. */
+#mesondefine HAVE_GETEUID
+
+/* Define to 1 if you have the `getgid' function. */
+#mesondefine HAVE_GETGID
+
+/* Define to 1 if you have the `getuid' function. */
+#mesondefine HAVE_GETUID
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#mesondefine HAVE_LIBGEN_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#mesondefine HAVE_MEMORY_H
+
+/* Define if you have POSIX threads libraries and header files. */
+#mesondefine HAVE_PTHREAD
+
+/* Have PTHREAD_PRIO_INHERIT. */
+#mesondefine HAVE_PTHREAD_PRIO_INHERIT
+
+/* Define to 1 if you have the `secure_getenv' function. */
+#mesondefine HAVE_SECURE_GETENV
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if you have the `strndup' function. */
+#mesondefine HAVE_STRNDUP
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#mesondefine HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#mesondefine HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Define to 1 if you have the `vasprintf' function. */
+#mesondefine HAVE_VASPRINTF
+
+/* Define if va_copy() macro exists (and no fallback implementation is
+   required) */
+#mesondefine HAVE_VA_COPY
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#mesondefine HAVE_VSNPRINTF
+
+/* Define to 1 if you have the `__secure_getenv' function. */
+#mesondefine HAVE___SECURE_GETENV
+
+/* Wheter inline statement can be used */
+#mesondefine LT_CAN_INLINE
+
+/* Have buit-in atomic functions */
+#mesondefine LT_HAVE_ATOMIC_BUILTINS
+
+/* Have C99-compliant vsnprintf */
+#mesondefine LT_HAVE_C99_VSNPRINTF
+
+/* Use GNUC varargs macro */
+#mesondefine LT_HAVE_GNUC_VARARGS
+
+/* Have inline keyword */
+#mesondefine LT_HAVE_INLINE
+
+/* Use ISO C99 varargs */
+#mesondefine LT_HAVE_ISO_VARARGS
+
+/* Have __inline keyword */
+#mesondefine LT_HAVE___INLINE
+
+/* Have __inline__ keyword */
+#mesondefine LT_HAVE___INLINE__
+
+/* Shared library suffix */
+#mesondefine LT_MODULE_SUFFIX
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Define if debugging is disabled */
+#mesondefine NDEBUG
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+/* Define to necessary symbol if this constant uses a non-standard name on
+   your system. */
+#mesondefine PTHREAD_CREATE_JOINABLE
+
+/* The size of `char', as computed by sizeof. */
+#mesondefine SIZEOF_CHAR
+
+/* The size of `int', as computed by sizeof. */
+#mesondefine SIZEOF_INT
+
+/* The size of `long', as computed by sizeof. */
+#mesondefine SIZEOF_LONG
+
+/* The size of `long long', as computed by sizeof. */
+#mesondefine SIZEOF_LONG_LONG
+
+/* The size of `short', as computed by sizeof. */
+#mesondefine SIZEOF_SHORT
+
+/* The size of `void*', as computed by sizeof. */
+#mesondefine SIZEOF_VOIDP
+
+/* The size of `void *', as computed by sizeof. */
+#mesondefine SIZEOF_VOID_P
+
+/* Define to 1 if you have the ANSI C header files. */
+#mesondefine STDC_HEADERS
+
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+# undef _ALL_SOURCE
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+# undef _GNU_SOURCE
+#endif
+/* Enable threading extensions on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+# undef _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+# undef _TANDEM_SOURCE
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+# undef __EXTENSIONS__
+#endif
+
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* Define to 1 if on MINIX. */
+#mesondefine _MINIX
+
+/* Define to 2 if the system does not provide POSIX.1 features except with
+   this defined. */
+#mesondefine _POSIX_1_SOURCE
+
+/* Define to 1 if you need to in order for `stat' and other things to work. */
+#mesondefine _POSIX_SOURCE
+
+/* Optional va_copy() implementation activation */
+#ifndef HAVE_VA_COPY
+#define va_copy(d, s) __VA_COPY_USE(d, s)
+#endif
+
+
+/* Define to id of used va_copy() implementation */
+#mesondefine __VA_COPY_USE
+
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#mesondefine size_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#mesondefine ssize_t
