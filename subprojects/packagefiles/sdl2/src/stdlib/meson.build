@@ -1,4 +1,5 @@
 all_sources += files(
+  'SDL_crc32.c',
   'SDL_getenv.c',
   'SDL_iconv.c',
   'SDL_malloc.c',

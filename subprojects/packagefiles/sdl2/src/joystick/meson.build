@@ -5,6 +5,7 @@ all_sources += files(
 
 subdir('hidapi')
 subdir('steam')
+subdir('virtual')
 
 if host_machine.system() == 'linux'
   subdir('linux')

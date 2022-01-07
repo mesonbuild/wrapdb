@@ -5,7 +5,6 @@ all_sources += files(
   'SDL_x11dyn.c',
   'edid-parse.c',
   'SDL_x11framebuffer.c',
-  'imKStoUCS.c',
   'SDL_x11shape.c',
   'SDL_x11messagebox.c',
   'SDL_x11video.c',

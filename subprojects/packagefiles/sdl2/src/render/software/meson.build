@@ -6,4 +6,5 @@ all_sources += files(
   'SDL_rotate.c',
   'SDL_blendline.c',
   'SDL_render_sw.c',
+  'SDL_triangle.c',
 )
