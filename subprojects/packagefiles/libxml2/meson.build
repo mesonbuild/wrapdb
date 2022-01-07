@@ -297,7 +297,7 @@ xml2lib = library('xml2', sources,
                   include_directories : incdir,
                   dependencies: deps,
                   install: true)
-xml2lib_dep = declare_dependency(link_with: xml2lib,
+libxml2_dep = declare_dependency(link_with: xml2lib,
                                  include_directories: incdir,
                                  dependencies: deps)
 pkg = import('pkgconfig')
@@ -310,10 +310,10 @@ pkg.generate(name : 'libXML',
 
 
 executable('xmllint', 'xmllint.c',
-           dependencies: xml2lib_dep,
+           dependencies: libxml2_dep,
            install: true)
 
 dictexe = executable('testdict', 'testdict.c',
-                     dependencies : xml2lib_dep)
+                     dependencies : libxml2_dep)
 
 test('dict', dictexe)
