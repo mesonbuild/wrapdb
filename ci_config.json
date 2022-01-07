@@ -5,7 +5,7 @@
   "skip_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
     "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
-    "protobuf-c", "pugixml", "quazip", "sdl2", "sdl2_image", "sdl2_mixer",
+    "protobuf-c", "pugixml", "quazip", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
   "skip_windows": [
@@ -17,7 +17,7 @@
     "libtomcrypt", "libuv", "libwebsockets",
     "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
-    "quazip", "rdkafka", "reflex", "sdl2", "sdl2_image", "sdl2_mixer",
+    "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
 
@@ -66,6 +66,24 @@
       "libpulse-dev",
       "libasound2-dev",
       "libjack-dev"
+    ]
+  },
+  "sdl2": {
+    "debian_packages": [
+      "libwayland-dev",
+      "libx11-dev",
+      "libxcursor-dev",
+      "libxext-dev",
+      "libxi-dev",
+      "libxinerama-dev",
+      "libxkbcommon-dev",
+      "libxkbfile-dev",
+      "libxrandr-dev",
+      "libxt-dev",
+      "libxv-dev",
+      "libxxf86vm-dev",
+      "pkg-config",
+      "wayland-protocols"
     ]
   },
   "sfml": {

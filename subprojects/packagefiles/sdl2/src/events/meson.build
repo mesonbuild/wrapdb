@@ -8,4 +8,6 @@ all_sources += files(
   'SDL_gesture.c',
   'SDL_clipboardevents.c',
   'SDL_touch.c',
+  'SDL_displayevents.c',
+  'imKStoUCS.c',
 )

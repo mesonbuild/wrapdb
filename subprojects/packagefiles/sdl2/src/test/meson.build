@@ -1,4 +1,5 @@
-all_sources += files(
+# FIXME, these should be executables instead.
+test_sources += files(
   'SDL_test_assert.c',
   'SDL_test_common.c',
   'SDL_test_compare.c',

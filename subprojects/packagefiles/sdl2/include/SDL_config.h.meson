@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C)1997-2022 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -10,7 +10,7 @@
   including commercial applications, and to alter it and redistribute it
   freely, subject to the following restrictions:
 
-  1. The origin of this software must not be misrepresented; you must not
+ 1. The origin of this software must not be misrepresented; you must not
      claim that you wrote the original software. If you use this software
      in a product, an acknowledgment in the product documentation would be
      appreciated but is not required.
@@ -38,7 +38,7 @@
 
 /* C datatypes */
 /* Define SIZEOF_VOIDP for 64/32 architectures */
-#ifdef __LP64__
+#if defined(__LP64__) || defined(_LP64) || defined(_WIN64)
 #define SIZEOF_VOIDP 8
 #else
 #define SIZEOF_VOIDP 4
@@ -46,35 +46,36 @@
 
 #mesondefine HAVE_GCC_ATOMICS
 #mesondefine HAVE_GCC_SYNC_LOCK_TEST_AND_SET
-#mesondefine HAVE_PTHREAD_SPINLOCK
 
 /* Comment this if you want to build without any C library requirements */
 #mesondefine HAVE_LIBC
 #if HAVE_LIBC
 
 /* Useful headers */
-#mesondefine HAVE_ALLOCA_H
-#mesondefine HAVE_SYS_TYPES_H
-#mesondefine HAVE_STDIO_H
 #mesondefine STDC_HEADERS
-#mesondefine HAVE_STDLIB_H
-#mesondefine HAVE_STDARG_H
-#mesondefine HAVE_MALLOC_H
-#mesondefine HAVE_MEMORY_H
-#mesondefine HAVE_STRING_H
-#mesondefine HAVE_STRINGS_H
-#mesondefine HAVE_INTTYPES_H
-#mesondefine HAVE_STDINT_H
+#mesondefine HAVE_ALLOCA_H
 #mesondefine HAVE_CTYPE_H
-#mesondefine HAVE_MATH_H
+#mesondefine HAVE_FLOAT_H
 #mesondefine HAVE_ICONV_H
+#mesondefine HAVE_INTTYPES_H
+#mesondefine HAVE_LIMITS_H
+#mesondefine HAVE_MALLOC_H
+#mesondefine HAVE_MATH_H
+#mesondefine HAVE_MEMORY_H
 #mesondefine HAVE_SIGNAL_H
-#mesondefine HAVE_ALTIVEC_H
+#mesondefine HAVE_STDARG_H
+#mesondefine HAVE_STDINT_H
+#mesondefine HAVE_STDIO_H
+#mesondefine HAVE_STDLIB_H
+#mesondefine HAVE_STRINGS_H
+#mesondefine HAVE_STRING_H
+#mesondefine HAVE_SYS_TYPES_H
+#mesondefine HAVE_WCHAR_H
 #mesondefine HAVE_PTHREAD_NP_H
-#mesondefine HAVE_LIBUDEV_H
-#mesondefine HAVE_DBUS_DBUS_H
+#mesondefine HAVE_LIBUNWIND_H
 
 /* C library functions */
+#mesondefine HAVE_DLOPEN
 #mesondefine HAVE_MALLOC
 #mesondefine HAVE_CALLOC
 #mesondefine HAVE_REALLOC
@@ -93,10 +94,21 @@
 #mesondefine HAVE_MEMCPY
 #mesondefine HAVE_MEMMOVE
 #mesondefine HAVE_MEMCMP
+#mesondefine HAVE_WCSLEN
+#mesondefine HAVE_WCSLCPY
+#mesondefine HAVE_WCSLCAT
+#mesondefine HAVE__WCSDUP
+#mesondefine HAVE_WCSDUP
+#mesondefine HAVE_WCSSTR
+#mesondefine HAVE_WCSCMP
+#mesondefine HAVE_WCSNCMP
+#mesondefine HAVE_WCSCASECMP
+#mesondefine HAVE__WCSICMP
+#mesondefine HAVE_WCSNCASECMP
+#mesondefine HAVE__WCSNICMP
 #mesondefine HAVE_STRLEN
 #mesondefine HAVE_STRLCPY
 #mesondefine HAVE_STRLCAT
-#mesondefine HAVE_STRDUP
 #mesondefine HAVE__STRREV
 #mesondefine HAVE__STRUPR
 #mesondefine HAVE__STRLWR
@@ -105,6 +117,7 @@
 #mesondefine HAVE_STRCHR
 #mesondefine HAVE_STRRCHR
 #mesondefine HAVE_STRSTR
+#mesondefine HAVE_STRTOK_R
 #mesondefine HAVE_ITOA
 #mesondefine HAVE__LTOA
 #mesondefine HAVE__UITOA
@@ -124,25 +137,53 @@
 #mesondefine HAVE_STRCASECMP
 #mesondefine HAVE__STRNICMP
 #mesondefine HAVE_STRNCASECMP
+#mesondefine HAVE_SSCANF
 #mesondefine HAVE_VSSCANF
 #mesondefine HAVE_VSNPRINTF
 #mesondefine HAVE_M_PI
-#mesondefine HAVE_ATAN
-#mesondefine HAVE_ATAN2
 #mesondefine HAVE_ACOS
+#mesondefine HAVE_ACOSF
 #mesondefine HAVE_ASIN
+#mesondefine HAVE_ASINF
+#mesondefine HAVE_ATAN
+#mesondefine HAVE_ATANF
+#mesondefine HAVE_ATAN2
+#mesondefine HAVE_ATAN2F
 #mesondefine HAVE_CEIL
+#mesondefine HAVE_CEILF
 #mesondefine HAVE_COPYSIGN
+#mesondefine HAVE_COPYSIGNF
 #mesondefine HAVE_COS
 #mesondefine HAVE_COSF
+#mesondefine HAVE_EXP
+#mesondefine HAVE_EXPF
 #mesondefine HAVE_FABS
+#mesondefine HAVE_FABSF
 #mesondefine HAVE_FLOOR
+#mesondefine HAVE_FLOORF
+#mesondefine HAVE_FMOD
+#mesondefine HAVE_FMODF
 #mesondefine HAVE_LOG
+#mesondefine HAVE_LOGF
+#mesondefine HAVE_LOG10
+#mesondefine HAVE_LOG10F
+#mesondefine HAVE_LROUND
+#mesondefine HAVE_LROUNDF
 #mesondefine HAVE_POW
+#mesondefine HAVE_POWF
+#mesondefine HAVE_ROUND
+#mesondefine HAVE_ROUNDF
 #mesondefine HAVE_SCALBN
+#mesondefine HAVE_SCALBNF
 #mesondefine HAVE_SIN
 #mesondefine HAVE_SINF
 #mesondefine HAVE_SQRT
+#mesondefine HAVE_SQRTF
+#mesondefine HAVE_TAN
+#mesondefine HAVE_TANF
+#mesondefine HAVE_TRUNC
+#mesondefine HAVE_TRUNCF
+#mesondefine HAVE_FOPEN64
 #mesondefine HAVE_FSEEKO
 #mesondefine HAVE_FSEEKO64
 #mesondefine HAVE_SIGACTION
@@ -158,13 +199,62 @@
 #mesondefine HAVE_PTHREAD_SETNAME_NP
 #mesondefine HAVE_PTHREAD_SET_NAME_NP
 #mesondefine HAVE_SEM_TIMEDWAIT
-#elif __WIN32__
+#mesondefine HAVE_GETAUXVAL
+#mesondefine HAVE_ELF_AUX_INFO
+#mesondefine HAVE_POLL
+#mesondefine HAVE__EXIT
+
+#elif defined(__WIN32__)
 #mesondefine HAVE_STDARG_H
 #mesondefine HAVE_STDDEF_H
+#mesondefine HAVE_FLOAT_H
+
 #else
 /* We may need some replacement for stdarg.h here */
 #include <stdarg.h>
 #endif /* HAVE_LIBC */
+
+#mesondefine HAVE_ALTIVEC_H
+#mesondefine HAVE_DBUS_DBUS_H
+#mesondefine HAVE_FCITX
+#mesondefine HAVE_IBUS_IBUS_H
+#mesondefine HAVE_SYS_INOTIFY_H
+#mesondefine HAVE_INOTIFY_INIT
+#mesondefine HAVE_INOTIFY_INIT1
+#mesondefine HAVE_INOTIFY
+#mesondefine HAVE_O_CLOEXEC
+
+/* Apple platforms might be building universal binaries, where Intel builds
+   can use immintrin.h but other architectures can't. */
+#ifdef __APPLE__
+#  if defined(__has_include) && (defined(__i386__) || defined(__x86_64))
+#    if __has_include(<immintrin.h>)
+#       define HAVE_IMMINTRIN_H
+#    endif
+#  endif
+#else  /* non-Apple platforms can use the normal CMake check for this. */
+#mesondefine HAVE_IMMINTRIN_H
+#endif
+
+#mesondefine HAVE_LIBUDEV_H
+#mesondefine HAVE_LIBSAMPLERATE_H
+#mesondefine HAVE_LIBDECOR_H 
+
+#mesondefine HAVE_D3D_H
+#mesondefine HAVE_D3D11_H
+#mesondefine HAVE_DDRAW_H
+#mesondefine HAVE_DSOUND_H
+#mesondefine HAVE_DINPUT_H
+#mesondefine HAVE_XINPUT_H
+#mesondefine HAVE_WINDOWS_GAMING_INPUT_H
+#mesondefine HAVE_DXGI_H
+
+#mesondefine HAVE_MMDEVICEAPI_H
+#mesondefine HAVE_AUDIOCLIENT_H
+#mesondefine HAVE_SENSORSAPI_H
+
+#mesondefine HAVE_XINPUT_GAMEPAD_EX
+#mesondefine HAVE_XINPUT_STATE_EX
 
 /* SDL internal assertion support */
 #mesondefine SDL_DEFAULT_ASSERT_LEVEL
@@ -177,6 +267,8 @@
 #mesondefine SDL_FILE_DISABLED
 #mesondefine SDL_JOYSTICK_DISABLED
 #mesondefine SDL_HAPTIC_DISABLED
+#mesondefine SDL_HIDAPI_DISABLED
+#mesondefine SDL_SENSOR_DISABLED
 #mesondefine SDL_LOADSO_DISABLED
 #mesondefine SDL_RENDER_DISABLED
 #mesondefine SDL_THREADS_DISABLED
@@ -188,111 +280,161 @@
 /* Enable various audio drivers */
 #mesondefine SDL_AUDIO_DRIVER_ALSA
 #mesondefine SDL_AUDIO_DRIVER_ALSA_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_ANDROID
+#mesondefine SDL_AUDIO_DRIVER_OPENSLES
+#mesondefine SDL_AUDIO_DRIVER_AAUDIO
 #mesondefine SDL_AUDIO_DRIVER_ARTS
 #mesondefine SDL_AUDIO_DRIVER_ARTS_DYNAMIC
-#mesondefine SDL_AUDIO_DRIVER_PULSEAUDIO
-#mesondefine SDL_AUDIO_DRIVER_PULSEAUDIO_DYNAMIC
-#mesondefine SDL_AUDIO_DRIVER_HAIKU
-#mesondefine SDL_AUDIO_DRIVER_BSD
 #mesondefine SDL_AUDIO_DRIVER_COREAUDIO
 #mesondefine SDL_AUDIO_DRIVER_DISK
-#mesondefine SDL_AUDIO_DRIVER_DUMMY
-#mesondefine SDL_AUDIO_DRIVER_XAUDIO2
 #mesondefine SDL_AUDIO_DRIVER_DSOUND
+#mesondefine SDL_AUDIO_DRIVER_DUMMY
+#mesondefine SDL_AUDIO_DRIVER_EMSCRIPTEN
 #mesondefine SDL_AUDIO_DRIVER_ESD
 #mesondefine SDL_AUDIO_DRIVER_ESD_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_FUSIONSOUND
+#mesondefine SDL_AUDIO_DRIVER_FUSIONSOUND_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_HAIKU
+#mesondefine SDL_AUDIO_DRIVER_JACK
+#mesondefine SDL_AUDIO_DRIVER_JACK_DYNAMIC
 #mesondefine SDL_AUDIO_DRIVER_NAS
 #mesondefine SDL_AUDIO_DRIVER_NAS_DYNAMIC
-#mesondefine SDL_AUDIO_DRIVER_SNDIO
-#mesondefine SDL_AUDIO_DRIVER_SNDIO_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_NETBSD
 #mesondefine SDL_AUDIO_DRIVER_OSS
 #mesondefine SDL_AUDIO_DRIVER_OSS_SOUNDCARD_H
 #mesondefine SDL_AUDIO_DRIVER_PAUDIO
+#mesondefine SDL_AUDIO_DRIVER_PIPEWIRE
+#mesondefine SDL_AUDIO_DRIVER_PIPEWIRE_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_PULSEAUDIO
+#mesondefine SDL_AUDIO_DRIVER_PULSEAUDIO_DYNAMIC
 #mesondefine SDL_AUDIO_DRIVER_QSA
+#mesondefine SDL_AUDIO_DRIVER_SNDIO
+#mesondefine SDL_AUDIO_DRIVER_SNDIO_DYNAMIC
 #mesondefine SDL_AUDIO_DRIVER_SUNAUDIO
+#mesondefine SDL_AUDIO_DRIVER_WASAPI
 #mesondefine SDL_AUDIO_DRIVER_WINMM
-#mesondefine SDL_AUDIO_DRIVER_FUSIONSOUND
-#mesondefine SDL_AUDIO_DRIVER_FUSIONSOUND_DYNAMIC
+#mesondefine SDL_AUDIO_DRIVER_OS2
+#mesondefine SDL_AUDIO_DRIVER_VITA
+#mesondefine SDL_AUDIO_DRIVER_PSP
 
 /* Enable various input drivers */
 #mesondefine SDL_INPUT_LINUXEV
 #mesondefine SDL_INPUT_LINUXKD
-#mesondefine SDL_INPUT_TSLIB
+#mesondefine SDL_INPUT_FBSDKBIO
+#mesondefine SDL_JOYSTICK_ANDROID
 #mesondefine SDL_JOYSTICK_HAIKU
+#mesondefine SDL_JOYSTICK_WGI
 #mesondefine SDL_JOYSTICK_DINPUT
+#mesondefine SDL_JOYSTICK_XINPUT
 #mesondefine SDL_JOYSTICK_DUMMY
 #mesondefine SDL_JOYSTICK_IOKIT
+#mesondefine SDL_JOYSTICK_MFI
 #mesondefine SDL_JOYSTICK_LINUX
-#mesondefine SDL_JOYSTICK_WINMM
+#mesondefine SDL_JOYSTICK_OS2
 #mesondefine SDL_JOYSTICK_USBHID
-#mesondefine SDL_JOYSTICK_USBHID_MACHINE_JOYSTICK_H
+#mesondefine SDL_HAVE_MACHINE_JOYSTICK_H
+#mesondefine SDL_JOYSTICK_HIDAPI
+#mesondefine SDL_JOYSTICK_RAWINPUT
+#mesondefine SDL_JOYSTICK_EMSCRIPTEN
+#mesondefine SDL_JOYSTICK_VIRTUAL
+#mesondefine SDL_JOYSTICK_VITA
+#mesondefine SDL_JOYSTICK_PSP
 #mesondefine SDL_HAPTIC_DUMMY
 #mesondefine SDL_HAPTIC_LINUX
 #mesondefine SDL_HAPTIC_IOKIT
 #mesondefine SDL_HAPTIC_DINPUT
+#mesondefine SDL_HAPTIC_XINPUT
+#mesondefine SDL_HAPTIC_ANDROID
+#mesondefine SDL_LIBUSB_DYNAMIC
+
+/* Enable various sensor drivers */
+#mesondefine SDL_SENSOR_ANDROID
+#mesondefine SDL_SENSOR_COREMOTION
+#mesondefine SDL_SENSOR_WINDOWS
+#mesondefine SDL_SENSOR_DUMMY
+#mesondefine SDL_SENSOR_VITA
 
 /* Enable various shared object loading systems */
-#mesondefine SDL_LOADSO_HAIKU
 #mesondefine SDL_LOADSO_DLOPEN
 #mesondefine SDL_LOADSO_DUMMY
 #mesondefine SDL_LOADSO_LDG
 #mesondefine SDL_LOADSO_WINDOWS
+#mesondefine SDL_LOADSO_OS2
 
 /* Enable various threading systems */
+#mesondefine SDL_THREAD_GENERIC_COND_SUFFIX
 #mesondefine SDL_THREAD_PTHREAD
 #mesondefine SDL_THREAD_PTHREAD_RECURSIVE_MUTEX
 #mesondefine SDL_THREAD_PTHREAD_RECURSIVE_MUTEX_NP
 #mesondefine SDL_THREAD_WINDOWS
+#mesondefine SDL_THREAD_OS2
+#mesondefine SDL_THREAD_VITA
+#mesondefine SDL_THREAD_PSP
 
 /* Enable various timer systems */
 #mesondefine SDL_TIMER_HAIKU
 #mesondefine SDL_TIMER_DUMMY
 #mesondefine SDL_TIMER_UNIX
 #mesondefine SDL_TIMER_WINDOWS
-#mesondefine SDL_TIMER_WINCE
+#mesondefine SDL_TIMER_OS2
+#mesondefine SDL_TIMER_VITA
+#mesondefine SDL_TIMER_PSP
 
 /* Enable various video drivers */
+#mesondefine SDL_VIDEO_DRIVER_ANDROID
+#mesondefine SDL_VIDEO_DRIVER_EMSCRIPTEN
 #mesondefine SDL_VIDEO_DRIVER_HAIKU
 #mesondefine SDL_VIDEO_DRIVER_COCOA
+#mesondefine SDL_VIDEO_DRIVER_UIKIT
 #mesondefine SDL_VIDEO_DRIVER_DIRECTFB
 #mesondefine SDL_VIDEO_DRIVER_DIRECTFB_DYNAMIC
 #mesondefine SDL_VIDEO_DRIVER_DUMMY
+#mesondefine SDL_VIDEO_DRIVER_OFFSCREEN
 #mesondefine SDL_VIDEO_DRIVER_WINDOWS
+#mesondefine SDL_VIDEO_DRIVER_WINRT
 #mesondefine SDL_VIDEO_DRIVER_WAYLAND
+#mesondefine SDL_VIDEO_DRIVER_RPI
+#mesondefine SDL_VIDEO_DRIVER_VIVANTE
+#mesondefine SDL_VIDEO_DRIVER_VIVANTE_VDK
+#mesondefine SDL_VIDEO_DRIVER_OS2
+#mesondefine SDL_VIDEO_DRIVER_QNX
+#mesondefine SDL_VIDEO_DRIVER_RISCOS
+#mesondefine SDL_VIDEO_DRIVER_PSP
 
-#if 0
-/* !!! FIXME: in configure script version, missing here: */
-#undef SDL_VIDEO_DRIVER_WAYLAND_QT_TOUCH
-#undef SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC
-#undef SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_EGL
-#undef SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_CURSOR
-#undef SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_XKBCOMMON
-#endif
+#mesondefine SDL_VIDEO_DRIVER_KMSDRM
+#mesondefine SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC
+#mesondefine SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC_GBM
 
-#mesondefine SDL_VIDEO_DRIVER_MIR
-#mesondefine SDL_VIDEO_DRIVER_MIR_DYNAMIC
-#mesondefine SDL_VIDEO_DRIVER_MIR_DYNAMIC_XKBCOMMON
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_QT_TOUCH
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_EGL
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_CURSOR
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_XKBCOMMON
+#mesondefine SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_LIBDECOR
+
 #mesondefine SDL_VIDEO_DRIVER_X11
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XINERAMA
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2
+#mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XFIXES
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE
 #mesondefine SDL_VIDEO_DRIVER_X11_XCURSOR
+#mesondefine SDL_VIDEO_DRIVER_X11_XDBE
 #mesondefine SDL_VIDEO_DRIVER_X11_XINERAMA
 #mesondefine SDL_VIDEO_DRIVER_X11_XINPUT2
 #mesondefine SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH
+#mesondefine SDL_VIDEO_DRIVER_X11_XFIXES
 #mesondefine SDL_VIDEO_DRIVER_X11_XRANDR
 #mesondefine SDL_VIDEO_DRIVER_X11_XSCRNSAVER
 #mesondefine SDL_VIDEO_DRIVER_X11_XSHAPE
 #mesondefine SDL_VIDEO_DRIVER_X11_XVIDMODE
 #mesondefine SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS
-#mesondefine SDL_VIDEO_DRIVER_X11_CONST_PARAM_XDATA32
-#mesondefine SDL_VIDEO_DRIVER_X11_CONST_PARAM_XEXTADDDISPLAY
 #mesondefine SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM
+#mesondefine SDL_VIDEO_DRIVER_VITA
 
 #mesondefine SDL_VIDEO_RENDER_D3D
 #mesondefine SDL_VIDEO_RENDER_D3D11
@@ -300,6 +442,9 @@
 #mesondefine SDL_VIDEO_RENDER_OGL_ES
 #mesondefine SDL_VIDEO_RENDER_OGL_ES2
 #mesondefine SDL_VIDEO_RENDER_DIRECTFB
+#mesondefine SDL_VIDEO_RENDER_METAL
+#mesondefine SDL_VIDEO_RENDER_VITA_GXM
+#mesondefine SDL_VIDEO_RENDER_PSP
 
 /* Enable OpenGL support */
 #mesondefine SDL_VIDEO_OPENGL
@@ -313,27 +458,61 @@
 #mesondefine SDL_VIDEO_OPENGL_OSMESA
 #mesondefine SDL_VIDEO_OPENGL_OSMESA_DYNAMIC
 
+/* Enable Vulkan support */
+#mesondefine SDL_VIDEO_VULKAN
+
+/* Enable Metal support */
+#mesondefine SDL_VIDEO_METAL
+
 /* Enable system power support */
+#mesondefine SDL_POWER_ANDROID
 #mesondefine SDL_POWER_LINUX
 #mesondefine SDL_POWER_WINDOWS
+#mesondefine SDL_POWER_WINRT
 #mesondefine SDL_POWER_MACOSX
+#mesondefine SDL_POWER_UIKIT
 #mesondefine SDL_POWER_HAIKU
+#mesondefine SDL_POWER_EMSCRIPTEN
 #mesondefine SDL_POWER_HARDWIRED
+#mesondefine SDL_POWER_VITA
+#mesondefine SDL_POWER_PSP
 
 /* Enable system filesystem support */
+#mesondefine SDL_FILESYSTEM_ANDROID
 #mesondefine SDL_FILESYSTEM_HAIKU
 #mesondefine SDL_FILESYSTEM_COCOA
 #mesondefine SDL_FILESYSTEM_DUMMY
+#mesondefine SDL_FILESYSTEM_RISCOS
 #mesondefine SDL_FILESYSTEM_UNIX
 #mesondefine SDL_FILESYSTEM_WINDOWS
+#mesondefine SDL_FILESYSTEM_EMSCRIPTEN
+#mesondefine SDL_FILESYSTEM_OS2
+#mesondefine SDL_FILESYSTEM_VITA
+#mesondefine SDL_FILESYSTEM_PSP
 
 /* Enable assembly routines */
 #mesondefine SDL_ASSEMBLY_ROUTINES
 #mesondefine SDL_ALTIVEC_BLITTERS
+#mesondefine SDL_ARM_SIMD_BLITTERS
+#mesondefine SDL_ARM_NEON_BLITTERS
 
+/* Whether SDL_DYNAMIC_API needs dlopen */
+#mesondefine DYNAPI_NEEDS_DLOPEN 
+
+/* Enable dynamic libsamplerate support */
+#mesondefine SDL_LIBSAMPLERATE_DYNAMIC
+
+/* Enable ime support */
+#mesondefine SDL_USE_IME
 
 /* Platform specific definitions */
-#if !defined(__WIN32__)
+#mesondefine SDL_IPHONE_KEYBOARD
+#mesondefine SDL_IPHONE_LAUNCHSCREEN
+
+#mesondefine SDL_VIDEO_VITA_PIB
+#mesondefine SDL_VIDEO_VITA_PVR
+
+#if !defined(__WIN32__) && !defined(__WINRT__)
 #  if !defined(_STDINT_H_) && !defined(_STDINT_H) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
 typedef unsigned int size_t;
 typedef signed char int8_t;
@@ -348,8 +527,8 @@ typedef unsigned long uintptr_t;
 #  endif /* if (stdint.h isn't available) */
 #else /* __WIN32__ */
 #  if !defined(_STDINT_H_) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
-#    if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__)
-#define HAVE_STDINT_H	1
+#    if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__) || defined(__BORLANDC__) || defined(__CODEGEARC__)
+#define HAVE_STDINT_H   1
 #    elif defined(_MSC_VER)
 typedef signed __int8 int8_t;
 typedef unsigned __int8 uint8_t;
@@ -368,10 +547,10 @@ typedef unsigned int uintptr_t;
 #define _UINTPTR_T_DEFINED
 #      endif
 /* Older Visual C++ headers don't have the Win64-compatible typedefs... */
-#      if ((_MSC_VER <= 1200) && (!defined(DWORD_PTR)))
+#      if ((_MSC_VER <=200) && (!defined(DWORD_PTR)))
 #define DWORD_PTR DWORD
 #      endif
-#      if ((_MSC_VER <= 1200) && (!defined(LONG_PTR)))
+#      if ((_MSC_VER <=200) && (!defined(LONG_PTR)))
 #define LONG_PTR LONG
 #      endif
 #    else /* !__GNUC__ && !_MSC_VER */
@@ -392,4 +571,4 @@ typedef unsigned int uintptr_t;
 #  endif /* !_STDINT_H_ && !HAVE_STDINT_H */
 #endif /* __WIN32__ */
 
-#endif /* SDL_config_h */
+#endif /* SDL_config_h_ */
