@@ -568,6 +568,14 @@
       "2.1.0-1"
     ]
   },
+  "liblangtag": {
+    "dependency_names": [
+      "liblangtag"
+    ],
+    "versions": [
+      "0.6.3-1"
+    ]
+  },
   "liblbfgs": {
     "versions": [
       "1.10-1"
