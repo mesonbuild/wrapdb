@@ -7,6 +7,11 @@ compile_args = []
 if cc.get_id() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE',
     '-D_CRT_NONSTDC_NO_DEPRECATE', language : 'c')
+    compile_args += cc.get_supported_arguments(['/wd4131',  # 'function' : uses old-style declarator
+                                                '/wd4244',  # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+                                                '/wd4245',  # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
+                                                '/wd4267',  # 'var' : conversion from 'size_t' to 'type', possible loss of data
+                                                '/wd4127']) # conditional expression is constant
 else
   # Don't spam consumers of this wrap with these warnings
   compile_args += cc.get_supported_arguments(['-Wno-implicit-fallthrough',
