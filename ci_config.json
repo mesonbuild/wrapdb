@@ -15,7 +15,7 @@
     "hinnant-date", "imgui-sfml", "inih", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libuv", "libwebsockets",
-    "libxmlpp", "lua", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
+    "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
