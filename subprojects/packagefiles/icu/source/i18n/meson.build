@@ -251,3 +251,4 @@ i18n_lib = library('icui18n',
 icui18n_dep = declare_dependency(link_with: [i18n_lib, common_lib],
     compile_args: usage_args,
     include_directories: incdir)
+meson.override_dependency('icu-i18n', icui18n_dep)

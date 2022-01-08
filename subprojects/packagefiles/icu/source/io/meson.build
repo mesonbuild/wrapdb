@@ -23,3 +23,4 @@ io_lib = library('icuio',
 
 icuio_dep = declare_dependency(link_with: [io_lib, common_lib],
     include_directories: incdir)
+meson.override_dependency('icu-io', icuio_dep)
