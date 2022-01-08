@@ -20,8 +20,6 @@ if get_option('default_library') == 'static'
     add_project_arguments('-DU_STATIC_IMPLEMENTATION', language : 'c')
     add_project_arguments('-DU_STATIC_IMPLEMENTATION', language : 'cpp')
     usage_args = ['-DU_STATIC_IMPLEMENTATION']
-elif host_machine.system() == 'windows'
-    error('Shared library build not supported on Windows. Set default_library to static.')
 endif
 
 subdir('source')
