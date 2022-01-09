@@ -1,4 +1,4 @@
-project('libxml2', 'c', version : '2.9.7', license : 'mit')
+project('libxml2', 'c', version : '2.9.7', meson_version: '>=0.54.0', license : 'mit')
 
 cdata = configuration_data()
 
@@ -297,14 +297,17 @@ xml2lib = library('xml2', sources,
                   include_directories : incdir,
                   dependencies: deps,
                   install: true)
-libxml2_dep = declare_dependency(link_with: xml2lib,
-                                 include_directories: incdir,
-                                 dependencies: deps)
+libxml2_dep = declare_dependency(
+  link_with: xml2lib,
+  include_directories: incdir,
+  dependencies: deps,
+  variables: {'modules': withcdata.get('WITH_MODULES').to_string()},
+)
 pkg = import('pkgconfig')
-pkg.generate(name : 'libXML',
+pkg.generate(xml2lib,
+             name : 'libXML',
              description: 'libXML library version2.',
              filebase: 'libxml-2.0',
-             libraries: xml2lib,
              subdirs: 'libxml2',
              variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')))
 
