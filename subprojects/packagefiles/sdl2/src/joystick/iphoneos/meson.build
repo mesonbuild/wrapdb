@@ -1,3 +1,3 @@
 all_sources += files(
-  'SDL_syspower.c'
+  'SDL_mfijoystick.m',
 )
