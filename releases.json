@@ -713,6 +713,18 @@
       "3.0.1-1"
     ]
   },
+  "libxslt": {
+    "dependency_names": [
+      "libxslt",
+      "libexslt"
+    ],
+    "program_names": [
+      "xsltproc"
+    ],
+    "versions": [
+      "1.1.34-1"
+    ]
+  },
   "libyaml": {
     "dependency_names": [
       "yaml-0.1"
