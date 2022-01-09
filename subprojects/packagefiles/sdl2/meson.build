@@ -184,6 +184,7 @@ check_functions = [
 # check token HAVE_SEM_TIMEDWAIT
   ['HAVE_INOTIFY_INIT', 'inotify_init', '#include<sys/inotify.h>'],
   ['HAVE_INOTIFY_INIT1', 'inotify_init1', '#include<sys/inotify.h>'],
+  ['HAVE_DLOPEN', 'dlopen', '#include<dlcfn.h>'],
 ]
 
 
@@ -319,6 +320,7 @@ gl_dep = dependency('gl', required : false)
 xrandr_dep = dependency('xrandr', required : false)
 xinerama_dep = dependency('xinerama', required : false)
 udev_dep = dependency('libudev', required : false)
+libdl_dep = cc.find_library('dl', required : false)
 
 if gl_dep.found()
   cdata.set('SDL_VIDEO_RENDER_OGL', 1)
@@ -347,12 +349,16 @@ if udev_dep.found()
   cdata.set('HAVE_LIBUDEV_H', 1)
 endif
 
+if libdl_dep.found()
+  cdata.set('HAVE_DLOPEN', 1)
+endif
+
 subdir('include')
 subdir('src')
 
 core_deps += [
   x11_dep, xi_dep, xrandr_dep, xext_dep, gl_dep, xinerama_dep,
-  alsa_dep, udev_dep
+  alsa_dep, udev_dep, libdl_dep
 ]
 
 sdl2 = library('sdl2',

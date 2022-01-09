@@ -8,6 +8,5 @@ all_sources += files(
   'SDL_cocoaopengl.m',
   'SDL_cocoamessagebox.m',
   'SDL_cocoashape.m',
-  'SDL_cocoamousetap.m',
   'SDL_cocoavideo.m',
 )
