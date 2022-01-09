@@ -1,5 +1,6 @@
 project('libxslt', 'c',
-  version : '1.1.34')
+  version : '1.1.34',
+  meson_version: '>=0.54.0')
 
 exslt_version = '0.8.20'
 pkg = import('pkgconfig')
