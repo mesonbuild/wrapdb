@@ -47,6 +47,10 @@
       "libvulkan-dev"
     ]
   },
+  "libccp4c": {
+    "_comment": ["- upstream does not support building with MSVC"],
+    "linux_only": true
+  },
   "liburing": {
     "linux_only": true
   },

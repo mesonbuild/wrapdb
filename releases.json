@@ -541,7 +541,15 @@
       "2.12-2",
       "2.12-1"
     ]
-},
+  },
+  "libccp4c": {
+    "dependency_names": [
+      "libccp4c"
+    ],
+    "versions": [
+      "6.5.1-1"
+    ]
+  },
   "libexif": {
     "dependency_names": [
       "libexif"
