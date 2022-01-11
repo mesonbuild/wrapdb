@@ -41,3 +41,6 @@ toolutil_lib = static_library('toolutil',
   cpp_args : toolutil_cpp_args,
   link_with: [i18n_lib, common_lib],
 )
+
+toolutil_dep = declare_dependency(link_with: toolutil_lib,
+  include_directories: '.')
