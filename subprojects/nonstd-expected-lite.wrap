@@ -5,3 +5,5 @@ source_filename = expected-lite-0.3.0.tar.gz
 source_hash = fc942ce0614e9498bff6f35f1ee8d58f83026bac904d9ab427a2e822b5bdfcbd
 patch_directory = nonstd-expected-lite
 
+[provide]
+expected-lite = nonstd_expected_lite_dep
