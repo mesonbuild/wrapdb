@@ -861,7 +861,11 @@
     ]
   },
   "nonstd-expected-lite": {
+    "dependency_names": [
+      "expected-lite"
+    ],
     "versions": [
+      "0.3.0-2",
       "0.3.0-1"
     ]
   },
