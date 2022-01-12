@@ -10,4 +10,4 @@ icu-uc = icuuc_dep
 icu-io = icuio_dep
 icu-i18n = icui18n_dep
 
-program_names = genbrk, genccode
+program_names = genbrk, genccode, gencmn
