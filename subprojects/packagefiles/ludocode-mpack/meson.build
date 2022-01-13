@@ -1,4 +1,4 @@
-project('mpack', 'c', version : '1.0', license : 'MIT', default_options : ['c_std=gnu99'])
+project('mpack', 'c', version : '1.1', license : 'MIT', default_options : ['c_std=gnu99'])
 incdir = include_directories('src/mpack')
 
 src = files([
