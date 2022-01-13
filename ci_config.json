@@ -14,7 +14,7 @@
     "fuse", "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "imgui-sfml", "inih", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
-    "libtomcrypt", "libuv", "libwebsockets",
+    "libtomcrypt", "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
