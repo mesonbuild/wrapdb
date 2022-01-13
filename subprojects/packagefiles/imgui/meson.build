@@ -1,5 +1,5 @@
 project('imgui', 'cpp',
-    version: '1.85',
+    version: '1.86',
     license: 'MIT',
 )
 
@@ -78,11 +78,6 @@ allegro5_primitives_dep = dependency('allegro_primitives-5', required: get_optio
 if allegro5_dep.found() and allegro5_primitives_dep.found()
     sources += 'backends/imgui_impl_allegro5.cpp'
     dependencies += [allegro5_dep, allegro5_primitives_dep]
-endif
-marmalade_dep = cpp.find_library('marmalade', required: get_option('marmalade'))
-if marmalade_dep.found()
-    sources += 'backends/imgui_impl_marmalade.cpp'
-    dependencies += marmalade_dep
 endif
 
 imgui = library('imgui',
