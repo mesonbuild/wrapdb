@@ -39,6 +39,8 @@ find config/archs -iname '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$
 
 # AIX is not supported by Meson
 rm -rf ../../../generated-config/archs/aix*
+# This is for old gas/nasm versions, we do not care about them
+rm -rf ../../../generated-config/archs/*/asm_avx2
 # Remove build info files, we use hardcoded deterministic one instead
 rm -rf ../../../generated-config/archs/*/*/crypto/buildinf.h
 
