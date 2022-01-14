@@ -90,6 +90,7 @@ pcre_posix = build_target('pcreposix',
   'pcreposix.c',
   c_args : compile_args,
   target_type : libtype,
+  link_with : pcre8,
   include_directories : conf_inc)
 
 pcretest = executable('pcretest',
