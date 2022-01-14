@@ -24,3 +24,6 @@ pkg = import('pkgconfig')
 
 pkg.generate(name: 'mpack', description: 'mpack msgpack serialization library', libraries: mpack)
 
+if meson.version().version_compare('>=0.54.0')
+    meson.override_dependency('ludocode-mpack', ludocode_mpack_dep)
+endif

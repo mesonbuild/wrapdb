@@ -759,9 +759,12 @@
     ]
   },
   "ludocode-mpack": {
+    "dependency_names": [
+      "ludocode-mpack"
+    ],
     "versions": [
+      "1.1-1",
       "1.0-1"
-      "1.1-1"
     ]
   },
   "lz4": {
