@@ -5,3 +5,6 @@ source_filename = ludocode-mpack-1.1.tar.gz
 source_hash = a62a3954dbbd77cf7f3048e8d7e89718d45a851d55003c37c51277c71ca968e6
 patch_directory = ludocode-mpack
 
+[provide]
+ludocode-mpack = ludocode_mpack_dep
+
