@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '1.1.1l',
+  version: '3.0.2',
   license : 'Apache-2.0',
   meson_version: '>= 0.55',
   default_options: [
@@ -26,6 +26,8 @@ include_directories = [
   'crypto/modes',
   'crypto/ec/curve448',
   'crypto/ec/curve448/arch_32',
+  'providers/common/include',
+  'providers/implementations/include',
 ]
 
 compiler = meson.get_compiler('c')
@@ -276,6 +278,8 @@ if asm == 'no-asm'
     arch_subdir = 'linux-x86_64'
   elif host_machine.cpu_family() == 'mips64' and host_machine.system() == 'linux'
     arch_subdir = 'linux64-mips64'
+  elif host_machine.cpu_family() == 'riscv64' and host_machine.system() == 'linux'
+    arch_subdir = 'linux64-riscv64'
   else
     error('Unsupported arch+OS combo: ' + host_machine.cpu_family() + ' + ' + host_machine.system())
   endif
@@ -293,6 +297,7 @@ if host_machine.system() == 'windows'
     ## default of Win. See INSTALL in openssl repo.
     'OPENSSLDIR="C:\\Program Files\\Common Files\\SSL"',
     'ENGINESDIR="NUL"',
+    'MODULESDIR="NUL"',
     'OPENSSL_SYS_WIN32', 'WIN32_LEAN_AND_MEAN', 'L_ENDIAN',
     '_CRT_SECURE_NO_DEPRECATE', 'UNICODE', '_UNICODE',
   ]
@@ -305,6 +310,7 @@ elif host_machine.system() == 'darwin'
   defines += [
     'OPENSSLDIR="/System/Library/OpenSSL/"',
     'ENGINESDIR="/dev/null"',
+    'MODULESDIR="/dev/null"',
   ]
   c_args += [
     '-Wno-missing-field-initializers',
@@ -313,6 +319,7 @@ elif host_machine.system() == 'sunos'
   defines += [
    'OPENSSLDIR="/etc/ssl"',
    'ENGINESDIR="/dev/null"',
+   'MODULESDIR="/dev/null"',
    '__EXTENSIONS__'
  ]
 else
@@ -320,6 +327,7 @@ else
   defines += [
     'OPENSSLDIR="/etc/ssl"',
     'ENGINESDIR="/dev/null"',
+    'MODULESDIR="/dev/null"',
   ]
   c_args += [
     '-Wno-missing-field-initializers',
@@ -352,7 +360,7 @@ if get_option('default_library') == 'static'
   defines += [
     'OSSL_CRYPTO_DSO_CONF_H',
     'DSO_NONE',
-    'DSO_EXTENSION=.so',
+    'DSO_EXTENSION=".so"',
     'OPENSSL_NO_DSO',
   ]
 endif
@@ -399,6 +407,10 @@ openssl_dep = declare_dependency(
   dependencies: [libcrypto_dep, libssl_dep],
 )
 
+openssl_cli_directories = include_directories + [
+  'apps/include'
+]
+
 cli_opt = get_option('build_cli')
 
 openssl_cli = executable(
@@ -406,7 +418,7 @@ openssl_cli = executable(
   build_by_default: cli_opt,
   dependencies: dependencies + [openssl_dep],
   sources: openssl_cli_sources,
-  include_directories: include_directories,
+  include_directories: openssl_cli_directories,
   c_args: c_args,
   install: cli_opt,
 )

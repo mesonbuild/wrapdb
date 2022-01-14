@@ -23,7 +23,7 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update
-          sudo apt-get -y install build-essential python3-pip ninja-build nasm
+          sudo apt-get -y install build-essential python3-pip ninja-build nasm libtext-template-perl
           pip install git+https://github.com/mesonbuild/meson
 
       - name: Sanity Checks

@@ -5,7 +5,9 @@ foreach $src (@libcrypto_srcs) {
   $OUT .= "  '$src',\n";
 }
 foreach $src (@generated_srcs) {
-  $OUT .= "  'generated-config/archs/$arch/$asm/$src',\n";
+  if ($src !~ /\.ld/) {
+    $OUT .= "  'generated-config/archs/$arch/$asm/$src',\n";
+  }
 }
 -%%]
 libssl_sources = [
@@ -26,6 +28,9 @@ foreach $define (@lib_cppflags) {
   $OUT .= "  '$define',\n";
 }
 foreach $define (@{$target{defines}}) {
+  $OUT .= "  '$define',\n";
+}
+foreach $define (@{lib_defines}) {
   $OUT .= "  '$define',\n";
 }
 foreach $define (@{$config{lib_defines}}) {
@@ -74,15 +79,19 @@ openssl_include_directories = [
   'generated-config/archs/%%-$arch-%%/%%-$asm-%%',
   'generated-config/archs/%%-$arch-%%/%%-$asm-%%/include',
   'generated-config/archs/%%-$arch-%%/%%-$asm-%%/crypto',
-  'generated-config/archs/%%-$arch-%%/%%-$asm-%%/crypto/include/internal',
+  'generated-config/archs/%%-$arch-%%/%%-$asm-%%/providers/common/include',
 ]
 
 # OpenSSL CLI
 openssl_cli_sources = [
 %%-
 foreach $src (@apps_openssl_srcs) {
-  unless ($src eq "apps/openssl.rc") {
-    $OUT .= "  '$src',\n";
+  if ($src eq 'apps/progs.c') {
+    $OUT .= "  'generated-config/archs/$arch/$asm/$src',\n";
+  } else {
+    unless ($src eq "apps/openssl.rc") {
+      $OUT .= "  '$src',\n";
+    }
   }
 }
 foreach $src (@libapps_srcs) {
