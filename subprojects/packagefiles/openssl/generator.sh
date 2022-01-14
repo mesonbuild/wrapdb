@@ -39,6 +39,10 @@ find config/archs -iname '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$
 
 # AIX is not supported by Meson
 rm -rf ../../../generated-config/archs/aix*
+# 32-bit s390x supported in Meson
+rm -rf ../../../generated-config/archs/linux32-s390x
+# Linux ELF is useless in Meson
+rm -rf ../../../generated-config/archs/linux-elf
 # This is for old gas/nasm versions, we do not care about them
 rm -rf ../../../generated-config/archs/*/asm_avx2
 # Remove build info files, we use hardcoded deterministic one instead
