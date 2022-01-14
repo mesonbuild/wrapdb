@@ -1208,6 +1208,14 @@
       "3.34.1-1"
     ]
   },
+  "taglib": {
+    "dependency_names": [
+      "taglib"
+    ],
+    "versions": [
+      "1.12-1"
+    ]
+  },
   "tclap": {
     "dependency_names": [
       "tclap"

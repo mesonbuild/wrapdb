@@ -1,0 +1,10 @@
+[wrap-file]
+directory = taglib-1.12
+source_url = https://github.com/taglib/taglib/releases/download/v1.12/taglib-1.12.tar.gz
+source_filename = taglig-1.12.tar.gz
+source_hash = 7fccd07669a523b07a15bd24c8da1bbb92206cb19e9366c3692af3d79253b703
+patch_directory = taglib
+
+[provide]
+taglib = taglib_dep
+
