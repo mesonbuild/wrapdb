@@ -591,6 +591,17 @@
       "1.7.0-2"
     ]
   },
+  "harfbuzz": {
+    "dependency_names": [
+      "harfbuzz",
+      "harfbuzz-icu",
+      "harfbuzz-subset",
+      "harfbuzz-gobject"
+    ],
+    "versions": [
+      "4.4.1-1"
+    ]
+  },
   "hedley": {
     "versions": [
       "11-1"

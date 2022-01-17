@@ -110,6 +110,24 @@
       "glib:tests=false"
     ]
   },
+  "harfbuzz": {
+    "_comment": ["- Currently builds with no warnings other than an incorrect warning() function",
+                 "  tracked at https://github.com/harfbuzz/harfbuzz/issues/3378",
+                 "  Absolutely impossible to fix on Windows."],
+    "fatal_warnings": false,
+    "build_options": [
+      "glib:tests=false",
+      "cairo:tests=disabled",
+      "pixman:tests=disabled"
+    ],
+    "brew_packages": [
+      "glib-utils"
+    ],
+    "debian_packages": [
+      "libicu-dev",
+      "libfreetype6-dev"
+    ]
+  },
   "hinnant-date": {
     "build_options": [
       "hinnant-date:use_system_tzdb=true"
