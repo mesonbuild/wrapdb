@@ -1,14 +1,18 @@
 {
-  "_comment": ["skip_linux and skip_windows are lists of wraps that are known",
-               "to fail on the CI and should get repaired whenever possible.",
+  "_comment": ["This is intentionally undocumented in README.md, do not use it.",
+               "Using it is an automatic CI error.",
+               "skip_linux and skip_windows are lists of wraps that are known",
+               "to be broken on the CI and ***MUST*** get repaired before updates",
+               "will be accepted. If upstream does not support Windows, set that",
+               "wrap to linux_only instead.",
                "Please remove projects from those lists once they are updated."],
-  "skip_linux": [
+  "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
     "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
     "protobuf-c", "pugixml", "quazip", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
-  "skip_windows": [
+  "broken_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers",
     "fuse", "gdbm", "google-snappy", "google-woff2",
