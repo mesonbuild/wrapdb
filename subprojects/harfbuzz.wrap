@@ -1,0 +1,9 @@
+[wrap-file]
+directory = harfbuzz-3.2.0
+source_url = https://github.com/harfbuzz/harfbuzz/releases/download/3.2.0/harfbuzz-3.2.0.tar.xz
+source_filename = harfbuzz-3.2.0.tar.xz
+source_hash = 0ada50a1c199bb6f70843ab893c55867743a443b84d087d54df08ad883ebc2cd
+
+[provide]
+harfbuzz = libharfbuzz_dep
+harfbuzz-icu = libharfbuzz_icu_dep
