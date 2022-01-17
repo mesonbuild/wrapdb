@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libepoxy-1.5.9
+source_url = https://github.com/anholt/libepoxy/releases/download/1.5.9/libepoxy-1.5.9.tar.xz
+source_filename = libepoxy-1.5.9.tar.xz
+source_hash = d168a19a6edfdd9977fef1308ccf516079856a4275cf876de688fb7927e365e4
+
+[provide]
+epoxy = libepoxy_dep

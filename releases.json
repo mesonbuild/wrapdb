@@ -185,6 +185,14 @@
       "1.3.13-2"
     ]
   },
+  "epoxy": {
+    "dependency_names": [
+      "epoxy"
+    ],
+    "versions": [
+      "1.5.9-1"
+    ]
+  },
   "expat": {
     "dependency_names": [
       "expat"

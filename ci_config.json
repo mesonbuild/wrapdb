@@ -21,6 +21,13 @@
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
 
+  "epoxy": {
+    "debian_packages": [
+      "libgl-dev",
+      "libegl-dev"
+    ],
+    "linux_only": true
+  },
   "fluidsynth": {
     "build_options": [
       "glib:tests=false"
