@@ -62,8 +62,7 @@ class TestReleases(unittest.TestCase):
                 cls.ci_config = json.load(f)
         except json.decoder.JSONDecodeError as err:
             what = "Error in file '%s': %s" % (fn, err)
-        finally:
-            raise RuntimeError(what)
+            raise RuntimeError(f'Error in file "{fn}": {err}') from err
 
         system = platform.system().lower()
         cls.skip = cls.ci_config[f'skip_{system}']
