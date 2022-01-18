@@ -66,7 +66,7 @@ class TestReleases(unittest.TestCase):
             raise RuntimeError(what)
 
         system = platform.system().lower()
-        cls.skip = cls.ci_config[f'skip_{system}']
+        cls.skip = cls.ci_config[f'broken_{system}']
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
 
     def test_releases_json(self):
@@ -178,7 +178,7 @@ class TestReleases(unittest.TestCase):
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
                             self.check_new_release(name)
-                            with self.subTest(f'If this works now, please remove it from skip_{platform.system().lower()}!'):
+                            with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                 self.assertNotIn(name, self.skip)
                             self.check_meson_version(name, ver, patch_path)
                     else:
@@ -256,7 +256,7 @@ class TestReleases(unittest.TestCase):
             raise
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
-            subprocess.check_call(['meson', 'test', '-C', builddir, '--print-errorlogs'])
+            subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
         except subprocess.CalledProcessError:
             log_file = Path(builddir, 'meson-logs', 'testlog.txt')
             print('::group::==== testlog.txt ====')
