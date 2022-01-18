@@ -1,30 +1,36 @@
 {
-  "_comment": ["skip_linux and skip_windows are lists of wraps that are known",
-               "to fail on the CI and should get repaired whenever possible.",
+  "_comment": ["This is intentionally undocumented in README.md, do not use it.",
+               "Using it is an automatic CI error.",
+               "skip_linux and skip_windows are lists of wraps that are known",
+               "to be broken on the CI and ***MUST*** get repaired before updates",
+               "will be accepted. If upstream does not support Windows, set that",
+               "wrap to linux_only instead.",
                "Please remove projects from those lists once they are updated."],
-  "skip_linux": [
+  "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
     "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
     "protobuf-c", "pugixml", "quazip", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
-  "skip_windows": [
+  "broken_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers",
     "fuse", "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "imgui-sfml", "inih", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
-    "libtomcrypt", "libuv", "libwebsockets",
+    "libtomcrypt", "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
     "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
 
-  "fluidsynth": {
-    "build_options": [
-      "glib:tests=false"
-    ]
+  "epoxy": {
+    "debian_packages": [
+      "libgl-dev",
+      "libegl-dev"
+    ],
+    "linux_only": true
   },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
@@ -100,10 +106,7 @@
   },
   "slirp": {
     "_comment": ["- Limited to linux_only pending the addition of other POSIX-ish environments to the test matrix."],
-    "linux_only": true,
-    "build_options": [
-      "glib:tests=false"
-    ]
+    "linux_only": true
   },
   "wayland": {
     "linux_only": true,
