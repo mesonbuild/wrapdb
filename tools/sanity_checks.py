@@ -249,7 +249,7 @@ class TestReleases(unittest.TestCase):
             raise
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
-            subprocess.check_call(['meson', 'test', '-C', builddir, '--print-errorlogs'])
+            subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
         except subprocess.CalledProcessError:
             log_file = Path(builddir, 'meson-logs', 'testlog.txt')
             print('::group::==== testlog.txt ====')

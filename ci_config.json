@@ -32,11 +32,6 @@
     ],
     "linux_only": true
   },
-  "fluidsynth": {
-    "build_options": [
-      "glib:tests=false"
-    ]
-  },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
     "build_options": [
@@ -111,10 +106,7 @@
   },
   "slirp": {
     "_comment": ["- Limited to linux_only pending the addition of other POSIX-ish environments to the test matrix."],
-    "linux_only": true,
-    "build_options": [
-      "glib:tests=false"
-    ]
+    "linux_only": true
   },
   "wayland": {
     "linux_only": true,
