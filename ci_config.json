@@ -73,6 +73,17 @@
       "libglibmm-2.4-dev"
     ]
   },
+  "orcus": {
+    "_comment": ["- depends on Boost, which is not available on WrapDB"],
+    "linux_only": true,
+    "debian_packages": [
+      "libmdds-dev",
+      "libboost-filesystem-dev"
+    ],
+    "build_options": [
+      "cpp_std=c++17"
+    ]
+  },
   "rdkafka": {
     "build_options": [
       "rdkafka:WITH_SASL=disabled",

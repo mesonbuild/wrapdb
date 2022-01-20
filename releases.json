@@ -1001,6 +1001,14 @@
       "1.1.1k-1"
     ]
   },
+  "orcus": {
+    "dependency_names": [
+      "liborcus-0.17"
+    ],
+    "versions": [
+      "0.17.2-1"
+    ]
+  },
   "pcg": {
     "versions": [
       "0.98.1-2",
