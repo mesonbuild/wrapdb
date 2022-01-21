@@ -7,4 +7,5 @@ patch_directory = flatbuffers
 
 [provide]
 flatbuffers = flatbuffers_dep
+flatc_library = flatc_lib_dep
 program_names = flatc, flathash

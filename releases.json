@@ -233,7 +233,8 @@
   },
   "flatbuffers": {
     "dependency_names": [
-      "flatbuffers"
+      "flatbuffers",
+      "flatc_library"
     ],
     "program_names": [
       "flatc",

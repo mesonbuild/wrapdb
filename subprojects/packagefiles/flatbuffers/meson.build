@@ -2,7 +2,11 @@ project(
     'flatbuffers',
     'cpp',
     version : '2.0.0',
-    license : 'Apache-2.0'
+    license : 'Apache-2.0',
+    default_options: [
+        'werror=true',
+        'warning_level=3'
+    ]
 )
 
 cpp = meson.get_compiler('cpp')
@@ -13,21 +17,11 @@ if host_machine.system() == 'windows'
     cpp_args += '-D_CRT_SECURE_NO_WARNINGS'
 endif
 
-if cpp.get_argument_syntax() == 'gcc'
-    cpp_args += [
-        '-Wall',
-        '-pedantic',
-        '-Werror',
-        '-Wextra'
-    ]
-endif
-
 # Certain platforms such as ARM do not use signed chars by default
 # which causes issues with certain bounds checks.
 if cpp.has_argument('-fsigned-char')
    cpp_args += '-fsigned-char'
 endif
-
 
 includes = include_directories(['include', 'grpc'])
 
@@ -197,3 +191,6 @@ flathash = executable(
     include_directories : includes,
     cpp_args : cpp_args
 )
+
+meson.override_find_program('flatc', flatc)
+meson.override_find_program('flathash', flathash)
