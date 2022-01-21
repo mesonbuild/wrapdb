@@ -73,6 +73,13 @@
       "libglibmm-2.4-dev"
     ]
   },
+  "lmdb": {
+    "_comment": ["Tests and programs disabled by default"],
+    "build_options": [
+      "lmdb:tests=true",
+      "lmdb:programs=true"
+    ]
+  },
   "orcus": {
     "_comment": ["- depends on Boost, which is not available on WrapDB"],
     "linux_only": true,

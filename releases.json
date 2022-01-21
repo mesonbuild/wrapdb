@@ -791,6 +791,20 @@
       "0.2.5-1"
     ]
   },
+  "lmdb": {
+    "dependency_names": [
+      "lmdb"
+    ],
+    "versions": [
+      "0.9.29-1"
+    ],
+    "program_names": [
+      "mdb_stat",
+      "mdb_copy",
+      "mdb_dump",
+      "mdb_load"
+    ]
+  },
   "lua": {
     "dependency_names": [
       "lua-5.4"
