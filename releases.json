@@ -36,6 +36,14 @@
       "1.6.20-1"
     ]
   },
+  "argparse": {
+    "dependency_names": [
+      "argparse"
+    ],
+    "versions": [
+      "2.2-1"
+    ]
+  },
   "bdwgc": {
     "versions": [
       "7.6.8-1"
