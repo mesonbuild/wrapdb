@@ -1373,6 +1373,14 @@
       "2.0.0-1"
     ]
   },
+  "unity": {
+    "dependency_names": [
+      "unity"
+    ],
+    "versions": [
+      "2.5.2-1"
+    ]
+  },
   "utf8proc": {
     "dependency_names": [
       "libutf8proc"
