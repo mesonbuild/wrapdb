@@ -21,7 +21,10 @@ lame_sources = [
   'version.c',
 ]
 
-vector_sources = ['vector/xmm_quantize_sub.c']
+vector_sources = []
+if cdata.has('HAVE_XMMINTRIN_H')
+  vector_sources += ['vector/xmm_quantize_sub.c']
+endif
 
 lame_deps = [m_dep]
 if build_decoder
