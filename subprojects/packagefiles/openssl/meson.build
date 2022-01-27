@@ -406,5 +406,4 @@ openssl_cli = executable(
   sources: openssl_cli_sources,
   include_directories: include_directories,
   c_args: c_args,
-  install: true,
 )
