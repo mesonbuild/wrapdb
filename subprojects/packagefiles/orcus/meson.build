@@ -9,10 +9,12 @@ version_micro = varr[2]
 
 boost_dep = dependency('boost')
 boost_fs_dep = dependency('boost', modules: ['filesystem'])
-thread_dep = dependency('threads')
+boost_ios_dep = dependency('boost', modules: ['iostreams'])
 
+thread_dep = dependency('threads')
 mdds_dep = dependency('mdds-2.0')
 zlib_dep = dependency('zlib')
+
 subdir('src')
 
 liborcus_dep = declare_dependency(include_directories: 'include',
