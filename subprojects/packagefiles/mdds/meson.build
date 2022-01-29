@@ -1,3 +1,3 @@
-project('mdds', version: '1.6.0', license: 'mit')
+project('mdds', version: '2.0.1', license: 'mit')
 
 mdds_dep = declare_dependency(include_directories: 'include')

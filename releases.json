@@ -849,9 +849,10 @@
   },
   "mdds": {
     "dependency_names": [
-      "mdds-1.6"
+      "mdds-2.0"
     ],
     "versions": [
+      "2.0.1-1",
       "1.6.0-2",
       "1.6.0-1"
     ]
