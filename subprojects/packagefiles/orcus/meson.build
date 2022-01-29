@@ -11,9 +11,9 @@ boost_dep = dependency('boost')
 boost_fs_dep = dependency('boost', modules: ['filesystem'])
 thread_dep = dependency('threads')
 
-mdds_dep = dependency('mdds-1.6')
+mdds_dep = dependency('mdds-2.0')
 zlib_dep = dependency('zlib')
 subdir('src')
 
 liborcus_dep = declare_dependency(include_directories: 'include',
-  link_with: orcus_lib)
+  link_with: [parser_lib, orcus_lib])
