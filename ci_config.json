@@ -85,7 +85,8 @@
     "linux_only": true,
     "debian_packages": [
       "libmdds-dev",
-      "libboost-filesystem-dev"
+      "libboost-filesystem-dev",
+      "libboost-iostreams-dev"
     ],
     "build_options": [
       "cpp_std=c++17"
