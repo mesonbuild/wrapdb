@@ -53,10 +53,15 @@ class TestReleases(unittest.TestCase):
         stdout = subprocess.check_output(['git', 'tag'])
         cls.tags = [t.strip() for t in stdout.decode().splitlines()]
 
-        with open('releases.json', 'r') as f:
-            cls.releases = json.load(f)
-        with open('ci_config.json', 'r') as f:
-            cls.ci_config = json.load(f)
+        try:
+            fn = 'releases.json'
+            with open(fn, 'r') as f:
+                cls.releases = json.load(f)
+            fn = 'ci_config.json'
+            with open(fn, 'r') as f:
+                cls.ci_config = json.load(f)
+        except json.decoder.JSONDecodeError as err:
+            raise RuntimeError(f'file {fn} is malformed')
 
         system = platform.system().lower()
         cls.skip = cls.ci_config[f'broken_{system}']
