@@ -7,7 +7,7 @@
                "wrap to linux_only instead.",
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
-    "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
+    "arduinocore-avr", "cpr", "glew", "imgui-sfml",
     "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
     "protobuf-c", "pugixml", "quazip", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
@@ -37,6 +37,11 @@
     "build_options": [
       "glib:tests=false"
     ]
+  },
+  "hinnant-date": {
+    "_comment": ["- needs libcurl which isn't available on Windows"],
+    "linux_only": true,
+    "debian_packages": ["libcurl4-gnutls-dev"]
   },
   "htslib": {
     "_comment": ["- relies on lots of POSIX interfaces"],
