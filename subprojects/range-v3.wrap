@@ -4,3 +4,6 @@ source_url = https://github.com/ericniebler/range-v3/archive/0.10.0.tar.gz
 source_filename = range-v3-0.10.0.tar.gz
 source_hash = 5a1cd44e7315d0e8dcb1eee4df6802221456a9d1dbeac53da02ac7bd4ea150cd
 patch_directory = range-v3
+
+[provide]
+range-v3 = range_dep
