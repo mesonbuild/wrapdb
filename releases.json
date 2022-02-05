@@ -1115,6 +1115,9 @@
     ]
   },
   "range-v3": {
+    "dependency_names": [
+      "range-v3"
+    ],
     "versions": [
       "0.10.0-1",
       "0.3.6-1"
