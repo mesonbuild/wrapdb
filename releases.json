@@ -1170,6 +1170,14 @@
       "5.2.0-1"
     ]
   },
+  "rubberband": {
+    "dependency_names": [
+      "rubberband"
+    ],
+    "versions": [
+      "2.0.2-1"
+    ]
+  },
   "rxcpp": {
     "versions": [
       "4.1.0-1"
