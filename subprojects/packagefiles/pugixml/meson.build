@@ -1,4 +1,4 @@
-project('pugixml', 'cpp', version: '1.11.4', meson_version: '>=0.46.0')
+project('pugixml', 'cpp', version: '1.12', meson_version: '>=0.46.0')
 
 cxx = meson.get_compiler('cpp')
 
