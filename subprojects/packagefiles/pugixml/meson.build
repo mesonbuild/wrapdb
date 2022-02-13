@@ -45,19 +45,23 @@ import('pkgconfig').generate(
   url: 'https://pugixml.org/',
 )
 
-if find_program('cmake', required: false).found()
-  cmake = import('cmake')
-  cmake.write_basic_package_version_file(
-    name: meson.project_name(),
-    version: meson.project_version(),
-    compatibility: 'SameMajorVersion',
-  )
-  cmake.configure_package_config_file(
-    input: 'scripts/pugixml-config.cmake.in',
-    name: meson.project_name(),
-    configuration: configuration_data(),
-  )
-endif
+# This is a nice idea in theory, but in practice it turns out CMake needs a third file
+# too, this one called "-targets.cmake", and there isn't a module method to create this.
+# Watch this space for news: https://github.com/mesonbuild/meson/pull/9978
+#
+#if find_program('cmake', required: false).found()
+#  cmake = import('cmake')
+#  cmake.write_basic_package_version_file(
+#    name: meson.project_name(),
+#    version: meson.project_version(),
+#    compatibility: 'SameMajorVersion',
+#  )
+#  cmake.configure_package_config_file(
+#    input: 'scripts/pugixml-config.cmake.in',
+#    name: meson.project_name(),
+#    configuration: configuration_data(),
+#  )
+#endif
 
 subdir('tests')
 pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
