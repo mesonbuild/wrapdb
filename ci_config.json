@@ -9,7 +9,7 @@
   "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
     "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
-    "protobuf-c", "pugixml", "quazip", "sdl2_image", "sdl2_mixer",
+    "protobuf-c", "quazip", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "zstd"
   ],
   "broken_windows": [
@@ -20,7 +20,7 @@
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
-    "nng", "openh264", "openssl", "protobuf", "protobuf-c", "pugixml",
+    "nng", "openh264", "openssl", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "xxhash", "zstd"
   ],
