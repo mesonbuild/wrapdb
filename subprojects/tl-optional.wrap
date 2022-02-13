@@ -1,0 +1,9 @@
+[wrap-file]
+directory = optional-1.0.0
+source_url = https://github.com/TartanLlama/optional/archive/refs/tags/v1.0.0.tar.gz
+source_filename = optional-1.0.0.tar.gz
+source_hash = e18941da05bca12a796ebbeacb83993bc0f10e817fa10bb45124a421c2384690
+patch_directory = tl-optional
+
+[provide]
+tl-optional = tl_optional_dep
