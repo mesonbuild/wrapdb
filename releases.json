@@ -725,6 +725,14 @@
       "0.6.22-1"
     ]
   },
+  "libffmpegthumbnailer": {
+    "dependency_names": [
+      "libffmpegthumbnailer"
+    ],
+    "versions": [
+      "2.2.2-1"
+    ]
+  },
   "libgpiod": {
     "versions": [
       "1.6.3-1"
