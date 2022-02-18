@@ -116,6 +116,25 @@
       "libpciaccess-dev"
     ]
   },
+  "libffmpegthumbnailer": {
+    "brew_packages": [
+      "ffmpeg@4"
+    ],
+    "debian_packages": [
+      "libavcodec-dev",
+      "libavfilter-dev",
+      "libavformat-dev",
+      "libavutil-dev"
+    ],
+    "_comment": "ffmpeg4 is keg-only. Need to add pkgconfig path.",
+    "build_options": [
+      "pkg_config_path=/usr/local/opt/ffmpeg@4/lib/pkgconfig"
+    ],
+    "_comment": "ffmpeg is not available with MSVC CI",
+    "build_on": {
+      "windows": false
+    }
+  },
   "libnpupnp": {
     "brew_packages": [
       "libmicrohttpd"
