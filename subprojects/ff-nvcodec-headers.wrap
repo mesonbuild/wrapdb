@@ -1,0 +1,9 @@
+[wrap-file]
+directory = nv-codec-headers-11.1.5.1
+source_url = https://github.com/FFmpeg/nv-codec-headers/releases/download/n11.1.5.1/nv-codec-headers-11.1.5.1.tar.gz
+source_filename = nv-codec-headers-11.1.5.1.tar.gz
+source_hash = a28cdde3ac0e9e02c2dde7a1b4de5333b4ac6148a8332ca712da243a3361a0d9
+patch_directory = ff-nvcodec-headers
+
+[provide]
+ffnvcodec = ffnvcodec_dep
