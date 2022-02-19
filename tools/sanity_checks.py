@@ -42,6 +42,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'lame.h',
     ],
 }
+PER_PROJECT_PERMITTED_WRAP_GIT = {'ff-nvcodec-headers'}
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 
@@ -116,14 +117,20 @@ class TestReleases(unittest.TestCase):
                 # Basic checks
                 with self.subTest(step='basic'):
                     self.assertTrue(re.fullmatch('[a-z][a-z-1-9._-]*', name))
-                    self.assertEqual(config.sections()[0], 'wrap-file')
-                    wrap_section = config['wrap-file']
+                    if name in PER_PROJECT_PERMITTED_WRAP_GIT:
+                        self.assertEqual(config.sections()[0], 'wrap-git')
+                        wrap_section = config['wrap-git']
+                        self.assertIn('url', wrap_section)
+                        self.assertIn('revision', wrap_section)
+                    else:
+                        self.assertEqual(config.sections()[0], 'wrap-file')
+                        wrap_section = config['wrap-file']
+                        self.assertIn('source_filename', wrap_section)
+                        self.check_has_no_path_separators(wrap_section['source_filename'])
+                        self.assertIn('source_url', wrap_section)
+                        self.assertIn('source_hash', wrap_section)
                     self.assertIn('directory', wrap_section)
                     self.check_has_no_path_separators(wrap_section['directory'])
-                    self.assertIn('source_filename', wrap_section)
-                    self.check_has_no_path_separators(wrap_section['source_filename'])
-                    self.assertIn('source_url', wrap_section)
-                    self.assertIn('source_hash', wrap_section)
 
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks:
@@ -171,8 +178,10 @@ class TestReleases(unittest.TestCase):
                         self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
                         self.assertTrue(re.fullmatch('[0-9]+', rev))
                     if i == 0:
-                        with self.subTest(step='check_source_url'):
-                            self.check_source_url(name, wrap_section, ver)
+                        # No source_url for [wrap-git]
+                        if name not in PER_PROJECT_PERMITTED_WRAP_GIT:
+                            with self.subTest(step='check_source_url'):
+                                self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
                             self.check_new_release(name)

@@ -231,6 +231,14 @@
       "2.0.2-0"
     ]
   },
+  "ff-nvcodec-headers": {
+    "dependency_names": [
+      "ffnvcodec"
+    ],
+    "versions": [
+      "11.1.5.1-0"
+    ]
+  },
   "flac": {
     "dependency_names": [
       "flac"
