@@ -5,7 +5,9 @@ libdl = cc.find_library('dl', required: false)
 libm = cc.find_library('m', required: false)
 
 sqlite_args = []
-if 'msvc' == cc.get_id() and 'static' != get_option('default_library')
+# On Windows/MinGW, we need to define -DSQLITE_API=__declspec(dllexport)
+# If not the .lib will not be generated
+if host_machine.system() == 'windows' and 'static' != get_option('default_library')
     sqlite_args += ['-DSQLITE_API=__declspec(dllexport)']
 endif
 
