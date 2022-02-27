@@ -3,7 +3,7 @@ project(
     ['c'],
     # library files are BSD licensed. xxhsum utility is GPL licensed.
     license: ['BSD-2-Clause', 'GPL-2.0'],
-    version: '0.8.0',
+    version: '0.8.1',
 )
 
 cc = meson.get_compiler('c')
@@ -153,13 +153,17 @@ xxhash_dep = declare_dependency(
 )
 
 if get_option('cli')
-    install_man('xxhsum.1')
+    install_man('cli/xxhsum.1')
 
     cli_c_args = []
 
     cli_sources = [
         files(
-            'xxhsum.c',
+            'cli/xsum_bench.c',
+            'cli/xsum_os_specific.c',
+            'cli/xsum_output.c',
+            'cli/xsum_sanity_check.c',
+            'cli/xxhsum.c',
         ),
     ]
 
