@@ -81,7 +81,7 @@ if host_machine.system() == 'windows'
     c_args += '-DWIN32'
 endif
 
-if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
+if (cc.get_id() == 'msvc' or cc.get_id().contains('clang')) and get_option('default_library') != 'static'
     c_build_args += '-DXXH_EXPORT'
     c_use_args += '-DXXH_IMPORT'
 endif
