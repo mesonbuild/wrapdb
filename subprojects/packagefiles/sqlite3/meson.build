@@ -1,4 +1,4 @@
-project('sqlite3', 'c', license: 'pd', version: '3.34.1')
+project('sqlite3', 'c', license: 'pd', version: '3.38.0')
 
 cc = meson.get_compiler('c')
 libdl = cc.find_library('dl', required: false)
