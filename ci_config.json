@@ -123,6 +123,12 @@
       "wayland-protocols"
     ]
   },
+  "sds": {
+    "linux_only": true,
+    "build_options": [
+      "sds:tests=true"
+    ]
+  },
   "sfml": {
     "debian_packages": [
       "libgl-dev",
