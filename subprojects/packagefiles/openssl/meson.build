@@ -300,6 +300,13 @@ if host_machine.system() == 'windows'
     c_args += [
       '-wd4090', '-Gs0', '-GF', '-Gy', '-nologo',
     ]
+  elif compiler.get_id().contains('clang')
+    c_args += compiler.get_supported_arguments([
+      # XXX crypto/rc2/rc2_skey.c:97:10: warning: '#pragma optimize' is not supported [-Wignored-pragma-optimize]
+      '-Wno-ignored-pragma-optimize',
+      # XXX crypto/bio/b_sock2.c:45:16: warning: implicit conversion from 'SOCKET' (aka 'unsigned long long') to 'int' changes value from 18446744073709551615 to -1 [-Wconstant-conversion]
+      '-Wno-constant-conversion',
+    ])
   endif
 elif host_machine.system() == 'darwin'
   defines += [
@@ -332,8 +339,9 @@ else
 endif
 
 foreach library: openssl_libraries
-  # MSVC fails with "ERROR: C static library 'ws2_32' not found" when `static` is specified at all
-  if compiler.get_id() == 'msvc'
+  # Windows compilers fail with "ERROR: C static library 'ws2_32' not found" when `static` is specified at all;
+  # on Windows openssl_libraries point at Windows SDK libs which are shipped .dll files only.
+  if host_machine.system() == 'windows'
     dependencies += [
       compiler.find_library(library),
     ]
