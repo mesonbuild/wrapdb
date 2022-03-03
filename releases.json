@@ -1248,6 +1248,14 @@
       "2.0.12-1"
     ]
   },
+  "sds": {
+    "dependency_names": [
+      "sds"
+    ],
+    "versions": [
+      "2.0.0-1"
+    ]
+  },
   "sergiusthebest-plog": {
     "versions": [
       "1.1.4-1"
