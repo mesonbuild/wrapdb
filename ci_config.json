@@ -20,7 +20,7 @@
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
-    "nng", "openh264", "openssl", "protobuf", "protobuf-c",
+    "nng", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "reflex", "sdl2_image", "sdl2_mixer",
     "sdl2_net", "sdl2_ttf", "termbox", "unit-system", "zstd"
   ],
@@ -78,6 +78,12 @@
     "build_options": [
       "lmdb:tests=true",
       "lmdb:programs=true"
+    ]
+  },
+  "openssl": {
+    "linux_only": true,
+    "build_options": [
+      "openssl:build_cli=true"
     ]
   },
   "orcus": {

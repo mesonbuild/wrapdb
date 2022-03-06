@@ -399,12 +399,14 @@ openssl_dep = declare_dependency(
   dependencies: [libcrypto_dep, libssl_dep],
 )
 
+cli_opt = get_option('build_cli')
+
 openssl_cli = executable(
   'openssl',
-  build_by_default: false,
+  build_by_default: cli_opt,
   dependencies: dependencies + [openssl_dep],
   sources: openssl_cli_sources,
   include_directories: include_directories,
   c_args: c_args,
-  install: true,
+  install: cli_opt,
 )
