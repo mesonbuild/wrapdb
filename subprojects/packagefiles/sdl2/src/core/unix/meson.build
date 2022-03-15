@@ -1,3 +1,3 @@
-all_sources += files(
-  'SDL_poll.c',
+c_sources += files(
+    'SDL_poll.c',
 )

@@ -1,10 +1,10 @@
-all_sources += files(
-  'SDL_assert.c',
-  'SDL_dataqueue.c',
-  'SDL_error.c',
-  'SDL_hints.c',
-  'SDL_log.c',
-  'SDL.c',
+c_sources += files(
+    'SDL.c',
+    'SDL_assert.c',
+    'SDL_dataqueue.c',
+    'SDL_error.c',
+    'SDL_hints.c',
+    'SDL_log.c',
 )
 
 subdir('atomic')
@@ -27,7 +27,6 @@ subdir('power')
 subdir('render')
 subdir('sensor')
 subdir('stdlib')
-#subdir('test')
 subdir('thread')
 subdir('timer')
 subdir('video')

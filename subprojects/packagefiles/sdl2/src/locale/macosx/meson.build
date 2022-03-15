@@ -1,3 +1,3 @@
-all_sources += files(
-  'SDL_syslocale.m',
+objc_sources += files(
+    'SDL_syslocale.m',
 )

@@ -1,3 +1,3 @@
-all_sources += files(
+objc_sources += files(
   'SDL_coreaudio.m',
 )

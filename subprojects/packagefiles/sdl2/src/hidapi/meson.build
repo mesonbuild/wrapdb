@@ -1,9 +1,13 @@
-all_sources += files(
-  'SDL_hidapi.c',
+c_sources += files(
+    'SDL_hidapi.c',
 )
 
-core_inc += include_directories('hidapi')
-
-if host_machine.system() == 'windows'
-  core_deps += [cc.find_library('setupapi')]
+if platform_is_android
+    cxx_sources += files(
+        'android/hid.cpp',
+    )
+elif platform_is_ios
+    objc_sources += files(
+        'ios/hid.m'
+    )
 endif

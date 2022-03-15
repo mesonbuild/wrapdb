@@ -41,6 +41,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'sdl2': [
+        'find-dylib-name.py'
+    ]
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}

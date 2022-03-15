@@ -1,9 +1,11 @@
-all_sources += files(
-  'SDL_thread.c',
+c_sources += files(
+    'SDL_thread.c',
 )
 
-if host_machine.system() == 'windows'
-  subdir('windows')
+if sys_thread.length() == 0
+    subdir('generic')
 else
-  subdir('pthread')
+    foreach backend : sys_thread
+        subdir(backend)
+    endforeach
 endif

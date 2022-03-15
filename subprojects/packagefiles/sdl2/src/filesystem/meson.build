@@ -1,6 +1,12 @@
-if host_machine.system() == 'windows'
-  subdir('windows')
-else
-  subdir('unix')
-endif
 
+subdir('android')
+subdir('cocoa')
+subdir('dummy')
+subdir('emscripten')
+subdir('haiku')
+subdir('nacl')
+subdir('os2')
+subdir('unix')
+subdir('vita')
+subdir('windows')
+subdir('winrt')

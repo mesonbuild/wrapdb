@@ -1,33 +1,38 @@
-all_sources += files(
-  'SDL_mixer.c',
-  'SDL_audiodev.c',
-  'SDL_audio.c',
-  'SDL_audiotypecvt.c',
-  'SDL_audiocvt.c',
-  'SDL_wave.c',
+c_sources += files(
+    'SDL_audio.c',
+    'SDL_audiocvt.c',
+    'SDL_audiodev.c',
+    'SDL_audiotypecvt.c',
+    'SDL_mixer.c',
+    'SDL_wave.c',
 )
 
+subdir('aaudio')
 subdir('alsa')
-#subdir('android')
-#subdir('arts')
-#subdir('bsd')
-if host_machine.system() == 'darwin'
-  subdir('coreaudio')
-endif
+subdir('android')
+subdir('arts')
+subdir('coreaudio')
 subdir('directsound')
 subdir('disk')
-#subdir('dsp')
+subdir('dsp')
 subdir('dummy')
-#subdir('esd')
-#subdir('fusionsound')
-#subdir('haiku')
-#subdir('nas')
-#subdir('paudio')
-#subdir('psp')
-#subdir('pulseaudio')
-#subdir('qsa')
-#subdir('sndio')
-#subdir('sun')
+subdir('emscripten')
+subdir('esd')
+subdir('fusionsound')
+subdir('haiku')
+subdir('jack')
+subdir('nacl')
+subdir('nas')
+subdir('netbsd')
+subdir('openslES')
+subdir('os2')
+subdir('paudio')
+subdir('pipewire')
+subdir('psp')
+subdir('pulseaudio')
+subdir('qsa')
+subdir('sndio')
+subdir('sun')
+subdir('vita')
 subdir('wasapi')
 subdir('winmm')
-#subdir('xaudio2')
