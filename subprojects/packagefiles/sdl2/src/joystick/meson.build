@@ -1,19 +1,32 @@
-all_sources += files(
-  'SDL_joystick.c',
-  'SDL_gamecontroller.c',
+c_sources += files(
+    'SDL_joystick.c',
+    'SDL_gamecontroller.c',
 )
 
+subdir('dummy')
 subdir('hidapi')
 subdir('steam')
 subdir('virtual')
 
-if host_machine.system() == 'linux'
-  subdir('linux')
-elif host_machine.system() == 'windows'
-  subdir('windows')
-elif host_machine.system() == 'darwin'
-  subdir('darwin')
-  subdir('iphoneos')
-else
-  error('Unsupported platform.')
+if platform_is_android
+    subdir('android')
+elif platform_is_ios
+    subdir('iphoneos')
+elif platform_is_darwin
+    subdir('darwin')
+    subdir('iphoneos')
+elif platform_is_linux
+    subdir('linux')
+elif platform_is_bsd
+    subdir('bsd')
+elif platform_is_emscripten
+    subdir('emscripten')
+elif platform_is_psp
+    subdir('psp')
+elif platform_is_windows
+    subdir('windows')
+elif platform_is_vita
+    subdir('vita')
+elif platform_is_os2
+    subdir('os2')
 endif

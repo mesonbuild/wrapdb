@@ -1,3 +1,3 @@
-all_sources += files(
-  'yuv_rgb.c',
+c_sources += files(
+    'yuv_rgb.c',
 )

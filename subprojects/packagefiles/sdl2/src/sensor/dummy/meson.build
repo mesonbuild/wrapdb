@@ -1,3 +1,3 @@
-all_sources += files(
-  'SDL_dummysensor.c',
+c_sources += files(
+    'SDL_dummysensor.c',
 )

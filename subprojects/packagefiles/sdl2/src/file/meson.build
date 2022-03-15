@@ -1,7 +1,7 @@
-all_sources += files(
-  'SDL_rwops.c',
+c_sources += files(
+    'SDL_rwops.c',
 )
 
-if host_machine.system() == 'darwin'
-  subdir('cocoa')
+if platform_is_macos
+    subdir('cocoa')
 endif
