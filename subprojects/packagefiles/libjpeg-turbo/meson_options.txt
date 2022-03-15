@@ -1,1 +1,2 @@
 option('force_inline', type: 'boolean', value: true)
+option('with_simd', type: 'feature')

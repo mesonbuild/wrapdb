@@ -1,7 +1,7 @@
 project('libjpeg-turbo', 'c', version : '2.1.2', license : 'bsd-like')
 
 pkg = import('pkgconfig')
-python = find_program('python')
+python = import('python').find_installation()
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
@@ -120,9 +120,11 @@ if host_system == 'windows'
   add_project_arguments('-DDLLDEFINE', language: 'c')
 endif
 
-# TODO: Add simd support
-cdata.set('WITH_SIMD', false)
-simd = static_library('simd', 'jsimd_none.c')
+subdir('simd')
+cdata.set('WITH_SIMD', has_simd)
+if not has_simd
+  simd = static_library('simd', 'jsimd_none.c')
+endif
 
 jconfig_h_in = host_system == 'windows' ? 'win/jconfig.h.in' : 'jconfig.h.in'
 jconfig_h = configure_file(input: jconfig_h_in,
