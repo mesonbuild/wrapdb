@@ -692,6 +692,15 @@
       "4.2.1-1"
     ]
   },
+  "libobsd": {
+    "dependency_names": [
+      "libbsd-overlay",
+      "libobsd"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
   "libopenjp2": {
     "dependency_names": [
       "libopenjp2"
