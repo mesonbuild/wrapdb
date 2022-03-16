@@ -594,6 +594,24 @@
       "6.5.1-1"
     ]
   },
+  "libdrm": {
+    "dependency_names": [
+      "libdrm",
+      "libdrm_amdgpu",
+      "libdrm_etnaviv",
+      "libdrm_exynos",
+      "libdrm_freedreno",
+      "libdrm_intel",
+      "libdrm_libkms",
+      "libdrm_nouveau",
+      "libdrm_omap",
+      "libdrm_radeon",
+      "libdrm_tegra"
+    ],
+    "versions": [
+      "2.4.110-1"
+    ]
+  },
   "libebml" : {
     "dependency_names" : [
       "libebml"

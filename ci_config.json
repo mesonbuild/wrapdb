@@ -57,6 +57,12 @@
     "_comment": ["- upstream does not support building with MSVC"],
     "linux_only": true
   },
+  "libdrm": {
+    "linux_only": true,
+    "debian_packages": [
+      "libpciaccess-dev"
+    ]
+  },
   "libnpupnp": {
     "debian_packages": [
       "libcurl4-gnutls-dev",
