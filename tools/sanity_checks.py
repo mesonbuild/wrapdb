@@ -226,14 +226,9 @@ class TestReleases(unittest.TestCase):
         ci = self.ci_config.get(name, {})
         if ci.get('linux_only', False) and not is_linux():
             return
-        options = [f'-Dwraps={name}']
+        options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         if ci.get('fatal_warnings', True) and self.fatal_warnings:
             options.append('--fatal-meson-warnings')
-        if is_windows():
-            # On Windows we need to install python modules outside of prefix.
-            for i in {'purelib', 'platlib'}:
-                path = sysconfig.get_paths()[i]
-                options += [f'-Dpython.{i}dir={path}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
