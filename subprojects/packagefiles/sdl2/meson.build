@@ -5,6 +5,10 @@ project('sdl2', 'c',
     default_options : ['c_std=none'],
 )
 
+if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
+  error('default_library=both not supported when compiling with MSVC')
+endif
+  
 # Based on https://github.com/mesonbuild/sdl2/blob/2.0.3/meson.build
 
 varr = meson.project_version().split('.')
@@ -658,6 +662,10 @@ cdata.set('HAVE_LIBC', 1)
 
 core_args = ['-DUSING_GENERATED_CONFIG_H']
 core_ldflags = []
+
+if platform_is_windows and get_option('default_library') != 'static'
+    core_args += '-DDLL_EXPORT'
+endif
 
 cdata.set10('HAVE_GCC_ATOMICS',
     cc.links('int main() { int x; return __atomic_load_n(&x, __ATOMIC_SEQ_CST); }',
