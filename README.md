@@ -52,6 +52,8 @@ meson compile -C builddir
     should not be added here because it's better to test that fallbacks works.
     When running `tools/sanity_checks.py` locally, this list will be printed
     but not installed.
+  - `brew_packages`: (Optional) List of extra packages that will be installed
+    on MacOS CI runners.
   - `linux_only`: (Optional) If set to `true`, indicates the wrap should be tested
     only on Linux CI.
   - `fatal_warnings`: (Optional) If set to `false` removes --fatal-meson-warning.
