@@ -1051,14 +1051,13 @@ if use_sdl2main
     )
 
     sdl2_dep = declare_dependency(
-        link_with : sdl2,
-        link_whole : sdl2main,
+        link_with : [sdl2, sdl2main],
         include_directories : core_inc,
         compile_args : main_c_args,
     )
 
     sdl2main_dep = declare_dependency(
-        link_whole : sdl2main,
+        link_with : sdl2main,
         include_directories : core_inc,
         compile_args : main_c_args,
     )
