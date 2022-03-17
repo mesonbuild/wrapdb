@@ -98,3 +98,6 @@ def is_linux() -> bool:
 def is_windows() -> bool:
     platname = platform.system().lower()
     return platname == 'windows'
+
+def is_macos():
+    return any(platform.mac_ver()[0])
