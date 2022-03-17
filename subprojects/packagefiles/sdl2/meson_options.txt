@@ -169,6 +169,7 @@ option(
 option(
     'use_video_offscreen',
     type : 'feature',
+    value : 'disabled',
     description : 'Enable offscreen rendering support'
 )
 
