@@ -26,9 +26,9 @@
     "abseil-cpp", "arduinocore-avr", "box2d", "check", "cli11",
     "cpr", "docopt", "emilk-loguru", "flac", "flatbuffers",
     "fluidsynth", "fmt", "freetype2", "fuse", "glib",
-    "google-benchmark", "google-woff2", "hinnant-date", "icu",
+    "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libebml", "libgpiod",
-    "libmatroska", "libtomcrypt", "libwebsockets", "libxmlpp",
+    "libmatroska", "libnpupnp", "libtomcrypt", "libwebsockets", "libxmlpp",
     "libxslt", "lmdb", "lz4", "mocklibc", "mpdecimal",
     "openal-soft", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "re2", "rtaudio", "sdl2_image", "sfml",
@@ -74,7 +74,9 @@
     }
   },
   "libdrm": {
+    "_comment": ["- relies on Linux and BSD specific APIs"],
     "build_on": {
+      "darwin": false,
       "windows": false
     },
     "debian_packages": [
@@ -82,6 +84,9 @@
     ]
   },
   "libnpupnp": {
+    "brew_packages": [
+      "libmicrohttpd"
+    ],
     "debian_packages": [
       "libcurl4-gnutls-dev",
       "libmicrohttpd-dev"
@@ -92,7 +97,9 @@
     }
   },
   "liburing": {
+    "_comment": ["- relies on Linux-specific APIs"],
     "build_on": {
+      "darwin": false,
       "windows": false
     }
   },
@@ -109,7 +116,9 @@
     ]
   },
   "openssl": {
+    "_comment": ["- The NodeJS generator requires Linux"],
     "build_on": {
+      "darwin": false,
       "windows": false
     },
     "build_options": [
@@ -121,6 +130,9 @@
     "build_on": {
       "windows": false
     },
+    "brew_packages": [
+      "boost"
+    ],
     "debian_packages": [
       "libmdds-dev",
       "libboost-filesystem-dev",
@@ -184,7 +196,9 @@
     }
   },
   "wayland": {
+    "_comment": ["- relies on Linux-specific APIs"],
     "build_on": {
+      "darwin": false,
       "windows": false
     },
     "build_options": [
@@ -192,7 +206,9 @@
     ]
   },
   "wayland-protocols": {
+    "_comment": ["- relies on wayland-scanner which uses Linux-specific APIs"],
     "build_on": {
+      "darwin": false,
       "windows": false
     },
     "debian_packages": [
