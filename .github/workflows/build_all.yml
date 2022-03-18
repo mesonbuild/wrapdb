@@ -68,7 +68,7 @@ jobs:
         run: |
           brew update
           brew install ninja python
-          python3 -m pip install --pre meson
+          python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Sanity Checks
         run: |
