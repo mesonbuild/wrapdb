@@ -121,6 +121,10 @@
       "darwin": false,
       "windows": false
     },
+    "debian_packages": [
+      "libtext-template-perl",
+      "nasm"
+    ],
     "build_options": [
       "openssl:build_cli=true"
     ]
