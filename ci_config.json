@@ -150,6 +150,12 @@
       "windows": false
     }
   },
+  "libupnp": {
+    "_comment": "Requires some special pthread library",
+    "build_on": {
+      "windows": false
+    }
+  },
   "liburing": {
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
