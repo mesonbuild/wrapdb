@@ -866,6 +866,14 @@
       "1.17-1"
     ]
   },
+  "libupnp": {
+    "dependency_names": [
+      "libupnp"
+    ],
+    "versions": [
+      "1.14.12-1"
+    ]
+  },
   "liburing": {
     "dependency_names": [
       "uring"
