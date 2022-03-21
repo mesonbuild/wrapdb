@@ -1,6 +1,6 @@
 project('libmatroska', 'cpp',
   version : '1.6.3',
-  default_options : ['warning_level=3', 'cpp_std=c++14'])
+  default_options : ['warning_level=1', 'cpp_std=c++14'])
 
 cpp = meson.get_compiler('cpp')
 if cpp.get_id() == 'msvc'
