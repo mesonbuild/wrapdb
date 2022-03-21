@@ -28,7 +28,7 @@
     "fluidsynth", "fmt", "freetype2", "fuse", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libebml", "libgpiod",
-    "libmatroska", "libnpupnp", "libtomcrypt", "libwebsockets", "libxmlpp",
+    "libmatroska", "libtomcrypt", "libwebsockets", "libxmlpp",
     "libxslt", "lmdb", "lz4", "mocklibc", "mpdecimal",
     "openal-soft", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "re2", "rtaudio", "sdl2_image", "sfml",
@@ -94,7 +94,10 @@
     "_comment": ["libmicrohttpd is not available with MSVC CI"],
     "build_on": {
       "windows": false
-    }
+    },
+    "build_options": [
+      "cpp_std=c++14"
+    ]
   },
   "liburing": {
     "_comment": ["- relies on Linux-specific APIs"],
