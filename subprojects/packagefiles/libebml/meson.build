@@ -1,6 +1,6 @@
 project('libebml', 'cpp',
   version : '1.4.2',
-  default_options : ['warning_level=3', 'cpp_std=c++14']
+  default_options : ['warning_level=1', 'cpp_std=c++14']
 )
 
 #hacks to fix compilation with GCC11. They go away with the next version
