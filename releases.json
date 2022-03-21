@@ -508,9 +508,10 @@
   "inih": {
     "dependency_names": [
       "inih",
-      "inireader"
+      "INIReader"
     ],
     "versions": [
+      "r53-2",
       "r53-1",
       "r52-1",
       "r51-1"
