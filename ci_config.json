@@ -17,8 +17,8 @@
     "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit", "libexif",
     "libgpiod", "liblbfgs", "liblzma", "libwebsockets", "libxmlpp",
     "lzo2", "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
-    "protobuf", "protobuf-c", "quazip", "rdkafka", "reflex", "termbox",
-    "unit-system", "zstd"
+    "protobuf-c", "quazip", "rdkafka", "reflex", "termbox","unit-system",
+    "zstd"
   ],
   "broken_darwin": [
     "abseil-cpp", "arduinocore-avr", "box2d", "check", "cli11", "cpr",
@@ -26,7 +26,7 @@
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
     "lmdb", "lz4", "mocklibc", "mpdecimal", "openal-soft",
-    "openh264", "protobuf", "protobuf-c", "quazip", "rdkafka", "re2",
+    "openh264", "protobuf-c", "quazip", "rdkafka", "re2",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
   ],
@@ -179,6 +179,11 @@
     ],
     "build_options": [
       "cpp_std=c++17"
+    ]
+  },
+  "protobuf" : {
+    "build_options": [
+      "cpp_std=c++14"
     ]
   },
   "rdkafka": {
