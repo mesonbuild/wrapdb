@@ -28,7 +28,7 @@
     "fluidsynth", "fmt", "freetype2", "fuse", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libgpiod",
-    "libmatroska", "libtomcrypt", "libwebsockets", "libxmlpp",
+    "libtomcrypt", "libwebsockets", "libxmlpp",
     "libxslt", "lmdb", "lz4", "mocklibc", "mpdecimal",
     "openal-soft", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "re2", "rtaudio", "sdl2_image", "sfml",
@@ -84,6 +84,11 @@
     ]
   },
   "libebml" : {
+    "build_options": [
+      "cpp_std=c++14"
+    ]
+  },
+  "libmatroska" : {
     "build_options": [
       "cpp_std=c++14"
     ]
