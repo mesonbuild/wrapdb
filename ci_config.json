@@ -25,7 +25,7 @@
   "broken_darwin": [
     "abseil-cpp", "arduinocore-avr", "box2d", "check", "cli11",
     "cpr", "docopt", "emilk-loguru", "flac", "flatbuffers",
-    "fluidsynth", "fmt", "freetype2", "glib",
+    "fluidsynth", "freetype2", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libgpiod",
     "libtomcrypt", "libwebsockets", "libxmlpp",
@@ -50,6 +50,11 @@
       "darwin": false,
       "windows": false
     }
+  },
+  "fmt": {
+    "build_options": [
+      "cpp_std=c++14"
+    ]
   },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
