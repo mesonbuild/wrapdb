@@ -14,7 +14,7 @@
   "broken_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers",
-    "fuse", "gdbm", "google-snappy", "google-woff2",
+    "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "imgui-sfml", "inih", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libtomcrypt", "libwebsockets",
@@ -25,7 +25,7 @@
   "broken_darwin": [
     "abseil-cpp", "arduinocore-avr", "box2d", "check", "cli11",
     "cpr", "docopt", "emilk-loguru", "flac", "flatbuffers",
-    "fluidsynth", "fmt", "freetype2", "fuse", "glib",
+    "fluidsynth", "fmt", "freetype2", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libgpiod",
     "libtomcrypt", "libwebsockets", "libxmlpp",
@@ -41,6 +41,13 @@
       "libegl-dev"
     ],
     "build_on": {
+      "windows": false
+    }
+  },
+  "fuse": {
+    "_comment": ["- relies on Linux and BSD specific APIs"],
+    "build_on": {
+      "darwin": false,
       "windows": false
     }
   },
