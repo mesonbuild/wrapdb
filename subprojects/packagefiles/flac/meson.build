@@ -1,8 +1,11 @@
-project('flac', 'c', version: '1.3.3')
+project('flac', 'c', version: '1.3.4')
 
 cc = meson.get_compiler('c')
 
 add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+if host_machine.system() == 'darwin'
+  add_project_arguments('-D_DARWIN_C_SOURCE', language: 'c')
+endif
 
 ogg_dep = dependency('ogg')
 m_dep = cc.find_library('m', required: false)
