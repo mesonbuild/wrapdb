@@ -8,7 +8,7 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "hinnant-date", "imgui-sfml",
-    "libtomcrypt", "libxmlpp", "openal-soft", "openh264",
+    "libxmlpp", "openal-soft", "openh264",
     "protobuf-c", "quazip", "zstd"
   ],
   "broken_windows": [
@@ -17,7 +17,7 @@
     "gdbm", "google-snappy", "google-woff2",
     "hinnant-date", "imgui-sfml", "inih", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
-    "libtomcrypt", "libwebsockets",
+    "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
     "nng", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "reflex", "termbox", "unit-system", "zstd"
@@ -28,7 +28,7 @@
     "fluidsynth", "fmt", "freetype2", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
     "imgui", "imgui-sfml", "jsoncpp", "libgpiod",
-    "libtomcrypt", "libwebsockets", "libxmlpp",
+    "libwebsockets", "libxmlpp",
     "libxslt", "lmdb", "lz4", "mocklibc", "mpdecimal",
     "openal-soft", "openh264", "protobuf", "protobuf-c",
     "quazip", "rdkafka", "re2", "rtaudio", "sdl2_image", "sfml",
