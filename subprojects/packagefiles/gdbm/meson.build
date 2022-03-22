@@ -1,4 +1,4 @@
-project('gdbm', 'c', version: '1.14.1', license: 'lgpl')
+project('gdbm', 'c', version: '1.23', license: 'lgpl')
 cc = meson.get_compiler('c')
 
 conf = configuration_data()
