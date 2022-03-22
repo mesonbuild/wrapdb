@@ -1,13 +1,10 @@
 project('libtomcrypt', 'c',
-  version : '1.17',
+  version : '1.18.2',
   license : 'Public Domain')
 
 add_project_arguments(
   '-DLTC_NO_ASM',
   '-DLTC_SOURCE',
-  '-Wno-unused-but-set-variable',
-  '-Wno-unused-parameter',
-  '-Wno-unused-variable',
   language : 'c'
 )
 
