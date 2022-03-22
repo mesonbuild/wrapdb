@@ -1,8 +1,8 @@
 [wrap-file]
-directory = xz-5.2.1
-source_url = http://tukaani.org/xz/xz-5.2.1.tar.xz
-source_filename = xz-5.2.1.tar.xz
-source_hash = 6ecdd4d80b12001497df0741d6037f918d270fa0f9a1ab4e2664bf4157ae323c
+directory = xz-5.2.5
+source_url = http://tukaani.org/xz/xz-5.2.5.tar.xz
+source_filename = xz-5.2.5.tar.xz
+source_hash = 3e1e518ffc912f86608a8cb35e4bd41ad1aec210df2a47aaa1f95e7f5576ef56
 patch_directory = liblzma
 
 [provide]
