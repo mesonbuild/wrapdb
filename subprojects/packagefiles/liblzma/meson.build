@@ -1,5 +1,5 @@
 # liblzma is what upstream uses for their pkg-config name
-project('liblzma', 'c', version : '5.2.1', license : 'pd/lgpl2/gpl2/gpl3')
+project('liblzma', 'c', version : '5.2.5', license : 'pd/lgpl2/gpl2/gpl3')
 
 cc = meson.get_compiler('c')
 cdata = configuration_data()
@@ -46,6 +46,20 @@ check_coders = [['decoder_arm', 'HAVE_DECODER_ARM'],
   ['encoder_powerpc', 'HAVE_ENCODER_POWERPC'],
   ['encoder_x86', 'HAVE_ENCODER_X86']
 ]
+
+if (get_option('decoder_arm') or get_option('decoder_armthumb') or
+  get_option('decoder_delta') or get_option('decoder_ia64') or
+  get_option('decoder_lzma1') or get_option('decoder_lzma2') or
+  get_option('decoder_powerpc') or get_option('decoder_x86'))
+  cdata.set('HAVE_DECODERS', 1)
+endif
+
+if (get_option('encoder_arm') or get_option('encoder_armthumb') or
+  get_option('encoder_delta') or get_option('encoder_ia64') or
+  get_option('encoder_lzma1') or get_option('encoder_lzma2') or
+  get_option('encoder_powerpc') or get_option('encoder_x86'))
+  cdata.set('HAVE_ENCODERS', 1)
+endif
 
 foreach i : check_headers
   if cc.has_header(i)
