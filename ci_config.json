@@ -13,7 +13,7 @@
   ],
   "broken_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt", "emilk-loguru",
-    "enet", "facil", "flatbuffers", "gdbm", "google-snappy",
+    "enet", "facil", "flatbuffers", "google-snappy",
     "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit", "libexif",
     "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
     "lzo2", "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
@@ -62,6 +62,12 @@
     "build_options": [
       "cpp_std=c++17"
     ]
+  },
+  "gdbm": {
+    "_comment": ["- Requires POSIX platform."],
+    "build_on": {
+      "windows": false
+    }
   },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
