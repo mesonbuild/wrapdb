@@ -11,7 +11,7 @@ cc = meson.get_compiler('c')
 
 include = include_directories('.')
 
-if cc.get_define('__ANDROID__') != ''
+if cc.get_define('__ANDROID__').strip() != ''
   zlib_dep = cc.find_library('z')
 else
   zlib_dep = dependency('zlib')
@@ -47,7 +47,7 @@ png_src = files([
 ])
 
 
-if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
+if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip() != ''
     png_src += files([
         'arm/arm_init.c',
         'arm/filter_neon_intrinsics.c',
