@@ -15,7 +15,7 @@
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt",
     "emilk-loguru", "enet", "facil", "flatbuffers",
     "gdbm", "google-snappy", "google-woff2",
-    "hinnant-date", "imgui-sfml", "inih", "jbigkit",
+    "hinnant-date", "imgui-sfml", "jbigkit",
     "libexif", "libgpiod", "liblbfgs", "liblzma",
     "libwebsockets",
     "libxmlpp", "lzo2", "mocklibc", "mpdecimal", "netstring-c",
