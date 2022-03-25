@@ -27,9 +27,11 @@ rt_dep = cc.find_library('rt', required : false)
 
 wxwidgets_dep = dependency('wxWidgets', required: get_option('build_viewer'))
 
+opj_static_args = []
 if host_system == 'windows'
   if get_option('default_library') == 'static'
-    add_project_arguments(['-DOPJ_STATIC'], language: 'c')
+    opj_static_args = ['-DOPJ_STATIC']
+    add_project_arguments(opj_static_args, language: 'c')
   else
     add_project_arguments(['-DOPJ_EXPORTS'], language: 'c')
   endif
@@ -116,7 +118,8 @@ if get_option('build_pkgconfig_files')
   pkgconfig.generate(openjp2_lib, name: 'libopenjp2',
                        description: 'JPEG2000 library (Part 1 and 2)',
                        version: meson.project_version(),
-                       libraries: openjp2_lib)
+                       libraries: openjp2_lib,
+                       extra_cflags: opj_static_args)
   if get_option('build_jpwl')
     pkgconfig.generate(openjpwl_lib, name: 'libopenjpwl',
                        description: 'JPEG2000 Wireless library (Part 11)',

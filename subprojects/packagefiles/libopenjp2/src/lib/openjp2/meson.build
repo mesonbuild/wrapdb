@@ -189,7 +189,8 @@ openjp2_lib = library('openjp2', openjp2_srcs,
   version : meson.project_version())
 
 libopenjp2_dep = declare_dependency(link_with : openjp2_lib,
-              include_directories : inc_dirs)
+              include_directories : inc_dirs,
+              compile_args: opj_static_args)
 
 install_headers(openjp2_headers)
 
