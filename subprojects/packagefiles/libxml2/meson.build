@@ -307,6 +307,7 @@ libxml2_dep = declare_dependency(
   include_directories: incdir,
   dependencies: deps,
   variables: {'modules': withcdata.get('WITH_MODULES').to_string()},
+  compile_args: libxml_static_args,
 )
 pkg = import('pkgconfig')
 pkg.generate(xml2lib,
