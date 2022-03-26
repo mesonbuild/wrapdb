@@ -186,6 +186,9 @@ sources = files(
   'simpleformatter.cpp',
   'static_unicode_sets.cpp',
   'locdspnm.cpp',
+  'localebuilder.cpp',
+  'emojiprops.cpp',
+  'lstmbe.cpp',
 )
 
 common_lib = library('uc',
