@@ -3,15 +3,19 @@ mt32emu_config_h_in = files('config.h.in')
 common_headers = [
   'mt32emu.h',
   'globals.h',
+  'internals.h',
   'Enumerations.h',
   'Types.h',
 ]
 cpp_headers = [
+  'Display.h',
   'File.h',
   'FileStream.h',
   'MidiStreamParser.h',
+  'Part.h',
   'ROMInfo.h',
   'SampleRateConverter.h',
+  'Structures.h',
   'Synth.h',
 ]
 c_headers = [
@@ -35,6 +39,7 @@ endforeach
 mt32emu_sources = files(
   'Analog.cpp',
   'BReverbModel.cpp',
+  'Display.cpp',
   'File.cpp',
   'FileStream.cpp',
   'LA32FloatWaveGenerator.cpp',
