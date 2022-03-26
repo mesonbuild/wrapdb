@@ -23,7 +23,7 @@
   "broken_darwin": [
     "abseil-cpp", "arduinocore-avr", "box2d", "check", "cli11", "cpr",
     "docopt", "emilk-loguru", "flatbuffers", "freetype2", "glib",
-    "google-benchmark", "google-woff2", "graphite2", "hinnant-date", "icu",
+    "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
     "lmdb", "lz4", "mocklibc", "mpdecimal", "openal-soft",
     "openh264", "protobuf", "protobuf-c", "quazip", "rdkafka", "re2",
@@ -68,6 +68,11 @@
     ]
   },
   "jsoncpp": {
+    "build_options": [
+      "cpp_std=c++14"
+    ]
+  },
+  "icu": {
     "build_options": [
       "cpp_std=c++14"
     ]
