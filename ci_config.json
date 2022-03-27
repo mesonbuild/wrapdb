@@ -58,7 +58,7 @@
     }
   },
   "fuse": {
-    "_comment": ["- relies on Linux and BSD specific APIs"],
+    "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
       "darwin": false,
       "windows": false
@@ -73,19 +73,19 @@
     ]
   },
   "gdbm": {
-    "_comment": ["- Requires POSIX platform."],
+    "_comment": "- Requires POSIX platform.",
     "build_on": {
       "windows": false
     }
   },
   "glib": {
-    "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
+    "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
     "build_options": [
       "glib:tests=false"
     ]
   },
   "htslib": {
-    "_comment": ["- relies on lots of POSIX interfaces"],
+    "_comment": "- relies on lots of POSIX interfaces",
     "build_on": {
       "windows": false
     },
@@ -110,13 +110,13 @@
     ]
   },
   "libccp4c": {
-    "_comment": ["- upstream does not support building with MSVC"],
+    "_comment": "- upstream does not support building with MSVC",
     "build_on": {
       "windows": false
     }
   },
   "libdrm": {
-    "_comment": ["- relies on Linux and BSD specific APIs"],
+    "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
       "darwin": false,
       "windows": false
@@ -125,11 +125,11 @@
       "libpciaccess-dev"
     ]
   },
-  "libebml" : {
+  "libebml": {
     "build_options": [
     ]
   },
-  "libmatroska" : {
+  "libmatroska": {
     "build_options": [
     ]
   },
@@ -141,7 +141,7 @@
       "libcurl4-gnutls-dev",
       "libmicrohttpd-dev"
     ],
-    "_comment": ["libmicrohttpd is not available with MSVC CI"],
+    "_comment": "libmicrohttpd is not available with MSVC CI",
     "build_on": {
       "windows": false
     },
@@ -149,7 +149,7 @@
     ]
   },
   "liburing": {
-    "_comment": ["- relies on Linux-specific APIs"],
+    "_comment": "- relies on Linux-specific APIs",
     "build_on": {
       "darwin": false,
       "windows": false
@@ -161,14 +161,14 @@
     ]
   },
   "lmdb": {
-    "_comment": ["Tests and programs disabled by default"],
+    "_comment": "Tests and programs disabled by default",
     "build_options": [
       "lmdb:tests=true",
       "lmdb:programs=true"
     ]
   },
   "openssl": {
-    "_comment": ["- The NodeJS generator requires Linux"],
+    "_comment": "- The NodeJS generator requires Linux",
     "build_on": {
       "darwin": false,
       "windows": false
@@ -182,7 +182,7 @@
     ]
   },
   "orcus": {
-    "_comment": ["- depends on Boost, which is not available on WrapDB"],
+    "_comment": "- depends on Boost, which is not available on WrapDB",
     "build_on": {
       "windows": false
     },
@@ -197,7 +197,7 @@
     "build_options": [
     ]
   },
-  "protobuf" : {
+  "protobuf": {
     "build_options": [
     ]
   },
@@ -254,7 +254,7 @@
     ]
   },
   "slirp": {
-    "_comment": ["- relies on lots of POSIX interfaces"],
+    "_comment": "- relies on lots of POSIX interfaces",
     "build_on": {
       "windows": false
     }
@@ -264,7 +264,7 @@
     ]
   },
   "wayland": {
-    "_comment": ["- relies on Linux-specific APIs"],
+    "_comment": "- relies on Linux-specific APIs",
     "build_on": {
       "darwin": false,
       "windows": false
@@ -274,7 +274,7 @@
     ]
   },
   "wayland-protocols": {
-    "_comment": ["- relies on wayland-scanner which uses Linux-specific APIs"],
+    "_comment": "- relies on wayland-scanner which uses Linux-specific APIs",
     "build_on": {
       "darwin": false,
       "windows": false
