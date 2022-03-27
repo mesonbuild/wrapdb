@@ -139,7 +139,9 @@
     ]
   },
   "cpp-httplib": {
-    "dependency_names": ["cpp-httplib"],
+    "dependency_names": [
+      "cpp-httplib"
+    ],
     "versions": [
       "0.8.9-2",
       "0.8.9-1"
@@ -165,7 +167,7 @@
   },
   "docopt": {
     "dependency_names": [
-     "docopt"
+      "docopt"
     ],
     "versions": [
       "0.6.3-2",
@@ -663,11 +665,11 @@
       "2.4.110-1"
     ]
   },
-  "libebml" : {
-    "dependency_names" : [
+  "libebml": {
+    "dependency_names": [
       "libebml"
     ],
-    "versions" : [
+    "versions": [
       "1.4.2-1"
     ]
   },
@@ -724,11 +726,11 @@
       "5.2.1-2"
     ]
   },
-  "libmatroska" : {
-    "dependency_names" : [
+  "libmatroska": {
+    "dependency_names": [
       "libmatroska"
     ],
-    "versions" : [
+    "versions": [
       "1.6.3-1"
     ]
   },
@@ -944,7 +946,7 @@
       "1.9.2-1"
     ]
   },
-   "lzo2": {
+  "lzo2": {
     "dependency_names": [
       "lzo2"
     ],
@@ -1414,7 +1416,7 @@
   },
   "spng": {
     "dependency_names": [
-        "spng"
+      "spng"
     ],
     "versions": [
       "0.7.0-1",
@@ -1610,7 +1612,7 @@
       "wayland-protocols"
     ],
     "versions": [
-        "1.24-1"
+      "1.24-1"
     ]
   },
   "wren": {
