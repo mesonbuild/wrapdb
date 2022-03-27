@@ -54,12 +54,12 @@ xsltconfig.set('VERSION', meson.project_version())
 xsltconfig.set('LIBXSLT_VERSION_NUMBER', version_number)
 xsltconfig.set('LIBXSLT_VERSION_EXTRA', version_extra)
 xsltconfig.set('LIBXSLT_DEFAULT_PLUGINS_PATH', get_option('prefix') / get_option('libdir') / 'libxslt-plugins')
-xsltconfig.set10('WITH_DEBUGGER', with_debugger)
-xsltconfig.set10('WITH_MEM_DEBUG', with_mem_debug)
+xsltconfig.set10('WITH_DEBUGGER', get_option('debugger'))
+xsltconfig.set10('WITH_MEM_DEBUG', get_option('mem_debug'))
 xsltconfig.set10('WITH_MODULES', with_modules)
-xsltconfig.set10('WITH_PROFILER', with_profiler)
+xsltconfig.set10('WITH_PROFILER', get_option('profiler'))
 xsltconfig.set10('WITH_TRIO', with_trio)
-xsltconfig.set10('WITH_XSLT_DEBUG', with_xslt_debug)
+xsltconfig.set10('WITH_XSLT_DEBUG', get_option('xslt_debug'))
 
 configure_file(input : 'xsltconfig.h.in',
   output : 'xsltconfig.h',

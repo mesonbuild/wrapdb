@@ -24,11 +24,10 @@ version_number = version_int[0] * 10000 + version_int[1] * 100 + version_int[2]
 version_extra = ''
 
 exsltconfig = configuration_data()
-exsltconfig.set('VERSION', exslt_version)
+exsltconfig.set('LIBEXSLT_VERSION', exslt_version)
 exsltconfig.set('LIBEXSLT_VERSION_NUMBER', version_number)
 exsltconfig.set('LIBEXSLT_VERSION_EXTRA', version_extra)
-exsltconfig.set('LIBXSLT_DEFAULT_PLUGINS_PATH', get_option('prefix') / get_option('libdir') / 'libxslt-plugins')
-exsltconfig.set10('WITH_CRYPTO', with_crypto)
+exsltconfig.set10('WITH_CRYPTO', libgcrypt_dep.found())
 
 configure_file(input : 'exsltconfig.h.in',
   output : 'exsltconfig.h',
