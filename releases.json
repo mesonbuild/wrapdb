@@ -382,7 +382,13 @@
     ]
   },
   "google-brotli": {
+    "dependency_names": [
+      "libbrotlicommon",
+      "libbrotlienc",
+      "libbrotlidec"
+    ],
     "versions": [
+      "1.0.9-1",
       "1.0.7-1"
     ]
   },
