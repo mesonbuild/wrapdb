@@ -308,6 +308,16 @@
       "1.0.1-1"
     ]
   },
+  "ftxui": {
+    "dependency_names": [
+      "ftxui-screen",
+      "ftxui-dom",
+      "ftxui-component"
+    ],
+    "versions": [
+      "2.0.0-1"
+    ]
+  },
   "fuse": {
     "dependency_names": [
       "fuse"

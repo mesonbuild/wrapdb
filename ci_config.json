@@ -52,6 +52,11 @@
       "cpp_std=c++14"
     ]
   },
+  "ftxui": {
+    "build_options": [
+      "cpp_std=c++17"
+    ]
+  },
   "glib": {
     "_comment": ["- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux."],
     "build_options": [
