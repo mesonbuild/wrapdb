@@ -72,6 +72,15 @@
       "2.3.1-2"
     ]
   },
+  "cairo": {
+    "dependency_names": [
+      "cairo",
+      "cairo-ft"
+    ],
+    "versions": [
+      "1.17.6-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",
