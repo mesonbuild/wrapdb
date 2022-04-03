@@ -1,7 +1,7 @@
 project('libuv', 'c',
-  version : '1.44.1',
+  version : '1.44.2',
   license : 'libuv',
-  default_options : [ 'c_std=c99' ],
+  default_options : [ 'c_std=gnu99' ],
 )
 
 # get compiler type
@@ -12,6 +12,7 @@ cc_msvc = cc.get_id().contains('msvc')
 
 # get system type
 win32 = host_machine.system() == 'windows'
+gnu = host_machine.system() == 'gnu'
 linux = host_machine.system() == 'linux'
 android = host_machine.system() == 'android'
 apple = host_machine.system() == 'darwin'
@@ -96,6 +97,7 @@ libuv_src = [
   'src/inet.c',
   'src/random.c',
   'src/strscpy.c',
+  'src/strtok.c',
   'src/threadpool.c',
   'src/timer.c',
   'src/uv-data-getter-setters.c',
@@ -201,7 +203,6 @@ if android
   libuv_cargs += '-D_GNU_SOURCE'
   libuv_libs += 'dl'
   libuv_src += [
-    'src/unix/android-ifaddrs.c',
     'src/unix/linux-core.c',
     'src/unix/linux-inotify.c',
     'src/unix/linux-syscalls.c',
@@ -259,6 +260,18 @@ if apple
   ]
   libuv_headers += [
     'include/uv/darwin.h',
+  ]
+endif
+
+if gnu
+  libuv_libs += ['dl']
+  libuv_src += [
+    'src/unix/bsd-ifaddrs.c',
+    'src/unix/no-fsevents.c',
+    'src/unix/no-proctitle.c',
+    'src/unix/posix-hrtime.c',
+    'src/unix/posix-poll.c',
+    'src/unix/hurd.c',
   ]
 endif
 
@@ -410,6 +423,7 @@ if libuv_build_bench
     'test/benchmark-fs-stat.c',
     'test/benchmark-getaddrinfo.c',
     'test/benchmark-loop-count.c',
+    'test/benchmark-queue-work.c',
     'test/benchmark-million-async.c',
     'test/benchmark-million-timers.c',
     'test/benchmark-multi-accept.c',
@@ -443,7 +457,6 @@ if libuv_build_tests
     'test/test-async-null-cb.c',
     'test/test-async.c',
     'test/test-barrier.c',
-    'test/test-callback-order.c',
     'test/test-callback-stack.c',
     'test/test-close-fd.c',
     'test/test-close-order.c',
@@ -542,10 +555,12 @@ if libuv_build_tests
     'test/test-spawn.c',
     'test/test-stdio-over-pipes.c',
     'test/test-strscpy.c',
+    'test/test-strtok.c',
     'test/test-tcp-alloc-cb-fail.c',
     'test/test-tcp-bind-error.c',
     'test/test-tcp-bind6-error.c',
     'test/test-tcp-close-accept.c',
+    'test/test-tcp-close-after-read-timeout.c',
     'test/test-tcp-close-while-connecting.c',
     'test/test-tcp-close.c',
     'test/test-tcp-close-reset.c',
@@ -559,6 +574,7 @@ if libuv_build_tests
     'test/test-tcp-open.c',
     'test/test-tcp-read-stop.c',
     'test/test-tcp-read-stop-start.c',
+    'test/test-tcp-rst.c',
     'test/test-tcp-shutdown-after-write.c',
     'test/test-tcp-try-write.c',
     'test/test-tcp-try-write-error.c',
