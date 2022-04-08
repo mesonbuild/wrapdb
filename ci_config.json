@@ -138,10 +138,6 @@
       "cpp_std=c++14"
     ]
   },
-  "libobsd": {
-    "_comment": ["Doesn't build with MSVC"],
-    "linux_only": true
-  },
   "liburing": {
     "_comment": ["- relies on Linux-specific APIs"],
     "build_on": {
