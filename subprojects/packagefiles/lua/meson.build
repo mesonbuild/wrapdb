@@ -2,7 +2,7 @@ project(
   'lua-5.4', 'c',
   license: 'MIT',
   meson_version: '>=0.49.2',
-  version: '5.4.3',
+  version: '5.4.4',
 )
 
 lua_versions = meson.project_version().split('.')
@@ -21,6 +21,8 @@ endif
 is_posix = host_machine.system() not in ['windows', 'emscripten', 'android']
 if is_posix
   add_project_arguments('-DLUA_USE_POSIX', language: 'c')
+elif get_option('default_library') != 'static'
+  add_project_arguments('-DLUA_BUILD_AS_DLL', language: 'c')
 endif
 
 # Library dependencies.
@@ -31,6 +33,7 @@ if get_option('loadlib')
   lua_lib_deps += [dl_dep]
   add_project_arguments('-DLUA_USE_DLOPEN', language: 'c')
 endif
+
 
 # Interpreter dependencies.
 lua_exe_deps = []
@@ -49,7 +52,7 @@ if get_option('line_editing')
 endif
 
 # Targets.
-lua_static = static_library('_lua',
+lua_lib = library('lua',
   'src/lapi.c',
   'src/lauxlib.c',
   'src/lbaselib.c',
@@ -83,27 +86,13 @@ lua_static = static_library('_lua',
   'src/lvm.c',
   'src/lzio.c',
   dependencies: lua_lib_deps,
-  override_options: project_options,
-  implicit_include_directories: false,
-)
-
-lua_lib = library('lua',
-  link_whole: lua_static,
-  dependencies: lua_lib_deps,
   version: meson.project_version(),
   soversion: lua_versions[0] + '.' + lua_versions[1],
   override_options: project_options,
   implicit_include_directories: false,
 )
 
-if cc.get_id() == 'msvc'
-  # Lua does not export symbols
-  # so we have to compile executables
-  # statically
-  lua_link = lua_static
-else
-  lua_link = lua_lib
-endif
+lua_link = lua_lib
 
 if get_option('interpreter')
   lua_exe = executable('lua',
