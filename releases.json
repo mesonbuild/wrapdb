@@ -545,7 +545,11 @@
     ]
   },
   "jansson": {
+    "dependency_names": [
+      "jansson"
+    ],
     "versions": [
+      "2.13-1",
       "2.11-3",
       "2.11-2",
       "2.11-1"
