@@ -257,6 +257,11 @@
       "windows": false
     }
   },
+  "spdlog": {
+    "build_options": [
+      "cpp_std=c++14"
+    ]
+  },
   "wayland": {
     "_comment": ["- relies on Linux-specific APIs"],
     "build_on": {
