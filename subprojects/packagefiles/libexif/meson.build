@@ -1,10 +1,15 @@
-project('exif', 'c', license: 'LGPL-2.1', version: '0.6.22')
+project('exif', 'c', license: 'LGPL-2.1', version: '0.6.24')
 
 cc = meson.get_compiler('c')
 
 deps = [meson.get_compiler('c').find_library('m', required: false)]
 
 cdata = configuration_data()
+
+#bugfix for msvc builds
+if cc.get_id() == 'msvc'
+  add_project_arguments('-Dssize_t=ptrdiff_t', language : 'c')
+endif
 
 check_functions = [
   ['HAVE_DCGETTEXT', 'dcgettext', '#include <libintl.h>'],
@@ -48,6 +53,7 @@ sources = [
     'libexif/exif-data.c',
     'libexif/exif-entry.c',
     'libexif/exif-format.c',
+    'libexif/exif-gps-ifd.c',
     'libexif/exif-ifd.c',
     'libexif/exif-loader.c',
     'libexif/exif-log.c',
@@ -55,6 +61,9 @@ sources = [
     'libexif/exif-mnote-data.c',
     'libexif/exif-tag.c',
     'libexif/exif-utils.c',
+    'libexif/apple/exif-mnote-data-apple.c',
+    'libexif/apple/mnote-apple-entry.c',
+    'libexif/apple/mnote-apple-tag.c',
     'libexif/pentax/exif-mnote-data-pentax.c',
     'libexif/pentax/mnote-pentax-entry.c',
     'libexif/pentax/mnote-pentax-tag.c',

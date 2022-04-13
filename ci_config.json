@@ -14,7 +14,7 @@
   "broken_windows": [
     "arduinocore-avr", "box2d", "cjson", "cpr", "docopt", "emilk-loguru",
     "enet", "facil", "flatbuffers", "google-snappy",
-    "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit", "libexif",
+    "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
     "lzo2", "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
     "protobuf-c", "quazip", "rdkafka", "reflex", "termbox","unit-system",
