@@ -1,0 +1,9 @@
+[wrap-file]
+directory = dragonbox-1.1.2
+source_url = https://github.com/jk-jeon/dragonbox/archive/refs/tags/1.1.2.tar.gz
+source_filename = dragonbox-1.1.2.tar.gz
+source_hash = 60938a42c1013dd214c976a019fcde893c603379f059881cb86ed0c2637e2f19
+patch_directory = dragonbox
+
+[provide]
+dragonbox = dragonbox_dep

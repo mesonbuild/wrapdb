@@ -37,6 +37,11 @@
       "cpp_std=c++14"
     ]
   },
+  "dragonbox": {
+    "build_options": [
+      "cpp_std=c++17"
+    ]
+  },
   "epoxy": {
     "debian_packages": [
       "libgl-dev",
