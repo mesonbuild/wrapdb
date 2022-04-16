@@ -9,14 +9,14 @@
   "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "imgui-sfml",
     "openal-soft", "openh264",
-    "protobuf-c", "quazip", "zstd"
+    "protobuf-c", "zstd"
   ],
   "broken_windows": [
     "arduinocore-avr", "cpr", "docopt", "emilk-loguru",
     "google-woff2", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "mpdecimal", "netstring-c", "openh264",
-    "protobuf-c", "quazip", "rdkafka", "termbox","unit-system",
+    "protobuf-c", "rdkafka", "termbox","unit-system",
     "zstd"
   ],
   "broken_darwin": [
@@ -25,7 +25,7 @@
     "google-benchmark", "google-woff2", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "mpdecimal", "openal-soft",
-    "openh264", "protobuf-c", "quazip", "rdkafka",
+    "openh264", "protobuf-c", "rdkafka",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
   ],
@@ -169,6 +169,18 @@
       "libmdds-dev",
       "libboost-filesystem-dev",
       "libboost-iostreams-dev"
+    ]
+  },
+  "quazip" : {
+    "_comment": ["- Windows needs qt"],
+    "build_on": {
+      "windows": false
+    },
+    "brew_packages": [
+      "qt"
+    ],
+    "debian_packages": [
+      "qtbase5-dev"
     ]
   },
   "rdkafka": {
