@@ -1,5 +1,6 @@
 project('wrapdb',
   meson_version: '>=0.55.0'
+  default_options: ['cpp_std=c++17'],
 )
 
 wraps = get_option('wraps')
