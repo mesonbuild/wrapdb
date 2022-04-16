@@ -21,7 +21,7 @@
     "zstd"
   ],
   "broken_darwin": [
-    "arduinocore-avr", "check", "cli11", "cpr",
+    "arduinocore-avr", "check", "cpr",
     "docopt", "emilk-loguru", "flatbuffers", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
@@ -38,6 +38,11 @@
     ]
   },
   "box2d": {
+    "build_options": [
+      "cpp_std=c++14"
+    ]
+  },
+  "cli11": {
     "build_options": [
       "cpp_std=c++14"
     ]
