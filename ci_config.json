@@ -32,19 +32,15 @@
   ],
 
   "abseil-cpp": {
-    "_comment": ["Remove this once https://github.com/mesonbuild/meson/pull/9394 is released"],
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "box2d": {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "dragonbox": {
     "build_options": [
-      "cpp_std=c++17"
     ]
   },
   "epoxy": {
@@ -65,12 +61,10 @@
   },
   "fmt": {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "ftxui": {
     "build_options": [
-      "cpp_std=c++17"
     ]
   },
   "gdbm": {
@@ -96,12 +90,10 @@
   },
   "jsoncpp": {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "icu": {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "imgui": {
@@ -130,12 +122,10 @@
   },
   "libebml" : {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "libmatroska" : {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "libnpupnp": {
@@ -151,7 +141,6 @@
       "windows": false
     },
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "liburing": {
@@ -169,7 +158,6 @@
   "lmdb": {
     "_comment": ["Tests and programs disabled by default"],
     "build_options": [
-      "cpp_std=c++14",
       "lmdb:tests=true",
       "lmdb:programs=true"
     ]
@@ -202,12 +190,10 @@
       "libboost-iostreams-dev"
     ],
     "build_options": [
-      "cpp_std=c++17"
     ]
   },
   "protobuf" : {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "rdkafka": {
@@ -265,7 +251,6 @@
   },
   "spdlog": {
     "build_options": [
-      "cpp_std=c++14"
     ]
   },
   "wayland": {
