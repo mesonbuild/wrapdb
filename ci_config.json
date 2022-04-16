@@ -12,7 +12,7 @@
     "protobuf-c", "quazip", "zstd"
   ],
   "broken_windows": [
-    "arduinocore-avr", "box2d", "cjson", "cpr", "docopt", "emilk-loguru",
+    "arduinocore-avr", "cjson", "cpr", "docopt", "emilk-loguru",
     "enet", "facil", "flatbuffers", "google-snappy",
     "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
@@ -21,7 +21,7 @@
     "zstd"
   ],
   "broken_darwin": [
-    "arduinocore-avr", "box2d", "check", "cli11", "cpr",
+    "arduinocore-avr", "check", "cli11", "cpr",
     "docopt", "emilk-loguru", "flatbuffers", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
@@ -33,6 +33,11 @@
 
   "abseil-cpp": {
     "_comment": ["Remove this once https://github.com/mesonbuild/meson/pull/9394 is released"],
+    "build_options": [
+      "cpp_std=c++14"
+    ]
+  },
+  "box2d": {
     "build_options": [
       "cpp_std=c++14"
     ]
