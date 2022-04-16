@@ -26,7 +26,7 @@
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
     "lz4", "mocklibc", "mpdecimal", "openal-soft",
-    "openh264", "protobuf-c", "quazip", "rdkafka", "re2",
+    "openh264", "protobuf-c", "quazip", "rdkafka",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
   ],
@@ -214,6 +214,11 @@
     "build_options": [
       "rdkafka:WITH_SASL=disabled",
       "rdkafka:WITH_ZSTD=disabled"
+    ]
+  },
+  "re2": {
+    "build_options": [
+      "cpp_std=c++14"
     ]
   },
   "rtaudio": {

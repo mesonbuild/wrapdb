@@ -1,8 +1,8 @@
 project('re2', 'cpp',
-        version : '20201101',
+        version : '20220401',
         license : 'BSD-3-Clause',
         default_options : [
-          'cpp_std=c++11',
+          'cpp_std=c++14',
         ])
 
 threads_dep = dependency('threads')
