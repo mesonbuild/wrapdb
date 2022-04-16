@@ -25,7 +25,7 @@
     "docopt", "emilk-loguru", "flatbuffers", "glib",
     "google-benchmark", "google-woff2", "graphite2", "hinnant-date",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
-    "lmdb", "lz4", "mocklibc", "mpdecimal", "openal-soft",
+    "lz4", "mocklibc", "mpdecimal", "openal-soft",
     "openh264", "protobuf-c", "quazip", "rdkafka", "re2",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
@@ -164,6 +164,7 @@
   "lmdb": {
     "_comment": ["Tests and programs disabled by default"],
     "build_options": [
+      "cpp_std=c++14",
       "lmdb:tests=true",
       "lmdb:programs=true"
     ]
