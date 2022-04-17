@@ -16,7 +16,7 @@
     "enet", "facil", "flatbuffers", "google-snappy",
     "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
-    "lzo2", "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
+    "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
     "protobuf-c", "quazip", "rdkafka", "reflex", "termbox","unit-system",
     "zstd"
   ],
@@ -165,6 +165,12 @@
     "build_options": [
       "lmdb:tests=true",
       "lmdb:programs=true"
+    ]
+  },
+  "lzo2": {
+    "_comment": ["lzotest directory check fails on Windows"],
+    "build_options": [
+      "lzo2:tests=false"
     ]
   },
   "openssl": {
