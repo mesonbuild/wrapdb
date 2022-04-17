@@ -8,6 +8,11 @@ inc = include_directories('include', '.')
 subdir('src')
 topdir = meson.current_source_dir()
 
+cc = meson.get_compiler('c')
+if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
+  add_project_arguments('-D__LZO_EXPORT1=__declspec(dllexport)', language: 'c')
+endif
+
 if host_machine.endian() == 'big'
   add_project_arguments('-DLZO_ABI_BIG_ENDIAN=1', language: 'c')
 else
@@ -49,7 +54,9 @@ lzo2_dep = declare_dependency(
   include_directories: inc
 )
 
-subdir('lzotest')
-subdir('tests')
+if get_option('tests')
+  subdir('lzotest')
+  subdir('tests')
+endif
 subdir('examples')
 
