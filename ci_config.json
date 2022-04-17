@@ -7,12 +7,12 @@
                "explicitly disable that Operating System in build_on.",
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
-    "arduinocore-avr", "cpr", "glew", "imgui-sfml",
+    "arduinocore-avr", "glew", "imgui-sfml",
     "openal-soft", "openh264",
     "protobuf-c", "zstd"
   ],
   "broken_windows": [
-    "arduinocore-avr", "cpr", "docopt", "emilk-loguru",
+    "arduinocore-avr", "docopt", "emilk-loguru",
     "google-woff2", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "mpdecimal", "netstring-c", "openh264",
@@ -20,7 +20,7 @@
     "zstd"
   ],
   "broken_darwin": [
-    "arduinocore-avr", "check", "cpr",
+    "arduinocore-avr", "check",
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
@@ -33,6 +33,15 @@
     "build_options": [
       "cpp_std=c++14"
     ]
+  },
+  "cpr": {
+    "debian_packages": [
+      "libcurl4-gnutls-dev"
+    ],
+    "_comment": "curl not available with MSVC CI",
+    "build_on": {
+      "windows": false
+    }
   },
   "epoxy": {
     "debian_packages": [
