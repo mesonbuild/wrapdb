@@ -13,20 +13,9 @@ m_dep = cc.find_library('m', required: false)
 cdata = configuration_data()
 
 check_headers = [
-  'byteswap.h',
-  'cpuid.h',
   'inttypes.h',
-  'memory.h',
   'stdint.h',
-  'stdlib.h',
   'string.h',
-  'sys/ioctl.h',
-  'sys/param.h',
-  'sys/stat.h',
-  'sys/types.h',
-  'termios.h',
-  'unistd.h',
-  'x86intrin.h',
 ]
 
 foreach h : check_headers
@@ -35,6 +24,17 @@ foreach h : check_headers
   endif
 endforeach
 
+cdata.set('HAVE_BYTESWAP_H', cc.has_header('byteswap.h'))
+cdata.set('HAVE_CPUID_H', cc.has_header('cpuid.h'))
+cdata.set('HAVE_MEMORY_H', cc.has_header('memory.h'))
+cdata.set('HAVE_STDLIB_H', cc.has_header('stdlib.h'))
+cdata.set('HAVE_SYS_IOCTL_H', cc.has_header('sys/ioctl.h'))
+cdata.set('HAVE_SYS_PARAM_H', cc.has_header('sys/param.h'))
+cdata.set('HAVE_SYS_STAT_H', cc.has_header('sys/stat.h'))
+cdata.set('HAVE_SYS_TYPES_H', cc.has_header('sys/types.h'))
+cdata.set('HAVE_TERMIOS_H', cc.has_header('termios.h'))
+cdata.set('HAVE_UNISTD_H', cc.has_header('unistd.h'))
+cdata.set('HAVE_X86INTRIN_H', cc.has_header('x86intrin.h'))
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set10('CPU_IS_BIG_ENDIAN', host_machine.endian() == 'big')
 cdata.set10('CPU_IS_LITTLE_ENDIAN', host_machine.endian() == 'little')
