@@ -16,7 +16,7 @@
     "enet", "facil", "flatbuffers", "google-snappy",
     "google-woff2", "hinnant-date", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
-    "mocklibc", "mpdecimal", "netstring-c", "nng", "openh264",
+    "mocklibc", "mpdecimal", "netstring-c", "openh264",
     "protobuf-c", "quazip", "rdkafka", "reflex", "termbox","unit-system",
     "zstd"
   ],
