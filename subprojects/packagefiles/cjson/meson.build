@@ -29,7 +29,7 @@ if meson.version().version_compare('>=0.54.0')
 endif
 
 # the tests do not work on MSVC. Missing unity_setup.c
-if get_option('tests') and cc.get_id() != 'msvc'
+if get_option('tests')
     e = executable('root-test', 'test.c', dependencies: libcjson_dep)
     test('root-test', e)
 
