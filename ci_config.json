@@ -167,12 +167,6 @@
       "lmdb:programs=true"
     ]
   },
-  "lzo2": {
-    "_comment": ["lzotest directory check fails on Windows"],
-    "build_options": [
-      "lzo2:tests=false"
-    ]
-  },
   "openssl": {
     "_comment": ["- The NodeJS generator requires Linux"],
     "build_on": {

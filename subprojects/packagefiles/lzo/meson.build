@@ -54,9 +54,6 @@ lzo2_dep = declare_dependency(
   include_directories: inc
 )
 
-if get_option('tests')
-  subdir('lzotest')
-  subdir('tests')
-endif
+subdir('lzotest')
+subdir('tests')
 subdir('examples')
-
