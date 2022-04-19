@@ -30,7 +30,7 @@
 project(
   'google-snappy',
   'cpp',
-  version : '1.1.7',
+  version : '1.1.9',
   license : 'BSD3',
   meson_version : '>= 0.50'
 )
@@ -85,9 +85,9 @@ foreach h : ['HAVE_STDINT_H', 'HAVE_STDDEF_H', 'HAVE_SYS_UIO_H']
 endforeach
 
 version = meson.project_version().split('.')
-pconf.set('SNAPPY_MAJOR', version[0])
-pconf.set('SNAPPY_MINOR', version[1])
-pconf.set('SNAPPY_PATCHLEVEL', version[2])
+pconf.set('PROJECT_VERSION_MAJOR', version[0])
+pconf.set('PROJECT_VERSION_MINOR', version[1])
+pconf.set('PROJECT_VERSION_PATCH', version[2])
 
 configure_file(
   configuration : pconf,

@@ -449,7 +449,11 @@
     ]
   },
   "google-snappy": {
+    "dependency_names": [
+      "snappy"
+    ],
     "versions": [
+      "1.1.9-1",
       "1.1.7-2",
       "1.1.7-1"
     ]
