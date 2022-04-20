@@ -1,4 +1,4 @@
-project('rdkafka', 'c', 'cpp', version: '1.7.0')
+project('rdkafka', 'c', 'cpp', version: '1.8.2')
 cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
@@ -105,7 +105,8 @@ zlib = dependency('zlib', required: get_option('WITH_ZLIB'), static: get_option(
 zstd = dependency('libzstd', required: get_option('WITH_ZSTD'), static: get_option('default_library') == 'static', fallback: ['zstd', 'libzstd_dep'])
 lz4 = dependency('liblz4', required: get_option('ENABLE_LZ4_EXT'), static: get_option('default_library') == 'static', fallback: ['lz4', 'liblz4_dep'])
 sasl = dependency('libsasl2', required: get_option('WITH_SASL'), static: get_option('default_library') == 'static') # TODO: make SASL usable without libsasl2 on windows 
-ssl = dependency('openssl', required: get_option('WITH_SSL'), static: get_option('default_library') == 'static')
+ssl = dependency('libssl', required: get_option('WITH_SSL'), static: get_option('default_library') == 'static')
+crypto = dependency('libcrypto', required: get_option('WITH_SSL'), static: get_option('default_library') == 'static')
 dl = cc.find_library('dl', required : get_option('WITH_LIBDL'))
 threads = dependency('threads')
 
@@ -119,14 +120,14 @@ conf.set10('WITH_PLUGINS', dl.found())
 conf.set10('WITH_LIBDL', dl.found())
 conf.set10('WITH_ZLIB', zlib.found())
 conf.set10('WITH_ZSTD', zstd.found())
-conf.set10('WITH_SSL', ssl.found())
+conf.set10('WITH_SSL', ssl.found() and crypto.found())
 conf.set10('WITH_SASL', sasl.found())
 conf.set10('ENABLE_LZ4_EXT', lz4.found())
 conf.set10('HAVE_REGEX', regex)
 conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', 'so')
 
 built_with = 'meson ' + cc.get_id() + ' ' + cpp.get_id()
-if ssl.found()
+if ssl.found() and crypto.found()
   built_with += ' SSL'
   srcc += 'src/rdkafka_ssl.c'
 endif
@@ -142,7 +143,7 @@ if sasl.found()
     conf.set10('WITH_SASL_CYRUS', true)
     built_with += ' SASL_CYRUS'
   endif
-  if ssl.found()
+  if ssl.found() and crypto.found()
     srcc += [ 'src/rdkafka_sasl_scram.c', 'src/rdkafka_sasl_oauthbearer.c']
     conf.set10('WITH_SASL_SCRAM', true)
     conf.set10('WITH_SASL_OAUTHBEARER', true)
@@ -173,7 +174,7 @@ configure_file(configuration: conf,
   format: 'cmake',
 )
 
-rdkafka_deps = [threads, dl, zlib, zstd, sasl, ssl, lz4]
+rdkafka_deps = [threads, dl, zlib, zstd, sasl, ssl, crypto, lz4]
 rdkafka = library('rdkafka', srcc, install: true, dependencies: rdkafka_deps)
 rdkafka_dep = declare_dependency(
   link_with: rdkafka,
