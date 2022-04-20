@@ -16,7 +16,7 @@
     "google-woff2", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "mpdecimal", "netstring-c", "openh264",
-    "protobuf-c", "rdkafka", "termbox","unit-system",
+    "protobuf-c", "termbox","unit-system",
     "zstd"
   ],
   "broken_darwin": [
@@ -25,7 +25,7 @@
     "google-benchmark", "google-woff2", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "mpdecimal", "openal-soft",
-    "openh264", "protobuf-c", "rdkafka",
+    "openh264", "protobuf-c",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
   ],
@@ -199,7 +199,19 @@
     ]
   },
   "rdkafka": {
+    "_comment": ["- Windows needs lz4. The current wrap is broken."],
+    "build_on": {
+      "windows": false
+    },
+    "debian_packages": [
+      "liblz4-dev"
+    ],
+    "brew_packages": [
+      "openssl@1.1",
+      "lz4"
+    ],
     "build_options": [
+      "pkg_config_path=/usr/local/opt/openssl@1.1/lib/pkgconfig",
       "rdkafka:WITH_SASL=disabled",
       "rdkafka:WITH_ZSTD=disabled"
     ]
