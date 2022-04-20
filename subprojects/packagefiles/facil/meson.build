@@ -1,5 +1,5 @@
 project('facil', 'c',
-    version : '0.7.5',
+    version : '0.7.6',
     license: 'MIT',
     default_options: ['c_std=c11']
 )

@@ -247,7 +247,11 @@
     ]
   },
   "facil": {
+    "dependency_names": [
+      "facil"
+    ],
     "versions": [
+      "0.7.6-1",
       "0.7.5-1"
     ]
   },
