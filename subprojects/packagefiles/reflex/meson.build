@@ -1,5 +1,5 @@
 project('reflex', 'cpp',
-        version : '3.0.1',
+        version : '3.2.3',
         license : 'BSD-3-Clause',
         meson_version: '>=0.43.0')
 
@@ -28,11 +28,6 @@ libreflex_sources = files(
   'lib/utf8.cpp',
 )
 
-libreflex = library(
-  'reflex',
-  libreflex_sources, unicode_sources,
-  include_directories : includes)
-
 libreflexmin_sources = files(
   'lib/debug.cpp',
   'lib/error.cpp',
@@ -42,26 +37,31 @@ libreflexmin_sources = files(
   'lib/utf8.cpp',
 )
 
-libreflexmin = library(
-  'reflexmin',
-  libreflexmin_sources,
-  include_directories : includes)
+#no dllexport being used here. Must use static library.
+if cpp.get_id() != 'msvc'
+  libreflexmin = library(
+    'reflexmin',
+    libreflexmin_sources,
+    include_directories : includes)
 
-reflex_sources = files(
-  'src/reflex.cpp',
-)
+  libreflex = library(
+    'reflex',
+    libreflex_sources, unicode_sources,
+    include_directories : includes)
+else
+  libreflexmin = static_library(
+    'reflexmin',
+    libreflexmin_sources,
+    include_directories : includes)
 
-reflex = executable(
-  'reflex',
-  reflex_sources,
-  link_with : libreflex,
-  include_directories : includes,
-  install : true)
+  libreflex = static_library(
+    'reflex',
+    libreflex_sources, unicode_sources,
+    include_directories : includes)
+endif
+
+subdir('src')
 
 reflex_dep = declare_dependency(
   link_with : libreflex,
   include_directories : includes)
-
-if meson.version().version_compare('>=0.46.0')
-  meson.override_find_program('reflex', reflex)
-endif
