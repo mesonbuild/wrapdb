@@ -1547,6 +1547,14 @@
       "2.5.0-1"
     ]
   },
+  "tracy": {
+    "dependency_names": [
+      "tracy"
+    ],
+    "versions": [
+      "0.8.1-1"
+    ]
+  },
   "trompeloeil": {
     "versions": [
       "39-1",
