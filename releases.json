@@ -250,6 +250,14 @@
       "2.2.5-1"
     ]
   },
+  "expected": {
+    "dependency_names": [
+      "expected"
+    ],
+	"versions": [
+	  "1.0.0-1"
+	]
+  },
   "facil": {
     "dependency_names": [
       "facil"
