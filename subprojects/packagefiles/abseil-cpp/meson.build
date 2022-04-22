@@ -21,7 +21,7 @@ endif
 
 flags = cpp.get_supported_arguments(cpp_flags)
 
-if cpp.get_id() == 'msvc'
+if cpp.get_argument_syntax() == 'msvc'
   flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
 endif
 
