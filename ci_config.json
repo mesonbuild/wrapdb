@@ -8,13 +8,13 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr", "cpr", "glew", "imgui-sfml",
-    "libxmlpp", "openal-soft", "openh264",
+    "openal-soft", "openh264",
     "protobuf-c", "quazip", "zstd"
   ],
   "broken_windows": [
     "arduinocore-avr", "cpr", "docopt", "emilk-loguru",
     "google-woff2", "imgui-sfml", "jbigkit",
-    "libgpiod", "liblbfgs", "libwebsockets", "libxmlpp",
+    "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "mpdecimal", "netstring-c", "openh264",
     "protobuf-c", "quazip", "rdkafka", "termbox","unit-system",
     "zstd"
@@ -23,7 +23,7 @@
     "arduinocore-avr", "check", "cpr",
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
-    "imgui", "imgui-sfml", "libgpiod", "libwebsockets", "libxmlpp",
+    "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "mpdecimal", "openal-soft",
     "openh264", "protobuf-c", "quazip", "rdkafka",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
@@ -168,11 +168,6 @@
       "darwin": false,
       "windows": false
     }
-  },
-  "libxmlpp": {
-    "debian_packages": [
-      "libglibmm-2.4-dev"
-    ]
   },
   "lmdb": {
     "_comment": "Tests and programs disabled by default",
