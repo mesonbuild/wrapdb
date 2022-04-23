@@ -250,14 +250,6 @@
       "2.2.5-1"
     ]
   },
-  "expected": {
-    "dependency_names": [
-      "expected"
-    ],
-	"versions": [
-	  "1.0.0-1"
-	]
-  },
   "facil": {
     "dependency_names": [
       "facil"
@@ -1525,6 +1517,14 @@
       "9.0.0-1",
       "7.0.1-1"
     ]
+  },
+  "tl-expected": {
+    "dependency_names": [
+      "tl-expected"
+    ],
+	"versions": [
+	  "1.0.0-1"
+	]
   },
   "tl-optional": {
     "dependency_names": [

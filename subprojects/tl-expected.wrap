@@ -1,9 +1,9 @@
 [wrap-file]
-source_url = https://github.com/TartanLlama/expected/archive/v1.0.0.tar.gz
 directory = expected-1.0.0
+source_url = https://github.com/TartanLlama/expected/archive/v1.0.0.tar.gz
 source_filename = expected-1.0.0.tar.gz
 source_hash = 8f5124085a124113e75e3890b4e923e3a4de5b26a973b891b3deb40e19c03cee
-patch_directory = expected
+patch_directory = tl-expected
 
 [provide]
-expected = expected_dep
+tl-expected = tl_expected_dep
