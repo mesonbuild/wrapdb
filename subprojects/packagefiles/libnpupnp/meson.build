@@ -1,6 +1,7 @@
 project('libnpupnp', 'cpp',
-  version : '4.2.1',
-  default_options : [ 'cpp_std=c++14', 'warning_level=1' ]
+  version : '4.2.2',
+  default_options : [ 'cpp_std=c++14' ],
+  meson_version : '>=0.48',
 )
 
 cpp = meson.get_compiler('cpp')
@@ -89,14 +90,14 @@ libnpupnp = library('npupnp',
   npupnp_sources,
   include_directories : libnpupnp_incdir,
   gnu_symbol_visibility : 'hidden',
-  version : '4.2.1',
+  version : '4.2.2',
   dependencies : deps,
   install : true,
 )
 
 auto = configuration_data()
-auto.set('PACKAGE_VERSION', '"' + meson.project_version() + '"')
-auto.set('NPUPNP_VERSION_STRING', '"' + meson.project_version() + '"')
+auto.set_quoted('PACKAGE_VERSION', meson.project_version())
+auto.set_quoted('NPUPNP_VERSION_STRING', meson.project_version())
 ver = meson.project_version().split('.')
 auto.set('NPUPNP_VERSION_MAJOR', ver[0])
 auto.set('NPUPNP_VERSION_MINOR', ver[1])
