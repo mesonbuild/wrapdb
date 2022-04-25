@@ -69,13 +69,9 @@
     ]
   },
   "hinnant-date": {
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ],
-    "_comment": "libcurl is not available with MSVC CI",
-    "build_on": {
-      "windows": false
-    }
+    "build_options": [
+      "hinnant-date:use_system_tzdb=true"
+    ]
   },
   "htslib": {
     "_comment": "- relies on lots of POSIX interfaces",
