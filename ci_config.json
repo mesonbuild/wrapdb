@@ -29,22 +29,9 @@
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
   ],
-
-  "abseil-cpp": {
-    "build_options": [
-    ]
-  },
-  "box2d": {
-    "build_options": [
-    ]
-  },
   "cli11": {
     "build_options": [
       "cpp_std=c++14"
-    ]
-  },
-  "dragonbox": {
-    "build_options": [
     ]
   },
   "epoxy": {
@@ -68,14 +55,6 @@
       "darwin": false,
       "windows": false
     }
-  },
-  "fmt": {
-    "build_options": [
-    ]
-  },
-  "ftxui": {
-    "build_options": [
-    ]
   },
   "gdbm": {
     "_comment": "- Requires POSIX platform.",
@@ -107,14 +86,6 @@
       "htslib:tests=true"
     ]
   },
-  "jsoncpp": {
-    "build_options": [
-    ]
-  },
-  "icu": {
-    "build_options": [
-    ]
-  },
   "imgui": {
     "debian_packages": [
       "liballegro5-dev",
@@ -139,14 +110,6 @@
       "libpciaccess-dev"
     ]
   },
-  "libebml": {
-    "build_options": [
-    ]
-  },
-  "libmatroska": {
-    "build_options": [
-    ]
-  },
   "libnpupnp": {
     "brew_packages": [
       "libmicrohttpd"
@@ -158,9 +121,7 @@
     "_comment": "libmicrohttpd is not available with MSVC CI",
     "build_on": {
       "windows": false
-    },
-    "build_options": [
-    ]
+    }
   },
   "liburing": {
     "_comment": "- relies on Linux-specific APIs",
@@ -202,12 +163,6 @@
       "libmdds-dev",
       "libboost-filesystem-dev",
       "libboost-iostreams-dev"
-    ],
-    "build_options": [
-    ]
-  },
-  "protobuf": {
-    "build_options": [
     ]
   },
   "rdkafka": {
@@ -267,10 +222,6 @@
     "build_on": {
       "windows": false
     }
-  },
-  "spdlog": {
-    "build_options": [
-    ]
   },
   "wayland": {
     "_comment": "- relies on Linux-specific APIs",
