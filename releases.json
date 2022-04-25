@@ -640,6 +640,14 @@
       "json-c"
     ]
   },
+  "json-glib": {
+    "dependency_names": [
+      "json-glib-1.0"
+    ],
+    "versions": [
+      "1.6.6-1"
+    ]
+  },
   "jsoncpp": {
     "dependency_names": [
       "jsoncpp"

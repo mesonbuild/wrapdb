@@ -86,6 +86,12 @@
       "htslib:tests=true"
     ]
   },
+  "json-glib": {
+    "_comment": "gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
+    "debian_packages": [
+      "gettext"
+    ]
+  },
   "imgui": {
     "debian_packages": [
       "liballegro5-dev",
