@@ -97,6 +97,24 @@ if meson.version().version_compare('>=0.46.0')
   meson.override_find_program('woff2_decompress', woff2_decompress)
 endif
 
+cpp = meson.get_compiler('cpp')
+if cpp.get_argument_syntax() == 'msvc'
+libwoff2_encoder = static_library(
+  'woff2_encoder',
+  [
+    'src/font.cc',
+    'src/glyph.cc',
+    'src/normalize.cc',
+    'src/transform.cc',
+    'src/woff2_enc.cc',
+  ],
+  include_directories : inc,
+  link_with : libwoff2_common,
+  dependencies : [dependency('libbrotlienc',
+                             fallback : ['google-brotli',
+                                         'brotli_encoder_dep'])],
+)
+else
 libwoff2_encoder = library(
   'woff2_encoder',
   [
@@ -113,6 +131,7 @@ libwoff2_encoder = library(
                                          'brotli_encoder_dep'])],
   version : meson.project_version(),
 )
+endif
 
 woff2_encoder_dep = declare_dependency(
   link_with : [libwoff2_common, libwoff2_encoder],

@@ -13,7 +13,7 @@
   ],
   "broken_windows": [
     "arduinocore-avr", "cpr", "docopt", "emilk-loguru",
-    "google-woff2", "imgui-sfml", "jbigkit",
+    "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "mpdecimal", "netstring-c", "openh264",
     "protobuf-c", "rdkafka", "termbox","unit-system",
@@ -22,7 +22,7 @@
   "broken_darwin": [
     "arduinocore-avr", "check", "cpr",
     "docopt", "emilk-loguru", "glib",
-    "google-benchmark", "google-woff2", "graphite2",
+    "google-benchmark", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "mpdecimal", "openal-soft",
     "openh264", "protobuf-c", "rdkafka",
