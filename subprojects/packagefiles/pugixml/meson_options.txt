@@ -1,5 +1,6 @@
 option('wchar_mode', type: 'boolean', value: false, description: 'Enable wchar_t mode')
 option('compact', type: 'boolean', value: false)
+option('tests', type: 'boolean', value: true)
 
 # the "no_" here is silly, but it's needed to derive defines
 option('no_xpath', type: 'boolean', value: false)

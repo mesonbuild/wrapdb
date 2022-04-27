@@ -1,4 +1,4 @@
-project('pugixml', 'cpp', version: '1.12', meson_version: '>=0.46.0')
+project('pugixml', 'cpp', default_options : 'cpp_std=c++14', version: '1.12.1', meson_version: '>=0.46.0')
 
 cxx = meson.get_compiler('cpp')
 
@@ -63,6 +63,9 @@ import('pkgconfig').generate(
 #  )
 #endif
 
-subdir('tests')
-pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
-test('pugixml-check', pugixml_check, workdir: meson.current_source_dir())
+#Windows doesn't compile with C++17 until next version
+if get_option('tests') and host_machine.system() != 'windows'
+  subdir('tests')
+  pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
+  test('pugixml-check', pugixml_check, workdir: meson.current_source_dir())
+endif
