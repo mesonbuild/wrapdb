@@ -1,7 +1,7 @@
 project('libuv', 'c',
   version : '1.43.0',
   license : 'libuv',
-  default_options : [ 'c_std=c89' ],
+  default_options : [ 'c_std=c99' ],
 )
 
 # get compiler type
