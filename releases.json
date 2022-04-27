@@ -1563,6 +1563,14 @@
       "2.5.0-1"
     ]
   },
+  "tree-sitter": {
+    "dependency_names": [
+      "tree-sitter"
+    ],
+    "versions": [
+      "0.15.7"
+    ]
+  },
   "tracy": {
     "dependency_names": [
       "tracy"
