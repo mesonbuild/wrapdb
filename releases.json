@@ -1563,6 +1563,14 @@
       "2.5.0-1"
     ]
   },
+  "tree-sitter-xml-parser": {
+    "dependency_names": [
+      "tree-sitter-xml-parser"
+    ],
+    "versions": [
+      "master"
+    ]
+  },
   "tracy": {
     "dependency_names": [
       "tracy"
