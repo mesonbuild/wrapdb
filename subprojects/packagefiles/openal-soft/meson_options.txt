@@ -1,0 +1,52 @@
+option('alsa', type: 'feature',
+  description: 'ALSA backend',
+)
+
+option('jack', type: 'feature',
+  description: 'JACK backend',
+)
+
+option('opensl', type: 'feature',
+  description: 'OpenSL backend',
+)
+
+option('oss', type: 'feature',
+  description: 'OSS backend',
+)
+
+option('pipewire', type: 'feature',
+  description: 'PipeWire backend',
+)
+
+option('portaudio', type: 'feature',
+  description: 'PortAudio backend',
+)
+
+option('pulseaudio', type: 'feature',
+  description: 'PulseAudio backend',
+)
+
+option('rtkit', type: 'feature',
+  description: 'RTKit/D-Bus support',
+)
+
+option('sdl2', type: 'feature',
+  description: 'SDL2 backend',
+)
+
+option('sndio', type: 'feature',
+  description: 'SoundIO backend',
+)
+
+option('solaris', type: 'feature',
+  description: 'Solaris backend',
+)
+
+option('utils', type: 'boolean',
+  value: true,
+  description: 'Install utility programs (openal-info, alsoft-config, ...)',
+)
+
+option('winmm', type: 'feature',
+  description: 'Windows Multimedia backend backend',
+)\

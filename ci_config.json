@@ -8,7 +8,7 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr",
-    "openal-soft", "openh264",
+    "openh264",
     "protobuf-c", "zstd"
   ],
   "broken_windows": [
@@ -23,7 +23,7 @@
     "arduinocore-avr",
     "google-benchmark", "google-woff2", "graphite2",
     "libgpiod",
-    "lz4", "mocklibc", "openal-soft",
+    "lz4", "mocklibc",
     "openh264", "protobuf-c",
     "rtaudio", "sdl2_image", "tinyxml2", "unit-system",
     "zstd"
