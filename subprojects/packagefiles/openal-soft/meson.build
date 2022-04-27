@@ -1,212 +1,302 @@
-project('openal-soft', 'cpp', 'c',
-        version: '1.21.0',
-        default_options: ['cpp_std=c++17', 'c_std=c11'])
-
-if host_machine.system() != 'windows'
-    error('Currently only Windows is supported by this wrap.')
-endif
+project('openal-soft', 'cpp', version: '1.22.2', default_options: ['cpp_std=c++17', 'c_std=c11'])
 
 cpp = meson.get_compiler('cpp')
-
-if cpp.get_id() != 'msvc'
-    error('Currently only the VS compiler is supported.')
-endif
-
-mm_dep = cpp.find_library('winmm', required: false)
+dl_dep = cpp.find_library('dl', required: false)
+thread_dep = dependency('threads')
+alsa_dep = dependency('alsa', required: get_option('alsa'))
+apple_dep = dependency('appleframeworks', modules: ['AudioToolbox', 'CoreAudio', 'CoreFoundation'], required: host_machine.system() == 'darwin')
+jack_dep = dependency('jack', required: get_option('jack'))
+mm_dep = cpp.find_library('winmm', required: get_option('winmm'))
+opensl_dep = dependency('opensl', required: get_option('opensl'))
+oss_dep = dependency('oss', required: get_option('oss'))
+pipewire_dep = dependency('libpipewire-0.3', required: get_option('pipewire'))
+portaudio_dep = dependency('portaudio', required: get_option('portaudio'))
+pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
+rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
+sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
+sndio_dep = dependency('sndio', required: get_option('sndio'))
+solaris_dep = dependency('audioio', required: get_option('solaris'))
 
 add_project_arguments('-DNOMINMAX', '-DRESTRICT=__restrict', language: 'cpp')
+if host_machine.system() == 'windows' and get_option('buildtype') != 'static'
+  add_project_arguments('-DAL_API=__declspec(dllexport)', language: 'cpp')
+  add_project_arguments('-DALC_API=__declspec(dllexport)', language: 'cpp')
+endif
 
 common_sources = files(
-    'common/albyte.h',
-    'common/alcomplex.cpp',
-    'common/alcomplex.h',
-    'common/alexcpt.cpp',
-    'common/alexcpt.h',
-    'common/alfstream.cpp',
-    'common/alfstream.h',
-    'common/almalloc.cpp',
-    'common/almalloc.h',
-    'common/alnumeric.h',
-    'common/aloptional.h',
-    'common/alspan.h',
-    'common/alstring.cpp',
-    'common/alstring.h',
-    'common/atomic.h',
-    'common/dynload.cpp',
-    'common/dynload.h',
-    'common/endiantest.h',
-    'common/intrusive_ptr.h',
-    'common/math_defs.h',
-    'common/opthelpers.h',
-    'common/polyphase_resampler.cpp',
-    'common/polyphase_resampler.h',
-    'common/pragmadefs.h',
-    'common/strutils.cpp',
-    'common/strutils.h',
-    'common/threads.cpp',
-    'common/threads.h',
-    'common/vecmat.h',
-    'common/vector.h',
+  'common/alcomplex.cpp',
+  'common/alfstream.cpp',
+  'common/almalloc.cpp',
+  'common/alstring.cpp',
+  'common/dynload.cpp',
+  'common/polyphase_resampler.cpp',
+  'common/ringbuffer.cpp',
+  'common/strutils.cpp',
+  'common/threads.cpp',
+)
+
+core_sources = files(
+  'core/ambdec.cpp',
+  'core/ambidefs.cpp',
+  'core/bformatdec.cpp',
+  'core/bs2b.cpp',
+  'core/bsinc_tables.cpp',
+  'core/buffer_storage.cpp',
+  'core/context.cpp',
+  'core/converter.cpp',
+  'core/cpu_caps.cpp',
+  'core/devformat.cpp',
+  'core/device.cpp',
+  'core/effectslot.cpp',
+  'core/except.cpp',
+  'core/filters/biquad.cpp',
+  'core/filters/nfc.cpp',
+  'core/filters/splitter.cpp',
+  'core/fmt_traits.cpp',
+  'core/fpu_ctrl.cpp',
+  'core/helpers.cpp',
+  'core/hrtf.cpp',
+  'core/logging.cpp',
+  'core/mastering.cpp',
+  'core/mixer.cpp',
+  'core/mixer/mixer_c.cpp',
+  'core/uhjfilter.cpp',
+  'core/uiddefs.cpp',
+  'core/voice.cpp',
 )
 
 openal_sources = files(
-    'al/auxeffectslot.cpp',
-    'al/auxeffectslot.h',
-    'al/buffer.cpp',
-    'al/buffer.h',
-    'al/effect.cpp',
-    'al/effect.h',
-    'al/error.cpp',
-    'al/event.cpp',
-    'al/event.h',
-    'al/extension.cpp',
-    'al/filter.cpp',
-    'al/filter.h',
-    'al/listener.cpp',
-    'al/listener.h',
-    'al/source.cpp',
-    'al/source.h',
-    'al/state.cpp',
+  'al/auxeffectslot.cpp',
+  'al/buffer.cpp',
+  'al/effect.cpp',
+  'al/effects/autowah.cpp',
+  'al/effects/chorus.cpp',
+  'al/effects/compressor.cpp',
+  'al/effects/convolution.cpp',
+  'al/effects/dedicated.cpp',
+  'al/effects/distortion.cpp',
+  'al/effects/echo.cpp',
+  'al/effects/effects.cpp',
+  'al/effects/equalizer.cpp',
+  'al/effects/fshifter.cpp',
+  'al/effects/modulator.cpp',
+  'al/effects/null.cpp',
+  'al/effects/pshifter.cpp',
+  'al/effects/reverb.cpp',
+  'al/effects/vmorpher.cpp',
+  'al/error.cpp',
+  'al/event.cpp',
+  'al/extension.cpp',
+  'al/filter.cpp',
+  'al/listener.cpp',
+  'al/source.cpp',
+  'al/state.cpp',
 )
 
 alc_sources = files(
-    'alc/alc.cpp',
-    'alc/alcmain.h',
-    'alc/alu.cpp',
-    'alc/alu.h',
-    'alc/alconfig.cpp',
-    'alc/alconfig.h',
-    'alc/alcontext.h',
-    'alc/ambdec.cpp',
-    'alc/ambdec.h',
-    'alc/ambidefs.h',
-    'alc/bformatdec.cpp',
-    'alc/bformatdec.h',
-    'alc/bs2b.cpp',
-    'alc/bs2b.h',
-    'alc/bsinc_defs.h',
-    'alc/bsinc_tables.cpp',
-    'alc/bsinc_tables.h',
-    'alc/bufferline.h',
-    'alc/buffer_storage.cpp',
-    'alc/buffer_storage.h',
-    'alc/compat.h',
-    'alc/converter.cpp',
-    'alc/converter.h',
-    'alc/cpu_caps.cpp',
-    'alc/cpu_caps.h',
-    'alc/devformat.h',
-    'alc/effects/base.h',
-    'alc/effects/autowah.cpp',
-    'alc/effects/chorus.cpp',
-    'alc/effects/compressor.cpp',
-    'alc/effects/convolution.cpp',
-    'alc/effects/dedicated.cpp',
-    'alc/effects/distortion.cpp',
-    'alc/effects/echo.cpp',
-    'alc/effects/equalizer.cpp',
-    'alc/effects/fshifter.cpp',
-    'alc/effects/modulator.cpp',
-    'alc/effects/null.cpp',
-    'alc/effects/pshifter.cpp',
-    'alc/effects/reverb.cpp',
-    'alc/effects/vmorpher.cpp',
-    'alc/filters/biquad.h',
-    'alc/filters/biquad.cpp',
-    'alc/filters/nfc.cpp',
-    'alc/filters/nfc.h',
-    'alc/filters/splitter.cpp',
-    'alc/filters/splitter.h',
-    'alc/fmt_traits.cpp',
-    'alc/fmt_traits.h',
-    'alc/fpu_ctrl.cpp',
-    'alc/fpu_ctrl.h',
-    'alc/front_stablizer.h',
-    'alc/helpers.cpp',
-    'alc/hrtf.cpp',
-    'alc/hrtf.h',
-    'alc/inprogext.h',
-    'alc/logging.h',
-    'alc/mastering.cpp',
-    'alc/mastering.h',
-    'alc/panning.cpp',
-    'alc/ringbuffer.cpp',
-    'alc/ringbuffer.h',
-    'alc/uhjfilter.cpp',
-    'alc/uhjfilter.h',
-    'alc/uiddefs.cpp',
-    'alc/voice.cpp',
-    'alc/voice.h',
-    'alc/mixer/defs.h',
-    'alc/mixer/hrtfbase.h',
-    'alc/mixer/mixer_c.cpp',
-    'alc/mixer/mixer_sse.cpp',
-    'alc/mixer/mixer_sse2.cpp',
-    'alc/mixer/mixer_sse41.cpp',
-    'alc/backends/wasapi.cpp',
-    'alc/backends/dsound.cpp',
-    'alc/backends/wave.cpp',
-    'alc/backends/winmm.cpp',
+  'alc/alc.cpp',
+  'alc/alconfig.cpp',
+  'alc/alu.cpp',
+  'alc/context.cpp',
+  'alc/device.cpp',
+  'alc/effects/autowah.cpp',
+  'alc/effects/chorus.cpp',
+  'alc/effects/compressor.cpp',
+  'alc/effects/convolution.cpp',
+  'alc/effects/dedicated.cpp',
+  'alc/effects/distortion.cpp',
+  'alc/effects/echo.cpp',
+  'alc/effects/equalizer.cpp',
+  'alc/effects/fshifter.cpp',
+  'alc/effects/modulator.cpp',
+  'alc/effects/null.cpp',
+  'alc/effects/pshifter.cpp',
+  'alc/effects/reverb.cpp',
+  'alc/effects/vmorpher.cpp',
+  'alc/panning.cpp',
 )
 
 alc_sources += files(
-    'alc/backends/base.cpp',
-    # Default backends, always available
-    'alc/backends/loopback.cpp',
-    'alc/backends/null.cpp',
+  'alc/backends/base.cpp',
+  'alc/backends/loopback.cpp',
+  'alc/backends/null.cpp',
+  'alc/backends/wave.cpp',
+  # Default backends, always available
 )
 
-hrtf_h = custom_target('hrtf-header',
-    output: 'hrtf_default.h',
-    input: 'hrtf/Default HRTF.mhr',
-    command: [find_program('hexify.py'), '@INPUT@', '@OUTPUT@', 'hrtf_default'])
+hrtf_h = custom_target(
+  'hrtf-header',
+  output: 'hrtf_default.h',
+  input: 'hrtf/Default HRTF.mhr',
+  command: ['hexify.py', '@INPUT@', '@OUTPUT@', 'hrtf_default'],
+)
 
 cdata = configuration_data()
-
-cdata.set('AL_API', '__declspec(dllexport)')
-cdata.set('ALC_API', '__declspec(dllexport)')
-
-cdata.set('HAVE__ALIGNED_MALLOC', true)
-cdata.set('ALSOFT_EMBED_HRTF_DATA', true)
-
-cdata.set('HAVE_SSE', true)
-cdata.set('HAVE_SSE2', true)
-cdata.set('HAVE_SSE3', true)
-cdata.set('HAVE_SSE4_1', true)
-
-cdata.set('HAVE_WINMM', true)
-cdata.set('HAVE_DSOUND', true)
-cdata.set('HAVE_WASAPI', true)
 cdata.set('HAVE_WAVE', true)
+cdata.set('HAVE_LIBDL', dl_dep.found())
+cdata.set('HAVE_ALSA', alsa_dep.found())
+cdata.set('HAVE_COREAUDIO', apple_dep.found())
+cdata.set('HAVE_JACK', jack_dep.found())
+cdata.set('HAVE_OPENSL', opensl_dep.found())
+cdata.set('HAVE_OSS', oss_dep.found())
+cdata.set('HAVE_PIPEWIRE', pipewire_dep.found())
+cdata.set('HAVE_PORTAUDIO', portaudio_dep.found())
+cdata.set('HAVE_PULSEAUDIO', pulseaudio_dep.found())
+cdata.set('HAVE_RTKIT', rtkit_dep.found())
+cdata.set('HAVE_SDL2', sdl2_dep.found())
+cdata.set('HAVE_SNDIO', sndio_dep.found())
+cdata.set('HAVE_SOLARIS', solaris_dep.found())
+cdata.set('HAVE_WINMM', mm_dep.found())
+cdata.set('HAVE_DSOUND', cpp.has_header('dsound.h'))
+cdata.set('HAVE_WASAPI', cpp.has_header('wasapi.h'))
 
-cdata.set('HAVE_MALLOC_H', true)
-cdata.set('HAVE_INTRIN_H', true)
-cdata.set('HAVE_GUIDDEF_H', true)
-cdata.set('HAVE_CPUID_INTRINSIC', true)
-cdata.set('HAVE_SSE_INTRINSICS', true)
+#ignore for now
+cdata.set('ALSOFT_EAX', false)
+cdata.set('HAVE_OBOE', false)
 
-cdata.set_quoted('ALSOFT_VERSION', meson.project_version())
-cdata.set('ALSOFT_VERSION_NUM', '1,21,0,0')
-cdata.set_quoted('ALSOFT_GIT_BRANCH', 'UNKNOWN')
-cdata.set_quoted('ALSOFT_GIT_COMMIT_HASH', 'unknown')
+foreach b : ['alsa', 'coreaudio', 'jack', 'opensl', 'oss', 'pipewire', 'portaudio', 'pulseaudio', 'sdl2', 'sndio', 'solaris', 'winmm', 'dsound', 'wasapi']
+  if cdata.get('HAVE_@0@'.format(b.to_upper()))
+    alc_sources += 'alc/backends/@0@.cpp'.format(b)
+  endif
+endforeach
 
+if cdata.get('HAVE_RTKIT')
+  alc_sources += files('core/dbus_wrap.cpp', 'core/rtkit.cpp')
+endif
 
-configure_file(input: 'config.h.meson',
-    output: 'config.h',
-    configuration: cdata)
+foreach h : ['dlfcn.h', 'guiddef.h', 'initguid.h', 'malloc.h', 'pthread_np.h']
+  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cpp.has_header(h))
+endforeach
 
-configure_file(input: 'version.h.meson',
-    output: 'version.h',
-    configuration: cdata)
+#needs to be check_header for LLVM as well as MinGW
+cdata.set('HAVE_CPUID_H', cpp.check_header('cpuid.h'))
+cdata.set('HAVE_INTRIN_H', cpp.check_header('intrin.h'))
+cdata.set('HAVE_SSE', cpp.check_header('xmmintrin.h'))
+cdata.set('HAVE_SSE2', cpp.check_header('emmintrin.h'))
+cdata.set('HAVE_SSE3', cpp.check_header('pmmintrin.h'))
+cdata.set('HAVE_SSE4_1', cpp.check_header('smmintrin.h'))
+cdata.set('HAVE_NEON', cpp.check_header('arm_neon.h'))
 
-openal_lib = shared_library('openal',
-    common_sources,
-    openal_sources,
-    alc_sources,
-    hrtf_h,
-    cpp_args: ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES'],
-    include_directories: ['include', 'common', 'alc'],
-    dependencies: [mm_dep],
-    )
+#need to check for non windows because meson wrongly detects its presence under MinGW
+cdata.set('HAVE_POSIX_MEMALIGN', cpp.has_function('posix_memalign') and host_machine.system() != 'windows')
+cdata.set('HAVE__ALIGNED_MALLOC', cpp.has_function('_aligned_malloc'))
+cdata.set('HAVE_PROC_PIDPATH', cpp.has_function('proc_pidpath'))
+cdata.set('HAVE_PTHREAD_SETSCHEDPARAM', cpp.has_function('pthread_setschedparam', dependencies: thread_dep))
+cdata.set('HAVE_PTHREAD_SETNAME_NP', cpp.has_function('pthread_setname_np', dependencies: thread_dep))
+cdata.set('HAVE_PTHREAD_SET_NAME_NP', cpp.has_function('pthread_set_name_np', dependencies: thread_dep))
+cdata.set('HAVE_GETOPT', cpp.has_function('getopt'))
 
-openal_dep = declare_dependency(include_directories: 'include/AL', link_with: openal_lib)
+cdata.set('HAVE_CPUID_INTRINSIC', cpp.get_argument_syntax() == 'msvc')
+cdata.set('HAVE_GCC_GET_CPUID', cpp.has_function('__get_cpuid', prefix: '#include <cpuid.h>'))
+cdata.set('HAVE_SSE_INTRINSICS', cpp.has_function('_mm_pause', prefix: '#include <emmintrin.h>'))
+
+cdata.set('ALSOFT_EMBED_HRTF_DATA', true)
+cdata.set('ALSOFT_INSTALL_DATADIR', get_option('prefix') / get_option('datadir'))
+
+configure_file(input: 'config.h.in', output: 'config.h', format: 'cmake@', configuration: cdata)
+
+vdata = configuration_data()
+vdata.set('GIT_BRANCH', run_command('git', 'rev-parse', '--symbolic-full-name', 'HEAD', check: false, capture: true).stdout().strip())
+vdata.set('GIT_COMMIT_HASH', run_command('git', 'rev-parse', 'HEAD', check: false, capture: true).stdout().strip())
+vdata.set('LIB_VERSION', meson.project_version())
+vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
+
+configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
+
+if cdata.get('HAVE_SSE')
+  core_sources += 'core/mixer/mixer_sse.cpp'
+endif
+
+if cdata.get('HAVE_SSE2')
+  core_sources += 'core/mixer/mixer_sse2.cpp'
+endif
+
+if cdata.get('HAVE_SSE3')
+  core_sources += 'core/mixer/mixer_sse3.cpp'
+endif
+
+if cdata.get('HAVE_SSE4_1')
+  core_sources += 'core/mixer/mixer_sse41.cpp'
+endif
+
+if cdata.get('HAVE_NEON')
+  core_sources += 'core/mixer/mixer_neon.cpp'
+endif
+
+openal_lib = library(
+  'openal',
+  common_sources,
+  core_sources,
+  openal_sources,
+  alc_sources,
+  hrtf_h,
+  cpp_args: ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES'],
+  include_directories: ['include', 'common', 'alc'],
+  dependencies: [
+    dl_dep,
+    thread_dep,
+    alsa_dep,
+    apple_dep,
+    jack_dep,
+    mm_dep,
+    opensl_dep,
+    oss_dep,
+    pipewire_dep,
+    portaudio_dep,
+    pulseaudio_dep,
+    rtkit_dep,
+    sdl2_dep,
+    sndio_dep,
+    solaris_dep,
+  ],
+  version: meson.project_version(),
+  soversion: host_machine.system() == 'windows' ? '' : '1',
+  install: true,
+)
+
+openal_dep = declare_dependency(
+  include_directories: ['.', 'include', 'include/AL', 'common'],
+  link_with: openal_lib,
+)
+
+meson.override_dependency('openal', openal_dep)
+
+install_headers(
+  'include/AL/al.h',
+  'include/AL/alc.h',
+  'include/AL/alext.h',
+  'include/AL/efx-creative.h',
+  'include/AL/efx-presets.h',
+  'include/AL/efx.h',
+  subdir: 'AL',
+)
+
+install_data(
+  'alsoftrc.sample',
+  install_dir: get_option('datadir') / 'openal',
+)
+
+install_data(
+  'hrtf/Default HRTF.mhr',
+  install_dir: get_option('datadir') / 'openal' / 'hrft',
+)
+
+install_data(
+  'presets/hexagon.ambdec',
+  'presets/itu5.1-nocenter.ambdec',
+  'presets/itu5.1.ambdec',
+  'presets/rectangle.ambdec',
+  'presets/square.ambdec',
+  'presets/3D7.1.ambdec',
+  'presets/presets.txt',
+  install_dir: get_option('datadir') / 'openal' / 'presets',
+)
+
+pconf = import('pkgconfig')
+pconf.generate(
+  openal_lib,
+  description: 'OpenAL is a cross-platform 3D audio API',
+  subdirs: 'AL',
+)
+
+subdir('utils')

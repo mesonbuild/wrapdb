@@ -62,6 +62,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'meson.build.tmpl',
         'README.md',
     ],
+    'openal-soft': [
+        'hexify.py'
+    ],
     'sdl2': [
         'find-dylib-name.py'
     ],
