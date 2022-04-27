@@ -1,7 +1,7 @@
 project('taglib', 'cpp',
   version : '1.12',
   meson_version : '>=0.46.0',
-  default_options : ['warning_level=0', 'cpp_std=c++98']
+  default_options : ['warning_level=0']
 )
 
 cpp = meson.get_compiler('cpp')
