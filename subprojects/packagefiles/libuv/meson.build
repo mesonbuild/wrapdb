@@ -1,7 +1,7 @@
 project('libuv', 'c',
-  version : '1.43.0',
+  version : '1.44.1',
   license : 'libuv',
-  default_options : [ 'c_std=c89' ],
+  default_options : [ 'c_std=c99' ],
 )
 
 # get compiler type
@@ -376,6 +376,7 @@ if libuv_build_bench
     'test/benchmark-ping-udp.c',
     'test/benchmark-pound.c',
     'test/benchmark-pump.c',
+    'test/benchmark-queue-work.c',
     'test/benchmark-sizes.c',
     'test/benchmark-spawn.c',
     'test/benchmark-tcp-write-batch.c',
