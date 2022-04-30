@@ -1,0 +1,11 @@
+
+#mesondefine HAVE_SYS_SIGNALFD_H
+#mesondefine HAVE_SYS_TIMERFD_H
+#mesondefine HAVE_SYS_EVENTFD_H
+#mesondefine HAVE_ERR_H
+#mesondefine HAVE_SYS_TYPES_H
+
+#mesondefine HAVE_EPOLLRDHUP
+#mesondefine HAVE_NOTE_TRUNCATE
+#mesondefine HAVE_DECL_PPOLL
+#mesondefine HAVE_NOTE_REVOKE

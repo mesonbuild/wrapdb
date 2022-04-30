@@ -131,6 +131,12 @@
       "windows": false
     }
   },
+  "libkqueue": {
+    "_comment": ["- MacOS already provides kqueue"],
+    "build_on": {
+      "darwin": false
+    }
+  },
   "libnpupnp": {
     "brew_packages": [
       "libmicrohttpd"
