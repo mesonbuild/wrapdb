@@ -757,6 +757,14 @@
       "2.1.0-1"
     ]
   },
+  "libkqueue": {
+    "dependency_names": [
+      "libkqueue"
+    ],
+    "versions": [
+      "2.6.1-1"
+    ]
+  },
   "liblangtag": {
     "dependency_names": [
       "liblangtag"
