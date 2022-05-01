@@ -1,6 +1,5 @@
 project('ftxui', 'cpp',
     version: '2.0.0',
-    meson_version: '>= 0.62.0',
     default_options: ['cpp_std=c++17'],
 )
 
