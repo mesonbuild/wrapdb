@@ -126,9 +126,11 @@
     ]
   },
   "harfbuzz": {
-    "_comment": ["- Currently builds with no warnings other than an incorrect warning() function",
-                 "  tracked at https://github.com/harfbuzz/harfbuzz/issues/3378",
-                 "  Absolutely impossible to fix on Windows."],
+    "_comment": [
+      "- Currently builds with no warnings other than an incorrect warning() function",
+      "  tracked at https://github.com/harfbuzz/harfbuzz/issues/3378",
+      "  Absolutely impossible to fix on Windows."
+    ],
     "fatal_warnings": false,
     "build_options": [
       "glib:tests=false",
@@ -223,7 +225,7 @@
     ]
   },
   "libkqueue": {
-    "_comment": ["- MacOS already provides kqueue"],
+    "_comment": "- MacOS already provides kqueue",
     "build_on": {
       "darwin": false
     }
@@ -292,7 +294,7 @@
       "lmdb:programs=true"
     ]
   },
-  "mpdecimal" : {
+  "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",
       "mpdecimal:tests=true"
@@ -332,8 +334,8 @@
       "libboost-iostreams-dev"
     ]
   },
-  "quazip" : {
-    "_comment": ["- Windows needs qt"],
+  "quazip": {
+    "_comment": "- Windows needs qt",
     "build_on": {
       "windows": false
     },
@@ -343,8 +345,6 @@
     "debian_packages": [
       "qtbase5-dev"
     ]
-  },
-  "range-v3": {
   },
   "re2": {
     "build_options": [
