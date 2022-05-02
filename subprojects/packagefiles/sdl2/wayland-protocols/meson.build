@@ -4,10 +4,13 @@ protocols = [
     'keyboard-shortcuts-inhibit-unstable-v1',
     'pointer-constraints-unstable-v1',
     'relative-pointer-unstable-v1',
+    'tablet-unstable-v2',
     'text-input-unstable-v3',
+    'viewporter',
     'wayland',
     'xdg-activation-v1',
     'xdg-decoration-unstable-v1',
+    'xdg-output-unstable-v1',
     'xdg-shell',
 ]
 
