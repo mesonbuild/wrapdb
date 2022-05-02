@@ -210,13 +210,17 @@
     ]
   },
   "cppzmq": {
-    "dependency_names": ["cppzmq"],
+    "dependency_names": [
+      "cppzmq"
+    ],
     "versions": [
       "4.8.1-1"
     ]
   },
   "cpr": {
-    "dependency_names": ["cpr"],
+    "dependency_names": [
+      "cpr"
+    ],
     "versions": [
       "1.7.2-1",
       "1.5.0-1",
@@ -1863,9 +1867,9 @@
     "dependency_names": [
       "tl-expected"
     ],
-	"versions": [
-	  "1.0.0-1"
-	]
+    "versions": [
+      "1.0.0-1"
+    ]
   },
   "tl-optional": {
     "dependency_names": [
