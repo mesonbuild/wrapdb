@@ -86,6 +86,22 @@ exif = shared_library(
     soversion: 0, version: '0.6.22'
     )
 
-install_headers('libexif/exif-data.h', subdir: 'libexif')
+install_headers(
+  'libexif/exif-byte-order.h',
+  'libexif/exif-content.h',
+  'libexif/exif-data.h',
+  'libexif/exif-data-type.h',
+  'libexif/exif-entry.h',
+  'libexif/exif-format.h',
+  'libexif/exif-ifd.h',
+  'libexif/exif-loader.h',
+  'libexif/exif-log.h',
+  'libexif/exif-mem.h',
+  'libexif/exif-mnote-data.h',
+  'libexif/exif-tag.h',
+  'libexif/exif-utils.h',
+  'libexif/_stdint.h',
+  subdir: 'libexif'
+)
 
 exif_dep = declare_dependency(link_with: exif)
