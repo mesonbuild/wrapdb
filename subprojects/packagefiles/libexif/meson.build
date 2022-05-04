@@ -104,4 +104,7 @@ install_headers(
   subdir: 'libexif'
 )
 
-exif_dep = declare_dependency(link_with: exif)
+exif_dep = declare_dependency(
+  include_directories : '.',
+  link_with: exif,
+)
