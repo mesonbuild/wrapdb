@@ -97,6 +97,8 @@ class CreateRelease:
         self.wrap_section['patch_hash'] = patch_hash
 
     def create_wrap_file(self):
+        self.wrap_section['wrapdb_version'] = self.version
+
         filename = Path(self.tempdir, self.name + '.wrap')
         with open(filename, 'w') as f:
             self.wrap.write(f)
