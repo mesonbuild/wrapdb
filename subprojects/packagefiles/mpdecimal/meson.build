@@ -15,58 +15,18 @@ m_dep = cc.find_library('m', required : false)
 
 conf = configuration_data()
 
-conf.set_quoted('PACKAGE_NAME', meson.project_name())
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
-conf.set_quoted('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(), meson.project_version()))
-conf.set_quoted('PACKAGE_TARNAME', meson.project_name())
-conf.set_quoted('PACKAGE_URL', 'http://www.bytereef.org/mpdecimal/index.html')
-conf.set_quoted('PACKAGE_BUGREPORT', 'mpdecimal-bugs@bytereef.org')
-
-headers = [
-  'inttypes.h',
-  'memory.h',
-  'stdint.h',
-  'stdlib.h',
-  'strings.h',
-  'string.h',
-  'sys/stat.h',
-  'sys/types.h',
-  'unistd.h',
-]
-
-foreach header : headers
-  if cc.has_header(header)
-    conf.set('HAVE_' + header.underscorify().to_upper(), 1)
-  endif
-endforeach
-
-# This define is produced by the deprecated AC_HEADER_STDC autoconf
-# macro. It is however not used anywhere in the source code. Set it to
-# a static value for completeness. Any supported platform should
-# anyway comply with C89.
-conf.set('STDC_HEADERS', 1)
-
-conf.set('SIZEOF_SIZE_T', cc.sizeof('size_t'))
-
-size_uint128_t = cc.sizeof('__uint128_t')
-if size_uint128_t > 0
-  conf.set('SIZEOF___UINT128_T', size_uint128_t)
-  conf.set('HAVE_UINT128_T', 1)
-endif
+have_uint128_t = cc.sizeof('__uint128_t') > 0
 
 # x64 with gcc asm:
-if cc.compiles('''
+gcc_asm_for_x64 = cc.compiles('''
   int main()
   {
     __asm__ __volatile__ ("movq %rcx, %rax");
   }''',
   name : 'x64 gcc inline assembler')
 
-  conf.set('HAVE_GCC_ASM_FOR_X64', 1)
-endif
-
 # x87 with gcc asm:
-if cc.compiles('''
+gcc_asm_for_x87 = cc.compiles('''
   int main()
   {
     unsigned short cw;
@@ -74,9 +34,6 @@ if cc.compiles('''
     __asm__ __volatile__ ("fldcw %0" : : "m" (cw));
   }''',
   name : 'x87 gcc inline assembler')
-
-  conf.set('HAVE_GCC_ASM_FOR_X87', 1)
-endif
 
 # _FORTIFY_SOURCE wrappers for memmove and bcopy are incorrect:
 # http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
@@ -98,7 +55,25 @@ if cc.run('''
   args : ['-O2', '-D_FORTIFY_SOURCE=2'],
   name : 'glibc _FORTIFY_SOURCE/memmove').returncode() != 0
 
-  conf.set('HAVE_GLIBC_MEMMOVE_BUG', 1)
+  warning('''
+***************************** WARNING *********************************
+
+Detected glibc _FORTIFY_SOURCE/memmove bug. See:
+
+    http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
+
+Enabling -U_FORTIFY_SOURCE workaround. If -D_FORTIFY_SOURCE is also
+present in the command line, make sure that the order of the two
+options is:
+
+   ... -D_FORTIFY_SOURCE=2 ... -U_FORTIFY_SOURCE ...
+
+A better solution is to upgrade glibc or to report the bug to your
+OS vendor.
+
+***************************** WARNING *********************************
+''')
+  add_project_arguments('-U_FORTIFY_SOURCE', language: 'c')
 endif
 
 # Some versions of gcc miscompile inline asm:
@@ -123,7 +98,7 @@ if cc.get_id() == 'gcc' and cc.run('''
   args : ['-O2'],
   name : 'gcc ipa-pure-const').returncode() != 0
 
-  conf.set('HAVE_IPA_PURE_CONST_BUG', 1)
+  add_project_arguments('-fno-ipa-pure-const', language: 'c')
 endif
 
 # Values for the MPD_HEADER_CONFIG variable:
@@ -194,9 +169,9 @@ mpd_header_config_fullcov = '''
 machine = get_option('machine')
 if machine == 'auto'
   if cc.sizeof('size_t') == 8
-    if conf.get('HAVE_GCC_ASM_FOR_X64') == 1
+    if gcc_asm_for_x64
       machine = 'x64'
-    elif conf.get('HAVE_UINT128_T') == 1
+    elif have_uint128_t
       machine = 'uint128'
     else
       machine = 'ansi64'
@@ -207,7 +182,7 @@ if machine == 'auto'
     else
       machine = 'ansi32'
     endif
-    if conf.get('HAVE_GCC_ASM_FOR_X87') == 1
+    if gcc_asm_for_x87
       if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
         if target_machine.system() != 'darwin'
           machine = 'ppro'
@@ -253,11 +228,6 @@ endif
 mpdecimal_h = configure_file(
   input : 'libmpdec/mpdecimal.h.in',
   output : 'mpdecimal.h',
-  configuration : conf)
-
-configure_file(
-  input : 'config.h.meson',
-  output : 'config.h',
   configuration : conf)
 
 libmpdec_sources = files(
