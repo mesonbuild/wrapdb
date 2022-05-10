@@ -168,24 +168,34 @@ mpd_header_config_fullcov = '''
 
 machine = get_option('machine')
 if machine == 'auto'
-  if cc.sizeof('size_t') == 8
-    if gcc_asm_for_x64
+  if host_machine.system() == 'windows'
+    if host_machine.cpu_family() == 'x86'
+      machine = 'ppro'
+    elif host_machine.cpu_family() == 'x86_64'
       machine = 'x64'
-    elif have_uint128_t
-      machine = 'uint128'
     else
-      machine = 'ansi64'
+      error('machine probing on Windows only supports x86/x64')
     endif
   else
-    if cc.get_id() == 'ccomp'
-      machine = 'ansi-legacy'
+    if cc.sizeof('size_t') == 8
+      if gcc_asm_for_x64
+        machine = 'x64'
+      elif have_uint128_t
+        machine = 'uint128'
+      else
+        machine = 'ansi64'
+      endif
     else
-      machine = 'ansi32'
-    endif
-    if gcc_asm_for_x87
-      if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-        if target_machine.system() != 'darwin'
-          machine = 'ppro'
+      if cc.get_id() == 'ccomp'
+        machine = 'ansi-legacy'
+      else
+        machine = 'ansi32'
+      endif
+      if gcc_asm_for_x87
+        if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+          if target_machine.system() != 'darwin'
+            machine = 'ppro'
+          endif
         endif
       endif
     endif
@@ -193,8 +203,13 @@ if machine == 'auto'
 endif
 
 if machine == 'x64'
-  add_project_arguments('-DCONFIG_64', '-DASM', language : 'c')
+  add_project_arguments('-DCONFIG_64', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
+  if host_machine.system() == 'windows'
+    add_project_arguments('/DMASM', language: 'c')
+  else
+    add_project_arguments('-DASM', language: 'c')
+  endif
 
 elif machine == 'uint128'
   add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language : 'c')
@@ -211,6 +226,9 @@ elif machine == 'full-coverage'
 elif machine == 'ppro'
   add_project_arguments('-DCONFIG_32', '-DPPRO', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
+  if host_machine.system() == 'windows'
+    add_project_arguments('/DMASM', language: 'c')
+  endif
 
 elif machine == 'ansi32'
   add_project_arguments('-DCONFIG_32', '-DANSI', language : 'c')
@@ -225,10 +243,26 @@ elif machine == 'universal'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_universal)
 endif
 
-mpdecimal_h = configure_file(
-  input : 'libmpdec/mpdecimal.h.in',
-  output : 'mpdecimal.h',
-  configuration : conf)
+build_dll = []
+use_dll = []
+if host_machine.system() == 'windows'
+  add_project_arguments('/wd4200', '/wd4204', '/wd4221', '/D_CRT_SECURE_NO_WARNINGS', '/nologo', language: 'c')
+  if get_option('default_library') != 'static'
+    build_dll = ['/DBUILD_DLL']
+    use_dll = ['/DUSE_DLL']
+  endif
+  vcver = machine == 'x64' ? '64vc' : '32vc'
+  mpdecimal_h = configure_file(
+    input: 'libmpdec/mpdecimal@0@.h'.format(vcver),
+    output : 'mpdecimal.h',
+    copy: true)
+  install_headers('libmpdec/vccompat.h')
+else
+  mpdecimal_h = configure_file(
+    input : 'libmpdec/mpdecimal.h.in',
+    output : 'mpdecimal.h',
+    configuration : conf)
+endif
 
 libmpdec_sources = files(
   'libmpdec/basearith.c',
@@ -248,12 +282,28 @@ libmpdec_sources = files(
   'libmpdec/transpose.c',
 )
 
+if host_machine.system() == 'windows' and machine == 'x64'
+  ml = find_program('ml64')
+  libmpdec_sources += custom_target(
+    'vcdiv64.asm.obj',
+    input: 'libmpdec/vcdiv64.asm',
+    output: 'vcdiv64.asm.obj',
+    command: [ml, '/Cx', '/Fo', '@OUTPUT@', '/c', '@INPUT@'])
+endif
+
 libmpdec = library(
   'mpdec',
   libmpdec_sources,
+  c_args: build_dll,
   dependencies : m_dep,
   version : library_version,
   darwin_versions : [compat_version, library_version])
+
+mpdec_dep = declare_dependency(
+  link_with : libmpdec,
+  compile_args: use_dll,
+  # mpdecimal.h is generated in the project root directory
+  include_directories : include_directories('.', 'libmpdec'))
 
 libmpdecpp_sources = files(
   'libmpdec++/decimal.cc',
@@ -262,17 +312,11 @@ libmpdecpp_sources = files(
 libmpdecpp = library(
   'mpdec++',
   libmpdecpp_sources, mpdecimal_h,
-  dependencies : m_dep,
-  link_with : libmpdec,
+  dependencies : [m_dep, mpdec_dep],
   version : library_version,
   darwin_versions : [compat_version, library_version])
 
 install_headers(mpdecimal_h, 'libmpdec++/decimal.hh')
-
-mpdec_dep = declare_dependency(
-  link_with : libmpdec,
-  # mpdecimal.h is generated in the project root directory
-  include_directories : include_directories('.'))
 
 mpdecpp_dep = declare_dependency(
   link_with : libmpdecpp,

@@ -15,7 +15,7 @@
     "arduinocore-avr", "docopt", "emilk-loguru",
     "google-woff2", "imgui-sfml", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
-    "mocklibc", "mpdecimal", "netstring-c", "openh264",
+    "mocklibc", "netstring-c", "openh264",
     "protobuf-c", "termbox","unit-system",
     "zstd"
   ],
@@ -24,7 +24,7 @@
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
-    "lz4", "mocklibc", "mpdecimal", "openal-soft",
+    "lz4", "mocklibc", "openal-soft",
     "openh264", "protobuf-c",
     "rtaudio", "sdl2_image", "sfml", "tinyply", "tinyxml2", "unit-system",
     "zstd"
