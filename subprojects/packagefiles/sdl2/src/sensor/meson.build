@@ -1,6 +1,9 @@
-all_sources += files(
-  'SDL_sensor.c',
+c_sources += files(
+    'SDL_sensor.c',
 )
 
-subdir('windows')
+subdir('android')
+subdir('coremotion')
 subdir('dummy')
+subdir('vita')
+subdir('windows')

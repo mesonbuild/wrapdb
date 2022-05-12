@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pugixml-1.12
-source_url = https://github.com/zeux/pugixml/archive/v1.12.tar.gz
-source_filename = pugixml-1.12.tar.gz
-source_hash = b8547983a22a79ef24e604501ae0fb3e5fe6855a140972ecf43c5e3a72749505
+directory = pugixml-1.12.1
+source_url = https://github.com/zeux/pugixml/archive/v1.12.1.tar.gz
+source_filename = pugixml-1.12.1.tar.gz
+source_hash = 1e28ab24b6e04e013d96f45d25e9f2d04c921dc68c613fd010ecaaad3892c14d
 patch_directory = pugixml
 
 [provide]

@@ -1,6 +1,9 @@
 [wrap-file]
-directory = libtomcrypt-1.17
-source_url = https://github.com/libtom/libtomcrypt/releases/download/1.17/crypt-1.17.tar.bz2
-source_filename = crypt-1.17.tar.bz2
-source_hash = e33b47d77a495091c8703175a25c8228aff043140b2554c08a3c3cd71f79d116
+directory = libtomcrypt-1.18.2
+source_url = https://github.com/libtom/libtomcrypt/releases/download/v1.18.2/crypt-1.18.2.tar.xz
+source_filename = crypt-1.18.2.tar.xz
+source_hash = 96ad4c3b8336050993c5bc2cf6c057484f2b0f9f763448151567fbab5e767b84
 patch_directory = libtomcrypt
+
+[provide]
+libtomcrypt = tomcrypt_dep

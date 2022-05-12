@@ -1,7 +1,7 @@
 project(
   'htslib',
   'c',
-  version : '1.14',
+  version : '1.15',
   default_options : [
     'buildtype=release',
     # -Wall produces way

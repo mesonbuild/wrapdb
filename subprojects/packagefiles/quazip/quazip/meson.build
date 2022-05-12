@@ -16,6 +16,7 @@ quazip_src = [
   'qioapi.cpp',
   'JlCompress.cpp',
   'quaadler32.cpp',
+  'quachecksum32.cpp',
   'quacrc32.cpp',
   'quagzipfile.cpp',
   'quaziodevice.cpp',
@@ -28,15 +29,14 @@ quazip_src = [
   'zip.c'
 ]
 
-quazip_pp = qt5.preprocess(moc_headers: quazip_moc_headers)
+quazip_pp = qt.preprocess(moc_headers: quazip_moc_headers)
 
 quazip_lib = library(
   'quazip',
   quazip_src,
   quazip_pp,
-  dependencies: [qt5_dep, zlib_dep],
+  dependencies: [qt_dep, zlib_dep],
   cpp_args: quazip_args,
-  override_options: ['cpp_std=c++11']
 )
 
 quazip_incdir = include_directories('.')

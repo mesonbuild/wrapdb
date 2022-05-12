@@ -1,0 +1,9 @@
+[wrap-file]
+directory = sds-2.0.0
+source_url = https://github.com/antirez/sds/archive/refs/tags/2.0.0.tar.gz
+source_filename = sds-2.0.0.tar.gz
+source_hash = 379c88d31bf9957006130c00671c28612a8647d5f38ff09cb75efb7abf08f6bb
+patch_directory = sds
+
+[provide]
+sds = sds_dep

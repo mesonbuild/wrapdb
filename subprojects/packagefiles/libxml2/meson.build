@@ -159,8 +159,13 @@ endif
 
 deps = [math_lib, iconv_lib, dl_lib, lzma_dep, thread_dep, zlib_dep, readline_lib, history_lib]
 
+libxml_static_args = []
 if target_machine.system() == 'windows'
   deps += cc.find_library('ws2_32')
+  if get_option('default_library') == 'static'
+    libxml_static_args = ['-DLIBXML_STATIC']
+    add_project_arguments(libxml_static_args, language: 'c')
+  endif
 endif
 
 configure_file(input : 'config.h.meson',
@@ -302,6 +307,7 @@ libxml2_dep = declare_dependency(
   include_directories: incdir,
   dependencies: deps,
   variables: {'modules': withcdata.get('WITH_MODULES').to_string()},
+  compile_args: libxml_static_args,
 )
 pkg = import('pkgconfig')
 pkg.generate(xml2lib,
@@ -309,7 +315,8 @@ pkg.generate(xml2lib,
              description: 'libXML library version2.',
              filebase: 'libxml-2.0',
              subdirs: 'libxml2',
-             variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')))
+             variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')),
+             extra_cflags: libxml_static_args)
 
 
 executable('xmllint', 'xmllint.c',

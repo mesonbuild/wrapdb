@@ -15,58 +15,18 @@ m_dep = cc.find_library('m', required : false)
 
 conf = configuration_data()
 
-conf.set_quoted('PACKAGE_NAME', meson.project_name())
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
-conf.set_quoted('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(), meson.project_version()))
-conf.set_quoted('PACKAGE_TARNAME', meson.project_name())
-conf.set_quoted('PACKAGE_URL', 'http://www.bytereef.org/mpdecimal/index.html')
-conf.set_quoted('PACKAGE_BUGREPORT', 'mpdecimal-bugs@bytereef.org')
-
-headers = [
-  'inttypes.h',
-  'memory.h',
-  'stdint.h',
-  'stdlib.h',
-  'strings.h',
-  'string.h',
-  'sys/stat.h',
-  'sys/types.h',
-  'unistd.h',
-]
-
-foreach header : headers
-  if cc.has_header(header)
-    conf.set('HAVE_' + header.underscorify().to_upper(), 1)
-  endif
-endforeach
-
-# This define is produced by the deprecated AC_HEADER_STDC autoconf
-# macro. It is however not used anywhere in the source code. Set it to
-# a static value for completeness. Any supported platform should
-# anyway comply with C89.
-conf.set('STDC_HEADERS', 1)
-
-conf.set('SIZEOF_SIZE_T', cc.sizeof('size_t'))
-
-size_uint128_t = cc.sizeof('__uint128_t')
-if size_uint128_t > 0
-  conf.set('SIZEOF___UINT128_T', size_uint128_t)
-  conf.set('HAVE_UINT128_T', 1)
-endif
+have_uint128_t = cc.sizeof('__uint128_t') > 0
 
 # x64 with gcc asm:
-if cc.compiles('''
+gcc_asm_for_x64 = cc.compiles('''
   int main()
   {
     __asm__ __volatile__ ("movq %rcx, %rax");
   }''',
   name : 'x64 gcc inline assembler')
 
-  conf.set('HAVE_GCC_ASM_FOR_X64', 1)
-endif
-
 # x87 with gcc asm:
-if cc.compiles('''
+gcc_asm_for_x87 = cc.compiles('''
   int main()
   {
     unsigned short cw;
@@ -74,9 +34,6 @@ if cc.compiles('''
     __asm__ __volatile__ ("fldcw %0" : : "m" (cw));
   }''',
   name : 'x87 gcc inline assembler')
-
-  conf.set('HAVE_GCC_ASM_FOR_X87', 1)
-endif
 
 # _FORTIFY_SOURCE wrappers for memmove and bcopy are incorrect:
 # http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
@@ -98,7 +55,25 @@ if cc.run('''
   args : ['-O2', '-D_FORTIFY_SOURCE=2'],
   name : 'glibc _FORTIFY_SOURCE/memmove').returncode() != 0
 
-  conf.set('HAVE_GLIBC_MEMMOVE_BUG', 1)
+  warning('''
+***************************** WARNING *********************************
+
+Detected glibc _FORTIFY_SOURCE/memmove bug. See:
+
+    http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
+
+Enabling -U_FORTIFY_SOURCE workaround. If -D_FORTIFY_SOURCE is also
+present in the command line, make sure that the order of the two
+options is:
+
+   ... -D_FORTIFY_SOURCE=2 ... -U_FORTIFY_SOURCE ...
+
+A better solution is to upgrade glibc or to report the bug to your
+OS vendor.
+
+***************************** WARNING *********************************
+''')
+  add_project_arguments('-U_FORTIFY_SOURCE', language: 'c')
 endif
 
 # Some versions of gcc miscompile inline asm:
@@ -123,7 +98,7 @@ if cc.get_id() == 'gcc' and cc.run('''
   args : ['-O2'],
   name : 'gcc ipa-pure-const').returncode() != 0
 
-  conf.set('HAVE_IPA_PURE_CONST_BUG', 1)
+  add_project_arguments('-fno-ipa-pure-const', language: 'c')
 endif
 
 # Values for the MPD_HEADER_CONFIG variable:
@@ -193,24 +168,34 @@ mpd_header_config_fullcov = '''
 
 machine = get_option('machine')
 if machine == 'auto'
-  if cc.sizeof('size_t') == 8
-    if conf.get('HAVE_GCC_ASM_FOR_X64') == 1
+  if host_machine.system() == 'windows'
+    if host_machine.cpu_family() == 'x86'
+      machine = 'ppro'
+    elif host_machine.cpu_family() == 'x86_64'
       machine = 'x64'
-    elif conf.get('HAVE_UINT128_T') == 1
-      machine = 'uint128'
     else
-      machine = 'ansi64'
+      error('machine probing on Windows only supports x86/x64')
     endif
   else
-    if cc.get_id() == 'ccomp'
-      machine = 'ansi-legacy'
+    if cc.sizeof('size_t') == 8
+      if gcc_asm_for_x64
+        machine = 'x64'
+      elif have_uint128_t
+        machine = 'uint128'
+      else
+        machine = 'ansi64'
+      endif
     else
-      machine = 'ansi32'
-    endif
-    if conf.get('HAVE_GCC_ASM_FOR_X87') == 1
-      if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-        if target_machine.system() != 'darwin'
-          machine = 'ppro'
+      if cc.get_id() == 'ccomp'
+        machine = 'ansi-legacy'
+      else
+        machine = 'ansi32'
+      endif
+      if gcc_asm_for_x87
+        if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+          if target_machine.system() != 'darwin'
+            machine = 'ppro'
+          endif
         endif
       endif
     endif
@@ -218,8 +203,13 @@ if machine == 'auto'
 endif
 
 if machine == 'x64'
-  add_project_arguments('-DCONFIG_64', '-DASM', language : 'c')
+  add_project_arguments('-DCONFIG_64', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
+  if host_machine.system() == 'windows'
+    add_project_arguments('/DMASM', language: 'c')
+  else
+    add_project_arguments('-DASM', language: 'c')
+  endif
 
 elif machine == 'uint128'
   add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language : 'c')
@@ -236,6 +226,9 @@ elif machine == 'full-coverage'
 elif machine == 'ppro'
   add_project_arguments('-DCONFIG_32', '-DPPRO', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
+  if host_machine.system() == 'windows'
+    add_project_arguments('/DMASM', language: 'c')
+  endif
 
 elif machine == 'ansi32'
   add_project_arguments('-DCONFIG_32', '-DANSI', language : 'c')
@@ -250,15 +243,26 @@ elif machine == 'universal'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_universal)
 endif
 
-mpdecimal_h = configure_file(
-  input : 'libmpdec/mpdecimal.h.in',
-  output : 'mpdecimal.h',
-  configuration : conf)
-
-configure_file(
-  input : 'config.h.meson',
-  output : 'config.h',
-  configuration : conf)
+build_dll = []
+use_dll = []
+if host_machine.system() == 'windows'
+  add_project_arguments('/wd4200', '/wd4204', '/wd4221', '/D_CRT_SECURE_NO_WARNINGS', '/nologo', language: 'c')
+  if get_option('default_library') != 'static'
+    build_dll = ['/DBUILD_DLL']
+    use_dll = ['/DUSE_DLL']
+  endif
+  vcver = machine == 'x64' ? '64vc' : '32vc'
+  mpdecimal_h = configure_file(
+    input: 'libmpdec/mpdecimal@0@.h'.format(vcver),
+    output : 'mpdecimal.h',
+    copy: true)
+  install_headers('libmpdec/vccompat.h')
+else
+  mpdecimal_h = configure_file(
+    input : 'libmpdec/mpdecimal.h.in',
+    output : 'mpdecimal.h',
+    configuration : conf)
+endif
 
 libmpdec_sources = files(
   'libmpdec/basearith.c',
@@ -278,12 +282,28 @@ libmpdec_sources = files(
   'libmpdec/transpose.c',
 )
 
+if host_machine.system() == 'windows' and machine == 'x64'
+  ml = find_program('ml64')
+  libmpdec_sources += custom_target(
+    'vcdiv64.asm.obj',
+    input: 'libmpdec/vcdiv64.asm',
+    output: 'vcdiv64.asm.obj',
+    command: [ml, '/Cx', '/Fo', '@OUTPUT@', '/c', '@INPUT@'])
+endif
+
 libmpdec = library(
   'mpdec',
   libmpdec_sources,
+  c_args: build_dll,
   dependencies : m_dep,
   version : library_version,
   darwin_versions : [compat_version, library_version])
+
+mpdec_dep = declare_dependency(
+  link_with : libmpdec,
+  compile_args: use_dll,
+  # mpdecimal.h is generated in the project root directory
+  include_directories : include_directories('.', 'libmpdec'))
 
 libmpdecpp_sources = files(
   'libmpdec++/decimal.cc',
@@ -292,17 +312,11 @@ libmpdecpp_sources = files(
 libmpdecpp = library(
   'mpdec++',
   libmpdecpp_sources, mpdecimal_h,
-  dependencies : m_dep,
-  link_with : libmpdec,
+  dependencies : [m_dep, mpdec_dep],
   version : library_version,
   darwin_versions : [compat_version, library_version])
 
 install_headers(mpdecimal_h, 'libmpdec++/decimal.hh')
-
-mpdec_dep = declare_dependency(
-  link_with : libmpdec,
-  # mpdecimal.h is generated in the project root directory
-  include_directories : include_directories('.'))
 
 mpdecpp_dep = declare_dependency(
   link_with : libmpdecpp,

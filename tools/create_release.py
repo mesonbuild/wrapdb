@@ -25,6 +25,7 @@ import subprocess
 import json
 
 from pathlib import Path
+from utils import is_ci, is_debianlike
 
 class CreateRelease:
     def __init__(self, repo: T.Optional[str], token: T.Optional[str], tag: str):
@@ -57,6 +58,21 @@ class CreateRelease:
 
         generator = Path(srcdir, 'generator.sh')
         if generator.exists():
+            try:
+                fn = 'ci_config.json'
+                with open(fn, 'r') as f:
+                    ci = json.load(f)
+            except json.decoder.JSONDecodeError:
+                raise RuntimeError(f'file {fn} is malformed')
+
+            debian_packages = ci.get(self.name, {}).get('debian_packages', [])
+            if debian_packages and is_debianlike():
+                if is_ci():
+                    subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
+                else:
+                    s = ', '.join(debian_packages)
+                    print(f'The following packages could be required: {s}')
+
             subprocess.check_call([generator])
 
         # If no specific license is specified, copy wrapdb's
@@ -81,6 +97,8 @@ class CreateRelease:
         self.wrap_section['patch_hash'] = patch_hash
 
     def create_wrap_file(self):
+        self.wrap_section['wrapdb_version'] = self.version
+
         filename = Path(self.tempdir, self.name + '.wrap')
         with open(filename, 'w') as f:
             self.wrap.write(f)

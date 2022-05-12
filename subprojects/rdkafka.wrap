@@ -1,8 +1,8 @@
 [wrap-file]
-directory = librdkafka-1.7.0
-source_url = https://github.com/edenhill/librdkafka/archive/v1.7.0.tar.gz
-source_filename = rdkafka-1.7.0.tgz
-source_hash = c71b8c5ff419da80c31bb8d3036a408c87ad523e0c7588e7660ee5f3c8973057
+directory = librdkafka-1.8.2
+source_url = https://github.com/edenhill/librdkafka/archive/v1.8.2.tar.gz
+source_filename = rdkafka-1.8.2.tgz
+source_hash = 6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6
 patch_directory = rdkafka
 
 [provide]

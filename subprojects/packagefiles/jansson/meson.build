@@ -1,4 +1,4 @@
-project('jansson', 'c', version : '2.11', license : 'MIT')
+project('jansson', 'c', version : '2.13', license : 'MIT')
 
 cc = meson.get_compiler('c')
 cdata = configuration_data()

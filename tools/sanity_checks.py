@@ -23,10 +23,9 @@ import typing as T
 import os
 import tempfile
 import platform
-import sysconfig
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux, is_windows
+from utils import Version, is_ci, is_debianlike, is_linux, is_macos
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -41,6 +40,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'sdl2': [
+        'find-dylib-name.py'
+    ]
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
@@ -60,7 +62,7 @@ class TestReleases(unittest.TestCase):
             fn = 'ci_config.json'
             with open(fn, 'r') as f:
                 cls.ci_config = json.load(f)
-        except json.decoder.JSONDecodeError as err:
+        except json.decoder.JSONDecodeError:
             raise RuntimeError(f'file {fn} is malformed')
 
         system = platform.system().lower()
@@ -223,27 +225,35 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
 
     def check_new_release(self, name: str, builddir: str = '_build'):
+        system = platform.system().lower()
         ci = self.ci_config.get(name, {})
+        # kept for backwards compatibility
         if ci.get('linux_only', False) and not is_linux():
             return
-        options = [f'-Dwraps={name}']
+        elif not ci.get('build_on', {}).get(system, True):
+            return
+
+        options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         if ci.get('fatal_warnings', True) and self.fatal_warnings:
             options.append('--fatal-meson-warnings')
-        if is_windows():
-            # On Windows we need to install python modules outside of prefix.
-            for i in {'purelib', 'platlib'}:
-                path = sysconfig.get_paths()[i]
-                options += [f'-Dpython.{i}dir={path}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
         debian_packages = ci.get('debian_packages', [])
+        brew_packages = ci.get('brew_packages', [])
         if debian_packages and is_debianlike():
             if is_ci():
-                subprocess.check_call(['sudo', 'apt', 'install'] + debian_packages)
+                subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
+        elif brew_packages and is_macos():
+            if is_ci():
+                subprocess.check_call(['brew', 'install'] + brew_packages)
+            else:
+                s = ', '.join(brew_packages)
+                print(f'The following packages could be required: {s}')
+
         try:
             subprocess.check_call(['meson', 'setup', builddir] + options)
         except subprocess.CalledProcessError:

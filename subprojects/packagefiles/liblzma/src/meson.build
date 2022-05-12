@@ -1,2 +1,4 @@
 subdir('liblzma')
-subdir('xz')
+if cc.get_id() != 'msvc'
+  subdir('xz')
+endif

@@ -8,4 +8,4 @@ aes_enc_lib = static_library('aes_enc', 'aes.c',
   include_directories : core_inc,
   c_args : ['-DENCRYPT_ONLY'])
 
-extra_objects += [aes_enc_lib.extract_all_objects()]
+extra_objects += [aes_enc_lib.extract_all_objects(recursive : true)]

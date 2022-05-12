@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '1.1.1l',
+  version: '3.0.2',
   license : 'Apache-2.0',
   meson_version: '>= 0.55',
   default_options: [
@@ -26,6 +26,8 @@ include_directories = [
   'crypto/modes',
   'crypto/ec/curve448',
   'crypto/ec/curve448/arch_32',
+  'providers/common/include',
+  'providers/implementations/include',
 ]
 
 compiler = meson.get_compiler('c')
@@ -45,188 +47,132 @@ c_args = []
 asm_opt = get_option('asm')
 
 if asm_opt.disabled()
-  new_gas_or_nasm = false
-  any_gas_or_nasm = false
+  gas_or_nasm = false
 else
-  new_gas_or_nasm = (
-    find_program('as', required: false, version: '>=2.26').found() or
-    find_program('nasm', required: false, version: '>=2.11.8').found()
-  )
-  any_gas_or_nasm = (
-    new_gas_or_nasm or
+  gas_or_nasm = (
     find_program('as', required: false).found() or
     find_program('nasm', required: false).found()
   )
 endif
 
-if new_gas_or_nasm
+is_bsd = host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
+is_darwin = host_machine.system() == 'darwin'
+is_linux = host_machine.system() in ['linux', 'android']
+is_sunos = host_machine.system() == 'sunos'
+is_windows = host_machine.system() == 'windows'
+
+is_x86 = host_machine.cpu_family() == 'x86'
+is_x86_64 = host_machine.cpu_family() == 'x86_64'
+is_aarch64 = host_machine.cpu_family() == 'aarch64'
+is_mips64 = host_machine.cpu_family() == 'mips64'
+is_s390x = host_machine.cpu_family() == 's390x'
+is_arm = host_machine.cpu_family() == 'arm'
+is_ppc = host_machine.cpu_family() == 'ppc'
+is_ppc64 = host_machine.cpu_family() == 'ppc64'
+is_riskv64 = host_machine.cpu_family() == 'riscv64'
+
+if gas_or_nasm
   asm = 'asm'
 
-  # Require AVX512IFMA supported. See
-  # https://www.openssl.org/docs/man1.1.1/man3/OPENSSL_ia32cap.html
-  # Currently crypto/poly1305/asm/poly1305-x86_64.pl requires AVX512IFMA.
-  if host_machine.cpu_family() == 'ppc' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux' and host_machine.endian() == 'little'
-    arch_subdir = 'linux-ppc64le'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc64'
-  elif host_machine.cpu_family() == 's390x' and host_machine.system() == 'linux'
-    arch_subdir = 'linux64-s390x'
-  elif host_machine.cpu_family() == 'arm' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-armv4'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-aarch64'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-elf'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin-i386-cc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris-x86-gcc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'windows'
-    warning('x86 + windows combo does not support ASM yet, please contribute')
-    asm = 'no-asm'
-    # TODO: Port this for Windows and uncomment
-    # arch_subdir = 'VC-WIN32'
-    # asm = 'asm'
-    #'rules': [
-    #  {
-    #    'rule_name': 'Assemble',
-    #    'extension': 'asm',
-    #    'inputs': [],
-    #    'outputs': [
-    #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #    ],
-    #    'action': [
-    #      'nasm.exe',
-    #      '-f win32',
-    #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #      '<(RULE_INPUT_PATH)',
-    #    ],
-    #  }
-    #],
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86_64'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-x86_64-cc'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-arm64-cc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris64-x86_64-gcc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'windows'
-    warning('x86_64 + windows combo does not support ASM yet, please contribute')
-    asm = 'no-asm'
-    # TODO: Port this for Windows and uncomment
-    # arch_subdir = 'VC-WIN64A'
-    # asm = 'asm'
-    #'rules': [
-    #  {
-    #    'rule_name': 'Assemble',
-    #    'extension': 'asm',
-    #    'inputs': [],
-    #    'outputs': [
-    #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #    ],
-    #    'action': [
-    #      'nasm.exe',
-    #      '-f win64',
-    #      '-DNEAR',
-    #      '-Ox',
-    #      '-g',
-    #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #      '<(RULE_INPUT_PATH)',
-    #    ],
-    #  }
-    #],
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-x86_64'
-  elif host_machine.cpu_family() == 'mips64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux64-mips64'
-  else
-    asm = 'no-asm'
-  endif
-elif any_gas_or_nasm
-  asm = 'asm_avx2'
-
-  if host_machine.cpu_family() == 'ppc' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux' and host_machine.endian() == 'little'
-    arch_subdir = 'linux-ppc64le'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc64'
-  elif host_machine.cpu_family() == 's390x' and host_machine.system() == 'linux'
-    arch_subdir = 'linux64-s390x'
-  elif host_machine.cpu_family() == 'arm' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-armv4'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-aarch64'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-elf'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin-i386-cc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris-x86-gcc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'windows'
-    warning('x86 + windows combo does not support ASM yet, please contribute')
-    asm = 'no-asm'
-    # TODO: Port this for Windows and uncomment
-    # arch_subdir = 'VC-WIN32'
-    # asm = 'asm_avx2'
-    #'rules': [
-    #  {
-    #    'rule_name': 'Assemble',
-    #    'extension': 'asm',
-    #    'inputs': [],
-    #    'outputs': [
-    #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #    ],
-    #    'action': [
-    #      'nasm.exe',
-    #      '-f win32',
-    #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #      '<(RULE_INPUT_PATH)',
-    #    ],
-    #  }
-    #],
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86_64'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-x86_64-cc'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-arm64-cc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris64-x86_64-gcc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'windows'
-    warning('x86_64 + windows combo does not support ASM yet, please contribute')
-    asm = 'no-asm'
-    # TODO: Port this for Windows and uncomment
-    # arch_subdir = 'VC-WIN64A'
-    # asm = 'asm_avx2'
-    #'rules': [
-    #  {
-    #    'rule_name': 'Assemble',
-    #    'extension': 'asm',
-    #    'inputs': [],
-    #    'outputs': [
-    #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #    ],
-    #    'action': [
-    #      'nasm.exe',
-    #      '-f win64',
-    #      '-DNEAR',
-    #      '-Ox',
-    #      '-g',
-    #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-    #      '<(RULE_INPUT_PATH)',
-    #    ],
-    #  }
-    #],
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == ['linux', 'android']
-    arch_subdir = 'linux-x86_64'
+  if is_bsd
+    if is_x86
+      arch_subdir = 'BSD-x86'
+    elif is_x86_64
+      arch_subdir = 'BSD-x86_64'
+    else
+      asm = 'no-asm'
+    endif
+  elif is_darwin
+    if is_aarch64
+      arch_subdir = 'darwin64-arm64-cc'
+    elif is_x86_64
+      arch_subdir = 'darwin64-x86_64-cc'
+    elif is_x86
+      arch_subdir = 'darwin-i386-cc'
+    else
+      asm = 'no-asm'
+    endif
+  elif is_linux
+    if is_mips64
+      arch_subdir = 'linux64-mips64'
+    elif is_s390x
+      arch_subdir = 'linux64-s390x'
+    elif is_aarch64
+      arch_subdir = 'linux-aarch64'
+    elif is_arm
+      arch_subdir = 'linux-armv4'
+    elif is_ppc
+      arch_subdir = 'linux-ppc'
+    elif is_ppc64 and host_machine.endian() == 'big'
+      arch_subdir = 'linux-ppc64'
+    elif is_ppc64
+      arch_subdir = 'linux-ppc64le'
+    elif is_x86
+      arch_subdir = 'linux-x32'
+    elif is_x86_64
+      arch_subdir = 'linux-x86_64'
+    else
+      asm = 'no-asm'
+    endif
+  elif is_sunos
+    if is_x86_64
+      arch_subdir = 'solaris64-x86_64-gcc'
+    elif is_x86
+      arch_subdir = 'solaris-x86-gcc'
+    else
+      asm = 'no-asm'
+    endif
+  elif is_windows
+    if is_x86
+      warning('x86 + windows combo does not support ASM yet, please contribute')
+      asm = 'no-asm'
+      # TODO: Port this for Windows and uncomment
+      # arch_subdir = 'VC-WIN32'
+      # asm = 'asm'
+      #'rules': [
+      #  {
+      #    'rule_name': 'Assemble',
+      #    'extension': 'asm',
+      #    'inputs': [],
+      #    'outputs': [
+      #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
+      #    ],
+      #    'action': [
+      #      'nasm.exe',
+      #      '-f win32',
+      #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
+      #      '<(RULE_INPUT_PATH)',
+      #    ],
+      #  }
+      #],
+    elif is_x86_64
+      warning('x86_64 + windows combo does not support ASM yet, please contribute')
+      asm = 'no-asm'
+      # TODO: Port this for Windows and uncomment
+      # arch_subdir = 'VC-WIN64A'
+      # asm = 'asm'
+      #'rules': [
+      #  {
+      #    'rule_name': 'Assemble',
+      #    'extension': 'asm',
+      #    'inputs': [],
+      #    'outputs': [
+      #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
+      #    ],
+      #    'action': [
+      #      'nasm.exe',
+      #      '-f win64',
+      #      '-DNEAR',
+      #      '-Ox',
+      #      '-g',
+      #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
+      #      '<(RULE_INPUT_PATH)',
+      #    ],
+      #  }
+      #],
+    else
+      asm = 'no-asm'
+    endif
   else
     asm = 'no-asm'
   endif
@@ -238,46 +184,70 @@ endif
 
 if asm == 'no-asm'
   defines += ['OPENSSL_NO_ASM']
-  if host_machine.cpu_family() == 'ppc' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux' and host_machine.endian() == 'little'
-    arch_subdir = 'linux-ppc64le'
-  elif host_machine.cpu_family() == 'ppc64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-ppc64'
-  elif host_machine.cpu_family() == 's390x' and host_machine.system() == 'linux'
-    arch_subdir = 'linux64-s390x'
-  elif host_machine.cpu_family() == 'arm' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-armv4'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-aarch64'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() in ['linux', 'android']
-    arch_subdir = 'linux-elf'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin-i386-cc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris-x86-gcc'
-  elif host_machine.cpu_family() == 'x86' and host_machine.system() == 'windows'
-    arch_subdir = 'VC-WIN32'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
-    arch_subdir = 'BSD-x86_64'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-x86_64-cc'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() == 'darwin'
-    arch_subdir = 'darwin64-arm64-cc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'sunos'
-    arch_subdir = 'solaris64-x86_64-gcc'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'windows'
-    arch_subdir = 'VC-WIN64A'
-  elif host_machine.cpu_family() == 'aarch64' and host_machine.system() == 'windows'
-    arch_subdir = 'VC-WIN64-ARM'
-  elif host_machine.cpu_family() == 'x86_64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux-x86_64'
-  elif host_machine.cpu_family() == 'mips64' and host_machine.system() == 'linux'
-    arch_subdir = 'linux64-mips64'
+  error_message = 'Unsupported arch+OS combo: ' + host_machine.cpu_family() + ' + ' + host_machine.system()
+
+  if is_bsd
+    if is_x86
+      arch_subdir = 'BSD-x86'
+    elif is_x86_64
+      arch_subdir = 'BSD-x86_64'
+    else
+      error(error_message)
+    endif
+  elif is_darwin
+    if is_aarch64
+      arch_subdir = 'darwin64-arm64-cc'
+    elif is_x86_64
+      arch_subdir = 'darwin64-x86_64-cc'
+    elif is_x86
+      arch_subdir = 'darwin-i386-cc'
+    else
+      error(error_message)
+    endif
+  elif is_linux
+    if is_mips64
+      arch_subdir = 'linux64-mips64'
+    elif is_riskv64
+      arch_subdir = 'linux64-riscv64'
+    elif is_s390x
+      arch_subdir = 'linux64-s390x'
+    elif is_aarch64
+      arch_subdir = 'linux-aarch64'
+    elif is_arm
+      arch_subdir = 'linux-armv4'
+    elif is_ppc
+      arch_subdir = 'linux-ppc'
+    elif is_ppc64 and host_machine.endian() == 'big'
+      arch_subdir = 'linux-ppc64'
+    elif is_ppc64
+      arch_subdir = 'linux-ppc64le'
+    elif is_x86
+      arch_subdir = 'linux-x32'
+    elif is_x86_64
+      arch_subdir = 'linux-x86_64'
+    else
+      error(error_message)
+    endif
+  elif is_sunos
+    if is_x86_64
+      arch_subdir = 'solaris64-x86_64-gcc'
+    elif is_x86
+      arch_subdir = 'solaris-x86-gcc'
+    else
+      error(error_message)
+    endif
+  elif is_windows
+    if is_x86
+      arch_subdir = 'VC-WIN32'
+    elif is_aarch64
+      arch_subdir = 'VC-WIN64-ARM'
+    elif is_x86_64
+      arch_subdir = 'VC-WIN64A'
+    else
+      error(error_message)
+    endif
   else
-    error('Unsupported arch+OS combo: ' + host_machine.cpu_family() + ' + ' + host_machine.system())
+    error(error_message)
   endif
 
   message('OpenSSL is configured without ASM support')
@@ -288,11 +258,12 @@ endif
 subdir('generated-config/archs' / arch_subdir / asm)
 
 # Build options specific to OS, engines are disabled on purpose for the same reasons as `OPENSSL_NO_HW` above
-if host_machine.system() == 'windows'
+if is_windows
   defines += [
     ## default of Win. See INSTALL in openssl repo.
     'OPENSSLDIR="C:\\Program Files\\Common Files\\SSL"',
     'ENGINESDIR="NUL"',
+    'MODULESDIR="NUL"',
     'OPENSSL_SYS_WIN32', 'WIN32_LEAN_AND_MEAN', 'L_ENDIAN',
     '_CRT_SECURE_NO_DEPRECATE', 'UNICODE', '_UNICODE',
   ]
@@ -301,25 +272,28 @@ if host_machine.system() == 'windows'
       '-wd4090', '-Gs0', '-GF', '-Gy', '-nologo',
     ]
   endif
-elif host_machine.system() == 'darwin'
+elif is_darwin
   defines += [
     'OPENSSLDIR="/System/Library/OpenSSL/"',
     'ENGINESDIR="/dev/null"',
+    'MODULESDIR="/dev/null"',
   ]
   c_args += [
     '-Wno-missing-field-initializers',
   ]
-elif host_machine.system() == 'sunos'
+elif is_sunos
   defines += [
    'OPENSSLDIR="/etc/ssl"',
    'ENGINESDIR="/dev/null"',
+   'MODULESDIR="/dev/null"',
    '__EXTENSIONS__'
  ]
 else
-  # linux and others
+  # Linux and others
   defines += [
     'OPENSSLDIR="/etc/ssl"',
     'ENGINESDIR="/dev/null"',
+    'MODULESDIR="/dev/null"',
   ]
   c_args += [
     '-Wno-missing-field-initializers',
@@ -352,7 +326,7 @@ if get_option('default_library') == 'static'
   defines += [
     'OSSL_CRYPTO_DSO_CONF_H',
     'DSO_NONE',
-    'DSO_EXTENSION=.so',
+    'DSO_EXTENSION=".so"',
     'OPENSSL_NO_DSO',
   ]
 endif
@@ -399,12 +373,18 @@ openssl_dep = declare_dependency(
   dependencies: [libcrypto_dep, libssl_dep],
 )
 
+openssl_cli_directories = include_directories + [
+  'apps/include'
+]
+
+cli_opt = get_option('build_cli')
+
 openssl_cli = executable(
   'openssl',
-  build_by_default: false,
+  build_by_default: cli_opt,
   dependencies: dependencies + [openssl_dep],
   sources: openssl_cli_sources,
-  include_directories: include_directories,
+  include_directories: openssl_cli_directories,
   c_args: c_args,
-  install: true,
+  install: cli_opt,
 )

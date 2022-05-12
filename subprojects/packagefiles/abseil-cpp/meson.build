@@ -21,7 +21,7 @@ endif
 
 flags = cpp.get_supported_arguments(cpp_flags)
 
-if cpp.get_id() == 'msvc'
+if cpp.get_argument_syntax() == 'msvc'
   flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
 endif
 
@@ -103,7 +103,6 @@ absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
   'absl/hash/internal/low_level_hash.cc',
-  'absl/hash/internal/print_hash_of.cc',
 )
 
 absl_numeric_sources = files(

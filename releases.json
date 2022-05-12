@@ -15,6 +15,8 @@
       "absl_types"
     ],
     "versions": [
+      "20211102.0-3",
+      "20211102.0-2",
       "20211102.0-1",
       "20210324.2-4",
       "20210324.2-3",
@@ -41,6 +43,7 @@
       "argparse"
     ],
     "versions": [
+      "2.4-1",
       "2.2-1"
     ]
   },
@@ -54,6 +57,7 @@
       "box2d"
     ],
     "versions": [
+      "2.4.1-2",
       "2.4.1-1",
       "2.3.1-7",
       "2.3.1-5",
@@ -73,6 +77,7 @@
       "catch2"
     ],
     "versions": [
+      "2.13.8-1",
       "2.13.7-1",
       "2.13.3-2",
       "2.13.3-1",
@@ -91,7 +96,11 @@
     ]
   },
   "cereal": {
+    "dependency_names": [
+      "cereal"
+    ],
     "versions": [
+      "1.3.2-1",
       "1.3.0-1",
       "1.2.2-1"
     ]
@@ -112,6 +121,7 @@
       "libcjson"
     ],
     "versions": [
+      "1.7.15-2",
       "1.7.15-1",
       "1.7.14-1"
     ]
@@ -121,6 +131,7 @@
       "cli11"
     ],
     "versions": [
+      "2.2.0-1",
       "2.1.2-1",
       "1.9.1-1"
     ]
@@ -134,7 +145,9 @@
     ]
   },
   "cpp-httplib": {
-    "dependency_names": ["cpp-httplib"],
+    "dependency_names": [
+      "cpp-httplib"
+    ],
     "versions": [
       "0.8.9-2",
       "0.8.9-1"
@@ -146,13 +159,19 @@
     ]
   },
   "cpr": {
+    "dependency_names": ["cpr"],
     "versions": [
+      "1.7.2-1",
       "1.5.0-1",
       "1.3.0-1"
     ]
   },
   "cxxopts": {
+    "dependency_names": [
+      "cxxopts"
+    ],
     "versions": [
+      "3.0.0-1",
       "2.2.1-1",
       "2.2.0-2",
       "2.2.0-1"
@@ -160,11 +179,27 @@
   },
   "docopt": {
     "dependency_names": [
-     "docopt"
+      "docopt"
     ],
     "versions": [
       "0.6.3-2",
       "0.6.3-1"
+    ]
+  },
+  "doctest": {
+    "dependency_names": [
+      "doctest"
+    ],
+    "versions": [
+      "2.4.8-1"
+    ]
+  },
+  "dragonbox": {
+    "dependency_names": [
+      "dragonbox"
+    ],
+    "versions": [
+      "1.1.2-1"
     ]
   },
   "eigen": {
@@ -189,7 +224,11 @@
     ]
   },
   "enet": {
+    "dependency_names": [
+      "enet"
+    ],
     "versions": [
+      "1.3.17-1",
       "1.3.13-4",
       "1.3.13-2"
     ]
@@ -207,6 +246,7 @@
       "expat"
     ],
     "versions": [
+      "2.4.8-1",
       "2.2.9-4",
       "2.2.9-3",
       "2.2.9-2",
@@ -219,7 +259,11 @@
     ]
   },
   "facil": {
+    "dependency_names": [
+      "facil"
+    ],
     "versions": [
+      "0.7.6-1",
       "0.7.5-1"
     ]
   },
@@ -231,17 +275,35 @@
       "2.0.2-0"
     ]
   },
+  "ff-nvcodec-headers": {
+    "dependency_names": [
+      "ffnvcodec"
+    ],
+    "versions": [
+      "11.1.5.1-0"
+    ]
+  },
   "flac": {
     "dependency_names": [
       "flac"
     ],
     "versions": [
+      "1.3.4-2",
+      "1.3.4-1",
       "1.3.3-2",
       "1.3.3-1"
     ]
   },
   "flatbuffers": {
+    "dependency_names": [
+      "flatbuffers"
+    ],
+    "program_names": [
+      "flatc",
+      "flathash"
+    ],
     "versions": [
+      "2.0.6-1",
       "1.11.0-1"
     ]
   },
@@ -250,6 +312,7 @@
       "fluidsynth"
     ],
     "versions": [
+      "2.2.6-1",
       "2.2.4-3",
       "2.2.4-2",
       "2.2.4-1",
@@ -265,6 +328,7 @@
       "fmt"
     ],
     "versions": [
+      "8.1.1-1",
       "8.0.1-1",
       "7.1.3-1",
       "7.0.1-1",
@@ -282,6 +346,7 @@
       "freetype2"
     ],
     "versions": [
+      "2.12.0-1",
       "2.11.1-1",
       "2.11.0-1",
       "2.9.1-2",
@@ -297,6 +362,17 @@
       "1.0.1-1"
     ]
   },
+  "ftxui": {
+    "dependency_names": [
+      "ftxui-screen",
+      "ftxui-dom",
+      "ftxui-component"
+    ],
+    "versions": [
+      "2.0.0-2",
+      "2.0.0-1"
+    ]
+  },
   "fuse": {
     "dependency_names": [
       "fuse"
@@ -306,7 +382,11 @@
     ]
   },
   "gdbm": {
+    "dependency_names": [
+      "gdbm"
+    ],
     "versions": [
+      "1.23-1",
       "1.14.1-2",
       "1.14.1-1"
     ]
@@ -343,6 +423,7 @@
       "gdbus-codegen"
     ],
     "versions": [
+      "2.70.4-1",
       "2.70.2-1",
       "2.70.1-1",
       "2.70.0-1",
@@ -370,12 +451,22 @@
     ]
   },
   "google-brotli": {
+    "dependency_names": [
+      "libbrotlicommon",
+      "libbrotlienc",
+      "libbrotlidec"
+    ],
     "versions": [
+      "1.0.9-1",
       "1.0.7-1"
     ]
   },
   "google-snappy": {
+    "dependency_names": [
+      "snappy"
+    ],
     "versions": [
+      "1.1.9-1",
       "1.1.7-2",
       "1.1.7-1"
     ]
@@ -432,7 +523,12 @@
     ]
   },
   "hinnant-date": {
+    "dependency_names": [
+      "date",
+      "tz"
+    ],
     "versions": [
+      "3.0.1-1",
       "3.0.0-1",
       "2.4.1-1"
     ]
@@ -442,6 +538,7 @@
       "htslib"
     ],
     "versions": [
+      "1.15-1",
       "1.14-1",
       "1.11-1",
       "1.10.2-1",
@@ -460,6 +557,7 @@
       "gencmn"
     ],
     "versions": [
+      "70.1-1",
       "67.1-4",
       "67.1-3",
       "67.1-2",
@@ -472,6 +570,7 @@
       "imgui"
     ],
     "versions": [
+      "1.87-1",
       "1.86-1",
       "1.85-1",
       "1.81-1",
@@ -500,13 +599,18 @@
       "inireader"
     ],
     "versions": [
+      "r54-1",
       "r53-1",
       "r52-1",
       "r51-1"
     ]
   },
   "jansson": {
+    "dependency_names": [
+      "jansson"
+    ],
     "versions": [
+      "2.13-1",
       "2.11-3",
       "2.11-2",
       "2.11-1"
@@ -545,11 +649,20 @@
       "json-c"
     ]
   },
+  "json-glib": {
+    "dependency_names": [
+      "json-glib-1.0"
+    ],
+    "versions": [
+      "1.6.6-1"
+    ]
+  },
   "jsoncpp": {
     "dependency_names": [
       "jsoncpp"
     ],
     "versions": [
+      "1.9.5-2",
       "1.9.5-1",
       "1.8.4-1"
     ]
@@ -581,14 +694,33 @@
       "libccp4c"
     ],
     "versions": [
+      "6.5.1-2",
       "6.5.1-1"
     ]
   },
-  "libebml" : {
-    "dependency_names" : [
+  "libdrm": {
+    "dependency_names": [
+      "libdrm",
+      "libdrm_amdgpu",
+      "libdrm_etnaviv",
+      "libdrm_exynos",
+      "libdrm_freedreno",
+      "libdrm_intel",
+      "libdrm_libkms",
+      "libdrm_nouveau",
+      "libdrm_omap",
+      "libdrm_radeon",
+      "libdrm_tegra"
+    ],
+    "versions": [
+      "2.4.110-1"
+    ]
+  },
+  "libebml": {
+    "dependency_names": [
       "libebml"
     ],
-    "versions" : [
+    "versions": [
       "1.4.2-1"
     ]
   },
@@ -597,7 +729,18 @@
       "libexif"
     ],
     "versions": [
+      "0.6.24-3",
+      "0.6.24-2",
+      "0.6.24-1",
       "0.6.22-1"
+    ]
+  },
+  "libffmpegthumbnailer": {
+    "dependency_names": [
+      "libffmpegthumbnailer"
+    ],
+    "versions": [
+      "2.2.2-1"
     ]
   },
   "libgpiod": {
@@ -614,9 +757,18 @@
       "libjpeg"
     ],
     "versions": [
+      "2.1.2-2",
       "2.1.2-1",
       "2.1.0-2",
       "2.1.0-1"
+    ]
+  },
+  "libkqueue": {
+    "dependency_names": [
+      "libkqueue"
+    ],
+    "versions": [
+      "2.6.1-1"
     ]
   },
   "liblangtag": {
@@ -637,17 +789,18 @@
       "liblzma"
     ],
     "versions": [
+      "5.2.5-1",
       "5.2.1-6",
       "5.2.1-5",
       "5.2.1-4",
       "5.2.1-2"
     ]
   },
-  "libmatroska" : {
-    "dependency_names" : [
+  "libmatroska": {
+    "dependency_names": [
       "libmatroska"
     ],
-    "versions" : [
+    "versions": [
       "1.6.3-1"
     ]
   },
@@ -656,7 +809,19 @@
       "libnpupnp"
     ],
     "versions": [
+      "4.2.2-1",
+      "4.2.1-2",
       "4.2.1-1"
+    ]
+  },
+  "libobsd": {
+    "dependency_names": [
+      "libbsd-overlay",
+      "libobsd"
+    ],
+    "versions": [
+      "1.1.0-1",
+      "1.0.0-1"
     ]
   },
   "libopenjp2": {
@@ -664,6 +829,7 @@
       "libopenjp2"
     ],
     "versions": [
+      "2.3.1-8",
       "2.3.1-7",
       "2.3.1-6",
       "2.3.1-5",
@@ -718,8 +884,20 @@
     ]
   },
   "libtomcrypt": {
+    "dependency_names": [
+      "libtomcrypt"
+    ],
     "versions": [
+      "1.18.2-1",
       "1.17-1"
+    ]
+  },
+  "libupnp": {
+    "dependency_names": [
+      "libupnp"
+    ],
+    "versions": [
+      "1.14.12-1"
     ]
   },
   "liburing": {
@@ -736,6 +914,7 @@
       "libuv"
     ],
     "versions": [
+      "1.44.1-1",
       "1.43.0-1",
       "1.42.0-1",
       "1.41.0-1",
@@ -754,6 +933,10 @@
       "libxml-2.0"
     ],
     "versions": [
+      "2.9.7-12",
+      "2.9.7-11",
+      "2.9.7-10",
+      "2.9.7-9",
       "2.9.7-8",
       "2.9.7-7",
       "2.9.7-6",
@@ -768,7 +951,11 @@
     ]
   },
   "libxmlpp": {
+    "dependency_names": [
+      "libxml++"
+    ],
     "versions": [
+      "5.0.1-1",
       "3.0.1-2",
       "3.0.1-1"
     ]
@@ -782,6 +969,7 @@
       "xsltproc"
     ],
     "versions": [
+      "1.1.35-1",
       "1.1.34-1"
     ]
   },
@@ -798,6 +986,7 @@
       "lmdb"
     ],
     "versions": [
+      "0.9.29-2",
       "0.9.29-1"
     ],
     "program_names": [
@@ -812,6 +1001,7 @@
       "lua-5.4"
     ],
     "versions": [
+      "5.4.4-1",
       "5.4.3-2",
       "5.4.3-1",
       "5.3.6-2",
@@ -840,11 +1030,12 @@
       "1.9.2-1"
     ]
   },
-   "lzo2": {
+  "lzo2": {
     "dependency_names": [
       "lzo2"
     ],
     "versions": [
+      "2.10-2",
       "2.10-1"
     ]
   },
@@ -890,6 +1081,7 @@
       "mt32emu"
     ],
     "versions": [
+      "2.6.1-1",
       "2.5.3-1",
       "2.5.0-1",
       "2.4.2-2",
@@ -924,7 +1116,11 @@
     ]
   },
   "nng": {
+    "dependency_names": [
+      "nng"
+    ],
     "versions": [
+      "1.5.2-1",
       "1.3.2-2",
       "1.3.2-1"
     ]
@@ -1021,6 +1217,8 @@
       "openssl"
     ],
     "versions": [
+      "3.0.2-1",
+      "1.1.1l-3",
       "1.1.1l-2",
       "1.1.1l-1",
       "1.1.1k-2",
@@ -1048,6 +1246,7 @@
       "libpcre"
     ],
     "versions": [
+      "8.45-1",
       "8.37-4",
       "8.37-3",
       "8.37-2",
@@ -1068,7 +1267,12 @@
     ]
   },
   "protobuf": {
+    "dependency_names": [
+      "protobuf-lite",
+      "protobuf"
+    ],
     "versions": [
+      "3.20.0-1",
       "3.12.2-2",
       "3.12.2-1",
       "3.5.1-3",
@@ -1088,6 +1292,7 @@
       "pugixml"
     ],
     "versions": [
+      "1.12.1-1",
       "1.12-1",
       "1.11.4-1"
     ]
@@ -1108,7 +1313,11 @@
     ]
   },
   "quazip": {
+    "dependency_names": [
+      "quazip"
+    ],
     "versions": [
+      "1.3-1",
       "0.7.3-1"
     ]
   },
@@ -1138,6 +1347,7 @@
       "rdkafka++"
     ],
     "versions": [
+      "1.8.2-1",
       "1.7.0-1",
       "1.5.2-1",
       "1.5.0-1",
@@ -1150,6 +1360,7 @@
       "re2"
     ],
     "versions": [
+      "20220401-1",
       "20201101-1"
     ]
   },
@@ -1161,6 +1372,7 @@
       "reflex"
     ],
     "versions": [
+      "3.2.3-1",
       "3.0.1-2",
       "3.0.1-1"
     ]
@@ -1191,6 +1403,9 @@
       "sdl2"
     ],
     "versions": [
+      "2.0.20-3",
+      "2.0.20-2",
+      "2.0.20-1",
       "2.0.18-2",
       "2.0.18-1",
       "2.0.12-3",
@@ -1239,6 +1454,14 @@
       "2.0.12-1"
     ]
   },
+  "sds": {
+    "dependency_names": [
+      "sds"
+    ],
+    "versions": [
+      "2.0.0-1"
+    ]
+  },
   "sergiusthebest-plog": {
     "versions": [
       "1.1.4-1"
@@ -1267,6 +1490,8 @@
       "spdlog"
     ],
     "versions": [
+      "1.10.0-2",
+      "1.10.0-1",
       "1.9.2-1",
       "1.8.5-1",
       "1.8.2-1",
@@ -1283,7 +1508,7 @@
   },
   "spng": {
     "dependency_names": [
-        "spng"
+      "spng"
     ],
     "versions": [
       "0.7.0-1",
@@ -1300,6 +1525,7 @@
       "sqlite3"
     ],
     "versions": [
+      "3.38.0-1",
       "3.34.1-1"
     ]
   },
@@ -1308,6 +1534,7 @@
       "taglib"
     ],
     "versions": [
+      "1.12-2",
       "1.12-1"
     ]
   },
@@ -1350,6 +1577,14 @@
       "7.0.1-1"
     ]
   },
+  "tl-expected": {
+    "dependency_names": [
+      "tl-expected"
+    ],
+	"versions": [
+	  "1.0.0-1"
+	]
+  },
   "tl-optional": {
     "dependency_names": [
       "tl-optional"
@@ -1363,8 +1598,17 @@
       "tomlplusplus"
     ],
     "versions": [
+      "3.1.0-1",
       "3.0.0-1",
       "2.5.0-1"
+    ]
+  },
+  "tracy": {
+    "dependency_names": [
+      "tracy"
+    ],
+    "versions": [
+      "0.8.1-1"
     ]
   },
   "trompeloeil": {
@@ -1478,7 +1722,7 @@
       "wayland-protocols"
     ],
     "versions": [
-        "1.24-1"
+      "1.24-1"
     ]
   },
   "wren": {
@@ -1511,6 +1755,7 @@
       "libxxhash"
     ],
     "versions": [
+      "0.8.1-1",
       "0.8.0-2",
       "0.8.0-1",
       "0.6.5-1"
@@ -1521,6 +1766,7 @@
       "yajl"
     ],
     "versions": [
+      "2.1.0-3",
       "2.1.0-2",
       "2.1.0-1"
     ]
@@ -1530,6 +1776,7 @@
       "zlib"
     ],
     "versions": [
+      "1.2.12-1",
       "1.2.11-6",
       "1.2.11-5",
       "1.2.11-4",

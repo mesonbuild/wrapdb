@@ -1,8 +1,8 @@
 [wrap-file]
-directory = SDL2-2.0.18
-source_url = https://www.libsdl.org/release/SDL2-2.0.18.tar.gz
-source_filename = SDL2-2.0.18.tar.gz
-source_hash = 94d40cd73dbfa10bb6eadfbc28f355992bb2d6ef6761ad9d4074eff95ee5711c
+directory = SDL2-2.0.20
+source_url = https://libsdl.org/release/SDL2-2.0.20.tar.gz
+source_filename = SDL2-2.0.20.tar.gz
+source_hash = c56aba1d7b5b0e7e999e4a7698c70b63a3394ff9704b5f6e1c57e0c16f04dd06
 patch_directory = sdl2
 
 [provide]

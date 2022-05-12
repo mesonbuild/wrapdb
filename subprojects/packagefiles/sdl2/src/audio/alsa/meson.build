@@ -1,3 +1,3 @@
-all_sources += files(
-  'SDL_alsa_audio.c',
+c_sources += files(
+    'SDL_alsa_audio.c',
 )

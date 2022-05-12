@@ -10,7 +10,7 @@ src = [
 fmt = 'fmt.cpp'
 
 
-if not(get_option('external_fmt'))
+if not fmt_dep.found()
 src += fmt
 endif
 

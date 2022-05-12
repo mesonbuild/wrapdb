@@ -1,7 +1,7 @@
 diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
 --- a/openssl/config/generate_gypi.pl
 +++ b/openssl/config/generate_gypi.pl
-@@ -171,7 +171,34 @@
+@@ -361,7 +361,35 @@
  print CLGYPI "$clgypi";
  close(CLGYPI);
 
@@ -16,6 +16,7 @@ diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
 +    HASH => {
 +        libssl_srcs => \@libssl_srcs,
 +        libcrypto_srcs => \@libcrypto_srcs,
++        lib_defines => \@lib_defines,
 +        generated_srcs => \@generated_srcs,
 +        apps_openssl_srcs => \@apps_openssl_srcs,
 +        libapps_srcs => \@libapps_srcs,

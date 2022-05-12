@@ -1,6 +1,7 @@
 all_sources += files(
   'anubis.c',
   'blowfish.c',
+  'camellia.c',
   'cast5.c',
   'des.c',
   'kasumi.c',

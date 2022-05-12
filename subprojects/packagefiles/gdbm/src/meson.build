@@ -8,12 +8,13 @@ conf.set('GDBM_COUNT_T', count_t)
 version = meson.project_version().split('.')
 conf.set('GDBM_VERSION_MAJOR', version[0])
 conf.set('GDBM_VERSION_MINOR', version[1])
-conf.set('GDBM_VERSION_PATCH', version[2])
+conf.set('GDBM_VERSION_PATCH', 0)
 configure_file(output: 'gdbm.h', input: 'gdbm.h.in', configuration: conf)
 
 inc = autoconf_include
 
 src = [
+    'avail.c',
     'gdbmclose.c',
     'gdbmcount.c',
     'gdbmdelete.c',

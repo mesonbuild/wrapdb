@@ -90,6 +90,9 @@
 /* Define to 1 if x86 decoder is enabled. */
 #mesondefine HAVE_DECODER_X86
 
+/* Define to 1 if any of HAVE_DECODER_foo have been defined. */
+#mesondefine HAVE_DECODERS
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #mesondefine HAVE_DLFCN_H
 
@@ -119,6 +122,9 @@
 
 /* Define to 1 if x86 encoder is enabled. */
 #mesondefine HAVE_ENCODER_X86
+
+/* Define to 1 if any of HAVE_ENCODER_foo have been defined. */
+#mesondefine HAVE_ENCODERS
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #mesondefine HAVE_FCNTL_H

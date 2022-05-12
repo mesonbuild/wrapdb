@@ -5,7 +5,9 @@ on:
       fatal_warnings:
         description: 'Build with --fatal-meson-warning (yes/no)'
         default: 'no'
-
+  schedule:
+    # Run every Sunday at midnight
+    - cron: '0 0 * * 0'
 jobs:
   Ubuntu:
     runs-on: ubuntu-latest
@@ -20,7 +22,8 @@ jobs:
 
       - name: Install packages
         run: |
-          sudo apt-get -y install build-essential python3-pip ninja-build nasm
+          sudo apt-get update
+          sudo apt-get -y install build-essential python3-pip ninja-build
           pip install git+https://github.com/mesonbuild/meson
 
       - name: Sanity Checks
@@ -49,3 +52,24 @@ jobs:
       - name: Sanity Checks
         run: |
           python tools/sanity_checks.py
+
+  MacOS:
+    runs-on: macos-latest
+    env:
+      TEST_BUILD_ALL: 1
+      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install packages
+        run: |
+          brew update
+          brew install ninja python
+          python3 -m pip install git+https://github.com/mesonbuild/meson
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py

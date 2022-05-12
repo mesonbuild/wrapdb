@@ -22,7 +22,7 @@ project(
   'google-brotli',
   'c',
   license : 'MIT',
-  version : '1.0.7',
+  version : '1.0.9',
   meson_version : '>= 0.50',
 )
 
@@ -54,7 +54,11 @@ endif
 
 libbrotli_common = library(
   'brotli_common',
-  ['c/common/dictionary.c', 'c/common/transform.c'],
+  'c/common/constants.c',
+  'c/common/context.c',
+  'c/common/dictionary.c',
+  'c/common/platform.c',
+  'c/common/transform.c',
   c_args : c_args,
   include_directories : inc,
   version : meson.project_version(),
@@ -85,12 +89,14 @@ libbrotli_encoder = library(
     'c/enc/block_splitter.c',
     'c/enc/brotli_bit_stream.c',
     'c/enc/cluster.c',
+    'c/enc/command.c',
     'c/enc/compress_fragment.c',
     'c/enc/compress_fragment_two_pass.c',
     'c/enc/dictionary_hash.c',
     'c/enc/encode.c',
     'c/enc/encoder_dict.c',
     'c/enc/entropy_encode.c',
+    'c/enc/fast_log.c',
     'c/enc/histogram.c',
     'c/enc/literal_cost.c',
     'c/enc/memory.c',
@@ -106,14 +112,17 @@ libbrotli_encoder = library(
   install : install,
 )
 
+brotli_common_dep = declare_dependency(
+  link_with : libbrotli_common,
+  include_directories : inc,
+)
+
 brotli_encoder_dep = declare_dependency(
   link_with : [libbrotli_common, libbrotli_encoder],
   include_directories : inc,
-  version : meson.project_version(),
 )
 
 brotli_decoder_dep = declare_dependency(
   link_with : [libbrotli_common, libbrotli_decoder],
   include_directories : inc,
-  version : meson.project_version(),
 )

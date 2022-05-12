@@ -46,4 +46,6 @@ box2d_sources = files(
     'rope/b2_rope.cpp')
 
 box2d_lib = library('box2d', box2d_sources,
-    include_directories: incdir)
+    include_directories: incdir,
+    cpp_args : box2d_compile_args,
+)

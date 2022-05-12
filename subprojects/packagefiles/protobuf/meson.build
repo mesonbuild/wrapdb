@@ -1,6 +1,14 @@
-project('protobuf', 'cpp', version: '3.12.2', license: 'protobuf')
+project('protobuf', 'cpp', version: '3.20.0', license: 'protobuf')
 
 cc = meson.get_compiler('cpp')
+
+ttype = cc.get_id() == 'msvc' ? 'static_library' : 'library'
+
+if get_option('default_library') != 'static'
+  add_project_arguments('-DPROTOBUF_USE_DLLS', language : 'cpp')
+  add_project_arguments('-DLIBPROTOBUF_EXPORTS', language : 'cpp')
+  add_project_arguments('-DLIBPROTOC_EXPORTS', language : 'cpp')
+endif
 
 flags = cc.get_supported_arguments([
   '-DHAVE_PTHREAD',
@@ -17,20 +25,25 @@ deps = dependency('threads')
 libprotobuf_lite_src = [
   'src/google/protobuf/any_lite.cc',
   'src/google/protobuf/arena.cc',
+  'src/google/protobuf/arenastring.cc',
+  'src/google/protobuf/arenaz_sampler.cc',
   'src/google/protobuf/extension_set.cc',
   'src/google/protobuf/generated_enum_util.cc',
-  'src/google/protobuf/generated_message_table_driven_lite.cc',
+  'src/google/protobuf/generated_message_tctable_lite.cc',
   'src/google/protobuf/generated_message_util.cc',
   'src/google/protobuf/implicit_weak_message.cc',
+  'src/google/protobuf/inlined_string_field.cc',
   'src/google/protobuf/io/coded_stream.cc',
   'src/google/protobuf/io/io_win32.cc',
   'src/google/protobuf/io/strtod.cc',
   'src/google/protobuf/io/zero_copy_stream.cc',
   'src/google/protobuf/io/zero_copy_stream_impl.cc',
   'src/google/protobuf/io/zero_copy_stream_impl_lite.cc',
+  'src/google/protobuf/map.cc',
   'src/google/protobuf/message_lite.cc',
   'src/google/protobuf/parse_context.cc',
   'src/google/protobuf/repeated_field.cc',
+  'src/google/protobuf/repeated_ptr_field.cc',
   'src/google/protobuf/stubs/bytestream.cc',
   'src/google/protobuf/stubs/common.cc',
   'src/google/protobuf/stubs/int128.cc',
@@ -43,11 +56,12 @@ libprotobuf_lite_src = [
   'src/google/protobuf/stubs/time.cc',
   'src/google/protobuf/wire_format_lite.cc',
 ]
-libprotobuf_lite = library(
+libprotobuf_lite = build_target(
   'protobuf-lite',
   libprotobuf_lite_src,
   cpp_args: flags,
   dependencies: deps,
+  target_type: ttype,
   include_directories: include_directories('src'),
 )
 protobuf_lite_dep = declare_dependency(
@@ -70,8 +84,9 @@ libprotobuf_src = [
   'src/google/protobuf/empty.pb.cc',
   'src/google/protobuf/extension_set_heavy.cc',
   'src/google/protobuf/field_mask.pb.cc',
+  'src/google/protobuf/generated_message_bases.cc',
   'src/google/protobuf/generated_message_reflection.cc',
-  'src/google/protobuf/generated_message_table_driven.cc',
+  'src/google/protobuf/generated_message_tctable_full.cc',
   'src/google/protobuf/io/gzip_stream.cc',
   'src/google/protobuf/io/printer.cc',
   'src/google/protobuf/io/tokenizer.cc',
@@ -110,10 +125,11 @@ libprotobuf_src = [
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wrappers.pb.cc',
 ]
-libprotobuf = library(
+libprotobuf = build_target(
   'protobuf',
   libprotobuf_src,
   cpp_args: flags,
+  target_type: ttype,
   link_with: libprotobuf_lite,
   include_directories: include_directories('src')
 )
@@ -136,6 +152,7 @@ libprotoc_src = [
   'src/google/protobuf/compiler/cpp/cpp_message.cc',
   'src/google/protobuf/compiler/cpp/cpp_message_field.cc',
   'src/google/protobuf/compiler/cpp/cpp_padding_optimizer.cc',
+  'src/google/protobuf/compiler/cpp/cpp_parse_function_generator.cc',
   'src/google/protobuf/compiler/cpp/cpp_primitive_field.cc',
   'src/google/protobuf/compiler/cpp/cpp_service.cc',
   'src/google/protobuf/compiler/cpp/cpp_string_field.cc',
@@ -168,6 +185,7 @@ libprotoc_src = [
   'src/google/protobuf/compiler/java/java_generator.cc',
   'src/google/protobuf/compiler/java/java_generator_factory.cc',
   'src/google/protobuf/compiler/java/java_helpers.cc',
+  'src/google/protobuf/compiler/java/java_kotlin_generator.cc',
   'src/google/protobuf/compiler/java/java_map_field.cc',
   'src/google/protobuf/compiler/java/java_map_field_lite.cc',
   'src/google/protobuf/compiler/java/java_message.cc',
@@ -201,47 +219,19 @@ libprotoc_src = [
   'src/google/protobuf/compiler/plugin.cc',
   'src/google/protobuf/compiler/plugin.pb.cc',
   'src/google/protobuf/compiler/python/python_generator.cc',
+  'src/google/protobuf/compiler/python/python_helpers.cc',
+  'src/google/protobuf/compiler/python/python_pyi_generator.cc',
   'src/google/protobuf/compiler/ruby/ruby_generator.cc',
   'src/google/protobuf/compiler/subprocess.cc',
   'src/google/protobuf/compiler/zip_writer.cc',
 ]
-libprotoc = library(
+libprotoc = static_library(
   'protoc',
   libprotoc_src,
   cpp_args: flags,
+  gnu_symbol_visibility : 'hidden',
   link_with: [libprotobuf_lite, libprotobuf],
   include_directories: include_directories('src')
 )
-protoc_dep = declare_dependency(
-  link_with: [libprotobuf_lite, libprotobuf, libprotoc],
-  include_directories: include_directories('src')
-)
 
-
-protoc_src = [ 'src/google/protobuf/compiler/main.cc' ]
-protoc = executable(
-  'protoc',
-  protoc_src,
-  cpp_args: flags,
-  include_directories: include_directories('src'),
-  link_with: [libprotobuf_lite, libprotoc]
-)
-
-
-if meson.is_cross_build()
-  protoc_native = executable(
-    'protoc-native',
-    [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
-    native: true,
-    cpp_args: flags,
-    include_directories: include_directories('src'),
-    dependencies: dependency('threads', native: true),
-  )
-else
-  protoc_native = protoc
-endif
-
-protoc_gen = generator(protoc_native,
-  output: ['@BASENAME@.pb.cc', '@BASENAME@.pb.h'],
-  arguments: ['@EXTRA_ARGS@', '--proto_path=' + meson.current_source_dir()/'src', '--cpp_out=@BUILD_DIR@', '@INPUT@']
-)
+subdir('src')

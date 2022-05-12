@@ -39,7 +39,7 @@ endif
 if get_option('tests')
     tests = ['mtest', 'mtest2', 'mtest3', 'mtest4', 'mtest5']
 
-    python = find_program('python')
+    python = import('python').find_installation()
 
     snippet = (
         '''

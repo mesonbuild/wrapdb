@@ -1,6 +1,5 @@
-if host_machine.system() == 'windows'
-  subdir('windows')
-else
-  subdir('dlopen')
-endif
 
+subdir('dlopen')
+subdir('dummy')
+subdir('os2')
+subdir('windows')

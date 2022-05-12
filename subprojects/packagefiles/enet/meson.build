@@ -1,7 +1,13 @@
-project('enet', 'c', version : '1.3.13', license : 'mit')
+project('enet', 'c', version : '1.3.17', license : 'mit')
 
 cc = meson.get_compiler('c')
 c_args = []
+deps = []
+if host_machine.system() == 'windows'
+    deps += cc.find_library('winmm')
+    deps += cc.find_library('ws2_32')
+    deps += cc.find_library('iphlpapi')
+endif
 
 if cc.has_function('gethostbyaddr_r', prefix : '#include <netdb.h>')
   c_args = c_args + ['-DHAS_GETHOSTBYADDR_R']
@@ -45,5 +51,10 @@ enetlib = library(
   'enet',
   sources : src,
   include_directories : incdir,
+  dependencies : deps,
   c_args : c_args)
 
+enet_dep = declare_dependency(
+  include_directories : incdir,
+  link_with : enetlib,
+)

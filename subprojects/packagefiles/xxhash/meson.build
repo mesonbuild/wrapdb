@@ -3,7 +3,7 @@ project(
     ['c'],
     # library files are BSD licensed. xxhsum utility is GPL licensed.
     license: ['BSD-2-Clause', 'GPL-2.0'],
-    version: '0.8.0',
+    version: '0.8.1',
 )
 
 cc = meson.get_compiler('c')
@@ -81,20 +81,22 @@ if host_machine.system() == 'windows'
     c_args += '-DWIN32'
 endif
 
-if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
-    c_build_args += '-DXXH_EXPORT'
-    c_use_args += '-DXXH_IMPORT'
-endif
-
-if cc.get_id().contains('clang') and host_machine.system() == 'windows'
-    c_args += [
-        # XXX xxhsum.c:1540:38: warning: comparison of integers of different signs: 'const AlgoSelected' and 'unsigned long long' [-Wsign-compare]
-        # see: https://github.com/Cyan4973/xxHash/issues/588
-        '-Wno-sign-compare',
-        # XXX xxhash.h:3503:1: warning: unused function 'XXH3_accumulate_512_scalar' [-Wunused-function]
-        # see: https://github.com/Cyan4973/xxHash/issues/556
-        '-Wno-unused-function',
-    ]
+if host_machine.system() == 'windows'
+    # On Windows/MinGW, we need to define -DXXH_EXPORT and -DXXH_IMPORT
+    if get_option('default_library') != 'static'
+        c_build_args += '-DXXH_EXPORT'
+        c_use_args += '-DXXH_IMPORT'
+    endif
+    if cc.get_id().contains('clang') 
+        c_args += [
+            # XXX xxhsum.c:1540:38: warning: comparison of integers of different signs: 'const AlgoSelected' and 'unsigned long long' [-Wsign-compare]
+            # see: https://github.com/Cyan4973/xxHash/issues/588
+            '-Wno-sign-compare',
+            # XXX xxhash.h:3503:1: warning: unused function 'XXH3_accumulate_512_scalar' [-Wunused-function]
+            # see: https://github.com/Cyan4973/xxHash/issues/556
+            '-Wno-unused-function',
+        ]
+    endif
 endif
 
 pkgconfig_data = configuration_data({
@@ -151,13 +153,17 @@ xxhash_dep = declare_dependency(
 )
 
 if get_option('cli')
-    install_man('xxhsum.1')
+    install_man('cli/xxhsum.1')
 
     cli_c_args = []
 
     cli_sources = [
         files(
-            'xxhsum.c',
+            'cli/xsum_bench.c',
+            'cli/xsum_os_specific.c',
+            'cli/xsum_output.c',
+            'cli/xsum_sanity_check.c',
+            'cli/xxhsum.c',
         ),
     ]
 

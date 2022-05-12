@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install nasm for OpenSSL generator
-        run: sudo apt-get install --no-install-recommends nasm
       - name: Upload release assets
         run: |
           git fetch --unshallow --tags

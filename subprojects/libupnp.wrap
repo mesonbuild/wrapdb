@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libupnp-1.14.12
+source_url = https://github.com/pupnp/pupnp/releases/download/release-1.14.12/libupnp-1.14.12.tar.bz2
+source_filename = libupnp-1.14.12.tar.bz2
+source_hash = 091c80aada1e939c2294245c122be2f5e337cc932af7f7d40504751680b5b5ac
+patch_directory = libupnp
+
+[provide]
+libupnp = libupnp_dep

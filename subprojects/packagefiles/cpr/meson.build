@@ -1,7 +1,7 @@
 project('cpr', 'cpp', 
-    version : '1.5.0', 
+    version : '1.7.2',
     license : 'MIT', 
-    default_options : ['cpp_std=c++14']
+    default_options : ['cpp_std=c++11']
 )
 
 curl_dep = dependency('libcurl')

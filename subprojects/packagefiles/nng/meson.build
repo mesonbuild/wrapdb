@@ -1,15 +1,26 @@
 project('nng', 'c',
-    version : '1.3.2',
+    version : '1.5.2',
     license : 'MIT',
     default_options : [])
 
 cc = meson.get_compiler('c')
 
+if get_option('buildtype') != 'static'
+  add_project_arguments('-DNNG_SHARED_LIB', language : 'c')
+else
+  add_project_arguments('-DNNG_STATIC_LIB', language : 'c')
+endif
+
+deps = []
+if host_machine.system() == 'windows'
+    deps += cc.find_library('ws2_32')
+    deps += cc.find_library('iphlpapi')
+endif
+
 nng_src = files(
     'src/nng.c',
 
     'src/core/aio.c',
-    'src/core/clock.c',
     'src/core/device.c',
     'src/core/dialer.c',
     'src/core/file.c',
@@ -21,9 +32,9 @@ nng_src = files(
     'src/core/message.c',
     'src/core/msgqueue.c',
     'src/core/options.c',
-    'src/core/pollable.c',
     'src/core/panic.c',
     'src/core/pipe.c',
+    'src/core/pollable.c',
     'src/core/protocol.c',
     'src/core/reap.c',
     'src/core/socket.c',
@@ -31,51 +42,47 @@ nng_src = files(
     'src/core/stream.c',
     'src/core/strs.c',
     'src/core/taskq.c',
+    'src/core/tcp.c',
     'src/core/thread.c',
     'src/core/timer.c',
-    'src/core/transport.c',
     'src/core/url.c',
 
     'src/compat/nanomsg/nn.c',
-    'src/protocol/bus0/bus.c',
-    'src/protocol/pair0/pair.c',
-    'src/protocol/pair1/pair.c',
-    'src/protocol/pair1/pair1_poly.c',
-    'src/protocol/pipeline0/pull.c',
-    'src/protocol/pipeline0/push.c',
-    'src/protocol/pubsub0/pub.c',
-    'src/protocol/pubsub0/sub.c',
-    'src/protocol/pubsub0/xsub.c',
-    'src/protocol/reqrep0/rep.c',
-    'src/protocol/reqrep0/req.c',
-    'src/protocol/reqrep0/xrep.c',
-    'src/protocol/reqrep0/xreq.c',
-    'src/protocol/survey0/respond.c',
-    'src/protocol/survey0/survey.c',
-    'src/protocol/survey0/xrespond.c',
-    'src/protocol/survey0/xsurvey.c',
+    'src/sp/transport.c',
+    'src/sp/protocol/bus0/bus.c',
+    'src/sp/protocol/pair0/pair.c',
+    'src/sp/protocol/pipeline0/pull.c',
+    'src/sp/protocol/pipeline0/push.c',
+    'src/sp/protocol/pubsub0/pub.c',
+    'src/sp/protocol/pubsub0/sub.c',
+    'src/sp/protocol/pubsub0/xsub.c',
+    'src/sp/protocol/reqrep0/rep.c',
+    'src/sp/protocol/reqrep0/req.c',
+    'src/sp/protocol/reqrep0/xrep.c',
+    'src/sp/protocol/reqrep0/xreq.c',
+    'src/sp/protocol/survey0/respond.c',
+    'src/sp/protocol/survey0/survey.c',
+    'src/sp/protocol/survey0/xrespond.c',
+    'src/sp/protocol/survey0/xsurvey.c',
+    'src/sp/transport/inproc/inproc.c',
+    'src/sp/transport/ipc/ipc.c',
+    'src/sp/transport/tcp/tcp.c',
+    'src/sp/transport/tls/tls.c',
     'src/supplemental/base64/base64.c',
     'src/supplemental/http/http_chunk.c',
     'src/supplemental/http/http_client.c',
     'src/supplemental/http/http_conn.c',
     'src/supplemental/http/http_msg.c',
     'src/supplemental/http/http_public.c',
+    'src/supplemental/http/http_schemes.c',
     'src/supplemental/http/http_server.c',
     'src/supplemental/sha1/sha1.c',
-    'src/supplemental/tcp/tcp.c',
     # Do not build with TLS support (using mbedtls)
     #'src/supplemental/tls/mbedtls/tls.c',
     'src/supplemental/tls/tls_common.c',
     'src/supplemental/util/options.c',
     'src/supplemental/util/platform.c',
-    # Not needed
-    #'src/supplemental/websocket/stub.c',
     'src/supplemental/websocket/websocket.c',
-    'src/transport/inproc/inproc.c',
-    'src/transport/ipc/ipc.c',
-    'src/transport/tcp/tcp.c',
-    'src/transport/tls/tls.c',
-    'src/transport/ws/websocket.c',
 
     # Do not build zerotier
     #'src/transport/zerotier/zerotier.c',
@@ -162,6 +169,7 @@ add_project_arguments(nng_args, language: 'c')
 
 nng = library('nng',
     nng_src,
+    dependencies : deps,
     include_directories : include_dirs
 )
 

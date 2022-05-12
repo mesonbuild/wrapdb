@@ -1,8 +1,8 @@
 [wrap-file]
-directory = argparse-2.2
-source_url = https://github.com/p-ranav/argparse/archive/refs/tags/v2.2.tar.gz
-source_filename = argparse-2.2.tar.gz
-source_hash = f0fc6ab7e70ac24856c160f44ebb0dd79dc1f7f4a614ee2810d42bb73799872b
+directory = argparse-2.4
+source_url = https://github.com/p-ranav/argparse/archive/refs/tags/v2.4.tar.gz
+source_filename = argparse-2.4.tar.gz
+source_hash = 3589559f115bfedfef2edffb3e7b61d88657ba7b70a0b1f47352ff3043abc825
 patch_directory = argparse
 
 [provide]

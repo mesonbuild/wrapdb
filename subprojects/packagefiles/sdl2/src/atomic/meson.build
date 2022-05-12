@@ -1,4 +1,4 @@
-all_sources += files(
-  'SDL_spinlock.c',
-  'SDL_atomic.c',
+c_sources += files(
+    'SDL_atomic.c',
+    'SDL_spinlock.c',
 )
