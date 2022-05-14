@@ -1,2 +1,3 @@
 option('machine', type : 'combo', value : 'auto',
        choices : ['auto', 'x64', 'uint128', 'ansi64', 'ppro', 'ansi32', 'ansi-legacy', 'universal'])
+option('examples', type : 'boolean', value : false)
