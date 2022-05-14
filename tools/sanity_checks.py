@@ -29,6 +29,12 @@ from utils import Version, is_ci, is_debianlike, is_linux, is_macos
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
+    'lame': [
+        'lame.h',
+    ],
+    'mpdecimal': [
+        'gettests.py',
+    ],
     'openssl': [
         'bn_conf.h',
         'dso_conf.h',
@@ -36,9 +42,6 @@ PER_PROJECT_PERMITTED_FILES = {
         'generate_gypi.pl.patch',
         'meson.build.tmpl',
         'README.md',
-    ],
-    'lame': [
-        'lame.h',
     ],
     'sdl2': [
         'find-dylib-name.py'

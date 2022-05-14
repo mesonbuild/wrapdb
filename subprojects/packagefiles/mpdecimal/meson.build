@@ -382,3 +382,8 @@ if get_option('examples')
   subdir('libmpdec/examples')
   subdir('libmpdec++/examples')
 endif
+
+if get_option('tests')
+  subdir('tests')
+  subdir('tests++')
+endif
