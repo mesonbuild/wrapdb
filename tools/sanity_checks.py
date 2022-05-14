@@ -262,7 +262,7 @@ class TestReleases(unittest.TestCase):
             print(log_file.read_text(encoding='utf-8'))
             print('::endgroup::')
             raise
-        subprocess.check_call(['meson', 'compile', '-C', builddir])
+        subprocess.check_call(['meson', 'compile', '-C', builddir, '-v'])
         try:
             subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
         except subprocess.CalledProcessError:
