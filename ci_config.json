@@ -179,6 +179,11 @@
       "lmdb:programs=true"
     ]
   },
+  "mpdecimal" : {
+    "build_options": [
+      "mpdecimal:examples=true"
+    ]
+  },
   "openssl": {
     "_comment": "- The NodeJS generator requires Linux",
     "build_on": {

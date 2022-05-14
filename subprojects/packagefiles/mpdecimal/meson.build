@@ -377,3 +377,8 @@ mpdecpp_dep = declare_dependency(
   link_with: libmpdecpp,
   include_directories: include_directories('libmpdec++'),
   dependencies: mpdec_dep)
+
+if get_option('examples')
+  subdir('libmpdec/examples')
+  subdir('libmpdec++/examples')
+endif
