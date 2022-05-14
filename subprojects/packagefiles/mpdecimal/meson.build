@@ -1,17 +1,19 @@
 project('mpdecimal', 'c', 'cpp',
-        version : '2.5.0',
-        license : 'BSD-2-Clause',
+        version: '2.5.1',
+        license: 'BSD-2-Clause',
         default_options: [
           'c_std=c99',
           'cpp_std=c++11',
+          'b_ndebug=true',
         ])
 
+library_soversion = '3'
 library_version = meson.project_version()
 v = library_version.split('.')
 compat_version = '.'.join([v[0], v[1]])
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required : false)
+m_dep = cc.find_library('m', required: false)
 
 conf = configuration_data()
 
@@ -23,7 +25,7 @@ gcc_asm_for_x64 = cc.compiles('''
   {
     __asm__ __volatile__ ("movq %rcx, %rax");
   }''',
-  name : 'x64 gcc inline assembler')
+  name: 'x64 gcc inline assembler')
 
 # x87 with gcc asm:
 gcc_asm_for_x87 = cc.compiles('''
@@ -33,7 +35,7 @@ gcc_asm_for_x87 = cc.compiles('''
     __asm__ __volatile__ ("fnstcw %0" : "=m" (cw));
     __asm__ __volatile__ ("fldcw %0" : : "m" (cw));
   }''',
-  name : 'x87 gcc inline assembler')
+  name: 'x87 gcc inline assembler')
 
 # _FORTIFY_SOURCE wrappers for memmove and bcopy are incorrect:
 # http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
@@ -52,8 +54,8 @@ if cc.run('''
       return 1;
     return 0;
   }''',
-  args : ['-O2', '-D_FORTIFY_SOURCE=2'],
-  name : 'glibc _FORTIFY_SOURCE/memmove').returncode() != 0
+  args: ['-O2', '-D_FORTIFY_SOURCE=2'],
+  name: 'glibc _FORTIFY_SOURCE/memmove').returncode() != 0
 
   warning('''
 ***************************** WARNING *********************************
@@ -76,97 +78,94 @@ OS vendor.
   add_project_arguments('-U_FORTIFY_SOURCE', language: 'c')
 endif
 
-# Some versions of gcc miscompile inline asm:
-# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46491
-# http://gcc.gnu.org/ml/gcc/2010-11/msg00366.html
-if cc.get_id() == 'gcc' and cc.run('''
-  __attribute__((noinline)) int
-  foo(int *p) {
-    int r;
-    asm ( "movl \$6, (%1)\n\t"
-          "xorl %0, %0\n\t"
-          : "=r" (r) : "r" (p) : "memory"
-    );
-    return r;
-  }
-  int main() {
-    int p = 8;
-    if ((foo(&p) ? : p) != 6)
-      return 1;
-    return 0;
-  }''',
-  args : ['-O2'],
-  name : 'gcc ipa-pure-const').returncode() != 0
 
-  add_project_arguments('-fno-ipa-pure-const', language: 'c')
-endif
-
-# Values for the MPD_HEADER_CONFIG variable:
+# Values for the MPD_HEADER_CONFIG variable
 mpd_header_config_64 = '''
 /* ABI: 64-bit */
+#define MPD_CONFIG_64 1
+
+#ifdef MPD_CONFIG_32
+  #error "cannot use MPD_CONFIG_32 with 64-bit header."
+#endif
+
 #ifdef CONFIG_32
   #error "cannot use CONFIG_32 with 64-bit header."
-#endif
+#endif'''
 
-#ifndef CONFIG_64
-  #define CONFIG_64
-#endif
-'''
 mpd_header_config_32 = '''
 /* ABI: 32-bit */
-#ifdef CONFIG_64
-  #error "cannot use CONFIG_64 with 32-bit header."
+#define MPD_CONFIG_32 1
+
+#ifdef MPD_CONFIG_64
+  #error "cannot use MPD_CONFIG_64 with 32-bit header."
 #endif
 
-#ifndef CONFIG_32
-  #define CONFIG_32
-#endif
-'''
+#ifdef CONFIG_64
+  #error "cannot use CONFIG_64 with 32-bit header."
+#endif'''
+
 mpd_header_config_32_legacy = '''
 /* ABI: 32-bit */
-#ifdef CONFIG_64
-  #error "cannot use CONFIG_64 with 32-bit header."
-#endif
-
-#ifndef CONFIG_32
-  #define CONFIG_32
-#endif
+#define MPD_CONFIG_32 1
 
 /* libmpdec was compiled without support for int64_t */
-#ifndef LEGACY_COMPILER
-  #define LEGACY_COMPILER
-#endif"
-'''
+#define MPD_LEGACY_COMPILER 1
+
+#ifdef MPD_CONFIG_64
+  #error "cannot use MPD_CONFIG_64 with 32-bit header."
+#endif
+
+#ifdef CONFIG_64
+  #error "cannot use CONFIG_64 with 32-bit header."
+#endif'''
+
 mpd_header_config_universal = '''
 /* Mac OS X: support for building universal binaries */
+#if defined(MPD_CONFIG_64) || defined(MPD_CONFIG_32)
+  #error "cannot use MPD_CONFIG_64 or MPD_CONFIG_32 with universal header."
+#endif
+
 #if defined(CONFIG_64) || defined(CONFIG_32)
   #error "cannot use CONFIG_64 or CONFIG_32 with universal header."
 #endif
 
 #if defined(__ppc__)
-  #define CONFIG_32
-  #define ANSI
+  #define MPD_CONFIG_32 1
+  #ifdef UNIVERSAL
+    #define CONFIG_32
+    #define ANSI
+  #endif
 #elif defined(__ppc64__)
-  #define CONFIG_64
-  #define ANSI
+  #define MPD_CONFIG_64 1
+  #ifdef UNIVERSAL
+    #define CONFIG_64
+    #define ANSI
+  #endif
 #elif defined(__i386__)
-  #define CONFIG_32
-  #define ANSI
+  #define MPD_CONFIG_32 1
+  #ifdef UNIVERSAL
+    #define CONFIG_32
+    #define ANSI
+  #endif
 #elif defined(__x86_64__)
-  #define CONFIG_64
-  #define ASM
+  #define MPD_CONFIG_64 1
+  #ifdef UNIVERSAL
+    #define CONFIG_64
+    #define ASM
+  #endif
+#elif defined(__arm64__)
+  #define MPD_CONFIG_64 1
+  #ifdef UNIVERSAL
+    #define CONFIG_64
+    #define ANSI
+  #endif
 #else
   #error "unknown architecture for universal build."
-#endif
-'''
-mpd_header_config_fullcov = '''
-/* DO NOT USE IN PRODUCTION! */
-#if defined(CONFIG_64) || !defined(CONFIG_32)
-  #error "CONFIG_32 must be defined for full coverage."
-#endif
-'''
+#endif'''
+
 
 machine = get_option('machine')
+
 if machine == 'auto'
   if host_machine.system() == 'windows'
     if host_machine.cpu_family() == 'x86'
@@ -202,66 +201,118 @@ if machine == 'auto'
   endif
 endif
 
+
+add_project_arguments(cc.get_supported_arguments('-Wno-unknown-pragmas'), language: ['c', 'cpp'])
+
+
 if machine == 'x64'
-  add_project_arguments('-DCONFIG_64', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
+  add_project_arguments('-DCONFIG_64', language: 'c')
   if host_machine.system() == 'windows'
-    add_project_arguments('/DMASM', language: 'c')
+    add_project_arguments('-DMASM', language: 'c')
   else
     add_project_arguments('-DASM', language: 'c')
+    add_project_arguments('-m64', language: ['c', 'cpp'])
+    add_project_link_arguments('-m64', language: ['c', 'cpp'])
   endif
 
 elif machine == 'uint128'
-  add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
+  add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language: 'c')
+  if host_machine.system() == 'windows'
+    error('machine "uint128" not supported on Windows')
+  else
+    add_project_arguments('-m64', language: ['c', 'cpp'])
+    add_project_link_arguments('-m64', language: ['c', 'cpp'])
+  endif
 
 elif machine == 'ansi64'
-  add_project_arguments('-DCONFIG_64', '-DANSI', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
-
-elif machine == 'full-coverage'
-  add_project_arguments('-DCONFIG_32', '-DANSI', language : 'c')
-  conf.set('MPD_HEADER_CONFIG', mpd_header_config_fullcov)
+  add_project_arguments('-DCONFIG_64', '-DANSI', language: 'c')
+  if host_machine.system() != 'windows'
+    add_project_arguments('-m64', language: ['c', 'cpp'])
+    add_project_link_arguments('-m64', language: ['c', 'cpp'])
+  endif
 
 elif machine == 'ppro'
-  add_project_arguments('-DCONFIG_32', '-DPPRO', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
+  add_project_arguments('-DCONFIG_32', '-DPPRO', '-DASM', language: 'c')
   if host_machine.system() == 'windows'
-    add_project_arguments('/DMASM', language: 'c')
+    add_project_arguments('-DMASM', language: 'c')
+  else
+    add_project_arguments('-DASM', language: 'c')
+    add_project_arguments('-m32', language: ['c', 'cpp'])
+    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+  endif
+
+  # Some versions of gcc miscompile inline asm:
+  # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46491
+  # http://gcc.gnu.org/ml/gcc/2010-11/msg00366.html
+  if cc.get_id() == 'gcc' and cc.run('''
+    __attribute__((noinline)) int
+    foo(int *p) {
+      int r;
+      asm ( "movl \$6, (%1)\n\t"
+            "xorl %0, %0\n\t"
+            : "=r" (r) : "r" (p) : "memory"
+      );
+      return r;
+    }
+    int main() {
+      int p = 8;
+      if ((foo(&p) ? : p) != 6)
+        return 1;
+      return 0;
+    }''',
+    args: ['-O2'],
+    name: 'gcc ipa-pure-const').returncode() != 0
+
+    add_project_arguments('-fno-ipa-pure-const', language: 'c')
   endif
 
 elif machine == 'ansi32'
-  add_project_arguments('-DCONFIG_32', '-DANSI', language : 'c')
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
+  add_project_arguments('-DCONFIG_32', '-DANSI', language: 'c')
+  if host_machine.system() != 'windows'
+    add_project_arguments('-m32', language: ['c', 'cpp'])
+    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+  endif
 
 elif machine == 'ansi-legacy'
-  add_project_arguments('-DCONFIG_32', '-DANSI', '-DLEGACY_COMPILER', language : 'c')
-  conf.set('MPD_HEADER_CONFIG', mpd_header_config_32_legacy)
+  conf.set('MPD_HEADER_CONFIG', mpd_header_config_32_LEGACY)
+  add_project_arguments('-DCONFIG_32', '-DANSI', '-DLEGACY_COMPILER', language: 'c')
+  if host_machine.system() != 'windows'
+    add_project_arguments('-m32', language: ['c', 'cpp'])
+    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+  endif
 
 elif machine == 'universal'
-  add_project_arguments('-DUNIVERSAL', language : 'c')
-  conf.set('MPD_HEADER_CONFIG', mpd_header_config_universal)
+  add_project_arguments('-DUNIVERSAL', language: 'c')
+  conf.set('MPD_HEADER_CONFIG', mpd_header_config_UNIVERSAL)
+  if host_machine.system() == 'windows'
+    error('machine "universal" not supported on Windows')
+  endif
+
 endif
 
-build_dll = []
-use_dll = []
+libmpdec_c_args = []
+libmpdecpp_cpp_args = []
 if host_machine.system() == 'windows'
   add_project_arguments('/wd4200', '/wd4204', '/wd4221', '/D_CRT_SECURE_NO_WARNINGS', '/nologo', language: 'c')
   if get_option('default_library') != 'static'
-    build_dll = ['/DBUILD_DLL']
-    use_dll = ['/DUSE_DLL']
+    libmpdec_c_args = ['/DBUILD_LIBMPDEC']
+    libmpdecpp_cpp_args = ['/DBUILD_LIBMPDECXX']
   endif
   vcver = machine == 'x64' ? '64vc' : '32vc'
   mpdecimal_h = configure_file(
     input: 'libmpdec/mpdecimal@0@.h'.format(vcver),
-    output : 'mpdecimal.h',
+    output: 'mpdecimal.h',
     copy: true)
-  install_headers('libmpdec/vccompat.h')
 else
   mpdecimal_h = configure_file(
-    input : 'libmpdec/mpdecimal.h.in',
-    output : 'mpdecimal.h',
-    configuration : conf)
+    input: 'libmpdec/mpdecimal.h.in',
+    output: 'mpdecimal.h',
+    configuration: conf)
 endif
 
 libmpdec_sources = files(
@@ -294,16 +345,17 @@ endif
 libmpdec = library(
   'mpdec',
   libmpdec_sources,
-  c_args: build_dll,
-  dependencies : m_dep,
-  version : library_version,
-  darwin_versions : [compat_version, library_version])
+  c_args: libmpdec_c_args,
+  dependencies: m_dep,
+  version: library_version,
+  soversion: library_soversion,
+  darwin_versions: [compat_version, library_version],
+  override_options: ['optimization=2'])
 
 mpdec_dep = declare_dependency(
-  link_with : libmpdec,
-  compile_args: use_dll,
+  link_with: libmpdec,
   # mpdecimal.h is generated in the project root directory
-  include_directories : include_directories('.', 'libmpdec'))
+  include_directories: include_directories('.', 'libmpdec'))
 
 libmpdecpp_sources = files(
   'libmpdec++/decimal.cc',
@@ -312,13 +364,16 @@ libmpdecpp_sources = files(
 libmpdecpp = library(
   'mpdec++',
   libmpdecpp_sources, mpdecimal_h,
-  dependencies : [m_dep, mpdec_dep],
-  version : library_version,
-  darwin_versions : [compat_version, library_version])
+  cpp_args: libmpdecpp_cpp_args,
+  dependencies: [m_dep, mpdec_dep],
+  version: library_version,
+  soversion: library_soversion,
+  darwin_versions: [compat_version, library_version],
+  override_options: ['optimization=3'])
 
 install_headers(mpdecimal_h, 'libmpdec++/decimal.hh')
 
 mpdecpp_dep = declare_dependency(
-  link_with : libmpdecpp,
-  include_directories : include_directories('libmpdec++'),
-  dependencies : mpdec_dep)
+  link_with: libmpdecpp,
+  include_directories: include_directories('libmpdec++'),
+  dependencies: mpdec_dep)
