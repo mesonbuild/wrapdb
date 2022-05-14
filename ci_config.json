@@ -181,7 +181,8 @@
   },
   "mpdecimal" : {
     "build_options": [
-      "mpdecimal:examples=true"
+      "mpdecimal:examples=true",
+      "mpdecimal:tests=true"
     ]
   },
   "openssl": {
