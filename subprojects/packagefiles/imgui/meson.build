@@ -3,8 +3,12 @@ project('imgui', 'cpp',
     license: 'MIT',
 )
 
+if host_machine.system() == 'darwin'
+    add_languages('objcpp')
+endif
+
 include_dirs = include_directories('.', 'backends')
-sources = ['imgui_demo.cpp', 'imgui_draw.cpp', 'imgui_tables.cpp', 'imgui_widgets.cpp', 'imgui.cpp']
+sources = ['imgui_demo.cpp', 'imgui_draw.cpp', 'imgui_tables.cpp', 'imgui_widgets.cpp', 'imgui.cpp', 'misc/cpp/imgui_stdlib.cpp']
 
 cpp = meson.get_compiler('cpp')
 dependencies = []
