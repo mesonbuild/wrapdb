@@ -1,26 +1,25 @@
-project('libwebsockets', 'c', version: '4.0.13', license: 'MIT')
+project('libwebsockets', 'c', version: '4.0.21', license: 'MIT')
 
 lws_library_version = meson.project_version()
 lws_library_version_major = '4'
 lws_library_version_minor = '0'
-lws_library_version_patch = '13'
+lws_library_version_patch = '21'
 lws_library_version_number = 16
 
 lws_incdirs = []
 lws_dependencies = []
 lws_c_args = []
 
-
 # ToDo: detect platform properly
 esp_platform = false
 ios = false
 apple = false
 mingw = false
-win32 = build_machine.system() == 'win32'
+win32 = build_machine.system() == 'windows'
 unix = build_machine.system() == 'linux'
 
 # Initialize
-lws_max_smp = ''
+lws_max_smp = 0
 lws_with_abstract = false
 lws_build_hash = ''
 lws_builtin_getifaddrs = false
@@ -320,7 +319,12 @@ if win32
     win32_version_data.set('LWS_LIBRARY_VERSION_MINOR', lws_library_version_minor)
     win32_version_data.set('LWS_LIBRARY_VERSION_PATCH', lws_library_version_patch)
     win32_version_data.set('LWS_LIBRARY_PACKAGE', 'libwebsockets')
-    configure_file(input: 'win32port/version.rc.in', output: 'win32port/version.rc', configuration: conf_data, format: 'cmake')
+    configure_file(
+        input: 'win32port/version.rc.in',
+        output: 'version.rc',
+        configuration: win32_version_data,
+        format: 'cmake',
+    )
 endif
 
 # translate old functionality enables to set up ROLE enables so nothing changes
@@ -330,11 +334,7 @@ if lws_with_http2 and lws_without_server
 endif
 
 lws_role_h2 = lws_with_http2
-
-lws_role_cgi = false
-if lws_with_cgi
-    lws_role_cgi = true
-endif
+lws_role_cgi = lws_with_cgi
 
 if not lws_role_ws
     lws_without_extensions = true
@@ -457,7 +457,7 @@ endif
 
 if win32
     lws_max_smp = 1
-    lws_with_threadpool = true
+    lws_with_threadpool = false
 endif
 
 if lws_without_server
@@ -539,6 +539,10 @@ endif
 
 # if you gave LWS_WITH_MINIZ, point to MINIZ here if not found
 # automatically
+
+c_compiler = meson.get_compiler('c')
+
+lws_dependencies += c_compiler.find_library('ws2_32', required: build_machine.system() == 'windows')
 
 zlib_dep = dependency('zlib', required: false)
 lws_dependencies += [zlib_dep]
@@ -626,19 +630,15 @@ else
 endif
 
 # LWS_OPENSSL_SUPPORT deprecated... use LWS_WITH_TLS
-if lws_with_ssl or lws_with_mbedtls
-    lws_openssl_support = true
-    lws_with_tls = true
-endif
+lws_openssl_support = lws_with_ssl or lws_with_mbedtls
+lws_with_tls = lws_with_ssl or lws_with_mbedtls
 
-if lws_without_daemonize or win32
-    lws_no_daemonize = true
-endif
+lws_no_daemonize = lws_without_daemonize or win32
 
 lws_with_ipv6 = lws_ipv6
 lws_with_unix_sock = lws_unix_sock
 
-if '' == lws_max_smp
+if lws_max_smp == 0
     lws_max_smp = 1
 endif
 
@@ -652,38 +652,24 @@ lws_sha1_use_openssl_name = lws_without_builtin_sha1
 
 # checking compiler features
 
-c_compiler = meson.get_compiler('c')
-
-lws_have_malloc_trim = c_compiler.compiles(
-    '''
-    #include <malloc.h>
-    int main(int argc, char **argv) { return malloc_trim(0); }
-    ''',
-)
-
-lws_have_malloc_usable_size = c_compiler.compiles(
-    '''
-    #include <malloc.h>
-    int main(int argc, char **argv) { return (int)malloc_usable_size((void *)0); }
-    ''',
-)
-
+lws_have_malloc_trim = c_compiler.has_function('malloc_trim')
+lws_have_malloc_usable_size = c_compiler.has_function('malloc_usable_size')
 
 lws_have_fork = c_compiler.has_function('fork')
 lws_have_getenv = c_compiler.has_function('getenv')
 lws_have_malloc = c_compiler.has_function('malloc')
 lws_have_memset = c_compiler.has_function('memset')
 lws_have_realloc = c_compiler.has_function('realloc')
-lws_have_socket = c_compiler.has_function('(socket')
+lws_have_socket = c_compiler.has_function('socket')
 lws_have_strerror = c_compiler.has_function('strerror')
 lws_have_vfork = c_compiler.has_function('vfork')
-lws_have_execvpe = c_compiler.has_function('(execvpe')
+lws_have_execvpe = c_compiler.has_function('execvpe')
 lws_have_getifaddrs = c_compiler.has_function('getifaddrs')
 lws_have_snprintf = c_compiler.has_function('snprintf')
 lws_have__snprintf = c_compiler.has_function('_snprintf')
 lws_have__vsnprintf = c_compiler.has_function('_vsnprintf')
-lws_have_getloadavg = c_compiler.has_function('(getloadavg')
-lws_have_atoll = c_compiler.has_function('(atoll')
+lws_have_getloadavg = c_compiler.has_function('getloadavg')
+lws_have_atoll = c_compiler.has_function('atoll')
 lws_have__atoi64 = c_compiler.has_function('_atoi64')
 lws_have__stat32i64 = c_compiler.has_function('_stat32i64')
 lws_have_clock_gettime = c_compiler.has_function('clock_gettime')
@@ -735,21 +721,8 @@ endif
 lws_have_evbackend_linuxaio = false
 lws_have_evbackend_iouring = false
 if lws_with_libev
-    lws_have_evbackend_linuxaio = c_compiler.compiles(
-        '''
-        #include <ev.h>
-        int main(int argc, char **argv) { return EVBACKEND_LINUXAIO; }
-        ''',
-        dependencies: [libev_dep],
-    )
-
-    lws_have_evbackend_iouring = c_compiler.compiles(
-        '''(
-        #include <ev.h>
-        int main(int argc, char **argv) { return EVBACKEND_IOURING; }
-        ''',
-        dependencies: [libev_dep],
-    )
+    lws_have_evbackend_linuxaio = c_compiler.has_header_symbol('ev.h', 'EVBACKEND_LINUXAIO')
+    lws_have_evbackend_iouring = c_compiler.has_header_symbol('ev.h', 'EVBACKEND_IOURING')
 endif
 
 if lws_with_zlib and not lws_with_bundled_zlib
@@ -758,45 +731,22 @@ if lws_with_zlib and not lws_with_bundled_zlib
     else
         lws_have_zlib_h = c_compiler.has_header('zlib.h')
     endif
+else
+    lws_have_zlib_h = false
 endif
 
 # TODO: These can also be tested to see whether they actually work...
 lws_have_working_fork = lws_have_fork
 lws_have_working_vfork = lws_have_vfork
 
-lws_has_intptr_t = c_compiler.compiles(
-    '''
-    #include <stdint.h>
-    int main(void) {
-        intptr_t test = 1;
-        return 0;
-    }''',
-)
+lws_has_intptr_t = c_compiler.has_header_symbol('stdint.h', 'intptr_t')
 
 lws_has_pthread_setname_np = false
 if lws_have_pthread_h
-    lws_has_pthread_setname_np = c_compiler.compiles(
-        '''
-        #define _GNU_SOURCE
-        #include <pthread.h>
-        int main(void) {
-            pthread_t th = 0;
-            pthread_setname_np(th, NULL);
-            return 0;
-        }''',
-    )
+    lws_has_pthread_setname_np = c_compiler.has_header_symbol('pthread.h', 'pthread_setname_np', prefix: '#define _GNU_SOURCE')
 endif
 
-lws_has_getopt_long = c_compiler.compiles(
-    '''
-    #include <stddef.h>
-    #include <getopt.h>
-    int main(void) {
-        void *p = (void *)getopt_long;
-        return p != NULL;
-    }''',
-)
-
+lws_has_getopt_long = c_compiler.has_function('getopt_long')
 varia = ''
 
 lws_have_openssl_ecdh_h = c_compiler.has_header('openssl/ecdh.h', dependencies: [openssl_dep])
@@ -822,18 +772,19 @@ lws_have_rsa_verify_pss_mgf1 = c_compiler.has_function(varia + 'RSA_verify_pss_m
 lws_have_hmac_ctx_new = c_compiler.has_function(varia + 'HMAC_CTX_new', dependencies: [openssl_dep])
 lws_have_ssl_ctx_set_ciphersuites = c_compiler.has_function(varia + 'SSL_CTX_set_ciphersuites', dependencies: [openssl_dep])
 if (lws_with_ssl and not lws_with_mbedtls)
-    lws_have_ssl_extra_chain_certs = c_compiler.compiles(
-        '#include <openssl/ssl.h>\nint main(void) { STACK_OF(X509) *c = NULL; SSL_CTX *ctx = NULL; return (int)SSL_CTX_get_extra_chain_certs_only(ctx, &c); }\n',
-        dependencies: [openssl_dep],
-    )
-    lws_have_evp_md_ctx_free = c_compiler.compiles(
-        '#include <openssl/ssl.h>\nint main(void) { EVP_MD_CTX *md_ctx = NULL; EVP_MD_CTX_free(md_ctx); return 0; }\n',
-        dependencies: [openssl_dep],
-    )
+    lws_have_ssl_extra_chain_certs = c_compiler.has_header_symbol('openssl/ssl.h', 'SSL_CTX_get_extra_chain_certs_only')
+    lws_have_evp_md_ctx_free = c_compiler.has_function(varia + 'EVP_MD_CTX_free', dependencies: [openssl_dep])
     lws_have_ecdsa_sig_set0 = c_compiler.has_function(varia + 'ECDSA_SIG_set0', dependencies: [openssl_dep])
     lws_have_bn_bn2binpad = c_compiler.has_function(varia + 'BN_bn2binpad', dependencies: [openssl_dep])
     lws_have_evp_aes_128_wrap = c_compiler.has_function(varia + 'EVP_aes_128_wrap', dependencies: [openssl_dep])
     lws_have_ec_point_get_affine_coordinates = c_compiler.has_function(varia + 'EC_POINT_get_affine_coordinates', dependencies: [openssl_dep])
+else
+    lws_have_ssl_extra_chain_certs = false
+    lws_have_evp_md_ctx_free = false
+    lws_have_ecdsa_sig_set0 = false
+    lws_have_bn_bn2binpad = false
+    lws_have_evp_aes_128_wrap = false
+    lws_have_ec_point_get_affine_coordinates = false
 endif
 if lws_with_mbedtls
     lws_have_tls_client_method = true
@@ -859,26 +810,22 @@ else
     lws_have_mbedtls_ssl_set_hs_authmode = false
     lws_have_mbedtls_net_init = false
 
-    lws_have_tls_client_method = c_compiler.has_function(varia + 'TLS_client_method')
-    lws_have_tlsv1_2_client_method = c_compiler.has_function(varia + 'TLSv1_2_client_method')
+    lws_have_tls_client_method = c_compiler.has_function(varia + 'TLS_client_method', dependencies: [openssl_dep])
+    lws_have_tlsv1_2_client_method = c_compiler.has_function(varia + 'TLSv1_2_client_method', dependencies: [openssl_dep])
 endif
 
 # ideally we want to use pipe2()
 
-lws_have_pipe2 = c_compiler.compiles('#define _GNU_SOURCE\n#include <unistd.h>\nint main(void) {int fd[2];\n return pipe2(fd, 0);\n}\n')
+lws_have_pipe2 = c_compiler.has_function('pipe2')
 
 # old mbedtls has everything in mbedtls/net.h
 
-lws_have_mbedtls_net_sockets = c_compiler.compiles('#include <mbedtls/net_sockets.h>\nint main(void) { return 0;}\n')
+lws_have_mbedtls_net_sockets = c_compiler.has_header('mbedtls/net_sockets.h')
 
 # tcp keepalive needs this on linux to work practically... but it only exists
 # after kernel 2.6.37
 
-lws_have_tcp_user_timeout = c_compiler.compiles('#include <netinet/tcp.h>\nint main(void) { return TCP_USER_TIMEOUT; }\n')
-
-
-
-lws_includes = include_directories(lws_incdirs)
+lws_have_tcp_user_timeout = c_compiler.has_header_symbol('netinet/tcp.h', 'TCP_USER_TIMEOUT')
 
 lws_sources = [
     'lib/core/alloc.c',
@@ -959,7 +906,11 @@ if lws_with_network
     endif
 
     if lws_with_secure_streams
-        lws_sources += ['lib/secure-streams/secure-streams.c', 'lib/secure-streams/policy.c', 'lib/secure-streams/system/fetch-policy/fetch-policy.c']
+        lws_sources += [
+            'lib/secure-streams/secure-streams.c',
+            'lib/secure-streams/policy.c',
+            'lib/secure-streams/system/fetch-policy/fetch-policy.c',
+        ]
 
         if lws_role_h1
             lws_sources += ['lib/secure-streams/protocols/ss-h1.c']
@@ -978,7 +929,10 @@ if lws_with_network
         endif
 
         if lws_with_secure_streams_proxy_api
-            lws_sources += ['lib/secure-streams/secure-streams-serialize.c', 'lib/secure-streams/secure-streams-client.c']
+            lws_sources += [
+                'lib/secure-streams/secure-streams-serialize.c',
+                'lib/secure-streams/secure-streams-client.c',
+            ]
         endif
 
         if lws_with_secure_streams_proxy_api
@@ -1089,7 +1043,12 @@ if lws_with_struct_sqlite3
 endif
 
 if not lws_without_client
-    lws_sources += ['lib/core-net/connect.c', 'lib/core-net/client.c', 'lib/roles/http/client/client-http.c', 'lib/roles/http/client/client-handshake.c']
+    lws_sources += [
+        'lib/core-net/connect.c',
+        'lib/core-net/client.c',
+        'lib/roles/http/client/client-http.c',
+        'lib/roles/http/client/client-handshake.c',
+    ]
 endif
 
 if not lws_without_server
@@ -1251,7 +1210,12 @@ else
     endif
 
     if lws_with_network
-        lws_sources += ['lib/plat/unix/unix-pipe.c', 'lib/plat/unix/unix-service.c', 'lib/plat/unix/unix-sockets.c', 'lib/plat/unix/unix-fds.c']
+        lws_sources += [
+            'lib/plat/unix/unix-pipe.c',
+            'lib/plat/unix/unix-service.c',
+            'lib/plat/unix/unix-sockets.c',
+            'lib/plat/unix/unix-fds.c',
+        ]
 
         if lws_with_sys_async_dns
             if lws_plat_android
@@ -1377,6 +1341,8 @@ lws_have_visibility = c_compiler.has_argument('-fvisibility=hidden')
 if lws_have_visibility
     lws_c_args += ['-fvisibility=hidden']
 endif
+
+lws_includes = include_directories(lws_incdirs)
 
 lws_config_private_data = configuration_data()
 lws_config_private_data.set('LWS_HAVE_DLFCN_H', lws_have_dlfcn_h)
@@ -1579,7 +1545,12 @@ lws_config_data.set('LWS_WITH_ZIP_FOPS', lws_with_zip_fops)
 lws_config_data.set('USE_OLD_CYASSL', use_old_cyassl)
 lws_config_data.set('USE_WOLFSSL', use_wolfssl)
 lws_config_data.set('LWS_SIZEOFPTR_CODE', '')
-lws_config_h = configure_file(input: 'cmake/lws_config.h.in', output: 'lws_config.h', configuration: lws_config_data, format: 'cmake')
+lws_config_h = configure_file(
+    input: 'cmake/lws_config.h.in',
+    output: 'lws_config.h',
+    configuration: lws_config_data,
+    format: 'cmake',
+)
 lws_sources += [lws_config_h]
 
 libwebsockets = library(
@@ -1592,4 +1563,8 @@ libwebsockets = library(
     dependencies: lws_dependencies,
 )
 
-libwebsockets_dep = declare_dependency(include_directories: lws_includes, link_with: libwebsockets, dependencies: lws_dependencies)
+libwebsockets_dep = declare_dependency(
+    include_directories: lws_includes,
+    link_with: libwebsockets,
+    dependencies: lws_dependencies,
+)
