@@ -1,7 +1,9 @@
 [wrap-file]
-directory = check-0.14.0
-source_url = https://github.com/libcheck/check/archive/0.14.0.tar.gz
-source_filename = check-0.14.0.tar.gz
-source_hash = d55782b36827e36472b77d577953795403fb708f94a202558ffaa054bd328c60
+directory = check-0.15.2
+source_url = https://github.com/libcheck/check/archive/0.15.2.tar.gz
+source_filename = check-0.15.2.tar.gz
+source_hash = 998d355294bb94072f40584272cf4424571c396c631620ce463f6ea97aa67d2e
 patch_directory = check
 
+[provide]
+check = check_dep

@@ -1,6 +1,6 @@
 project('check', 'c',
   default_options : ['warning_level=0', 'default_library=static'],
-  version : '0.14.0',
+  version : '0.15.2',
   license : 'LGPL2.1',
 )
 
@@ -311,6 +311,13 @@ if not cdata.has('HAVE_SYS_TIME_H')
         language : 'c'
       )
     endif
+  endif
+else
+  if not cc.has_member('struct itimerspec', 'it_value', prefix : '#include <sys/time.h>')
+      add_project_arguments(
+        '-DSTRUCT_ITIMERSPEC_DEFINITION_MISSING=1',
+        language : 'c'
+      )
   endif
 endif
 

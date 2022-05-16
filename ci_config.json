@@ -20,7 +20,7 @@
     "zstd"
   ],
   "broken_darwin": [
-    "arduinocore-avr", "check",
+    "arduinocore-avr",
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
