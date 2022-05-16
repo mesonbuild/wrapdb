@@ -7,13 +7,13 @@
                "explicitly disable that Operating System in build_on.",
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
-    "arduinocore-avr", "imgui-sfml",
+    "arduinocore-avr",
     "openal-soft", "openh264",
     "protobuf-c", "zstd"
   ],
   "broken_windows": [
     "arduinocore-avr", "docopt", "emilk-loguru",
-    "google-woff2", "imgui-sfml", "jbigkit",
+    "google-woff2", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "netstring-c", "openh264",
     "protobuf-c", "termbox","unit-system",
@@ -23,7 +23,7 @@
     "arduinocore-avr",
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
-    "imgui-sfml", "libgpiod", "libwebsockets",
+    "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "openal-soft",
     "openh264", "protobuf-c",
     "rtaudio", "sdl2_image", "tinyxml2", "unit-system",
@@ -108,6 +108,14 @@
       "libglfw3-dev",
       "libsdl2-dev",
       "libvulkan-dev"
+    ]
+  },
+  "imgui-sfml": {
+    "debian_packages": [
+      "libgl-dev",
+      "libopenal-dev",
+      "libudev-dev",
+      "libxrandr-dev"
     ]
   },
   "libccp4c": {
