@@ -26,7 +26,7 @@
     "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "openal-soft",
     "openh264", "protobuf-c",
-    "rtaudio", "sdl2_image", "sfml", "tinyxml2", "unit-system",
+    "rtaudio", "sdl2_image", "tinyxml2", "unit-system",
     "zstd"
   ],
   "cli11": {

@@ -43,6 +43,36 @@ elif host_machine.system() == 'linux'
         'Unix/GlxExtensions.cpp',
     )
     window_deps = [dependency('xrandr'), dependency('x11'), dependency('libudev')]
+elif host_machine.system() == 'darwin'
+    add_languages('objc')
+    add_languages('objcpp')
+    window_sources += files(
+        'OSX/cpp_objc_conversion.mm',
+        'OSX/cg_sf_conversion.mm',
+        'OSX/CursorImpl.mm',
+        'OSX/ClipboardImpl.mm',
+        'OSX/InputImpl.mm',
+        'OSX/HIDInputManager.mm',
+        'OSX/HIDJoystickManager.cpp',
+        'OSX/JoystickImpl.cpp',
+        'OSX/NSImage+raw.mm',
+        'OSX/SensorImpl.cpp',
+        'OSX/SFApplication.m',
+        'OSX/SFApplicationDelegate.m',
+        'OSX/SFContext.mm',
+        'OSX/SFKeyboardModifiersHelper.mm',
+        'OSX/SFOpenGLView.mm',
+        'OSX/SFOpenGLView+keyboard.mm',
+        'OSX/SFOpenGLView+mouse.mm',
+        'OSX/SFSilentResponder.m',
+        'OSX/SFWindow.m',
+        'OSX/SFWindowController.mm',
+        'OSX/SFViewController.mm',
+        'OSX/VideoModeImpl.cpp',
+        'OSX/WindowImplCocoa.mm',
+        'OSX/AutoreleasePoolWrapper.mm',
+    )
+    window_deps = [dependency('appleframeworks', modules : ['Foundation', 'AppKit', 'IOKit', 'Carbon']) ]
 else
     error('Not yet implemented.')
 endif
