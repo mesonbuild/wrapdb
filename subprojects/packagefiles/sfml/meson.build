@@ -6,6 +6,13 @@ project('sfml', 'cpp',
 
 cpp = meson.get_compiler('cpp')
 
+#this still uses auto_ptr...
+if cpp.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_HAS_AUTO_PTR_ETC=1', language: 'cpp')
+else
+  add_project_arguments('-D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR', language: 'cpp')
+endif
+
 openal_dep = dependency('openal')
 thread_dep = dependency('threads')
 gl_dep = dependency('gl')
