@@ -1,5 +1,5 @@
 project('tinyply', 'cpp',
-    version: '2.2',
+    version: '2.3.4',
     default_options: ['cpp_std=c++11'],
     meson_version: '>=0.46.0')
 pkg = import('pkgconfig')

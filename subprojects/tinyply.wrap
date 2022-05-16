@@ -1,8 +1,8 @@
 [wrap-file]
-source_url = https://github.com/ddiakopoulos/tinyply/archive/2.2.tar.gz
-source_filename = tinyply-2.2.tar.gz
-directory = tinyply-2.2
-source_hash = c01446e1d03f160123756a28e4be8769ecf35e4da5c34e7a9a9bf561334f32dc
+source_url = https://github.com/ddiakopoulos/tinyply/archive/2.3.4.tar.gz
+source_filename = tinyply-2.3.4.tar.gz
+directory = tinyply-2.3.4
+source_hash = 1bb1462727a363f7b77a10e51cd023095db7b281d2f201167620a83e495513c6
 patch_directory = tinyply
 
 [provide]
