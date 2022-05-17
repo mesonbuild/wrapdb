@@ -104,8 +104,7 @@ option(
 
 option(
   'loguru_stacktraces',
-  type: 'boolean',
-  value: true,
+  type: 'feature',
   description: 'Print stack traces on abort',
 )
 

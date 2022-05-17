@@ -12,7 +12,7 @@
     "protobuf-c", "zstd"
   ],
   "broken_windows": [
-    "arduinocore-avr", "docopt", "emilk-loguru",
+    "arduinocore-avr", "docopt",
     "google-woff2", "jbigkit",
     "libgpiod", "liblbfgs", "libwebsockets",
     "mocklibc", "netstring-c", "openh264",
@@ -21,7 +21,7 @@
   ],
   "broken_darwin": [
     "arduinocore-avr",
-    "docopt", "emilk-loguru", "glib",
+    "docopt", "glib",
     "google-benchmark", "google-woff2", "graphite2",
     "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "openal-soft",
