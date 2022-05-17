@@ -21,7 +21,7 @@
   ],
   "broken_darwin": [
     "arduinocore-avr",
-    "docopt", "glib",
+    "docopt",
     "google-benchmark", "google-woff2", "graphite2",
     "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "openal-soft",
