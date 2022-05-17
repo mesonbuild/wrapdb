@@ -23,7 +23,7 @@
     "arduinocore-avr",
     "docopt", "emilk-loguru", "glib",
     "google-benchmark", "google-woff2", "graphite2",
-    "imgui", "imgui-sfml", "libgpiod", "libwebsockets",
+    "imgui-sfml", "libgpiod", "libwebsockets",
     "lz4", "mocklibc", "openal-soft",
     "openh264", "protobuf-c",
     "rtaudio", "sdl2_image", "tinyxml2", "unit-system",

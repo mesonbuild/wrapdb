@@ -5,12 +5,22 @@ project('imgui', 'cpp',
 
 if host_machine.system() == 'darwin'
     add_languages('objcpp')
+    #hack for current version - fixed in next
+    add_project_arguments('-fobjc-weak', language: 'objcpp')
 endif
 
 include_dirs = include_directories('.', 'backends')
 sources = ['imgui_demo.cpp', 'imgui_draw.cpp', 'imgui_tables.cpp', 'imgui_widgets.cpp', 'imgui.cpp', 'misc/cpp/imgui_stdlib.cpp']
 
 cpp = meson.get_compiler('cpp')
+if cpp.get_argument_syntax() == 'msvc'
+  if get_option('buildtype') != 'static'
+    add_project_arguments('-DIMGUI_API=__declspec(dllexport)', language: 'cpp')
+  else
+    add_project_arguments('-DIMGUI_API=__declspec(dllimport)', language: 'cpp')
+  endif
+endif
+
 dependencies = []
 
 # renderer backends
@@ -34,7 +44,7 @@ if dx12_dep.found()
     sources += 'backends/imgui_impl_dx12.cpp'
     dependencies += dx12_dep
 endif
-metal_dep = dependency('appleframeworks', modules : 'metal', required: get_option('metal'))
+metal_dep = dependency('appleframeworks', modules : [ 'Foundation', 'AppKit', 'GameController', 'Metal' ], required: get_option('metal'))
 if metal_dep.found()
     sources += 'backends/imgui_impl_metal.mm'
     dependencies += metal_dep
