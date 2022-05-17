@@ -222,7 +222,11 @@
     ]
   },
   "emilk-loguru": {
+    "dependency_names": [
+      "loguru"
+    ],
     "versions": [
+      "2.1.0-3",
       "2.1.0-2",
       "2.1.0-1"
     ]
