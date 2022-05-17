@@ -7,7 +7,7 @@
                "explicitly disable that Operating System in build_on.",
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
-    "arduinocore-avr", "glew", "imgui-sfml",
+    "arduinocore-avr", "imgui-sfml",
     "openal-soft", "openh264",
     "protobuf-c", "zstd"
   ],
@@ -70,6 +70,11 @@
     "build_on": {
       "windows": false
     }
+  },
+  "glew": {
+    "debian_packages": [
+      "libglu1-mesa-dev"
+    ]
   },
   "glib": {
     "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
