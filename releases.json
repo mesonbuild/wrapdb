@@ -412,6 +412,14 @@
       "2.1.0-1"
     ]
   },
+  "glfw": {
+    "dependency_names": [
+      "glfw3"
+    ],
+    "versions": [
+      "3.3.7-1"
+    ]
+  },
   "glib": {
     "dependency_names": [
       "gthread-2.0",

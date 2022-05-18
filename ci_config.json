@@ -75,6 +75,30 @@
       "libglu1-mesa-dev"
     ]
   },
+  "glfw": {
+    "_comment": "- Requires POSIX platform.",
+    "debian_packages": [
+      "libxrandr-dev",
+      "libxinerama-dev",
+      "libxcursor-dev",
+      "libxi-dev",
+      "libxkbcommon-dev"
+    ],
+    "brew_packages": [
+      "libxrandr",
+      "libxinerama",
+      "libxcursor",
+      "libxi",
+      "libxkbcommon"
+    ],
+    "build_options": [
+      "glfw:tests=true",
+      "glfw:examples=true"
+    ],
+    "build_on": {
+      "windows": false
+    }
+  },
   "glib": {
     "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
     "build_options": [

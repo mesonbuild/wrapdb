@@ -1,0 +1,9 @@
+[wrap-file]
+directory = glfw-3.3.7
+patch_directory = glfw
+source_url = https://github.com/glfw/glfw/archive/refs/tags/3.3.7.tar.gz
+source_filename = glfw-3.3.7.tar.gz
+source_hash = fd21a5f65bcc0fc3c76e0f8865776e852de09ef6fbc3620e09ce96d2b2807e04
+
+[provide]
+glfw3 = glfw_dep
