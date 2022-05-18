@@ -60,10 +60,10 @@ class TestReleases(unittest.TestCase):
 
         try:
             fn = 'releases.json'
-            with open(fn, 'r') as f:
+            with open(fn, 'r', encoding='utf-8') as f:
                 cls.releases = json.load(f)
             fn = 'ci_config.json'
-            with open(fn, 'r') as f:
+            with open(fn, 'r', encoding='utf-8') as f:
                 cls.ci_config = json.load(f)
         except json.decoder.JSONDecodeError:
             raise RuntimeError(f'file {fn} is malformed')
@@ -116,7 +116,7 @@ class TestReleases(unittest.TestCase):
 
                 # Make sure we can load wrap file
                 config = configparser.ConfigParser(interpolation=None)
-                config.read(f'subprojects/{name}.wrap')
+                config.read(f'subprojects/{name}.wrap', encoding='utf-8')
 
                 # Basic checks
                 with self.subTest(step='basic'):
@@ -292,7 +292,7 @@ class TestReleases(unittest.TestCase):
                 continue
             elif not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
-            elif f.name in NO_TABS_FILES and '\t' in f.read_text():
+            elif f.name in NO_TABS_FILES and '\t' in f.read_text(encoding='utf-8'):
                 tabs.append(f)
         if tabs:
             tabs_str = ', '.join([str(f) for f in tabs])
