@@ -1,0 +1,16 @@
+#ifndef __SPEEX_TYPES_H__
+#define __SPEEX_TYPES_H__
+
+/* these are populated by Meson's configuration data */
+#mesondefine INCLUDE_INTTYPES_H
+#mesondefine INCLUDE_SYS_TYPES_H
+#define INCLUDE_STDINT_H 1
+
+#include <stdint.h>
+
+typedef @SIZE16@ spx_int16_t;
+typedef @USIZE16@ spx_uint16_t;
+typedef @SIZE32@ spx_int32_t;
+typedef @USIZE32@ spx_uint32_t;
+
+#endif

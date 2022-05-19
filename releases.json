@@ -1540,6 +1540,14 @@
       "0.11.0-1"
     ]
   },
+  "speexdsp": {
+    "dependency_names": [
+      "speexdsp"
+    ],
+    "versions": [
+      "1.2.0-1"
+    ]
+  },
   "spng": {
     "dependency_names": [
       "spng"
