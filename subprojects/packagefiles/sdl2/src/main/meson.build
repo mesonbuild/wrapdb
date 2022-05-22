@@ -12,6 +12,5 @@ elif platform_is_winrt
 elif platform_is_windows
     subdir('windows')
 else
-    sdl2main_is_dummy = true
     subdir('dummy')
 endif

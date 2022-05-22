@@ -1042,46 +1042,44 @@ sdl2 = library('sdl2',
     install : do_install,
 )
 
-use_sdl2main = not sdl2main_is_dummy
 
-if use_sdl2main
-    main_c_args = ['-Dmain=SDL_main']
+main_link_with = []
+main_link_whole = []
+main_c_args = []
 
-    sdl2main = static_library('sdl2main',
-        main_sources,
-        include_directories : core_inc,
-        c_args : [core_args, main_c_args],
-        install : do_install,
-    )
+main_c_args += '-Dmain=SDL_main'
 
-    # dealing with MSVC being MSVC
-    main_link_with = []
-    main_link_whole = []
-    if cc.get_id() == 'msvc'
-        main_link_with += sdl2main
-    else
-        main_link_whole += sdl2main
-    endif
+sdl2main = static_library('sdl2main',
+    main_sources,
+    include_directories : core_inc,
+    c_args : [core_args, main_c_args],
+    install : do_install,
+)
 
-    sdl2_dep = declare_dependency(
-        link_with : [sdl2] + main_link_with,
-        link_whole : main_link_whole,
-        include_directories : core_inc,
-        compile_args : main_c_args,
-    )
-
-    sdl2main_dep = declare_dependency(
-        link_with : main_link_with,
-        link_whole : main_link_whole,
-        include_directories : core_inc,
-        compile_args : main_c_args,
-    )
+if cc.get_id() == 'msvc'
+    main_link_with += sdl2main
 else
-    sdl2_dep = declare_dependency(
-        link_with : sdl2,
-        include_directories : core_inc,
-    )
+    main_link_whole += sdl2main
 endif
+
+sdl2main_dep = declare_dependency(
+    link_with : main_link_with,
+    link_whole : main_link_whole,
+    include_directories : core_inc,
+    compile_args : main_c_args,
+)
+
+deps = []
+if get_option('with_main')
+    deps += sdl2main_dep
+endif
+
+sdl2_dep = declare_dependency(
+    link_with : sdl2,
+    dependencies : deps,
+    include_directories : core_inc,
+    compile_args : c_args,
+)
 
 if meson.version().version_compare('>=0.54')
     meson.override_dependency('sdl2', sdl2_dep)

@@ -196,3 +196,10 @@ option(
     type : 'boolean',
     description : 'If possible, dlopen dependencies at runtime instead of linking (linux only)'
 )
+
+option(
+    'with_main',
+    type : 'boolean',
+    value : 'true',
+    description : 'automatically link against sdl2main'
+)
