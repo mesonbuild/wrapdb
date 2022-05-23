@@ -864,6 +864,14 @@
       "0.6.3-1"
     ]
   },
+  "liblastfm": {
+    "versions": [
+      "1.0.1-1"
+    ],
+    "dependency_names": [
+      "liblastfm"
+    ]
+  },
   "liblbfgs": {
     "versions": [
       "1.10-1"

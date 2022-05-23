@@ -187,6 +187,21 @@
       "darwin": false
     }
   },
+  "liblastfm": {
+    "brew_packages": [
+      "curl"
+    ],
+    "debian_packages": [
+      "libcurl4-gnutls-dev"
+    ],
+    "build_options": [
+      "liblastfm:tests=enabled"
+    ],
+    "_comment": "libcurl is not available with MSVC CI",
+    "build_on": {
+      "windows": false
+    }
+  },
   "libnpupnp": {
     "brew_packages": [
       "libmicrohttpd"
