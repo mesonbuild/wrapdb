@@ -28,7 +28,8 @@ install_headers(headers,
 
 # Maybe disable exceptions
 if not get_option('exceptions')
-  add_project_arguments('-DIIR1_NO_EXCEPTIONS', 'cpp')
+  add_project_arguments('-DIIR1_NO_EXCEPTIONS',
+                        language : 'cpp')
 endif
 
 lib = library('iir', 
