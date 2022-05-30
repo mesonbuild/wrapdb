@@ -1,0 +1,9 @@
+[wrap-file]
+directory = iir1-1.9.2
+source_url = https://github.com/berndporr/iir1/archive/refs/tags/1.9.2.tar.gz
+source_filename = 1.9.2.tar.gz
+source_hash = b53581a71b0e116c74429ffd936b8a94cd1c3e626b8074f948024d2e23bff161
+patch_directory = iir
+
+[provide]
+iir = libiir_dep
