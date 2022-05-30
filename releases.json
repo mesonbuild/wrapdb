@@ -584,6 +584,14 @@
       "55.2-1"
     ]
   },
+  "iir": {
+    "dependency_names": [
+      "iir"
+    ],
+    "versions": [
+      "1.9.2-1"
+    ]
+  },
   "imgui": {
     "dependency_names": [
       "imgui"
