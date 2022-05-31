@@ -43,16 +43,6 @@ option('webserver', type : 'boolean',
   description : 'integrated web server',
 )
 
-option('blocking_tcp_connectionsr', type : 'boolean',
-  value : false,
-  description : 'blocking TCP connections',
-)
-
-option('reuseaddr', type : 'boolean',
-  value : true,
-  description : 'bind the miniserver socket with reuseaddr to allow clean restarts',
-)
-
 option('expat', type : 'feature',
   description : 'Use expat',
 )
