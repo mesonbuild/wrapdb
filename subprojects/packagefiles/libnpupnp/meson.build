@@ -31,6 +31,7 @@ add_project_arguments('-DSMALLUT_EXTERNAL_INSTANTIATIONS', language : 'cpp')
 libnpupnp_incdir = include_directories([ '.', 'inc', 'src/inc' ])
 
 npupnp_sources = [
+  'src/api/upnpdebug.cpp',
   'src/api/upnpapi.cpp',
   'src/dispatcher/miniserver.cpp',
   'src/threadutil/ThreadPool.cpp',
@@ -47,12 +48,6 @@ npupnp_sources = [
   'src/utils/utf8iter.cpp',
   'src/webserver/webserver.cpp',
 ]
-
-if get_option('debug')
-  npupnp_sources += [
-    'src/api/upnpdebug.cpp',
-  ]
-endif
 
 if get_option('gena')
   npupnp_sources += [
@@ -103,75 +98,19 @@ auto.set('NPUPNP_VERSION_MAJOR', ver[0])
 auto.set('NPUPNP_VERSION_MINOR', ver[1])
 auto.set('NPUPNP_VERSION_PATCH', ver[2])
 auto.set('LIBUPNP_EXPORTS', 1)
-
-if get_option('debug')
-  auto.set('UPNP_HAVE_DEBUG', 1)
-endif
-
-if get_option('device')
-  auto.set('UPNP_HAVE_DEVICE', 1)
-endif
-
-if expat_dep.found()
-  auto.set('USE_EXPAT', 1)
-endif
-
-if get_option('gena')
-  auto.set('UPNP_HAVE_GENA', 1)
-endif
-
-if get_option('optssdp')
-  auto.set('UPNP_HAVE_OPTSSDP', 1)
-endif
-
-if get_option('soap')
-  auto.set('UPNP_HAVE_SOAP', 1)
-endif
-
-if get_option('ssdp')
-  auto.set('UPNP_HAVE_SSDP', 1)
-endif
-
-if get_option('tools')
-  auto.set('UPNP_HAVE_TOOLS', 1)
-endif
-
-if get_option('unspecified_server')
-  auto.set('UPNP_ENABLE_UNSPECIFIED_SERVER', 1)
-endif
-
-if get_option('webserver')
-  auto.set('UPNP_HAVE_TOOLS', 1)
-endif
-
-if get_option('ipv6')
-  auto.set('UPNP_ENABLE_IPV6', 1)
-endif
-
-if get_option('client')
-  auto.set('UPNP_HAVE_CLIENT', 1)
-endif
-
-if get_option('webserver')
-  auto.set('UPNP_HAVE_WEBSERVER', 1)
-endif
-
-if get_option('blocking_tcp_connectionsr')
-  auto.set('UPNP_ENABLE_BLOCKING_TCP_CONNECTIONS', 1)
-endif
-
-if get_option('reuseaddr')
-  auto.set('UPNP_MINISERVER_REUSEADDR', 1)
-endif
-
-#every platform has this
-auto.set('HAVE_INET_PTON', 1)
-
-if (host_machine.system() == 'windows')
-  inet_pton_include = '#include <ws2tcpip.h>'
-else
-  inet_pton_include = '#include <arpa/inet.h>'
-endif
+auto.set10('UPNP_HAVE_DEBUG', get_option('debug'))
+auto.set10('UPNP_HAVE_DEVICE', get_option('device'))
+auto.set('USE_EXPAT', expat_dep.found())
+auto.set10('UPNP_HAVE_GENA', get_option('gena'))
+auto.set('UPNP_HAVE_OPTSSDP', get_option('optssdp'))
+auto.set10('UPNP_HAVE_SOAP', get_option('soap'))
+auto.set10('UPNP_HAVE_SSDP', get_option('ssdp'))
+auto.set10('UPNP_HAVE_TOOLS', get_option('tools') or get_option('webserver'))
+auto.set('UPNP_ENABLE_UNSPECIFIED_SERVER', get_option('unspecified_server'))
+auto.set('UPNP_ENABLE_IPV6', get_option('ipv6'))
+auto.set10('UPNP_HAVE_CLIENT', get_option('client'))
+auto.set10('UPNP_HAVE_WEBSERVER', get_option('webserver'))
+auto.set('HAVE_INET_PTON', true) #every platform has this
 
 ufile = configure_file(
   output : 'upnpconfig.h',
@@ -184,7 +123,7 @@ cfile = configure_file(
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libnpupnp)
+pkg.generate(libnpupnp, name: 'libnpupnp', subdirs: 'npupnp')
 
 install_headers(
   'inc/upnpdebug.h',
@@ -192,20 +131,9 @@ install_headers(
   'inc/upnp.h',
   'inc/UpnpInet.h',
   'inc/upnptools.h',
-  'src/inc/config.h',
-  'src/inc/expatmm.hxx',
-  'src/inc/gena_ctrlpt.h',
-  'src/inc/gena_device.h',
-  'src/inc/gena.h',
-  'src/inc/gena_sids.h',
-  'src/inc/genut.h',
-  'src/inc/httputils.h',
-  'src/inc/md5.h',
-  'src/inc/miniserver.h',
   'src/inc/netif.h',
-  'src/inc/picoxml.h',
-  'src/inc/service_table.h',
   ufile,
+  subdir: 'npupnp'
 )
 
 libnpupnp_dep = declare_dependency(
