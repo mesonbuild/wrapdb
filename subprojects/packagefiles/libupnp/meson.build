@@ -97,92 +97,47 @@ if get_option('tools')
   ]
 endif
 
-auto = configuration_data()
-auto.set('IXML_HAVE_SCRIPTSUPPORT', 1)
-auto.set('UPNP_VERSION_STRING', '"' + meson.project_version() + '"')
-ver = meson.project_version().split('.')
-auto.set('UPNP_VERSION_MAJOR', ver[0])
-auto.set('UPNP_VERSION_MINOR', ver[1])
-auto.set('UPNP_VERSION_PATCH', ver[2])
-
-if get_option('blocking_tcp_connectionsr')
-  auto.set('UPNP_ENABLE_BLOCKING_TCP_CONNECTIONS', 1)
-endif
-
-if get_option('client')
-  auto.set('UPNP_HAVE_CLIENT', 1)
-endif
-
-if get_option('device')
-  auto.set('UPNP_HAVE_DEVICE', 1)
-endif
-
-if get_option('gena')
-  auto.set('UPNP_HAVE_GENA', 1)
-endif
-
-if get_option('tools')
-  auto.set('UPNP_HAVE_TOOLS', 1)
-endif
-
-if get_option('ipv6')
-  auto.set('UPNP_ENABLE_IPV6', 1)
-endif
-
-if get_option('optssdp')
-  auto.set('UPNP_HAVE_OPTSSDP', 1)
-endif
-
-if get_option('open_ssl')
-  auto.set('UPNP_ENABLE_OPEN_SSL', 1)
-endif
-
-if get_option('soap')
-  auto.set('UPNP_HAVE_SOAP', 1)
-endif
-
-if get_option('ssdp')
-  auto.set('UPNP_HAVE_SSDP', 1)
-endif
-
-if get_option('unspecified_server')
-  auto.set('UPNP_ENABLE_UNSPECIFIED_SERVER', 1)
-endif
-
-if get_option('webserver')
-  auto.set('UPNP_HAVE_WEBSERVER', 1)
-endif
-
-if get_option('reuseaddr')
-  auto.set('UPNP_MINISERVER_REUSEADDR', 1)
-endif
-
-if get_option('debug')
-  auto.set('UPNP_HAVE_DEBUG', 1)
-endif
-
 cc = meson.get_compiler('c')
+ver = meson.project_version().split('.')
+uconf = configuration_data()
+uconf.set('IXML_HAVE_SCRIPTSUPPORT', true)
+uconf.set('UPNP_VERSION_MAJOR', ver[0])
+uconf.set('UPNP_VERSION_MINOR', ver[1])
+uconf.set('UPNP_VERSION_PATCH', ver[2])
+uconf.set('UPNP_ENABLE_BLOCKING_TCP_CONNECTIONS', get_option('blocking_tcp_connectionsr'))
+uconf.set10('UPNP_HAVE_CLIENT', get_option('client'))
+uconf.set10('UPNP_HAVE_DEVICE', get_option('device'))
+uconf.set10('UPNP_HAVE_GENA', get_option('gena'))
+uconf.set10('UPNP_HAVE_TOOLS', get_option('tools'))
+uconf.set('UPNP_ENABLE_IPV6', get_option('ipv6'))
+uconf.set('UPNP_HAVE_OPTSSDP', get_option('optssdp'))
+uconf.set('UPNP_ENABLE_OPEN_SSL', get_option('open_ssl'))
+uconf.set10('UPNP_HAVE_SOAP', get_option('soap'))
+uconf.set10('UPNP_HAVE_SSDP', get_option('ssdp'))
+uconf.set('UPNP_ENABLE_UNSPECIFIED_SERVER', get_option('unspecified_server'))
+uconf.set10('UPNP_HAVE_WEBSERVER', get_option('webserver'))
+uconf.set('UPNP_MINISERVER_REUSEADDR', get_option('reuseaddr'))
 
-if cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', prefix : '#define _XOPEN_SOURCE 500')
-  auto.set('UPNP_USE_RWLOCK', 1)
-endif
+aconf = configuration_data()
+aconf.merge_from(uconf)
 
-if cc.has_header_symbol('string.h', 'strndup')
-  auto.set('HAVE_STRNDUP', 1)
-endif
-
-if cc.has_header_symbol('string.h', 'strnlen')
-  auto.set('HAVE_STRNLEN', 1)
-endif
+uconf.set('UPNP_VERSION_STRING', meson.project_version())
+aconf.set_quoted('UPNP_VERSION_STRING', meson.project_version())
+aconf.set10('UPNP_HAVE_DEBUG', get_option('debug'))
+aconf.set10('UPNP_USE_RWLOCK', cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', prefix : '#define _XOPEN_SOURCE 500'))
+aconf.set10('HAVE_STRNDUP', cc.has_function('strndup'))
+aconf.set10('HAVE_STRNLEN', cc.has_function('strnlen'))
 
 ufile = configure_file(
+  input: 'upnp/inc/upnpconfig.h.cm',
   output : 'upnpconfig.h',
-  configuration : auto
+  format: 'cmake',
+  configuration : uconf
 )
 
-cfile = configure_file(
-  output : 'autoconfig.h',
-  configuration : auto
+afile = configure_file(
+  output: 'autoconfig.h',
+  configuration: aconf
 )
 
 deps = []
@@ -206,7 +161,7 @@ libupnp = library('upnp',
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libupnp)
+pkg.generate(libupnp, name: 'libupnp', subdirs: 'upnp')
 
 headers = [
   'ixml/inc/ixml.h',
