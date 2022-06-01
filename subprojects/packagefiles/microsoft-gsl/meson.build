@@ -1,6 +1,6 @@
 project('microsoft-gsl',
   'cpp',
-  version: '3.1.0',
+  version: '4.0.0',
   license: 'MIT'
 )
 
