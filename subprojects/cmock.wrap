@@ -1,0 +1,9 @@
+[wrap-file]
+directory = CMock-2.5.3
+source_url = https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v2.5.3.tar.gz
+source_filename = CMock-2.5.3.tar.gz
+source_hash = d30724405b527f2b1d2894b27a1600af3ccb4aad12e63e48ba4f0ea8ae88fe9c
+
+[provide]
+cmock = cmock_dep
+
