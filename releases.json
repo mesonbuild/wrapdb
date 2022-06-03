@@ -1323,6 +1323,14 @@
       "1.3.0-1"
     ]
   },
+  "proxy-libintl": {
+    "versions": [
+      "0.4-1"
+    ],
+    "dependency_names": [
+      "intl"
+    ]
+  },
   "pugixml": {
     "dependency_names": [
       "pugixml"
