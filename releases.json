@@ -148,6 +148,14 @@
       "1.9.1-1"
     ]
   },
+  "cmock": {
+    "dependency_names": [
+      "cmock"
+    ],
+    "versions": [
+      "2.5.3-1"
+    ]
+  },
   "cmocka": {
     "versions": [
       "1.1.5-3",
