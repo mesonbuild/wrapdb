@@ -971,7 +971,11 @@
     ]
   },
   "libwebsockets": {
+    "dependency_names": [
+      "libwebsockets"
+    ],
     "versions": [
+      "4.0.21-1",
       "4.0.13-1"
     ]
   },

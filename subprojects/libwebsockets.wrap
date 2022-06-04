@@ -1,6 +1,9 @@
 [wrap-file]
-directory = libwebsockets-v4.0.13
-source_url = https://libwebsockets.org/git/libwebsockets/snapshot/libwebsockets-v4.0.13.tar.xz
-source_filename = libwebsockets-v4.0.13.tar.xz
-source_hash = 82a30cb62ab9735d926990a75f166078101028af1923a30232032b39976f8879
+directory = libwebsockets-v4.0.21
+source_url = https://libwebsockets.org/git/libwebsockets/snapshot/libwebsockets-v4.0.21.tar.xz
+source_filename = libwebsockets-v4.0.21.tar.xz
+source_hash = 57ef0c4c951b056532d88ad618badd5c3615b7c71418dd26800dc886032a32b4
 patch_directory = libwebsockets
+
+[provide]
+libwebsockets = libwebsockets_dep
