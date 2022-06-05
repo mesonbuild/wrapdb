@@ -6,5 +6,4 @@ source_hash = eb37336bf9ae59aca7b954db3350d9b30d1cab24b96c7676f36040aa76e915e8
 patch_directory = concurrentqueue
 
 [provide]
-
 concurrentqueue = concurrentqueue_dep
