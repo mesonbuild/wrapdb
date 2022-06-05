@@ -34,8 +34,13 @@ endif
 if get_option('use_manual_tzdb')
   defines += ['-DAUTO_DOWNLOAD=0', '-DHAS_REMOTE_API=0']
 elif get_option('use_system_tzdb')
-  defines += ['-DAUTO_DOWNLOAD=0', '-DHAS_REMOTE_API=0']
-  tz_public_defines += ['-DUSE_OS_TZDB=1']
+  # only works if not linux
+  if host_machine.system() != 'windows'
+    defines += ['-DAUTO_DOWNLOAD=0', '-DHAS_REMOTE_API=0']
+    tz_public_defines += ['-DUSE_OS_TZDB=1']
+  endif
+  # display a warning but not fail
+  message('hinntant-date[WARNING]: use_system_tzdb is not supported on windows')
 else
   defines += ['-DAUTO_DOWNLOAD=1', '-DHAS_REMOTE_API=1']
   tz_public_defines += ['-DUSE_OS_TZDB=0']
