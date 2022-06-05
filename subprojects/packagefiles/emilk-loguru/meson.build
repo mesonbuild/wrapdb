@@ -39,7 +39,8 @@ if get_option('loguru_with_fileabs')
 endif
 
 dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
-if dl_dep.found()
+execinfo = cxx.has_header('execinfo.h')
+if dl_dep.found() and execinfo
   loguru_deps_internal += dl_dep
   compile_opts += ['-DLOGURU_STACKTRACES=1']
 endif
