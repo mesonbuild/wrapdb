@@ -1,0 +1,10 @@
+[wrap-file]
+directory = concurrentqueue-1.0.3
+source_url = https://github.com/cameron314/concurrentqueue/archive/refs/tags/v1.0.3.tar.gz
+source_filename = concurrentqueue-1.0.3.tar.xz
+source_hash = eb37336bf9ae59aca7b954db3350d9b30d1cab24b96c7676f36040aa76e915e8
+patch_directory = concurrentqueue
+
+[provide]
+
+concurrentqueue = concurrentqueue_dep
