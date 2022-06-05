@@ -1,11 +1,20 @@
 project('sdl2 mixer', 'c')
 
-sdl2_dep = dependency('sdl2')
+if host_machine.system() == 'windows'
+  sdl2_dep = dependency('sdl2', default_options: ['with_main=true'])
+else
+  sdl2_dep = dependency('sdl2', default_options: ['with_main=false'])
+endif
 ogg_dep = dependency('ogg')
 vorbis_dep = dependency('vorbis')
 vorbisfile_dep = dependency('vorbisfile')
 
+cc = meson.get_compiler('c')
+
 feature_args = ['-DMUSIC_WAV', '-DMUSIC_OGG']
+if get_option('default_library') != 'static' and cc.get_id() == 'msvc'
+  feature_args += '-DDLL_EXPORT'
+endif
 
 sdl2_mixer_lib = library('sdl2mixer',
   'effect_position.c',
