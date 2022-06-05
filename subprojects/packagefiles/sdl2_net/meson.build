@@ -20,11 +20,11 @@ else
     plat_libs = []
 endif
 
-sdl2_dep = dependency('sdl2')
+sdl2_dep = dependency('sdl2', default_options: ['with_main=false'])
 
 sdl2_net = library('sdl2_net',
     sdl2_net_src,
-    dependencies : sdl2_dep,
+    dependencies : [ sdl2_dep, plat_libs ],
     c_args: plat_args,
     include_directories : '.')
 
