@@ -22,6 +22,10 @@ if cpp.get_argument_syntax() == 'gcc'
     ]
 endif
 
+if not cpp.has_function('strtoull_l')
+  cpp_args += '-DFLATBUFFERS_LOCALE_INDEPENDENT=0'
+endif
+
 # Certain platforms such as ARM do not use signed chars by default
 # which causes issues with certain bounds checks.
 if cpp.has_argument('-fsigned-char')
