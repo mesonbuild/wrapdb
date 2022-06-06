@@ -1045,9 +1045,7 @@ sdl2 = library('sdl2',
 
 main_link_with = []
 main_link_whole = []
-main_c_args = []
-
-main_c_args += '-Dmain=SDL_main'
+main_c_args = ['-Dmain=SDL_main']
 
 sdl2main = static_library('sdl2main',
     main_sources,
@@ -1070,7 +1068,7 @@ sdl2main_dep = declare_dependency(
 )
 
 deps = []
-if get_option('with_main')
+if platform_is_windows and get_option('with_main')
     deps += sdl2main_dep
 endif
 
