@@ -1,7 +1,7 @@
 project('emilk-loguru', 'cpp',
   version: '2.1.0',
   license: 'Public Domain',
-  meson_version : '>=0.47',
+  meson_version : '>=0.50',
 )
 
 cxx = meson.get_compiler('cpp')
@@ -39,10 +39,12 @@ if get_option('loguru_with_fileabs')
 endif
 
 dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
-execinfo = cxx.has_header('execinfo.h')
+execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
 if dl_dep.found() and execinfo
   loguru_deps_internal += dl_dep
   compile_opts += ['-DLOGURU_STACKTRACES=1']
+else
+  compile_opts += ['-DLOGURU_STACKTRACES=0']
 endif
 if get_option('loguru_rtti')
   compile_opts += ['-DLOGURU_RTTI=1']
