@@ -1,25 +1,9 @@
-project('protobuf', 'cpp', version: '3.20.0', license: 'protobuf')
+project('protobuf', 'cpp', version: '3.20.1', license: 'protobuf', default_options: 'warning_level=0')
 
 cc = meson.get_compiler('cpp')
 
-ttype = cc.get_id() == 'msvc' ? 'static_library' : 'library'
+ttype = cc.get_argument_syntax() == 'msvc' ? 'static_library' : 'library'
 
-if get_option('default_library') != 'static'
-  add_project_arguments('-DPROTOBUF_USE_DLLS', language : 'cpp')
-  add_project_arguments('-DLIBPROTOBUF_EXPORTS', language : 'cpp')
-  add_project_arguments('-DLIBPROTOC_EXPORTS', language : 'cpp')
-endif
-
-flags = cc.get_supported_arguments([
-  '-DHAVE_PTHREAD',
-  '-Wno-sign-compare',
-  '-Wno-unused-parameter',
-  '-Wno-ignored-qualifiers',
-  '/wd4146',
-  '/wd4244',
-  '/wd4305',
-  '/wd4506',
-])
 deps = dependency('threads')
 
 libprotobuf_lite_src = [
@@ -59,9 +43,11 @@ libprotobuf_lite_src = [
 libprotobuf_lite = build_target(
   'protobuf-lite',
   libprotobuf_lite_src,
-  cpp_args: flags,
   dependencies: deps,
   target_type: ttype,
+  version: meson.project_version(),
+  soversion: 31,
+  install: true,
   include_directories: include_directories('src'),
 )
 protobuf_lite_dep = declare_dependency(
@@ -128,9 +114,11 @@ libprotobuf_src = [
 libprotobuf = build_target(
   'protobuf',
   libprotobuf_src,
-  cpp_args: flags,
   target_type: ttype,
+  version: meson.project_version(),
+  soversion: 31,
   link_with: libprotobuf_lite,
+  install: true,
   include_directories: include_directories('src')
 )
 protobuf_dep = declare_dependency(
@@ -225,13 +213,25 @@ libprotoc_src = [
   'src/google/protobuf/compiler/subprocess.cc',
   'src/google/protobuf/compiler/zip_writer.cc',
 ]
-libprotoc = static_library(
+libprotoc = build_target(
   'protoc',
   libprotoc_src,
-  cpp_args: flags,
-  gnu_symbol_visibility : 'hidden',
+  target_type: ttype,
+  version: meson.project_version(),
+  soversion: 31,
   link_with: [libprotobuf_lite, libprotobuf],
+  include_directories: include_directories('src'),
+  install: true,
+)
+
+protoc_dep = declare_dependency(
+  link_with: [libprotobuf_lite, libprotobuf, libprotoc],
   include_directories: include_directories('src')
 )
+
+pkg = import('pkgconfig')
+pkg.generate(libprotobuf_lite, description: 'Google\'s Data Interchange Format')
+pkg.generate(libprotobuf, description: 'Google\'s Data Interchange Format')
+pkg.generate(libprotoc)
 
 subdir('src')
