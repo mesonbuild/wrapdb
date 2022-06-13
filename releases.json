@@ -1013,6 +1013,14 @@
       "2.0-1"
     ]
   },
+  "libusb": {
+    "dependency_names": [
+      "libusb-1.0"
+    ],
+    "versions": [
+      "1.0.26-1"
+    ]
+  },
   "libuv": {
     "dependency_names": [
       "libuv"
