@@ -228,6 +228,12 @@
       "windows": false
     }
   },
+  "libusb": {
+    "_comment": "non udev backend fails at running in a container.",
+    "debian_packages": [
+      "libudev-dev"
+    ]
+  },
   "lmdb": {
     "_comment": "Tests and programs disabled by default",
     "build_options": [
