@@ -1068,7 +1068,7 @@ sdl2main_dep = declare_dependency(
 )
 
 deps = []
-if platform_is_windows and get_option('with_main')
+if cc.get_id() == 'msvc' and get_option('with_main')
     deps += sdl2main_dep
 endif
 
