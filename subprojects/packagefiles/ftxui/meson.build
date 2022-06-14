@@ -3,7 +3,9 @@ project('ftxui', 'cpp',
     default_options: ['cpp_std=c++17'],
 )
 
-if host_machine.system() == 'windows'
+cpp = meson.get_compiler('cpp')
+
+if cpp.get_argument_syntax() == 'msvc'
   add_project_arguments('/utf-8', '-DUNICODE', language: 'cpp')
 endif
 
