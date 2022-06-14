@@ -150,7 +150,7 @@ pkg.generate(libraries : pcre2_32_lib,
 
 if get_option('test') and not meson.is_cross_build() # wine wrappers are not bat-friendly, this would need better testing
   link_args = []
-  if host_machine.system() == 'windows'
+  if c_compiler.get_argument_syntax() == 'msvc'
     link_args += '/STACK:2500000'
   endif
 
