@@ -297,7 +297,7 @@ endif
 
 libmpdec_c_args = []
 libmpdecpp_cpp_args = []
-if host_machine.system() == 'windows'
+if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('/wd4200', '/wd4204', '/wd4221', '/D_CRT_SECURE_NO_WARNINGS', '/nologo', language: 'c')
   if get_option('default_library') != 'static'
     libmpdec_c_args = ['/DBUILD_LIBMPDEC']
@@ -333,7 +333,7 @@ libmpdec_sources = files(
   'libmpdec/transpose.c',
 )
 
-if host_machine.system() == 'windows' and machine == 'x64'
+if cc.get_argument_syntax() == 'msvc' and machine == 'x64'
   ml = find_program('ml64')
   libmpdec_sources += custom_target(
     'vcdiv64.asm.obj',
