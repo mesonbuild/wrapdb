@@ -1,4 +1,4 @@
-project('pcre2', 'c', version: '10.39', license: 'BSD-3')
+project('pcre2', 'c', version: '10.40', license: 'BSD-3')
 
 c_compiler = meson.get_compiler('c')
 
@@ -160,13 +160,21 @@ if get_option('test') and not meson.is_cross_build() # wine wrappers are not bat
     c_args: config_h_defs + ['-DHAVE_CONFIG_H'],
     link_args: link_args)
 
-  if host_machine.system() == 'windows'
+  if c_compiler.get_argument_syntax() == 'msvc'
     runtest = find_program('RunTest.bat')
+    rungreptest = find_program('RunGrepTest.bat')
   else
     runtest = find_program('RunTest')
+    rungreptest = find_program('RunGrepTest')
   endif
 
   test('RunTest', runtest,
+    should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
+    env : ['srcdir=@0@'.format(meson.current_source_dir())],
+    workdir: meson.current_build_dir())
+
+  test('RunGrepTest', rungreptest,
+    should_fail: host_machine.system() == 'windows',
     env : ['srcdir=@0@'.format(meson.current_source_dir())],
     workdir: meson.current_build_dir())
 endif
