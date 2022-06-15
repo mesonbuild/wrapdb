@@ -1,12 +1,15 @@
 project('ftxui', 'cpp',
-    version: '2.0.0',
+    version: '3.0.0',
     default_options: ['cpp_std=c++17'],
 )
 
 cpp = meson.get_compiler('cpp')
 
-if cpp.get_argument_syntax() == 'msvc'
-  add_project_arguments('/utf-8', '-DUNICODE', language: 'cpp')
+if host_machine.system() == 'windows'
+  if cpp.get_argument_syntax() == 'msvc'
+    add_project_arguments('/utf-8', language: 'cpp')
+  endif
+  add_project_arguments('-DUNICODE', language: 'cpp')
 endif
 
 thread_dep = dependency('threads')
@@ -26,6 +29,7 @@ screen_lib = static_library('screen',
 )
 
 dom_lib = static_library('dom',
+    'src/ftxui/dom/automerge.cpp',
     'src/ftxui/dom/blink.cpp',
     'src/ftxui/dom/bold.cpp',
     'src/ftxui/dom/border.cpp',
@@ -66,11 +70,13 @@ dom_lib = static_library('dom',
 )
 
 component_lib = static_library('component',
+    'src/ftxui/component/animation.cpp',
     'src/ftxui/component/button.cpp',
     'src/ftxui/component/catch_event.cpp',
     'src/ftxui/component/checkbox.cpp',
     'src/ftxui/component/collapsible.cpp',
     'src/ftxui/component/component.cpp',
+    'src/ftxui/component/component_options.cpp',
     'src/ftxui/component/container.cpp',
     'src/ftxui/component/dropdown.cpp',
     'src/ftxui/component/event.cpp',
@@ -78,13 +84,12 @@ component_lib = static_library('component',
     'src/ftxui/component/maybe.cpp',
     'src/ftxui/component/menu.cpp',
     'src/ftxui/component/radiobox.cpp',
-    'src/ftxui/component/radiobox.cpp',
     'src/ftxui/component/renderer.cpp',
     'src/ftxui/component/resizable_split.cpp',
     'src/ftxui/component/screen_interactive.cpp',
     'src/ftxui/component/slider.cpp',
     'src/ftxui/component/terminal_input_parser.cpp',
-    'src/ftxui/component/toggle.cpp',
+    'src/ftxui/component/util.cpp',
     include_directories: ['include', 'src'],
     link_with: [dom_lib, screen_lib],
     dependencies: thread_dep,
