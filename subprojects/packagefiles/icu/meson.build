@@ -1,5 +1,5 @@
 project('icu', 'c', 'cpp',
-  version: '70.1',
+  version: '71.1',
   meson_version: '>=0.55.0',
   default_options: 'cpp_std=c++17')
 
