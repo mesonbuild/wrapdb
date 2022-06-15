@@ -13,12 +13,13 @@ version_patch = varr[2]
 cc = meson.get_compiler('c')
 
 cdata = configuration_data()
+vdata = configuration_data()
 
-cdata.set_quoted('LIBKQUEUE_VERSION_STRING', meson.project_version())
-cdata.set('LIBKQUEUE_VERSION_MAJOR', version_major)
-cdata.set('LIBKQUEUE_VERSION_MINOR', version_minor)
-cdata.set('LIBKQUEUE_VERSION_PATCH', version_patch)
-cdata.set_quoted('LIBKQUEUE_VERSION_DATE', '')
+vdata.set('PROJECT_VERSION', meson.project_version())
+vdata.set('PROJECT_VERSION_MAJOR', version_major)
+vdata.set('PROJECT_VERSION_MINOR', version_minor)
+vdata.set('PROJECT_VERSION_PATCH', version_patch)
+vdata.set('PROJECT_VERSION_DATE' , '')
 
 check_headers = [
     'sys/signalfd.h',
@@ -27,28 +28,14 @@ check_headers = [
     'sys/types.h',
 ]
 
-foreach entry : check_headers
-    header = entry
-    if cc.has_header(header)
-        cdata.set('HAVE_@0@'.format(header.underscorify().to_upper()), 1)
-    endif
+foreach header : check_headers
+    cdata.set10('HAVE_@0@'.format(header.underscorify().to_upper()), cc.has_header(header))
 endforeach
 
-check_symbols = [
-    ['HAVE_EPOLLRDHUP',     'EPOLLRDHUP',       'sys/epoll.h'],
-    ['HAVE_NOTE_TRUNCATE',  'NOTE_TRUNCATE',    'sys/event.h'],
-    ['HAVE_DECL_PPOLL',     'ppoll',            'poll.h'],
-    ['HAVE_SYS_PIDFD_OPEN', 'pidfd_open',   'sys/syscall.h'],
-]
-
-foreach entry : check_symbols
-    define = entry[0]
-    symbol = entry[1]
-    header = entry[2]
-    if cc.has_header_symbol(header, symbol)
-        cdata.set(define, 1)
-    endif
-endforeach
+cdata.set10('HAVE_NOTE_TRUNCATE', cc.has_header_symbol('sys/event.h', 'NOTE_TRUNCATE'))
+cdata.set10('HAVE_EPOLLRDHUP', cc.has_header_symbol('sys/epoll.h', 'HAVE_EPOLLRDHUP'))
+cdata.set10('HAVE_DECL_PPOLL', cc.has_function('ppoll'))
+cdata.set10('HAVE_SYS_PIDFD_OPEN', cc.has_function('pidfd_open'))
 
 kqueue_sources = [
     'src/common/alloc.h',
@@ -138,15 +125,17 @@ else
 endif
 
 configure_file(
-    input : 'config.h.meson',
+    input : 'config.h.in',
     output : 'config.h',
+    format : 'cmake',
     configuration : cdata
 )
 
 configure_file(
-    input : 'version.h.meson',
+    input : 'version.h.in',
     output : 'version.h',
-    configuration : cdata
+    format : 'cmake@',
+    configuration : vdata
 )
 
 libkqueue = library('kqueue',
