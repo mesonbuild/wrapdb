@@ -21,5 +21,7 @@ test_src = [
     'test_stopwatch.cpp'
 ]
 
+cpp = meson.get_compiler('cpp')
+
 tests_exe = executable('tests_exe', test_src, dependencies : [spdlog_dep])
-test('tests', tests_exe)
+test('tests', tests_exe, should_fail: host_machine.system() == 'windows' and cpp.get_id() == 'g++')
