@@ -1,10 +1,6 @@
 project('sdl2 mixer', 'c')
 
-if host_machine.system() == 'windows'
-  sdl2_dep = dependency('sdl2', default_options: ['with_main=true'])
-else
-  sdl2_dep = dependency('sdl2', default_options: ['with_main=false'])
-endif
+sdl2_dep = dependency('sdl2')
 ogg_dep = dependency('ogg')
 vorbis_dep = dependency('vorbis')
 vorbisfile_dep = dependency('vorbisfile')
