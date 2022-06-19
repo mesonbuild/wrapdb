@@ -41,6 +41,11 @@ libuv_cargs = []
 libuv_libs = []
 libuv_test_src = []
 libuv_test_libs = []
+libuv_headers =  [
+  'include/uv/errno.h',
+  'include/uv/threadpool.h',
+  'include/uv/version.h',
+]
 
 # option-depending config
 if libuv_qemu
@@ -136,6 +141,10 @@ if win32
     'src/win/snprintf.c',
     'test/runner-win.c',
   ]
+  libuv_headers += [
+    'include/uv/win.h',
+    'include/uv/tree.h',
+  ]
 else
   libuv_cargs += [
     '-D_FILE_OFFSET_BITS=64',
@@ -164,6 +173,9 @@ else
   libuv_test_src += [
     'test/runner-unix.c',
   ]
+  libuv_headers += [
+    'include/uv/unix.h',
+  ]
 endif
 
 if aix
@@ -179,6 +191,9 @@ if aix
   libuv_src += [
     'src/unix/aix.c',
     'src/unix/aix-common.c',
+  ]
+  libuv_headers += [
+    'include/uv/aix.h',
   ]
 endif
 
@@ -212,6 +227,9 @@ if dragonfly or freebsd or netbsd or openbsd
     'src/unix/posix-hrtime.c',
     'src/unix/bsd-proctitle.c',
   ]
+  libuv_headers += [
+    'include/uv/bsd.h',
+  ]
 endif
 
 if apple or dragonfly or freebsd or netbsd or openbsd
@@ -239,6 +257,9 @@ if apple
     'src/unix/darwin.c',
     'src/unix/fsevents.c',
   ]
+  libuv_headers += [
+    'include/uv/darwin.h',
+  ]
 endif
 
 if linux
@@ -255,6 +276,9 @@ if linux
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
     'src/unix/epoll.c',
+  ]
+  libuv_headers += [
+    'include/uv/linux.h',
   ]
 endif
 
@@ -285,6 +309,9 @@ if sunos
     'src/unix/no-proctitle.c',
     'src/unix/sunos.c',
   ]
+  libuv_headers +=[
+    'include/uv/sunos.h',
+  ]
 endif
 
 if haiku
@@ -297,6 +324,9 @@ if haiku
     'src/unix/no-proctitle.c',
     'src/unix/posix-hrtime.c',
     'src/unix/posix-poll.c',
+  ]
+  libuv_headers += [
+    'include/uv/posix.h',
   ]
 endif
 
@@ -353,12 +383,23 @@ libuv = library('uv',
   c_args: libuv_cargs,
   dependencies: libuv_deps,
   include_directories: libuv_inc,
+  version: '1.0.0',
+  install: true,
 )
 libuv_dep = declare_dependency(
   dependencies: libuv_deps,
   link_with: libuv,
   include_directories: libuv_public_inc,
 )
+import('pkgconfig').generate(
+  libuv,
+  name: 'libuv',
+  description: 'multi-platform support library with a focus on asynchronous I/O.',
+  url: 'http://libuv.org/',
+)
+
+install_headers('include/uv.h')
+install_headers(libuv_headers, subdir: 'uv')
 
 # benchmark & test config
 if libuv_build_bench
@@ -590,6 +631,3 @@ if libuv_build_tests
      is_parallel: false,
   )
 endif
-
-# TODO: install
-
