@@ -1,4 +1,4 @@
-project('rdkafka', 'c', 'cpp', version: '1.8.2')
+project('rdkafka', 'c', 'cpp', version: '1.9.0', default_options: ['cpp_std=c++17', 'c_std=c11'])
 cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
@@ -72,6 +72,7 @@ srcc = [
   'src/tinycthread.c',
   'src/tinycthread_extra.c',
   'src/rdxxhash.c',
+  'src/cJSON.c',
 ]
 srccpp = [
   'src-cpp/ConfImpl.cpp',
@@ -90,41 +91,54 @@ srccpp = [
   'src-cpp/rdkafkacpp_int.h',
 ]
 
-regex = cc.compiles('''
-  #include <stddef.h>
-  #include <regex.h>
-  void foo (void) {
-    regcomp(NULL, NULL, 0);
-    regexec(NULL, NULL, 0, NULL, 0);
-    regerror(0, NULL, NULL, 0);
-    regfree(NULL);
-  }
-''', name: 'have regex')
-
-zlib = dependency('zlib', required: get_option('WITH_ZLIB'), static: get_option('default_library') == 'static', fallback: ['zlib', 'zlib_dep'])
-zstd = dependency('libzstd', required: get_option('WITH_ZSTD'), static: get_option('default_library') == 'static', fallback: ['zstd', 'libzstd_dep'])
-lz4 = dependency('liblz4', required: get_option('ENABLE_LZ4_EXT'), static: get_option('default_library') == 'static', fallback: ['lz4', 'liblz4_dep'])
-sasl = dependency('libsasl2', required: get_option('WITH_SASL'), static: get_option('default_library') == 'static') # TODO: make SASL usable without libsasl2 on windows 
-ssl = dependency('libssl', required: get_option('WITH_SSL'), static: get_option('default_library') == 'static')
-crypto = dependency('libcrypto', required: get_option('WITH_SSL'), static: get_option('default_library') == 'static')
-dl = cc.find_library('dl', required : get_option('WITH_LIBDL'))
+cjson = dependency('libcjson')
+curl = dependency('libcurl', required: get_option('WITH_CURL'))
+zlib = dependency('zlib', required: get_option('WITH_ZLIB'))
+zstd = dependency('libzstd', required: get_option('WITH_ZSTD'))
+lz4 = dependency('liblz4', required: get_option('WITH_LZ4_EXT'))
+sasl = dependency('libsasl2', required: get_option('WITH_SASL')) # TODO: make SASL usable without libsasl2 on windows 
+ssl = dependency('libssl', required: get_option('WITH_SSL'))
+crypto = dependency('libcrypto', required: get_option('WITH_SSL'))
+dl = dependency('dl', required : get_option('WITH_LIBDL'))
 threads = dependency('threads')
+math = cc.find_library('m', required : false)
 
 conf = configuration_data()
 
 conf.set10('WITHOUT_OPTIMIZATION', get_option('WITHOUT_OPTIMIZATION'))
 conf.set10('ENABLE_DEVEL', get_option('ENABLE_DEVEL'))
 conf.set10('ENABLE_REFCNT_DEBUG', get_option('ENABLE_REFCNT_DEBUG'))
-conf.set10('ENABLE_SHAREDPTR_DEBUG', get_option('ENABLE_SHAREDPTR_DEBUG'))
-conf.set10('WITH_PLUGINS', dl.found())
-conf.set10('WITH_LIBDL', dl.found())
+conf.set10('WITH_PKGCONFIG', find_program('pkg-config').found())
+conf.set10('WITH_HDRHISTOGRAM', get_option('ENABLE_HDRHISTOGRAM'))
 conf.set10('WITH_ZLIB', zlib.found())
+conf.set10('WITH_CURL', curl.found())
+conf.set10('WITH_OAUTHBEARER_OIDC', false)
 conf.set10('WITH_ZSTD', zstd.found())
+conf.set10('WITH_LIBDL', dl.found())
+conf.set10('WITH_PLUGINS', dl.found())
 conf.set10('WITH_SSL', ssl.found() and crypto.found())
 conf.set10('WITH_SASL', sasl.found())
-conf.set10('ENABLE_LZ4_EXT', lz4.found())
-conf.set10('HAVE_REGEX', regex)
+conf.set10('WITH_SASL_CYRUS', sasl.found())
+conf.set10('WITH_LZ4_EXT', lz4.found())
+conf.set10('HAVE_REGEX', cc.has_function('regcomp'))
+conf.set10('HAVE_STRNDUP', cc.has_function('strndup'))
+conf.set10('HAVE_RAND_R', cc.has_function('rand_r'))
+conf.set10('WITH_C11THREADS', cc.has_function('thrd_create'))
 conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', 'so')
+
+add_project_arguments('-DWITHOUT_WIN32_CONFIG', language: 'c')
+if host_machine.system() == 'windows'
+  add_project_arguments('-DENABLE_DEVEL=@0@'.format(conf.get('ENABLE_DEVEL')), language: 'c')
+  add_project_arguments('-DWITH_SSL=@0@'.format(conf.get('WITH_SSL')), language: 'c')
+  if get_option('buildtype') != 'static'
+    add_project_arguments('-DLIBRDKAFKACPP_EXPORTS', language: 'cpp')
+  endif
+endif
+
+# hack for upstream bug
+if cpp.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_Thread_local= ', language: 'c')
+endif
 
 built_with = 'meson ' + cc.get_id() + ' ' + cpp.get_id()
 if ssl.found() and crypto.found()
@@ -135,14 +149,11 @@ if dl.found()
   srcc += ['src/rddl.c', 'src/rdkafka_plugin.c']
   built_with += ' LIBDL PLUGINS'
 endif
-if sasl.found()
-  if host_machine.system() == 'windows'
-    srcc += 'src/rdkafka_sasl_win32.c'
-  else
-    srcc += 'src/rdkafka_sasl_cyrus.c'
-    conf.set10('WITH_SASL_CYRUS', true)
-    built_with += ' SASL_CYRUS'
-  endif
+if host_machine.system() == 'windows'
+  srcc += 'src/rdkafka_sasl_win32.c'
+elif sasl.found()
+  srcc += 'src/rdkafka_sasl_cyrus.c'
+  built_with += ' SASL_CYRUS'
   if ssl.found() and crypto.found()
     srcc += [ 'src/rdkafka_sasl_scram.c', 'src/rdkafka_sasl_oauthbearer.c']
     conf.set10('WITH_SASL_SCRAM', true)
@@ -159,12 +170,18 @@ if zstd.found()
   srcc += 'src/rdkafka_zstd.c'
   built_with += ' ZSTD'
 endif
-if lz4.found()
+if not lz4.found()
   srcc += ['src/lz4.c', 'src/lz4frame.c', 'src/lz4hc.c']
   built_with += ' LZ4'
 endif
-if not regex
+if curl.found()
+  srcc += 'src/rdhttp.c'
+endif
+if conf.get('HAVE_REGEX') == 0
   srcc += 'src/regexp.c'
+endif
+if get_option('ENABLE_HDRHISTOGRAM')
+  srcc += 'src/rdhdrhistogram.c'
 endif
 
 conf.set('BUILT_WITH', built_with)
@@ -174,7 +191,13 @@ configure_file(configuration: conf,
   format: 'cmake',
 )
 
-rdkafka_deps = [threads, dl, zlib, zstd, sasl, ssl, crypto, lz4]
+rdkafka_deps = [math, threads, dl, cjson, zlib, zstd, sasl, ssl, crypto, lz4, curl]
+if host_machine.system() == 'windows'
+  rdkafka_deps += [cpp.find_library('ws2_32'), cpp.find_library('iphlpapi'), cpp.find_library('secur32')]
+  if ssl.found()
+    rdkafka_deps += cpp.find_library('crypt32')
+  endif
+endif
 rdkafka = library('rdkafka', srcc, install: true, dependencies: rdkafka_deps)
 rdkafka_dep = declare_dependency(
   link_with: rdkafka,
