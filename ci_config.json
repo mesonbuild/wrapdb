@@ -266,24 +266,6 @@
       "qtbase5-dev"
     ]
   },
-  "rdkafka": {
-    "_comment": ["- Windows needs lz4. The current wrap is broken."],
-    "build_on": {
-      "windows": false
-    },
-    "debian_packages": [
-      "liblz4-dev"
-    ],
-    "brew_packages": [
-      "openssl@1.1",
-      "lz4"
-    ],
-    "build_options": [
-      "pkg_config_path=/usr/local/opt/openssl@1.1/lib/pkgconfig",
-      "rdkafka:WITH_SASL=disabled",
-      "rdkafka:WITH_ZSTD=disabled"
-    ]
-  },
   "re2": {
     "build_options": [
       "cpp_std=c++14"
