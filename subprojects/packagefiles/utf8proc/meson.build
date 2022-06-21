@@ -1,5 +1,5 @@
 project('utf8proc', 'c',
-    version : '2.6.0',
+    version : '3.2.1',
     license: 'MIT',
     default_options: ['c_std=c99']
 )
@@ -11,10 +11,6 @@ if get_option('default_library') == 'static'
 endif
 
 utf8proc_lib = library('utf8proc',
-    sources: [
-        'utf8proc.c',
-        'utf8proc.h'
-    ],
     include_directories: include_directories('.'),
     c_args: ['-DUTF8PROC_EXPORTS']
 )
