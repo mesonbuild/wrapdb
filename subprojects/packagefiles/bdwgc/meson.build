@@ -1,31 +1,33 @@
-project('bdwgc', 'c', version: '7.6.8',
+project('bdwgc', 'c', version: '8.2.0',
         meson_version: '>=0.47.0',
         license: 'custom')
 
+add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 i = include_directories('include')
 
 gc_src = files(
-    'alloc.c',
-    'reclaim.c',
     'allchblk.c',
-    'misc.c',
-    'mach_dep.c' ,
-    'os_dep.c',
-    'mark_rts.c',
-    'headers.c' ,
-    'mark.c' ,
-    'obj_map.c' ,
-    'blacklst.c' ,
-    'finalize.c',
-    'new_hblk.c' ,
-    'dbg_mlc.c' ,
-    'malloc.c' ,
-    'stubborn.c',
+    'alloc.c',
+    'blacklst.c',
+    'dbg_mlc.c',
     'dyn_load.c',
-    'typd_mlc.c' ,
-    'ptr_chck.c' ,
-    'mallocx.c' 
+    'finalize.c',
+    'gc_dlopen.c',
+    'headers.c',
+    'mach_dep.c',
+    'malloc.c',
+    'mallocx.c',
+    'mark.c',
+    'mark_rts.c',
+    'misc.c',
+    'new_hblk.c',
+    'obj_map.c',
+    'os_dep.c',
+    'ptr_chck.c',
+    'reclaim.c',
+    'specific.c',
+    'typd_mlc.c',
 )
 gc_deps = []
 defs = []
