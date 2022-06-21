@@ -4,3 +4,6 @@ source_url = https://github.com/cpputest/cpputest/archive/v4.0.tar.gz
 source_filename = cpputest-4.0.tar.gz
 source_hash = 0b66d20661f232d2a6af124c4455c8ccc9a4ce72d29f6ad4877eb385faaf5108
 patch_directory = cpputest
+
+[provide]
+cpputest = cpputest_dep
