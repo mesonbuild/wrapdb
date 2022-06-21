@@ -1,4 +1,4 @@
-project('miniz', 'c', license : 'mit', version : '2.1.0')
+project('miniz', 'c', license : 'mit', version : '2.2.0')
 
 miniz_inc = include_directories('.')
 
