@@ -1780,7 +1780,11 @@
     ]
   },
   "utfcpp": {
+    "dependency_names": [
+      "utfcpp"
+    ],
     "versions": [
+      "3.2.1-1",
       "2.3.5-1"
     ]
   },

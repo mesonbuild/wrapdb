@@ -1,6 +1,9 @@
 [wrap-file]
-directory = utfcpp-2.3.5
-source_url = https://github.com/nemtrif/utfcpp/archive/v2.3.5.tar.gz
-source_filename = utfcpp-2.3.5.tar.gz
-source_hash = f3ffe0ef6c02f48ebafe42369cbd741e844143baad27c13baad1cd14b863983d
+directory = utfcpp-3.2.1
+source_url = https://github.com/nemtrif/utfcpp/archive/v3.2.1.tar.gz
+source_filename = utfcpp-3.2.1.tar.gz
+source_hash = 8d6aa7d77ad0abb35bb6139cb9a33597ac4c5b33da6a004ae42429b8598c9605
 patch_directory = utfcpp
+
+[provide]
+utfcpp = utfcpp_dep
