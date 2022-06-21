@@ -1,7 +1,7 @@
 project(
     'rxcpp',
     'cpp',
-    version : '4.1.0',
+    version : '4.1.1',
     license : 'Apache-2.0'
 )
 

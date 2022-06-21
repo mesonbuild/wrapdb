@@ -1495,7 +1495,11 @@
     ]
   },
   "rxcpp": {
+    "dependency_names": [
+      "rxcpp"
+    ],
     "versions": [
+      "4.1.1-1",
       "4.1.0-1"
     ]
   },
