@@ -1426,7 +1426,11 @@
     ]
   },
   "rang": {
+    "dependency_names": [
+      "rang"
+    ],
     "versions": [
+      "3.2-1",
       "2.0-1"
     ]
   },

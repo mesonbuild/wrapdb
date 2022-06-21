@@ -1,7 +1,9 @@
 [wrap-file]
-directory = rang-2.0
-source_url = https://github.com/agauniyal/rang/archive/v2.0.tar.gz
-source_filename = rang-2.0.tar.gz
-source_hash = 09f4d8c939b8658d7097dd709682695ed51054665c74d3fb033f9444508c0677
+directory = rang-3.2
+source_url = https://github.com/agauniyal/rang/archive/v3.2.tar.gz
+source_filename = rang-3.2.tar.gz
+source_hash = 8b42d9c33a6529a6c283a4f4c73c26326561ccc67fbb3e6a3225edd688b39973
 patch_directory = rang
 
+[provide]
+rang = rang_dep
