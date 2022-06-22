@@ -1,8 +1,8 @@
 [wrap-file]
-directory = RE-flex-3.2.3
-source_url = https://github.com/Genivia/RE-flex/archive/v3.2.3.tar.gz
-source_filename = v3.2.3.tar.gz
-source_hash = 6aa5c054026dd031615638103e89c303f94af3d69f2250de25c4b81c34bafa07
+directory = RE-flex-3.2.7
+source_url = https://github.com/Genivia/RE-flex/archive/v3.2.7.tar.gz
+source_filename = v3.2.7.tar.gz
+source_hash = e1184d98ad7ae7d8b36581058218f8c42592393506f49dcc2de0c6e09946154a
 patch_directory = reflex
 
 [provide]

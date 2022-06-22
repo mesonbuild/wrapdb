@@ -1,7 +1,7 @@
 project('reflex', 'cpp',
-        version : '3.2.3',
+        version : '3.2.7',
         license : 'BSD-3-Clause',
-        meson_version: '>=0.43.0')
+        meson_version: '>=0.49.0')
 
 includes = include_directories('include')
 
@@ -38,7 +38,7 @@ libreflexmin_sources = files(
 )
 
 #no dllexport being used here. Must use static library.
-if cpp.get_id() != 'msvc'
+if cpp.get_argument_syntax() != 'msvc'
   libreflexmin = library(
     'reflexmin',
     libreflexmin_sources,

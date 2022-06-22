@@ -9,6 +9,4 @@ reflex = executable(
   include_directories : includes,
   install : true)
 
-if meson.version().version_compare('>=0.46.0')
-  meson.override_find_program('reflex', reflex)
-endif
+meson.override_find_program('reflex', reflex)
