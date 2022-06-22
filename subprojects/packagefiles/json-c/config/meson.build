@@ -82,7 +82,7 @@ foreach function : check_function
 endforeach
 conf.set10('HAVE_DOPRNT', cc.has_function('_doprnt'))
 
-if cc.get_id() == 'msvc'
+if cc.get_argument_syntax() == 'msvc'
   if cc.has_function('strtoll')
     conf.set10('HAVE_STRTOLL', true)
     conf.set('json_c_strtoll', 'strtoll')
@@ -93,7 +93,7 @@ if cc.get_id() == 'msvc'
 endif
 
 check_types = ['int', 'int64_t', 'long', 'long long', 'size_t']
-if cc.get_id() == 'msvc'
+if cc.get_argument_syntax() == 'msvc'
   size = cc.sizeof('SSIZE_T', prefix: '#include <BaseTsd.h>')
   conf.set('SIZEOF_SSIZE_T', size)
 else
@@ -114,7 +114,7 @@ endif
 
 if conf.has('HAVE___THREAD')
   conf.set('SPEC___THREAD', '__thread')
-elif cc.get_id() == 'msvc'
+elif cc.get_argument_syntax() == 'msvc'
   conf.set('SPEC___THREAD', '__declspec(thread)')
 endif
 

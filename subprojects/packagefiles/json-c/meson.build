@@ -1,7 +1,7 @@
 project('json-c', 'c',
-  version: '0.15',
+  version: '0.16',
   license: 'MIT',
-  meson_version: '>=0.46',
+  meson_version: '>=0.49',
   default_options: ['c_std=gnu99'],
 )
 
@@ -27,8 +27,19 @@ json_config_h = configure_file(
   output: 'json_config.h',
 )
 
+jconf = configuration_data()
+jconf.set('JSON_H_JSON_POINTER', '#include "json_pointer.h"')
+
+json_h = configure_file(
+  input: 'json.h.cmakein',
+  output: 'json.h',
+  format: 'cmake@',
+  configuration: jconf,
+)
+
 public_headers = [
   json_config_h,
+  json_h,
   'arraylist.h',
   'debug.h',
   'json_c_version.h',
@@ -57,7 +68,7 @@ sources = [
   'strerror_override.c',
 ]
 
-libjson_c = library(meson.project_name(), json_config_h, config_h, sources,
+libjson_c = library(meson.project_name(), json_config_h, json_h, config_h, sources,
   include_directories: inc,
   install: true,
 )
