@@ -1,8 +1,8 @@
 [wrap-file]
-directory = json-c-0.15
-source_url = https://s3.amazonaws.com/json-c_releases/releases/json-c-0.15.tar.gz
-source_filename = json-c-0.15.tar.gz
-source_hash = b8d80a1ddb718b3ba7492916237bbf86609e9709fb007e7f7d4322f02341a4c6
+directory = json-c-0.16
+source_url = https://s3.amazonaws.com/json-c_releases/releases/json-c-0.16.tar.gz
+source_filename = json-c-0.16.tar.gz
+source_hash = 8e45ac8f96ec7791eaf3bb7ee50e9c2100bbbc87b8d0f1d030c5ba8a0288d96b
 patch_directory = json-c
 
 [provide]
