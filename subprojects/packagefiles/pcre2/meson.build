@@ -130,17 +130,17 @@ install_headers([pcre2_h, 'src/pcre2posix.h'])
 
 pkg = import('pkgconfig')
 
-pkg.generate(libraries : pcre2_8_lib,
+pkg.generate(pcre2_8_lib,
              name : 'libpcre2-8',
              description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 8 bit character support',
              version: meson.project_version())
 
-pkg.generate(libraries : pcre2_16_lib,
+pkg.generate(pcre2_16_lib,
              name : 'libpcre2-16',
              description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 16 bit character support',
              version: meson.project_version())
 
-pkg.generate(libraries : pcre2_32_lib,
+pkg.generate(pcre2_32_lib,
              name : 'libpcre2-32',
              description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support',
              version: meson.project_version())
