@@ -1,0 +1,6 @@
+EXPORTS
+;
+lbfgs
+lbfgs_parameter_init
+lbfgs_malloc
+lbfgs_free
