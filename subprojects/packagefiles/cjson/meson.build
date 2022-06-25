@@ -1,6 +1,6 @@
 project('cjson', 'c',
         version: '1.7.15',
-        meson_version: '>=0.47.0',
+        meson_version: '>=0.49.0',
         license: ['MIT'])
 
 cc = meson.get_compiler('c')
@@ -10,6 +10,10 @@ if cc.get_id() == 'msvc'
   else
     add_project_arguments('-DCJSON_IMPORT_SYMBOLS', language : 'c')
   endif
+endif
+
+if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
+  add_project_arguments('-DUNITY_WEAK_ATTRIBUTE=__attribute__((weak))', language: 'c')
 endif
 
 headers = files('cJSON.h', 'cJSON_Utils.h')
