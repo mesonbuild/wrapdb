@@ -32,6 +32,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'liblbfgs': [
+        'liblbfgs.def'
+    ],
     'mpdecimal': [
         'gettests.py',
     ],
