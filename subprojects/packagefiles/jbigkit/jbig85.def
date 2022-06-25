@@ -1,0 +1,13 @@
+EXPORTS
+;
+jbg85_enc_init
+jbg85_enc_options
+jbg85_enc_lineout
+jbg85_enc_newlen
+jbg85_enc_abort
+;
+jbg85_dec_init
+jbg85_dec_in
+jbg85_dec_end
+;
+jbg85_strerror
