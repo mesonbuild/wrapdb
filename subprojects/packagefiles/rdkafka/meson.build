@@ -131,6 +131,7 @@ if host_machine.system() == 'windows'
   add_project_arguments('-DENABLE_DEVEL=@0@'.format(conf.get('ENABLE_DEVEL')), language: 'c')
   add_project_arguments('-DWITH_SSL=@0@'.format(conf.get('WITH_SSL')), language: 'c')
   if get_option('buildtype') != 'static'
+    add_project_arguments('-DLIBRDKAFKA_EXPORTS', language: 'c')
     add_project_arguments('-DLIBRDKAFKACPP_EXPORTS', language: 'cpp')
   endif
 endif
