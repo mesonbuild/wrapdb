@@ -13,7 +13,7 @@
   ],
   "broken_windows": [
     "arduinocore-avr",
-    "google-woff2", "jbigkit",
+    "google-woff2",
     "libgpiod",
     "mocklibc", "openh264",
     "protobuf-c", "termbox","unit-system",

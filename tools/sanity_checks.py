@@ -29,6 +29,10 @@ from utils import Version, is_ci, is_debianlike, is_linux, is_macos
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
+    'jbigkit': [
+        'jbig.def',
+        'jbig85.def'
+    ],
     'lame': [
         'lame.h',
     ],

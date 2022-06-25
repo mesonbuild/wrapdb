@@ -702,6 +702,7 @@
   },
   "jbigkit": {
     "versions": [
+      "2.1-2",
       "2.1-1"
     ],
     "dependency_names": [
