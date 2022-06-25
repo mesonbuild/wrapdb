@@ -1,6 +1,6 @@
 project('libebml', 'cpp',
   version : '1.4.2',
-  default_options : ['warning_level=1', 'cpp_std=c++14']
+  default_options : [ 'warning_level=1' ],
 )
 
 #hacks to fix compilation with GCC11. They go away with the next version
@@ -8,7 +8,15 @@ project('libebml', 'cpp',
 #run_command('sed', 's/cassert/limits/g', '-i', 'src/EbmlUnicodeString.cpp', check : true)
 
 cpp = meson.get_compiler('cpp')
-if cpp.get_id() == 'msvc'
+if host_machine.system() == 'windows' and cpp.has_header('winapifamily.h')
+  add_project_arguments('-DHAVE_WINAPIFAMILY_H', language : 'cpp')
+endif
+
+if get_option('default_library') == 'static'
+  add_project_arguments('-DEBML_STATIC_DEFINE', language : 'cpp')
+endif
+
+if host_machine.system() == 'windows'
   ebml_conf = configure_file(output: 'ebml_export.h', configuration: {'EBML_DLL_API': '__declspec(dllexport)'})
 else
   ebml_conf = configure_file(output: 'ebml_export.h', configuration: {'EBML_DLL_API': ''})
@@ -48,7 +56,12 @@ install_headers(
   subdir : 'ebml',
 )
 
-libebml = static_library('libebml',
+install_headers(
+  'ebml/c/libebml_t.h',
+  subdir: 'ebml/c/',
+)
+
+cpp_files = [
   'src/Debug.cpp',
   'src/EbmlBinary.cpp',
   'src/EbmlContexts.cpp',
@@ -72,12 +85,21 @@ libebml = static_library('libebml',
   'src/MemReadIOCallback.cpp',
   'src/SafeReadIOCallback.cpp',
   'src/StdIOCallback.cpp',
+]
+
+if get_option('win32_io') and host_machine.system() == 'windows'
+  cpp_files += 'src/platform/win32/WinIOCallback.cpp'
+endif
+
+libebml = library('ebml',
+  cpp_files,
+  version : '5.0.0',
   include_directories : libebml_incdir,
   install : true,
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libebml)
+pkg.generate(libebml, name: 'libebml')
 
 libebml_dep = declare_dependency(
   include_directories : libebml_incdir,
