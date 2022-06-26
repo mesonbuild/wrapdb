@@ -38,6 +38,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'mpdecimal': [
         'gettests.py',
     ],
+    'netstring-c': [
+        'netstring-c.def',
+    ],
     'openssl': [
         'bn_conf.h',
         'dso_conf.h',
