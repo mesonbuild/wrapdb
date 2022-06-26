@@ -15,6 +15,7 @@ libm_dep = cc.find_library(
 
 netstring_c_lib = library(
   'netstring-c',
+  vs_module_defs: 'netstring-c.def',
   dependencies: libm_dep,
   sources: 'netstring.c',
 )

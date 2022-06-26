@@ -15,7 +15,7 @@
     "arduinocore-avr",
     "google-woff2", "jbigkit",
     "libgpiod",
-    "mocklibc", "netstring-c", "openh264",
+    "mocklibc", "openh264",
     "protobuf-c", "termbox","unit-system",
     "zstd"
   ],
