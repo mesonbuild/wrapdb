@@ -8,12 +8,12 @@ add_project_arguments(cc.get_supported_arguments(c_args), language: 'c')
 threads_dep = dependency('threads', required: true)
 incdir = include_directories('.')
 
-lmdb = build_target(
+lmdb = library(
     'lmdb',
     src,
+    vs_module_defs: '../../lmdb.def',
     dependencies: threads_dep,
     install: true,
-    target_type: host_machine.system() == 'windows' ? 'static_library' : 'library',
 )
 
 install_headers('lmdb.h')
