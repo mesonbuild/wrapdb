@@ -36,6 +36,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'lmdb': [
+        'lmdb.def',
+    ],
     'liblbfgs': [
         'liblbfgs.def'
     ],
