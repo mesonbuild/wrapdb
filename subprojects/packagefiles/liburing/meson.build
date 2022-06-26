@@ -1,5 +1,5 @@
 project('liburing', ['c','cpp'],
-        version: '2.1',
+        version: '2.2',
         license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
         meson_version: '>=0.57.0',
         default_options: ['default_library=both',
@@ -11,9 +11,9 @@ project('liburing', ['c','cpp'],
 add_project_arguments('-D_GNU_SOURCE',
                       '-D__SANE_USERSPACE_TYPES__',
                       '-include', meson.current_build_dir() + '/config-host.h',
+                      '-fno-stack-protector',
                       '-Wno-unused-parameter',
                       '-Wno-sign-compare',
-                      '-fomit-frame-pointer',
                       language: ['c', 'cpp'])
 
 thread_dep = dependency('threads')
@@ -31,9 +31,9 @@ has__kernel_timespec = cc.has_members('struct __kernel_timespec',
                                       prefix: '#include <linux/time.h>')
 
 code = '''#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <linux/openat2.h>
 int main(int argc, char **argv)
 {
   struct open_how how;
@@ -60,6 +60,20 @@ int main(int argc, char **argv)
 '''
 has_statx = cc.compiles(code, name: 'statx')
 
+code= '''#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <linux/stat.h>
+main(int argc, char **argv)
+{
+  struct statx x;
+
+  return memset(&x, 0, sizeof(x)) != NULL;
+}
+'''
+glibc_statx = cc.compiles(code, name: 'glibc_statx')
+
 cpp = meson.get_compiler('cpp')
 
 code = '''#include <iostream>
@@ -74,13 +88,19 @@ has_cxx = cpp.compiles(code, name: 'C++')
 has_ucontext = (cc.has_type('ucontext_t', prefix: '#include <ucontext.h>')
   and cc.has_function('makecontext', prefix: '#include <ucontext.h>'))
 
+has_memfd_create = cc.has_function('memfd_create',
+                                   args: ['-D_GNU_SOURCE'],
+                                   prefix: '#include <sys/mman.h>')
+
 conf_data = configuration_data()
 conf_data.set('CONFIG_HAVE_KERNEL_RWF_T', has__kernel_rwf_t)
 conf_data.set('CONFIG_HAVE_KERNEL_TIMESPEC', has__kernel_timespec)
 conf_data.set('CONFIG_HAVE_OPEN_HOW', has_open_how)
 conf_data.set('CONFIG_HAVE_STATX', has_statx)
+conf_data.set('CONFIG_HAVE_GLIBC_STATX', glibc_statx)
 conf_data.set('CONFIG_HAVE_CXX', has_cxx)
 conf_data.set('CONFIG_HAVE_UCONTEXT', has_ucontext)
+conf_data.set('CONFIG_HAVE_MEMFD_CREATE', has_memfd_create)
 configure_file(output: 'config-host.h',
                configuration: conf_data)
 
