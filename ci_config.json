@@ -16,7 +16,6 @@
     "libgpiod",
     "mocklibc",
     "termbox",
-    "unit-system",
     "zstd",
     "ludocode-mpack",
     "m4",
@@ -30,7 +29,6 @@
     "mocklibc",
     "rtaudio",
     "tinyxml2",
-    "unit-system",
     "zstd"
   ],
   "cexception": {

@@ -1,9 +1,8 @@
 [wrap-file]
-directory = unit-system-0.5.2
-
-source_url = https://github.com/noah1510/unit-system/archive/refs/tags/v0.5.2.tar.gz
-source_filename = unit-system-0.5.2.tar.gz
-source_hash = 77758587bd1da89994cbc38c3c5f5513de77ff1c7df7334e7ab88db9854ee316
+directory = unit-system-0.6.1
+source_url = https://github.com/noah1510/unit-system/archive/refs/tags/v0.6.1.tar.gz
+source_filename = unit-system-0.6.1.tar.gz
+source_hash = d863c02bc2c99daf710e857ff21fc0ed915dab37af26f9b91a04d32a21e2768d
 
 [provide]
-dependency_names = unit-system-full, unit-system-generic, unit-system-base, unit-system-common
+unit-system = unit_system_dep
