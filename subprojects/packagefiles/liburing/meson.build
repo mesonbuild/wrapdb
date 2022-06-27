@@ -1,7 +1,7 @@
 project('liburing', ['c','cpp'],
         version: '2.1',
         license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
-        meson_version: '>=0.53.0',
+        meson_version: '>=0.57.0',
         default_options: ['default_library=both',
                           'buildtype=debugoptimized',
                           'c_std=c11',

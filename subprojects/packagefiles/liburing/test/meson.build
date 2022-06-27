@@ -118,6 +118,7 @@ endif
 
 runtests_sh = find_program('runtests.sh')
 runtests_loop_sh = find_program('runtests-loop.sh')
+runtests_quiet_sh = find_program('runtests-quiet.sh')
 
 xcflags = []
 if has_stringop_overflow
@@ -143,15 +144,27 @@ foreach t : all_tests
     test(t[0],
          runtests_sh,
          args : t[0],
+         is_parallel: false,
          workdir : meson.current_build_dir(),
          suite : 'once')
 
     test(t[0] + '_loop',
          runtests_loop_sh,
          args : t[0],
+         is_parallel: false,
          workdir : meson.current_build_dir(),
          suite : 'loop')
+
+    test(t[0] + '_quiet',
+         runtests_quiet_sh,
+         args : t[0],
+         workdir : meson.current_build_dir(),
+         suite : 'parallel')
 endforeach
+
+add_test_setup('runtests',
+               exclude_suites: ['loop', 'parallel'],
+               is_default: true)
 
 configure_file(input : 'runtests.sh',
                output: 'runtests.sh',
