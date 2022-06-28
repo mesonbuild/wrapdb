@@ -1,4 +1,4 @@
-project('libusb', 'c', version: '1.0.26', meson_version: '>=0.60')
+project('libusb', 'c', version: '1.0.26', meson_version: '>=0.49.0')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
