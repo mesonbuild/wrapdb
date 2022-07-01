@@ -7,3 +7,4 @@ patch_directory = cjson
 
 [provide]
 libcjson = libcjson_dep
+libcjson_utils = libcjson_utils_dep

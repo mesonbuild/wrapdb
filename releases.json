@@ -139,9 +139,11 @@
   },
   "cjson": {
     "dependency_names": [
-      "libcjson"
+      "libcjson",
+      "libcjson_utils"
     ],
     "versions": [
+      "1.7.15-4",
       "1.7.15-3",
       "1.7.15-2",
       "1.7.15-1",

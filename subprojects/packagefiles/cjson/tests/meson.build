@@ -31,7 +31,7 @@ foreach t : tests
         t,
         '@0@.c'.format(t), src,
         dependencies: [
-            libcjson_dep,
+            libcjson_utils_dep,
             unity_dep,
         ]
     )
