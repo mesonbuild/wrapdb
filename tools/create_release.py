@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import sys
 import configparser
 import shutil
@@ -100,8 +101,15 @@ class CreateRelease:
         self.wrap_section['wrapdb_version'] = self.version
 
         filename = Path(self.tempdir, self.name + '.wrap')
+
+        # configparser write() adds multiple trailing newlines, collapse them
+        buf = io.StringIO()
+        self.wrap.write(buf)
+        buf.seek(0)
+        newbuf = buf.read().rstrip('\n') + '\n'
+
         with open(filename, 'w') as f:
-            self.wrap.write(f)
+            f.write(newbuf)
 
         print('Generated wrap file:')
         print(filename.read_text())
