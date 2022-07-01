@@ -16,7 +16,7 @@ if not cdata.get('HAVE_SYSLOG') and get_option('system-log')
   error('system logging requires syslog to be present')
 endif
 
-cdata.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime'))
+cdata.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime') and host_machine.system() != 'windows')
 cdata.set('HAVE_EVENTFD', cc.has_function('eventfd'))
 cdata.set('HAVE_TIMERFD', cc.has_function('timerfd_create'))
 cdata.set('HAVE_PIPE2', cc.has_function('pipe2'))
@@ -96,7 +96,7 @@ libusb = library('libusb-1.0',
   dependencies: [ thread_dep, macos_dep, udev_dep ],
   include_directories: incdirs,
   version: '0.3.0',
-  soversion: cc.get_argument_syntax() == 'msvc' ? '' : '0',
+  soversion: host_machine.system() == 'windows' ? '' : '0',
   name_prefix: '',
   gnu_symbol_visibility: 'hidden',
   vs_module_defs: 'libusb/libusb-1.0.def',
