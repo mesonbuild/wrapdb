@@ -21,6 +21,34 @@ jobs:
         run: |
           ./tools/sanity_checks.py
 
+  MSYS2:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    strategy:
+      matrix:
+        sys: [ MINGW64, MINGW32, UCRT64, CLANG32, CLANG64 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.sys}}
+          install: git base-devel
+          pacboy: cc:p python-pip:p ninja:p
+          path-type: strict
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - name: Install packages
+        run: |
+          pip install --pre meson
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py
+
   VisualStudio:
     runs-on: windows-latest
 
