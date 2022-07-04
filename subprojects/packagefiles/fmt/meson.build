@@ -28,6 +28,10 @@ fmt_dep = declare_dependency(
     link_with : fmt_lib
 )
 
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('fmt', fmt_dep)
+endif
+
 fmt_header_only_dep = declare_dependency(
     include_directories : fmt_inc,
     compile_args : '-DFMT_HEADER_ONLY'
