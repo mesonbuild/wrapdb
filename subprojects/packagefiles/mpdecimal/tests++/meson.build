@@ -27,4 +27,4 @@ test(
   args: files('additional.topTest'),
   depends: testdata,
   workdir: join_paths(meson.current_build_dir(), '..', 'tests'),
-  timeout: 60)
+  timeout: 660)

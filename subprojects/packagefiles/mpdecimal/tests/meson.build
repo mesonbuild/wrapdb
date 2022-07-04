@@ -23,4 +23,4 @@ test(
   args: files('additional.decTest'),
   depends: testdata,
   workdir: meson.current_build_dir(),
-  timeout: 60)
+  timeout: 660)

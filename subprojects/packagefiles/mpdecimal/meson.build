@@ -3,7 +3,7 @@ project('mpdecimal', 'c', 'cpp',
         license: 'BSD-2-Clause',
         default_options: [
           'c_std=c99',
-          'cpp_std=c++11',
+          'cpp_std=c++14',
           'b_ndebug=true',
         ])
 
@@ -273,7 +273,7 @@ elif machine == 'ppro'
 elif machine == 'ansi32'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
   add_project_arguments('-DCONFIG_32', '-DANSI', language: 'c')
-  if host_machine.system() != 'windows'
+  if host_machine.system() != 'windows' and cc.sizeof('size_t') > 4
     add_project_arguments('-m32', language: ['c', 'cpp'])
     add_project_link_arguments('-m32', language: ['c', 'cpp'])
   endif
