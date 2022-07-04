@@ -1,8 +1,8 @@
 project('abseil-cpp', 'cpp',
-  version : '20211102.0',
+  version : '20220623.0',
   license : 'Apache-2.0',
   default_options : [
-    'cpp_std=c++11',
+    'cpp_std=c++14',
   ])
 
 cpp = meson.get_compiler('cpp')
@@ -79,7 +79,6 @@ absl_debugging_sources = files(
   'absl/debugging/internal/stack_consumption.cc',
   'absl/debugging/internal/vdso_support.cc',
   'absl/debugging/leak_check.cc',
-  'absl/debugging/leak_check_disable.cc',
   'absl/debugging/stacktrace.cc',
   'absl/debugging/symbolize.cc',
 )
@@ -140,6 +139,8 @@ absl_strings_sources = files(
   'absl/strings/ascii.cc',
   'absl/strings/charconv.cc',
   'absl/strings/cord.cc',
+  'absl/strings/cord_analysis.cc',
+  'absl/strings/cord_buffer.cc',
   'absl/strings/escaping.cc',
   'absl/strings/internal/charconv_bigint.cc',
   'absl/strings/internal/charconv_parse.cc',
@@ -148,6 +149,7 @@ absl_strings_sources = files(
   'absl/strings/internal/cord_rep_btree_navigator.cc',
   'absl/strings/internal/cord_rep_btree_reader.cc',
   'absl/strings/internal/cord_rep_consume.cc',
+  'absl/strings/internal/cord_rep_crc.cc',
   'absl/strings/internal/cord_rep_ring.cc',
   'absl/strings/internal/cordz_functions.cc',
   'absl/strings/internal/cordz_handle.cc',
