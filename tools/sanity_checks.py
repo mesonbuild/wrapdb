@@ -292,6 +292,7 @@ class TestReleases(unittest.TestCase):
             print(log_file.read_text(encoding='utf-8'))
             print('::endgroup::')
             raise
+        subprocess.check_call(['meson', 'install', '-C', builddir, '--destdir', 'pkg'])
 
     def is_permitted_file(self, subproject: str, filename: str):
         if filename in PERMITTED_FILES:
