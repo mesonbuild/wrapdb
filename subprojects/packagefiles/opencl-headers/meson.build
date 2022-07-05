@@ -2,7 +2,7 @@ project(
   'OpenCLHeaders',
   'c',
   license : 'Apache-2.0',
-  version : '2021.06.30',
+  version : '2022.05.18',
 )
 
 install_headers(
@@ -36,3 +36,7 @@ opencl_headers_dep = declare_dependency(
   include_directories : include_directories('.'),
   version : '2.2',
 )
+
+if get_option('tests')
+  subdir('tests')
+endif
