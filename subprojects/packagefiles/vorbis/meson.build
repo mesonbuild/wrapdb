@@ -21,11 +21,11 @@ enc_lib_age = 0
 vorbisenc_soversion = enc_lib_current - enc_lib_age
 vorbisenc_version = '@0@.@1@.@2@'.format(vorbisenc_soversion, enc_lib_age, enc_lib_revision)
 
-headers = files([
+headers = files(
   'include/vorbis/codec.h',
   'include/vorbis/vorbisenc.h',
   'include/vorbis/vorbisfile.h'
-])
+)
 install_headers(headers, subdir: 'vorbis')
 
 incdir = include_directories('include')
