@@ -1,0 +1,11 @@
+[wrap-file]
+directory = libglvnd-v1.6.0
+source_url = https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v1.6.0/libglvnd-v1.6.0.tar.bz2
+source_filename = libglvnd-1.6.0.tar.bz2
+source_hash = 2b22a72f9f35fe9ba630c2971f6cee6eefc0c8317e0eecc3c76134ed5f00bd8a
+
+[provide]
+egl = dep_egl
+opengl = dep_opengl
+glesv1 = dep_glesv1
+glesv2 = dep_glesv2

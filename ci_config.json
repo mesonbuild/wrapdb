@@ -216,6 +216,17 @@
       "windows": false
     }
   },
+  "libglvnd": {
+    "_comment": "Upstream explicitly only supports Unix-like OSes excluding macOS",
+    "build_on": {
+      "darwin": false,
+      "windows": false
+    },
+    "_comment": "GLX tests require an X server, which CI does not provide.",
+    "build_options": [
+      "libglvnd:glx=disabled"
+    ]
+  },
   "libjpeg-turbo": {
     "brew_packages": [
       "nasm"
