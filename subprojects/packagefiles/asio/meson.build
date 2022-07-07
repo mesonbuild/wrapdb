@@ -19,3 +19,5 @@ asio_dep = declare_dependency(
     include_directories : include_directories('include'),
     dependencies: asio_deps,
 )
+
+install_headers('include/asio.hpp', 'include/asio/*')
