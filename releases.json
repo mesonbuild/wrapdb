@@ -968,6 +968,14 @@
       "1.6.17-2"
     ]
   },
+  "libsndfile": {
+    "dependency_names": [
+      "sndfile"
+    ],
+    "versions": [
+      "1.1.0-1"
+    ]
+  },
   "libsrtp2": {
     "dependency_names": [
       "libsrtp2"
