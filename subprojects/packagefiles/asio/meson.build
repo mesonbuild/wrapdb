@@ -13,7 +13,9 @@ if target_machine.system() == 'windows'
     asio_deps += ws2_32_dep
 endif
 
+add_project_arguments('-DASIO_STANDALONE', language : 'cpp')
+
 asio_dep = declare_dependency(
-    include_directories : include_directories('asio/include'),
+    include_directories : include_directories('include'),
     dependencies: asio_deps,
 )
