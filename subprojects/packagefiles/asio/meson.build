@@ -19,4 +19,5 @@ asio_dep = declare_dependency(
     cpp_args: ['ASIO_STANDALONE']
 )
 
-install_headers('include/asio.hpp', 'include/asio/*')
+install_headers('include/asio.hpp')
+install_subdir('include/asio', install_dir: get_option('includedir'))
