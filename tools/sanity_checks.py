@@ -36,6 +36,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'lame': [
         'lame.h',
     ],
+    'libexif': [
+        'def.py',
+    ],
     'lmdb': [
         'lmdb.def',
     ],
