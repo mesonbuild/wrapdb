@@ -22,7 +22,6 @@
     "termbox",
     "unit-system",
     "zstd",
-    "libexif",
     "ludocode-mpack",
     "m4",
     "miniz",
