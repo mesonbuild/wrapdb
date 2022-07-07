@@ -49,6 +49,14 @@
       "2.2-1"
     ]
   },
+  "asio": {
+    "dependency_names": [
+      "asio"
+    ],
+    "versions": [
+      "1.22.1-1"
+    ]
+  },
   "bdwgc": {
     "dependency_names": [
       "gc"
