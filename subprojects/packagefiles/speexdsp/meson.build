@@ -1,6 +1,6 @@
 project('speexdsp',
         'c',
-        version : '1.2.0',
+        version : '1.2.1',
         license : 'BSD-3-Clause',
         default_options : [
           'c_std=c99',
@@ -47,7 +47,7 @@ if get_option('simd')
                '-msse2']
     simd_type = 'SSE2'
 
-  elif host_cpu_family == 'arm'
+  elif host_cpu_family == 'arm' and cc.get_define('__thumb__') != '1'
     cdata.set('USE_NEON', true)
     # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions. 
     # Adding "+simd" is GCC's generic flag to add Armv7-A SIMD and floating-point instructions.

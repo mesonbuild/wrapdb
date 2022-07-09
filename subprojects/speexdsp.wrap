@@ -1,9 +1,9 @@
 [wrap-file]
-directory = speexdsp-1.2.0
-source_url = https://downloads.xiph.org/releases/speex/speexdsp-1.2.0.tar.gz
-source_fallback_url = https://ftp.osuosl.org/pub/xiph/releases/speex/speexdsp-1.2.0.tar.gz
-source_filename = speexdsp-1.2.0.tar.gz
-source_hash = 682042fc6f9bee6294ec453f470dadc26c6ff29b9c9e9ad2ffc1f4312fd64771
+directory = speexdsp-1.2.1
+source_url = https://downloads.xiph.org/releases/speex/speexdsp-1.2.1.tar.gz
+source_fallback_url = https://ftp.osuosl.org/pub/xiph/releases/speex/speexdsp-1.2.1.tar.gz
+source_filename = speexdsp-1.2.1.tar.gz
+source_hash = 8c777343e4a6399569c72abc38a95b24db56882c83dbdb6c6424a5f4aeb54d3d
 patch_directory = speexdsp
 
 [provide]
