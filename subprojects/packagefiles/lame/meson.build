@@ -45,6 +45,11 @@ foreach h : check_headers
   endif
 endforeach
 
+# mingw32 does not enable SSE by default
+if cc.get_argument_syntax() == 'gcc' and cpu_family == 'x86'
+  add_project_arguments('-msse', language: 'c')
+endif
+
 # Approximate autoconf's STDC_HEADERS define
 have_stdc_headers = true
 stdc_headers = [
