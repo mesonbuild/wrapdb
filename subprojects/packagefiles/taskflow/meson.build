@@ -16,6 +16,18 @@ taskflow_dep = declare_dependency(
     ]
 )
 
+# Provides the author selected doctest header-only library
+subdir('3rd-party/doctest')
+
+# TODO: Scan the system for external doctest dependency
+# Reference: https://github.com/doctest/doctest/issues/670
+#doctest_dep = dependency('doctest', required: false)
+
+# Unit tests
+if get_option('tests')
+subdir('unittests')
+endif
+
 # Installations
 
 # Copy all header files to ${prefix}/include/taskflow/
