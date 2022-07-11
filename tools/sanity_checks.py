@@ -56,9 +56,6 @@ PER_PROJECT_PERMITTED_FILES = {
         'meson.build.tmpl',
         'README.md',
     ],
-    'ogg': [
-        'ogg.def'
-    ],
     'sdl2': [
         'find-dylib-name.py'
     ],
