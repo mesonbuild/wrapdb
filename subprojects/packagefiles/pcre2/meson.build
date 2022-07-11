@@ -90,6 +90,13 @@ endforeach
 
 config_h_defs += ['-DHAVE_MEMMOVE', '-DSTDC_HEADERS', '-DSUPPORT_PCRE2_8', '-DSUPPORT_UNICODE']
 
+if get_option('default_library') == 'static'
+  static_defs = ['-DPCRE2_STATIC']
+  config_h_defs += static_defs
+else
+  static_defs = []
+endif
+
 pcre2_8_lib = library('pcre2-8', sources,
   include_directories: includes,
   c_args: config_h_defs + ['-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
@@ -112,13 +119,17 @@ pcre2_32_lib = library('pcre2-32', sources,
   install: true)
 
 libpcre2_8 = declare_dependency(link_with: pcre2_8_lib,
-  include_directories: includes)
+  include_directories: includes,
+  compile_args: static_defs)
 libpcre2_posix = declare_dependency(link_with: pcre2_posix_lib,
-  include_directories: includes)
+  include_directories: includes,
+  compile_args: static_defs)
 libpcre2_16 = declare_dependency(link_with: pcre2_16_lib,
-  include_directories: includes)
+  include_directories: includes,
+  compile_args: static_defs)
 libpcre2_32 = declare_dependency(link_with: pcre2_32_lib,
-  include_directories: includes)
+  include_directories: includes,
+  compile_args: static_defs)
 
 if get_option('grep')
   pcre2grep = executable('pcre2grep', ['src/pcre2grep.c'],
