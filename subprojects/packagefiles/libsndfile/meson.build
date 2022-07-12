@@ -104,13 +104,6 @@ sndfile = configure_file(
 
 incdirs = include_directories('.', 'src')
 
-def = custom_target(
-  'def',
-  output: 'sndfile.def',
-  capture: true,
-  command: [ './src/create_symbols_file.py', 'win32', meson.project_version() ],
-)
-
 libsndfile_sources = files(
   'src/common.c',
   'src/file_io.c',
@@ -210,11 +203,24 @@ if host_machine.system() == 'windows'
   libsndfile_sources += 'src/windows.c'
 endif
 
+gnu_sym_path = 'src/Symbols.gnu-binutils'
+gnu_sym_ldflag = '-Wl,--version-script=' + gnu_sym_path
+darwin_sym_path = 'src/Symbols.darwin'
+link_args = []
+if get_option('buildtype') != 'static'
+  if cc.links('', name: '-Wl,--version-script', args: ['-shared', gnu_sym_ldflag])
+    link_args = [gnu_sym_ldflag]
+  elif host_machine.system() == 'darwin' and cc.has_multi_link_arguments('-Wl,-exported_symbols_list', darwin_sym_path)
+    link_args = ['-Wl,-exported_symbols_list', darwin_sym_path]
+  endif
+endif
+
 libsndfile = library('sndfile',
   libsndfile_sources,
   include_directories: incdirs,
   version: meson.project_version(),
-  vs_module_defs: def,
+  vs_module_defs: 'src/libsndfile-1.def',
+  link_args: link_args,
   dependencies: [ mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep ],
   install: true,
 )
