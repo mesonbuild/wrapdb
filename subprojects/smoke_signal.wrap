@@ -1,0 +1,7 @@
+[wrap-git]
+url = https://gitea.gigo-games.dk/frederik/smoke-signal.git
+revision = head
+
+[provide]
+smoke_signal = smoke_signal_dep
+
