@@ -1042,6 +1042,14 @@
       "2.2.0-1"
     ]
   },
+  "libssh2": {
+    "dependency_names": [
+      "libssh2"
+    ],
+    "versions": [
+      "1.10.0-1"
+    ]
+  },
   "libtiff": {
     "dependency_names": [
       "libtiff-4"

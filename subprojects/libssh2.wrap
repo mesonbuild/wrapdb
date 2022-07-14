@@ -1,0 +1,9 @@
+[wrap-file]
+directory=libssh2-libssh2-1.10.0
+source_url = https://github.com/libssh2/libssh2/archive/libssh2-1.10.0.tar.gz
+source_filename = libssh2-1.10.0.tar.gz
+source_hash = 31469ccfc71a5247c926e3f0938e122cbb7a7a4a1bdf1cf2d3121f78b558d261
+patch_directory = libssh2
+
+[provide]
+libssh2 = libssh2_dep
