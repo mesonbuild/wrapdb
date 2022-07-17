@@ -1,5 +1,5 @@
 project('pybind11', 'cpp',
-        version : '2.9.0',
+        version : '2.10.0',
         license : 'BSD-3-Clause')
 
 pybind11_incdir = include_directories('include')
