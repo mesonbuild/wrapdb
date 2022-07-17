@@ -4,11 +4,10 @@ if get_option('examples')
     'echo',
     'jitter',
     'resample',
-    'resample2']
+    'resample2',
+  ]
 
   foreach example : examples
-    executable(example,
-               '../libspeexdsp/test' + example + '.c',
-               dependencies : speexdsp_dep)
+    executable(example, '../libspeexdsp/test' + example + '.c', dependencies: speexdsp_dep)
   endforeach
 endif
