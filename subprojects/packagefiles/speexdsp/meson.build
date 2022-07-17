@@ -1,11 +1,10 @@
-project('speexdsp',
-        'c',
-        version : '1.2.1',
-        license : 'BSD-3-Clause',
-        default_options : [
-          'c_std=c99',
-          'default_library=both',
-          'warning_level=0'])
+project(
+  'speexdsp',
+  'c',
+  version: '1.2.1',
+  license: 'BSD-3-Clause',
+  default_options: ['c_std=c99', 'default_library=both', 'warning_level=0'],
+)
 
 # library versioning from speexdsp-1.2.0's configure.ac
 # SPEEXDSP_LT_CURRENT=6, SPEEXDSP_LT_REVISION=1, SPEEXDSP_LT_AGE=5
@@ -20,8 +19,7 @@ cc = meson.get_compiler('c')
 host_cpu_family = host_machine.cpu_family()
 
 # Round up configuration data
-add_project_arguments('-DHAVE_CONFIG_H',
-                      language: 'c')
+add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 cdata = configuration_data()
 
 # Set SIMD config data and flags
@@ -42,9 +40,11 @@ if get_option('simd')
     cdata.set('USE_SSE2', true)
     # On 32-bit x86, setting "-mfpmath=sse" is the only way to both enable and use SSE extensions.
     # Ref: https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
-    c_args += ['-mfpmath=sse',
-               '-msse',
-               '-msse2']
+    c_args += [
+      '-mfpmath=sse',
+      '-msse',
+      '-msse2',
+    ]
     simd_type = 'SSE2'
 
   elif host_cpu_family == 'arm' and cc.get_define('__thumb__') != '1'
@@ -54,15 +54,17 @@ if get_option('simd')
     # Refs:
     #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
     #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
-    c_args += ['-march=armv7-a+simd',
-               '/arch:VFPv4']
+    c_args += [
+      '-march=armv7-a+simd',
+      '/arch:VFPv4',
+    ]
     simd_type = 'NEON (armv7-a)'
 
-  # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
-  # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
-  # Refs:
-  #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-  #  - https://developer.arm.com/documentation/101754/0618/armclang-Reference/armclang-Command-line-Options/-mcpu
+    # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
+    # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
+    # Refs:
+    #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+    #  - https://developer.arm.com/documentation/101754/0618/armclang-Reference/armclang-Command-line-Options/-mcpu
   elif host_cpu_family == 'aarch64'
     cdata.set('USE_NEON', true)
     c_args += '-march=armv8-a+simd'
@@ -96,11 +98,10 @@ else
   fft_library = 'OggVorbis FFT (built-in)'
 endif
 
-summary({'Optimization level': get_option('optimization'),
-         'SIMD instructions' : simd_type,
-         'Numerical type' : numerical_type,
-         'FFT library' : fft_library},
-        section : 'Library Summary')
+summary(
+  {'Optimization level': get_option('optimization'), 'SIMD instructions': simd_type, 'Numerical type': numerical_type, 'FFT library': fft_library},
+  section: 'Library Summary',
+)
 
 # Set C99 variable-length array config data
 cdata.set('VAR_ARRAYS', cc.get_id() != 'msvc')
@@ -115,18 +116,21 @@ else
 endif
 
 # Populate config.h from the above data
-configure_file(input : 'config.h.meson',
-               output : 'config.h',
-               configuration : cdata)
+configure_file(
+  input: 'config.h.meson',
+  output: 'config.h',
+  configuration: cdata,
+)
 
 # Add supported flags to the build
-add_project_arguments(cc.get_supported_arguments(c_args),
-                      language: 'c')
+add_project_arguments(cc.get_supported_arguments(c_args), language: 'c')
 
 # Set header include paths
-incdir = include_directories('.',
-                             'include',
-                             'include/speex')
+incdir = include_directories(
+  '.',
+  'include',
+  'include/speex',
+)
 
 # Nested Meson builds
 subdir('include/speex')
