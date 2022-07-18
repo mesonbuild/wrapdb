@@ -13,8 +13,8 @@ compile_opts = [
 ]
 loguru_deps_internal = [dependency('threads')]
 
-if get_option('loguru_export') != ''
-  compile_opts += ['-DLOGURU_EXPORT=' + get_option('loguru_export')]
+if get_option('default_library') != 'static' and host_machine.system() == 'windows'
+  compile_opts += ['-DLOGURU_EXPORT=__declspec(dllexport)']
 endif
 if get_option('loguru_debug_logging')
   compile_opts += ['-DLOGURU_DEBUG_LOGGING=1']
@@ -68,7 +68,7 @@ emilk_loguru_lib = library(
   include_directories: include_directories('.'),
   cpp_args: flags,
   dependencies: loguru_deps_internal,
-  soversion: loguru_lib_soversion,
+  soversion: host_machine.system() == 'windows' ? '' : loguru_lib_soversion,
   version: meson.project_version(),
   install: true,
 )

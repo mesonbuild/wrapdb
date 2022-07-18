@@ -1,14 +1,4 @@
 option(
-  'loguru_export',
-  type: 'string',
-  value: '',
-  description: '''
-    Define to your project\'s export declaration if needed for use in a shared
-    library
-  ''',
-)
-
-option(
   'loguru_debug_logging',
   type: 'boolean',
   value: true,
