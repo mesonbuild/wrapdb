@@ -22,7 +22,6 @@
     "termbox",
     "unit-system",
     "zstd",
-    "emilk-loguru",
     "libexif",
     "ludocode-mpack",
     "m4",
