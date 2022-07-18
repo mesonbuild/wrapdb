@@ -22,7 +22,7 @@ speexdsp = library(
   gnu_symbol_visibility: 'hidden',
   vs_module_defs: '../win32/libspeexdsp.def',
   version: lib_version,
-  soversion: cc.get_id() == 'msvc' ? '' : lib_soversion,
+  soversion: host_machine.system() == 'windows' ? '' : lib_soversion,
   install: true,
 )
 
