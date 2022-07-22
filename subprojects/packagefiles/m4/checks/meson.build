@@ -255,7 +255,9 @@ nomac_checks = [
 
 py = find_program('python3')
 m4_test = files('m4_test_runner.py')
-m4_env = ['TMPDIR=' + meson.project_build_root(),'M4PATH=' + meson.project_source_root() / 'examples']
+m4_env = ['TMPDIR=' + meson.project_build_root(),
+          'M4PATH=' + meson.project_source_root() / 'examples',
+          '_=']
 m4_path = m4.full_path()
 
 foreach file : checks
