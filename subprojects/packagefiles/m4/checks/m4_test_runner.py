@@ -43,11 +43,10 @@ def check_error(run_result,
     return res
 
 def main() -> int:
-    m4 = sys.argv[1]
+    m4_path = sys.argv[1]
     input_path = sys.argv[2]
     tmproot = sys.argv[3]
     workdir = sys.argv[4]
-    m4_path = tmproot + '/../' + m4
     examples_path = workdir + '/examples'
     if ':' in examples_path:
         examples_path = examples_path.partition(':')[2]
