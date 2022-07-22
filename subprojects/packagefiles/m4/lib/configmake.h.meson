@@ -1,0 +1,31 @@
+/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
+#if HAVE_WINSOCK2_H
+# include <winsock2.h> /* avoid mingw pollution on DATADIR */
+#endif
+#mesondefine PREFIX
+#mesondefine EXEC_PREFIX
+#mesondefine BINDIR
+#mesondefine SBINDIR
+#mesondefine LIBEXECDIR
+#mesondefine DATAROOTDIR
+#mesondefine DATADIR
+#mesondefine SYSCONFDIR
+#mesondefine SHAREDSTATEDIR
+#mesondefine LOCALSTATEDIR
+#mesondefine RUNSTATEDIR
+#mesondefine INCLUDEDIR
+#mesondefine OLDINCLUDEDIR
+#mesondefine DOCDIR
+#mesondefine INFODIR
+#mesondefine HTMLDIR
+#mesondefine DVIDIR
+#mesondefine PDFDIR
+#mesondefine PSDIR
+#mesondefine LIBDIR
+#mesondefine LISPDIR
+#mesondefine LOCALEDIR
+#mesondefine MANDIR
+#mesondefine PKGDATADIR
+#mesondefine PKGINCLUDEDIR
+#mesondefine PKGLIBDIR
+#mesondefine PKGLIBEXECDIR

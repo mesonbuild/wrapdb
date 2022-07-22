@@ -42,6 +42,10 @@ PER_PROJECT_PERMITTED_FILES = {
     'liblbfgs': [
         'liblbfgs.def'
     ],
+    'm4': [
+        'm4_test_runner.py',
+        'nononnull.h',
+    ],
     'mpdecimal': [
         'gettests.py',
     ],
