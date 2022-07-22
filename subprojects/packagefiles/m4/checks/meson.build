@@ -244,20 +244,18 @@ nowindows_checks = [
   '201.mkstemp', # Wants rm
 ]
 
-nomac_checks = [
-  # 198.sysval expects no output on stderr. However, the esyscmd(kill) it issues prints
-  # sh: line 1: 14295 Killed: 9               /bin/sh -c 'kill -9 $$'
-  #
-  # I believe this is not a problem with m4 but rather just an unexpected
-  # behavior of the shell environment
+no_checks = [
+  # This test depends on /bin/sh being bash. Rather than trying to identify
+  # dash, just skip the test. If you are very interested in m4, you can enable
+  # this manually.
   '198.sysval',
 ]
 
 py = find_program('python3')
 m4_test = files('m4_test_runner.py')
 m4_env = ['TMPDIR=' + meson.project_build_root(),
-          'M4PATH=' + meson.project_source_root() / 'examples',
-          'SHELLOPTS=']
+          'M4PATH=' + meson.project_source_root() / 'examples'
+         ]
 m4_path = m4.full_path()
 
 foreach file : checks
@@ -266,15 +264,6 @@ foreach file : checks
        env: m4_env,
        depends: m4)
 endforeach
-
-if host_machine.system() != 'darwin'
-  foreach file : nomac_checks
-    test(file, py,
-         args: [m4_test, m4_path, files(file), meson.current_build_dir(), meson.project_source_root()],
-         env: m4_env,
-         depends: m4)
-  endforeach
-endif
 
 if host_machine.system() != 'windows'
   foreach file : noparallel_checks
