@@ -5,6 +5,7 @@ python = find_program('python3')
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
+host_cpu = host_machine.cpu_family()
 
 cdata = configuration_data()
 cdata.set('CMAKE_PROJECT_NAME', meson.project_name())
@@ -121,9 +122,13 @@ if host_system == 'windows'
   add_project_arguments('-DDLLDEFINE', language: 'c')
 endif
 
-# TODO: Add simd support
-cdata.set('WITH_SIMD', false)
-simd = static_library('simd', 'jsimd_none.c')
+incdir = include_directories('.')
+
+subdir('simd')
+cdata.set('WITH_SIMD', have_simd)
+if not have_simd
+  simd = static_library('simd', 'jsimd_none.c')
+endif
 
 jconfig_h_in = host_system == 'windows' ? 'win/jconfig.h.in' : 'jconfig.h.in'
 jconfig_h = configure_file(input: jconfig_h_in,
@@ -164,7 +169,7 @@ jpeg = library('jpeg', sources,
 pkg.generate(jpeg, name: 'libjpeg')
 
 jpeg_dep = declare_dependency(
-  include_directories: include_directories('.'),
+  include_directories: incdir,
   link_with: jpeg
 )
 
