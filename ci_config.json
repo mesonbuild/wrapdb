@@ -305,6 +305,8 @@
       "qtbase5-dev"
     ]
   },
+  "range-v3": {
+  },
   "re2": {
     "build_options": [
       "cpp_std=c++14"

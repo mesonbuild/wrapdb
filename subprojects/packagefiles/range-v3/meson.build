@@ -6,3 +6,5 @@ range_inc = include_directories('include')
 range_dep = declare_dependency(
   include_directories : range_inc
 )
+
+subdir('test')
