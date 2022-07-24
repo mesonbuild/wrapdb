@@ -199,6 +199,14 @@
       "windows": false
     }
   },
+  "libjpeg-turbo": {
+    "brew_packages": [
+      "nasm"
+    ],
+    "debian_packages": [
+      "nasm"
+    ]
+  },
   "libkqueue": {
     "_comment": ["- MacOS already provides kqueue"],
     "build_on": {
