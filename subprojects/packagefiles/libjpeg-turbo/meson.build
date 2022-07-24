@@ -1,4 +1,4 @@
-project('libjpeg-turbo', 'c', version : '2.1.2', license : 'bsd-like')
+project('libjpeg-turbo', 'c', version : '2.1.3', license : 'bsd-like')
 
 pkg = import('pkgconfig')
 python = find_program('python3')
@@ -9,6 +9,7 @@ host_system = host_machine.system()
 cdata = configuration_data()
 cdata.set('CMAKE_PROJECT_NAME', meson.project_name())
 cdata.set('VERSION', meson.project_version())
+cdata.set('COPYRIGHT_YEAR', '1991-2022')
 
 jpeg_lib_version = 80
 so_major = jpeg_lib_version / 10
@@ -132,6 +133,11 @@ jconfig_h = configure_file(input: jconfig_h_in,
 
 configure_file(input: 'jconfigint.h.in',
   output: 'jconfigint.h',
+  format: 'cmake@',
+  configuration: cdata)
+
+configure_file(input: 'jversion.h.in',
+  output: 'jversion.h',
   format: 'cmake@',
   configuration: cdata)
 
