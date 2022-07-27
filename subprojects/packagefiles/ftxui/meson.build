@@ -9,7 +9,7 @@ if host_machine.system() == 'windows'
   if cpp.get_argument_syntax() == 'msvc'
     add_project_arguments('/utf-8', language: 'cpp')
   endif
-  add_project_arguments('-DUNICODE', language: 'cpp')
+  add_project_arguments('-DUNICODE', '-DFTXUI_MICROSOFT_TERMINAL_FALLBACK', language: 'cpp')
 endif
 
 thread_dep = dependency('threads')
