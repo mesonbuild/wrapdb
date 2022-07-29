@@ -38,6 +38,21 @@
       "cpp_std=c++14"
     ]
   },
+  "cppzmq": {
+    "debian_packages": [
+      "libzmq3-dev"
+    ],
+    "brew_packages": [
+      "zeromq"
+    ],
+    "build_options": [
+      "cppzmq:catch2=enabled"
+    ],
+    "_comment": "- libzmq not yet available as wrap",
+    "build_on": {
+      "windows": false
+    }
+  },
   "cpr": {
     "debian_packages": [
       "libcurl4-gnutls-dev"
