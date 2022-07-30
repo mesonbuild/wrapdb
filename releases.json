@@ -1187,6 +1187,14 @@
       "2.10-1"
     ]
   },
+  "m4": {
+    "versions": [
+      "1.4.19-1"
+    ],
+    "program_names": [
+      "m4"
+    ]
+  },
   "mdds": {
     "dependency_names": [
       "mdds-2.0"
