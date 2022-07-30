@@ -1855,7 +1855,12 @@ if generated_header_data.get('GNULIB_RENAME') == 1
   m4lib_src += 'rename.c'
 endif
 
-m4_lib = static_library('m4', m4lib_src, c_args: libm4_c_args)
+m4_lib_nononnull_h = configure_file(input: 'nononnull.h.meson',
+                                    output: 'nononnull.h',
+                                    copy: true)
+
+m4_lib = static_library('m4', m4lib_src, m4_lib_nononnull_h,
+                        c_args: libm4_c_args)
 if host_machine.system() == 'windows'
   m4_dep = declare_dependency(link_with: m4_lib,
                               dependencies: getrandom_dep,

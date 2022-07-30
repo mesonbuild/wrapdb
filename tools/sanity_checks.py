@@ -44,7 +44,6 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
     'm4': [
         'm4_test_runner.py',
-        'nononnull.h',
     ],
     'mpdecimal': [
         'gettests.py',
