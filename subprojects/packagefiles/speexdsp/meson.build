@@ -3,7 +3,7 @@ project(
   'c',
   version: '1.2.1',
   license: 'BSD-3-Clause',
-  default_options: ['c_std=c99', 'default_library=both', 'warning_level=0'],
+  default_options: ['c_std=gnu99', 'default_library=both', 'warning_level=0'],
 )
 
 # library versioning from speexdsp-1.2.0's configure.ac
