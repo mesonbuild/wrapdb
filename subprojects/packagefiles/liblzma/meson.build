@@ -10,7 +10,6 @@ check_headers = [
   'dlfcn.h',
   'fcntlh',
   'getopt.h',
-  'immintrin.h',
   'inttypes.h',
   'limits.h',
   'memory.h',
@@ -72,6 +71,10 @@ foreach i : check_coders
     cdata.set(i.get(1), 1)
   endif
 endforeach
+
+if host_machine.cpu_family() == 'x86' or host_machine.cpu_family() == 'x86_64'
+   cdata.set('HAVE_IMMINTRIN_H', cc.has_header('immintrin.h'))
+endif
 
 if cc.has_type('_Bool')
   cdata.set('HAVE__BOOL', 1)
