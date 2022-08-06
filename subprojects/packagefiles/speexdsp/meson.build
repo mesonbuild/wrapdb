@@ -50,12 +50,12 @@ if get_option('simd')
   elif host_cpu_family == 'arm' and cc.get_define('__thumb__') != '1'
     cdata.set('USE_NEON', true)
     # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions. 
-    # Adding "+simd" is GCC's generic flag to add Armv7-A SIMD and floating-point instructions.
     # Refs:
     #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
     #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
     c_args += [
-      '-march=armv7-a+simd',
+      '-march=armv7-a',
+      '-mfpu=neon',
       '/arch:VFPv4',
     ]
     simd_type = 'NEON (armv7-a)'
