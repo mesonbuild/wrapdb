@@ -25,7 +25,6 @@ foreach h : check_headers
 endforeach
 
 cdata.set('HAVE_BYTESWAP_H', cc.has_header('byteswap.h'))
-cdata.set('HAVE_CPUID_H', cc.has_header('cpuid.h'))
 cdata.set('HAVE_MEMORY_H', cc.has_header('memory.h'))
 cdata.set('HAVE_STDLIB_H', cc.has_header('stdlib.h'))
 cdata.set('HAVE_SYS_IOCTL_H', cc.has_header('sys/ioctl.h'))
@@ -46,6 +45,10 @@ cdata.set10('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', prefix: '#inc
 cdata.set10('HAVE_FSEEKO', cc.has_function('fseeko', prefix: '#include<stdio.h>'))
 cdata.set10('HAVE_GETOPT_LONG', cc.has_function('getopt_long', prefix: '#include<getopt.h>'))
 cdata.set10('HAVE_LROUND', cc.has_function('lround', prefix: '#include<math.h>'))
+
+if host_machine.cpu_family() == 'x86' or host_machine.cpu_family() == 'x86_64'
+  cdata.set('HAVE_CPUID_H', cc.has_header('cpuid.h'))
+endif
 
 cdata.set('SIZEOF_OFF_T', cc.sizeof('off_t'))
 cdata.set('SIZEOF_VOIDP', cc.sizeof('void*'))
