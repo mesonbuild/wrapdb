@@ -1,0 +1,10 @@
+[wrap-file]
+directory = ImGuizmo-1.83
+source_url = https://github.com/CedricGuillemet/ImGuizmo/archive/refs/tags/1.83.tar.gz
+source_filename = ImGuizmo-1.83.tar.gz
+source_hash = e6d05c5ebde802df7f6c342a06bc675bd2aa1c754d2d96755399a182187098a8
+
+patch_directory = imguizmo
+
+[provide]
+imguizmo = imguizmo_dep
