@@ -5,7 +5,7 @@ stress = executable('stress',
   link_with: libusb,
 )
 
-test('libusb_test', stress, timeout: 60)
+test('libusb_test', stress, timeout: 90)
 
 umockdev_dep = dependency('umockdev', required: false)
 if umockdev_dep.found()
