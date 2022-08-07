@@ -696,6 +696,14 @@
       "2.1-1"
     ]
   },
+  "imguizmo": {
+    "dependency_names": [
+      "imguizmo"
+    ],
+    "versions": [
+      "1.83-1"
+    ]
+  },
   "inih": {
     "dependency_names": [
       "inih",
