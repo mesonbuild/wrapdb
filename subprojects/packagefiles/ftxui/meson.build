@@ -1,6 +1,6 @@
 project('ftxui', 'cpp',
     version: '3.0.0',
-    default_options: ['cpp_std=c++17'],
+    default_options: ['cpp_std=gnu++17'],
 )
 
 cpp = meson.get_compiler('cpp')
