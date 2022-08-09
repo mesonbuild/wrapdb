@@ -1,8 +1,8 @@
 [wrap-file]
 directory = pkgconf
-source_url = https://gitea.treehouse.systems/ariadne/pkgconf/archive/pkgconf-1.9.0.tar.gz
-source_filename = pkgconf-1.9.0.tar.xz
-source_hash = 0432469db9c3cad85f3cc451d0334c3892a854b5e941fe8bcef608acc49e57b5
+source_url = https://gitea.treehouse.systems/ariadne/pkgconf/archive/pkgconf-1.9.2.tar.gz
+source_filename = pkgconf-1.9.2.tar.xz
+source_hash = f8ac7372f3cd371b39948dc21dc33553cbef9b623dbfd1f774b716c3aeee9a25
 
 [provide]
 libpkgconf = dep_libpkgconf
