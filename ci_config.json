@@ -291,10 +291,7 @@
     "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
     "build_options": [
       "pkgconf:tests=false"
-    ],
-    "build_on": {
-      "darwin": false
-    }
+    ]
   },
   "orcus": {
     "_comment": "- depends on Boost, which is not available on WrapDB",
