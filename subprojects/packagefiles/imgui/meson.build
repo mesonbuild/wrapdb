@@ -19,6 +19,10 @@ if cpp.get_argument_syntax() == 'msvc'
   else
     add_project_arguments('-DIMGUI_API=__declspec(dllimport)', language: 'cpp')
   endif
+else
+  if target_machine.system() == 'windows'
+    add_project_link_arguments('-ldwmapi', language: 'cpp')
+  endif
 endif
 
 dependencies = []
