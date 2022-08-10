@@ -53,7 +53,7 @@ if metal_dep.found()
     sources += 'backends/imgui_impl_metal.mm'
     dependencies += metal_dep
 endif
-libgl_dep = dependency('GL', required: get_option('opengl'))
+libgl_dep = dependency('gl', required: get_option('opengl'))
 if libgl_dep.found()
     sources += 'backends/imgui_impl_opengl3.cpp'
     dependencies += libgl_dep
