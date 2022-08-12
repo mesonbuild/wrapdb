@@ -58,3 +58,8 @@ option('openmp', type : 'feature', value : 'auto',
 
 option('try-static-deps', type : 'boolean', value : false,
        description : 'try using static linking for FluidSynth dependencies')
+
+option('tests',
+       type : 'boolean',
+       value : true,
+       description : 'Build self-test programs')

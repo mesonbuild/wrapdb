@@ -1,5 +1,5 @@
 project('fluidsynth', 'c', 'cpp',
-        version : '2.2.6',
+        version : '2.2.8',
         license : 'LGPL-2.1-or-later',
         default_options : ['b_ndebug=if-release'],
         meson_version : '>= 0.53.0')
@@ -157,5 +157,6 @@ fluidsynth_dep = declare_dependency(link_with : fluidsynth_lib,
                                     include_directories : dep_includes)
 
 # unit tests
-
-subdir('test')
+if get_option('tests')
+  subdir('test')
+endif
