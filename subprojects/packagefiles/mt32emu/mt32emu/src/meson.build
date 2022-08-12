@@ -29,14 +29,22 @@ c_headers = [
 #
 mt32emu_header_map = []
 foreach header : common_headers + cpp_headers
-  mt32emu_header_map += [ [ files(header), header ] ]
+  mt32emu_header_map += [[files(header), header]]
 endforeach
 mt32emu_c_header_map = []
 foreach header : c_headers
-  mt32emu_c_header_map += [ [ files('c_interface' / header), header ] ]
+  mt32emu_c_header_map += [[files('c_interface' / header), header]]
 endforeach
 
 mt32emu_sources = files(
+  'c_interface/c_interface.cpp',
+  'sha1/sha1.cpp',
+  'srchelper/InternalResampler.cpp',
+  'srchelper/srctools/src/FIRResampler.cpp',
+  'srchelper/srctools/src/IIR2xResampler.cpp',
+  'srchelper/srctools/src/LinearResampler.cpp',
+  'srchelper/srctools/src/ResamplerModel.cpp',
+  'srchelper/srctools/src/SincResampler.cpp',
   'Analog.cpp',
   'BReverbModel.cpp',
   'Display.cpp',
@@ -53,17 +61,9 @@ mt32emu_sources = files(
   'ROMInfo.cpp',
   'SampleRateConverter.cpp',
   'Synth.cpp',
-  'Tables.cpp',
   'TVA.cpp',
   'TVF.cpp',
   'TVP.cpp',
+  'Tables.cpp',
   'VersionTagging.cpp',
-  'sha1/sha1.cpp',
-  'srchelper/srctools/src/FIRResampler.cpp',
-  'srchelper/srctools/src/SincResampler.cpp',
-  'srchelper/srctools/src/IIR2xResampler.cpp',
-  'srchelper/srctools/src/LinearResampler.cpp',
-  'srchelper/srctools/src/ResamplerModel.cpp',
-  'srchelper/InternalResampler.cpp',
-  'c_interface/c_interface.cpp',
 )
