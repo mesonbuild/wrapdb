@@ -24,10 +24,13 @@ if host_machine.system() == 'windows'
 endif
 
 foreach name : fluid_tests
-  exe = executable(name, name + '.c', 
-                   objects : fluidsynth_obj , 
-                   dependencies : ext_deps,
-                   include_directories : lib_includes,
-                   c_args : test_args)
-  test(name, exe, timeout : 100)
+  exe = executable(
+    name,
+    name + '.c',
+    objects: fluidsynth_obj,
+    dependencies: ext_deps,
+    include_directories: lib_includes,
+    c_args: test_args,
+  )
+  test(name, exe, timeout: 100)
 endforeach

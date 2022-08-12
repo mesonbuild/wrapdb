@@ -61,14 +61,19 @@ if cc.get_id() == 'msvc'
   gen_tables_flags += ['-D_USE_MATH_DEFINES']
 endif
 
-make_tables_exe = executable('make_tables', make_tables_sources,
-                             native : true,
-                             dependencies : m_dep,
-                             include_directories : '.',
-                             c_args: gen_tables_flags)
+make_tables_exe = executable(
+  'make_tables',
+  make_tables_sources,
+  native: true,
+  dependencies: m_dep,
+  include_directories: '.',
+  c_args: gen_tables_flags,
+)
 
 fluid_tables = ['fluid_conv_tables.inc.h', 'fluid_rvoice_dsp_tables.inc.h']
 
-gen_tables = custom_target('gen_tables',
-                           command : [make_tables_exe, meson.current_build_dir() + '/'],
-                           output : fluid_tables)
+gen_tables = custom_target(
+  'gen_tables',
+  command: [make_tables_exe, meson.current_build_dir() + '/'],
+  output: fluid_tables,
+)
