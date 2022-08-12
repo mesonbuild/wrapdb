@@ -1,0 +1,9 @@
+[wrap-file]
+directory = minizip-ng-3.0.6
+source_url = https://github.com/zlib-ng/minizip-ng/archive/refs/tags/3.0.6.tar.gz
+source_filename = 3.0.6.tar.gz
+source_hash = 383fa1bdc28c482828a8a8db53f758dbd44291b641182724fda5df5b59cce543
+patch_directory = minizip-ng
+
+[provide]
+minizip-ng = minizip_ng_dep

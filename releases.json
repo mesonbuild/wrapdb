@@ -1240,6 +1240,14 @@
       "2.1.0-1"
     ]
   },
+  "minizip-ng": {
+    "dependency_names": [
+      "minizip-ng"
+    ],
+    "versions": [
+      "3.0.6-1"
+    ]
+  },
   "mocklibc": {
     "versions": [
       "1.0-2"

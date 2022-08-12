@@ -45,6 +45,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'm4': [
         'm4_test_runner.py',
     ],
+    'minizip-ng': [
+        'mz.def',
+    ],
     'mpdecimal': [
         'gettests.py',
     ],
