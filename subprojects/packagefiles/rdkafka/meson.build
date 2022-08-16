@@ -72,7 +72,6 @@ srcc = [
   'src/tinycthread.c',
   'src/tinycthread_extra.c',
   'src/rdxxhash.c',
-  'src/cJSON.c',
 ]
 srccpp = [
   'src-cpp/ConfImpl.cpp',
