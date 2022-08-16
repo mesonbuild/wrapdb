@@ -1,4 +1,4 @@
-project('rdkafka', 'c', 'cpp', version: '1.9.0', default_options: ['cpp_std=c++17', 'c_std=c11'])
+project('rdkafka', 'c', 'cpp', version: '1.9.2', default_options: ['cpp_std=c++17', 'c_std=c11'])
 cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
