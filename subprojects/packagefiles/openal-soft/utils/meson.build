@@ -4,6 +4,7 @@ executable(
   'openal-info',
   'openal-info.c',
   dependencies: openal_dep,
+  link_args: host_machine.system() == 'windows' ? '-municode' : [],
   install: true,
 )
 

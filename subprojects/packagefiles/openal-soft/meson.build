@@ -188,7 +188,7 @@ cdata.set('HAVE_GETOPT', cpp.has_function('getopt'))
 
 cdata.set('HAVE_CPUID_INTRINSIC', cpp.get_argument_syntax() == 'msvc')
 cdata.set('HAVE_GCC_GET_CPUID', cpp.has_function('__get_cpuid', prefix: '#include <cpuid.h>'))
-cdata.set('HAVE_SSE_INTRINSICS', cpp.has_function('_mm_pause', prefix: '#include <emmintrin.h>'))
+cdata.set('HAVE_SSE_INTRINSICS', cpp.has_header_symbol('xmmintrin.h', '_mm_pause'))
 
 cdata.set('ALSOFT_EMBED_HRTF_DATA', true)
 cdata.set('ALSOFT_INSTALL_DATADIR', get_option('prefix') / get_option('datadir'))
@@ -203,23 +203,30 @@ vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 
 configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
 
+openal_args = ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 if cdata.get('HAVE_SSE')
+  openal_args += '-mfpmath=sse'
+  openal_args += '-msse'
   core_sources += 'core/mixer/mixer_sse.cpp'
 endif
 
 if cdata.get('HAVE_SSE2')
+  openal_args += '-msse2'
   core_sources += 'core/mixer/mixer_sse2.cpp'
 endif
 
 if cdata.get('HAVE_SSE3')
+  openal_args += '-msse3'
   core_sources += 'core/mixer/mixer_sse3.cpp'
 endif
 
 if cdata.get('HAVE_SSE4_1')
+  openal_args += '-msse4.1'
   core_sources += 'core/mixer/mixer_sse41.cpp'
 endif
 
 if cdata.get('HAVE_NEON')
+  openal_args += '-mfpu=neon'
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
@@ -230,7 +237,7 @@ openal_lib = library(
   openal_sources,
   alc_sources,
   hrtf_h,
-  cpp_args: ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES'],
+  cpp_args: openal_args,
   include_directories: ['include', 'common', 'alc'],
   dependencies: [
     dl_dep,
@@ -255,6 +262,7 @@ openal_lib = library(
 )
 
 openal_dep = declare_dependency(
+  compile_args: openal_args,
   include_directories: ['.', 'include', 'include/AL', 'common'],
   link_with: openal_lib,
 )
