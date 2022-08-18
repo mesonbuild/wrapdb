@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libliftoff-v0.3.0
+source_url = https://gitlab.freedesktop.org/emersion/libliftoff/-/archive/v0.3.0/libliftoff-v0.3.0.tar.gz
+source_filename = libliftoff-v0.3.0.tar.gz
+source_hash = ef531d4913903da3bdc5fe96324abd080aded89a0d4b7258c1d1095c1a4b7925
+
+[provide]
+libliftoff = liftoff

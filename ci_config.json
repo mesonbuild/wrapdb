@@ -228,6 +228,16 @@
       "windows": false
     }
   },
+  "libliftoff": {
+    "_comment": "- depends on libdrm",
+    "build_on": {
+      "darwin": false,
+      "windows": false
+    },
+    "debian_packages": [
+      "libpciaccess-dev"
+    ]
+  },
   "libnpupnp": {
     "brew_packages": [
       "libmicrohttpd"
