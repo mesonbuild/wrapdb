@@ -21,7 +21,7 @@
   ],
   "broken_darwin": [
     "arduinocore-avr",
-    "google-benchmark", "google-woff2", "graphite2",
+    "google-woff2", "graphite2",
     "libgpiod",
     "lz4", "mocklibc",
     "openh264", "protobuf-c",
