@@ -917,6 +917,14 @@
       "1.10-1"
     ]
   },
+  "libliftoff": {
+    "dependency_names": [
+      "libliftoff"
+    ],
+    "versions": [
+      "0.3.0-1"
+    ]
+  },
   "liblzma": {
     "dependency_names": [
       "liblzma"
