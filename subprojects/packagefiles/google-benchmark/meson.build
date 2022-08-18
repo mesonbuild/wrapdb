@@ -1,6 +1,6 @@
 project('benchmark', 'cpp',
-  version : '1.6.0',
-  default_options : ['cpp_std=c++11'],
+  version : '1.7.0',
+  default_options : ['cpp_std=c++14'],
   license : 'Apache-2.0')
 
 benchmark_sources = [
@@ -35,6 +35,9 @@ lib_benchmark_deps = [ dependency('threads') ]
 if host_machine.system() == 'windows'
   cc = meson.get_compiler('cpp')
   lib_benchmark_deps += cc.find_library('shlwapi', required : true)
+  if get_option('buildtype') != 'static'
+    add_project_arguments('-Dbenchmark_EXPORTS', language: 'cpp')
+  endif
 endif
 
 lib_benchmark = static_library('gbenchmark',

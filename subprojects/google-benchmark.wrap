@@ -1,8 +1,8 @@
 [wrap-file]
-directory = benchmark-1.6.0
-source_url = https://github.com/google/benchmark/archive/refs/tags/v1.6.0.tar.gz
-source_filename = benchmark-1.6.0.tar.gz
-source_hash = 1f71c72ce08d2c1310011ea6436b31e39ccab8c2db94186d26657d41747c85d6
+directory = benchmark-1.7.0
+source_url = https://github.com/google/benchmark/archive/refs/tags/v1.7.0.tar.gz
+source_filename = benchmark-1.7.0.tar.gz
+source_hash = 3aff99169fa8bdee356eaa1f691e835a6e57b1efeadb8a0f9f228531158246ac
 patch_directory = google-benchmark
 
 [provide]
