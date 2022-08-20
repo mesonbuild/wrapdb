@@ -4,6 +4,7 @@ c_sources += files(
     'SDL_dataqueue.c',
     'SDL_error.c',
     'SDL_hints.c',
+    'SDL_list.c',
     'SDL_log.c',
 )
 
