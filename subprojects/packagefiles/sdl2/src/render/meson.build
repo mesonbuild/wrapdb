@@ -6,6 +6,7 @@ c_sources += files(
 
 subdir('direct3d')
 subdir('direct3d11')
+subdir('direct3d12')
 subdir('opengl')
 subdir('opengles')
 subdir('opengles2')

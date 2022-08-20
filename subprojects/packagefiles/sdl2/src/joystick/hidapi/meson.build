@@ -1,9 +1,11 @@
 c_sources += files(
+    'SDL_hidapi_combined.c',
     'SDL_hidapi_gamecube.c',
     'SDL_hidapi_luna.c',
     'SDL_hidapi_ps4.c',
     'SDL_hidapi_ps5.c',
     'SDL_hidapi_rumble.c',
+    'SDL_hidapi_shield.c',
     'SDL_hidapi_stadia.c',
     'SDL_hidapi_steam.c',
     'SDL_hidapi_switch.c',
