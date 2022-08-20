@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-    version : '2.0.22',
+    version : '2.24.0',
     license : 'zlib',
     meson_version : '>=0.48.0',
     default_options : ['c_std=none'],
@@ -25,7 +25,13 @@ c_args = cc.get_supported_arguments(
     '-mpreferred-stack-boundary=2',
 )
 
+objc_args = [
+    '-fobjc-arc',
+    '-fobjc-weak'
+]
+
 add_project_arguments(c_args, language : 'c')
+add_project_arguments(objc_args, language: 'objc')
 
 # BEGIN platform detection logic
 
@@ -188,6 +194,19 @@ gl_deps = [
 
 cdata = configuration_data()
 
+if get_option('assertions') == 'auto'
+    # Do nada
+elif get_option('assertions') == 'disabled'
+    cdata.set('SDL_DEFAULT_ASSERT_LEVEL', 0)
+elif get_option('assertions') == 'release'
+    cdata.set('SDL_DEFAULT_ASSERT_LEVEL', 1)
+elif get_option('assertions') == 'enabled'
+    cdata.set('SDL_DEFAULT_ASSERT_LEVEL', 2)
+elif get_option('assertions') == 'paranoid'
+    cdata.set('SDL_DEFAULT_ASSERT_LEVEL', 3)
+endif
+cdata.set10('HAVE_ASSERTIONS', true)
+
 alsa_dep = dependency('alsa', required : opt_audio_alsa)
 libpulse_simple_dep = dependency('libpulse-simple', required : opt_audio_pulseaudio)
 jack_dep = dependency('jack', required : opt_audio_jack)
@@ -196,7 +215,6 @@ vulkan_dep = dependency('vulkan', required : opt_video_vulkan)
 x11_dep = dependency('x11', required : opt_video_x11)
 xext_dep = dependency('xext', required : opt_video_x11)
 xi_dep = dependency('xi', required : opt_video_x11)
-xinerama_dep = dependency('xinerama', required : opt_video_x11)
 xkbcommon_dep = dependency('xkbcommon', required : opt_video_wayland)
 xrandr_dep = dependency('xrandr', required : opt_video_x11)
 xfixes_dep = dependency('xfixes', required : opt_video_x11)
@@ -257,7 +275,6 @@ dlopen_table = [
     { 'dep_var' : 'xext_dep',             'lib' : 'Xext',           'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT'          },
     { 'dep_var' : 'xfixes_dep',           'lib' : 'Xfixes',         'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XFIXES'        },
     { 'dep_var' : 'xi_dep',               'lib' : 'Xi',             'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2'       },
-    { 'dep_var' : 'xinerama_dep',         'lib' : 'Xinerama',       'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XINERAMA'      },
     { 'dep_var' : 'xkbcommon_dep',        'lib' : 'xkbcommon',      'conf_var' : 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_XKBCOMMON' },
     { 'dep_var' : 'xrandr_dep',           'lib' : 'Xrandr',         'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR'        },
 ]
@@ -289,7 +306,6 @@ x11_deps = [
     xcursor_dep,
     xext_dep,
     xi_dep,
-    xinerama_dep,
     xrandr_dep,
     xfixes_dep,
 ]
@@ -457,6 +473,7 @@ check_headers = [
     'signal.h',
     'stdarg.h',
     'stdint.h',
+    'stddef.h',
     'stdio.h',
     'stdlib.h',
     'string.h',
@@ -464,6 +481,10 @@ check_headers = [
     'sys/inotify.h',
     'sys/types.h',
     'wchar.h',
+
+    'd3d.h',
+    'd3d11.h',
+    'd3d12.h',
     'windows.gaming.input.h',
     'xinput.h',
 ]
@@ -516,6 +537,7 @@ check_functions = [
     ['_wcsicmp', 'wchar.h'],
     ['_wcsnicmp', 'wchar.h'],
     ['abs', 'stdlib.h'],
+    ['bsearch', 'stdlib.h'],
     ['acos', 'math.h'],
     ['acosf', 'math.h'],
     ['alloca', 'stdlib.h'],
@@ -806,7 +828,7 @@ elif platform_is_windows
     sys_thread_generic_cond_suffix = true
     sys_timer = ['windows']
     sys_video_driver = ['windows']
-    sys_video_render = ['d3d', 'd3d11']
+    sys_video_render = ['d3d', 'd3d11', 'd3d12']
     sys_gl_wsi = ['wgl']
     extra_deps += [
         cc.find_library('user32'),
@@ -923,10 +945,6 @@ if extra_deps.contains(x11_dep)
 
     if extra_deps.contains(xfixes_dep)
         sys_video_driver += 'x11_xfixes'
-    endif
-
-    if extra_deps.contains(xinerama_dep)
-        sys_video_driver += 'x11_xinerama'
     endif
 
     if extra_deps.contains(xcursor_dep)

@@ -1,6 +1,7 @@
 c_sources += files(
-    'SDL_joystick.c',
     'SDL_gamecontroller.c',
+    'SDL_joystick.c',
+    'controller_type.c'
 )
 
 subdir('dummy')

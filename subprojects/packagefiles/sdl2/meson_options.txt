@@ -1,3 +1,12 @@
+
+option(
+    'assertions',
+    type : 'combo',
+    value : 'auto',
+    choices : ['auto', 'disabled', 'release', 'enabled', 'paranoid'],
+    description: 'Enable internal sanity checks'
+)
+
 option(
     'use_threads',
     type : 'feature',

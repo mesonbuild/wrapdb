@@ -350,7 +350,6 @@
       "libxcursor-dev",
       "libxext-dev",
       "libxi-dev",
-      "libxinerama-dev",
       "libxkbcommon-dev",
       "libxkbfile-dev",
       "libxrandr-dev",

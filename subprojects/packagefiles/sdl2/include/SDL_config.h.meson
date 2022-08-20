@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2022 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -65,6 +65,7 @@
 #mesondefine HAVE_SIGNAL_H
 #mesondefine HAVE_STDARG_H
 #mesondefine HAVE_STDINT_H
+#mesondefine HAVE_STDDEF_H
 #mesondefine HAVE_STDIO_H
 #mesondefine HAVE_STDLIB_H
 #mesondefine HAVE_STRINGS_H
@@ -89,6 +90,7 @@
 #endif
 #mesondefine HAVE_QSORT
 #mesondefine HAVE_ABS
+#mesondefine HAVE_BSEARCH
 #mesondefine HAVE_BCOPY
 #mesondefine HAVE_MEMSET
 #mesondefine HAVE_MEMCPY
@@ -242,14 +244,12 @@
 
 #mesondefine HAVE_D3D_H
 #mesondefine HAVE_D3D11_H
+#mesondefine HAVE_D3D12_H
 #mesondefine HAVE_DDRAW_H
 #mesondefine HAVE_DSOUND_H
 #mesondefine HAVE_DINPUT_H
 #mesondefine HAVE_XINPUT_H
-/* workaround for https://github.com/libsdl-org/SDL/issues/5580 */
-#ifdef HAVE_XINPUT_H
 #mesondefine HAVE_WINDOWS_GAMING_INPUT_H
-#endif
 #mesondefine HAVE_DXGI_H
 
 #mesondefine HAVE_MMDEVICEAPI_H
@@ -257,6 +257,7 @@
 #mesondefine HAVE_TPCSHRD_H
 #mesondefine HAVE_SENSORSAPI_H
 #mesondefine HAVE_ROAPI_H
+#mesondefine HAVE_SHELLSCALINGAPI_H
 
 #mesondefine HAVE_XINPUT_GAMEPAD_EX
 #mesondefine HAVE_XINPUT_STATE_EX
@@ -323,6 +324,7 @@
 #mesondefine SDL_AUDIO_DRIVER_OS2
 #mesondefine SDL_AUDIO_DRIVER_VITA
 #mesondefine SDL_AUDIO_DRIVER_PSP
+#mesondefine SDL_AUDIO_DRIVER_PS2
 
 /* Enable various input drivers */
 #mesondefine SDL_INPUT_LINUXEV
@@ -346,6 +348,7 @@
 #mesondefine SDL_JOYSTICK_VIRTUAL
 #mesondefine SDL_JOYSTICK_VITA
 #mesondefine SDL_JOYSTICK_PSP
+#mesondefine SDL_JOYSTICK_PS2
 #mesondefine SDL_HAPTIC_DUMMY
 #mesondefine SDL_HAPTIC_LINUX
 #mesondefine SDL_HAPTIC_IOKIT
@@ -377,6 +380,7 @@
 #mesondefine SDL_THREAD_OS2
 #mesondefine SDL_THREAD_VITA
 #mesondefine SDL_THREAD_PSP
+#mesondefine SDL_THREAD_PS2
 
 /* Enable various timer systems */
 #mesondefine SDL_TIMER_HAIKU
@@ -386,6 +390,7 @@
 #mesondefine SDL_TIMER_OS2
 #mesondefine SDL_TIMER_VITA
 #mesondefine SDL_TIMER_PSP
+#mesondefine SDL_TIMER_PS2
 
 /* Enable various video drivers */
 #mesondefine SDL_VIDEO_DRIVER_ANDROID
@@ -407,6 +412,7 @@
 #mesondefine SDL_VIDEO_DRIVER_QNX
 #mesondefine SDL_VIDEO_DRIVER_RISCOS
 #mesondefine SDL_VIDEO_DRIVER_PSP
+#mesondefine SDL_VIDEO_DRIVER_PS2
 
 #mesondefine SDL_VIDEO_DRIVER_KMSDRM
 #mesondefine SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC
@@ -423,34 +429,32 @@
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR
-#mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XINERAMA
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XFIXES
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR
 #mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS
-#mesondefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE
 #mesondefine SDL_VIDEO_DRIVER_X11_XCURSOR
 #mesondefine SDL_VIDEO_DRIVER_X11_XDBE
-#mesondefine SDL_VIDEO_DRIVER_X11_XINERAMA
 #mesondefine SDL_VIDEO_DRIVER_X11_XINPUT2
 #mesondefine SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH
 #mesondefine SDL_VIDEO_DRIVER_X11_XFIXES
 #mesondefine SDL_VIDEO_DRIVER_X11_XRANDR
 #mesondefine SDL_VIDEO_DRIVER_X11_XSCRNSAVER
 #mesondefine SDL_VIDEO_DRIVER_X11_XSHAPE
-#mesondefine SDL_VIDEO_DRIVER_X11_XVIDMODE
 #mesondefine SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS
 #mesondefine SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM
 #mesondefine SDL_VIDEO_DRIVER_VITA
 
 #mesondefine SDL_VIDEO_RENDER_D3D
 #mesondefine SDL_VIDEO_RENDER_D3D11
+#mesondefine SDL_VIDEO_RENDER_D3D12
 #mesondefine SDL_VIDEO_RENDER_OGL
 #mesondefine SDL_VIDEO_RENDER_OGL_ES
 #mesondefine SDL_VIDEO_RENDER_OGL_ES2
 #mesondefine SDL_VIDEO_RENDER_DIRECTFB
 #mesondefine SDL_VIDEO_RENDER_METAL
 #mesondefine SDL_VIDEO_RENDER_VITA_GXM
+#mesondefine SDL_VIDEO_RENDER_PS2
 #mesondefine SDL_VIDEO_RENDER_PSP
 
 /* Enable OpenGL support */
@@ -496,6 +500,7 @@
 #mesondefine SDL_FILESYSTEM_OS2
 #mesondefine SDL_FILESYSTEM_VITA
 #mesondefine SDL_FILESYSTEM_PSP
+#mesondefine SDL_FILESYSTEM_PS2
 
 /* Enable misc subsystem */
 #mesondefine SDL_MISC_DUMMY
@@ -504,7 +509,6 @@
 #mesondefine SDL_LOCALE_DUMMY
 
 /* Enable assembly routines */
-#mesondefine SDL_ASSEMBLY_ROUTINES
 #mesondefine SDL_ALTIVEC_BLITTERS
 #mesondefine SDL_ARM_SIMD_BLITTERS
 #mesondefine SDL_ARM_NEON_BLITTERS
@@ -542,7 +546,7 @@ typedef unsigned long uintptr_t;
 #else /* __WIN32__ */
 #  if !defined(_STDINT_H_) && !defined(HAVE_STDINT_H) && !defined(_HAVE_STDINT_H)
 #    if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__) || defined(__BORLANDC__) || defined(__CODEGEARC__)
-#define HAVE_STDINT_H	1
+#define HAVE_STDINT_H   1
 #    elif defined(_MSC_VER)
 typedef signed __int8 int8_t;
 typedef unsigned __int8 uint8_t;
@@ -561,10 +565,10 @@ typedef unsigned int uintptr_t;
 #define _UINTPTR_T_DEFINED
 #      endif
 /* Older Visual C++ headers don't have the Win64-compatible typedefs... */
-#      if ((_MSC_VER <=200) && (!defined(DWORD_PTR)))
+#      if ((_MSC_VER <= 1200) && (!defined(DWORD_PTR)))
 #define DWORD_PTR DWORD
 #      endif
-#      if ((_MSC_VER <=200) && (!defined(LONG_PTR)))
+#      if ((_MSC_VER <= 1200) && (!defined(LONG_PTR)))
 #define LONG_PTR LONG
 #      endif
 #    else /* !__GNUC__ && !_MSC_VER */
