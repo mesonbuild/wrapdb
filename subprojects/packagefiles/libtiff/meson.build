@@ -2,7 +2,7 @@ project('tiff', 'c', version: files('VERSION'))
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required: false)
-jbig_dep = dependency('libjbig', required: get_option('jbig'))
+jbig_dep = cc.find_library('libjbig', required: get_option('jbig'))
 jpeg_dep = dependency('libjpeg', required: get_option('jpeg'))
 lerc_dep = dependency('liblerc', required: get_option('lerc'))
 lzma_dep = dependency('liblzma', required: get_option('lzma'))
@@ -49,7 +49,7 @@ foreach f : [ 'fseeko', 'mmap', 'setmode' ]
   cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
-cdata.set('HAVE_JBG_NEWLEN', cc.has_function('jbg_newlen', dependencies: jbig_dep))
+cdata.set('HAVE_JBG_NEWLEN', jbig_dep.found())
 cdata.set10('HAVE_DECL_OPTARG', cc.has_header_symbol('unistd.h', 'optarg'))
 cdata.set10('HAVE_GETOPT', cc.has_header_symbol('getopt.h', 'getopt'))
 
