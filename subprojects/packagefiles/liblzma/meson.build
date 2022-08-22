@@ -1,5 +1,5 @@
 # liblzma is what upstream uses for their pkg-config name
-project('liblzma', 'c', version : '5.2.6', license : 'pd/lgpl2/gpl2/gpl3')
+project('liblzma', 'c', version: '5.2.6', license: 'pd/lgpl2/gpl2/gpl3')
 
 cc = meson.get_compiler('c')
 cdata = configuration_data()
@@ -81,9 +81,10 @@ cdata.set('HAVE_CHECK_CRC32', true)
 cdata.set('HAVE_CHECK_CRC64', true)
 cdata.set('HAVE_CHECK_SHA256', true)
 
-configure_file(input : 'config.h.meson',
-  output : 'config.h',
-  configuration : cdata
+configure_file(
+  input: 'config.h.meson',
+  output: 'config.h',
+  configuration: cdata,
 )
 
 confinc = include_directories('.')
