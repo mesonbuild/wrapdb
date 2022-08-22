@@ -44,7 +44,7 @@ cdata.set('FLAC__SYS_LINUX', host_machine.system() == 'linux')
 cdata.set10('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', prefix: '#include<time.h>'))
 cdata.set10('HAVE_FSEEKO', cc.has_function('fseeko', prefix: '#include<stdio.h>'))
 cdata.set10('HAVE_GETOPT_LONG', cc.has_function('getopt_long', prefix: '#include<getopt.h>'))
-cdata.set10('HAVE_LROUND', cc.has_function('lround', prefix: '#include<math.h>'))
+cdata.set10('HAVE_LROUND', cc.has_function('lround', prefix: '#include<math.h>', dependencies: m_dep))
 
 if host_machine.cpu_family() == 'x86' or host_machine.cpu_family() == 'x86_64'
   cdata.set('HAVE_CPUID_H', cc.has_header('cpuid.h'))
@@ -53,9 +53,11 @@ endif
 cdata.set('SIZEOF_OFF_T', cc.sizeof('off_t'))
 cdata.set('SIZEOF_VOIDP', cc.sizeof('void*'))
 
-configure_file(input: 'config.h.meson',
-    output: 'config.h',
-    configuration: cdata)
+configure_file(input: 'config.cmake.h.in',
+  output: 'config.h',
+  format: 'cmake',
+  configuration: cdata,
+)
 
 main_inc = include_directories('include', '.')
 
