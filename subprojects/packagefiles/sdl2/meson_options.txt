@@ -1,3 +1,16 @@
+option(
+    'test',
+    type : 'boolean',
+    value : 'true',
+    description : 'build tests'
+)
+
+option(
+    'run_test',
+    type : 'boolean',
+    value : 'false',
+    description : 'run testsm. running the tests requires a video output, audio processor, etc. do not use on headless machines'
+)
 
 option(
     'assertions',

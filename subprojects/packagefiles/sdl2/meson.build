@@ -194,8 +194,10 @@ gl_deps = [
 
 cdata = configuration_data()
 
+cdata.set10('SDL_DEFAULT_ASSERT_LEVEL_CONFIGURED', true)
 if get_option('assertions') == 'auto'
     # Do nada
+    cdata.set10('SDL_DEFAULT_ASSERT_LEVEL_CONFIGURED', false)
 elif get_option('assertions') == 'disabled'
     cdata.set('SDL_DEFAULT_ASSERT_LEVEL', 0)
 elif get_option('assertions') == 'release'
@@ -1099,4 +1101,8 @@ sdl2_dep = declare_dependency(
 
 if meson.version().version_compare('>=0.54')
     meson.override_dependency('sdl2', sdl2_dep)
+endif
+
+if get_option('test')
+    subdir('test')
 endif
