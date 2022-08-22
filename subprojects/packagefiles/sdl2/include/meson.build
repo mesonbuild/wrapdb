@@ -1,8 +1,9 @@
 
 c_sources += configure_file(
-    input : 'SDL_config.h.meson',
-    output : 'SDL_config.h',
-    configuration : cdata
+    input: 'SDL_config.h.cmake',
+    output: 'SDL_config.h',
+    format: 'cmake@',
+    configuration: cdata
 )
 
 headers = [
@@ -13,6 +14,7 @@ headers = [
     'SDL_bits.h',
     'SDL_blendmode.h',
     'SDL_clipboard.h',
+    'SDL_copying.h',
     'SDL_cpuinfo.h',
     'SDL_egl.h',
     'SDL_endian.h',
@@ -21,15 +23,20 @@ headers = [
     'SDL_filesystem.h',
     'SDL_gamecontroller.h',
     'SDL_gesture.h',
+    'SDL_guid.h',
     'SDL_haptic.h',
+    'SDL_hidapi.h',
     'SDL_hints.h',
     'SDL_joystick.h',
     'SDL_keyboard.h',
     'SDL_keycode.h',
     'SDL_loadso.h',
+    'SDL_locale.h',
     'SDL_log.h',
     'SDL_main.h',
     'SDL_messagebox.h',
+    'SDL_metal.h',
+    'SDL_misc.h',
     'SDL_mouse.h',
     'SDL_mutex.h',
     'SDL_name.h',

@@ -13,5 +13,6 @@ c_sources += files(
     'SDL_test_imagePrimitivesBlend.c',
     'SDL_test_log.c',
     'SDL_test_md5.c',
+    'SDL_test_memory.c',
     'SDL_test_random.c',
 )
