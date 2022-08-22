@@ -1103,6 +1103,8 @@ if meson.version().version_compare('>=0.54')
     meson.override_dependency('sdl2', sdl2_dep)
 endif
 
-if get_option('test')
+# MSVC does not correctly resolve the symbols when linking dynamically
+# works fine when linking statically or MinGW
+if get_option('test') and (cc.get_id() != 'msvc' or get_option('default_library') == 'static')
     subdir('test')
 endif

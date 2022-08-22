@@ -74,7 +74,7 @@ tests = [
 ]
 
 foreach test_entry : tests
-    test_executable = executable(test_entry['name'], test_entry['sources'], dependencies: [sdl2_dep], d_unittest: true)
+    test_executable = executable(test_entry['name'], test_entry['sources'], dependencies: [sdl2_dep])
     if get_option('run_test')
         test(test_entry['name'], test_executable, is_parallel: false)
     endif
