@@ -6,15 +6,13 @@ project('check', 'c',
 
 check_version = meson.project_version()
 cdata = configuration_data({
-  'PROJECT_NAME' : meson.project_name(),
-  'PROJECT_VERSION' : meson.project_version(),
-  'MESON_VERSION' : meson.version(),
   'CHECK_MAJOR_VERSION' : check_version.split('.')[0],
   'CHECK_MINOR_VERSION' : check_version.split('.')[1],
   'CHECK_MICRO_VERSION' : check_version.split('.')[2],
 })
 
 cc = meson.get_compiler('c')
+cdata.set10('HAVE_PTHREAD', cc.has_header('pthread.h'))
 
 ###############################################################################
 # Per-compiler/platform additional flags
@@ -50,7 +48,7 @@ check_headers = [
   'strings.h',
   'string.h',
   'sys/stat.h',
-  'sys/time.h',
+# 'sys/time.h',
   'sys/types.h',
   'sys/wait.h',
   'time.h',
@@ -59,106 +57,43 @@ check_headers = [
 ]
 
 foreach h : check_headers
-  if cc.has_header(h)
-    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
-  endif
+  cdata.set10('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
 ###############################################################################
 check_functions = [
-  ['HAVE_CLOCK_GETTIME', 'clock_gettime', '#include <time.h>'],
-  ['HAVE_DECL_ALARM', 'alarm', '#include <unistd.h>'],
-  ['HAVE_DECL_LOCALTIME_R', 'localtime_r', '#include <time.h>'],
-  ['HAVE_DECL_SETENV', 'setenv', '#include <stdlib.h>'],
-  ['HAVE_DECL_STRDUP', 'strdup', '#include <string.h>'],
-  ['HAVE_DECL_STRSIGNAL', 'strsignal', '#include <signal.h>'],
-  ['HAVE_FORK', 'fork', '#include <unistd.h>'],
-  ['HAVE_GETLINE', 'getline', '#include <stdio.h>'],
-  ['HAVE_GETPID', 'getpid', '#include <unistd.h>'],
-  ['HAVE_GETTIMEOFDAY', 'gettimeofday', '#include <sys/time.h>'],
-  ['HAVE_MALLOC', 'malloc', '#include <stdlib.h>'],
-  ['HAVE_MKSTEMP', 'mkstemp', '#include <stdlib.h>'],
-  ['HAVE_REALLOC', 'realloc', '#include <stdlib.h>'],
-  ['HAVE_REGCOMP', 'regcomp', '#include <regex.h>'],
-  ['HAVE_REGEXEC', 'regexec', '#include <regex.h>'],
-  ['HAVE_SIGACTION', 'sigaction', '#include <signal.h>'],
-  ['HAVE_SNPRINTF', 'snprintf', '#include <stdio.h>'],
-  ['HAVE_VASPRINTF', 'vasprintf', '#include <stdio.h>'],
-  ['HAVE_VA_COPY', 'va-copy', '#include <stdarg.h>'],
-  ['HAVE_VSNPRINTF', 'vsnprintf', '#include <stdio.h>'],
+  'clock_gettime',
+  'fork',
+  'getline',
+  'getpid',
+  'gettimeofday',
+  'malloc',
+  'mkstemp',
+  'realloc',
+  'regcomp',
+  'regexec',
+  'sigaction',
+  'snprintf',
+  'vasprintf',
+  'va-copy',
+  'vsnprintf',
 ]
 
 foreach f : check_functions
-  variable = f[0]
-  function = f[1]
-  header = f[2]
-  if cc.has_function(function, prefix : header)
-    cdata.set(variable, 1)
-  endif
+  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
-
-# Some check-specific definitions
-if not cdata.has('HAVE_VSNPRINTF') and not cdata.has('HAVE_SNPRINTF')
-  cdata.set('snprintf', 'rpl_snprintf')
-  add_project_arguments('-Dsnprintf=rpl_snprintf', language : 'c')
-  cdata.set('vsnprintf', 'rpl_vsnprintf')
-  add_project_arguments('-Dvsnprintf=rpl_vsnprintf', language : 'c')
-else
-  cdata.set('HAVE_SNPRINTF', 1)
-  add_project_arguments('-DHAVE_SNPRINTF=1', language : 'c')
-  cdata.set('HAVE_VSNPRINTF', 1)
-  add_project_arguments('-DHAVE_VSNPRINTF=1', language : 'c')
-endif
-
-if cdata.has('HAVE_FORK')
-  cdata.set('HAVE_FORK', 1)
-  add_project_arguments('-DHAVE_FORK=1', language : 'c')
-else
-  cdata.set('HAVE_FORK', 0)
-  add_project_arguments('-DHAVE_FORK=0', language : 'c')
-endif
-
-if cdata.has('HAVE_MKSTEMP')
-  cdata.set('HAVE_MKSTEMP', 1)
-  add_project_arguments('-DHAVE_MKSTEMP=1', language : 'c')
-else
-  cdata.set('HAVE_MKSTEMP', 0)
-  add_project_arguments('-DHAVE_MKSTEMP=0', language : 'c')
-endif
-
-if cdata.has('HAVE_DECL_ALARM')
-  cdata.set('HAVE_DECL_ALARM', 1)
-  add_project_arguments('-DHAVE_DECL_ALARM=1', language : 'c')
-else
-  cdata.set('HAVE_DECL_ALARM', 0)
-  add_project_arguments('-DHAVE_DECL_ALARM=0', language : 'c')
-endif
-
-if cdata.has('HAVE_REGCOMP') and cdata.has('HAVE_REGEXEC')
-  cdata.set('HAVE_REGEX', 1)
-  add_project_arguments('-DHAVE_REGEX=1', language : 'c')
-  cdata.set('ENABLE_REGEX', 1)
-  add_project_arguments('-DENABLE_REGEX=1', language : 'c')
-endif
-# /Some check-specific definitions
+foreach d : [ 'alarm', 'localtime_r', 'setenv', 'strdup', 'strsignal']
+  cdata.set10('HAVE_DECL_@0@'.format(d.underscorify().to_upper()), cc.has_function(d))
+endforeach
 
 ###############################################################################
 # Check for integer types
 
-cdata.set('SIZEOF_CHAR', cc.sizeof('char'))
-cdata.set('SIZEOF_INT', cc.sizeof('int'))
-cdata.set('SIZEOF_LONG', cc.sizeof('long'))
-cdata.set('SIZEOF_SHORT', cc.sizeof('short'))
-cdata.set('SIZEOF_VOIDP', cc.sizeof('void*'))
-cdata.set('SIZE_OF_SHORT', cc.sizeof('short'))
-cdata.set('SIZE_OF_INT', cc.sizeof('int'))
-cdata.set('SIZE_OF_LONG', cc.sizeof('long'))
-cdata.set('SIZE_OF_LONG_LONG', cc.sizeof('long long'))
-cdata.set('SIZE_OF_UNSIGNED_SHORT', cc.sizeof('unsigned short'))
-cdata.set('SIZE_OF_UNSIGNED', cc.sizeof('unsigned'))
-cdata.set('SIZE_OF_UNSIGNED_LONG', cc.sizeof('unsigned long'))
-cdata.set('SIZE_OF_UNSIGNED_LONG_LONG', cc.sizeof('unsigned long long'))
+foreach t : [ 'short', 'int', 'long', 'long long', 'unsigned short', 'unsigned', 'unsigned long', 'unsigned long long' ]
+  u = t.underscorify().to_upper()
+  cdata.set('SIZE_OF_@0@_CODE'.format(u), '#define SIZE_OF_@0@ @1@'.format(u, cc.sizeof(t)))
+endforeach
 
 cdata.set('__INT64', cc.sizeof('__int64'))
 cdata.set('UNSIGNED__INT64', cc.sizeof('unsigned __int64'))
@@ -175,16 +110,14 @@ cdata.set('UINTMAX_T', cc.sizeof('uintmax_t', prefix: '#include <stdint.h>'))
 
 if not cc.has_type('clock_t', prefix : '#include <time.h>')
   cdata.set('clock_t', 'int')
-  cdata.set('CLOCK_T', cc.sizeof('int'))
-else
-  cdata.set('CLOCK_T', cc.sizeof('clock_t', prefix : '#include <time.h>'))
 endif
 
 if not cc.has_type('clockid_t', prefix : '#include <time.h>')
   cdata.set('clockid_t', 'int')
-  cdata.set('CLOCKID_T', cc.sizeof('int'))
-else
-  cdata.set('CLOCKID_T', cc.sizeof('clock_t', prefix : '#include <time.h>'))
+endif
+
+if not cc.has_type('timer_t', prefix : '#include <time.h>\n#include <sys/time.h>')
+  cdata.set('timer_t', 'int')
 endif
 
 if cc.has_type('size_t', prefix: '#include <stddef.h>')
@@ -226,15 +159,6 @@ elif host_machine.system() == 'windows'
   cdata.set('PID_T', cc.sizeof('int'))
 else
   error('pid_t doesn\'t exist on this platform?')
-endif
-
-if cc.has_type('timer_t', prefix : '#include <time.h>')
-  cdata.set('TIMER_T', cc.sizeof('timer_t', prefix : '#include <time.h>'))
-elif cc.has_type('timer_t', prefix : '#include <sys/time.h>')
-  cdata.set('TIMER_T', cc.sizeof('timer_t', prefix : '#include <sys/time.h>'))
-else
-  cdata.set('timer_t', 'int')
-  cdata.set('TIMER_T', cc.sizeof('int'))
 endif
 
 ###############################################################################
@@ -348,7 +272,13 @@ endif
 
 ###############################################################################
 # Generate "config.h" from "cmake/config.h.in"
-subdir('internal')
+configure_file(input: 'cmake/config.h.in',
+  output: 'config.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
+
+confinc = include_directories('.')
 
 subdir('lib')
 subdir('src')
