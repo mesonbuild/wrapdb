@@ -1,16 +1,16 @@
-configure_file(input: 'tiffconf.h.meson',
+configure_file(
+  input: 'tiffconf.h.cmake.in',
   output: 'tiffconf.h',
-  configuration: cdata)
+  format: 'cmake@',
+  configuration: cdata
+)
 
-configure_file(input: 'tif_config.h.meson',
+configure_file(
+  input: 'tif_config.h.cmake.in',
   output: 'tif_config.h',
-  configuration: cdata)
-
-if host_machine.system() == 'windows'
-    platform_src = ['tif_win32.c']
-else
-    platform_src = ['tif_unix.c']
-endif
+  format: 'cmake@',
+  configuration: cdata
+)
 
 tiff4_lib = library('tiff4',
     'tif_aux.c',
@@ -53,8 +53,8 @@ tiff4_lib = library('tiff4',
     'tif_write.c',
     'tif_zip.c',
     'tif_zstd.c',
-    platform_src,
+    'tif_@0@.c'.format(host_machine.system() == 'windows' ? 'win32' : 'unix'),
     install: true,
-    dependencies: cc.find_library('m', required: false),
+    dependencies: [m_dep, jbig_dep, jpeg_dep, lerc_dep, lzma_dep, webp_dep, zlib_dep, zstd_dep],
     vs_module_defs: 'libtiff.def',
 )
