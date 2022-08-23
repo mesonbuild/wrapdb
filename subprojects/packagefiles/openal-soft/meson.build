@@ -226,7 +226,9 @@ if cdata.get('HAVE_SSE4_1')
 endif
 
 if cdata.get('HAVE_NEON')
-  openal_args += '-mfpu=neon'
+  if cpp.sizeof('void*') == 4
+    openal_args += '-mfpu=neon'
+  endif
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
