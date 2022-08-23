@@ -1,1 +1,7 @@
-option('shared_lib', type : 'boolean', value : false)
+option('libedit', type: 'feature',
+  description: 'Build with libedit support'
+)
+
+option('libreadline', type: 'feature',
+  description: 'Build with libreadline support'
+)

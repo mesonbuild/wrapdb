@@ -1,5 +1,8 @@
 project('pcre', 'c')
 
+libedit_dep = dependency('libedit', required: get_option('libedit'))
+readline_dep = dependency('readline', required: get_option('libreadline'))
+
 cc = meson.get_compiler('c')
 native_cc = meson.get_compiler('c', native : true)
 
@@ -28,10 +31,75 @@ if native_cc.get_id() == 'msvc'
   ])
 endif
 
-# put config.h in an internal directory so
-# users don't include it by accident
-subdir('internal')
-conf_inc = include_directories('internal')
+cdata = configuration_data()
+
+check_headers = [
+  'dirent.h',
+  'inttypes.h',
+  'stdint.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'unistd.h',
+  'windows.h',
+]
+
+foreach h : check_headers
+  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+endforeach
+
+check_functions = [
+  'bcopy',
+  'memmove',
+  'strerror',
+  'strtoimax',
+  'strtoll',
+  'strtoq',
+  '_strtoi64',
+]
+
+foreach f : check_functions
+  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+endforeach
+
+foreach t : [ 'long long', 'unsigned long long' ]
+  cdata.set('HAVE_@0@'.format(t.underscorify().to_upper()), cc.has_type(t))
+endforeach
+
+cdata.set('NEWLINE', 10) # Currently unix only.
+cdata.set('PCREGREP_BUFSIZE', 20480)
+cdata.set('PCRE_LINK_SIZE', 2)
+cdata.set('PCRE_MATCH_LIMIT', 10000000)
+cdata.set('PCRE_MATCH_LIMIT_RECURSION', 'MATCH_LIMIT')
+cdata.set('PCRE_PARENS_NEST_LIMIT', 250)
+cdata.set('PCRE_POSIX_MALLOC_THRESHOLD', 10)
+cdata.set('PCRE_STATIC', get_option('default_library') == 'static')
+
+cdata.set('SUPPORT_PCRE8', true)
+cdata.set('SUPPORT_PCRE16', false)
+cdata.set('SUPPORT_PCRE32', false)
+cdata.set('SUPPORT_JIT', true)
+cdata.set('SUPPORT_PCREGREP_JIT', true)
+cdata.set('SUPPORT_UTF', true)
+cdata.set('SUPPORT_UCP', true)
+cdata.set('EBCDIC', false)
+cdata.set('EBCDIC_NL25', false)
+cdata.set('BSR_ANYCRLF', false)
+cdata.set('NO_RECURSE', false)
+
+cdata.set('SUPPORT_LIBBZ2', false)
+cdata.set('SUPPORT_LIBZ', false)
+cdata.set('SUPPORT_LIBEDIT', libedit_dep.found())
+cdata.set('SUPPORT_LIBREADLINE', readline_dep.found())
+
+cdata.set('SUPPORT_VALGRIND', false)
+cdata.set('SUPPORT_GCOV', false)
+
+cfile = configure_file(
+  input: 'config-cmake.h.in',
+  output: 'config.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
 
 versiondata = configuration_data()
 versiondata.set('PCRE_MAJOR', 8)
@@ -69,7 +137,6 @@ pcre8_sources = [
 dftables = executable('dftables',
   'dftables.c',
   c_args : native_compile_args,
-  include_directories : conf_inc,
   # For cross-compilation this target needs to run on the build machine. It is
   # only used for the custom_target below. See:
   # http://mesonbuild.com/Cross-compilation.html#mixing-host-and-build-targets
@@ -80,24 +147,22 @@ char_tables = custom_target('chartables',
   output : 'pcre_chartables.c',
   command : [dftables, '@OUTPUT@'])
 
-pcre8 = build_target('pcre',
+pcre8 = library('pcre',
   pcre8_sources, char_tables,
-  c_args : compile_args,
-  target_type : libtype,
-  include_directories : conf_inc)
+  c_args: compile_args,
+)
 
-pcre_posix = build_target('pcreposix',
+pcre_posix = library('pcreposix',
   'pcreposix.c',
-  c_args : compile_args,
-  target_type : libtype,
-  link_with : pcre8,
-  include_directories : conf_inc)
+  c_args: compile_args,
+  link_with: pcre8,
+)
 
 pcretest = executable('pcretest',
   'pcretest.c', 'pcre_printint.c',
-  c_args : compile_args,
-  link_with : [pcre8, pcre_posix],
-  include_directories : conf_inc,
+  c_args: compile_args,
+  dependencies: [ libedit_dep, readline_dep ],
+  link_with: [pcre8, pcre_posix],
 )
 # Running test not added yet because it is
 # complicated.
