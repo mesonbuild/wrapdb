@@ -136,6 +136,10 @@ xxhash_dep = declare_dependency(
     ],
 )
 
+if meson.version().version_compare('>=0.54.0')
+    meson.override_dependency('libxxhash', xxhash_dep)
+endif
+
 if get_option('cli')
     install_man('cli/xxhsum.1')
 
@@ -167,4 +171,6 @@ if get_option('cli')
         ],
         install: true,
     )
+
+    meson.override_find_program('xxhsum', xxhsum)
 endif
