@@ -3,13 +3,13 @@ option('cpu-little-endian', type: 'feature', value: 'auto',
     description: 'Force endianness')
 option('dispatch', type: 'boolean', value: false,
     description: 'See DISPATCH=1 for information about xxh_x86dispatch.c')
-option('force-align-check', type: 'boolean', value: false,
+option('force-align-check', type: 'feature', value: 'auto',
     description: 'Use a faster direct read path when input is aligned')
 option('force-memory-access', type: 'combo', choices: ['default', 'attribute', 'unaligned-reads', 'byteshift'],
     value: 'default', description: 'See XXH_FORCE_MEMORY_ACCESS')
 option('inline-all', type: 'boolean', value: false,
     description: 'Make all functions inline')
-option('inline-hints', type: 'boolean', value: false,
+option('inline-hints', type: 'feature', value: 'auto',
     description: 'See XXH_NO_INLINE_HINTS')
 option('long-long', type: 'boolean', value: true,
     description: 'Include compilation of algorithms relying on 64-bit types')
