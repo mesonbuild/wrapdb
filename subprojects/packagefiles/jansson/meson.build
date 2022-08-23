@@ -1,19 +1,12 @@
-project('jansson', 'c', version : '2.13', license : 'MIT')
+project('jansson', 'c', version : '2.14', license : 'MIT')
 
 cc = meson.get_compiler('c')
-cdata = configuration_data()
+pdata = configuration_data()
 check_headers = [
-  'dlfcn.h',
   'endian.h',
   'fcntl.h',
-  'inttypes.h',
   'locale.h',
-  'memory.h',
   'sched.h',
-  'stdint.h',
-  'stdlib.h',
-  'strings.h',
-  'string.h',
   'sys/param.h',
   'sys/stat.h',
   'sys/time.h',
@@ -22,62 +15,70 @@ check_headers = [
 ]
 
 foreach h : check_headers
-  if cc.has_header(h)
-    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
-  endif
+  pdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-check_functions = [
-# check token ('HAVE_ATOMIC_BUILTINS',)
-# check token ('HAVE_CLOSE',)
-  ['HAVE_GETPID', 'getpid', '#include<unistd.h>'],
-  ['HAVE_GETTIMEOFDAY', 'gettimeofday', '#include<sys/time.h>'],
-# check token ('HAVE_LOCALECONV',)
-# check token ('HAVE_LONG_LONG_INT',)
-# check token ('HAVE_OPEN',)
-# check token ('HAVE_READ',)
-# check token ('HAVE_SCHED_YIELD',)
-  ['HAVE_STRTOLL', 'strtoll', '#include<stdlib.h>'],
-# check token ('HAVE_SYNC_BUILTINS',)
-# check token ('HAVE_UNSIGNED_LONG_LONG_INT',)
-]
+pdata.set10('HAVE_STDINT_H', cc.has_header('stdint.h'))
 
-foreach f : check_functions
-  if cc.has_function(f.get(1), prefix : f.get(2))
-    cdata.set(f.get(0), 1)
-  endif
+foreach f : [ 'close', 'getpid', 'gettimeofday', 'open', 'read', 'sched_yield', 'setlocale', 'strtoll' ]
+  pdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+endforeach
+
+foreach t : [ 'int32', 'uint32', 'uint16', 'uint8' ]
+  pdata.set('HAVE_@0@_T'.format(t.underscorify().to_upper()), cc.has_type(t + '_t', prefix: '#include <stdint.h>'))
+endforeach
+
+pdata.set('HAVE_SSIZE_T', cc.has_type('ssize_t', prefix: '#include <sys/types.h>'))
+
+pdata.set('JANSSON_INITIAL_HASHTABLE_ORDER', 3)
+pdata.set('JSON_INT32', 'int32_t')
+pdata.set('JSON_UINT32', 'uint32_t')
+pdata.set('JSON_UINT16', 'uint16_t')
+pdata.set('JSON_UINT8', 'uint8_t')
+pdata.set('JSON_SSIZE', 'long')
+
+pdata.set('USE_URANDOM', host_machine.system() != 'windows')
+pdata.set('USE_WINDOWS_CRYPTOAPI', host_machine.system() == 'windows')
+
+cdata = configuration_data()
+
+foreach h : [ 'stdint.h', 'inttypes.h', 'sys/types.h' ]
+  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
 foreach f : ['inline', '__inline', '']
   if cc.compiles(f + ' void func() {}')
-    cdata.set('json_inline', f)
+    cdata.set('JSON_INLINE', f)
     break
   endif
 endforeach
 
-if cc.sizeof('long long int') > 0
-  cdata.set('json_have_long_long', 1)
-  cdata.set('HAVE_LONG_LONG_INT', 1)
-else
-  cdata.set('json_have_long_long', 0)
-endif
+cdata.set('JSON_INT_T', 'int64_t')
+cdata.set('JSON_STRTOINT', 'strtoll')
+cdata.set_quoted('JSON_INTEGER_FORMAT', 'PRId64')
 
 # FIXME: These variables set features to be explicitly disabled. The tests for
 # these are missing from the check_functions block above and are also prefixed
 # by 'json_'. Also these are used by an extra 'src/jansson_config.h.in' file.
 # This means we may miss out on some platform specific performance improvemnts.
 cdata.set('var', 'var') # avoid warning; bogus variable found in comment.
-cdata.set('json_have_localeconv', 0)
-cdata.set('json_have_atomic_builtins', 0)
-cdata.set('json_have_sync_builtins', 0)
+cdata.set('JSON_HAVE_LOCALECONV', 0)
+cdata.set('JSON_HAVE_ATOMIC_BUILTINS', 0)
+cdata.set('JSON_HAVE_SYNC_BUILTINS', 0)
 
-configure_file(input : 'config.h.meson',
-  output : 'jansson_private_config.h',
-  configuration : cdata)
+configure_file(
+  input: 'cmake/jansson_private_config.h.cmake',
+  output: 'jansson_private_config.h',
+  format: 'cmake@',
+  configuration: pdata,
+)
 
-configure_file(input : 'src/jansson_config.h.in',
-  output : 'jansson_config.h',
-  configuration : cdata)
+configure_file(
+  input: 'cmake/jansson_config.h.cmake',
+  output: 'jansson_config.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
 
 jansson_lib = library('jansson',
   'src/dump.c',
