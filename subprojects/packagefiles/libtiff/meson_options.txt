@@ -1,0 +1,27 @@
+option('jbig', type: 'feature',
+  description: 'Build with libjbig support'
+)
+
+option('jpeg', type: 'feature',
+  description: 'Build with libjpeg support'
+)
+
+option('lerc', type: 'feature',
+  description: 'Build with liblerc support'
+)
+
+option('lzma', type: 'feature',
+  description: 'Build with liblzma support'
+)
+
+option('webp', type: 'feature',
+  description: 'Build with libwebp support'
+)
+
+option('zlib', type: 'feature',
+  description: 'Build with zlib support'
+)
+
+option('zstd', type: 'feature',
+  description: 'Build with libzstd support'
+)
