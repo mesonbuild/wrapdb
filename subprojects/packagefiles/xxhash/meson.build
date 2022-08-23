@@ -39,8 +39,8 @@ if get_option('force-memory-access') != 'default'
     c_args += '-DXXH_FORCE_MEMORY_ACCESS=@0@'.format(force_memory_access[get_option('force-memory-access')])
 endif
 
-if get_option('force-align-check')
-    c_args += '-DXXH_FORCE_ALIGN_CHECK'
+if not get_option('force-align-check').auto()
+    c_args += '-DXXH_FORCE_ALIGN_CHECK=@0@'.format(get_option('force-align-check').enabled() ? 1 : 0)
 endif
 
 if get_option('vector') != 'default'
@@ -55,18 +55,16 @@ if get_option('prefetch-dist') > 0
     c_args += '-DXXH_PREFETCH_DIST=@0@'.format(get_option('prefetch-dist'))
 endif
 
-if get_option('inline-hints')
-    c_args += '-DXXH_INLINE_HINTS'
+if not get_option('inline-hints').auto()
+    c_args += '-DXXH_NO_INLINE_HINTS=@0@'.format(get_option('inline-hints').enabled() ? 0 : 1)
 endif
 
 if not get_option('long-long')
     c_args += '-DXXH_NO_LONG_LONG'
 endif
 
-if get_option('cpu-little-endian').enabled()
-    c_args += '-DXXH_CPU_LITTLE_ENDIAN=1'
-elif get_option('cpu-little-endian').disabled()
-    c_args += '-DXXH_CPU_LITTLE_ENDIAN=0'
+if not get_option('cpu-little-endian').auto()
+    c_args += '-DXXH_CPU_LITTLE_ENDIAN=@0@'.format(get_option('cpu-little-endian').enabled() ? 1 : 0)
 endif
 
 if host_machine.system() == 'windows'
