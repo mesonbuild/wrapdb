@@ -55,7 +55,10 @@ if get_option('prefetch-dist') > 0
     c_args += '-DXXH_PREFETCH_DIST=@0@'.format(get_option('prefetch-dist'))
 endif
 
-if not get_option('inline-hints').auto()
+if cc.get_id() == 'gcc' and cc.version().version_compare('>=12.0.0') and get_option('optimization') == 'g'
+    c_args += '-DXXH_NO_INLINE_HINTS=1'
+    message('Ignoring value of inline-hints, see https://github.com/Cyan4973/xxHash/pull/720')
+elif not get_option('inline-hints').auto()
     c_args += '-DXXH_NO_INLINE_HINTS=@0@'.format(get_option('inline-hints').enabled() ? 0 : 1)
 endif
 
