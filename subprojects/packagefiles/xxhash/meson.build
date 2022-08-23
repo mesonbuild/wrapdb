@@ -2,7 +2,7 @@ project(
     'xxHash',
     ['c'],
     # library files are BSD licensed. xxhsum utility is GPL licensed.
-    license: ['BSD-2-Clause', 'GPL-2.0'],
+    license: 'BSD-2-Clause and GPL-2.0',
     version: '0.8.1',
 )
 
