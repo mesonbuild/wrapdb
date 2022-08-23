@@ -4,6 +4,7 @@ project(
     # library files are BSD licensed. xxhsum utility is GPL licensed.
     license: 'BSD-2-Clause and GPL-2.0',
     version: '0.8.1',
+    meson_version: '>=0.49.0'
 )
 
 cc = meson.get_compiler('c')
