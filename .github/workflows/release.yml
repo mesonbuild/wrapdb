@@ -5,6 +5,11 @@ on:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.workflow }}
+  # We do NOT want `cancel-in-progress` here since only one website job
+  # should run at a time to avoid upload race conditions.
+
 jobs:
   create_release:
     runs-on: ubuntu-latest
