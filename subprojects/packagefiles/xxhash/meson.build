@@ -87,16 +87,6 @@ if host_machine.system() == 'windows'
         c_build_args += '-DXXH_EXPORT'
         c_use_args += '-DXXH_IMPORT'
     endif
-    if cc.get_id().contains('clang') 
-        c_args += [
-            # XXX xxhsum.c:1540:38: warning: comparison of integers of different signs: 'const AlgoSelected' and 'unsigned long long' [-Wsign-compare]
-            # see: https://github.com/Cyan4973/xxHash/issues/588
-            '-Wno-sign-compare',
-            # XXX xxhash.h:3503:1: warning: unused function 'XXH3_accumulate_512_scalar' [-Wunused-function]
-            # see: https://github.com/Cyan4973/xxHash/issues/556
-            '-Wno-unused-function',
-        ]
-    endif
 endif
 
 pkgconfig_data = configuration_data({
