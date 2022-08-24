@@ -15,10 +15,6 @@ option('prefetch-dist', type: 'integer', value: 0,
     description: 'Select prefetching distance. XXH3 only')
 option('inline-hints', type: 'boolean', value: true,
     description: 'See XXH_NO_INLINE_HINTS')
-option('reroll', type: 'boolean', value: false,
-    description: 'Reduces the size of the generated code by not unrolling some loops')
-option('accept-null-input-pointer', type: 'boolean', value: false,
-    description: 'Prevent dereferencing of a NULL pointer')
 option('long-long', type: 'boolean', value: true,
     description: 'Include compilation of algorithms relying on 64-bit types')
 option('cpu-little-endian', type: 'feature', value: 'auto',
