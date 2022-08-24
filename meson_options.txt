@@ -1,2 +1,3 @@
 option('wraps', type: 'array', value: [])
-option('depvars', type: 'array', value: [])
+option('depnames', type: 'array', value: [])
+option('prognames', type: 'array', value: [])
