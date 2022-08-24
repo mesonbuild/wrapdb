@@ -5,6 +5,7 @@ on:
       fatal_warnings:
         description: 'Build with --fatal-meson-warning (yes/no)'
         default: 'no'
+        required: false
   schedule:
     # Run every Sunday at midnight
     - cron: '0 0 * * 0'
