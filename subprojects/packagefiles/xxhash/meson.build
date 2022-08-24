@@ -81,9 +81,7 @@ endif
 
 if host_machine.system() == 'windows'
     c_args += '-DWIN32'
-endif
 
-if host_machine.system() == 'windows'
     # On Windows/MinGW, we need to define -DXXH_EXPORT and -DXXH_IMPORT
     if get_option('default_library') != 'static'
         c_build_args += '-DXXH_EXPORT'
