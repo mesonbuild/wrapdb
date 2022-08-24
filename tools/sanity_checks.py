@@ -175,6 +175,7 @@ class TestReleases(unittest.TestCase):
                 with self.subTest(step='have_same_provides'):
                     progs = []
                     deps = []
+                    depvars = []
                     if 'provide' in config.sections():
                         provide = config['provide']
                         progs = [i.strip() for i in provide.get('program_names', '').split(',')]
@@ -182,6 +183,7 @@ class TestReleases(unittest.TestCase):
                         for k in provide:
                             if k not in {'dependency_names', 'program_names'}:
                                 deps.append(k.strip())
+                                depvars.append(provide[k].strip())
                     progs = [i for i in progs if i]
                     deps = [i for i in deps if i]
                     self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
@@ -207,7 +209,7 @@ class TestReleases(unittest.TestCase):
                             self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
-                            self.check_new_release(name)
+                            self.check_new_release(name, deps=depvars)
                             with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                 self.assertNotIn(name, self.skip)
                             self.check_meson_version(name, ver, patch_path)
@@ -254,7 +256,7 @@ class TestReleases(unittest.TestCase):
         self.assertTrue(version in source_url or version_ in source_url,
                         f'Version {version} not found in {source_url}')
 
-    def check_new_release(self, name: str, builddir: str = '_build'):
+    def check_new_release(self, name: str, builddir: str = '_build', deps=None):
         system = platform.system().lower()
         ci = self.ci_config.get(name, {})
         # kept for backwards compatibility
@@ -264,6 +266,7 @@ class TestReleases(unittest.TestCase):
             return
 
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
+        options.append('-Ddepvars={}'.format(','.join(deps or [])))
         if ci.get('fatal_warnings', True) and self.fatal_warnings:
             options.append('--fatal-meson-warnings')
         options += [f'-D{o}' for o in ci.get('build_options', [])]

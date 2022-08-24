@@ -6,8 +6,14 @@ project('wrapdb',
 wraps = get_option('wraps')
 
 foreach w : wraps
-  subproject(w)
+  sub = subproject(w)
+  if wraps.length() == 1
+    foreach d: get_option('depvars')
+      v = sub.get_variable(d)
+    endforeach
+  endif
 endforeach
+
 
 run_target('update',
   command: ['meson', 'subprojects', 'update', '--sourcedir', meson.current_source_dir(), '--reset'] + wraps,
