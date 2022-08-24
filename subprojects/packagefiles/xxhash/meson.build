@@ -59,14 +59,6 @@ if get_option('inline-hints')
     c_args += '-DXXH_INLINE_HINTS'
 endif
 
-if get_option('reroll')
-    c_args += '-DXXH_REROLL'
-endif
-
-if get_option('accept-null-input-pointer')
-    c_args += '-DXXH_ACCEPT_NULL_INPUT_POINTER'
-endif
-
 if not get_option('long-long')
     c_args += '-DXXH_NO_LONG_LONG'
 endif
