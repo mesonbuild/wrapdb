@@ -6,4 +6,4 @@ source_hash = e076ba3439cb7cfc45b908c869f51a8c89f3c9ee9ee982fde28849c015e723a7
 patch_directory = liblzma
 
 [provide]
-liblzma = liblzma_dep
+liblzma = lzma_dep
