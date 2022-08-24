@@ -28,6 +28,10 @@ c_args = []
 c_build_args = []
 c_use_args = []
 
+if get_option('32-endjmp')
+    c_args += '-DXXH32_ENDJMP'
+endif
+
 if get_option('inline-all')
     c_args += '-DXXH_INLINE_ALL'
 endif
@@ -69,6 +73,10 @@ endif
 
 if not get_option('cpu-little-endian').auto()
     c_args += '-DXXH_CPU_LITTLE_ENDIAN=@0@'.format(get_option('cpu-little-endian').enabled() ? 1 : 0)
+endif
+
+if not get_option('xxh3')
+    c_args += '-DXXH_NO_XXH3'
 endif
 
 if host_machine.system() == 'windows'
