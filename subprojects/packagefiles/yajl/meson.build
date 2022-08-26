@@ -1,4 +1,9 @@
 project('YetAnotherJSONParser', 'c', version: '2.1.0')
+
+if get_option('default_library') != 'static'
+  add_project_arguments('-DYAJL_SHARED', language: 'c')
+endif
+
 version = configuration_data({
   'YAJL_MAJOR': 2,
   'YAJL_MINOR': 1,
