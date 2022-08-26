@@ -1271,6 +1271,17 @@
       "3.0.6-1"
     ]
   },
+  "mm-common": {
+    "dependency_names": [
+      "mm-common-libstdc++"
+    ],
+    "program_names": [
+      "mm-common-get"
+    ],
+    "versions": [
+      "1.0.4-1"
+    ]
+  },
   "mocklibc": {
     "versions": [
       "1.0-2"
