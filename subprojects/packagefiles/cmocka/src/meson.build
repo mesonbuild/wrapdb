@@ -26,9 +26,8 @@ libcmocka = library(
   vs_module_defs : 'cmocka.def',
   soversion : host_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version : lib_version,
-  install : get_option('buildtype') != 'static',
+  install : true,
   override_options : _overrides,
-  build_by_default: false,
 )
 
 libcmocka_native = library(
