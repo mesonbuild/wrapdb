@@ -27,8 +27,7 @@
     "ludocode-mpack",
     "m4",
     "miniz",
-    "tinyply",
-    "yajl"
+    "tinyply"
   ],
   "broken_darwin": [
     "arduinocore-avr",
