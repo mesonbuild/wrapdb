@@ -38,6 +38,8 @@ flac_dep = dependency('flac', required: get_option('external_libs'))
 vorbis_dep = dependency('vorbis', required: get_option('external_libs'))
 vorbisenc_dep = dependency('vorbisenc', required: get_option('external_libs'))
 opus_dep = dependency('opus', required: get_option('external_libs'))
+sndio_dep = dependency('sndio', required: get_option('external_libs'))
+cdata.set10('HAVE_SNDIO_H', sndio_dep.found())
 cdata.set10('HAVE_EXTERNAL_XIPH_LIBS', flac_dep.found() and ogg_dep.found() and vorbis_dep.found() and vorbisenc_dep.found() and opus_dep.found())
 cdata.set10('CPU_CLIPS_POSITIVE', get_option('cpu_clip'))
 cdata.set10('CPU_CLIPS_NEGATIVE', get_option('cpu_clip'))
@@ -50,7 +52,7 @@ cdata.set('TYPEOF_SF_COUNT_T', 'int64_t')
 cdata.set('SF_COUNT_MAX', 'INT64_MAX')
 
 headers = [
-  'alsa/asoundlib.h', 'byteswap.h', 'dlfcn.h', 'endian.h', 'immintrin.h', 'inttypes.h', 'locale.h', 'memory.h', 'sndio.h', 'stdbool.h', 'stdint.h',
+  'alsa/asoundlib.h', 'byteswap.h', 'dlfcn.h', 'endian.h', 'immintrin.h', 'inttypes.h', 'locale.h', 'memory.h', 'stdbool.h', 'stdint.h',
   'stdlib.h', 'strings.h', 'string.h', 'sys/stat.h', 'sys/time.h', 'sys/types.h', 'sys/wait.h', 'unistd.h',
 ]
 
@@ -221,7 +223,7 @@ libsndfile = library('sndfile',
   version: meson.project_version(),
   vs_module_defs: 'src/libsndfile-1.def',
   link_args: link_args,
-  dependencies: [ mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep ],
+  dependencies: [ mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep, sndio_dep ],
   install: true,
 )
 
