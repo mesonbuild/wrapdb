@@ -315,7 +315,7 @@ pkg.generate(xml2lib,
              description: 'libXML library version2.',
              filebase: 'libxml-2.0',
              subdirs: 'libxml2',
-             variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')),
+             variables: ['modules=@0@'.format(withcdata.get('WITH_MODULES'))],
              extra_cflags: libxml_static_args)
 
 
