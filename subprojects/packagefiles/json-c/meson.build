@@ -7,6 +7,10 @@ project('json-c', 'c',
 
 cc = meson.get_compiler('c')
 
+if get_option('default_library') != 'static'
+  add_project_arguments('-DJSON_C_DLL', language: 'c')
+endif
+
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 if cc.has_argument('-Wno-unused')
   add_project_arguments('-Wno-unused', language: 'c')
