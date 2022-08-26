@@ -1,13 +1,13 @@
 project('taglib', 'cpp',
   version : '1.12',
-  meson_version : '>=0.46.0',
+  meson_version : '>=0.47.0',
   default_options : ['warning_level=0']
 )
 
 cpp = meson.get_compiler('cpp')
 
 add_project_arguments('-DHAVE_CONFIG_H', language : 'cpp')
-if get_option('default_library') == 'static'
+if get_option('default_library') != 'static'
   add_project_arguments('-DMAKE_TAGLIB_LIB', language : 'cpp')
 else
   add_project_arguments('-DTAGLIB_STATIC', language : 'cpp')
@@ -40,8 +40,13 @@ elif cpp.compiles('#include <cstdio> #include <cstdarg> int main() { char buf[20
   cdata.set('HAVE_VSPRINTF_S', 1)
 endif
 
+zlib_dep = dependency('zlib', required: get_option('zlib'))
+cdata.set('HAVE_ZLIB', zlib_dep.found())
+
 cfile = configure_file(
-  output : 'config.h',
+  input: 'config.h.cmake',
+  output: 'config.h',
+  format: 'cmake@',
   configuration : cdata,
 )
 
@@ -294,6 +299,7 @@ taglib = library('tag',
   'taglib/xm/xmfile.cpp',
   'taglib/xm/xmproperties.cpp',
   include_directories : taglib_includes,
+  dependencies: zlib_dep,
   install : true,
   version : '1.18.0',
 )

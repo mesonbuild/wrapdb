@@ -1,0 +1,3 @@
+option('zlib', type: 'feature',
+  description: 'Build with zlib support',
+)
