@@ -1,5 +1,5 @@
 project('libxslt', 'c',
-  version : '1.1.35',
+  version : '1.1.36',
   meson_version: '>=0.54.0')
 
 exslt_version = '0.8.20'
@@ -8,6 +8,8 @@ cc = meson.get_compiler('c')
 config = configuration_data()
 
 headers = [
+  'inttypes.h',
+  'xlocale.h',
   'sys/types.h',
   'sys/time.h',
   'stdlib.h',
@@ -35,21 +37,20 @@ foreach h : headers
 endforeach
 
 functions = [
+  'ftime',
+  'gettimeofday',
+  'gmtime_r',
+  'localtime_r',
+  'snprintf',
   'strxfrm_l',
   'stat',
+  'vsnprintf',
   '_stat',
-  'gettimeofday',
-  'localtime',
-  'localtime_r',
-  'time',
-  'gmtime',
-  'gmtime_r',
-  'ftime',
 ]
 
 foreach f : functions
   if cc.has_function(f)
-    config.set10('HAVE_' + h.underscorify().to_upper(), true)
+    config.set10('HAVE_' + f.underscorify().to_upper(), true)
   endif
 endforeach
 
@@ -60,10 +61,6 @@ if threads_dep.found()
 endif
 
 libm = cc.find_library('m', required : false)
-config.set('HAVE_POW', cc.has_function('pow', dependencies : libm))
-config.set('HAVE_FLOOR', cc.has_function('floor', dependencies : libm))
-config.set('HAVE_FABS', cc.has_function('fabs', dependencies : libm))
-
 librt = cc.find_library('rt', required : false)
 config.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', dependencies : librt))
 
@@ -95,7 +92,10 @@ with_modules = libxml2_dep.get_variable(
   internal : 'modules',
   default_value : '0').to_int() != 0
 
-configure_file(output : 'config.h',
+configure_file(
+  input: 'config.h.cmake.in',
+  output : 'config.h',
+  format: 'cmake@',
   configuration : config,
 )
 
