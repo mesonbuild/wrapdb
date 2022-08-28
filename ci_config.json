@@ -125,6 +125,12 @@
       "glib:tests=false"
     ]
   },
+  "glu": {
+    "_comment": "- glvnd is default and only available with Linux",
+    "build_options": [
+      "glu:gl_provider=gl"
+    ]
+  },
   "harfbuzz": {
     "_comment": ["- Currently builds with no warnings other than an incorrect warning() function",
                  "  tracked at https://github.com/harfbuzz/harfbuzz/issues/3378",
