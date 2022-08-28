@@ -1,0 +1,8 @@
+[wrap-file]
+directory = glu-9.0.3
+source_url = https://archive.mesa3d.org/glu/glu-9.0.3.tar.xz
+source_filename = glu-9.0.3.tar.xz
+source_hash = bd43fe12f374b1192eb15fe20e45ff456b9bc26ab57f0eee919f96ca0f8a330f
+
+[provide]
+glu = dep_glu
