@@ -22,9 +22,9 @@
 project(
   'expat',
   'c',
-  license : 'MIT',
-  version : '2.4.8',
-  meson_version : '>= 0.50.0',
+  license: 'MIT',
+  version: '2.4.8',
+  meson_version: '>= 0.49.0',
 )
 
 config = configuration_data()
@@ -33,35 +33,20 @@ cc = meson.get_compiler('c')
 # Define how much context to retain around the current parse point.
 config.set('XML_CONTEXT_BYTES', 1024)
 
-dep_libbsd = dependency('libbsd', required : get_option('use_libbsd'))
-if dep_libbsd.found()
-  config.set('HAVE_LIBBSD', true)
-endif
-
-if dep_libbsd.found()
-  header = 'bsd/stdlib.h'
+dep_libbsd = dependency('libbsd-overlay', required: get_option('use_libbsd'))
+if dep_libbsd.type_name() == 'internal'
+  config.set('HAVE_ARC4RANDOM_BUF', dep_libbsd.found())
+  config.set('HAVE_ARC4RANDOM', dep_libbsd.found())
 else
-  header = 'stdlib.h'
+  config.set('HAVE_ARC4RANDOM_BUF', cc.has_function('arc4random_buf', dependencies: dep_libbsd))
+  config.set('HAVE_ARC4RANDOM', cc.has_function('arc4random', dependencies: dep_libbsd))
 endif
 
-if cc.has_header_symbol(header, 'arc4random_buf')
-  config.set('HAVE_ARC4RANDOM_BUF', true)
-elif cc.has_header_symbol(header, 'arc4random')
-  config.set('HAVE_ARC4RANDOM', true)
-endif
+config.set('XML_DTD', get_option('xml_dtd'))
+config.set('XML_NS', get_option('xml_ns'))
 
-if get_option('xml_dtd')
-  config.set('XML_DTD', true)
-endif
-if get_option('xml_ns')
-  config.set('XML_NS', true)
-endif
-
-foreach h : ['dlfcn', 'fcntl', 'inttypes', 'memory', 'stdint', 'stdlib',
-             'strings', 'string', 'sys/stat', 'sys/types', 'unistd']
-  if cc.has_header(h + '.h')
-    config.set('HAVE_@0@_H'.format(h.underscorify().to_upper()), true)
-  endif
+foreach h : ['dlfcn', 'fcntl', 'inttypes', 'memory', 'stdint', 'stdlib', 'strings', 'string', 'sys/stat', 'sys/types', 'unistd']
+  config.set('HAVE_@0@_H'.format(h.underscorify().to_upper()), cc.has_header(h + '.h'))
 endforeach
 
 _stdc = true
@@ -71,14 +56,10 @@ foreach h : ['stdlib', 'stdarg', 'string', 'float']
     break
   endif
 endforeach
-if _stdc
-  config.set('STDC_HEADERS', true)
-endif
+config.set('STDC_HEADERS', _stdc)
 
 foreach f : ['getpagesize', 'mmap', 'getrandom']
-  if cc.has_function(f)
-    config.set('HAVE_@0@'.format(f.to_upper()), true)
-  endif
+  config.set('HAVE_@0@'.format(f.to_upper()), cc.has_function(f))
 endforeach
 
 if host_machine.endian() == 'little'
@@ -88,93 +69,67 @@ else
 endif
 
 
-if not (config.get('HAVE_SYS_TYPES_H', false) and
-        cc.has_header_symbol('sys/types.h', 'off_t'))
+if not (config.get('HAVE_SYS_TYPES_H', false) and cc.has_header_symbol('sys/types.h', 'off_t'))
   config.set('off_t', 'long')
 endif
-if not (config.get('HAVE_SYS_TYPES_H', false) and
-        cc.has_header_symbol('sys/types.h', 'size_t'))
+if not (config.get('HAVE_SYS_TYPES_H', false) and cc.has_header_symbol('sys/types.h', 'size_t'))
   config.set('size_t', 'unsigned')
 endif
 
-if cc.compiles('''
-      #include <stdlib.h>       /* for NULL */
-      #include <unistd.h>       /* for syscall */
-      #include <sys/syscall.h>  /* for SYS_getrandom */
-      int main() {
-        syscall(SYS_getrandom, NULL, 0, 0);
-        return 0;
-      }''',
-      name : 'SYS_getrandom',
-    )
-  config.set('HAVE_SYSCALL_GETRANDOM', true)
-endif
+config.set('HAVE_SYSCALL_GETRANDOM', cc.has_header_symbol('sys/syscall.h', 'SYS_getrandom'))
 
 # Install headers
 config_h = configure_file(
-  configuration : config,
-  output : 'expat_config.h',
-  install_dir : get_option('includedir'),
-  install : true,
+  configuration: config,
+  output: 'expat_config.h',
 )
-install_headers('lib/expat.h', 'lib/expat_external.h')
+install_headers('lib/expat.h', 'lib/expat_external.h', config_h)
 
 expat_static_args = []
 
-if get_option('build_tests') or cc.get_id() == 'msvc'
+if get_option('build_tests') or cc.get_argument_syntax() == 'msvc'
   visibility = 'default'
 else
   visibility = 'hidden'
-  add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language : ['c'])
+  add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language: 'c')
 endif
 
-add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language : ['c'])
+add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language: 'c')
 if cc.has_argument('-fno-strict-aliasing')
-  add_project_arguments('-fno-strict-aliasing', language : ['c'])
+  add_project_arguments('-fno-strict-aliasing', language: 'c')
 endif
-if cc.get_id() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language : ['c'])
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language: 'c')
   if get_option('default_library') == 'static'
-    add_project_arguments('-DXML_STATIC', language : ['c'])
-    expat_static_args += ['-DXML_STATIC']
+    add_project_arguments('-DXML_STATIC', language: 'c')
+    expat_static_args += '-DXML_STATIC'
   endif
 endif
 if not ['windows', 'cygwin'].contains(host_machine.system())
   if get_option('use_dev_urandom')
-    add_project_arguments('-DXML_DEV_URANDOM', language : ['c'])
+    add_project_arguments('-DXML_DEV_URANDOM', language: 'c')
   endif
 endif
 
-_files = [
-  files(
-    'lib/xmlparse.c',
-    'lib/xmlrole.c',
-    'lib/xmltok.c',
-  ),
-]
-
-# the lib/libexpat.def file is not valid with mingw, only with mvsc, intel-cl,
-# and clang-cl
-extra_kwargs = {}
-if cc.get_id() != 'gcc'
-  extra_kwargs += {'vs_module_defs' : 'lib/libexpat.def'}
-endif
+incdir = include_directories('lib')
 
 libexpat = library(
   'expat',
-  _files,
-  include_directories : include_directories('lib'),
-  dependencies : dep_libbsd,
-  version : '1.6.11',
-  soversion : host_machine.system() != 'windows' ? '1' : '',
-  install : true,
-  gnu_symbol_visibility : visibility,
-  kwargs : extra_kwargs,
+  'lib/xmlparse.c',
+  'lib/xmlrole.c',
+  'lib/xmltok.c',
+  include_directories: incdir,
+  dependencies: dep_libbsd,
+  version: '1.8.8',
+  soversion: host_machine.system() != 'windows' ? '1' : '',
+  install: true,
+  gnu_symbol_visibility: visibility,
+  vs_module_defs: 'lib/libexpat.def',
 )
 
 expat_dep = declare_dependency(
-  link_with : libexpat,
-  include_directories : include_directories('lib'),
+  link_with: libexpat,
+  include_directories: incdir,
   compile_args: expat_static_args,
 )
 
@@ -186,13 +141,11 @@ if get_option('build_tests')
 
   libtest = static_library(
     'libtest',
-    [
-      'tests/chardata.c',
-      'tests/memcheck.c',
-      'tests/minicheck.c',
-      'tests/structdata.c',
-    ],
-    include_directories : include_directories('lib'),
+    'tests/chardata.c',
+    'tests/memcheck.c',
+    'tests/minicheck.c',
+    'tests/structdata.c',
+    include_directories: incdir,
   )
 
   test(
@@ -200,18 +153,18 @@ if get_option('build_tests')
     executable(
       'runtests',
       'tests/runtests.c',
-      include_directories : include_directories('lib'),
-      link_with : [libtest, libexpat],
-    )
+      include_directories: incdir,
+      link_with: [libtest, libexpat],
+    ),
   )
   test(
     'runtestspp',
     executable(
       'runtestspp',
       'tests/runtestspp.cpp',
-      include_directories : include_directories('lib'),
-      link_with : [libtest, libexpat],
-    )
+      include_directories: incdir,
+      link_with: [libtest, libexpat],
+    ),
   )
 endif
 

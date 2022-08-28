@@ -22,7 +22,6 @@
 option(
   'use_libbsd',
   type : 'feature',
-  value : 'disabled',
   description : 'Use libbsd for arc4random_buf',
 )
 option(
