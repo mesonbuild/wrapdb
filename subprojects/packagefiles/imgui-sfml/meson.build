@@ -4,7 +4,10 @@ project('imgui-sfml', 'cpp',
 
 imgui_dep = dependency('imgui')
 sfml_dep = dependency('sfml')
-opengl_dep = dependency('gl')
+opengl_dep = dependency('gl', required: false)
+if not opengl_dep.found()
+  opengl_dep = dependency('opengl')
+endif
 
 # We do not look up sfml here because there are many different
 # names for the .pc files and others and it is unclear which
