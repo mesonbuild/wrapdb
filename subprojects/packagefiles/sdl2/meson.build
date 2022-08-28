@@ -153,6 +153,9 @@ gl_req_hack = opt_video_opengl.enabled() ? false : opt_video_opengl
 gles2_req_hack = opt_video_openglesv2.enabled() ? false : opt_video_openglesv2
 
 gl_dep = dependency('gl', required : opt_video_opengl)
+if not gl_dep.found()
+    gl_dep = dependency('opengl', required : opt_video_opengl)
+endif
 
 glesv2_dep = dependency('glesv2', required : gles2_req_hack)
 if not glesv2_dep.found() and not opt_video_openglesv2.disabled()
@@ -1033,12 +1036,14 @@ c_sources = []
 cxx_sources = []
 objc_sources = []
 main_sources = []
+test_c_sources = []
 
 subdir('include')
 subdir('src')
 subdir('wayland-protocols')
 
 all_sources = [c_sources]
+test_all_source = [test_c_sources]
 
 if platform_is_darwin
     add_languages('objc')
@@ -1051,17 +1056,6 @@ if platform_is_winrt or platform_is_haiku
 endif
 
 do_install = get_option('default_library') != 'static' or not meson.is_subproject()
-
-sdl2 = library('sdl2',
-    all_sources,
-    include_directories : core_inc,
-    c_args : core_args,
-    link_args : core_ldflags,
-    dependencies : [core_deps, extra_deps],
-    override_options : ['c_std=none'],
-    install : do_install,
-)
-
 
 main_link_with = []
 main_link_whole = []
@@ -1087,10 +1081,20 @@ sdl2main_dep = declare_dependency(
     compile_args : main_c_args,
 )
 
-deps = []
+deps = [core_deps, extra_deps]
 if cc.get_id() == 'msvc' and get_option('with_main')
     deps += sdl2main_dep
 endif
+
+sdl2 = library('sdl2',
+    all_sources,
+    include_directories : core_inc,
+    c_args : core_args,
+    link_args : core_ldflags,
+    dependencies : deps,
+    override_options : ['c_std=none'],
+    install : do_install,
+)
 
 sdl2_dep = declare_dependency(
     link_with : sdl2,
@@ -1105,6 +1109,6 @@ endif
 
 # MSVC does not correctly resolve the symbols when linking dynamically
 # works fine when linking statically or MinGW
-if get_option('test') and (cc.get_id() != 'msvc' or get_option('default_library') == 'static')
+if get_option('test')
     subdir('test')
 endif
