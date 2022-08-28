@@ -386,8 +386,6 @@
   },
   "sfml": {
     "debian_packages": [
-      "libgl-dev",
-      "libopenal-dev",
       "libudev-dev",
       "libxrandr-dev"
     ]

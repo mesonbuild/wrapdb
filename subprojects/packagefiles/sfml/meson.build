@@ -15,7 +15,10 @@ endif
 
 openal_dep = dependency('openal')
 thread_dep = dependency('threads')
-gl_dep = dependency('gl')
+gl_dep = dependency('gl', required: false)
+if not gl_dep.found()
+  gl_dep = dependency('opengl')
+endif
 winmm_dep = cpp.find_library('winmm', required: false)
 w32_dep = cpp.find_library('ws2_32', required: false)
 freetype_dep = dependency('freetype2')
