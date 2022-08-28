@@ -102,7 +102,7 @@
   },
   "glew": {
     "debian_packages": [
-      "libglu1-mesa-dev"
+      "libgl-dev"
     ]
   },
   "glfw": {

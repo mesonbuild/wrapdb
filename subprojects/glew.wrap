@@ -7,4 +7,3 @@ patch_directory = glew
 
 [provide]
 glew = glew_dep
-
