@@ -408,9 +408,7 @@
       "libxt-dev",
       "libxv-dev",
       "libxxf86vm-dev",
-      "libgles2-mesa-dev",
-      "pkg-config",
-      "wayland-protocols"
+      "libgles2-mesa-dev"
     ]
   },
   "sds": {

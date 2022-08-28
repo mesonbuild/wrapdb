@@ -1,4 +1,4 @@
-c_sources += files(
+test_c_sources += files(
     'SDL_test_assert.c',
     'SDL_test_common.c',
     'SDL_test_compare.c',
