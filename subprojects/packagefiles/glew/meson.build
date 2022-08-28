@@ -23,45 +23,45 @@ project(
   'c',
   version : '2.2.0',
   license: ['MIT', 'BSD-3'],
-  meson_version : '>= 0.43.0'
+  meson_version : '>= 0.49.0'
 )
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
 
+dep_gl = dependency('gl', required: false)
+if not dep_gl.found()
+  dep_gl = dependency('opengl')
+endif
+
+dep_glu = dependency('glu', required: get_option('glu'))
+if not dep_glu.found()
+  add_project_arguments('-DGLEW_NO_GLU', language: 'c')
+endif
+
+dep_egl = dependency('egl', required: get_option('egl'))
+if dep_egl.found()
+  add_project_arguments('-DGLEW_EGL', language: 'c')
+endif
+
 user_args = []
-
-c_args = [
-  '-DGLEW_NO_GLU',
-]
-ld_args = []
-glew_sources = [
-  'include/GL/wglew.h',
-  'include/GL/glew.h',
-  'include/GL/glxew.h',
-  'src/glew.c',
-]
-
-if get_option('default_library') == 'shared'
-  c_args += '-DGLEW_BUILD'
+if get_option('default_library') != 'static'
+  add_project_arguments('-DGLEW_BUILD', language: 'c')
 else
-  c_args += '-DGLEW_STATIC'
+  add_project_arguments('-DGLEW_STATIC', language: 'c')
   user_args += '-DGLEW_STATIC'
 endif
 
-if host_system == 'windows'
-  dep_gl = cc.find_library('opengl32')
-else
-  dep_gl = dependency('gl')
-endif
-
+c_args = []
+ld_args = []
+glew_sources = files('src/glew.c')
 if host_system == 'windows'
   windows = import('windows')
 
   glew_sources += windows.compile_resources('build/glew.rc')
   name = 'glew32'
 
-  if cc.get_id() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc'
     c_args += [
       '-DVC_EXTRALEAN',
       '-GS-',
@@ -83,13 +83,6 @@ else
   c_args = cc.get_supported_arguments(['-ansi', '-W', '-Wcast-qual', '-fno-stack-protector'])
 endif
 
-if get_option('egl')
-  dep_egl = dependency('egl')
-  c_args += '-DGLEW_EGL'
-else
-  dep_egl = dependency('', required: false)
-endif
-
 glew_include = include_directories('include')
 
 # The windows version shoould not have a version set
@@ -99,7 +92,7 @@ libglew = library(
   c_args : c_args,
   link_args : ld_args,
   include_directories : glew_include,
-  dependencies : [dep_gl, dep_egl],
+  dependencies : [dep_gl, dep_egl, dep_glu],
   soversion : host_system == 'windows' ? '' : meson.project_version().split('.')[0],
   version : meson.project_version(),
   install : true,

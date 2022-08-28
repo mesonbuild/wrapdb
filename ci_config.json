@@ -90,11 +90,6 @@
       "windows": false
     }
   },
-  "glew": {
-    "debian_packages": [
-      "libglu1-mesa-dev"
-    ]
-  },
   "glfw": {
     "_comment": "- Requires POSIX platform.",
     "debian_packages": [
