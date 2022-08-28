@@ -1,1 +1,2 @@
-option('egl', type : 'boolean', value : false, description : 'build support for egl')
+option('egl', type : 'feature', description : 'build support for egl')
+option('glu', type : 'feature', description : 'build support for glu')

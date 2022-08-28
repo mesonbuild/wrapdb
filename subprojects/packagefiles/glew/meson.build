@@ -21,47 +21,44 @@
 project(
   'glew',
   'c',
-  version : '2.2.0',
-  license: ['MIT', 'BSD-3'],
-  meson_version : '>= 0.43.0'
+  version: '2.2.0',
+  license: 'MIT AND BSD-3-Clause',
+  meson_version: '>= 0.49.0',
 )
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
 
+dep_gl = dependency('gl')
+
+dep_glu = dependency('glu', required: get_option('glu'))
+if not dep_glu.found()
+  add_project_arguments('-DGLEW_NO_GLU', language: 'c')
+endif
+
+dep_egl = dependency('egl', required: get_option('egl'))
+if dep_egl.found()
+  add_project_arguments('-DGLEW_EGL', language: 'c')
+endif
+
 user_args = []
-
-c_args = [
-  '-DGLEW_NO_GLU',
-]
-ld_args = []
-glew_sources = [
-  'include/GL/wglew.h',
-  'include/GL/glew.h',
-  'include/GL/glxew.h',
-  'src/glew.c',
-]
-
-if get_option('default_library') == 'shared'
-  c_args += '-DGLEW_BUILD'
+if get_option('default_library') != 'static'
+  add_project_arguments('-DGLEW_BUILD', language: 'c')
 else
-  c_args += '-DGLEW_STATIC'
+  add_project_arguments('-DGLEW_STATIC', language: 'c')
   user_args += '-DGLEW_STATIC'
 endif
 
-if host_system == 'windows'
-  dep_gl = cc.find_library('opengl32')
-else
-  dep_gl = dependency('gl')
-endif
-
+c_args = []
+ld_args = []
+glew_sources = files('src/glew.c')
 if host_system == 'windows'
   windows = import('windows')
 
   glew_sources += windows.compile_resources('build/glew.rc')
   name = 'glew32'
 
-  if cc.get_id() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc'
     c_args += [
       '-DVC_EXTRALEAN',
       '-GS-',
@@ -80,14 +77,7 @@ if host_system == 'windows'
   endif
 else
   name = 'GLEW'
-  c_args = cc.get_supported_arguments(['-ansi', '-W', '-Wcast-qual', '-fno-stack-protector'])
-endif
-
-if get_option('egl')
-  dep_egl = dependency('egl')
-  c_args += '-DGLEW_EGL'
-else
-  dep_egl = dependency('', required: false)
+  c_args = cc.get_supported_arguments('-ansi', '-W', '-Wcast-qual', '-fno-stack-protector')
 endif
 
 glew_include = include_directories('include')
@@ -96,23 +86,25 @@ glew_include = include_directories('include')
 libglew = library(
   name,
   glew_sources,
-  c_args : c_args,
-  link_args : ld_args,
-  include_directories : glew_include,
-  dependencies : [dep_gl, dep_egl],
-  soversion : host_system == 'windows' ? '' : meson.project_version().split('.')[0],
-  version : meson.project_version(),
-  install : true,
+  c_args: c_args,
+  link_args: ld_args,
+  include_directories: glew_include,
+  dependencies: [dep_gl, dep_egl, dep_glu],
+  soversion: host_system == 'windows' ? '' : meson.project_version().split('.')[0],
+  version: meson.project_version(),
+  install: true,
 )
 
 install_headers(
-  'include/GL/wglew.h', 'include/GL/glew.h', 'include/GL/glxew.h',
-  subdir : 'GL',
+  'include/GL/wglew.h',
+  'include/GL/glew.h',
+  'include/GL/glxew.h',
+  subdir: 'GL',
 )
 
 glew_dep = declare_dependency(
-  link_with : libglew,
+  link_with: libglew,
   compile_args: user_args,
-  include_directories : glew_include,
-  dependencies : [dep_gl, dep_egl],
+  include_directories: glew_include,
+  dependencies: [dep_gl, dep_egl, dep_glu],
 )
