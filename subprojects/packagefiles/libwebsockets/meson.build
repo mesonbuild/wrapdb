@@ -372,6 +372,7 @@ lws_incdirs += [
     'lib/abstract',
     'lib/system/async-dns',
     'lib/roles/mqtt',
+    '.',
 ]
 
 if lws_with_secure_streams
