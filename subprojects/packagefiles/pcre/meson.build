@@ -65,6 +65,15 @@ foreach t : [ 'long long', 'unsigned long long' ]
   cdata.set('HAVE_@0@'.format(t.underscorify().to_upper()), cc.has_type(t))
 endforeach
 
+if cc.get_argument_syntax() == 'msvc'
+  # FIXME: Build of DLL is currently broken
+  libtype = 'static_library'
+  pcre_static = true
+else
+  libtype = 'library'
+  pcre_static = get_option('default_library') == 'static'
+endif
+
 cdata.set('NEWLINE', 10) # Currently unix only.
 cdata.set('PCREGREP_BUFSIZE', 20480)
 cdata.set('PCRE_LINK_SIZE', 2)
@@ -72,7 +81,7 @@ cdata.set('PCRE_MATCH_LIMIT', 10000000)
 cdata.set('PCRE_MATCH_LIMIT_RECURSION', 'MATCH_LIMIT')
 cdata.set('PCRE_PARENS_NEST_LIMIT', 250)
 cdata.set('PCRE_POSIX_MALLOC_THRESHOLD', 10)
-cdata.set('PCRE_STATIC', get_option('default_library') == 'static')
+cdata.set('PCRE_STATIC', pcre_static)
 
 cdata.set('SUPPORT_PCRE8', true)
 cdata.set('SUPPORT_PCRE16', false)
@@ -147,14 +156,16 @@ char_tables = custom_target('chartables',
   output : 'pcre_chartables.c',
   command : [dftables, '@OUTPUT@'])
 
-pcre8 = library('pcre',
+pcre8 = build_target('pcre',
   pcre8_sources, char_tables,
+  target_type: libtype,
   c_args: compile_args,
 )
 
-pcre_posix = library('pcreposix',
+pcre_posix = build_target('pcreposix',
   'pcreposix.c',
   c_args: compile_args,
+  target_type: libtype,
   link_with: pcre8,
 )
 
