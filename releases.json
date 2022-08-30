@@ -721,6 +721,14 @@
       "1.83-1"
     ]
   },
+  "indicators": {
+    "dependency_names": [
+      "indicators"
+    ],
+    "versions": [
+      "2.2-1"
+    ]
+  },
   "inih": {
     "dependency_names": [
       "inih",
