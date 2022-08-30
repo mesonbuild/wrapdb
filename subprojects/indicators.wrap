@@ -1,0 +1,9 @@
+[wrap-file]
+directory = indicators-2.2
+source_url = https://github.com/p-ranav/indicators/archive/refs/tags/v2.2.tar.gz
+source_filename = indicators-2.2.tar.gz
+source_hash = b768f1b7ca64a413503f72d5460cc617c1458c17fb7a8c0ee503d753e1f20d03
+patch_directory = indicators
+
+[provide]
+indicators = indicators_dep
