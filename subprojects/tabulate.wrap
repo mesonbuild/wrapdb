@@ -1,0 +1,9 @@
+[wrap-file]
+directory = tabulate-1.4
+source_url = https://github.com/p-ranav/tabulate/archive/refs/tags/v1.4.tar.gz
+source_filename = tabulate-1.4.tar.gz
+source_hash = c20cdc3175526a069e932136a7cbdf6f27b137bdb4fc5f574eb5a497228c8e11
+patch_directory = tabulate
+
+[provide]
+tabulate = tabulate_dep
