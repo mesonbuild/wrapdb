@@ -1827,6 +1827,14 @@
       "3.34.1-1"
     ]
   },
+  "tabulate": {
+    "dependency_names": [
+      "tabulate"
+    ],
+    "versions": [
+      "1.4-1"
+    ]
+  },
   "taglib": {
     "dependency_names": [
       "taglib"
