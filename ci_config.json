@@ -9,24 +9,42 @@
   "broken_linux": [
     "arduinocore-avr",
     "openh264",
-    "protobuf-c", "zstd"
+    "protobuf-c",
+    "zstd"
   ],
   "broken_windows": [
     "arduinocore-avr",
     "google-woff2",
     "libgpiod",
-    "mocklibc", "openh264",
-    "protobuf-c", "termbox","unit-system",
-    "zstd"
+    "mocklibc",
+    "openh264",
+    "protobuf-c",
+    "termbox",
+    "unit-system",
+    "zstd",
+    "emilk-loguru",
+    "libexif",
+    "ludocode-mpack",
+    "m4",
+    "miniz",
+    "tinyply",
+    "yajl"
   ],
   "broken_darwin": [
     "arduinocore-avr",
-    "google-woff2", "graphite2",
+    "google-woff2",
+    "graphite2",
     "libgpiod",
-    "lz4", "mocklibc",
-    "openh264", "protobuf-c",
-    "rtaudio", "sdl2_image", "tinyxml2", "unit-system",
-    "zstd"
+    "lz4",
+    "mocklibc",
+    "openh264",
+    "protobuf-c",
+    "rtaudio",
+    "sdl2_image",
+    "tinyxml2",
+    "unit-system",
+    "zstd",
+    "sdl2"
   ],
   "cexception": {
     "build_options": [
