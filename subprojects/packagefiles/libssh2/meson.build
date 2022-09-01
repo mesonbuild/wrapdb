@@ -51,7 +51,7 @@ elif get_option('crypto_backend') == 'mbedtls'
     extra_flags += ['-DLIBSSH2_MBEDTLS']
 elif get_option('crypto_backend') == 'gcrypt'
     libssh2_sources += ['src/libgcrypt.c']
-    libssh2_deps += dependency('gcrypt')
+    libssh2_deps += dependency('libgcrypt')
     extra_flags += ['-DLIBSSH2_GCRYPT']
 else
     error('No crypto backend specified')
