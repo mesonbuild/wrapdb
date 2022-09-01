@@ -1,9 +1,9 @@
 [wrap-file]
-directory = cairo-1.17.6
-
-source_url = https://gitlab.freedesktop.org/cairo/cairo/-/archive/1.17.6/cairo-1.17.6.tar.gz
-source_filename = cairo-1.17.6.tar.gz
-source_hash = a2227afc15e616657341c42af9830c937c3a6bfa63661074eabef13600e8936f
+directory = cairo-1.17.4
+source_url = https://gitlab.freedesktop.org/cairo/cairo/-/archive/1.17.4/cairo-1.17.4.tar.gz
+source_filename = cairo-1.17.4.tar.gz
+source_hash = 0a673c88f7c049b4555c1f152b11d9fe16d8523b62632d2d5c14e1868499ce9f
+patch_directory = cairo
 
 [provide]
 dependency_names = cairo, cairo-ft
