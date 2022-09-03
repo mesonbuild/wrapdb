@@ -487,6 +487,11 @@ check_headers = [
     'sys/types.h',
     'wchar.h',
 
+    'usbhid.h',
+    'libusbhid.h',
+    'usb.h',
+    'libusb.h',
+
     'd3d.h',
     'd3d11.h',
     'd3d12.h',
@@ -730,6 +735,14 @@ if cdata.get('HAVE_FCITX', 0) == 1 or cdata.get('HAVE_IBUS_IBUS_H', 0) == 1
     cdata.set('SDL_USE_IME', 1)
 endif
 
+if platform_is_freebsd and cdata.get('HAVE_INOTIFY', 0) != 1
+    inotify_dep = dependency('libinotify', required : false)
+    if inotify_dep.found()
+        cdata.set('HAVE_INOTIFY', 1)
+        extra_deps += inotify_dep
+    endif
+endif
+
 sys_default_audio_driver = ['dummy']
 sys_default_filesystem = ['dummy']
 sys_default_haptic = ['dummy']
@@ -822,6 +835,11 @@ elif platform_is_linux
     sys_input = ['linuxev', 'linuxkd']
     sys_joystick = ['linux']
     sys_power = ['linux']
+elif platform_is_bsd
+    sys_joystick = ['bsd']
+    if platform_is_netbsd
+        sys_audio_driver = ['netbsd']
+    endif
 elif platform_is_windows
     sys_audio_driver = ['wasapi']  # XXX: winmm needed?
     sys_filesystem = ['windows']
