@@ -1144,6 +1144,14 @@
       "4.0.13-1"
     ]
   },
+  "libxcursor": {
+    "dependency_names": [
+      "xcursor"
+    ],
+    "versions": [
+      "1.2.1-1"
+    ]
+  },
   "libxinerama": {
     "dependency_names": [
       "xinerama"
