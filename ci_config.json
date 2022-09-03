@@ -316,6 +316,12 @@
       "libudev-dev"
     ]
   },
+  "libxinerama": {
+    "_comment": "X11 needs a POSIX system",
+    "build_on": {
+      "windows": false
+    }
+  },
   "libxrandr": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
