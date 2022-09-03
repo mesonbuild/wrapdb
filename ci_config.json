@@ -324,12 +324,6 @@
       "lmdb:programs=true"
     ]
   },
-  "lz4": {
-    "_comment": "dllexport strikes again",
-    "build_on": {
-      "windows": false
-    }
-  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",
