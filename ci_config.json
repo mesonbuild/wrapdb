@@ -40,8 +40,7 @@
     "sdl2_image",
     "tinyxml2",
     "unit-system",
-    "zstd",
-    "sdl2"
+    "zstd"
   ],
   "cexception": {
     "build_options": [
@@ -409,6 +408,14 @@
       "libxv-dev",
       "libxxf86vm-dev",
       "libgles2-mesa-dev"
+    ],
+    "brew_packages": [
+      "libx11",
+      "libxcursor",
+      "libext",
+      "libxi",
+      "libxkbcommon",
+      "libxrandr"
     ]
   },
   "sds": {
