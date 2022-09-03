@@ -1140,6 +1140,14 @@
       "4.0.13-1"
     ]
   },
+  "libxinerama": {
+    "dependency_names": [
+      "xinerama"
+    ],
+    "versions": [
+      "1.1.4-1"
+    ]
+  },
   "libxml2": {
     "dependency_names": [
       "libxml-2.0"
