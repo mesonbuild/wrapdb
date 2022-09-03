@@ -1177,6 +1177,14 @@
       "3.0.1-1"
     ]
   },
+  "libxrandr": {
+    "dependency_names": [
+      "xrandr"
+    ],
+    "versions": [
+      "1.5.2-1"
+    ]
+  },
   "libxslt": {
     "dependency_names": [
       "libxslt",
