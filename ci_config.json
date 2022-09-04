@@ -8,7 +8,6 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr",
-    "openh264",
     "protobuf-c",
     "zstd"
   ],
@@ -17,7 +16,6 @@
     "google-woff2",
     "libgpiod",
     "mocklibc",
-    "openh264",
     "protobuf-c",
     "termbox",
     "unit-system",
@@ -33,7 +31,6 @@
     "graphite2",
     "libgpiod",
     "mocklibc",
-    "openh264",
     "protobuf-c",
     "rtaudio",
     "sdl2_image",
@@ -342,6 +339,21 @@
     "build_options": [
       "mpdecimal:examples=true",
       "mpdecimal:tests=true"
+    ]
+  },
+  "openh264": {
+    "brew_packages": [
+      "nasm"
+    ],
+    "debian_packages": [
+      "nasm"
+    ],
+    "choco_packages": [
+      "nasm"
+    ],
+    "_comment": "Disable tests because they are too slow to run on our CI",
+    "build_options": [
+      "openh264:tests=disabled"
     ]
   },
   "openssl": {
