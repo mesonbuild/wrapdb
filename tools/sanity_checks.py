@@ -25,7 +25,7 @@ import tempfile
 import platform
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux, is_macos
+from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -284,6 +284,8 @@ class TestReleases(unittest.TestCase):
             options.append('--wipe')
         debian_packages = ci.get('debian_packages', [])
         brew_packages = ci.get('brew_packages', [])
+        choco_packages = ci.get('choco_packages', [])
+        meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
                 subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
@@ -296,8 +298,18 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(brew_packages)
                 print(f'The following packages could be required: {s}')
+        elif choco_packages and is_windows():
+            if is_ci():
+                subprocess.check_call(['choco', 'install', '-y'] + choco_packages)
+                # nasm is not added into PATH by default:
+                # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
+                if 'nasm' in choco_packages:
+                    meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
+            else:
+                s = ', '.join(choco_packages)
+                print(f'The following packages could be required: {s}')
 
-        res = subprocess.run(['meson', 'setup', builddir] + options)
+        res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
         if res.returncode == 0:
             if not expect_working:
                 raise Exception(f'Wrap {name} successfully configured but was expected to fail')
