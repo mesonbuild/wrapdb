@@ -457,6 +457,11 @@
       "windows": false
     }
   },
+  "tinyfsm": {
+    "build_options": [
+      "tinyfsm:build_examples=true"
+    ]
+  },
   "wayland": {
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
