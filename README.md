@@ -54,6 +54,8 @@ meson compile -C builddir
     but not installed.
   - `brew_packages`: (Optional) List of extra packages that will be installed
     on MacOS CI runners.
+  - `choco_packages`: (Optional) List of extra packages that will be installed
+    on Windows CI runners.
   - `linux_only`: (Optional) If set to `true`, indicates the wrap should be tested
     only on Linux CI.
   - `fatal_warnings`: (Optional) If set to `false` removes --fatal-meson-warning.
