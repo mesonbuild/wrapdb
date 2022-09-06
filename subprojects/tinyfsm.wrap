@@ -1,0 +1,9 @@
+[wrap-file]
+directory = tinyfsm-0.3.3
+source_url = https://github.com/digint/tinyfsm/archive/refs/tags/v0.3.3.tar.gz
+source_filename = tinyfsm-0.3.3.tar.gz
+source_hash = 99aaad53ddb9b9b3fbb535a6983e9c86a0b8c8ef112181cddcb6f3857b440d09
+patch_directory = tinyfsm
+
+[provide]
+tinyfsm = tinyfsm_dep
