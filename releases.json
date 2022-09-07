@@ -626,6 +626,7 @@
       "harfbuzz-gobject"
     ],
     "versions": [
+      "5.2.0-1",
       "4.4.1-1"
     ]
   },

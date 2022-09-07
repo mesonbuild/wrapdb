@@ -140,16 +140,10 @@
     ],
     "fatal_warnings": false,
     "build_options": [
-      "glib:tests=false",
-      "cairo:tests=disabled",
-      "pixman:tests=disabled"
-    ],
-    "brew_packages": [
-      "glib-utils"
-    ],
-    "debian_packages": [
-      "libicu-dev",
-      "libfreetype6-dev"
+      "harfbuzz:glib=enabled",
+      "harfbuzz:gobject=enabled",
+      "harfbuzz:freetype=enabled",
+      "harfbuzz:icu=enabled"
     ]
   },
   "hinnant-date": {
