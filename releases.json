@@ -1201,6 +1201,14 @@
       "1.5.2-1"
     ]
   },
+  "libxrender": {
+    "dependency_names": [
+      "xrender"
+    ],
+    "versions": [
+      "0.9.10-1"
+    ]
+  },
   "libxslt": {
     "dependency_names": [
       "libxslt",
