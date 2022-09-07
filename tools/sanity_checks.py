@@ -186,9 +186,10 @@ class TestReleases(unittest.TestCase):
                             if k not in {'dependency_names', 'program_names'}:
                                 deps.append(k.strip())
                     progs = [i for i in progs if i]
-                    deps = [i for i in deps if i]
+                    deps = [i.lower() for i in deps if i]
+                    info_deps = [i.lower() for i in info.get('dependency_names', [])]
                     self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
-                    self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+                    self.assertEqual(sorted(deps), sorted(info_deps))
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
