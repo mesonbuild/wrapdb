@@ -5,7 +5,7 @@ if cdata.get('HAVE_LIBUNWIND_H', 0) == 1
     test_deps += dependency('libunwind-generic', required : false)
 endif
 
-sdl2_test = library('sdl2',
+sdl2_test = static_library('sdl2_test',
     test_all_source,
     include_directories : core_inc,
     c_args : core_args,
