@@ -623,6 +623,14 @@
       "4.1.0-1"
     ]
   },
+  "fontconfig": {
+    "dependency_names": [
+      "fontconfig"
+    ],
+    "versions": [
+      "2.14.2-1"
+    ]
+  },
   "freetype2": {
     "dependency_names": [
       "freetype2",

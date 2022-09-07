@@ -1,0 +1,9 @@
+[wrap-file]
+directory = fontconfig-2.14.2
+
+source_url = https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.14.2.tar.xz
+source_filename = fontconfig-2.14.2.tar.xz
+source_hash = dba695b57bce15023d2ceedef82062c2b925e51f5d4cc4aef736cf13f60a468b
+
+[provide]
+fontconfig = fontconfig_dep
