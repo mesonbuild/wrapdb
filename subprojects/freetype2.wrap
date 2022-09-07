@@ -6,3 +6,4 @@ source_hash = 4766f20157cc4cf0cd292f80bf917f92d1c439b243ac3018debf6b9140c41a7f
 
 [provide]
 freetype2 = freetype_dep
+freetype = freetype_dep
