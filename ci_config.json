@@ -435,7 +435,7 @@
     "brew_packages": [
       "libx11",
       "libxcursor",
-      "libext",
+      "libxext",
       "libxi",
       "libxkbcommon",
       "libxrandr"
