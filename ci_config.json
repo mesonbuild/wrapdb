@@ -93,6 +93,9 @@
       "windows": false
     }
   },
+  "fontconfig": {
+    "fatal_warnings": false
+  },
   "fuse": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
