@@ -175,6 +175,15 @@
       "1.5.4-1"
     ]
   },
+  "cairo": {
+    "dependency_names": [
+      "cairo",
+      "cairo-gobject"
+    ],
+    "versions": [
+      "1.17.8-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",
