@@ -35,6 +35,9 @@
       "c-flags:tests=true"
     ]
   },
+  "cairo": {
+    "skip_tests": true
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"
