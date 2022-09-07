@@ -6,6 +6,7 @@ source_hash = 67a7e6e51f61faf1306b6935333e13b2c48abd8da6d2f46ce6adca24b1e21ebf
 patch_directory = icu
 
 [provide]
+ICU = icuuc_dep
 icu-uc = icuuc_dep
 icu-io = icuio_dep
 icu-i18n = icui18n_dep
