@@ -62,6 +62,11 @@ meson compile -C builddir
     Use this only when there is no other way to fix the warning.
   - `skip_dependency_check`: (Optional) List of platform specific dependency
     names that are not always provided by the project.
+  - `test_options`: (Optional) List of arguments that will be passed to
+    `meson test` command (e.g. `--timeout-multiplier`, `--no-suite`).
+  - `skip_tests`: (Optional) If set to `true` tests will not be run. This is
+    useful when tests are known to fail because of upstream issues, or requires
+    specific environment hard to setup.
 
 - Test locally by running `tools/sanity_checks.py` script. It will be executed
   on the CI and must always return success before merging any PR.
