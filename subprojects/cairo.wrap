@@ -1,0 +1,9 @@
+[wrap-file]
+directory = cairo-1.17.8
+
+source_url = https://gitlab.freedesktop.org/cairo/cairo/-/archive/1.17.8/cairo-1.17.8.tar.bz2
+source_filename = cairo-1.17.8.tar.bz2
+source_hash = ead4724423eb969f98b456fe1e3ee1e1741fe1c8dfb1a41ca12afa81a6c1665f
+
+[provide]
+dependency_names = cairo, cairo-gobject

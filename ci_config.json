@@ -35,6 +35,10 @@
       "c-flags:tests=true"
     ]
   },
+  "cairo": {
+    "_comment": "Some tests fails and they are still run despite -Dtests=disabled",
+    "skip_tests": true
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"
