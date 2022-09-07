@@ -835,11 +835,6 @@ elif platform_is_linux
     sys_input = ['linuxev', 'linuxkd']
     sys_joystick = ['linux']
     sys_power = ['linux']
-elif platform_is_bsd
-    sys_joystick = ['bsd']
-    if platform_is_netbsd
-        sys_audio_driver = ['netbsd']
-    endif
 elif platform_is_windows
     sys_audio_driver = ['wasapi']  # XXX: winmm needed?
     sys_filesystem = ['windows']
@@ -919,7 +914,7 @@ elif platform_is_emscripten
     sys_video_driver = ['emscripten']
     sys_dynamic_api = false
 else
-    error('Unknown platform @0@, please add.'.format(host_machine.system()))
+    error('Unsupported platform @0@, please add.'.format(host_machine.system()))
 endif
 
 if sys_dynamic_api
