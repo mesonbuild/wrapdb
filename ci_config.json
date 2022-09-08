@@ -346,6 +346,12 @@
       "windows": false
     }
   },
+  "libxv": {
+    "_comment": "X11 needs a POSIX system",
+    "build_on": {
+      "windows": false
+    }
+  },
   "lmdb": {
     "_comment": "Tests and programs disabled by default",
     "build_options": [

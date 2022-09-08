@@ -1231,6 +1231,14 @@
       "1.1.34-1"
     ]
   },
+  "libxv": {
+    "dependency_names": [
+      "xv"
+    ],
+    "versions": [
+      "1.0.11-1"
+    ]
+  },
   "libyaml": {
     "dependency_names": [
       "yaml-0.1"
