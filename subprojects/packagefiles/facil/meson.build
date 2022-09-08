@@ -1,13 +1,19 @@
 project('facil', 'c',
-    version : '0.7.6',
+    version: '0.7.6',
     license: 'MIT',
-    default_options: ['c_std=c11']
+    default_options: 'c_std=c11',
+    meson_version: '>=0.49.0',
 )
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required : false)
 
+if cc.get_argument_syntax() == 'msvc'
+  error('MSVC is unsupported. Only MinGW')
+endif
+
+m_dep = cc.find_library('m', required : false)
 thread_dep = dependency('threads')
+ws_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
 
 facil_src = [
     'lib/facil/fio.c',
@@ -44,7 +50,7 @@ facil_inc = [
 facil_lib = library('facil',
     sources: facil_src,
     include_directories: facil_inc,
-    dependencies: [m_dep, thread_dep]
+    dependencies: [m_dep, thread_dep, ws_dep]
 )
 
 facil_dep = declare_dependency(
