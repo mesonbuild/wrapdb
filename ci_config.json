@@ -322,6 +322,12 @@
       "windows": false
     }
   },
+  "libxext": {
+    "_comment": "X11 needs a POSIX system",
+    "build_on": {
+      "windows": false
+    }
+  },
   "libxinerama": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
