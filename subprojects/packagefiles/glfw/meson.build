@@ -1,7 +1,7 @@
 #####  GLFW  #####
 #@ Project file
 project('glfw', 'c',
-         version : '3.3.7',
+         version : '3.3.8',
          license : 'zlib',
          default_options : ['default_library=static',
                             'b_ndebug=if-release',

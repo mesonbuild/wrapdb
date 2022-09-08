@@ -111,16 +111,10 @@
   "glfw": {
     "_comment": "- Requires POSIX platform.",
     "debian_packages": [
-      "libxrandr-dev",
-      "libxinerama-dev",
-      "libxcursor-dev",
       "libxi-dev",
       "libxkbcommon-dev"
     ],
     "brew_packages": [
-      "libxrandr",
-      "libxinerama",
-      "libxcursor",
       "libxi",
       "libxkbcommon"
     ],
