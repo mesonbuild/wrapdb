@@ -1,7 +1,11 @@
-project('sqlite3', 'c', license: 'pd', version: '3.38.0')
+project('sqlite3', 'c', license: 'pd', version: '3.39.3', meson_version: '>=0.46.0')
 
 cc = meson.get_compiler('c')
-libdl = cc.find_library('dl', required: false)
+if meson.version().version_compare('>= 0.62.0')
+  libdl = dependency('dl', required: false)
+else
+  libdl = cc.find_library('dl', required: false)
+endif
 libm = cc.find_library('m', required: false)
 
 sqlite_args = []
