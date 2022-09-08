@@ -1,14 +1,17 @@
-project('rdkafka', 'c', 'cpp', version: '1.9.2', default_options: ['cpp_std=c++17', 'c_std=c11'])
+project(
+  'rdkafka',
+  'c',
+  'cpp',
+  version: '1.9.2',
+  default_options: ['cpp_std=c++17', 'c_std=c11', 'warning_level=0'],
+  meson_version: '>=0.57.0'
+)
+
 cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
 
-hdr = files(
-  'src/rdkafka.h',
-  'src-cpp/rdkafkacpp.h',
-)
-subdir('include-workaround-meson/librdkafka')
-srcc = [
+srcc = files(
   'src/crc32c.c',
   'src/rdaddr.c',
   'src/rdavl.c',
@@ -72,8 +75,9 @@ srcc = [
   'src/tinycthread.c',
   'src/tinycthread_extra.c',
   'src/rdxxhash.c',
-]
-srccpp = [
+)
+
+srccpp = files(
   'src-cpp/ConfImpl.cpp',
   'src-cpp/ConsumerImpl.cpp',
   'src-cpp/HeadersImpl.cpp',
@@ -86,9 +90,7 @@ srccpp = [
   'src-cpp/TopicImpl.cpp',
   'src-cpp/TopicPartitionImpl.cpp',
   'src-cpp/HandleImpl.cpp',
-  'src-cpp/rdkafkacpp.h',
-  'src-cpp/rdkafkacpp_int.h',
-]
+)
 
 cjson = dependency('libcjson')
 curl = dependency('libcurl', required: get_option('WITH_CURL'))
@@ -98,12 +100,16 @@ lz4 = dependency('liblz4', required: get_option('WITH_LZ4_EXT'))
 sasl = dependency('libsasl2', required: get_option('WITH_SASL')) # TODO: make SASL usable without libsasl2 on windows 
 ssl = dependency('libssl', required: get_option('WITH_SSL'))
 crypto = dependency('libcrypto', required: get_option('WITH_SSL'))
-dl = dependency('dl', required : get_option('WITH_LIBDL'))
+if meson.version().version_compare('>= 0.62.0')
+  dl = dependency('dl', required: get_option('WITH_LIBDL'))
+else
+  dl = cc.find_library('dl', required: get_option('WITH_LIBDL'))
+endif
 threads = dependency('threads')
-math = cc.find_library('m', required : false)
+regex = dependency('regex', required: false)
+math = cc.find_library('m', required: false)
 
 conf = configuration_data()
-
 conf.set10('WITHOUT_OPTIMIZATION', get_option('WITHOUT_OPTIMIZATION'))
 conf.set10('ENABLE_DEVEL', get_option('ENABLE_DEVEL'))
 conf.set10('ENABLE_REFCNT_DEBUG', get_option('ENABLE_REFCNT_DEBUG'))
@@ -117,28 +123,13 @@ conf.set10('WITH_LIBDL', dl.found())
 conf.set10('WITH_PLUGINS', dl.found())
 conf.set10('WITH_SSL', ssl.found() and crypto.found())
 conf.set10('WITH_SASL', sasl.found())
-conf.set10('WITH_SASL_CYRUS', sasl.found())
+conf.set10('WITH_SASL_CYRUS', sasl.found() and host_machine.system() != 'windows')
 conf.set10('WITH_LZ4_EXT', lz4.found())
-conf.set10('HAVE_REGEX', cc.has_function('regcomp'))
-conf.set10('HAVE_STRNDUP', cc.has_function('strndup'))
+conf.set10('HAVE_REGEX', cc.has_function('regcomp', dependencies: regex))
+conf.set10('HAVE_STRNDUP', host_machine.system() == 'windows' ? false : cc.has_function('strndup'))
 conf.set10('HAVE_RAND_R', cc.has_function('rand_r'))
 conf.set10('WITH_C11THREADS', cc.has_function('thrd_create'))
-conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', 'so')
-
-add_project_arguments('-DWITHOUT_WIN32_CONFIG', language: 'c')
-if host_machine.system() == 'windows'
-  add_project_arguments('-DENABLE_DEVEL=@0@'.format(conf.get('ENABLE_DEVEL')), language: 'c')
-  add_project_arguments('-DWITH_SSL=@0@'.format(conf.get('WITH_SSL')), language: 'c')
-  if get_option('buildtype') != 'static'
-    add_project_arguments('-DLIBRDKAFKA_EXPORTS', language: 'c')
-    add_project_arguments('-DLIBRDKAFKACPP_EXPORTS', language: 'cpp')
-  endif
-endif
-
-# hack for upstream bug
-if cpp.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_Thread_local= ', language: 'c')
-endif
+conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', host_machine.system() == 'windows' ? '.dll' : '.so')
 
 built_with = 'meson ' + cc.get_id() + ' ' + cpp.get_id()
 if ssl.found() and crypto.found()
@@ -184,6 +175,22 @@ if get_option('ENABLE_HDRHISTOGRAM')
   srcc += 'src/rdhdrhistogram.c'
 endif
 
+#upstream is broken and all config.h entries must be passed as compiler flags
+add_project_arguments('-DWITHOUT_WIN32_CONFIG', language: 'c')
+if host_machine.system() == 'windows'
+  foreach c : conf.keys()
+    add_project_arguments('-D@0@=@1@'.format(c, conf.get(c)), language: 'c')
+  endforeach
+  if get_option('buildtype') != 'static'
+    add_project_arguments('-DLIBRDKAFKA_EXPORTS', language: 'c')
+    add_project_arguments('-DLIBRDKAFKACPP_EXPORTS', language: 'cpp')
+  endif
+  # hack for upstream bug
+  if cpp.get_argument_syntax() == 'msvc'
+    add_project_arguments('-D_Thread_local= ', language: 'c')
+  endif
+endif
+
 conf.set('BUILT_WITH', built_with)
 configure_file(configuration: conf,
   input: 'packaging/cmake/config.h.in',
@@ -191,7 +198,7 @@ configure_file(configuration: conf,
   format: 'cmake',
 )
 
-rdkafka_deps = [math, threads, dl, cjson, zlib, zstd, sasl, ssl, crypto, lz4, curl]
+rdkafka_deps = [math, regex, threads, dl, cjson, zlib, zstd, sasl, ssl, crypto, lz4, curl]
 if host_machine.system() == 'windows'
   rdkafka_deps += [cpp.find_library('ws2_32'), cpp.find_library('iphlpapi'), cpp.find_library('secur32')]
   if ssl.found()
@@ -201,7 +208,7 @@ endif
 rdkafka = library('rdkafka', srcc, install: true, dependencies: rdkafka_deps)
 rdkafka_dep = declare_dependency(
   link_with: rdkafka,
-  include_directories: include_directories('include-workaround-meson'),
+  include_directories: '.',
   dependencies: rdkafka_deps,
 )
 pkgconfig.generate(rdkafka,
@@ -214,7 +221,7 @@ pkgconfig.generate(rdkafka,
 rdkafkapp = library('rdkafka++', srccpp, install: true, dependencies: rdkafka_dep)
 rdkafkapp_dep = declare_dependency(
   link_with: rdkafkapp,
-  include_directories: include_directories('include-workaround-meson'),
+  include_directories: '.',
   dependencies: rdkafka_dep,
 )
 pkgconfig.generate(rdkafkapp,
