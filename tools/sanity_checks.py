@@ -261,10 +261,11 @@ class TestReleases(unittest.TestCase):
         system = platform.system().lower()
         ci = self.ci_config.get(name, {})
         # kept for backwards compatibility
+        expect_working = True
         if ci.get('linux_only', False) and not is_linux():
-            return
+            expect_working = False
         elif not ci.get('build_on', {}).get(system, True):
-            return
+            expect_working = False
 
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options.append('-Ddepnames={}'.format(','.join(deps or [])))
@@ -289,15 +290,31 @@ class TestReleases(unittest.TestCase):
                 s = ', '.join(brew_packages)
                 print(f'The following packages could be required: {s}')
 
-        try:
-            subprocess.check_call(['meson', 'setup', builddir] + options)
-        except subprocess.CalledProcessError:
+        res = subprocess.run(['meson', 'setup', builddir] + options)
+        if res.returncode == 0:
+            if not expect_working:
+                raise Exception('Wrap successfully configured but was expected to fail')
+        else:
             log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
-            print('::group::==== meson-log.txt ====')
-            print(log_file.read_text(encoding='utf-8'))
-            print('::endgroup::')
-            raise
-        subprocess.check_call(['meson', 'compile', '-C', builddir, '-v'])
+            logs = log_file.read_text(encoding='utf-8')
+            if expect_working:
+                print('::group::==== meson-log.txt ====')
+                print(logs)
+                print('::endgroup::')
+                res.check_returncode()
+            else:
+                def skipme(msg):
+                    print(msg)
+                    self.skipTest(msg)
+
+                error = logs.splitlines()[-1]
+                if 'unsupported' in error or 'not supported' in error:
+                    skipme('unsupported, as expected')
+                elif 'ERROR: Dependency ' in error or 'ERROR: Program ' in error:
+                    if 'not found' in error:
+                        skipme('cannot verify in wrapdb due to missing dependency')
+            raise Exception('wrap failed to configure due to bugs in the wrap, rather than due to being unsupported')
+        subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
             subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
         except subprocess.CalledProcessError:
