@@ -9,7 +9,9 @@ htslib_test_lib = static_library(
   install : false,
   dependencies : [
     libm_dep,
+    regex_dep,
     thread_dep,
+    ws_dep,
     zlib_dep])
 
 test('hts_endian',
