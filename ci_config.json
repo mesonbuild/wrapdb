@@ -269,22 +269,6 @@
       "windows": false
     }
   },
-  "libssh2": {
-    "debian_packages": [
-      "libssl-dev"
-    ],
-    "brew_packages": [
-      "openssl"
-    ],
-    "build_on": {
-      "windows": false
-    },
-    "_comment": "openssl3 is keg-only. Need to add pkgconfig path.",
-    "build_options": [
-      "libssh2:examples=true",
-      "pkg_config_path=/usr/local/opt/openssl@3/lib/pkgconfig"
-    ]
-  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {

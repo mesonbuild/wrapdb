@@ -1,147 +1,182 @@
-project('libssh2', 'c',
-  version : '1.10.0',
-  license : 'BSD-3',
-  meson_version : '>=0.58.0')
+project('libssh2', 'c', version: '1.10.0', license: 'BSD-3', meson_version: '>=0.46.0')
 
 cc = meson.get_compiler('c')
 pkgconfig = import('pkgconfig')
 
-libssh2_sources = [
-    'src/misc.c',
-    'src/scp.c',
-    'src/crypt.c',
-    'src/hostkey.c',
-    'src/version.c',
-    'src/wincng.c',
-    'src/blowfish.c',
-    'src/mac.c',
-    'src/os400qc3.c',
-    'src/transport.c',
-    'src/agent.c',
-    'src/pem.c',
-    'src/kex.c',
-    'src/sftp.c',
-    'src/knownhost.c',
-    'src/publickey.c',
-    'src/channel.c',
-    'src/global.c',
-    'src/packet.c',
-    'src/bcrypt_pbkdf.c',
-    'src/userauth.c',
-    'src/keepalive.c',
-    'src/comp.c',
-    'src/session.c'
-]
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  add_project_arguments('-D_WINDLL', language: 'c')
+endif
+
+libssh2_sources = files(
+  'src/agent.c',
+  'src/agent_win.c',
+  'src/bcrypt_pbkdf.c',
+  'src/blowfish.c',
+  'src/channel.c',
+  'src/comp.c',
+  'src/crypt.c',
+  'src/global.c',
+  'src/hostkey.c',
+  'src/keepalive.c',
+  'src/kex.c',
+  'src/knownhost.c',
+  'src/mac.c',
+  'src/misc.c',
+  'src/packet.c',
+  'src/pem.c',
+  'src/publickey.c',
+  'src/scp.c',
+  'src/session.c',
+  'src/sftp.c',
+  'src/transport.c',
+  'src/userauth.c',
+  'src/version.c',
+)
 
 libssh2_deps = []
-extra_flags = []
 
-if get_option('crypto_backend') == 'openssl'
-    libssh2_sources += ['src/openssl.c']
-    libssh2_deps += dependency('openssl', version : '>= 1.0.0')
-    extra_flags += ['-DLIBSSH2_OPENSSL']
-elif get_option('crypto_backend') == 'mbedtls'
-    libssh2_sources += ['src/mbedtls.c']
+if host_machine.system() == 'windows'
+  win = import('windows')
+  libssh2_sources += win.compile_resources('win32/libssh2.rc')
+  add_project_arguments('-DLIBSSH2_WIN32', language: 'c')
+elif host_machine.system() == 'darwin'
+  add_project_arguments('-DLIBSSH2_DARWIN', language: 'c')
+endif
 
-    libmbedtls = cc.find_library('mbedtls', has_headers: ['mbedtls/version.h'])
-    libmbedx509 = cc.find_library('mbedx509')
-    libmbedcrypto = cc.find_library('mbedcrypto')
+crypto = get_option('crypto_backend')
+if crypto == 'auto'
+  if host_machine.system() == 'windows'
+    crypto = 'wincng'
+  else
+    crypto = 'openssl'
+  endif
+endif
+
+if crypto == 'openssl'
+  if meson.version().version_compare('>= 0.62.0')
+    openssl_dep = dependency('openssl', version: '>= 1.0.0', required: get_option('crypto_backend') == 'openssl')
+  else
+    openssl_dep = cc.find_library('libcrypto', required: get_option('crypto_backend') == 'openssl')
+  endif
+  if openssl_dep.found()
+    libssh2_sources += 'src/openssl.c'
+    libssh2_deps += openssl_dep
+    add_project_arguments('-DLIBSSH2_OPENSSL', language: 'c')
+  else
+    crypto = 'mbedtls'
+  endif
+endif
+
+if crypto == 'mbedtls'
+  libmbedtls = cc.find_library('mbedtls', required: get_option('crypto_backend') == 'mbedtls')
+  libmbedx509 = cc.find_library('mbedx509', required: get_option('crypto_backend') == 'mbedtls')
+  libmbedcrypto = cc.find_library('mbedcrypto', required: get_option('crypto_backend') == 'mbedtls')
+  if libmbedtls.found() and libmbedx509.found() and libmbedcrypto.found()
+    libssh2_sources += 'src/mbedtls.c'
     libssh2_deps += [libmbedtls, libmbedx509, libmbedcrypto]
+    add_project_arguments('-DLIBSSH2_MBEDTLS', language: 'c')
+  else
+    crypto = 'gcrypt'
+  endif
+endif
 
-    extra_flags += ['-DLIBSSH2_MBEDTLS']
-elif get_option('crypto_backend') == 'gcrypt'
-    libssh2_sources += ['src/libgcrypt.c']
-    libssh2_deps += dependency('libgcrypt')
-    extra_flags += ['-DLIBSSH2_GCRYPT']
-else
-    error('No crypto backend specified')
+if crypto == 'gcrypt'
+  gcrypt_dep = dependency('libgcrypt', required: get_option('crypto_backend') == 'gcrypt')
+  if gcrypt_dep.found()
+    libssh2_sources += 'src/libgcrypt.c'
+    libssh2_deps += gcrypt_dep
+    add_project_arguments('-DLIBSSH2_LIBGCRYPT', language: 'c')
+  else
+    error('No crypto backends available')
+  endif
+endif
+
+if crypto == 'wincng'
+  if host_machine.system() != 'windows'
+    error('WinCNG is a Windows only backend')
+  endif
+  libssh2_sources += 'src/wincng.c'
+  libssh2_deps += [cc.find_library('bcrypt'), cc.find_library('crypt32')]
+  add_project_arguments('-DLIBSSH2_WINCNG', language: 'c')
 endif
 
 libssh2_config = configuration_data()
 
 check_headers = [
-    'unistd.h',
-    'inttypes.h',
-    'stdlib.h',
-    'sys/select.h',
-    'sys/uio.h',
-    'sys/socket.h',
-    'netinet/in.h',
-    'arpa/inet.h',
-    'sys/ioctl.h',
-    'sys/time.h',
-    'sys/un.h',
-    'windows.h',
-    'ws2tcpip.h',
-    'winsock2.h',
-    'ntdef.h',
-    'ntstatus.h'
+  'unistd.h',
+  'inttypes.h',
+  'stdlib.h',
+  'sys/select.h',
+  'sys/uio.h',
+  'sys/socket.h',
+  'netinet/in.h',
+  'arpa/inet.h',
+  'sys/ioctl.h',
+  'sys/time.h',
+  'sys/un.h',
+  'windows.h',
+  'ws2tcpip.h',
+  'winsock2.h',
+  'ntdef.h',
+  'ntstatus.h',
 ]
 
 foreach h : check_headers
-    libssh2_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+  libssh2_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-if cc.has_header('fcntl.h')
-    libssh2_config.set('HAVE_O_NONBLOCK', cc.has_header_symbol('fcntl.h', 'O_NONBLOCK'))
-endif
+libssh2_config.set('HAVE_O_NONBLOCK', cc.has_header_symbol('fcntl.h', 'O_NONBLOCK'))
+libssh2_config.set('HAVE_FIONBIO', cc.has_header_symbol('sys/ioctl.h', 'FIONBIO'))
+libssh2_config.set('HAVE_IOCTLSOCKET', cc.has_header_symbol('winsock2.h', 'ioctlsocket'))
 
-if libssh2_config.get('HAVE_SYS_IOCTL_H')
-    libssh2_config.set('HAVE_FIONBIO', cc.has_header_symbol('sys/ioctl.h', 'FIONBIO'))
-endif
+ws_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
+libssh2_deps += ws_dep
 
-check_funcs = [
-    'EVP_aes_128_ctr',
-    'gettimeofday',
-    'poll',
-    'select',
-    'socket',
-    'strtoll',
-    'strtoi64',
-    'snprintf'
-]
+#hack for MSVC
+libssh2_config.set('HAVE_SNPRINTF', cc.has_header_symbol('stdio.h', 'snprintf'))
 
-foreach f : check_funcs
-    libssh2_config.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+foreach f : ['EVP_aes_128_ctr', 'gettimeofday', 'poll', 'select', 'socket', 'strtoll', 'strtoi64']
+  libssh2_config.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
 libssh2_config.set('HAVE_LONGLONG', 1)
 libssh2_config.set('LIBSSH2DEBUG', get_option('buildtype') == 'debug')
 
 libssh2_config_h = configure_file(
-    input: 'src/libssh2_config_cmake.h.in',
-    output: 'libssh2_config.h',
-    configuration: libssh2_config,
-    format: 'cmake',
-    install: true,
-    install_dir: 'include/'
+  input: 'src/libssh2_config_cmake.h.in',
+  output: 'libssh2_config.h',
+  configuration: libssh2_config,
+  format: 'cmake',
 )
-libssh2_sources += [libssh2_config_h]
 
-inc_dir = include_directories(['include', '.'])
-abi_version = host_machine.system() == 'windows' ? '' : '1.0.1'
-libssh2_lib = library('ssh2',
-    libssh2_sources,
-    include_directories: inc_dir,
-    dependencies: libssh2_deps,
-    c_args: extra_flags,
-    install: true,
-    version: abi_version
+inc_dir = include_directories('include', '.')
+abi_version = '1.0.1'
+libssh2_lib = library(
+  'ssh2',
+  libssh2_sources,
+  include_directories: inc_dir,
+  dependencies: libssh2_deps,
+  install: true,
+  version: abi_version,
+  soversion: host_machine.system() == 'windows' ? '' : '1',
 )
+
 libssh2_dep = declare_dependency(
-    include_directories: inc_dir,
-    link_with: libssh2_lib
+  include_directories: inc_dir,
+  link_with: libssh2_lib,
 )
 
 install_headers(
-    'include/libssh2.h',
-    'include/libssh2_publickey.h',
-    'include/libssh2_sftp.h'
+  libssh2_config_h,
+  'include/libssh2.h',
+  'include/libssh2_publickey.h',
+  'include/libssh2_sftp.h',
 )
 
-pkgconfig.generate(libssh2_lib,
-    name: 'libssh2',
-    description: 'Library for SSH-based communication'
+pkgconfig.generate(
+  libssh2_lib,
+  name: 'libssh2',
+  description: 'Library for SSH-based communication',
 )
 
 if get_option('examples')
