@@ -62,6 +62,6 @@ foreach example : examples_c
         example.replace('.c', ''),
         [ example, example_libssh2_config_h ],
         include_directories: include_directories('.'),
-        dependencies: libssh2_dep
+        dependencies: [libssh2_dep, ws_dep]
     )
 endforeach
