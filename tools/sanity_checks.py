@@ -314,8 +314,10 @@ class TestReleases(unittest.TestCase):
                     print(msg)
                     self.skipTest(msg)
 
-                error = logs.splitlines()[-1]
-                if 'unsupported' in error or 'not supported' in error:
+                loglines = logs.splitlines()
+                lasterror = [i for i, j in enumerate(loglines) if 'ERROR: ' in j][-1]
+                error = ' '.join(loglines[lasterror:])
+                if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
                     skipme('unsupported, as expected')
                 elif 'ERROR: Dependency ' in error or 'ERROR: Program ' in error:
                     if 'not found' in error:
