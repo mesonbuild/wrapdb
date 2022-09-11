@@ -223,6 +223,7 @@ class TestReleases(unittest.TestCase):
         passed = []
         skipped = []
         failed = []
+        errored = []
         for name, info in self.releases.items():
             if name in self.skip:
                 skipped.append(name)
@@ -231,12 +232,18 @@ class TestReleases(unittest.TestCase):
                 with tempfile.TemporaryDirectory() as d:
                     self.check_new_release(name, d)
                     passed.append(name)
+            except unittest.SkipTest:
+                passed.append(name)
             except subprocess.CalledProcessError:
                 failed.append(name)
+            except Exception:
+                errored.append(name)
         print(f'{len(passed)} passed:', ', '.join(passed))
         print(f'{len(skipped)} skipped:', ', '.join(skipped))
         print(f'{len(failed)} failed:', ', '.join(failed))
+        print(f'{len(errored)} errored:', ', '.join(errored))
         self.assertFalse(failed)
+        self.assertFalse(errored)
 
     def check_has_no_path_separators(self, value: str) -> None:
         self.assertNotIn('/', value)
@@ -293,7 +300,7 @@ class TestReleases(unittest.TestCase):
         res = subprocess.run(['meson', 'setup', builddir] + options)
         if res.returncode == 0:
             if not expect_working:
-                raise Exception('Wrap successfully configured but was expected to fail')
+                raise Exception(f'Wrap {name} successfully configured but was expected to fail')
         else:
             log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
             logs = log_file.read_text(encoding='utf-8')
@@ -313,7 +320,7 @@ class TestReleases(unittest.TestCase):
                 elif 'ERROR: Dependency ' in error or 'ERROR: Program ' in error:
                     if 'not found' in error:
                         skipme('cannot verify in wrapdb due to missing dependency')
-            raise Exception('wrap failed to configure due to bugs in the wrap, rather than due to being unsupported')
+            raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
             subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
