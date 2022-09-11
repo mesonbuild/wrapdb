@@ -26,6 +26,10 @@ option('programs', type: 'boolean',
   description: 'Build programs',
 )
 
+option('sndio', type: 'feature',
+  description: 'Build with sndio support. OpenBSD only.'
+)
+
 option('regtest', type: 'boolean',
   value: false,
   description: 'enable regtest'

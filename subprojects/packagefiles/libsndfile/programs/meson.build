@@ -8,7 +8,7 @@ if alsa_dep.found()
     'sndfile-play.c',
     'common.c',
     install: true,
-    dependencies: [ libsndfile_dep, libm_dep, alsa_dep ],
+    dependencies: [libsndfile_dep, libm_dep, alsa_dep, sndio_dep],
   )
 endif
 
@@ -20,6 +20,6 @@ foreach t : tests
     '@0@.c'.format(t),
     'common.c',
     install: true,
-    dependencies: [ libsndfile_dep, libm_dep, ],
+    dependencies: [libsndfile_dep, libm_dep],
   )
 endforeach

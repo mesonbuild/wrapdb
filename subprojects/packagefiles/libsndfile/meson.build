@@ -1,7 +1,4 @@
-project('libsndfile', 'c',
-  version : '1.1.0',
-  default_options : 'warning_level=3',
-)
+project('libsndfile', 'c', version: '1.1.0')
 
 cc = meson.get_compiler('c')
 
@@ -38,9 +35,16 @@ flac_dep = dependency('flac', required: get_option('external_libs'))
 vorbis_dep = dependency('vorbis', required: get_option('external_libs'))
 vorbisenc_dep = dependency('vorbisenc', required: get_option('external_libs'))
 opus_dep = dependency('opus', required: get_option('external_libs'))
-sndio_dep = dependency('sndio', required: get_option('external_libs'))
+if host_machine.system() == 'openbsd'
+  sndio_dep = dependency('sndio', required: get_option('sndio'))
+else
+  sndio_dep = dependency('', required: false)
+endif
 cdata.set10('HAVE_SNDIO_H', sndio_dep.found())
-cdata.set10('HAVE_EXTERNAL_XIPH_LIBS', flac_dep.found() and ogg_dep.found() and vorbis_dep.found() and vorbisenc_dep.found() and opus_dep.found())
+cdata.set10(
+  'HAVE_EXTERNAL_XIPH_LIBS',
+  flac_dep.found() and ogg_dep.found() and vorbis_dep.found() and vorbisenc_dep.found() and opus_dep.found(),
+)
 cdata.set10('CPU_CLIPS_POSITIVE', get_option('cpu_clip'))
 cdata.set10('CPU_CLIPS_NEGATIVE', get_option('cpu_clip'))
 cdata.set10('ENABLE_EXPERIMENTAL_CODE', get_option('experimental'))
@@ -52,24 +56,70 @@ cdata.set('TYPEOF_SF_COUNT_T', 'int64_t')
 cdata.set('SF_COUNT_MAX', 'INT64_MAX')
 
 headers = [
-  'alsa/asoundlib.h', 'byteswap.h', 'dlfcn.h', 'endian.h', 'immintrin.h', 'inttypes.h', 'locale.h', 'memory.h', 'stdbool.h', 'stdint.h',
-  'stdlib.h', 'strings.h', 'string.h', 'sys/stat.h', 'sys/time.h', 'sys/types.h', 'sys/wait.h', 'unistd.h',
+  'alsa/asoundlib.h',
+  'byteswap.h',
+  'dlfcn.h',
+  'endian.h',
+  'immintrin.h',
+  'inttypes.h',
+  'locale.h',
+  'memory.h',
+  'stdbool.h',
+  'stdint.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/stat.h',
+  'sys/time.h',
+  'sys/types.h',
+  'sys/wait.h',
+  'unistd.h',
 ]
 
 funcs = [
-  'calloc', 'ceil', 'floor', 'fmod', 'free', 'fstat', 'fstat64', 'fsync', 'ftruncate', 'getpagesize', 'gettimeofday', 'gmtime', 'localtime', 'lrint',
-  'lrintf', 'lround', 'lseek', 'lseek64', 'malloc', 'mmap', 'open', 'pipe', 'read', 'realloc', 'setlocale', 'snprintf', 'vsnprintf', 'waitpid', 'write'
+  'calloc',
+  'ceil',
+  'floor',
+  'fmod',
+  'free',
+  'fstat',
+  'fstat64',
+  'fsync',
+  'ftruncate',
+  'getpagesize',
+  'gettimeofday',
+  'gmtime',
+  'localtime',
+  'lrint',
+  'lrintf',
+  'lround',
+  'lseek',
+  'lseek64',
+  'malloc',
+  'mmap',
+  'open',
+  'pipe',
+  'read',
+  'realloc',
+  'setlocale',
+  'snprintf',
+  'vsnprintf',
+  'waitpid',
+  'write',
 ]
 
 sizes = [
-  [ 'int64_t', 'stdint.h' ], [ 'long', '' ], [ 'long long', '' ], [ 'off_t', '' ], [ 'ssize_t', 'sys/types.h' ], [ 'wchar_t', 'wchar.h' ]
+  ['int64_t', 'stdint.h'],
+  ['long', ''],
+  ['long long', ''],
+  ['off_t', ''],
+  ['ssize_t', 'sys/types.h'],
+  ['wchar_t', 'wchar.h'],
 ]
 
 #completely unused by the code but meson demands definitions
 cdata.set('SIZEOF_VOIDP_CODE', '#define VOIDP_CODE')
-sizes += [
-  [ 'double', '' ], [ 'float', '' ], [ 'int', '' ], [ 'loff_t', '' ], [ 'off64_t', '' ], [ 'short', '' ], [ 'size_t', '' ]
-]
+sizes += [['double', ''], ['float', ''], ['int', ''], ['loff_t', ''], ['off64_t', ''], ['short', ''], ['size_t', '']]
 
 foreach f : funcs
   cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
@@ -84,7 +134,13 @@ endforeach
 
 foreach s : sizes
   upper = s[0].underscorify().to_upper()
-  cdata.set('SIZEOF_@0@_CODE'.format(upper), '#define @0@ @1@'.format('SIZEOF_@0@'.format(upper), cc.sizeof(s[0], prefix: s[1].contains('.h') ? '#include <@0@>'.format(s[1]) : '')))
+  cdata.set(
+    'SIZEOF_@0@_CODE'.format(upper),
+    '#define @0@ @1@'.format(
+      'SIZEOF_@0@'.format(upper),
+      cc.sizeof(s[0], prefix: s[1].contains('.h') ? '#include <@0@>'.format(s[1]) : ''),
+    ),
+  )
 endforeach
 
 cfile = configure_file(
@@ -107,70 +163,20 @@ sndfile = configure_file(
 incdirs = include_directories('.', 'src')
 
 libsndfile_sources = files(
-  'src/common.c',
-  'src/file_io.c',
-  'src/command.c',
-  'src/pcm.c',
-  'src/ulaw.c',
-  'src/alaw.c',
-  'src/float32.c',
-  'src/double64.c',
-  'src/ima_adpcm.c',
-  'src/ms_adpcm.c',
-  'src/gsm610.c',
-  'src/dwvw.c',
-  'src/vox_adpcm.c',
-  'src/interleave.c',
-  'src/strings.c',
-  'src/dither.c',
-  'src/cart.c',
-  'src/broadcast.c',
-  'src/audio_detect.c',
-  'src/ima_oki_adpcm.c',
-  'src/alac.c',
-  'src/chunk.c',
-  'src/ogg.c',
-  'src/chanmap.c',
-  'src/id3.c',
-  'src/sndfile.c',
-  'src/aiff.c',
-  'src/au.c',
-  'src/avr.c',
-  'src/caf.c',
-  'src/dwd.c',
-  'src/flac.c',
-  'src/g72x.c',
-  'src/htk.c',
-  'src/ircam.c',
-  'src/macos.c',
-  'src/mat4.c',
-  'src/mat5.c',
-  'src/nist.c',
-  'src/paf.c',
-  'src/pvf.c',
-  'src/raw.c',
-  'src/rx2.c',
-  'src/sd2.c',
-  'src/sds.c',
-  'src/svx.c',
-  'src/txw.c',
-  'src/voc.c',
-  'src/wve.c',
-  'src/w64.c',
-  'src/wavlike.c',
-  'src/wav.c',
-  'src/xi.c',
-  'src/mpc2k.c',
-  'src/rf64.c',
-  'src/ogg_vorbis.c',
-  'src/ogg_speex.c',
-  'src/ogg_pcm.c',
-  'src/ogg_opus.c',
-  'src/ogg_vcomment.c',
-  'src/nms_adpcm.c',
-  'src/mpeg.c',
-  'src/mpeg_decode.c',
-  'src/mpeg_l3_encode.c',
+  'src/ALAC/ALACBitUtilities.c',
+  'src/ALAC/ag_dec.c',
+  'src/ALAC/ag_enc.c',
+  'src/ALAC/alac_decoder.c',
+  'src/ALAC/alac_encoder.c',
+  'src/ALAC/dp_dec.c',
+  'src/ALAC/dp_enc.c',
+  'src/ALAC/matrix_dec.c',
+  'src/ALAC/matrix_enc.c',
+  'src/G72x/g721.c',
+  'src/G72x/g723_16.c',
+  'src/G72x/g723_24.c',
+  'src/G72x/g723_40.c',
+  'src/G72x/g72x.c',
   'src/GSM610/add.c',
   'src/GSM610/code.c',
   'src/GSM610/decode.c',
@@ -185,20 +191,70 @@ libsndfile_sources = files(
   'src/GSM610/rpe.c',
   'src/GSM610/short_term.c',
   'src/GSM610/table.c',
-  'src/G72x/g721.c',
-  'src/G72x/g723_16.c',
-  'src/G72x/g723_24.c',
-  'src/G72x/g723_40.c',
-  'src/G72x/g72x.c',
-  'src/ALAC/ALACBitUtilities.c',
-  'src/ALAC/ag_dec.c',
-  'src/ALAC/ag_enc.c',
-  'src/ALAC/dp_dec.c',
-  'src/ALAC/dp_enc.c',
-  'src/ALAC/matrix_dec.c',
-  'src/ALAC/matrix_enc.c',
-  'src/ALAC/alac_decoder.c',
-  'src/ALAC/alac_encoder.c',
+  'src/aiff.c',
+  'src/alac.c',
+  'src/alaw.c',
+  'src/au.c',
+  'src/audio_detect.c',
+  'src/avr.c',
+  'src/broadcast.c',
+  'src/caf.c',
+  'src/cart.c',
+  'src/chanmap.c',
+  'src/chunk.c',
+  'src/command.c',
+  'src/common.c',
+  'src/dither.c',
+  'src/double64.c',
+  'src/dwd.c',
+  'src/dwvw.c',
+  'src/file_io.c',
+  'src/flac.c',
+  'src/float32.c',
+  'src/g72x.c',
+  'src/gsm610.c',
+  'src/htk.c',
+  'src/id3.c',
+  'src/ima_adpcm.c',
+  'src/ima_oki_adpcm.c',
+  'src/interleave.c',
+  'src/ircam.c',
+  'src/macos.c',
+  'src/mat4.c',
+  'src/mat5.c',
+  'src/mpc2k.c',
+  'src/mpeg.c',
+  'src/mpeg_decode.c',
+  'src/mpeg_l3_encode.c',
+  'src/ms_adpcm.c',
+  'src/nist.c',
+  'src/nms_adpcm.c',
+  'src/ogg.c',
+  'src/ogg_opus.c',
+  'src/ogg_pcm.c',
+  'src/ogg_speex.c',
+  'src/ogg_vcomment.c',
+  'src/ogg_vorbis.c',
+  'src/paf.c',
+  'src/pcm.c',
+  'src/pvf.c',
+  'src/raw.c',
+  'src/rf64.c',
+  'src/rx2.c',
+  'src/sd2.c',
+  'src/sds.c',
+  'src/sndfile.c',
+  'src/strings.c',
+  'src/svx.c',
+  'src/txw.c',
+  'src/ulaw.c',
+  'src/voc.c',
+  'src/vox_adpcm.c',
+  'src/w64.c',
+  'src/wav.c',
+  'src/wavlike.c',
+  'src/wve.c',
+  'src/xi.c',
 )
 
 if host_machine.system() == 'windows'
@@ -217,23 +273,25 @@ if get_option('buildtype') != 'static'
   endif
 endif
 
-libsndfile = library('sndfile',
+libsndfile = library(
+  'sndfile',
   libsndfile_sources,
   include_directories: incdirs,
   version: meson.project_version(),
   vs_module_defs: 'src/libsndfile-1.def',
   link_args: link_args,
-  dependencies: [ mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep, sndio_dep ],
+  dependencies: [mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep, sndio_dep],
   install: true,
 )
 
 libsndfile_dep = declare_dependency(
-  include_directories : incdirs,
-  link_with : libsndfile,
+  include_directories: incdirs,
+  link_with: libsndfile,
 )
 
 pconf = import('pkgconfig')
-pconf.generate(libsndfile,
+pconf.generate(
+  libsndfile,
   description: 'A library for reading and writing audio files',
 )
 
