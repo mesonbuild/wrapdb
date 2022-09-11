@@ -310,18 +310,16 @@ class TestReleases(unittest.TestCase):
                 print('::endgroup::')
                 res.check_returncode()
             else:
-                def skipme(msg):
-                    print(msg)
-                    self.skipTest(msg)
-
                 loglines = logs.splitlines()
                 lasterror = [i for i, j in enumerate(loglines) if 'ERROR: ' in j][-1]
                 error = ' '.join(loglines[lasterror:])
                 if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
-                    skipme('unsupported, as expected')
+                    print('unsupported, as expected')
+                    return
                 elif 'ERROR: Dependency ' in error or 'ERROR: Program ' in error:
                     if 'not found' in error:
-                        skipme('cannot verify in wrapdb due to missing dependency')
+                        print('cannot verify in wrapdb due to missing dependency')
+                        return
             raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
         subprocess.check_call(['meson', 'compile', '-C', builddir])
         try:
