@@ -1,6 +1,6 @@
 project('reflex', 'cpp',
-        version : '3.2.7',
-        license : 'BSD-3-Clause',
+        version: '3.2.11',
+        license: 'BSD-3-Clause',
         meson_version: '>=0.49.0')
 
 includes = include_directories('include')
