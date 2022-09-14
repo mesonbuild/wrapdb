@@ -1,10 +1,9 @@
 [wrap-file]
-directory = liblangtag-0.6.3
-source_url = https://bitbucket.org/tagoh/liblangtag/downloads/liblangtag-0.6.3.tar.bz2
-source_filename = liblangtag-0.6.3.tar.bz2
-source_hash = 1f12a20a02ec3a8d22e54dedb8b683a43c9c160bda1ba337bf1060607ae733bd
+directory = liblangtag-0.6.4
+source_url = https://bitbucket.org/tagoh/liblangtag/downloads/liblangtag-0.6.4.tar.bz2
+source_filename = liblangtag-0.6.4.tar.bz2
+source_hash = 5701062c17d3e73ddaa49956cbfa5d47d2f8221988dec561c0af2118c1c8a564
 patch_directory = liblangtag
 
 [provide]
 liblangtag = liblangtag_dep
-

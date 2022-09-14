@@ -1,87 +1,55 @@
-project('liblangtag', 'c', version: '0.6.3')
+project('liblangtag', 'c', version: '0.6.4')
 
 cc = meson.get_compiler('c')
 
 xml_dep = dependency('libxml-2.0')
-threads_dep = []
-dl_dep = cc.find_library('dl', required: false)
+threads_dep = dependency('threads')
+if meson.version().version_compare('>= 0.62.0')
+  dl_dep = dependency('dl', required: false)
+else
+  dl_dep = cc.find_library('dl', required: false)
+endif
 
 cdata = configuration_data()
-check_headers = [
-  ['HAVE_DIRENT_H', 'dirent.h'],
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_EXECINFO_H', 'execinfo.h'],
-  ['HAVE_INTTYPES_H', 'inttypes.h'],
-  ['HAVE_LIBGEN_H', 'libgen.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_PARAM_H', 'sys/param.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-]
 
-foreach h : check_headers
-  if cc.has_header(h.get(1))
-    cdata.set(h.get(0), 1)
-  endif
+foreach h : ['dirent.h', 'dlfcn.h', 'libgen.h', 'memory.h', 'string.h', 'sys/param.h', 'unistd.h']
+  cdata.set10('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-check_functions = [
-# check token ['HAVE_BACKTRACE']
-# check token ['HAVE_GETEGID']
-# check token ['HAVE_GETEUID']
-# check token ['HAVE_GETGID']
-  ['HAVE_GETUID', 'getuid', '#include<unistd.h>'],
-# check token ['HAVE_PTHREAD']
-# check token ['HAVE_PTHREAD_PRIO_INHERIT']
-# check token ['HAVE_SECURE_GETENV']
-  ['HAVE_STRNDUP', 'strndup', '#include<string.h>'],
-  ['HAVE_VASPRINTF', 'vasprintf', '#include<stdio.h>'],
-# check token ['HAVE_VA_COPY']
-  ['HAVE_VSNPRINTF', 'vsnprintf', '#include<stdio.h>'],
-# check token ['HAVE___SECURE_GETENV']
-# check token ['HAVE_VA_COPY']
-]
+cdata.set('HAVE_EXECINFO_H', cc.has_header('execinfo.h'))
+cdata.set10('HAVE_PTHREAD', cc.has_header('pthread.h'))
+
+foreach f : ['backtrace', 'strndup', 'vasprintf', 'vsnprintf']
+  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f, prefix: '#include <stdio.h>'))
+endforeach
+
+if cdata.get('HAVE_VASPRINTF') == 1
+  add_project_arguments('-D_GNU_SOURCE', language: 'c')
+endif
+
+foreach f : ['getegid', 'geteuid', 'getgid', 'getuid']
+  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+endforeach
+
+cdata.set('HAVE___SECURE_GETENV', cc.has_function('__secure_getenv'))
+
+cdata.set('ALIGNOF_VOID_P', cc.sizeof('void*'))
+
+# Because we are not living in the 1980s any more.
+cdata.set('LT_CAN_INLINE', true)
+
+cdata.set_quoted('LT_MODULE_SUFFIX', host_machine.system() == 'windows' ? 'dll' : 'so')
 
 if host_machine.system() != 'windows'
-  cdata.set('HAVE_PTHREAD', 1)
-  thread_dep = dependency('threads')
   cdata.set('ENABLE_MODULE', 1)
 else
   cdata.set('ENABLE_MODULE', 0)
 endif
 
-if cc.get_id() == 'msvc'
-  cdata.set('HAVE_VA_COPY', 1)
-endif
-
-foreach f : check_functions
-  if cc.has_function(f.get(1), prefix : f.get(2))
-    cdata.set(f.get(0), 1)
-  endif
-endforeach
-
-cdata.set('SIZEOF_CHAR', cc.sizeof('char'))
-cdata.set('SIZEOF_INT', cc.sizeof('int'))
-cdata.set('SIZEOF_LONG', cc.sizeof('long'))
-cdata.set('SIZEOF_LONG_LONG', cc.sizeof('long long'))
-cdata.set('SIZEOF_SHORT', cc.sizeof('short'))
-cdata.set('SIZEOF_VOIDP', cc.sizeof('voidp'))
-cdata.set('ALIGNOF_VOID_P', cc.alignment('void*'))
-
-# Because we are not living in the 1980s any more.
-cdata.set('LT_HAVE_INLINE', 1)
-cdata.set('LT_CAN_INLINE', 1)
-
-cdata.set_quoted('LT_MODULE_SUFFIX', host_machine.system() == 'windows' ? 'dll' : 'so')
-
-configure_file(input : 'config.h.meson',
-  output : 'config.h',
-  configuration : cdata)
+configure_file(
+  output: 'config.h',
+  configuration: cdata,
+)
 
 # The source code lacks function export annotations, so
 # it can not be built as a shared library under MSVC,
@@ -93,7 +61,8 @@ configure_file(input : 'config.h.meson',
 
 ttype = host_machine.system() == 'windows' ? 'static_library' : 'library'
 
-liblangtag_lib = build_target('langtag',
+liblangtag_lib = build_target(
+  'langtag',
   'liblangtag/lt-database.c',
   'liblangtag/lt-error.c',
   'liblangtag/lt-ext-module.c',
@@ -124,13 +93,17 @@ liblangtag_lib = build_target('langtag',
   'liblangtag/lt-variant-db.c',
   'liblangtag/lt-xml.c',
   target_type: ttype,
-  c_args: ['-D__LANGTAG_COMPILATION',
-           '-D__LANGTAG_PRIVATE',
-           '-DHAVE_CONFIG_H',
-           '-DREGDATADIR="@0@/liblangtag"'.format(get_option('datadir')),
-           '-DLANGTAG_EXT_MODULE_PATH="@0@"'.format(get_option('libdir') / 'liblangtag')],
+  c_args: [
+    '-D__LANGTAG_COMPILATION',
+    '-D__LANGTAG_PRIVATE',
+    '-DHAVE_CONFIG_H',
+    '-DREGDATADIR="@0@/liblangtag"'.format(get_option('datadir')),
+    '-DLANGTAG_EXT_MODULE_PATH="@0@"'.format(get_option('libdir') / 'liblangtag'),
+  ],
   dependencies: [xml_dep, threads_dep, dl_dep],
 )
 
-liblangtag_dep = declare_dependency(include_directories: '.',
-  link_with: liblangtag_lib)
+liblangtag_dep = declare_dependency(
+  include_directories: '.',
+  link_with: liblangtag_lib,
+)
