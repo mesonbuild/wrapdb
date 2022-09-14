@@ -1,0 +1,17 @@
+executable(
+  'metaflac',
+  'main.c',
+  'operations.c',
+  'operations_shorthand_cuesheet.c',
+  'operations_shorthand_picture.c',
+  'operations_shorthand_seektable.c',
+  'operations_shorthand_streaminfo.c',
+  'operations_shorthand_vorbiscomment.c',
+  'options.c',
+  'usage.c',
+  'utils.c',
+  win32_utf8,
+  dependencies: [flac_dep, m_dep],
+  link_with: [flac_lib, grabbag, libgetopt, utf8lib],
+  install: true,
+)
