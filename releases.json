@@ -1274,6 +1274,14 @@
       "1.0.11-1"
     ]
   },
+  "libxxf86vm": {
+    "dependency_names": [
+      "xxf86vm"
+    ],
+    "versions": [
+      "1.1.4-1"
+    ]
+  },
   "libyaml": {
     "dependency_names": [
       "yaml-0.1"
