@@ -1,4 +1,4 @@
-project('flac', 'c', version: '1.3.4')
+project('flac', 'c', version: '1.4.0', meson_version: '>=0.49.0')
 
 cc = meson.get_compiler('c')
 
@@ -9,59 +9,84 @@ endif
 
 ogg_dep = dependency('ogg')
 m_dep = cc.find_library('m', required: false)
+if meson.version().version_compare('>= 0.60')
+  iconv_dep = dependency('iconv', required: false)
+else
+  iconv_dep = dependency('', required: false)
+endif
+
 
 cdata = configuration_data()
 
-check_headers = [
+cheaders = [
+  'byteswap.h',
   'inttypes.h',
+  'memory.h',
   'stdint.h',
+  'stdlib.h',
   'string.h',
+  'sys/ioctl.h',
+  'sys/param.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'termios.h',
+  'unistd.h',
 ]
 
-foreach h : check_headers
-  if cc.has_header(h)
-    cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
-  endif
+foreach h : cheaders
+  cdata.set('HAVE_' + h.underscorify().to_upper(), cc.has_header(h))
 endforeach
 
-cdata.set('HAVE_BYTESWAP_H', cc.has_header('byteswap.h'))
-cdata.set('HAVE_MEMORY_H', cc.has_header('memory.h'))
-cdata.set('HAVE_STDLIB_H', cc.has_header('stdlib.h'))
-cdata.set('HAVE_SYS_IOCTL_H', cc.has_header('sys/ioctl.h'))
-cdata.set('HAVE_SYS_PARAM_H', cc.has_header('sys/param.h'))
-cdata.set('HAVE_SYS_STAT_H', cc.has_header('sys/stat.h'))
-cdata.set('HAVE_SYS_TYPES_H', cc.has_header('sys/types.h'))
-cdata.set('HAVE_TERMIOS_H', cc.has_header('termios.h'))
-cdata.set('HAVE_UNISTD_H', cc.has_header('unistd.h'))
-cdata.set('HAVE_X86INTRIN_H', cc.has_header('x86intrin.h'))
-cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
+cdata.set('HAVE_CPUID_H', cc.check_header('cpuid.h'))
+cdata.set('HAVE_X86INTRIN_H', cc.check_header('x86intrin.h'))
+cdata.set('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
+cdata.set('FLAC__USE_ALTIVEC', cc.check_header('altivec.h'))
+cdata.set('WITH_AVX', cc.check_header('immintrin.h'))
+
+cdata.set('PROJECT_VERSION', meson.project_version())
 cdata.set10('CPU_IS_BIG_ENDIAN', host_machine.endian() == 'big')
 cdata.set10('CPU_IS_LITTLE_ENDIAN', host_machine.endian() == 'little')
-cdata.set10('OGG_FOUND', ogg_dep.found())
-cdata.set10('FLAC__HAS_X86INTRIN', cc.has_header('x86intrin.h'))
+cdata.set('FLAC__CPU_ARM64', host_machine.cpu_family() == 'aarch64')
+cdata.set('FLAC__CPU_PPC', host_machine.cpu_family() == 'ppc')
+cdata.set('FLAC__CPU_PPC64', host_machine.cpu_family() == 'ppc64')
+cdata.set('FLAC__ALIGN_MALLOC_DATA', host_machine.cpu_family() == 'x86_64')
+cdata.set10('FLAC__HAS_X86INTRIN', cdata.get('HAVE_X86INTRIN_H'))
 cdata.set('FLAC__SYS_DARWIN', host_machine.system() == 'darwin')
 cdata.set('FLAC__SYS_LINUX', host_machine.system() == 'linux')
-cdata.set10('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', prefix: '#include<time.h>'))
-cdata.set10('HAVE_FSEEKO', cc.has_function('fseeko', prefix: '#include<stdio.h>'))
-cdata.set10('HAVE_GETOPT_LONG', cc.has_function('getopt_long', prefix: '#include<getopt.h>'))
-cdata.set10('HAVE_LROUND', cc.has_function('lround', prefix: '#include<math.h>', dependencies: m_dep))
-
-if host_machine.cpu_family() == 'x86' or host_machine.cpu_family() == 'x86_64'
-  cdata.set('HAVE_CPUID_H', cc.has_header('cpuid.h'))
-endif
+cdata.set10('OGG_FOUND', ogg_dep.found())
+cdata.set('HAVE_ICONV', iconv_dep.found())
+cdata.set10('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime'))
+cdata.set10('HAVE_FSEEKO', cc.has_function('fseeko'))
+cdata.set10('HAVE_GETOPT_LONG', cc.has_function('getopt_long'))
+cdata.set10('HAVE_LROUND', cc.has_function('lround', dependencies: m_dep))
+cdata.set('HAVE_BSWAP16', cc.has_function('__builtin_bswap16'))
+cdata.set('HAVE_BSWAP32', cc.has_function('__builtin_bswap32'))
 
 cdata.set('SIZEOF_OFF_T', cc.sizeof('off_t'))
 cdata.set('SIZEOF_VOIDP', cc.sizeof('void*'))
 
-configure_file(input: 'config.cmake.h.in',
+configure_file(
+  input: 'config.cmake.h.in',
   output: 'config.h',
-  format: 'cmake',
+  format: 'cmake@',
   configuration: cdata,
 )
 
 main_inc = include_directories('include', '.')
 
+win32_utf8 = host_machine.system() == 'windows' ? files('src/share/win_utf8_io/win_utf8_io.c') : []
+
 subdir('src')
 
-flac_dep = declare_dependency(include_directories: 'include',
-    link_with: flac_lib)
+install_headers(
+  'include/FLAC/all.h',
+  'include/FLAC/assert.h',
+  'include/FLAC/callback.h',
+  'include/FLAC/export.h',
+  'include/FLAC/format.h',
+  'include/FLAC/metadata.h',
+  'include/FLAC/ordinals.h',
+  'include/FLAC/stream_decoder.h',
+  'include/FLAC/stream_encoder.h',
+  subdir: 'FLAC',
+)

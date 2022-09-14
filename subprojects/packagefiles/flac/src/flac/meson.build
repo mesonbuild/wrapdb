@@ -1,0 +1,15 @@
+executable(
+  'flac',
+  'analyze.c',
+  'decode.c',
+  'encode.c',
+  'foreign_metadata.c',
+  'main.c',
+  'local_string_utils.c',
+  'utils.c',
+  'vorbiscomment.c',
+  win32_utf8,
+  dependencies: [flac_dep, m_dep],
+  link_with: [flac_lib, grabbag, libgetopt, replaygain_synthesis, utf8lib],
+  install: true,
+)
