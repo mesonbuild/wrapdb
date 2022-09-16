@@ -1,21 +1,21 @@
 # source code for openjpeg project:
 # Part 1 & 2:
 subdir('openjp2')
-# optionals components:
-if get_option('build_jpwl')
-  subdir('openjpwl')
-  if get_option('build_mj2')
-    subdir('openmj2')
-  endif
-else
-  if get_option('build_mj2')
-    message('WARNING: you need to enable JPWL to get MJ2')
-  endif
-endif
 
+# optionals components:
 if get_option('build_jpip')
   subdir('openjpip')
 endif
-if  get_option('build_jp3d')
-  subdir('openjp3d')
+
+
+pkgconfig = import('pkgconfig')
+pkgconfig.generate(openjp2_lib, name: 'libopenjp2',
+                     description: 'JPEG2000 library (Part 1 and 2)',
+                     version: meson.project_version(),
+                     libraries: openjp2_lib)
+if get_option('build_jpip')
+  pkgconfig.generate(openjpip_lib, name: 'libopenjpip',
+                     description: 'JPEG2000 Interactivity tools, APIs and protocols (Part 9)',
+                     version: meson.project_version(),
+                     libraries: openjpip_lib)
 endif
