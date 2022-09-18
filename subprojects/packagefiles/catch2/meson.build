@@ -1,9 +1,10 @@
-project('catch2',
-    'cpp',
-    version : '2.13.8',
-    license : 'Boost'
+project(
+  'catch2',
+  'cpp',
+  version : '3.1.0',
+  license: 'BSL-1.0',
+  meson_version: '>=0.49.0'
 )
 
-catch2_dep = declare_dependency(
-    include_directories : include_directories('single_include')
-)
+subdir('src/catch2')
+subdir('tests')
