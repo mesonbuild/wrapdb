@@ -82,9 +82,11 @@
   },
   "catch2": {
     "dependency_names": [
-      "catch2"
+      "catch2",
+      "catch2-with-main"
     ],
     "versions": [
+      "3.1.0-1",
       "2.13.8-1",
       "2.13.7-1",
       "2.13.3-2",
