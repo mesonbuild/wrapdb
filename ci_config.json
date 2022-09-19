@@ -285,6 +285,13 @@
       "pkg_config_path=/usr/local/opt/openssl@3/lib/pkgconfig"
     ]
   },
+  "libtirpc": {
+    "_comment": "Linux only",
+    "build_on": {
+      "darwin": false,
+      "windows": false
+    }
+  },
   "libupnp": {
     "_comment": "Requires some special pthread library",
     "build_on": {
