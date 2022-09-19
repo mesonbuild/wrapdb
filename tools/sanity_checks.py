@@ -274,6 +274,9 @@ class TestReleases(unittest.TestCase):
         elif not ci.get('build_on', {}).get(system, True):
             expect_working = False
 
+        skip_deps = ci.get('skip_dependency_check', [])
+        deps = [d for d in deps if d not in skip_deps]
+
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options.append('-Ddepnames={}'.format(','.join(deps or [])))
         options.append('-Dprognames={}'.format(','.join(progs or [])))

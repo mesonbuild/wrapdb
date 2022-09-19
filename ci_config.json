@@ -130,6 +130,10 @@
     "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
     "build_options": [
       "glib:tests=false"
+    ],
+    "skip_dependency_check": [
+      "gio-windows-2.0",
+      "gio-unix-2.0"
     ]
   },
   "harfbuzz": {
