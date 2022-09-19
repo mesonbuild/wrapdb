@@ -60,6 +60,8 @@ meson compile -C builddir
     only on Linux CI.
   - `fatal_warnings`: (Optional) If set to `false` removes --fatal-meson-warning.
     Use this only when there is no other way to fix the warning.
+  - `skip_dependency_check`: (Optional) List of platform specific dependency
+    names that are not always provided by the project.
 
 - Test locally by running `tools/sanity_checks.py` script. It will be executed
   on the CI and must always return success before merging any PR.
