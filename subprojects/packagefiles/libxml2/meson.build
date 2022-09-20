@@ -1,5 +1,7 @@
 project('libxml2', 'c', version : '2.9.7', meson_version: '>=0.54.0', license : 'mit')
 
+add_project_arguments('-D_GNU_SOURCE', language: 'c')
+
 cdata = configuration_data()
 
 cdata.set('PACKAGE', meson.project_name())
