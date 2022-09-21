@@ -106,22 +106,14 @@
     ]
   },
   "glfw": {
-    "_comment": "- Requires POSIX platform.",
     "debian_packages": [
       "libxi-dev",
       "libxkbcommon-dev"
     ],
-    "brew_packages": [
-      "libxi",
-      "libxkbcommon"
-    ],
     "build_options": [
       "glfw:tests=true",
       "glfw:examples=true"
-    ],
-    "build_on": {
-      "windows": false
-    }
+    ]
   },
   "glib": {
     "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
