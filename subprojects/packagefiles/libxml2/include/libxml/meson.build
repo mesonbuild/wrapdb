@@ -1,21 +1,24 @@
-configure_file(input : 'xmlversion.h.in',
-               output: 'xmlversion.h',
-               configuration: withcdata,
-               install_dir : join_paths(get_option('includedir'), 'libxml2', 'libxml'))
+configure_file(
+  input: 'xmlversion.h.in',
+  output: 'xmlversion.h',
+  configuration: withcdata,
+  install_dir: join_paths(get_option('includedir'), 'libxml2', 'libxml'),
+)
 
 libxml_headers = files(
+  'HTMLparser.h',
+  'HTMLtree.h',
+  'SAX.h',
+  'SAX2.h',
   'c14n.h',
   'catalog.h',
   'chvalid.h',
   'debugXML.h',
   'dict.h',
-  'DOCBparser.h',
   'encoding.h',
   'entities.h',
   'globals.h',
   'hash.h',
-  'HTMLparser.h',
-  'HTMLtree.h',
   'list.h',
   'nanoftp.h',
   'nanohttp.h',
@@ -23,8 +26,6 @@ libxml_headers = files(
   'parserInternals.h',
   'pattern.h',
   'relaxng.h',
-  'SAX.h',
-  'SAX2.h',
   'schemasInternals.h',
   'schematron.h',
   'threads.h',
@@ -33,10 +34,10 @@ libxml_headers = files(
   'valid.h',
   'xinclude.h',
   'xlink.h',
+  'xmlIO.h',
   'xmlautomata.h',
   'xmlerror.h',
   'xmlexports.h',
-  'xmlIO.h',
   'xmlmemory.h',
   'xmlmodule.h',
   'xmlreader.h',
@@ -51,4 +52,4 @@ libxml_headers = files(
   'xpathInternals.h',
   'xpointer.h',
 )
-install_headers(libxml_headers, subdir : 'libxml2/libxml')
+install_headers(libxml_headers, subdir: 'libxml2/libxml')
