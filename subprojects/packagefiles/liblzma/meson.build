@@ -1,6 +1,8 @@
 # liblzma is what upstream uses for their pkg-config name
 project('liblzma', 'c', version: '5.2.6', license: 'pd/lgpl2/gpl2/gpl3')
 
+add_project_arguments('-D_GNU_SOURCE', language: 'c')
+
 cc = meson.get_compiler('c')
 cdata = configuration_data()
 
