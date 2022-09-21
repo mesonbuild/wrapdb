@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libxml2-2.9.7
-source_url = https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.7.tar.xz
-source_filename = libxml2-2.9.7.tar.xz
-source_hash = 6437855f3332fcc0fc25323c5f06901e02277e1232a662b621dc88fde37259ac
+directory = libxml2-2.9.14
+source_url = https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz
+source_filename = libxml2-2.9.14.tar.xz
+source_hash = 60d74a257d1ccec0475e749cba2f21559e48139efba6ff28224357c7c798dfee
 patch_directory = libxml2
 
 [provide]

@@ -1,4 +1,4 @@
-project('libxml2', 'c', version : '2.9.7', meson_version: '>=0.54.0', license : 'mit')
+project('libxml2', 'c', version : '2.9.14', meson_version: '>=0.54.0', license : 'mit')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
