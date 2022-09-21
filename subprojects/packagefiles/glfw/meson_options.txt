@@ -17,6 +17,6 @@ option('install',
 #@ Configuration options
 option('display-api',
         type : 'combo',
-        choices : ['osmesa', 'x11', 'wayland', 'win32', 'cocoa'],
-        value : 'x11',
+        choices : ['auto', 'osmesa', 'x11', 'wayland', 'win32', 'cocoa'],
+        value : 'auto',
         description : 'Choose backend display API.')

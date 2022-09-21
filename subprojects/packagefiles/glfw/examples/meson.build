@@ -15,23 +15,27 @@ if host_machine.system() == 'darwin'
 endif
 
 #@ Example executables
-examples = [['offscreen', glad_gl],
-            ['boing', glad_gl],
-            ['gears', glad_gl],
-            ['heightmap', glad_gl],
-            ['particles', [tinycthread, getopt, glad_gl]],
-            ['sharing', glad_gl],
-            ['simple', glad_gl],
-            ['splitview', glad_gl],
-            ['wave', glad_gl]]
-foreach e : examples
-  name = e[0]
-  src = [e[0] + '.c', e[1]]
-  executable(name, src,
-             include_directories : ex_include,
-             c_args : c_flags,
-             dependencies : [glfw_dep, deps],
-             build_by_default : true,
-             install : get_option('install'),
-             install_dir : opt_libdir / 'GLFW' / 'examples')
+examples = {
+  'offscreen': glad_gl,
+  'boing': glad_gl,
+  'gears': glad_gl,
+  'heightmap': glad_gl,
+  'particles': [tinycthread, getopt, glad_gl],
+  'sharing': glad_gl,
+  'simple': glad_gl,
+  'splitview': glad_gl,
+  'wave': glad_gl,
+}
+foreach name, dep : examples
+  src = [name + '.c', dep]
+  executable(
+    name,
+    src,
+    include_directories: ex_include,
+    c_args: c_flags,
+    dependencies: [glfw_dep, deps],
+    build_by_default: true,
+    install: get_option('install'),
+    install_dir: opt_libdir / 'GLFW' / 'examples',
+  )
 endforeach
