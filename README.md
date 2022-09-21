@@ -64,6 +64,13 @@ meson compile -C builddir
 
 - Create Pull Request with your changes.
 
+## How to update an existing wrap and release a new version
+
+- Provide your change as a pull request along of a new release number
+  in the `releases.json` in the `versions` section.
+  The CI will release a new version available [here](https://github.com/mesonbuild/wrapdb/releases)
+  with a new tag.
+
 ## How to import one of those wraps into my project
 
 Run `meson wrap install <name>` on the top source dir of your project. It
