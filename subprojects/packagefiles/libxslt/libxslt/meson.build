@@ -61,23 +61,26 @@ xsltconfig.set10('WITH_PROFILER', get_option('profiler'))
 xsltconfig.set10('WITH_TRIO', with_trio)
 xsltconfig.set10('WITH_XSLT_DEBUG', get_option('xslt_debug'))
 
-configure_file(input : 'xsltconfig.h.in',
-  output : 'xsltconfig.h',
-  configuration : xsltconfig,
+configure_file(
+  input: 'xsltconfig.h.in',
+  output: 'xsltconfig.h',
+  configuration: xsltconfig,
 )
 
-libxslt = library('xslt', sources,
-  include_directories : incdir,
-  dependencies : [libxml2_dep, libm, librt],
-  install : true,
+libxslt = library(
+  'xslt',
+  sources,
+  include_directories: incdir,
+  dependencies: [libxml2_dep, libm, librt],
+  install: true,
 )
 
 pkg.generate(libxslt)
 
 libxslt_dep = declare_dependency(
-  link_with : libxslt,
-  include_directories : incdir,
-  dependencies : libxml2_dep,
+  link_with: libxslt,
+  include_directories: incdir,
+  dependencies: libxml2_dep,
 )
 
 meson.override_dependency('xslt', libxslt_dep)

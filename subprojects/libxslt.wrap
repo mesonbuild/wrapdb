@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libxslt-1.1.36
-source_url = https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.36.tar.xz
-source_filename = libxslt-1.1.36.tar.xz
-source_hash = 12848f0a4408f65b530d3962cd9ff670b6ae796191cfeff37522b5772de8dc8e
+directory = libxslt-1.1.37
+source_url = https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.37.tar.xz
+source_filename = libxslt-1.1.37.tar.xz
+source_hash = 3a4b27dc8027ccd6146725950336f1ec520928f320f144eb5fa7990ae6123ab4
 patch_directory = libxslt
 
 [provide]
