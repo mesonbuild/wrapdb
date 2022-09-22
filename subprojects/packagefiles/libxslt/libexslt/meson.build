@@ -29,23 +29,26 @@ exsltconfig.set('LIBEXSLT_VERSION_NUMBER', version_number)
 exsltconfig.set('LIBEXSLT_VERSION_EXTRA', version_extra)
 exsltconfig.set10('WITH_CRYPTO', libgcrypt_dep.found())
 
-configure_file(input : 'exsltconfig.h.in',
-  output : 'exsltconfig.h',
-  configuration : exsltconfig,
+configure_file(
+  input: 'exsltconfig.h.in',
+  output: 'exsltconfig.h',
+  configuration: exsltconfig,
 )
 
-libexslt = library('exslt', sources,
-  include_directories : incdir,
-  dependencies : [libxml2_dep, libxslt_dep, libm, librt, libgcrypt_dep],
-  install : true,
+libexslt = library(
+  'exslt',
+  sources,
+  include_directories: incdir,
+  dependencies: [libxml2_dep, libxslt_dep, libm, librt, libgcrypt_dep],
+  install: true,
 )
 
 pkg.generate(libexslt)
 
 libexslt_dep = declare_dependency(
-  link_with : libexslt,
-  include_directories : incdir,
-  dependencies : libxslt_dep,
+  link_with: libexslt,
+  include_directories: incdir,
+  dependencies: libxslt_dep,
 )
 
 meson.override_dependency('exslt', libxslt_dep)

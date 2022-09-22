@@ -1,6 +1,9 @@
-project('libxslt', 'c',
-  version : '1.1.36',
-  meson_version: '>=0.54.0')
+project('libxslt', 'c', license: 'MIT', version: '1.1.37', meson_version: '>=0.54.0')
+
+#time_r functions under MinGW
+if host_machine.system() == 'windows'
+  add_project_arguments('-D_POSIX_C_SOURCE', language: 'c')
+endif
 
 exslt_version = '0.8.20'
 pkg = import('pkgconfig')
@@ -9,7 +12,6 @@ config = configuration_data()
 
 headers = [
   'inttypes.h',
-  'xlocale.h',
   'sys/types.h',
   'sys/time.h',
   'stdlib.h',
@@ -36,33 +38,33 @@ foreach h : headers
   endif
 endforeach
 
-functions = [
-  'ftime',
-  'gettimeofday',
-  'gmtime_r',
-  'localtime_r',
-  'snprintf',
-  'strxfrm_l',
-  'stat',
-  'vsnprintf',
-  '_stat',
-]
+functions = {
+  'ftime': 'sys/timeb.h',
+  'gettimeofday': 'sys/time.h',
+  'gmtime_r': 'time.h',
+  'localtime_r': 'time.h',
+  'snprintf': 'stdio.h',
+  'strxfrm_l': 'string.h',
+  'stat': 'sys/stat.h',
+  'vsnprintf': 'stdio.h',
+  '_stat': 'sys/stat.h',
+}
 
-foreach f : functions
-  if cc.has_function(f)
+foreach f, h : functions
+  if cc.has_header_symbol(h, f, args: '-D_POSIX_C_SOURCE')
     config.set10('HAVE_' + f.underscorify().to_upper(), true)
   endif
 endforeach
 
-threads_dep = dependency('threads', required : false)
+threads_dep = dependency('threads', required: false)
 if threads_dep.found()
   config.set('HAVE_LIBPTHREAD', true)
-  config.set('HAVE_PTHREAD_H', true)
+  config.set('HAVE_PTHREAD_H', cc.has_header('pthread.h'))
 endif
 
-libm = cc.find_library('m', required : false)
-librt = cc.find_library('rt', required : false)
-config.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', dependencies : librt))
+libm = cc.find_library('m', required: false)
+librt = cc.find_library('rt', required: false)
+config.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', dependencies: [librt, threads_dep]))
 
 trio_functions = [
   'printf',
@@ -77,26 +79,22 @@ trio_functions = [
 
 with_trio = false
 foreach f : trio_functions
-  if not cc.has_function(f)
+  if not cc.has_header_symbol('stdio.h', f)
     with_trio = true
     break
   endif
 endforeach
 
-libgcrypt_dep = dependency('libgcrypt', version : '>=1.1.42',
-  required : get_option('crypto'))
+libgcrypt_dep = dependency('libgcrypt', version: '>=1.1.42', required: get_option('crypto'))
 
 libxml2_dep = dependency('libxml-2.0')
-with_modules = libxml2_dep.get_variable(
-  pkgconfig : 'modules',
-  internal : 'modules',
-  default_value : '0').to_int() != 0
+with_modules = libxml2_dep.get_variable(pkgconfig: 'modules', internal: 'modules', default_value: '0').to_int() != 0
 
 configure_file(
   input: 'config.h.cmake.in',
-  output : 'config.h',
+  output: 'config.h',
   format: 'cmake@',
-  configuration : config,
+  configuration: config,
 )
 
 incdir = include_directories('.')
