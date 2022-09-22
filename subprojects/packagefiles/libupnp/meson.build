@@ -1,12 +1,15 @@
-project('pupnp', 'c',
-  version : '1.14.12',
-  default_options : [ 'c_std=gnu99', 'warning_level=1' ]
-)
+project('pupnp', 'c', license: 'BSD-3-Clause', version: '1.14.13', meson_version: '>=0.49.0')
 
-libupnp_incdir = include_directories([ '.', 'upnp/inc', 'upnp/src/inc', 'upnp/src/threadutil' ])
-libixml_incdir = include_directories([ 'ixml/inc', 'ixml/src/inc' ])
+cc = meson.get_compiler('c')
+if cc.get_argument_syntax() == 'msvc'
+  error('MSVC is unsupported. Requires custom pthread library')
+endif
 
-libixml = static_library('ixml',
+libupnp_incdir = include_directories('.', 'upnp/inc', 'upnp/src/inc', 'upnp/src/threadutil')
+libixml_incdir = include_directories('ixml/inc', 'ixml/src/inc')
+
+libixml = static_library(
+  'ixml',
   'ixml/src/attr.c',
   'ixml/src/document.c',
   'ixml/src/element.c',
@@ -17,10 +20,10 @@ libixml = static_library('ixml',
   'ixml/src/namedNodeMap.c',
   'ixml/src/node.c',
   'ixml/src/nodeList.c',
-  include_directories : [ libixml_incdir, libupnp_incdir ],
+  include_directories: [libixml_incdir, libupnp_incdir],
 )
 
-upnp_sources = [
+upnp_sources = files(
   'upnp/src/api/UpnpActionComplete.c',
   'upnp/src/api/UpnpActionRequest.c',
   'upnp/src/api/UpnpDiscovery.c',
@@ -30,19 +33,19 @@ upnp_sources = [
   'upnp/src/api/UpnpFileInfo.c',
   'upnp/src/api/UpnpStateVarComplete.c',
   'upnp/src/api/UpnpStateVarRequest.c',
-  'upnp/src/api/UpnpSubscriptionRequest.c',
   'upnp/src/api/UpnpString.c',
+  'upnp/src/api/UpnpSubscriptionRequest.c',
   'upnp/src/api/upnpapi.c',
   'upnp/src/api/upnpdebug.c',
   'upnp/src/genlib/client_table/GenlibClientSubscription.c',
   'upnp/src/genlib/client_table/client_table.c',
   'upnp/src/genlib/miniserver/miniserver.c',
-  'upnp/src/genlib/net/sock.c',
   'upnp/src/genlib/net/http/httpparser.c',
   'upnp/src/genlib/net/http/httpreadwrite.c',
   'upnp/src/genlib/net/http/parsetools.c',
   'upnp/src/genlib/net/http/statcodes.c',
   'upnp/src/genlib/net/http/webserver.c',
+  'upnp/src/genlib/net/sock.c',
   'upnp/src/genlib/net/uri/uri.c',
   'upnp/src/genlib/service_table/service_table.c',
   'upnp/src/genlib/util/list.c',
@@ -55,49 +58,48 @@ upnp_sources = [
   'upnp/src/threadutil/ThreadPool.c',
   'upnp/src/threadutil/TimerThread.c',
   'upnp/src/urlconfig/urlconfig.c',
-]
+)
 
 if get_option('gena') or get_option('optssdp')
-  upnp_sources += [
+  upnp_sources += files(
     'upnp/src/uuid/md5.c',
     'upnp/src/uuid/sysdep.c',
     'upnp/src/uuid/uuid.c',
-  ]
+  )
 endif
 
 if get_option('gena')
-  upnp_sources += [
-    'upnp/src/gena/gena_device.c',
-    'upnp/src/gena/gena_ctrlpt.c',
+  upnp_sources += files(
     'upnp/src/gena/gena_callback2.c',
-  ]
+    'upnp/src/gena/gena_ctrlpt.c',
+    'upnp/src/gena/gena_device.c',
+  )
 endif
 
 if get_option('soap')
-  upnp_sources += [
-    'upnp/src/soap/soap_device.c',
-    'upnp/src/soap/soap_ctrlpt.c',
+  upnp_sources += files(
     'upnp/src/soap/soap_common.c',
-  ]
+    'upnp/src/soap/soap_ctrlpt.c',
+    'upnp/src/soap/soap_device.c',
+  )
 endif
 
 if get_option('ssdp')
-  upnp_sources += [
+  upnp_sources += files(
     'upnp/src/ssdp/SSDPResultData.c',
     'upnp/src/ssdp/SSDPResultDataCallback.c',
-    'upnp/src/ssdp/ssdp_device.c',
     'upnp/src/ssdp/ssdp_ctrlpt.c',
+    'upnp/src/ssdp/ssdp_device.c',
     'upnp/src/ssdp/ssdp_server.c',
-  ]
+  )
 endif
 
 if get_option('tools')
-  upnp_sources += [
+  upnp_sources += files(
     'upnp/src/api/upnptools.c',
-  ]
+  )
 endif
 
-cc = meson.get_compiler('c')
 ver = meson.project_version().split('.')
 uconf = configuration_data()
 uconf.set('IXML_HAVE_SCRIPTSUPPORT', true)
@@ -124,21 +126,12 @@ aconf.merge_from(uconf)
 uconf.set('UPNP_VERSION_STRING', meson.project_version())
 aconf.set_quoted('UPNP_VERSION_STRING', meson.project_version())
 aconf.set10('UPNP_HAVE_DEBUG', get_option('debug'))
-aconf.set10('UPNP_USE_RWLOCK', cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', prefix : '#define _XOPEN_SOURCE 500'))
+aconf.set10('UPNP_USE_RWLOCK', cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', prefix: '#define _XOPEN_SOURCE 500'))
 aconf.set10('HAVE_STRNDUP', cc.has_function('strndup'))
 aconf.set10('HAVE_STRNLEN', cc.has_function('strnlen'))
 
-ufile = configure_file(
-  input: 'upnp/inc/upnpconfig.h.cm',
-  output : 'upnpconfig.h',
-  format: 'cmake',
-  configuration : uconf
-)
-
-afile = configure_file(
-  output: 'autoconfig.h',
-  configuration: aconf
-)
+ufile = configure_file(input: 'upnp/inc/upnpconfig.h.cm', output: 'upnpconfig.h', format: 'cmake', configuration: uconf)
+afile = configure_file(output: 'autoconfig.h', configuration: aconf)
 
 deps = []
 if host_machine.system() == 'windows'
@@ -148,16 +141,17 @@ elif host_machine.system() == 'sunos'
   deps += cpp.find_library('nsl')
   deps += cpp.find_library('socket')
 endif
-deps += dependency('libcrypto', required : get_option('open_ssl'))
-deps += dependency('libssl', required : get_option('open_ssl'))
+deps += dependency('libcrypto', required: get_option('open_ssl'))
+deps += dependency('libssl', required: get_option('open_ssl'))
 threads_dep = dependency('threads')
 
-libupnp = library('upnp',
+libupnp = library(
+  'upnp',
   upnp_sources,
-  include_directories : [ libixml_incdir, libupnp_incdir ],
-  dependencies : [ deps, threads_dep ],
-  link_with : libixml,
-  install : true,
+  include_directories: [libixml_incdir, libupnp_incdir],
+  dependencies: [deps, threads_dep],
+  link_with: libixml,
+  install: true,
 )
 
 pkg = import('pkgconfig')
@@ -192,60 +186,60 @@ if get_option('tools')
   headers += 'upnp/inc/upnptools.h'
 endif
 
-install_headers(headers, subdir : 'upnp')
+install_headers(headers, subdir: 'upnp')
 
 libupnp_dep = declare_dependency(
-  include_directories : [ libixml_incdir, libupnp_incdir ],
-  link_with : libupnp,
+  include_directories: [libixml_incdir, libupnp_incdir],
+  link_with: libupnp,
 )
 
 if get_option('samples') and get_option('tools')
   sample_conf = configuration_data()
   sample_file = configure_file(
-    output : 'config_sample.h',
-    configuration : sample_conf,
+    output: 'config_sample.h',
+    configuration: sample_conf,
   )
 
   if get_option('client')
-    executable('tv_ctrlpt',
+    executable(
+      'tv_ctrlpt',
       'upnp/sample/common/sample_util.c',
       'upnp/sample/common/tv_ctrlpt.c',
       'upnp/sample/linux/tv_ctrlpt_main.c',
-      include_directories : [ '.', 'ixml/inc','upnp/inc', 'upnp/sample/common' ],
-      dependencies : threads_dep,
-      link_with : libupnp,
-      install : true,
+      include_directories: 'upnp/sample/common',
+      dependencies: [libupnp_dep, threads_dep],
+      install: true,
     )
   endif
 
   if get_option('client') and get_option('device')
-    executable('tv_combo',
+    executable(
+      'tv_combo',
       'upnp/sample/common/sample_util.c',
       'upnp/sample/common/tv_ctrlpt.c',
       'upnp/sample/common/tv_device.c',
       'upnp/sample/linux/tv_combo_main.c',
-      include_directories : [ '.', 'ixml/inc','upnp/inc', 'upnp/sample/common' ],
-      dependencies : threads_dep,
-      link_with : libupnp,
-      install : true,
+      include_directories: 'upnp/sample/common',
+      dependencies: [libupnp_dep, threads_dep],
+      install: true,
     )
   endif
 
   if get_option('device')
-    executable('tv_device',
+    executable(
+      'tv_device',
       'upnp/sample/common/sample_util.c',
       'upnp/sample/common/tv_device.c',
       'upnp/sample/linux/tv_device_main.c',
-      include_directories : [ '.', 'ixml/inc','upnp/inc', 'upnp/sample/common' ],
-      dependencies : threads_dep,
-      link_with : libupnp,
-      install : true,
+      include_directories: 'upnp/sample/common',
+      dependencies: [libupnp_dep, threads_dep],
+      install: true,
     )
 
     install_subdir(
       'upnp/sample/web',
-      install_dir : 'share/upnp',
-      strip_directory : true,
+      install_dir: 'share/upnp',
+      strip_directory: true,
     )
   endif
 endif
