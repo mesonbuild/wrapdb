@@ -1,4 +1,9 @@
-project('libsndfile', 'c', version: '1.1.0')
+project('libsndfile', 'c', license: 'LGPL-2.1-or-later', version: '1.1.0', meson_version: '>=0.49.0')
+
+#needed for time_r functions
+if host_machine.system() == 'windows'
+  add_project_arguments('-D_POSIX_C_SOURCE', language: 'c')
+endif
 
 cc = meson.get_compiler('c')
 
@@ -51,6 +56,7 @@ cdata.set10('ENABLE_EXPERIMENTAL_CODE', get_option('experimental'))
 cdata.set10('HAVE_SQLITE3', get_option('regtest'))
 
 cdata.set10('HAVE_DECL_S_IRGRP', cc.has_header_symbol('sys/stat.h', 'S_IRGRP'))
+cdata.set10('HAVE_FSTAT64', cc.has_header_symbol('sys/stat.h', 'fstat64'))
 cdata.set10('HAVE_SSIZE_T', cc.has_header_symbol('sys/types.h', 'ssize_t'))
 cdata.set('TYPEOF_SF_COUNT_T', 'int64_t')
 cdata.set('SF_COUNT_MAX', 'INT64_MAX')
@@ -83,7 +89,6 @@ funcs = [
   'fmod',
   'free',
   'fstat',
-  'fstat64',
   'fsync',
   'ftruncate',
   'getpagesize',
@@ -108,37 +113,38 @@ funcs = [
   'write',
 ]
 
-sizes = [
-  ['int64_t', 'stdint.h'],
-  ['long', ''],
-  ['long long', ''],
-  ['off_t', ''],
-  ['ssize_t', 'sys/types.h'],
-  ['wchar_t', 'wchar.h'],
-]
+sizes = {
+  'int64_t': 'stdint.h',
+  'long': '',
+  'long long': '',
+  'off_t': '',
+  'ssize_t': 'sys/types.h',
+  'wchar_t': 'wchar.h',
+}
 
 #completely unused by the code but meson demands definitions
 cdata.set('SIZEOF_VOIDP_CODE', '#define VOIDP_CODE')
-sizes += [['double', ''], ['float', ''], ['int', ''], ['loff_t', ''], ['off64_t', ''], ['short', ''], ['size_t', '']]
+sizes += {'double': '', 'float': '', 'int': '', 'loff_t': '', 'off64_t': '', 'short': '', 'size_t': ''}
 
 foreach f : funcs
   cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
-cdata.set('HAVE_GMTIME_R', cc.has_function('gmtime_r'))
-cdata.set('HAVE_LOCALTIME_R', cc.has_function('localtime_r'))
+foreach f : ['gmtime_r', 'localtime_r']
+  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_header_symbol('time.h', f, args: '-D_POSIX_C_SOURCE'))
+endforeach
 
 foreach h : headers
   cdata.set10('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-foreach s : sizes
-  upper = s[0].underscorify().to_upper()
+foreach s, h : sizes
+  upper = s.underscorify().to_upper()
   cdata.set(
     'SIZEOF_@0@_CODE'.format(upper),
     '#define @0@ @1@'.format(
       'SIZEOF_@0@'.format(upper),
-      cc.sizeof(s[0], prefix: s[1].contains('.h') ? '#include <@0@>'.format(s[1]) : ''),
+      cc.sizeof(s, prefix: h.contains('.h') ? '#include <@0@>'.format(s) : ''),
     ),
   )
 endforeach
