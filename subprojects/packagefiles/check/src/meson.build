@@ -8,16 +8,16 @@ endif
 
 
 configure_file(
-  input : 'check.h.in',
-  output : 'check.h',
-  configuration : cdata,
+  input: 'check.h.in',
+  output: 'check.h',
+  configuration: cdata,
 )
 
 configure_file(
-  input : '../cmake/check_stdint.h.in',
-  output : 'check_stdint.h',
-  configuration : cdata,
-  format : 'cmake',
+  input: '../cmake/check_stdint.h.in',
+  output: 'check_stdint.h',
+  configuration: cdata,
+  format: 'cmake@',
 )
 
 sources = [
@@ -32,15 +32,16 @@ sources = [
   'check_str.c',
 ]
 
-checklib = library('check',
+checklib = library(
+  'check',
   sources,
   c_args: ['-DHAVE_CONFIG_H=1', ck_dll_exp_private],
-  include_directories : [confinc],
-  dependencies : [libm, compatlib_dep],
+  include_directories: [confinc],
+  dependencies: [libm, compatlib_dep],
 )
 
 check_dep = declare_dependency(
-  include_directories : include_directories('.'),
-  link_with : checklib,
-  compile_args : ck_dll_exp_interface,
+  include_directories: include_directories('.'),
+  link_with: checklib,
+  compile_args: ck_dll_exp_interface,
 )
