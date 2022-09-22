@@ -1,4 +1,4 @@
-project('liblangtag', 'c', version: '0.6.4')
+project('liblangtag', 'c', license: 'LGPL-3.0-or-later', version: '0.6.4')
 
 cc = meson.get_compiler('c')
 
@@ -17,7 +17,7 @@ foreach h : ['dirent.h', 'dlfcn.h', 'libgen.h', 'memory.h', 'string.h', 'sys/par
 endforeach
 
 cdata.set('HAVE_EXECINFO_H', cc.has_header('execinfo.h'))
-cdata.set10('HAVE_PTHREAD', cc.has_header('pthread.h'))
+cdata.set10('HAVE_PTHREAD', cc.has_header('pthread.h') and host_machine.system() != 'windows')
 
 foreach f : ['backtrace', 'strndup', 'vasprintf', 'vsnprintf']
   cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f, prefix: '#include <stdio.h>'))
@@ -28,7 +28,7 @@ if cdata.get('HAVE_VASPRINTF') == 1
 endif
 
 foreach f : ['getegid', 'geteuid', 'getgid', 'getuid']
-  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
 cdata.set('HAVE___SECURE_GETENV', cc.has_function('__secure_getenv'))
