@@ -1,0 +1,62 @@
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# https://www.nginx.com/resources/wiki/start/
+# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+# https://wiki.debian.org/Nginx/DirectoryStructure
+
+# This is the web server config for wrapdb.mesonbuild.com
+
+upstream uwsgi {
+  server 127.0.0.1:8081;
+}
+
+server {
+  location /v2 {
+    rewrite ^.*/v2/releases.json https://raw.githubusercontent.com/mesonbuild/wrapdb/master/releases.json permanent;
+    rewrite ^.*/v2/([^/]+)/get_patch https://github.com/mesonbuild/wrapdb/releases/download/$1/$1_patch.zip permanent;
+    rewrite ^.*/v2/([^/]+)/([^/]+).wrap https://github.com/mesonbuild/wrapdb/releases/download/$1/$2.wrap permanent;
+  }
+
+  # Redirect legacy v1 patch URLs.
+  # FIXME: This breaks download of sqlite that has not been imported to v2 because it is replaced by sqlite3
+  #location ~ get_zip$ {
+  #  rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_zip https://github.com/mesonbuild/wrapdb/releases/download/$1_$2-$3/$1_$2-$3_patch.zip permanent;
+  #}
+
+  location = / {
+    return 301 https://mesonbuild.com/Wrapdb-projects.html;
+  }
+
+
+  location / {
+    try_files $uri @uwsgi;
+  }
+
+  location /static {
+    root /home/legeana/wrapweb/wrapweb/;
+  }
+
+  location @uwsgi {
+    include uwsgi_params;
+    uwsgi_pass uwsgi;
+  }
+
+  server_name wrapdb.mesonbuild.com;
+
+  listen [::]:443 ssl ipv6only=on; # managed by Certbot
+  listen 443 ssl; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/wrapdb.mesonbuild.com/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/wrapdb.mesonbuild.com/privkey.pem; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+  server_name wrapdb.mesonbuild.com;
+  listen 80;
+  listen [::]:80;
+
+  # Redirect all HTTP requests to HTTPS with a 301 Moved Permanently response.
+  return 301 https://$host$request_uri;
+}
