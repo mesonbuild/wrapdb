@@ -15,7 +15,6 @@ else
   iconv_dep = dependency('', required: false)
 endif
 
-
 cdata = configuration_data()
 
 cheaders = [
@@ -39,7 +38,7 @@ endforeach
 
 cdata.set('HAVE_CPUID_H', cc.check_header('cpuid.h'))
 cdata.set('HAVE_X86INTRIN_H', cc.check_header('x86intrin.h'))
-cdata.set('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
+cdata.set10('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
 cdata.set('FLAC__USE_ALTIVEC', cc.check_header('altivec.h'))
 cdata.set('WITH_AVX', cc.check_header('immintrin.h'))
 
