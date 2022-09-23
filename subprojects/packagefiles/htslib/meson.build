@@ -79,6 +79,10 @@ htslib_sources = files(
   'vcfutils.c',
 )
 
+if host_machine.cpu_family() in ['arm', 'aarch64'] and cc.get_define('__thumb__') != '1'
+  htslib_sources += files('htscodecs/htscodecs/rANS_static32x16pr_neon.c')
+endif
+
 htslib_config_h_config = configuration_data()
 htslib_config_h_config.set('HAVE_LIBZ', zlib_dep.found())
 if host_machine.system() == 'cygwin'
