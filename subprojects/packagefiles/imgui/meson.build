@@ -84,10 +84,12 @@ if sdl2_dep.found()
     sources += 'backends/imgui_impl_sdl.cpp'
     dependencies += sdl2_dep
 endif
-if get_option('osx').enabled() or (get_option('osx').auto() and target_machine.system() == 'darwin')
+osx_dep = dependency('appleframeworks', modules : [ 'Carbon', 'Cocoa', 'GameController' ], required: get_option('osx'))
+if osx_dep.found()
     sources += 'backends/imgui_impl_osx.mm'
 endif
-if get_option('win').enabled() or (get_option('win').auto() and target_machine.system() == 'windows')
+win_dep = cpp.find_library('gdi32', required: get_option('win'))
+if win_dep.found()
     sources += 'backends/imgui_impl_win32.cpp'
 endif
 
