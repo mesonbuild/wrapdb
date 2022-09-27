@@ -16,19 +16,19 @@ sources = files(
   'imgui_widgets.cpp',
 )
 
-cpp = meson.get_compiler('cpp')
-if cpp.get_argument_syntax() == 'msvc'
+if host_machine.system() == 'windows'
   if get_option('buildtype') != 'static'
-    add_project_arguments('-DIMGUI_API=__declspec(dllexport)', language: 'cpp')
+    api = '__declspec(dllexport)'
   else
-    add_project_arguments('-DIMGUI_API=__declspec(dllimport)', language: 'cpp')
+    api = '__declspec(dllimport)'
   endif
 else
-  if target_machine.system() == 'windows'
-    add_project_link_arguments('-ldwmapi', language: 'cpp')
-  endif
+  api = '__attribute__((visibility("default")))'
 endif
 
+add_project_arguments('-DIMGUI_API=@0@'.format(api), language: 'cpp')
+
+cpp = meson.get_compiler('cpp')
 dependencies = []
 
 # renderer backends
@@ -108,6 +108,7 @@ endif
 imgui = library(
   'imgui',
   sources,
+  gnu_symbol_visibility: 'hidden',
   dependencies: dependencies,
   include_directories: include_dirs,
 )
