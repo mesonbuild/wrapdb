@@ -23,12 +23,18 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.4.8',
+  version: '2.4.9',
   meson_version: '>= 0.49.0',
 )
 
 config = configuration_data()
 cc = meson.get_compiler('c')
+
+config.set('PACKAGE_NAME', meson.project_name())
+config.set('PACKAGE_TARNAME', meson.project_name())
+config.set('PACKAGE_VERSION', meson.project_version())
+config.set('PACKAGE_BUGREPORT', 'expat-bugs@libexpat.org')
+config.set('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(), meson.project_version()))
 
 # Define how much context to retain around the current parse point.
 config.set('XML_CONTEXT_BYTES', 1024)
@@ -69,10 +75,10 @@ else
 endif
 
 
-if not (config.get('HAVE_SYS_TYPES_H', false) and cc.has_header_symbol('sys/types.h', 'off_t'))
+if not cc.has_header_symbol('sys/types.h', 'off_t')
   config.set('off_t', 'long')
 endif
-if not (config.get('HAVE_SYS_TYPES_H', false) and cc.has_header_symbol('sys/types.h', 'size_t'))
+if not cc.has_header_symbol('sys/types.h', 'size_t')
   config.set('size_t', 'unsigned')
 endif
 
@@ -80,38 +86,51 @@ config.set('HAVE_SYSCALL_GETRANDOM', cc.has_header_symbol('sys/syscall.h', 'SYS_
 
 # Install headers
 config_h = configure_file(
-  configuration: config,
+  input: 'expat_config.h.cmake',
   output: 'expat_config.h',
+  format: 'cmake@',
+  configuration: config,
 )
 install_headers('lib/expat.h', 'lib/expat_external.h', config_h)
 
 expat_static_args = []
 
-if get_option('build_tests') or cc.get_argument_syntax() == 'msvc'
-  visibility = 'default'
-else
-  visibility = 'hidden'
-  add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language: 'c')
-endif
-
+add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language: 'c')
 add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language: 'c')
 if cc.has_argument('-fno-strict-aliasing')
   add_project_arguments('-fno-strict-aliasing', language: 'c')
 endif
 if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language: 'c')
-  if get_option('default_library') == 'static'
+endif
+
+if host_machine.system() == 'windows'
+  add_project_arguments('-DXMLCALL=WINAPIV', language: 'c')
+  if get_option('default_library') != 'static'
+    add_project_arguments('-DXMLIMPORT=__declspec(dllexport)', language: 'c')
+  else
+    add_project_arguments('-DXMLIMPORT=__declspec(dllimport)', language: 'c')
     add_project_arguments('-DXML_STATIC', language: 'c')
     expat_static_args += '-DXML_STATIC'
   endif
-endif
-if not ['windows', 'cygwin'].contains(host_machine.system())
+else
+  add_project_arguments('-DXMLIMPORT=__attribute__ ((visibility("default")))', language: 'c')
   if get_option('use_dev_urandom')
     add_project_arguments('-DXML_DEV_URANDOM', language: 'c')
   endif
 endif
 
 incdir = include_directories('lib')
+
+def = configuration_data()
+def.set('_EXPAT_COMMENT_ATTR_INFO', ';')
+def.set('_EXPAT_COMMENT_DTD', get_option('xml_dtd') ? ' ' : ';')
+
+expat_def = configure_file(
+  input: 'lib/libexpat.def.cmake',
+  output: 'libexpat.def',
+  configuration: def,
+)
 
 libexpat = library(
   'expat',
@@ -120,11 +139,11 @@ libexpat = library(
   'lib/xmltok.c',
   include_directories: incdir,
   dependencies: dep_libbsd,
-  version: '1.8.8',
+  version: '1.8.9',
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
-  gnu_symbol_visibility: visibility,
-  vs_module_defs: 'lib/libexpat.def',
+  gnu_symbol_visibility: 'hidden',
+  vs_module_defs: expat_def,
 )
 
 expat_dep = declare_dependency(
