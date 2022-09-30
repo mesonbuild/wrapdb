@@ -1,15 +1,18 @@
-project('libmatroska', 'cpp',
-  version : '1.6.3',
-  default_options : ['warning_level=1', 'cpp_std=c++14'])
+project('libmatroska', 'cpp', license: 'LGPL-2.1-or-later', version: '1.7.0', meson_version: '>=0.48.0')
 
-cpp = meson.get_compiler('cpp')
-if cpp.get_id() == 'msvc'
-  matroska_export = configure_file(output: 'matroska_export.h', configuration: {'MATROSKA_DLL_API': '__declspec(dllexport)'})
+matroska_api = configuration_data()
+if host_machine.system() == 'windows'
+  if get_option('default_library') != 'static'
+    matroska_api.set('MATROSKA_DLL_API', '__declspec(dllexport)')
+  else
+    matroska_api.set('MATROSKA_DLL_API', '__declspec(dllimport)')
+  endif
 else
-  matroska_export = configure_file(output: 'matroska_export.h', configuration: {'MATROSKA_DLL_API': ''})
+  matroska_api.set('MATROSKA_DLL_API', '__attribute__ ((visibility("default")))')
 endif
+matroska_export = configure_file(output: 'matroska_export.h', configuration: matroska_api)
 
-libebml = dependency('libebml')
+libebml = dependency('libebml', version: '1.4.3')
 
 install_headers(
   'matroska/FileKax.h',
@@ -40,12 +43,19 @@ install_headers(
   'matroska/KaxTypes.h',
   'matroska/KaxVersion.h',
   matroska_export,
-  subdir : 'matroska'
+  subdir: 'matroska',
 )
 
-libmatroska_incdir = include_directories(['.'])
+install_headers(
+  'matroska/c/libmatroska.h',
+  'matroska/c/libmatroska_t.h',
+  subdir: 'matroska/c',
+)
 
-libmatroska = library('matroska',
+libmatroska_incdir = include_directories('.', 'matroska')
+
+libmatroska = library(
+  'libmatroska',
   'src/FileKax.cpp',
   'src/KaxAttached.cpp',
   'src/KaxAttachments.cpp',
@@ -61,15 +71,20 @@ libmatroska = library('matroska',
   'src/KaxSemantic.cpp',
   'src/KaxTracks.cpp',
   'src/KaxVersion.cpp',
-  include_directories : libmatroska_incdir,
-  dependencies : libebml,
-  install : true,
+  name_prefix: '',
+  version: '7.0.0',
+  soversion: host_machine.system() == 'windows' ? '' : '7',
+  gnu_symbol_visibility: 'hidden',
+  include_directories: libmatroska_incdir,
+  dependencies: libebml,
+  install: true,
+)
+
+libmatroska_dep = declare_dependency(
+  include_directories: libmatroska_incdir,
+  dependencies: libebml,
+  link_with: libmatroska,
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libmatroska)
-
-libmatroska_dep = declare_dependency(
-  include_directories : libmatroska_incdir,
-  link_with : libmatroska,
-)
+pkg.generate(libmatroska, description: 'Library for parsing EBML data structures')
