@@ -1727,7 +1727,11 @@
     ]
   },
   "protobuf-c": {
+    "dependency_names": [
+      "libprotobuf-c"
+    ],
     "versions": [
+      "1.4.1-1",
       "1.3.0-1"
     ]
   },

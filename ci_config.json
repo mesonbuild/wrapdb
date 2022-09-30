@@ -8,7 +8,6 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr",
-    "protobuf-c",
     "zstd"
   ],
   "broken_windows": [
@@ -16,7 +15,6 @@
     "google-woff2",
     "libgpiod",
     "mocklibc",
-    "protobuf-c",
     "termbox",
     "unit-system",
     "zstd",
@@ -31,7 +29,6 @@
     "graphite2",
     "libgpiod",
     "mocklibc",
-    "protobuf-c",
     "rtaudio",
     "tinyxml2",
     "unit-system",
