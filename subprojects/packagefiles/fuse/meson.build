@@ -7,6 +7,8 @@ elif platform == 'cygwin' or platform == 'windows'
   error('libfuse does not support Windows.\n' + 'Take a look at http://www.secfs.net/winfsp/ instead')
 endif
 
+cc = meson.get_compiler('c')
+
 # Common dependencies
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency('iconv', required: false)
@@ -15,9 +17,9 @@ else
     int main() {
     iconv_open("","");
     }'''
-  have_iconv = compiler.links(iconv_open_snippet, name: 'iconv_open')
+  have_iconv = cc.links(iconv_open_snippet, name: 'iconv_open')
   if not have_iconv
-    iconv_dep = compiler.find_library('iconv', required: false)
+    iconv_dep = cc.find_library('iconv', required: false)
   else
     iconv_dep = declare_dependency()
   endif
@@ -28,8 +30,6 @@ thread_dep = dependency('threads')
 # Feature detection
 #
 cfg = configuration_data()
-cc = meson.get_compiler('c')
-
 cfg.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 # Test for presence of some functions
