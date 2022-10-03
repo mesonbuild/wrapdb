@@ -63,6 +63,17 @@ if crypto == 'openssl'
     libssh2_deps += openssl_dep
     add_project_arguments('-DLIBSSH2_OPENSSL', language: 'c')
   else
+    crypto = 'gcrypt'
+  endif
+endif
+
+if crypto == 'gcrypt'
+  gcrypt_dep = dependency('libgcrypt', required: get_option('crypto_backend') == 'gcrypt')
+  if gcrypt_dep.found()
+    libssh2_sources += 'src/libgcrypt.c'
+    libssh2_deps += gcrypt_dep
+    add_project_arguments('-DLIBSSH2_LIBGCRYPT', language: 'c')
+  else
     crypto = 'mbedtls'
   endif
 endif
@@ -75,17 +86,6 @@ if crypto == 'mbedtls'
     libssh2_sources += 'src/mbedtls.c'
     libssh2_deps += [libmbedtls, libmbedx509, libmbedcrypto]
     add_project_arguments('-DLIBSSH2_MBEDTLS', language: 'c')
-  else
-    crypto = 'gcrypt'
-  endif
-endif
-
-if crypto == 'gcrypt'
-  gcrypt_dep = dependency('libgcrypt', required: get_option('crypto_backend') == 'gcrypt')
-  if gcrypt_dep.found()
-    libssh2_sources += 'src/libgcrypt.c'
-    libssh2_deps += gcrypt_dep
-    add_project_arguments('-DLIBSSH2_LIBGCRYPT', language: 'c')
   else
     error('No crypto backends available')
   endif
