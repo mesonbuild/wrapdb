@@ -1,9 +1,7 @@
-project('imgui', 'cpp', version: '1.87', license: 'MIT')
+project('imgui', 'cpp', license: 'MIT', version: '1.88', meson_version: '>=0.50.0')
 
 if host_machine.system() == 'darwin'
   add_languages('objcpp')
-  #hack for current version - fixed in next
-  add_project_arguments('-fobjc-weak', language: 'objcpp')
 endif
 
 include_dirs = include_directories('.', 'backends')
@@ -32,6 +30,7 @@ cpp = meson.get_compiler('cpp')
 dependencies = []
 
 # renderer backends
+dependencies += cpp.find_library('d3dcompiler', required: host_machine.system() == 'windows')
 dx9_dep = cpp.find_library('d3d9', required: get_option('dx9'))
 if dx9_dep.found()
   sources += 'backends/imgui_impl_dx9.cpp'
@@ -48,7 +47,8 @@ if dx11_dep.found()
   dependencies += dx11_dep
 endif
 dx12_dep = cpp.find_library('d3d12', required: get_option('dx12'))
-if dx12_dep.found()
+# MinGW does not work. See https://github.com/ocornut/imgui/pull/4604
+if dx12_dep.found() and cpp.get_argument_syntax() == 'msvc'
   sources += 'backends/imgui_impl_dx12.cpp'
   dependencies += dx12_dep
 endif
@@ -92,9 +92,10 @@ osx_dep = dependency('appleframeworks', modules: ['Carbon', 'Cocoa', 'GameContro
 if osx_dep.found()
   sources += 'backends/imgui_impl_osx.mm'
 endif
-win_dep = cpp.find_library('gdi32', required: get_option('win'))
+win_dep = cpp.find_library('dwmapi', required: get_option('win'))
 if win_dep.found()
   sources += 'backends/imgui_impl_win32.cpp'
+  dependencies += win_dep
 endif
 
 # frameworks
