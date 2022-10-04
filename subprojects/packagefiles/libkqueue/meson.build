@@ -1,9 +1,9 @@
 project(
   'libkqueue',
   'c',
-  version: '2.6.1',
+  version: '2.6.2',
   license: 'BSD',
-  meson_version: '>=0.48.0',
+  meson_version: '>=0.46.0',
   default_options: ['c_std=c11'],
 )
 
@@ -24,18 +24,25 @@ vdata.set('PROJECT_VERSION_PATCH', version_patch)
 vdata.set('PROJECT_VERSION_DATE', '')
 
 check_headers = [
+  'err.h',
+  'linux/limits.h',
+  'linux/sockios.h',
+  'linux/unistd.h',
+  'sys/eventfd.h',
+  'sys/queue.h',
   'sys/signalfd.h',
   'sys/timerfd.h',
-  'sys/eventfd.h',
   'sys/types.h',
+  'syscall.h',
 ]
 
 foreach header : check_headers
   cdata.set10('HAVE_@0@'.format(header.underscorify().to_upper()), cc.has_header(header))
 endforeach
 
+cdata.set10('HAVE_NOTE_REVOKE', cc.has_header_symbol('sys/event.h', 'NOTE_REVOKE'))
 cdata.set10('HAVE_NOTE_TRUNCATE', cc.has_header_symbol('sys/event.h', 'NOTE_TRUNCATE'))
-cdata.set10('HAVE_EPOLLRDHUP', cc.has_header_symbol('sys/epoll.h', 'HAVE_EPOLLRDHUP'))
+cdata.set10('HAVE_EPOLLRDHUP', cc.has_header_symbol('sys/epoll.h', 'EPOLLRDHUP'))
 cdata.set10('HAVE_DECL_PPOLL', cc.has_function('ppoll'))
 cdata.set10('HAVE_SYS_PIDFD_OPEN', cc.has_function('pidfd_open'))
 
@@ -50,9 +57,7 @@ kqueue_sources = files(
 )
 
 kqueue_inc = ['include']
-
 kqueue_args = []
-
 kqueue_deps = [dependency('threads')]
 
 if target_machine.system() == 'windows'
@@ -75,13 +80,8 @@ elif target_machine.system() == 'linux'
     'src/linux/user.c',
     'src/linux/vnode.c',
     'src/linux/write.c',
+    'src/@0@/proc.c'.format(cdata.get('HAVE_SYS_PIDFD_OPEN', 0) == 1 ? 'linux' : 'posix'),
   )
-
-  if cdata.get('HAVE_SYS_PIDFD_OPEN', 0) == 1
-    kqueue_sources += 'src/linux/proc.c'
-  else
-    kqueue_sources += 'src/posix/proc.c'
-  endif
 
   kqueue_inc += 'src/common'
 
