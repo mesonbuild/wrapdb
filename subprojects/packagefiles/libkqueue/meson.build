@@ -39,9 +39,7 @@ cdata.set10('HAVE_EPOLLRDHUP', cc.has_header_symbol('sys/epoll.h', 'HAVE_EPOLLRD
 cdata.set10('HAVE_DECL_PPOLL', cc.has_function('ppoll'))
 cdata.set10('HAVE_SYS_PIDFD_OPEN', cc.has_function('pidfd_open'))
 
-kqueue_sources = [
-  'src/common/alloc.h',
-  'src/common/debug.h',
+kqueue_sources = files(
   'src/common/debug.c',
   'src/common/filter.c',
   'src/common/kevent.c',
@@ -49,43 +47,35 @@ kqueue_sources = [
   'src/common/kqueue.c',
   'src/common/libkqueue.c',
   'src/common/map.c',
-  'src/common/private.h',
-  'src/common/queue.h',
-  'src/common/tree.h',
-]
+)
 
-kqueue_inc = [
-  'include',
-]
+kqueue_inc = ['include']
 
 kqueue_args = []
 
 kqueue_deps = [dependency('threads')]
 
 if target_machine.system() == 'windows'
-  kqueue_sources += [
+  kqueue_sources += files(
     'src/windows/platform.c',
-    'src/windows/platform.h',
     'src/windows/read.c',
-    'src/windows/stdint.h',
     'src/windows/timer.c',
     'src/windows/user.c',
-  ]
+  )
 
   kqueue_args += ['-D_USRDLL', '-D_WINDLL', '-D_CRT_SECURE_NO_WARNINGS', '-DWIN32_LEAN_AND_MEAN']
 
   kqueue_deps += cc.find_library('ws2_32')
 elif target_machine.system() == 'linux'
-  kqueue_sources += [
+  kqueue_sources += files(
     'src/linux/platform.c',
-    'src/linux/platform.h',
     'src/linux/read.c',
     'src/linux/signal.c',
     'src/linux/timer.c',
     'src/linux/user.c',
     'src/linux/vnode.c',
     'src/linux/write.c',
-  ]
+  )
 
   if cdata.get('HAVE_SYS_PIDFD_OPEN', 0) == 1
     kqueue_sources += 'src/linux/proc.c'
@@ -99,7 +89,7 @@ elif target_machine.system() == 'linux'
     '-D_XOPEN_SOURCE=600',
   ]
 elif target_machine.system() == 'sunos'
-  kqueue_sources += [
+  kqueue_sources += files(
     'src/posix/eventfd.c',
     'src/posix/eventfd.h',
     'src/solaris/platform.c',
@@ -108,7 +98,7 @@ elif target_machine.system() == 'sunos'
     'src/solaris/socket.c',
     'src/solaris/timer.c',
     'src/solaris/user.c',
-  ]
+  )
 
   kqueue_inc += 'src/common'
 
