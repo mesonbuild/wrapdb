@@ -49,6 +49,7 @@ jobs:
       - name: Install packages
         run: |
           pip install git+https://github.com/mesonbuild/meson
+          choco install -y pkgconfiglite
 
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Sanity Checks
