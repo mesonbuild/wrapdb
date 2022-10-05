@@ -1,7 +1,9 @@
-project('cpr', 'cpp', 
-    version : '1.7.2',
-    license : 'MIT', 
-    default_options : ['cpp_std=c++11']
+project(
+  'cpr',
+  'cpp',
+  version: '1.9.2',
+  license: 'MIT',
+  default_options: 'cpp_std=c++11',
 )
 
 curl_dep = dependency('libcurl')
