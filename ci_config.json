@@ -64,6 +64,9 @@
     }
   },
   "cpr": {
+    "choco_packages": [
+      "pkgconfiglite"
+    ],
     "debian_packages": [
       "libcurl4-gnutls-dev"
     ],
