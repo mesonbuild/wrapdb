@@ -92,13 +92,17 @@ if cc.get_argument_syntax() == 'msvc'
   endif
 endif
 
-check_types = ['int', 'int64_t', 'long', 'long long', 'size_t']
+size = cc.sizeof('size_t', prefix: '#include <stddef.h>')
+conf.set('SIZEOF_SIZE_T', size)
+
 if cc.get_argument_syntax() == 'msvc'
   size = cc.sizeof('SSIZE_T', prefix: '#include <BaseTsd.h>')
-  conf.set('SIZEOF_SSIZE_T', size)
 else
-  check_types += 'ssize_t'
+  size = cc.sizeof('ssize_t', prefix: '#include <sys/types.h>')
 endif
+conf.set('SIZEOF_SSIZE_T', size)
+
+check_types = ['int', 'int64_t', 'long', 'long long']
 foreach type : check_types
   size = cc.sizeof(type, prefix: '#include <stdint.h>')
   conf.set('SIZEOF_' + type.underscorify().to_upper(), size)
