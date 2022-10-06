@@ -332,7 +332,7 @@ class TestReleases(unittest.TestCase):
                 if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
                     print('unsupported, as expected')
                     return
-                elif 'ERROR: Dependency ' in error or 'ERROR: Program ' in error:
+                elif any('ERROR: '+x in error for x in {'Dependency', 'Program', 'Pkg-config binary', 'CMake binary'}):
                     if 'not found' in error:
                         print('cannot verify in wrapdb due to missing dependency')
                         return
