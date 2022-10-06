@@ -5,6 +5,8 @@ project('sdl2', 'c',
     default_options : ['c_std=none'],
 )
 
+cc = meson.get_compiler('c')
+
 if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
   error('default_library=both not supported when compiling with MSVC')
 endif
@@ -15,8 +17,6 @@ varr = meson.project_version().split('.')
 version_major = varr[0]
 version_minor = varr[1]
 version_micro = varr[2]
-
-cc = meson.get_compiler('c')
 
 c_args = cc.get_supported_arguments(
     '-Wdeclaration-after-statement',
