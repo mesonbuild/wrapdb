@@ -14,3 +14,8 @@ subdir('cpr')
 
 cpr_lib = library('cpr', include_directories: includes, sources: cpr_src, dependencies: [curl_dep, thread_dep])
 cpr_dep = declare_dependency(include_directories: includes, link_with: cpr_lib)
+
+gtest_dep = dependency('gtest', required: get_option('tests'))
+if gtest_dep.found()
+  subdir('test')
+endif
