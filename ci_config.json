@@ -170,12 +170,6 @@
       "libxrandr-dev"
     ]
   },
-  "libccp4c": {
-    "_comment": "- upstream does not support building with MSVC",
-    "build_on": {
-      "windows": false
-    }
-  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
