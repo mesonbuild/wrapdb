@@ -1,7 +1,7 @@
 project(
     'flatbuffers',
     'cpp',
-    version : '2.0.6',
+    version : '2.0.8',
     license : 'Apache-2.0'
 )
 
@@ -33,10 +33,10 @@ if cpp.has_argument('-fsigned-char')
 endif
 
 
-includes = include_directories(['include', 'grpc'])
+includes = include_directories('include', 'grpc')
 
 # flatbuffers
-install_headers([
+install_headers(
     'include/flatbuffers/base.h',
     'include/flatbuffers/code_generators.h',
     'include/flatbuffers/flatbuffers.h',
@@ -50,7 +50,7 @@ install_headers([
     'include/flatbuffers/registry.h',
     'include/flatbuffers/stl_emulation.h',
     'include/flatbuffers/util.h',
-], subdir: 'flatbuffers')
+subdir: 'flatbuffers')
 
 flatbuffers_lib_sources = [
     'src/bfbs_gen_lua.cpp',
@@ -63,27 +63,18 @@ flatbuffers_lib_sources = [
 ]
 
 #shared libraries not supported with msvc
-if cpp.get_id() != 'msvc'
-  flatbuffers_lib = library(
-    'flatbuffers',
-    flatbuffers_lib_sources,
-    include_directories : includes,
-    cpp_args : cpp_args,
-    install: true
-  )
-else
-  flatbuffers_lib = static_library(
-    'flatbuffers',
-    flatbuffers_lib_sources,
-    include_directories : includes,
-    cpp_args : cpp_args,
-    install: true
-  )
-endif
+flatbuffers_lib = build_target(
+  'flatbuffers',
+  flatbuffers_lib_sources,
+  target_type: cpp.get_argument_syntax() == 'msvc' ? 'static_library' : 'library',
+  include_directories: includes,
+  cpp_args: cpp_args,
+  install: true,
+)
 
 flatbuffers_dep = declare_dependency(
     include_directories : includes,
-    link_with: flatbuffers_lib
+    link_with: flatbuffers_lib,
 )
 
 # grpc libraries
@@ -166,6 +157,8 @@ flatc_lib_dep = declare_dependency(
 )
 
 flatc_sources = [
+    'src/annotated_binary_text_gen.cpp',
+    'src/binary_annotator.cpp',
     'src/flatc_main.cpp',
     'src/idl_gen_cpp.cpp',
     'src/idl_gen_csharp.cpp',
@@ -203,6 +196,8 @@ flatc = executable(
     ]
 )
 
+meson.override_find_program('flatc', flatc)
+
 flathash_sources = [
     'src/flathash.cpp'
 ]
@@ -213,3 +208,5 @@ flathash = executable(
     include_directories : includes,
     cpp_args : cpp_args
 )
+
+meson.override_find_program('flathash', flathash)
