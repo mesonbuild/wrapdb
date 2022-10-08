@@ -1,6 +1,6 @@
 # Meson file for libccp4c (CCP4 core libraries, C part only)
 project('libccp4c', ['c'],
-        version: '6.5.1',
+        version: '8.0.0',
         meson_version: '>=0.49.0',
         license: 'LGPL3')
 
