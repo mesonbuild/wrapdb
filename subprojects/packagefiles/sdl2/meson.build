@@ -1095,9 +1095,6 @@ sdl2main_dep = declare_dependency(
 )
 
 deps = [core_deps, extra_deps]
-if platform_is_windows and get_option('with_main')
-    deps += sdl2main_dep
-endif
 
 sdl2 = library('sdl2',
     all_sources,
@@ -1108,6 +1105,10 @@ sdl2 = library('sdl2',
     override_options : ['c_std=none'],
     install : do_install,
 )
+
+if platform_is_windows and get_option('with_main')
+    deps += sdl2main_dep
+endif
 
 sdl2_dep = declare_dependency(
     link_with : sdl2,
