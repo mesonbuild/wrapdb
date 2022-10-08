@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-    version : '2.24.0',
+    version : '2.24.1',
     license : 'zlib',
     meson_version : '>=0.48.0',
     default_options : ['c_std=none'],
