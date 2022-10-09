@@ -139,12 +139,7 @@ endif
 m_dep = cc.find_library('m', required: false)
 glib_dep = dependency('glib-2.0', static: get_option('try-static-deps'))
 gthread_dep = dependency('gthread-2.0', static: get_option('try-static-deps'))
-openmp_dep = dependency(
-  'openmp',
-  required: get_option('openmp'),
-  language: 'c',
-  version: '>= 4.0',
-)
+openmp_dep = dependency('openmp', required: get_option('openmp'), version: '>=4.0')
 
 ext_deps = [m_dep, glib_dep, gthread_dep, openmp_dep]
 
