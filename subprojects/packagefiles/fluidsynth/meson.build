@@ -2,7 +2,7 @@ project(
   'fluidsynth',
   'c',
   'cpp',
-  version: '2.2.8',
+  version: '2.3.0',
   license: 'LGPL-2.1-or-later',
   default_options: ['b_ndebug=if-release'],
   meson_version: '>= 0.53.0',
@@ -15,7 +15,7 @@ summary('Install prefix', get_option('prefix'), section: 'Build Summary')
 
 # Due to symbol visibility issues, don't allow building 'both' library
 # types on MSVC
-if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
+if get_option('default_library') == 'both' and cc.get_argument_syntax() == 'msvc'
   error('default_library=both not supported when compiling with MSVC')
 endif
 

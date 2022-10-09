@@ -1,8 +1,8 @@
 [wrap-file]
-directory = fluidsynth-2.2.8
-source_url = https://github.com/FluidSynth/fluidsynth/archive/v2.2.8.tar.gz
-source_filename = fluidsynth-2.2.8.tar.gz
-source_hash = 7c29a5cb7a2755c8012d941d1335da7bda957bbb0a86b7c59215d26773bb51fe
+directory = fluidsynth-2.3.0
+source_url = https://github.com/FluidSynth/fluidsynth/archive/v2.3.0.tar.gz
+source_filename = fluidsynth-2.3.0.tar.gz
+source_hash = 1df5a1afb91acf3b945b7fdb89ac0d99877622161d9b5155533da59113eaaa20
 patch_directory = fluidsynth
 
 [provide]
