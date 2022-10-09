@@ -1,5 +1,5 @@
 # liblzma is what upstream uses for their pkg-config name
-project('liblzma', 'c', version: '5.2.6', license: 'pd/lgpl2/gpl2/gpl3')
+project('liblzma', 'c', version: '5.2.7', license: 'pd/lgpl2/gpl2/gpl3')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -18,6 +18,7 @@ check_headers = [
   'minix/sha2.h',
   'sha256.h',
   'sha2.h',
+  'stdbool.h',
   'stdint.h',
   'stdlib.h',
   'strings.h',
@@ -30,53 +31,60 @@ check_headers = [
   'unistd.h',
 ]
 
-check_coders = [
+decoders = [
   'decoder_arm',
+  'decoder_arm64',
   'decoder_armthumb',
   'decoder_delta',
   'decoder_ia64',
   'decoder_lzma1',
   'decoder_lzma2',
   'decoder_powerpc',
+  'decoder_sparc',
   'decoder_x86',
+]
+
+encoders = [
   'encoder_arm',
+  'encoder_arm64',
   'encoder_armthumb',
   'encoder_delta',
   'encoder_ia64',
   'encoder_lzma1',
   'encoder_lzma2',
   'encoder_powerpc',
+  'encoder_sparc',
   'encoder_x86',
 ]
 
-if (get_option('decoder_arm') or get_option('decoder_armthumb') or
-  get_option('decoder_delta') or get_option('decoder_ia64') or
-  get_option('decoder_lzma1') or get_option('decoder_lzma2') or
-  get_option('decoder_powerpc') or get_option('decoder_x86'))
-  cdata.set('HAVE_DECODERS', true)
-endif
+foreach d : decoders
+  if get_option(d)
+    cdata.set('HAVE_DECODERS', true)
+    break
+  endif
+endforeach
 
-if (get_option('encoder_arm') or get_option('encoder_armthumb') or
-  get_option('encoder_delta') or get_option('encoder_ia64') or
-  get_option('encoder_lzma1') or get_option('encoder_lzma2') or
-  get_option('encoder_powerpc') or get_option('encoder_x86'))
-  cdata.set('HAVE_ENCODERS', true)
-endif
+foreach d : encoders
+  if get_option(d)
+    cdata.set('HAVE_ENCODERS', true)
+    break
+  endif
+endforeach
 
 foreach i : check_headers
   cdata.set('HAVE_@0@'.format(i.underscorify().to_upper()), cc.has_header(i))
 endforeach
 
-foreach i : check_coders
+foreach i : decoders + encoders
   cdata.set('HAVE_@0@'.format(i.underscorify().to_upper()), get_option(i))
 endforeach
 
 cdata.set('HAVE_IMMINTRIN_H', cc.check_header('immintrin.h'))
 cdata.set10('HAVE__BOOL', cc.has_type('_Bool'))
 
-cdata.set('PACKAGE_NAME', '"liblzma"')
-cdata.set('PACKAGE_URL', '"http://tukaani.org/xz/"')
-cdata.set('PACKAGE_BUGREPORT', '"x@x"')
+cdata.set_quoted('PACKAGE_NAME', 'XZ Utils')
+cdata.set_quoted('PACKAGE_URL', 'https://tukaani.org/xz/')
+cdata.set_quoted('PACKAGE_BUGREPORT', 'lasse.collin@tukaani.org')
 
 cdata.set('ASSUME_RAM', 128)
 cdata.set('HAVE_CHECK_CRC32', true)
