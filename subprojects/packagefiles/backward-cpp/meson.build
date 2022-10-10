@@ -4,7 +4,7 @@ cpp = meson.get_compiler('cpp')
 
 bfd = cpp.find_library('bfd', required: false)
 dw = cpp.find_library('dw', required: false)
-unwind = dependency('libunwind', required: true)
+unwind = dependency('libunwind', required: false)
 dwarf = dependency('libdwarf', required: false)
 
 deps = [bfd, dw, dwarf, unwind]
