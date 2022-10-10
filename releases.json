@@ -51,6 +51,14 @@
       "2.2-1"
     ]
   },
+  "backward-cpp": {
+    "dependency_names": [
+      "backward-cpp"
+    ],
+    "versions": [
+      "1.6-1"
+    ]
+  },
   "bdwgc": {
     "dependency_names": [
       "gc"
