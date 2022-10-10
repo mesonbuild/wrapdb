@@ -2,26 +2,15 @@ project('flatbuffers', 'cpp', version: '2.0.8', license: 'Apache-2.0', meson_ver
 
 cpp = meson.get_compiler('cpp')
 
-cpp_args = []
-
 if host_machine.system() == 'windows'
-  cpp_args += '-D_CRT_SECURE_NO_WARNINGS'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
 endif
 
-if cpp.get_argument_syntax() == 'gcc'
-  cpp_args += ['-Wall', '-pedantic', '-Werror', '-Wextra']
-endif
-
-if not cpp.has_function('strtoull_l')
-  cpp_args += '-DFLATBUFFERS_LOCALE_INDEPENDENT=0'
-endif
+add_project_arguments('-DFLATBUFFERS_LOCALE_INDEPENDENT=@0@'.format(cpp.has_function('strtoull_l')), language: 'cpp')
 
 # Certain platforms such as ARM do not use signed chars by default
 # which causes issues with certain bounds checks.
-if cpp.has_argument('-fsigned-char')
-  cpp_args += '-fsigned-char'
-endif
-
+add_project_arguments(cpp.get_supported_arguments('-fsigned-char'), language: 'cpp')
 
 includes = include_directories('include', 'grpc')
 
@@ -75,7 +64,6 @@ flatbuffers_lib = build_target(
   flatbuffers_lib_sources,
   target_type: cpp.get_argument_syntax() == 'msvc' ? 'static_library' : 'library',
   include_directories: includes,
-  cpp_args: cpp_args,
   install: true,
 )
 
@@ -89,7 +77,6 @@ cpp_gen_lib = static_library(
   'cpp_generator',
   'grpc/src/compiler/cpp_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 # grpc libraries
@@ -97,35 +84,30 @@ go_gen_lib = static_library(
   'go_generator',
   'grpc/src/compiler/go_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 java_gen_lib = static_library(
   'java_generator',
   'grpc/src/compiler/java_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 python_gen_lib = static_library(
   'python_generator',
   'grpc/src/compiler/python_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 swift_gen_lib = static_library(
   'swift_generator',
   'grpc/src/compiler/swift_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 ts_gen_lib = static_library(
   'ts_generator',
   'grpc/src/compiler/ts_generator.cc',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 # flatc_library
@@ -133,7 +115,6 @@ flatc_lib = static_library(
   'flatc_library',
   'src/flatc.cpp',
   include_directories: includes,
-  cpp_args: cpp_args,
   install: true,
   link_with: flatbuffers_lib,
 )
@@ -173,7 +154,6 @@ flatc = executable(
   'flatc',
   flatc_sources,
   include_directories: includes,
-  cpp_args: cpp_args,
   install: true,
   link_with: [flatc_lib, cpp_gen_lib, go_gen_lib, java_gen_lib, python_gen_lib, swift_gen_lib, ts_gen_lib],
 )
@@ -184,7 +164,6 @@ flathash = executable(
   'flathash',
   'src/flathash.cpp',
   include_directories: includes,
-  cpp_args: cpp_args,
 )
 
 meson.override_find_program('flathash', flathash)
