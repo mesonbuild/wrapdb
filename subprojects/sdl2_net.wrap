@@ -1,8 +1,8 @@
 [wrap-file]
-directory = SDL2_net-2.0.1
-source_url = https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.0.1.tar.gz
-source_filename = SDL2_net-2.0.1.tar.gz
-source_hash = 15ce8a7e5a23dafe8177c8df6e6c79b6749a03fff1e8196742d3571657609d21
+directory = SDL2_net-2.2.0
+source_url = https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
+source_filename = SDL2_net-2.2.0.tar.gz
+source_hash = 4e4a891988316271974ff4e9585ed1ef729a123d22c08bd473129179dc857feb
 patch_directory = sdl2_net
 
 [provide]
