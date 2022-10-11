@@ -33,7 +33,6 @@
     "mocklibc",
     "protobuf-c",
     "rtaudio",
-    "sdl2_image",
     "tinyxml2",
     "unit-system",
     "zstd"
