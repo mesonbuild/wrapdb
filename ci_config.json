@@ -55,9 +55,6 @@
     "brew_packages": [
       "zeromq"
     ],
-    "build_options": [
-      "cppzmq:catch2=enabled"
-    ],
     "_comment": "- libzmq not yet available as wrap",
     "build_on": {
       "windows": false

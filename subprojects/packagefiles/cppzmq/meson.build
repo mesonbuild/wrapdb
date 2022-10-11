@@ -35,7 +35,7 @@ ex_multipart_messages_exe = executable('multipart_messages',
 test('ex_multipart_messages', ex_multipart_messages_exe)
 
 # unit tests
-catch2_dep = dependency('catch2', required: get_option('catch2'))
+catch2_dep = dependency('catch2', version: '<3.0.0', required: get_option('catch2'))
 if catch2_dep.found()
   test_src = files([
     'tests/buffer.cpp',
