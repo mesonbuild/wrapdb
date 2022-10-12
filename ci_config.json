@@ -405,24 +405,15 @@
     "debian_packages": [
       "libwayland-dev",
       "libx11-dev",
-      "libxcursor-dev",
-      "libxext-dev",
       "libxi-dev",
       "libxkbcommon-dev",
       "libxkbfile-dev",
-      "libxrandr-dev",
-      "libxt-dev",
-      "libxv-dev",
-      "libxxf86vm-dev",
-      "libgles2-mesa-dev"
+      "libxt-dev"
     ],
     "brew_packages": [
       "libx11",
-      "libxcursor",
-      "libxext",
       "libxi",
-      "libxkbcommon",
-      "libxrandr"
+      "libxkbcommon"
     ]
   },
   "sds": {
