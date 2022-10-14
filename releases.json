@@ -1367,6 +1367,14 @@
       "m4"
     ]
   },
+  "magic_enum": {
+    "versions": [
+      "0.8.1-1"
+    ],
+    "dependency_names": [
+      "magic_enum"
+    ]
+  },
   "mdds": {
     "dependency_names": [
       "mdds-2.0"
