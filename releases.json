@@ -491,6 +491,14 @@
       "1.14.1-1"
     ]
   },
+    "glad": {
+        "dependency_names": [
+            "glad"
+        ],
+        "versions": [
+            "v0.1.36"
+        ]
+    },
   "glew": {
     "dependency_names": [
       "glew"
