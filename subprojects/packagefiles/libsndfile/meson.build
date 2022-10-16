@@ -267,15 +267,14 @@ if host_machine.system() == 'windows'
   libsndfile_sources += 'src/windows.c'
 endif
 
-gnu_sym_path = 'src/Symbols.gnu-binutils'
-gnu_sym_ldflag = '-Wl,--version-script=' + gnu_sym_path
-darwin_sym_path = 'src/Symbols.darwin'
+gnu_sym_ldflag = '-Wl,--version-script,@0@/src/Symbols.gnu-binutils'.format(meson.current_source_dir())
+darwin_sym_ldflag = '-Wl,-exported_symbols_list,@0@/src/Symbols.darwin'.format(meson.current_source_dir())
 link_args = []
-if get_option('buildtype') != 'static'
+if get_option('default_library') != 'static'
   if cc.links('', name: '-Wl,--version-script', args: ['-shared', gnu_sym_ldflag])
-    link_args = [gnu_sym_ldflag]
-  elif host_machine.system() == 'darwin' and cc.has_multi_link_arguments('-Wl,-exported_symbols_list', darwin_sym_path)
-    link_args = ['-Wl,-exported_symbols_list', darwin_sym_path]
+    link_args += gnu_sym_ldflag
+  elif cc.links('', name: '-Wl,-exported_symbols_list', args: ['-shared', darwin_sym_ldflag])
+    link_args += darwin_sym_ldflag
   endif
 endif
 
