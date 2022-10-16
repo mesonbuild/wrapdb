@@ -1,4 +1,4 @@
-project('flac', 'c', version: '1.4.0', meson_version: '>=0.49.0')
+project('flac', 'c', version: '1.4.1', meson_version: '>=0.49.0')
 
 cc = meson.get_compiler('c')
 
@@ -39,6 +39,7 @@ endforeach
 cdata.set('HAVE_CPUID_H', cc.check_header('cpuid.h'))
 cdata.set('HAVE_X86INTRIN_H', cc.check_header('x86intrin.h'))
 cdata.set10('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
+cdata.set10('FLAC__HAS_A64NEONINTRIN', cc.check_header('arm_neon.h') and host_machine.cpu_family() == 'aarch64')
 cdata.set('FLAC__USE_ALTIVEC', cc.check_header('altivec.h'))
 cdata.set('WITH_AVX', cc.check_header('immintrin.h'))
 

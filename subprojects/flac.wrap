@@ -1,10 +1,9 @@
 [wrap-file]
-directory = flac-1.4.0
-source_url = https://github.com/xiph/flac/archive/refs/tags/1.4.0.tar.gz
-source_filename = 1.4.0.tar.gz
-source_hash = 879545395b64c4a9f1ea17ba1b4230fee1c439283b4f692d2f41b48dfcb825a4
+directory = flac-1.4.1
+source_url = https://github.com/xiph/flac/archive/refs/tags/1.4.1.tar.gz
+source_filename = 1.4.1.tar.gz
+source_hash = acbb966abaaf3f65b6f37f0f40130d061d2bfa6a0212366466a416f221567878
 patch_directory = flac
 
 [provide]
 flac = flac_dep
-
