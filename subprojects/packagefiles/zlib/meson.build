@@ -16,9 +16,9 @@ if cc.get_argument_syntax() == 'msvc'
 else
   # Don't spam consumers of this wrap with these warnings
   compile_args += cc.get_supported_arguments('-Wno-implicit-fallthrough', '-Wno-implicit-function-declaration')
-  if cc.get_id() == 'gcc' and host_machine.system() != 'windows'
-    vflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
-    link_args += [vflag]
+  gnu_sym_ldflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
+  if get_option('default_library') != 'static' and cc.links('', name: '-Wl,--version-script', args: ['-shared', gnu_sym_ldflag])
+    link_args += gnu_sym_ldflag
   endif
 endif
 
