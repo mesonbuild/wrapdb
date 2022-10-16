@@ -1,75 +1,80 @@
-project('zlib', 'c', version : '1.2.12', license : 'zlib')
+project('zlib', 'c', version: '1.2.13', license: 'zlib')
 
 cc = meson.get_compiler('c')
 
 link_args = []
 compile_args = []
-if cc.get_id() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE',
-    '-D_CRT_NONSTDC_NO_DEPRECATE', language : 'c')
-    compile_args += cc.get_supported_arguments(['/wd4131',  # 'function' : uses old-style declarator
-                                                '/wd4244',  # 'conversion' conversion from 'type1' to 'type2', possible loss of data
-                                                '/wd4245',  # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
-                                                '/wd4267',  # 'var' : conversion from 'size_t' to 'type', possible loss of data
-                                                '/wd4127']) # conditional expression is constant
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE', language: 'c')
+  compile_args += cc.get_supported_arguments(
+    '/wd4131', # 'function' : uses old-style declarator
+    '/wd4244', # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+    '/wd4245', # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
+    '/wd4267', # 'var' : conversion from 'size_t' to 'type', possible loss of data
+    '/wd4127', # conditional expression is constant
+  )
 else
   # Don't spam consumers of this wrap with these warnings
-  compile_args += cc.get_supported_arguments(['-Wno-implicit-fallthrough',
-                                              '-Wno-implicit-function-declaration'])
+  compile_args += cc.get_supported_arguments('-Wno-implicit-fallthrough', '-Wno-implicit-function-declaration')
   if cc.get_id() == 'gcc' and host_machine.system() != 'windows'
     vflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
     link_args += [vflag]
   endif
 endif
 
-src = files([
+src = files(
   'adler32.c',
+  'compress.c',
   'crc32.c',
   'deflate.c',
+  'gzclose.c',
+  'gzlib.c',
+  'gzread.c',
+  'gzwrite.c',
   'infback.c',
   'inffast.c',
   'inflate.c',
   'inftrees.c',
   'trees.c',
-  'zutil.c',
-  'compress.c',
   'uncompr.c',
-  'gzclose.c',
-  'gzlib.c',
-  'gzread.c',
-  'gzwrite.c'])
+  'zutil.c',
+)
 
-headers = files(['zconf.h', 'zlib.h'])
+headers = files('zconf.h', 'zlib.h')
 
 if host_machine.system() == 'windows'
   win = import('windows')
   win_args = []
-  if cc.get_id() != 'msvc'
+  if cc.get_argument_syntax() != 'msvc'
     win_args += '-DGCC_WINDRES'
   endif
-  src += win.compile_resources('win32/zlib1.rc', args : win_args)
+  src += win.compile_resources('win32/zlib1.rc', args: win_args)
 endif
 
 if get_option('solo')
   compile_args += ['-DZ_SOLO']
 endif
 
-zlib = library('z', src,
-  c_args : compile_args,
-  link_args : link_args,
-  vs_module_defs : 'win32/zlib.def',
-  install : true)
-
-incdir = include_directories('.')
+zlib = library(
+  'z',
+  src,
+  c_args: compile_args,
+  link_args: link_args,
+  vs_module_defs: 'win32/zlib.def',
+  install: true,
+)
 
 zlib_dep = declare_dependency(
-  link_with : zlib,
-  include_directories : incdir)
+  link_with: zlib,
+  include_directories: '.',
+)
 
 install_headers(headers)
 
 pkg = import('pkgconfig')
 
-pkg.generate(zlib,
-             name: 'zlib',
-             description: 'zlib compression library')
+pkg.generate(
+  zlib,
+  name: 'zlib',
+  description: 'zlib compression library',
+)
