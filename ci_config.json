@@ -398,21 +398,6 @@
       "libjack-dev"
     ]
   },
-  "sdl2": {
-    "debian_packages": [
-      "libwayland-dev",
-      "libx11-dev",
-      "libxi-dev",
-      "libxkbcommon-dev",
-      "libxkbfile-dev",
-      "libxt-dev"
-    ],
-    "brew_packages": [
-      "libx11",
-      "libxi",
-      "libxkbcommon"
-    ]
-  },
   "sds": {
     "build_on": {
       "windows": false
