@@ -1,4 +1,4 @@
-project('pupnp', 'c', license: 'BSD-3-Clause', version: '1.14.13', meson_version: '>=0.49.0')
+project('pupnp', 'c', license: 'BSD-3-Clause', version: '1.14.14', meson_version: '>=0.49.0')
 
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
