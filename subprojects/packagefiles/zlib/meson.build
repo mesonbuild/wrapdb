@@ -1,25 +1,29 @@
-project('zlib', 'c', version: '1.2.13', license: 'zlib')
+project(
+  'zlib',
+  'c',
+  version: '1.2.13',
+  license: 'zlib',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('c')
 
-link_args = []
-compile_args = []
+link_args = cc.get_supported_link_arguments(
+  '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir()),
+)
+
+compile_args = cc.get_supported_arguments(
+  '/wd4131', # 'function' : uses old-style declarator
+  '/wd4244', # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+  '/wd4245', # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
+  '/wd4267', # 'var' : conversion from 'size_t' to 'type', possible loss of data
+  '/wd4127', # conditional expression is constant
+  '-Wno-implicit-fallthrough',
+  '-Wno-implicit-function-declaration',
+)
+
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE', language: 'c')
-  compile_args += cc.get_supported_arguments(
-    '/wd4131', # 'function' : uses old-style declarator
-    '/wd4244', # 'conversion' conversion from 'type1' to 'type2', possible loss of data
-    '/wd4245', # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
-    '/wd4267', # 'var' : conversion from 'size_t' to 'type', possible loss of data
-    '/wd4127', # conditional expression is constant
-  )
-else
-  # Don't spam consumers of this wrap with these warnings
-  compile_args += cc.get_supported_arguments('-Wno-implicit-fallthrough', '-Wno-implicit-function-declaration')
-  gnu_sym_ldflag = '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir())
-  if get_option('default_library') != 'static' and cc.links('', name: '-Wl,--version-script', args: ['-shared', gnu_sym_ldflag])
-    link_args += gnu_sym_ldflag
-  endif
+  compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
 endif
 
 src = files(
@@ -64,9 +68,10 @@ zlib = library(
   install: true,
 )
 
+depinc = include_directories('.')
 zlib_dep = declare_dependency(
   link_with: zlib,
-  include_directories: '.',
+  include_directories: depinc,
 )
 
 install_headers(headers)
@@ -78,3 +83,5 @@ pkg.generate(
   name: 'zlib',
   description: 'zlib compression library',
 )
+
+subdir('test')
