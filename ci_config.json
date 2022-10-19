@@ -169,6 +169,18 @@
       "darwin": false,
       "windows": false
     },
+    "_comment": "- Upstream has no idea how to use feature options",
+    "build_options": [
+      "libdrm:amdgpu=enabled",
+      "libdrm:etnaviv=enabled",
+      "libdrm:exynos=enabled",
+      "libdrm:freedreno=enabled",
+      "libdrm:intel=enabled",
+      "libdrm:nouveau=enabled",
+      "libdrm:omap=enabled",
+      "libdrm:radeon=enabled",
+      "libdrm:tegra=enabled"
+    ],
     "debian_packages": [
       "libpciaccess-dev"
     ]
