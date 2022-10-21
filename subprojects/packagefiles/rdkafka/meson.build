@@ -11,6 +11,12 @@ cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
 
+hdr = files(
+  'src/rdkafka.h',
+  'src-cpp/rdkafkacpp.h',
+)
+subdir('include-workaround-meson/librdkafka')
+
 srcc = files(
   'src/crc32c.c',
   'src/rdaddr.c',
@@ -208,7 +214,7 @@ endif
 rdkafka = library('rdkafka', srcc, install: true, dependencies: rdkafka_deps)
 rdkafka_dep = declare_dependency(
   link_with: rdkafka,
-  include_directories: '.',
+  include_directories: 'include-workaround-meson/librdkafka',
   dependencies: rdkafka_deps,
 )
 pkgconfig.generate(rdkafka,
@@ -221,7 +227,7 @@ pkgconfig.generate(rdkafka,
 rdkafkapp = library('rdkafka++', srccpp, install: true, dependencies: rdkafka_dep)
 rdkafkapp_dep = declare_dependency(
   link_with: rdkafkapp,
-  include_directories: '.',
+  include_directories: 'include-workaround-meson/librdkafka',
   dependencies: rdkafka_dep,
 )
 pkgconfig.generate(rdkafkapp,
