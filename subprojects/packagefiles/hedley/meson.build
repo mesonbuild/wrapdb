@@ -1,4 +1,4 @@
-project('hedley', 'c', version: '11', license: 'CC0-1.0')
+project('hedley', 'c', version: '15', license: 'CC0-1.0')
 
 includes = include_directories('.')
 

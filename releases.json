@@ -649,7 +649,11 @@
     ]
   },
   "hedley": {
+    "dependency_names": [
+      "hedley"
+    ],
     "versions": [
+      "15-1",
       "11-1"
     ]
   },
