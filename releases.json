@@ -2105,6 +2105,14 @@
       "1.3.1-1"
     ]
   },
+  "uchardet": {
+    "dependency_names": [
+      "uchardet"
+    ],
+    "versions": [
+      "0.0.7-1"
+    ]
+  },
   "unit-system": {
     "dependency_names": [
       "unit-system-full",
