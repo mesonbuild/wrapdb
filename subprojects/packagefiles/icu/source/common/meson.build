@@ -197,9 +197,15 @@ common_lib = library('uc',
   c_args : '-DU_COMMON_IMPLEMENTATION',
   cpp_args : '-DU_COMMON_IMPLEMENTATION',
   link_whole: stubdata_lib,
-  dependencies: [dl_dep])
+  dependencies: dl_dep,
+)
 
-icuuc_dep = declare_dependency(link_with: common_lib,
-    compile_args: usage_args,
-    include_directories: incdir)
-meson.override_dependency('icu-uc', icuuc_dep)
+icuuc_dep = declare_dependency(
+  link_with: common_lib,
+  compile_args: usage_args,
+  include_directories: incdir,
+)
+
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('icu-uc', icuuc_dep)
+endif

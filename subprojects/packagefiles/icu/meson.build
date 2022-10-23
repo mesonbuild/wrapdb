@@ -1,6 +1,6 @@
 project('icu', 'c', 'cpp',
   version: '72.1',
-  meson_version: '>=0.55.0',
+  meson_version: '>=0.49.0',
   default_options: 'cpp_std=c++17')
 
 cpp = meson.get_compiler('cpp')
@@ -17,7 +17,12 @@ if cpp.get_argument_syntax() == 'msvc'
    add_project_arguments('/utf-8', language : 'c')
 endif
 
-dl_dep = cpp.find_library('dl', required: false)
+if meson.version().version_compare('>= 0.62')
+  dl_dep = dependency('dl', required: false)
+else
+  dl_dep = cpp.find_library('dl', required: false)
+endif
+
 thread_dep = dependency('threads')
 
 # Compiler flags the users of this library must use.
