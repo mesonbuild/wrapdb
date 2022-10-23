@@ -7,8 +7,10 @@
 #  link_with : [toolutil, i18n, common],
 #)
 
-executable('icuinfo', 'icuinfo.cpp',
-  include_directories : [toolinc],
-  link_with : [toolutil_lib],
-  dependencies: [icui18n_dep]
+executable(
+  'icuinfo',
+  'icuinfo.cpp',
+  include_directories: [toolinc],
+  link_with: [toolutil_lib],
+  dependencies: [icui18n_dep],
 )
