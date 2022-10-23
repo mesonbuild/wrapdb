@@ -1,6 +1,5 @@
 incdir = include_directories('common', 'i18n')
 toolinc = include_directories('tools/toolutil')
-ctestinc = include_directories('tools/ctestfw')
 
 subdir('stubdata')
 subdir('common')
