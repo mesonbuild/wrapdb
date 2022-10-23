@@ -61,4 +61,7 @@ uchardet = library(
     cpp_args: base_cpp_args + uchardet_args,
 )
 
-uchardet_dep = declare_dependency(link_with: uchardet)
+uchardet_dep = declare_dependency(
+    link_with: uchardet,
+    include_directories: include_directories('.')
+)
