@@ -1,44 +1,78 @@
-project('sdl2 mixer', 'c')
+project(
+  'sdl2 mixer',
+  'c',
+)
+
+cc = meson.get_compiler('c')
+
+feature_args = ['-DMUSIC_WAV', '-DMUSIC_OGG']
+if get_option('default_library') != 'static' and host_machine.system() == 'windows'
+  feature_args += '-DDLL_EXPORT'
+endif
 
 sdl2_dep = dependency('sdl2')
 ogg_dep = dependency('ogg')
 vorbis_dep = dependency('vorbis')
 vorbisfile_dep = dependency('vorbisfile')
 
-cc = meson.get_compiler('c')
-
-feature_args = ['-DMUSIC_WAV', '-DMUSIC_OGG']
-if get_option('default_library') != 'static' and cc.get_id() == 'msvc'
-  feature_args += '-DDLL_EXPORT'
+flac_dep = dependency('libflac', required: get_option('flac'))
+if flac_dep.found()
+  feature_args += '-DMUSIC_FLAC_LIBFLAC'
 endif
 
-sdl2_mixer_lib = library('sdl2mixer',
-  'effect_position.c',
-  'effect_stereoreverse.c',
-  'effects_internal.c',
-  'load_aiff.c',
-  'load_voc.c',
-  'mixer.c',
-  'music_cmd.c',
-  'music_flac.c',
-  'music_fluidsynth.c',
-  'music_mad.c',
-  'music_mikmod.c',
-  'music_modplug.c',
-  'music_mpg123.c',
-  'music_nativemidi.c',
-  'music_ogg.c',
-  'music_opus.c',
-  'music_timidity.c',
-  'music_wav.c',
-  'music.c',
-  c_args: feature_args,
-  dependencies: [vorbisfile_dep, vorbis_dep, ogg_dep, sdl2_dep],
+mpg123_dep = dependency('mpg123', required: get_option('mpg123'))
+if mpg123_dep.found()
+  feature_args += '-DMUSIC_MP3_MPG123'
+endif
+
+opus_dep = dependency('opusfile', required: get_option('opus'))
+if opus_dep.found()
+  feature_args += '-DMUSIC_OPUS'
+endif
+
+incdirs = include_directories('include', 'src', 'src/codecs')
+
+sources = files(
+  'src/codecs/load_aiff.c',
+  'src/codecs/load_voc.c',
+  'src/codecs/mp3utils.c',
+  'src/codecs/music_cmd.c',
+  'src/codecs/music_drflac.c',
+  'src/codecs/music_drmp3.c',
+  'src/codecs/music_flac.c',
+  'src/codecs/music_fluidsynth.c',
+  'src/codecs/music_modplug.c',
+  'src/codecs/music_mpg123.c',
+  'src/codecs/music_nativemidi.c',
+  'src/codecs/music_ogg.c',
+  'src/codecs/music_ogg_stb.c',
+  'src/codecs/music_opus.c',
+  'src/codecs/music_timidity.c',
+  'src/codecs/music_wav.c',
+  'src/codecs/music_xmp.c',
+  'src/effect_position.c',
+  'src/effect_stereoreverse.c',
+  'src/effects_internal.c',
+  'src/mixer.c',
+  'src/music.c',
+  'src/utils.c',
 )
 
-executable('playmus', 'playmus.c',
-  dependencies: sdl2_dep,
-  link_with: sdl2_mixer_lib)
+sdl2_mixer_lib = library(
+  'sdl2mixer',
+  sources,
+  c_args: feature_args,
+  include_directories: incdirs,
+  dependencies: [vorbisfile_dep, vorbis_dep, ogg_dep, opus_dep, mpg123_dep, flac_dep, sdl2_dep],
+)
 
-sdl2_mixer_dep = declare_dependency(include_directories: '.',
-  link_with: sdl2_mixer_lib)
+sdl2_mixer_dep = declare_dependency(
+  include_directories: incdirs,
+  link_with: sdl2_mixer_lib,
+)
+
+executable(
+  'playmus',
+  'playmus.c',
+  dependencies: [sdl2_dep, sdl2_mixer_dep],
+)
