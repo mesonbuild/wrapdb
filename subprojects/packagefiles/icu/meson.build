@@ -27,8 +27,6 @@ else
   dl_dep = cpp.find_library('dl', required: false)
 endif
 
-thread_dep = dependency('threads')
-
 # Compiler flags the users of this library must use.
 usage_args = []
 
