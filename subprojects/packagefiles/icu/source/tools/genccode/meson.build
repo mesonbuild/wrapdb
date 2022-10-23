@@ -1,4 +1,5 @@
-genccode_exe = executable('genccode',
+genccode_exe = executable(
+  'genccode',
   'genccode.c',
   dependencies: [toolutil_dep, icuuc_dep],
 )

@@ -1,4 +1,5 @@
-gencmn_exe = executable('gencmn',
+gencmn_exe = executable(
+  'gencmn',
   'gencmn.c',
   dependencies: [toolutil_dep, icuuc_dep],
 )

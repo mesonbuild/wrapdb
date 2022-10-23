@@ -1,4 +1,5 @@
-genbrk_exe = executable('genbrk',
+genbrk_exe = executable(
+  'genbrk',
   'genbrk.cpp',
   dependencies: [toolutil_dep, icuuc_dep],
 )
