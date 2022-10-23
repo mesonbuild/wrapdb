@@ -1,7 +1,7 @@
 project(
     'argparse',
     'cpp',
-    version : '2.6',
+    version : '2.9',
     license : 'MIT'
 )
 
