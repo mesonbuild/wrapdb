@@ -248,6 +248,7 @@ sources = files(
   'numrange_capi.cpp',
   'numrange_fluent.cpp',
   'numrange_impl.cpp',
+  'displayoptions.cpp',
 )
 
 i18n_lib = library('icui18n',
