@@ -23,4 +23,7 @@ io_lib = library('icuio',
 
 icuio_dep = declare_dependency(link_with: [io_lib, common_lib],
     include_directories: incdir)
-meson.override_dependency('icu-io', icuio_dep)
+
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('icu-io', icuio_dep)
+endif
