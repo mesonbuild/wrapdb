@@ -17,8 +17,8 @@ if get_option('build_jpip_server')
   # On unix you need to link to the math library:
 
   opj_server_exe = executable('opj_server', opj_server_srcs,
-                              dependencies : [m_dep],
-                              install : True)
+                              dependencies : m_dep,
+                              install : true)
 endif
 
 # Loop over all executables:

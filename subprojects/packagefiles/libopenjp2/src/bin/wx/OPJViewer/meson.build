@@ -11,13 +11,13 @@ inc_dirs = ['/../..', '/..'
             , '/src/lib'
             , '/src/bin'
             , '/src/lib/openjp2'
-            , '/src/lib/openjp2'])
+            , '/src/lib/openjp2']
 
 
 
 opjviewer_exe = 'opjviewer'
-c_args = ['-DwxUSE_LIBOPENJPEG' -DOPENJPEG_VERSION="1.5.0"]
-deps = [openjpeg_dep, wxwidgets_dep, m_dep]
+c_args = ['-DwxUSE_LIBOPENJPEG', '-DOPENJPEG_VERSION="1.5.0"']
+deps = [wxwidgets_dep, m_dep]
 exe = executable (opjviewer_exe, opjv_srcs
                       , c_args : c_args
                       , include_directories : inc_dirs

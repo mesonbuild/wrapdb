@@ -7,6 +7,7 @@ openjp2_srcs = [   'thread.c'
                   , 'invert.c'
                   , 'j2k.c'
                   , 'jp2.c'
+                  , 'ht_dec.c'
                   , 'mct.c'
                   , 'mqc.c'
                   , 'openjpeg.c'
@@ -151,7 +152,7 @@ endif
 #endif
 
 if get_option('build_luts_generator')
-  t1_generate_luts_exe = executable('t1_generate_luts', 't1_generate_luts.c', dependencies : [libm])
+  t1_generate_luts_exe = executable('t1_generate_luts', 't1_generate_luts.c', dependencies : m_dep)
 endif
 
 #################################################################################
