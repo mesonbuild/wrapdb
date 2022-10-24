@@ -1,11 +1,12 @@
 
-project('openjp2', 'c', 'cpp', version : '2.5.0',
-        meson_version : '>= 0.55.0',
-          default_options : [
-          'buildtype=debugoptimized',
-          'c_std=gnu89'
-        ]
-        )
+project(
+  'openjp2',
+  'c',
+  'cpp',
+  version: '2.5.0',
+  meson_version: '>= 0.55.0',
+  default_options: ['buildtype=debugoptimized', 'c_std=gnu89'],
+)
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -22,7 +23,7 @@ openjpeg_package_version = '@0@.@1@.@2@'.format(openjpeg_version_major, openjpeg
 
 m_dep = cc.find_library('m', required: false)
 thread_dep = dependency('threads')
-rt_dep = cc.find_library('rt', required : false)
+rt_dep = cc.find_library('rt', required: false)
 
 
 wxwidgets_dep = dependency('wxWidgets', required: get_option('build_viewer'))
@@ -52,7 +53,7 @@ endif
 
 #if fs.exists('openjpeg_mangle.h.in')
 #  mangle_prefix = openjpeg_library_name
-  # configure_file([cmake_current_source_dir, '/openjpeg_mangle.h.in', cmake_current_binary_dir, '/openjpeg_mangle.h', '@ONLY'])
+# configure_file([cmake_current_source_dir, '/openjpeg_mangle.h.in', cmake_current_binary_dir, '/openjpeg_mangle.h', '@ONLY'])
 #endif
 #-----------------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ endif
 #-----------------------------------------------------------------------------
 # Build Library
 if get_option('build_jpip_server')
-  curl_dep = dependency('libcurl', version : '>= 7.55.0', required : false)
+  curl_dep = dependency('libcurl', version: '>= 7.55.0', required: false)
   fcgi_dep = dependency('fcgi')
   threads_dep = dependency('threads')
 endif
@@ -108,7 +109,7 @@ endif
 #  if fs.exists('./CHANGES')
 #    # install(['FILES', 'CHANGES', 'DESTINATION', openjpeg_install_doc_dir])
 #  endif
-  # install(['FILES', 'LICENSE', 'DESTINATION', openjpeg_install_doc_dir])
+# install(['FILES', 'LICENSE', 'DESTINATION', openjpeg_install_doc_dir])
 #endif
 #-----------------------------------------------------------------------------
 
