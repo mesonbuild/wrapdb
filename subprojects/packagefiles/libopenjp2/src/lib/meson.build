@@ -7,7 +7,6 @@ if get_option('build_jpip')
   subdir('openjpip')
 endif
 
-
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(
   openjp2_lib,

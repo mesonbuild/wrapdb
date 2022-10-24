@@ -25,16 +25,15 @@ m_dep = cc.find_library('m', required: false)
 thread_dep = dependency('threads')
 rt_dep = cc.find_library('rt', required: false)
 
-
 wxwidgets_dep = dependency('wxWidgets', required: get_option('build_viewer'))
 
 opj_static_args = []
 if host_system == 'windows'
   if get_option('default_library') == 'static'
-    opj_static_args = ['-DOPJ_STATIC']
+    opj_static_args += '-DOPJ_STATIC'
     add_project_arguments(opj_static_args, language: 'c')
   else
-    add_project_arguments(['-DOPJ_EXPORTS'], language: 'c')
+    add_project_arguments('-DOPJ_EXPORTS', language: 'c')
   endif
 endif
 
