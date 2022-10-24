@@ -1,12 +1,16 @@
 # Headers file are located here:
-inc_dirs = ['../../lib/openjp2', '../common', '../jp2', '../../lib/openjpip']
+inc_dirs = include_directories('../../lib/openjp2', '../common', '../jp2', '../../lib/openjpip')
 
 # Tool to embed metadata into JP2 file
-opj_jpip_addxml_exe = executable('opj_jpip_addxml', ['opj_jpip_addxml.c'], install: true)
+opj_jpip_addxml_exe = executable(
+  'opj_jpip_addxml',
+  'opj_jpip_addxml.c',
+  install: true,
+)
 
 # Install exe
 if get_option('build_jpip_server')
-  opj_server_srcs = ['opj_server.c']
+  opj_server_srcs = 'opj_server.c'
   # Build executable
 
   # target_link_libraries(['opj_server', fcgi_libraries, 'openjpip_server'])
@@ -20,7 +24,7 @@ endif
 foreach exe : ['opj_dec_server', 'opj_jpip_transcode', 'opj_jpip_test']
   exe_c = exe + '.c'
   exe_c_args = []
-  exe_src = [exe_c] + common_srcs
+  exe_src = exe_c + common_srcs
   exe_deps = [libopenjpip_dep, rt_dep, m_dep]
   exe_exe = executable(exe, exe_src, c_args: exe_c_args, dependencies: exe_deps, install: true)
 endforeach
@@ -55,8 +59,8 @@ message('no java client')
 # Build java
 # add_custom_command(['OUTPUT', library_output_path, '/opj_jpip_viewer.jar', 'COMMAND', java_javac_executable, jflags, '-source', java_source_version, '-target', java_target_version, '-classpath', apache_xerces_jar, java2_srcs, '-d', cmake_current_binary_dir, '/classes2', 'COMMAND', java_jar_executable, 'cfm', library_output_path, '/opj_jpip_viewer.jar', cmake_current_binary_dir, '/opj_viewer_xerces/dist/manifest.txt', '-C', cmake_current_binary_dir, '/classes2', '.', 'DEPENDS', java2_srcs, cmake_current_source_dir, '/opj_viewer_xerces/dist/manifest.txt.in', 'COMMENT', 'javac *.java; jar cvf -> opj_viewer_xerces.jar'])
 # name the target
-# add_custom_target(['OPJViewerXercesJar', 'ALL', 'DEPENDS', library_output_path, '/opj_jpip_viewer.jar', 'COMMENT', 'building opj_jpip_viewer.jar (xerces)'])
-# install(['FILES', library_output_path, '/opj_jpip_viewer.jar', 'DESTINATION', openjpeg_install_share_dir, 'COMPONENT', 'JavaModule'])
+# add_custom_target('OPJViewerXercesJar', 'ALL', 'DEPENDS', library_output_path, '/opj_jpip_viewer.jar', 'COMMENT', 'building opj_jpip_viewer.jar (xerces)')
+# install('FILES', library_output_path, '/opj_jpip_viewer.jar', 'DESTINATION', openjpeg_install_share_dir, 'COMPONENT', 'JavaModule')
 #else
 # opj_viewer (simple, no xerces)
 # build dep list:

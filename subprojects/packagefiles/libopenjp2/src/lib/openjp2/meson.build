@@ -1,33 +1,34 @@
-openjp2_srcs = [
-  'thread.c',
+openjp2_srcs = files(
   'bio.c',
   'cio.c',
   'dwt.c',
   'event.c',
+  'function_list.c',
+  'ht_dec.c',
   'image.c',
   'invert.c',
   'j2k.c',
   'jp2.c',
-  'ht_dec.c',
   'mct.c',
   'mqc.c',
   'openjpeg.c',
   'opj_clock.c',
+  'opj_malloc.c',
   'pi.c',
+  'sparse_array.c',
   't1.c',
   't2.c',
   'tcd.c',
   'tgt.c',
-  'function_list.c',
-  'opj_malloc.c',
-  'sparse_array.c',
-]
-openjp2_headers = [
-  'thread.h',
+  'thread.c',
+)
+
+openjp2_headers = files(
   'bio.h',
   'cio.h',
   'dwt.h',
   'event.h',
+  'function_list.h',
   'image.h',
   'invert.h',
   'j2k.h',
@@ -37,77 +38,68 @@ openjp2_headers = [
   'mqc_inl.h',
   'openjpeg.h',
   'opj_clock.h',
-  'pi.h',
-  't1.h',
-  't2.h',
-  'tcd.h',
-  'tgt.h',
-  'function_list.h',
   'opj_codec.h',
   'opj_includes.h',
   'opj_intmath.h',
   'opj_malloc.h',
   'opj_stdint.h',
+  'pi.h',
   'sparse_array.h',
-]
+  't1.h',
+  't2.h',
+  'tcd.h',
+  'tgt.h',
+  'thread.h',
+)
 
 if get_option('build_jpip')
   add_project_arguments('-DUSE_JPIP', language: 'c')
-  openjp2_srcs += ['cidx_manager.c', 'phix_manager.c', 'ppix_manager.c', 'thix_manager.c', 'tpix_manager.c']
-  openjp2_headers += ['cidx_manager.h', 'indexbox_manager.h']
+  openjp2_srcs += files('cidx_manager.c', 'phix_manager.c', 'ppix_manager.c', 'thix_manager.c', 'tpix_manager.c')
+  openjp2_headers += files('cidx_manager.h', 'indexbox_manager.h')
 endif
 
 opj_config = configuration_data()
 opj_config.set('OPENJPEG_VERSION_MAJOR', openjpeg_version_major)
 opj_config.set('OPENJPEG_VERSION_MINOR', openjpeg_version_minor)
 opj_config.set('OPENJPEG_VERSION_BUILD', openjpeg_version_build)
-check_headers = [
-  ['OPJ_HAVE_STDINT_H', 'stdint.h'],
-]
-foreach h : check_headers
-  opj_config.set(h.get(0), cc.has_header(h.get(1)))
-endforeach
+opj_config.set('OPJ_HAVE_STDINT_H', cc.has_header('stdint.h'))
 
 opj_private_config = configuration_data()
 check_headers = [
-  ['HAVE_ASSERT_H', 'assert.h'],
-  ['HAVE_CTYPE_H', 'ctype.h'],
-  ['HAVE_DLFCN_H', 'dlfcn.h'],
-  ['HAVE_FLOAT_H', 'float.h'],
-  ['OPJ_HAVE_INTTYPES_H', 'inttypes.h'],
-  ['OPJ_HAVE_MALLOC_H', 'malloc.h'],
-  ['HAVE_MATH_H', 'math.h'],
-  ['HAVE_MEMORY_H', 'memory.h'],
-  ['HAVE_STDARG_H', 'stdarg.h'],
-  ['OPJ_HAVE_STDINT_H', 'stdint.h'],
-  ['HAVE_STDLIB_H', 'stdlib.h'],
-  ['HAVE_STDIO_H', 'stdio.h'],
-  ['HAVE_STRINGS_H', 'strings.h'],
-  ['HAVE_STRING_H', 'string.h'],
-  ['HAVE_SYS_STAT_H', 'sys/stat.h'],
-  ['HAVE_SYS_TYPES_H', 'sys/types.h'],
-  ['HAVE_TIME_H', 'time.h'],
-  ['HAVE_UNISTD_H', 'unistd.h'],
-  ['HAVE_WINSOCK2_H', 'winsock2.h'],
+ 'assert.h',
+ 'ctype.h',
+ 'dlfcn.h',
+ 'float.h',
+ 'inttypes.h',
+ 'malloc.h',
+ 'math.h',
+ 'memory.h',
+ 'stdarg.h',
+ 'stdint.h',
+ 'stdlib.h',
+ 'stdio.h',
+ 'strings.h',
+ 'string.h',
+ 'sys/stat.h',
+ 'sys/types.h',
+ 'time.h',
+ 'unistd.h',
+ 'winsock2.h',
 ]
 
 foreach h : check_headers
-  opj_private_config.set(h.get(0), cc.has_header(h.get(1)))
+  opj_private_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+endforeach
+
+foreach h : ['inttypes.h', 'malloc.h', 'stdint.h']
+  opj_private_config.set('OPJ_HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
 opj_private_config.set('OPJ_HAVE__ALIGNED_MALLOC', cc.has_function('_aligned_malloc', prefix: '#include <malloc.h>'))
-
+opj_private_config.set('OPJ_HAVE_FSEEKO', cc.has_function('fseeko').to_string('ON', 'OFF'))
 opj_private_config.set('OPJ_HAVE_MEMALIGN', cc.has_function('memalign', prefix: '#include <malloc.h>'))
-
 opj_private_config.set('OPJ_HAVE_POSIX_MEMALIGN', cc.has_function('posix_memalign', prefix: '#include <stdlib.h>'))
-
 opj_private_config.set('PACKAGE_VERSION', openjpeg_package_version)
-
-if cc.has_function('fseeko')
-  opj_private_config.set('OPJ_HAVE_FSEEKO', 'ON')
-else
-  opj_private_config.set('OPJ_HAVE_FSEEKO', 'OFF')
-endif
 
 #-----------------------------------------------------------------------------
 # opj_config.h generation (1/2)
@@ -149,9 +141,8 @@ openjp2_c_args = [
 ]
 
 if get_option('opj_disable_tpsot_fix')
-  openjp2_c_args += ['-DOPJ_DISABLE_TPSOT_FIX']
+  openjp2_c_args += '-DOPJ_DISABLE_TPSOT_FIX'
 endif
-
 
 #if get_option('build_doc')
 # install man page of the library
@@ -168,18 +159,18 @@ endif
 cmake_thread_prefer_pthread = 'TRUE'
 if not get_option('opj_use_thread')
   message('Use stub thread implementation')
-  openjp2_c_args += ('-DMUTEX_stub')
+  openjp2_c_args += '-DMUTEX_stub'
 endif
 
 if get_option('opj_use_thread') and host_system == 'windows'
   # add_definitions('-DMUTEX_win32')
   message('Use win32 thread implementation')
-  openjp2_c_args += ('-DMUTEX_win32')
+  openjp2_c_args += '-DMUTEX_win32'
 endif
 
 if get_option('opj_use_thread') and thread_dep.found()
   message('Use pthread implementation')
-  openjp2_c_args += ('-DMUTEX_pthread')
+  openjp2_c_args += '-DMUTEX_pthread'
 endif
 
 if get_option('opj_use_thread') and not thread_dep.found()

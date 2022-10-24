@@ -1,4 +1,4 @@
-opjv_srcs = [
+opjv_srcs = files(
   'imagjpeg2000.cpp',
   'wxj2kparser.cpp',
   '/source/OPJViewer.cpp',
@@ -7,11 +7,9 @@ opjv_srcs = [
   '/source/OPJThreads.cpp',
   '/source/OPJAbout.cpp',
   '../../jp2/index.c',
-]
+)
 
-inc_dirs = ['/../..', '/..', '/src/lib', '/src/bin', '/src/lib/openjp2', '/src/lib/openjp2']
-
-
+inc_dirs = include_directories('/../..', '/..', '/src/lib', '/src/bin', '/src/lib/openjp2', '/src/lib/openjp2')1
 
 opjviewer_exe = 'opjviewer'
 c_args = ['-DwxUSE_LIBOPENJPEG', '-DOPENJPEG_VERSION="1.5.0"']

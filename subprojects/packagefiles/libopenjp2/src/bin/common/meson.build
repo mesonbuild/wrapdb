@@ -6,8 +6,7 @@ configure_file(
   format: 'cmake@',
 )
 
-common_srcs = ['color.c']
-
+common_srcs = files('color.c')
 inc_dirs = include_directories('.', '../../lib/openjp2')
 
 common_lib = static_library(
