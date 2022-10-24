@@ -1,5 +1,5 @@
 
-project('openjp2', 'c', 'cpp', version : '2.3.1',
+project('openjp2', 'c', 'cpp', version : '2.5.0',
         meson_version : '>= 0.55.0',
           default_options : [
           'buildtype=debugoptimized',
