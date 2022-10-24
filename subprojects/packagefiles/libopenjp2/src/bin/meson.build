@@ -3,10 +3,10 @@
 cappdata = configuration_data()
 
 if get_option('bin_png')
-    libpng_dep = dependency('libpng')
+  libpng_dep = dependency('libpng')
 else
-    # always an empty not-found dependency
-    libpng_dep = dependency('', required: false)
+  # always an empty not-found dependency
+  libpng_dep = dependency('', required: false)
 endif
 
 if libpng_dep.found()
@@ -15,10 +15,10 @@ if libpng_dep.found()
 endif
 
 if get_option('bin_tiff')
-    libtiff_dep = dependency('libtiff-4')
+  libtiff_dep = dependency('libtiff-4')
 else
-    # always an empty not-found dependency
-    libtiff_dep = dependency('', required: false)
+  # always an empty not-found dependency
+  libtiff_dep = dependency('', required: false)
 endif
 
 if libtiff_dep.found()
@@ -27,10 +27,10 @@ if libtiff_dep.found()
 endif
 
 if get_option('bin_lcms2')
-    liblcms2_dep = dependency('lcms2')
+  liblcms2_dep = dependency('lcms2')
 else
-    # always an empty not-found dependency
-    liblcms2_dep = dependency('', required: false)
+  # always an empty not-found dependency
+  liblcms2_dep = dependency('', required: false)
 endif
 
 if liblcms2_dep.found()
