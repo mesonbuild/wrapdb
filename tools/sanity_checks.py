@@ -97,6 +97,13 @@ PER_PROJECT_PERMITTED_FILES = {
         'vorbisenc.def',
         'vorbisfile.def'
     ],
+    'libffi': [
+        'test-cc-supports-hidden-visibility.py',
+        'test-ro-eh-frame.py',
+        'test-cc-uses-zarch.py',
+        'test-unwind-section.py',
+        'extract-libtool-version.py',
+    ]
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
