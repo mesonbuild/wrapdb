@@ -168,6 +168,14 @@
       "1.9.1-1"
     ]
   },
+  "cmark-gfm": {
+    "dependency_names": [
+      "libcmark-gfm"
+    ],
+    "versions": [
+      "0.29.0.gfm.6-1"
+    ]
+  },
   "cmock": {
     "dependency_names": [
       "cmock"
