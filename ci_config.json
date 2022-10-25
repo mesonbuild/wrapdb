@@ -414,6 +414,11 @@
       "libjack-dev"
     ]
   },
+  "sdl2": {
+    "brew_packages": [
+      "dbus"
+    ]
+  },
   "sds": {
     "build_on": {
       "windows": false
