@@ -1727,6 +1727,14 @@
       "2.2.2-1"
     ]
   },
+  "qarchive": {
+      "dependency_names": [
+          "qarchive"
+      ],
+      "versions": [
+          "2.0.2-1"
+      ]
+  },
   "quazip": {
     "dependency_names": [
       "quazip"

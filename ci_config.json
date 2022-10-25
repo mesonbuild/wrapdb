@@ -374,6 +374,22 @@
       "libboost-iostreams-dev"
     ]
   },
+  "qarchive": {
+    "build_on": {
+      "windows": false
+    },
+    "debian_packages": [
+        "libarchive-dev",
+        "qtbase5-dev"
+    ],
+    "brew_packages": [
+        "libarchive",
+        "qt5"
+    ],
+    "build_options": [
+      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig:/usr/local/opt/qt@5/lib/pkgconfig"
+    ]
+  },
   "quazip": {
     "_comment": "- Windows needs qt",
     "build_on": {
