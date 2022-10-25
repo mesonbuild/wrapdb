@@ -1,3 +1,3 @@
-if get_option('build_viewer')
+if curl_dep.found() and fcgi_dep.found()
   subdir('OPJViewer')
 endif

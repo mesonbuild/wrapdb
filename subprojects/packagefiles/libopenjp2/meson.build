@@ -59,11 +59,8 @@ endif
 
 #-----------------------------------------------------------------------------
 # Build Library
-if get_option('build_jpip_server')
-  curl_dep = dependency('libcurl', version: '>= 7.55.0', required: false)
-  fcgi_dep = dependency('fcgi')
-  threads_dep = dependency('threads')
-endif
+curl_dep = dependency('libcurl', version: '>= 7.55.0', required: get_option('build_jpip_server'))
+fcgi_dep = dependency('fcgi', required: get_option('build_jpip_server'))
 
 subdir('src/lib')
 
