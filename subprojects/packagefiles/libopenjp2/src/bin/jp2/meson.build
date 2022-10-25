@@ -16,7 +16,7 @@ inc_dirs = include_directories('../../lib/openjp2', '../common')
 
 # Loop over all executables:
 foreach exe : ['opj_decompress', 'opj_compress', 'opj_dump']
-  exe_c = exe + '.c'
+  exe_c = files(exe + '.c')
   exe_src = exe_c + common_srcs
   exe_deps = [libopenjp2_dep, libpng_dep, libtiff_dep, liblcms2_dep, rt_dep, m_dep]
   exe_exe = executable(

@@ -2,7 +2,7 @@
 # After having configured the project with the "build_doc" option you can run make doc
 # to generate the html documentation in the doc/html repository of the build folder.
 # Try to find the doxygen tool
-doxygen_dep = dependency('Doxygen')
+doxygen_dep = dependency('Doxygen', required: get_option('build_doc'))
 if doxygen_dep.found()
   # Configure the doxygen config file with variable from CMake and move it
   # configure_file([cmake_current_source_dir, '/Doxyfile.dox.cmake.in', cmake_binary_dir, '/doc/Doxyfile-html.dox', '@ONLY'])
