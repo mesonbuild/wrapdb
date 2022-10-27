@@ -22,6 +22,48 @@ host_cpu_family = host_machine.cpu_family()
 add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 cdata = configuration_data()
 
+arm_neon_code = '''
+#include <stdint.h>
+#include <arm_neon.h>
+#include <math.h>
+
+static void square4_serial(float*);
+static void square4_vectorized(float*);
+static int compare4(const float*, const float*);
+
+static void square4_serial(float* array) {
+    for (uint8_t i = 0; i < 4; ++i) {
+        const float f = array[i];
+        array[i] = f * f;
+    }
+}
+
+static void square4_vectorized(float* array) {
+    float32x4_t f = vld1q_f32(array);
+    f = vmulq_f32(f, f);
+    vst1q_f32(array, f);
+}
+
+static int compare4(const float* a, const float* b) {
+    float sum_of_diffs = 0.0f;
+    for (uint8_t i = 0; i < 4; ++i) {
+        sum_of_diffs += fabsf(a[i] - b[i]);
+    }
+    const int rounded_sum = (int)(roundf(sum_of_diffs));
+    return rounded_sum;
+}
+
+int main() {
+    float values1[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+    square4_serial(values1);
+
+    float values2[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+    square4_vectorized(values2);
+
+    return compare4(values1, values2);
+}
+'''
+
 # Set SIMD config data and flags
 simd_type = 'None'
 if get_option('simd')
@@ -48,17 +90,27 @@ if get_option('simd')
     simd_type = 'SSE2'
 
   elif host_cpu_family == 'arm' and cc.get_define('__thumb__') != '1'
-    cdata.set('USE_NEON', true)
-    # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions. 
-    # Refs:
-    #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-    #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
-    c_args += [
-      '-march=armv7-a',
-      '-mfpu=neon',
-      '/arch:VFPv4',
-    ]
-    simd_type = 'NEON (armv7-a)'
+    neon_test = cc.run(
+      arm_neon_code,
+      name: 'system supports ARM NEON instructions',
+    )
+    can_use_neon = (
+      neon_test.compiled()
+      and neon_test.returncode() == 0
+    )
+    if can_use_neon
+      cdata.set('USE_NEON', true)
+      # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions.
+      # Refs:
+      #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+      #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
+      c_args += [
+        '-march=armv7-a',
+        '-mfpu=neon',
+        '/arch:VFPv4',
+      ]
+      simd_type = 'NEON (armv7-a)'
+    endif
 
     # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
     # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
