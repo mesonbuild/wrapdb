@@ -1,18 +1,21 @@
-project('libmatroska', 'cpp', license: 'LGPL-2.1-or-later', version: '1.7.0', meson_version: '>=0.48.0')
+project(
+  'libmatroska',
+  'cpp',
+  license: 'LGPL-2.1-or-later',
+  version: '1.7.1',
+  meson_version: '>=0.48.0',
+)
+
+if host_machine.system() == 'windows'
+  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
+else
+  dllapi = '-DMATROSKA_DLL_API=__attribute__ ((visibility("default")))'
+endif
 
 matroska_api = configuration_data()
-if host_machine.system() == 'windows'
-  if get_option('default_library') != 'static'
-    matroska_api.set('MATROSKA_DLL_API', '__declspec(dllexport)')
-  else
-    matroska_api.set('MATROSKA_DLL_API', '__declspec(dllimport)')
-  endif
-else
-  matroska_api.set('MATROSKA_DLL_API', '__attribute__ ((visibility("default")))')
-endif
 matroska_export = configure_file(output: 'matroska_export.h', configuration: matroska_api)
 
-libebml = dependency('libebml', version: '1.4.3')
+libebml = dependency('libebml', version: '1.4.4')
 
 install_headers(
   'matroska/FileKax.h',
@@ -71,6 +74,7 @@ libmatroska = library(
   'src/KaxSemantic.cpp',
   'src/KaxTracks.cpp',
   'src/KaxVersion.cpp',
+  cpp_args: dllapi,
   name_prefix: '',
   version: '7.0.0',
   soversion: host_machine.system() == 'windows' ? '' : '7',
@@ -80,7 +84,14 @@ libmatroska = library(
   install: true,
 )
 
+if host_machine.system() == 'windows'
+  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+else
+  dllapi = '-DMATROSKA_DLL_API=__attribute__ ((visibility("default")))'
+endif
+
 libmatroska_dep = declare_dependency(
+  compile_args: '-DMATROSKA_DLL_API=@0@'.format(dllapi),
   include_directories: libmatroska_incdir,
   dependencies: libebml,
   link_with: libmatroska,
