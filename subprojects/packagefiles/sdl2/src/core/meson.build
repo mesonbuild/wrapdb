@@ -1,5 +1,5 @@
 
-if platform_is_unixlike
+if platform_is_unixlike_or_apple
     subdir('unix')
 
     if cdata.get('HAVE_DBUS_DBUS_H', 0) == 1

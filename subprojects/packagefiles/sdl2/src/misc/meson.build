@@ -14,7 +14,7 @@ elif platform_is_win32
     subdir('windows')
 elif platform_is_winrt
     subdir('winrt')
-elif platform_is_unixlike and not platform_is_emscripten
+elif platform_is_unixlike_or_apple and not platform_is_emscripten
     subdir('unix')
 elif platform_is_vita
     subdir('vita')
