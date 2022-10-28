@@ -2,9 +2,8 @@ project(
   'libebml',
   'cpp',
   license: 'LGPL-2.1-or-later',
-  version: '1.4.3',
+  version: '1.4.4',
   meson_version: '>=0.48.0',
-  default_options: 'default_library=static',
 )
 
 cpp = meson.get_compiler('cpp')
@@ -16,16 +15,13 @@ if get_option('default_library') == 'static'
   add_project_arguments('-DEBML_STATIC_DEFINE', language: 'cpp')
 endif
 
-ebml_api = configuration_data()
 if host_machine.system() == 'windows'
-  if get_option('default_library') != 'static'
-    ebml_api.set('EBML_DLL_API', '__declspec(dllexport)')
-  else
-    ebml_api.set('EBML_DLL_API', '')
-  endif
+  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
 else
-  ebml_api.set('EBML_DLL_API', '__attribute__((visibility("default")))')
+  dllapi = '-DEBML_DLL_API=__attribute__((visibility("default")))'
 endif
+
+ebml_api = configuration_data()
 ebml_conf = configure_file(output: 'ebml_export.h', configuration: ebml_api)
 
 install_headers(
@@ -98,6 +94,7 @@ endif
 libebml = library(
   'libebml',
   cpp_files,
+  cpp_args: dllapi,
   name_prefix: '',
   version: '5.0.0',
   soversion: host_machine.system() == 'windows' ? '' : '5',
@@ -105,10 +102,17 @@ libebml = library(
   install: true,
 )
 
-pkg = import('pkgconfig')
-pkg.generate(libebml, description: 'Library for parsing EBML data structures')
+if host_machine.system() == 'windows'
+  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+else
+  dllapi = '-DEBML_DLL_API=__attribute__((visibility("default")))'
+endif
 
 libebml_dep = declare_dependency(
+  compile_args: dllapi,
   include_directories: '.',
   link_with: libebml,
 )
+
+pkg = import('pkgconfig')
+pkg.generate(libebml, description: 'Library for parsing EBML data structures')
