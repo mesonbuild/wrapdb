@@ -74,13 +74,20 @@ platform_is_psp = (host_machine.system() == 'psp')
 # FIXME: verify this
 platform_is_nacl = (host_machine.system() == 'nacl')
 
+# FIXME: darwin is technically a unix system, but we cannot differenciate between macOS and darwin
 platform_is_unixlike = (
     platform_is_bsd or
-    platform_is_darwin or
     platform_is_emscripten or
     platform_is_haiku or
     platform_is_linux or
 false)
+
+platform_is_apple = (
+    platform_is_macos or
+    platform_is_ios
+)
+
+platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
 
 # END platform detection logic
 
@@ -217,13 +224,26 @@ libpulse_simple_dep = dependency('libpulse-simple', required : opt_audio_pulseau
 jack_dep = dependency('jack', required : opt_audio_jack)
 libpipewire_dep = dependency('libpipewire-0.3', required : opt_audio_jack)
 vulkan_dep = dependency('vulkan', required : opt_video_vulkan)
-x11_dep = dependency('x11', required : opt_video_x11)
-xext_dep = dependency('xext', required : opt_video_x11)
-xi_dep = dependency('xi', required : opt_video_x11)
-xkbcommon_dep = dependency('xkbcommon', required : opt_video_wayland)
-xrandr_dep = dependency('xrandr', required : opt_video_x11)
-xfixes_dep = dependency('xfixes', required : opt_video_x11)
-xcursor_dep = dependency('xcursor', required : opt_video_x11)
+
+# We don't want to try X11 on non unix systems
+if platform_is_unixlike
+    x11_dep = dependency('x11', required : opt_video_x11)
+    xext_dep = dependency('xext', required : opt_video_x11)
+    xi_dep = dependency('xi', required : opt_video_x11)
+    xkbcommon_dep = dependency('xkbcommon', required : opt_video_wayland)
+    xrandr_dep = dependency('xrandr', required : opt_video_x11)
+    xfixes_dep = dependency('xfixes', required : opt_video_x11)
+    xcursor_dep = dependency('xcursor', required : opt_video_x11)
+else
+    x11_dep = fake_dep
+    xext_dep = fake_dep
+    xi_dep = fake_dep
+    xkbcommon_dep = fake_dep
+    xrandr_dep = fake_dep
+    xfixes_dep = fake_dep
+    xcursor_dep = fake_dep
+endif
+
 threads_dep = dependency('threads', required : opt_threads)
 libusb_dep = dependency('libusb-1.0', required : opt_hidapi)
 
@@ -304,7 +324,7 @@ if get_option('prefer_dlopen')
     endforeach
 endif
 
-cdata.set('DYNAPI_NEEDS_DLOPEN', platform_is_unixlike)
+cdata.set('DYNAPI_NEEDS_DLOPEN', platform_is_unixlike_or_apple)
 
 x11_deps = [
     x11_dep,
@@ -805,7 +825,7 @@ endforeach
 sys_dynamic_api = true
 sys_thread_generic_cond_suffix = false
 
-if platform_is_unixlike
+if platform_is_unixlike_or_apple
     # Some sane defaults
     sys_filesystem = ['unix']
     sys_loadso = ['dlopen']
