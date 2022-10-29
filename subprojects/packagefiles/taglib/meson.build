@@ -1,59 +1,57 @@
-project('taglib', 'cpp',
-  version : '1.12',
-  meson_version : '>=0.47.0',
-  default_options : ['warning_level=0']
+project(
+  'taglib',
+  'cpp',
+  license: 'LGPL-2.1-or-later OR MPL-1.1',
+  version: '1.13',
+  meson_version: '>=0.47.0',
+  default_options: 'warning_level=0',
 )
 
 cpp = meson.get_compiler('cpp')
 
-add_project_arguments('-DHAVE_CONFIG_H', language : 'cpp')
+add_project_arguments('-DHAVE_CONFIG_H', language: 'cpp')
 if get_option('default_library') != 'static'
-  add_project_arguments('-DMAKE_TAGLIB_LIB', language : 'cpp')
+  add_project_arguments('-DMAKE_TAGLIB_LIB', language: 'cpp')
 else
-  add_project_arguments('-DTAGLIB_STATIC', language : 'cpp')
+  add_project_arguments('-DTAGLIB_STATIC', language: 'cpp')
 endif
 
 cdata = configuration_data()
-if cpp.compiles('int main() { int i, x = 0; i = __sync_add_and_fetch(&x,1); return x; }', name : 'atomic builtins')
-  cdata.set('HAVE_GCC_ATOMIC', 1)
-elif cpp.compiles('#include <libkern/OSAtomic.h> int main() { int i, x = 0; i = OSAtomicIncrement32Barrier(&x); return x; }', name : 'macOS atomic')
-  cdata.set('HAVE_MAC_ATOMIC', 1)
-elif cpp.compiles('#include <windows.h> int main() { LONG i, x = 0; i = InterlockedIncrement(&x); return x; }', name : 'Windows atomic')
-  cdata.set('HAVE_WIN_ATOMIC', 1)
+atomic_dep = dependency('', required: false)
+gcc_atomic = cpp.links('int main(){__sync_synchronize();}', name: 'atomic builtins')
+if gcc_atomic
+  cdata.set('HAVE_GCC_ATOMIC', true)
+else
+  atomic_dep = cpp.find_library('atomic', required: false)
+  cdata.set('HAVE_GCC_ATOMIC', cpp.links('int main(){__sync_synchronize();}', dependencies: atomic_dep, name: 'atomic'))
 endif
 
-if cpp.compiles('int main() { __builtin_bswap64(0); return 0; }', name : 'gcc builtin byteswap')
-  cdata.set('HAVE_GCC_BYTESWAP', 1)
-elif cpp.compiles('#include <byteswap.h> int main() { __bswap_64(0); return 0; }', name : 'glibc byteswap')
-  cdata.set('HAVE_GLIBC_BYTESWAP', 1)
-elif cpp.compiles('#include <stdlib.h> int main() { _byteswap_uint64(0); return 0; }', name : 'MSC byteswap')
-  cdata.set('HAVE_MSC_BYTESWAP', 1)
-elif cpp.compiles('#include <libkern/OSByteOrder.h> int main() { OSSwapInt64(0); return 0; }', name : 'macOS byteswap')
-  cdata.set('HAVE_MAC_BYTESWAP', 1)
-elif cpp.links('#include <sys/endian.h> int main() { swap64(0); return 0; }', name : 'OpenBSD byteswap')
-  cdata.compiles('HAVE_OPENBSD_BYTESWAP', 1)
-endif
+cdata.set('HAVE_MAC_ATOMIC', cpp.has_function('OSAtomicIncrement32Barrier', prefix: '#include <libkern/OSAtomic.h>'))
+cdata.set('HAVE_WIN_ATOMIC', cpp.has_function('InterlockedIncrement', prefix: '#include <windows.h>'))
 
-if cpp.compiles('#include <cstdio> #include <cstdarg> int main() { char buf[20]; va_list args; vsnprintf(buf, 20, \"%d\", args); return 0; }', name : 'vsnprintf')
-  cdata.set('HAVE_VSNPRINTF', 1)
-elif cpp.compiles('#include <cstdio> #include <cstdarg> int main() { char buf[20]; va_list args; vsprintf_s(buf, \"%d\", args); return 0; }', name : 'vsprintf_s')
-  cdata.set('HAVE_VSPRINTF_S', 1)
-endif
+cdata.set('HAVE_GCC_BYTESWAP', cpp.has_function('__builtin_bswap64'))
+cdata.set('HAVE_GLIBC_BYTESWAP', cpp.has_function('__bswap_64', prefix: '#include <byteswap.h>'))
+cdata.set('HAVE_MSC_BYTESWAP', cpp.has_function('_byteswap_uint64', prefix: '#include <stdlib.h>'))
+cdata.set('HAVE_MAC_BYTESWAP', cpp.has_function('OSSwapInt64', prefix: '#include <libkern/OSByteOrder.h>'))
+cdata.set('HAVE_OPENBSD_BYTESWAP', cpp.has_function('swap64', prefix: '#include <sys/endian.h>'))
+
+cdata.set('HAVE_VSNPRINTF', cpp.has_function('vsnprintf', prefix: '#include <cstdio> #include <cstdarg>'))
+cdata.set('HAVE_VSPRINTF_S', cpp.has_function('vsprintf_s', prefix: '#include <cstdio> #include <cstdarg>'))
 
 zlib_dep = dependency('zlib', required: get_option('zlib'))
 cdata.set('HAVE_ZLIB', zlib_dep.found())
 
-cfile = configure_file(
+configure_file(
   input: 'config.h.cmake',
   output: 'config.h',
   format: 'cmake@',
-  configuration : cdata,
+  configuration: cdata,
 )
 
-tcdata = configuration_data()
 tcfile = configure_file(
-  output : 'taglib_config.h',
-  configuration : tcdata,
+  input: 'taglib/taglib_config.h.cmake',
+  output: 'taglib_config.h',
+  copy: true,
 )
 
 install_headers(
@@ -162,7 +160,7 @@ install_headers(
   'taglib/audioproperties.h',
   'taglib/fileref.h',
   'taglib/tag.h',
-  subdir : 'taglib',
+  subdir: 'taglib',
 )
 
 taglib_includes = [
@@ -195,7 +193,8 @@ taglib_includes = [
   'taglib/xm',
 ]
 
-taglib = library('tag',
+taglib = library(
+  'tag',
   'taglib/audioproperties.cpp',
   'taglib/fileref.cpp',
   'taglib/tag.cpp',
@@ -298,20 +297,20 @@ taglib = library('tag',
   'taglib/wavpack/wavpackproperties.cpp',
   'taglib/xm/xmfile.cpp',
   'taglib/xm/xmproperties.cpp',
-  include_directories : taglib_includes,
-  dependencies: zlib_dep,
-  install : true,
-  version : '1.18.0',
+  include_directories: taglib_includes,
+  dependencies: [atomic_dep, zlib_dep],
+  install: true,
+  version: '1.18.0',
 )
 
 pkg = import('pkgconfig')
-pkg.generate(taglib,
-  filebase: 'taglib',
-  subdirs : 'taglib'
+pkg.generate(
+  taglib,
+  name: 'taglib',
+  subdirs: 'taglib',
 )
 
 taglib_dep = declare_dependency(
-  include_directories : taglib_includes,
-  link_with : taglib,
+  include_directories: taglib_includes,
+  link_with: taglib,
 )
-
