@@ -14,18 +14,6 @@ sources = files(
   'imgui_widgets.cpp',
 )
 
-if host_machine.system() == 'windows'
-  if get_option('buildtype') != 'static'
-    api = '__declspec(dllexport)'
-  else
-    api = '__declspec(dllimport)'
-  endif
-else
-  api = '__attribute__((visibility("default")))'
-endif
-
-add_project_arguments('-DIMGUI_API=@0@'.format(api), language: 'cpp')
-
 cpp = meson.get_compiler('cpp')
 dependencies = []
 
@@ -106,15 +94,26 @@ if allegro5_dep.found() and allegro5_primitives_dep.found()
   dependencies += [allegro5_dep, allegro5_primitives_dep]
 endif
 
+api = '-DIMGUI_API=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  api = '-DIMGUI_API=@0@'.format(get_option('buildtype') != 'static' ? '__declspec(dllexport)' : '""')
+endif
+
 imgui = library(
   'imgui',
   sources,
+  cpp_args: api,
   gnu_symbol_visibility: 'hidden',
   dependencies: dependencies,
   include_directories: include_dirs,
 )
 
+if host_machine.system() == 'windows'
+  api = '-DIMGUI_API=@0@'.format(get_option('buildtype') != 'static' ? '__declspec(dllimport)' : '""')
+endif
+
 imgui_dep = declare_dependency(
+  compile_args: api,
   include_directories: include_dirs,
   link_with: imgui,
 )
