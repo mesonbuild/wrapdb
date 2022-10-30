@@ -31,12 +31,8 @@ endforeach
 
 dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
 execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
-if dl_dep.found() and execinfo
-  loguru_deps_internal += dl_dep
-  compile_opts += '-DLOGURU_STACKTRACES=1'
-else
-  compile_opts += '-DLOGURU_STACKTRACES=0'
-endif
+loguru_deps_internal += dl_dep
+compile_opts += '-DLOGURU_STACKTRACES=@0@'.format((dl_dep.found() and execinfo).to_int())
 
 fmt_dep = dependency('fmt', required: get_option('loguru_use_fmtlib'))
 loguru_deps_internal += fmt_dep
