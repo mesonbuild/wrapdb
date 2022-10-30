@@ -1,25 +1,31 @@
 # SPDX-License-Identifier: GPL-2.1-or-later
 # Copyright 2021 Eli Schwartz <eschwartz@archlinux.org>
 
-project('lzo', 'c', version: '2.10',
-  meson_version: '>=0.46.0')
+project(
+  'lzo',
+  'c',
+  version: '2.10',
+  meson_version: '>=0.48.0',
+)
 
 inc = include_directories('include', '.')
 subdir('src')
 topdir = meson.current_source_dir()
 
 cc = meson.get_compiler('c')
-if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
-  add_project_arguments('-D__LZO_EXPORT1=__declspec(dllexport)', language: 'c')
+
+api = '-D__LZO_EXPORT1=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  api = '-D__LZO_EXPORT1=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
 endif
 
-if host_machine.endian() == 'big'
-  add_project_arguments('-DLZO_ABI_BIG_ENDIAN=1', language: 'c')
-else
-  add_project_arguments('-DLZO_ABI_LITTLE_ENDIAN=1', language: 'c')
-endif
+add_project_arguments('-DLZO_ABI_@0@_ENDIAN=1'.format(host_machine.endian().to_upper()), language: 'c')
 
-liblzo2 = library('lzo2', sources,
+liblzo2 = library(
+  'lzo2',
+  sources,
+  c_args: api,
+  gnu_symbol_visibility: 'hidden',
   include_directories: inc,
   version: '2.0.0',
   install: true,
@@ -39,19 +45,26 @@ install_headers(
   'include/lzo/lzoconf.h',
   'include/lzo/lzodefs.h',
   'include/lzo/lzoutil.h',
-  subdir: 'lzo'
+  subdir: 'lzo',
 )
 
-import('pkgconfig').generate(
+pconf = import('pkgconfig')
+pconf.generate(
   liblzo2,
   description: 'LZO - a real-time data compression library',
   url: 'http://www.oberhumer.com/opensource/lzo/',
-  subdirs: 'lzo'
+  subdirs: 'lzo',
 )
 
+api = '-D__LZO_EXPORT1=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  api = '-D__LZO_EXPORT1=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+endif
+
 lzo2_dep = declare_dependency(
+  compile_args: api,
   link_with: liblzo2,
-  include_directories: inc
+  include_directories: inc,
 )
 
 subdir('lzotest')
