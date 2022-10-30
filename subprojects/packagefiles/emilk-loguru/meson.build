@@ -38,10 +38,9 @@ else
   compile_opts += '-DLOGURU_STACKTRACES=0'
 endif
 
-if get_option('loguru_use_fmtlib').enabled()
-  loguru_deps_internal += dependency('fmt', required: true)
-  compile_opts += '-DLOGURU_USE_FMTLIB=1'
-endif
+fmt_dep = dependency('fmt', required: get_option('loguru_use_fmtlib'))
+loguru_deps_internal += fmt_dep
+compile_opts += '-DLOGURU_USE_FMTLIB=@0@'.format(fmt_dep.found().to_int())
 
 api = '-DLOGURU_EXPORT=__attribute__((visibility("default")))'
 if host_machine.system() == 'windows'
