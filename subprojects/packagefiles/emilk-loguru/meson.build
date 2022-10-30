@@ -1,7 +1,9 @@
-project('emilk-loguru', 'cpp',
+project(
+  'emilk-loguru',
+  'cpp',
   version: '2.1.0',
   license: 'Public Domain',
-  meson_version : '>=0.50',
+  meson_version: '>=0.50',
 )
 
 cxx = meson.get_compiler('cpp')
@@ -57,7 +59,8 @@ emilk_loguru_lib = library(
 install_headers('loguru.hpp')
 
 pkgc = import('pkgconfig')
-pkgc.generate(emilk_loguru_lib,
+pkgc.generate(
+  emilk_loguru_lib,
   name: 'loguru',
   description: 'A lightweight and flexible C++ logging library',
 )
