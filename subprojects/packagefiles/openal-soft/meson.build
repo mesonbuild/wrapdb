@@ -1,4 +1,10 @@
-project('openal-soft', 'cpp', version: '1.22.2', default_options: ['cpp_std=c++17', 'c_std=c11'])
+project(
+  'openal-soft',
+  'cpp',
+  version: '1.22.2',
+  meson_version: '>=0.49.0',
+  default_options: ['cpp_std=c++14', 'c_std=c11'],
+)
 
 cpp = meson.get_compiler('cpp')
 dl_dep = cpp.find_library('dl', required: false)
@@ -11,16 +17,34 @@ opensl_dep = dependency('opensl', required: get_option('opensl'))
 oss_dep = dependency('oss', required: get_option('oss'))
 pipewire_dep = dependency('libpipewire-0.3', required: get_option('pipewire'))
 portaudio_dep = dependency('portaudio', required: get_option('portaudio'))
-pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
-rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
 sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 sndio_dep = dependency('sndio', required: get_option('sndio'))
 solaris_dep = dependency('audioio', required: get_option('solaris'))
 
-add_project_arguments('-DNOMINMAX', '-DRESTRICT=__restrict', language: 'cpp')
-if host_machine.system() == 'windows' and get_option('buildtype') != 'static'
-  add_project_arguments('-DAL_API=__declspec(dllexport)', language: 'cpp')
-  add_project_arguments('-DALC_API=__declspec(dllexport)', language: 'cpp')
+#fixed in next version
+if host_machine.system() != 'windows'
+  pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
+  rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
+else
+  pulseaudio_dep = dependency('', required: false)
+  rtkit_dep = dependency('', required: false)
+endif
+
+add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
+add_project_arguments('-DNOMINMAX', language: 'cpp')
+
+if host_machine.system() == 'windows'
+  api = '__declspec(dllexport)'
+elif cpp.has_function_attribute('visibility:protected')
+  api = '__attribute__((visibility("protected")))'
+elif cpp.has_function_attribute('visibility:default')
+  api = '__attribute__((visibility("default")))'
+endif
+
+openal_args = []
+if get_option('buildtype') != 'static'
+  openal_args += '-DAL_API=@0@'.format(api)
+  openal_args += '-DALC_API=@0@'.format(api)
 endif
 
 common_sources = files(
@@ -203,7 +227,7 @@ vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 
 configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
 
-openal_args = ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
+openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 if cdata.get('HAVE_SSE')
   openal_args += '-mfpmath=sse'
   openal_args += '-msse'
@@ -232,9 +256,14 @@ if cdata.get('HAVE_NEON')
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
+common_lib = static_library(
+  'common',
+  common_sources,
+  include_directories: ['include', 'common', 'alc'],
+)
+
 openal_lib = library(
   'openal',
-  common_sources,
   core_sources,
   openal_sources,
   alc_sources,
@@ -258,18 +287,35 @@ openal_lib = library(
     sndio_dep,
     solaris_dep,
   ],
+  link_with: common_lib,
+  gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
   soversion: host_machine.system() == 'windows' ? '' : '1',
   install: true,
 )
 
+if host_machine.system() == 'windows'
+  api = '__declspec(dllimport)'
+else
+  api = '__attribute__((visibility("default")))'
+endif
+
+export = []
+if get_option('buildtype') != 'static'
+  export += '-DAL_API=@0@'.format(api)
+  export += '-DALC_API=@0@'.format(api)
+endif
+
 openal_dep = declare_dependency(
-  compile_args: openal_args,
+  #  compile_args: openal_args,
+  compile_args: export,
   include_directories: ['.', 'include', 'include/AL', 'common'],
-  link_with: openal_lib,
+  link_with: [common_lib, openal_lib],
 )
 
-meson.override_dependency('openal', openal_dep)
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('openal', openal_dep)
+endif
 
 install_headers(
   'include/AL/al.h',
