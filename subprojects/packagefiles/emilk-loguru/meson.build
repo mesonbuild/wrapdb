@@ -1,7 +1,9 @@
-project('emilk-loguru', 'cpp',
+project(
+  'emilk-loguru',
+  'cpp',
   version: '2.1.0',
   license: 'Public Domain',
-  meson_version : '>=0.50',
+  meson_version: '>=0.50',
 )
 
 cxx = meson.get_compiler('cpp')
@@ -13,62 +15,43 @@ compile_opts = [
 ]
 loguru_deps_internal = [dependency('threads')]
 
-if get_option('default_library') != 'static' and host_machine.system() == 'windows'
-  compile_opts += ['-DLOGURU_EXPORT=__declspec(dllexport)']
-endif
-if get_option('loguru_debug_logging')
-  compile_opts += ['-DLOGURU_DEBUG_LOGGING=1']
-endif
-if get_option('loguru_debug_checks')
-  compile_opts += ['-DLOGURU_DEBUG_CHECKS=1']
-endif
-if get_option('loguru_catch_sigabrt')
-  compile_opts += ['-DLOGURU_CATCH_SIGABRT=1']
-endif
-if get_option('loguru_redefine_assert')
-  compile_opts += ['-DLOGURU_REDEFINE_ASSERT=1']
-endif
-if get_option('loguru_with_streams')
-  compile_opts += ['-DLOGURU_WITH_STREAMS=1']
-endif
-if get_option('loguru_replace_glog')
-  compile_opts += ['-DLOGURU_REPLACE_GLOG=1']
-endif
-if get_option('loguru_with_fileabs')
-  compile_opts += ['-DLOGURU_WITH_FILEABS=1']
-endif
+options = [
+  'loguru_debug_logging',
+  'loguru_debug_checks',
+  'loguru_catch_sigabrt',
+  'loguru_redefine_assert',
+  'loguru_with_streams',
+  'loguru_replace_glog',
+  'loguru_with_fileabs',
+  'loguru_rtti',
+  'loguru_verbose_scope_endings',
+]
+
+foreach o : options
+  compile_opts += '-D@0@=@1@'.format(o.to_upper(), get_option(o).to_int())
+endforeach
 
 dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
 execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
-if dl_dep.found() and execinfo
-  loguru_deps_internal += dl_dep
-  compile_opts += ['-DLOGURU_STACKTRACES=1']
-else
-  compile_opts += ['-DLOGURU_STACKTRACES=0']
-endif
-if get_option('loguru_rtti')
-  compile_opts += ['-DLOGURU_RTTI=1']
-endif
-if get_option('loguru_verbose_scope_endings')
-  compile_opts += ['-DLOGURU_VERBOSE_SCOPE_ENDINGS=1']
+loguru_deps_internal += dl_dep
+compile_opts += '-DLOGURU_STACKTRACES=@0@'.format((dl_dep.found() and execinfo).to_int())
+
+fmt_dep = dependency('fmt', required: get_option('loguru_use_fmtlib'))
+loguru_deps_internal += fmt_dep
+compile_opts += '-DLOGURU_USE_FMTLIB=@0@'.format(fmt_dep.found().to_int())
+
+api = '-DLOGURU_EXPORT=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  api = '-DLOGURU_EXPORT=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
 endif
 
-if get_option('loguru_use_fmtlib').enabled()
-  loguru_deps_internal += dependency('fmt', required: true)
-  compile_opts += ['-DLOGURU_USE_FMTLIB=1']
-endif
-flags = cxx.get_supported_arguments(compile_opts)
-
-loguru_lib_soversion = meson.project_version().split('.')[0]
 emilk_loguru_lib = library(
   'loguru',
-  files(
-    'loguru.cpp'
-  ),
-  include_directories: include_directories('.'),
-  cpp_args: flags,
+  'loguru.cpp',
+  include_directories: '.',
+  cpp_args: [compile_opts, api],
   dependencies: loguru_deps_internal,
-  soversion: host_machine.system() == 'windows' ? '' : loguru_lib_soversion,
+  soversion: host_machine.system() == 'windows' ? '' : meson.project_version().split('.')[0],
   version: meson.project_version(),
   install: true,
 )
@@ -76,14 +59,19 @@ emilk_loguru_lib = library(
 install_headers('loguru.hpp')
 
 pkgc = import('pkgconfig')
-pkgc.generate(emilk_loguru_lib,
-    name: 'loguru',
-    version: meson.project_version(),
-    description: 'A lightweight and flexible C++ logging library',
+pkgc.generate(
+  emilk_loguru_lib,
+  name: 'loguru',
+  description: 'A lightweight and flexible C++ logging library',
 )
 
+api = '-DLOGURU_EXPORT=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  api = '-DLOGURU_EXPORT=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+endif
+
 emilk_loguru_dep = declare_dependency(
-  include_directories: include_directories('.'),
+  include_directories: '.',
   link_with: emilk_loguru_lib,
-  compile_args: flags,
+  compile_args: [compile_opts, api],
 )

@@ -72,7 +72,6 @@ option(
 option(
   'loguru_use_fmtlib',
   type: 'feature',
-  value: 'auto',
   description: '''
     Use fmtlib formatting. See https://github.com/fmtlib/fmt. This will make
     loguru.hpp depend on <fmt/format.h>.
