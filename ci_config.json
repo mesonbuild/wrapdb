@@ -371,6 +371,9 @@
     "brew_packages": [
       "nasm"
     ],
+    "choco_packages": [
+      "nasm"
+    ],
     "debian_packages": [
       "nasm"
     ]
