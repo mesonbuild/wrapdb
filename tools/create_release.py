@@ -57,24 +57,13 @@ class CreateRelease:
         srcdir = Path('subprojects', 'packagefiles', patch_directory)
         destdir = Path(self.tempdir, directory)
 
-        generator = Path(srcdir, 'generator.sh')
-        if generator.exists():
-            try:
-                fn = 'ci_config.json'
-                with open(fn, 'r') as f:
-                    ci = json.load(f)
-            except json.decoder.JSONDecodeError:
-                raise RuntimeError(f'file {fn} is malformed')
-
-            debian_packages = ci.get(self.name, {}).get('debian_packages', [])
-            if debian_packages and is_debianlike():
-                if is_ci():
-                    subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
-                else:
-                    s = ', '.join(debian_packages)
-                    print(f'The following packages could be required: {s}')
-
-            subprocess.check_call([generator])
+        # If there is a generator script, run it inside the wrap source tree.
+        if Path(srcdir, 'generator.py').exists():
+            workdir = Path('subprojects', directory)
+            generator = Path(workdir / 'generator.py').absolute()
+            subprocess.check_call(['meson', 'subprojects', 'download', self.name])
+            subprocess.check_call([generator, srcdir], cwd=workdir)
+            shutil.copytree(workdir / 'generated-config', destdir)
 
         # If no specific license is specified, copy wrapdb's
         license_file = srcdir / 'LICENSE.build'

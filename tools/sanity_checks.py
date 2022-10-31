@@ -27,7 +27,7 @@ import platform
 from pathlib import Path
 from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows
 
-PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
+PERMITTED_FILES = ['generator.py', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
     'jbigkit': [
         'jbig.def',

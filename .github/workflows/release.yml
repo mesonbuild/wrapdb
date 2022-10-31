@@ -11,14 +11,38 @@ concurrency:
   # should run at a time to avoid upload race conditions.
 
 jobs:
-  create_release:
-    runs-on: ubuntu-latest
+  create_windows_artifacts:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Generate Windows artifacts
+        run: |
+          python ./tools/create_release.py
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: generator-artifacts
+          path: **/generated-config/**/*
+          if-no-files-found: ignore
+  create_release:
+    runs-on: ubuntu-latest
+    needs: create_windows_artifacts
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: generator-artifacts
+          if-no-files-found: ignore
       - name: Upload release assets
         run: |
-          git fetch --unshallow --tags
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+
   # Ideally we should trigger Meson's CI to update the website, but unfortunately
   # it requires a Personal Access Token. Instead clone meson and do it ourself.
   # This job is copied from Meson's workflows.
