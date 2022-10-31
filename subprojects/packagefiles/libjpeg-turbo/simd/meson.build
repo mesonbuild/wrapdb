@@ -36,56 +36,16 @@ simd_src_i386 = [
 have_simd = false
 simd = []
 
-simd_opt = get_option('simd')
-if simd_opt.disabled()
-  subdir_done()
-endif
-
 if host_cpu in ['x86', 'x86_64']
-  nasm = find_program('nasm', required: simd_opt)
-  if not nasm.found()
-    subdir_done()
+  have_simd = add_languages('nasm', required: get_option('simd'), native: false)
+  if have_simd
+    add_project_arguments('-DPIC', language: 'nasm')
+    x64 = host_cpu == 'x86_64'
+    dir = x64 ? 'x86_64' : 'i386'
+    simd_src = x64 ? simd_src_x86_64 : simd_src_i386
+    simd = static_library('simd', dir / 'jsimd.c',
+      simd_src, include_directories: [incdir, 'nasm', dir])
   endif
-
-  x64 = host_cpu == 'x86_64'
-  dir = x64 ? 'x86_64' : 'i386'
-
-  args = ['-I@CURRENT_SOURCE_DIR@' / 'nasm', '-I@CURRENT_SOURCE_DIR@' / dir]
-
-  suf = x64 ? '64' : '32'
-  if host_system == 'windows'
-    args += ['-DWIN' + suf, '-f', 'win' + suf]
-  elif host_system == 'darwin'
-    args += ['-DMACHO', '-f', 'macho' + suf]
-  else
-    args += ['-DELF', '-f', 'elf' + suf]
-  endif
-
-  if get_option('debug')
-    args += '-g'
-  endif
-
-  if x64
-    args += '-D__x86_64__'
-  endif
-
-  if host_system != 'windows'
-    args += '-DPIC'
-  endif
-
-  args += ['-MD', '-MQ', '@OUTPUT@', '-MF', '@DEPFILE@', '-o', '@OUTPUT@', '@INPUT@']
-
-  gen = generator(nasm,
-    arguments: args,
-    depfile: '@BASENAME@.dep',
-    output: '@BASENAME@.obj',
-  )
-
-  simd_src = gen.process(x64 ? simd_src_x86_64 : simd_src_i386)
-
-  have_simd = true
-  simd = static_library('simd', dir / 'jsimd.c',
-    simd_src, include_directories: incdir)
 elif simd_opt.enabled()
   error('SIMD enabled, but CPU family not supported')
 endif

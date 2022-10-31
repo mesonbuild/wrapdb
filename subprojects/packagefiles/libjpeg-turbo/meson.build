@@ -1,7 +1,7 @@
 project('libjpeg-turbo', 'c',
   version : '3.0.0',
   license : 'bsd-like',
-  meson_version : '>= 0.59.0')
+  meson_version : '>= 0.64.0')
 
 pkg = import('pkgconfig')
 python = find_program('python3')
