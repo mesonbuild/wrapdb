@@ -138,8 +138,8 @@ if host_machine.system() == 'windows'
   deps += cc.find_library('ws2_32')
   deps += cc.find_library('iphlpapi')
 elif host_machine.system() == 'sunos'
-  deps += cpp.find_library('nsl')
-  deps += cpp.find_library('socket')
+  deps += cc.find_library('nsl')
+  deps += cc.find_library('socket')
 endif
 deps += dependency('libcrypto', required: get_option('open_ssl'))
 deps += dependency('libssl', required: get_option('open_ssl'))
