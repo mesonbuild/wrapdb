@@ -1635,6 +1635,14 @@
       "0.17.2-1"
     ]
   },
+  "orocos-kdl": {
+    "dependency_names": [
+      "orocos-kdl"
+    ],
+    "versions": [
+      "1.5.1-1"
+    ]
+  },
   "pcg": {
     "versions": [
       "0.98.1-2",
@@ -1735,12 +1743,12 @@
     ]
   },
   "qarchive": {
-      "dependency_names": [
-          "qarchive"
-      ],
-      "versions": [
-          "2.0.2-1"
-      ]
+    "dependency_names": [
+      "qarchive"
+    ],
+    "versions": [
+      "2.0.2-1"
+    ]
   },
   "quazip": {
     "dependency_names": [
