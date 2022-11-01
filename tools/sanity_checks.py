@@ -289,6 +289,7 @@ class TestReleases(unittest.TestCase):
         debian_packages = ci.get('debian_packages', [])
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])
+        cpanm_packages = ci.get('cpanm_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -296,13 +297,13 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
-        elif brew_packages and is_macos():
+        if brew_packages and is_macos():
             if is_ci():
                 subprocess.check_call(['brew', 'install'] + brew_packages)
             else:
                 s = ', '.join(brew_packages)
                 print(f'The following packages could be required: {s}')
-        elif choco_packages and is_windows():
+        if choco_packages and is_windows():
             if is_ci():
                 subprocess.check_call(['choco', 'install', '-y'] + choco_packages)
                 # nasm is not added into PATH by default:
@@ -312,6 +313,12 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(choco_packages)
                 print(f'The following packages could be required: {s}')
+        if cpanm_packages and is_macos():
+            if is_ci():
+                subprocess.check_call(['cpanm', 'install'] + cpanm_packages)
+            else:
+                s = ', '.join(cpanm_packages)
+                print(f'The following CPANM packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
         if res.returncode == 0:
