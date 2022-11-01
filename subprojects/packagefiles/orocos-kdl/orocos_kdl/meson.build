@@ -77,4 +77,4 @@ sources = files(
 inc = include_directories('src')
 
 orocos_kdl_lib = library('oroco_kdl', sources, dependencies: eigen, include_directories: inc)
-orocos_kdl_dep = declare_dependency(include_directories: inc, link_with: orocos_kdl_lib)
+orocos_kdl_dep = declare_dependency(include_directories: inc, dependencies: eigen, link_with: orocos_kdl_lib)

@@ -7,4 +7,3 @@ patch_directory = eigen
 
 [provide]
 eigen3 = eigen_dep
-
