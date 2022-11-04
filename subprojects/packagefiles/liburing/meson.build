@@ -8,6 +8,10 @@ project('liburing', ['c','cpp'],
                           'cpp_std=c++11',
                           'warning_level=2'])
 
+if host_machine.system() != 'linux'
+  error('Everything except Linux is unsupported. uring is a Linux framework')
+endif
+
 add_project_arguments('-D_GNU_SOURCE',
                       '-D__SANE_USERSPACE_TYPES__',
                       '-include', meson.current_build_dir() + '/config-host.h',
