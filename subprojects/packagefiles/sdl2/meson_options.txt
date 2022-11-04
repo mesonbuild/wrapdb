@@ -1,15 +1,15 @@
 option(
     'test',
     type : 'boolean',
-    value : 'true',
+    value : true,
     description : 'build tests'
 )
 
 option(
     'run_test',
     type : 'boolean',
-    value : 'false',
-    description : 'run testsm. running the tests requires a video output, audio processor, etc. do not use on headless machines'
+    value : false,
+    description : 'run tests. running the tests requires a video output, audio processor, etc. do not use on headless machines'
 )
 
 option(
@@ -222,6 +222,6 @@ option(
 option(
     'with_main',
     type : 'boolean',
-    value : 'true',
+    value : true,
     description : 'automatically link against sdl2main'
 )

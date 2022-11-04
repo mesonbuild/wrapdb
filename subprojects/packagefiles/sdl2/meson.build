@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-    version : '2.24.1',
+    version : '2.24.2',
     license : 'zlib',
     meson_version : '>=0.48.0',
     default_options : ['c_std=none'],
@@ -10,13 +10,6 @@ cc = meson.get_compiler('c')
 if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
   error('default_library=both not supported when compiling with MSVC')
 endif
-  
-# Based on https://github.com/mesonbuild/sdl2/blob/2.0.3/meson.build
-
-varr = meson.project_version().split('.')
-version_major = varr[0]
-version_minor = varr[1]
-version_micro = varr[2]
 
 c_args = cc.get_supported_arguments(
     '-Wdeclaration-after-statement',
@@ -156,15 +149,12 @@ khronos_dep = declare_dependency(
     include_directories : include_directories(join_paths('src', 'video', 'khronos'))
 )
 
-gl_req_hack = opt_video_opengl.enabled() ? false : opt_video_opengl
-gles2_req_hack = opt_video_openglesv2.enabled() ? false : opt_video_openglesv2
-
 gl_dep = dependency('gl', required : opt_video_opengl)
 if not gl_dep.found()
     gl_dep = dependency('opengl', required : opt_video_opengl)
 endif
 
-glesv2_dep = dependency('glesv2', required : gles2_req_hack)
+glesv2_dep = dependency('glesv2', required : opt_video_openglesv2)
 if not glesv2_dep.found() and not opt_video_openglesv2.disabled()
     # we have the headers, we'll load the lib dynamically (which might be something like ANGLE)
     glesv2_dep = khronos_dep
