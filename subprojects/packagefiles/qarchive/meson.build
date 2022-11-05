@@ -1,17 +1,20 @@
 project(
   'QArchive',
   'cpp',
-  version: '2.0.2',
+  version: '2.2.0',
   license: 'BSD-3-Clause',
   default_options: ['cpp_std=c++11'],
   meson_version: '>=0.49.0'
 )
 
-qt5 = import('qt5')
-
-# NOTE: >2.0.2 depends on libarchive-3.5.0 (uses `archive_write_open2()`)
 libarchive_dep = dependency('libarchive')
-qt5core_dep = dependency('qt5', modules: ['Core'])
+qt_dep = dependency('qt6', modules: ['Core'], required: get_option('qt6'))
+if qt_dep.found()
+  qt = import('qt6')
+else
+  qt_dep = dependency('qt5', modules: ['Core'])
+  qt = import('qt5')
+endif
 
 configure_file(
   format: 'cmake@',
@@ -21,33 +24,45 @@ configure_file(
 )
 
 src = files(
-  'src/qarchivediskcompressor.cc',
-  'src/qarchivediskextractor.cc',
   'src/qarchive_enums.cc',
-  'src/qarchivediskcompressor_p.cc',
-  'src/qarchivediskextractor_p.cc',
   'src/qarchiveutils_p.cc',
+  'src/qarchivememoryfile.cc',
+  'src/qarchivememoryextractoroutput.cc',
   'src/qarchiveioreader_p.cc',
+  'src/qarchiveextractor_p.cc',
+  'src/qarchiveextractor.cc',
+  'src/qarchivecompressor_p.cc',
+  'src/qarchivecompressor.cc',
+  'src/qarchivediskextractor.cc',
+  'src/qarchivememoryextractor.cc',
+  'src/qarchivediskcompressor.cc',
+  'src/qarchivememorycompressor.cc',
 )
 
 headers = files(
   'include/qarchive_enums.hpp',
-  'include/qarchivediskextractor.hpp',
-  'include/qarchivediskcompressor.hpp',
-  'include/qarchive_global.hpp',
-  'include/qarchivediskcompressor_p.hpp',
-  'include/qarchivediskextractor_p.hpp',
   'include/qarchiveutils_p.hpp',
+  'include/qarchivememoryfile.hpp',
+  'include/qarchivememoryextractoroutput.hpp',
   'include/qarchiveioreader_p.hpp',
+  'include/qarchiveextractor_p.hpp',
+  'include/qarchiveextractor.hpp',
+  'include/qarchivecompressor_p.hpp',
+  'include/qarchivecompressor.hpp',
+  'include/qarchivediskextractor.hpp',
+  'include/qarchivememoryextractor.hpp',
+  'include/qarchivediskcompressor.hpp',
+  'include/qarchivememorycompressor.hpp',
+  'include/qarchive_global.hpp',
 )
 
 include_dirs = include_directories('include', '.')
 
-moc_files = qt5.preprocess(
+moc_files = qt.preprocess(
   moc_sources: src,
   moc_headers: headers,
   include_directories: include_dirs,
-  dependencies: qt5core_dep
+  dependencies: qt_dep
 )
 
 qarchive_lib = library(
@@ -55,7 +70,7 @@ qarchive_lib = library(
   src,
   moc_files,
   include_directories: include_dirs,
-  dependencies: [libarchive_dep, qt5core_dep]
+  dependencies: [libarchive_dep, qt_dep]
 )
 
 qarchive_dep = declare_dependency(
@@ -65,4 +80,51 @@ qarchive_dep = declare_dependency(
 
 if meson.version().version_compare('>=0.54.0')
   meson.override_dependency('qarchive', qarchive_dep)
+endif
+
+if get_option('tests')
+  test_src = files(
+    'tests/main.cc',
+    'tests/TestRunner.cc',
+    'tests/QArchiveDiskCompressorTests.cc',
+    'tests/QArchiveMemoryCompressorTests.cc',
+    'tests/QArchiveDiskExtractorTests.cc',
+    'tests/QArchiveMemoryExtractorTests.cc',
+  )
+
+  test_headers = files(
+    'tests/TestRunner.hpp',
+    'tests/QArchiveTestCases.hpp',
+    'tests/QArchiveDiskCompressorTests.hpp',
+    'tests/QArchiveMemoryCompressorTests.hpp',
+    'tests/QArchiveDiskExtractorTests.hpp',
+    'tests/QArchiveMemoryExtractorTests.hpp',
+  )
+
+  test_include_dirs = include_directories('tests')
+
+  test_moc_files = qt.preprocess(
+    moc_sources: test_src,
+    moc_headers: test_headers,
+    include_directories: test_include_dirs,
+    dependencies: qt_dep,
+  )
+
+  test_dep = dependency(
+    'qt6',
+    modules: ['Test', 'Concurrent'],
+    required: get_option('qt6'),
+  )
+  if not test_dep.found()
+    test_dep = dependency('qt5', modules: ['Test', 'Concurrent'])
+  endif
+
+  test_exe = executable(
+    'QArchiveTests',
+    test_src, test_moc_files,
+    include_directories: include_directories('tests'),
+    dependencies: [qarchive_dep, test_dep],
+  )
+
+  test('QArchiveTests', test_exe)
 endif
