@@ -384,10 +384,10 @@
     ],
     "brew_packages": [
         "libarchive",
-        "qt5"
+        "qt6"
     ],
     "build_options": [
-      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig:/usr/local/opt/qt@5/lib/pkgconfig"
+      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig"
     ]
   },
   "quazip": {

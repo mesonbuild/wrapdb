@@ -1,1 +1,8 @@
 option('static', type: 'boolean', value: true)
+option('tests', type: 'boolean', value: false)
+option(
+  'qt6',
+  type: 'feature',
+  value: 'auto',
+  description: 'enabled: do not fall back on Qt 5, disabled: always use Qt 5',
+)
