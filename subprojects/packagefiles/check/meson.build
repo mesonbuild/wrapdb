@@ -3,7 +3,7 @@ project(
   'c',
   license: 'LGPL-2.1-or-later',
   version: '0.15.2',
-  meson_version: '>=0.47.0',
+  meson_version: '>=0.50.0',
 )
 
 #need for time_r functions
@@ -359,7 +359,7 @@ subdir('internal')
 
 subdir('lib')
 subdir('src')
-
-if not meson.is_subproject()
+#tests use internal APIs not marked dllexport
+if cc.get_argument_syntax() != 'msvc'
   subdir('tests')
 endif
