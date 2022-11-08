@@ -1,11 +1,10 @@
-if get_option('default_library') == 'shared' and cc.get_id() == 'msvc'
-  ck_dll_exp_interface = '-DCK_DLL_EXP=__declspec(dllimport)'
-  ck_dll_exp_private = '-DCK_DLL_EXP=__declspec(dllexport)'
+if host_machine.system() == 'windows'
+  ck_dll_exp_interface = get_option('default_library') != 'static' ? '-DCK_DLL_EXP=__declspec(dllimport)' : []
+  ck_dll_exp_private = get_option('default_library') != 'static' ? '-DCK_DLL_EXP=__declspec(dllexport)' : []
 else
-  ck_dll_exp_interface = '-DCK_DLL_EXP='
-  ck_dll_exp_private = '-DCK_DLL_EXP='
+  ck_dll_exp_interface = []
+  ck_dll_exp_private = '-DCK_DLL_EXP=__attribute__((visibility("default")))'
 endif
-
 
 configure_file(
   input: 'check.h.in',
@@ -20,7 +19,7 @@ configure_file(
   format: 'cmake@',
 )
 
-sources = [
+sources = files(
   'check.c',
   'check_error.c',
   'check_list.c',
@@ -30,7 +29,7 @@ sources = [
   'check_print.c',
   'check_run.c',
   'check_str.c',
-]
+)
 
 checklib = library(
   'check',
@@ -41,7 +40,7 @@ checklib = library(
 )
 
 check_dep = declare_dependency(
-  include_directories: include_directories('.'),
+  include_directories: '.',
   link_with: checklib,
   compile_args: ck_dll_exp_interface,
 )

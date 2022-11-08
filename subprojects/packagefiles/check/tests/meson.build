@@ -1,3 +1,15 @@
+check_test_lib = static_library(
+  'staticcheck',
+  objects: checklib.extract_all_objects(recursive: false),
+  include_directories: confinc,
+  dependencies: [libm, compatlib_dep],
+)
+
+check_test_dep = declare_dependency(
+  include_directories: ['../src', confinc],
+  link_with: check_test_lib,
+)
+
 tests = {
   'check_check': files(
     'check_check_exit.c',
@@ -55,8 +67,7 @@ foreach test_name, file_list : tests
     test_name,
     file_list,
     c_args: ['-DHAVE_CONFIG_H=1', tests_c_args],
-    include_directories: confinc,
-    dependencies: check_dep,
+    dependencies: [check_test_dep, regex_dep],
   )
   test(test_name, exe)
 endforeach
