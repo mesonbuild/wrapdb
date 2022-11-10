@@ -1,12 +1,14 @@
 project('utf8proc', 'c',
-    version : '2.7.0',
+    version : '2.8.0',
     license: 'MIT',
     default_options: ['c_std=c99']
 )
 
-if get_option('default_library') != 'static' and host_machine.system() == 'windows'
-  add_project_arguments('-DUTF8PROC_EXPORTS', language: 'c')
+if get_option('default_library') == 'static'
+  add_project_arguments('-DUTF8PROC_STATIC', language: 'c')
 endif
+
+add_project_arguments('-DUTF8PROC_EXPORTS', language: 'c')
 
 utf8proc_lib = library('utf8proc',
   'utf8proc.c',
