@@ -7,4 +7,3 @@ project('entt',
 entt_dep = declare_dependency(
     include_directories: include_directories('single_include')
 )
-
