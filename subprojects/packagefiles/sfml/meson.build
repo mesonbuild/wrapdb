@@ -1,8 +1,13 @@
-project('sfml', 'cpp',
-    version: '2.5.1',
-    default_options: ['cpp_std=c++17',
-                      'wrap_mode=forcefallback',
-                     ])
+project(
+  'sfml',
+  'cpp',
+  version: '2.5.1',
+  default_options: [
+    'cpp_std=c++17',
+    'wrap_mode=forcefallback',
+  ],
+  meson_version: '>=0.49.0',
+)
 
 cpp = meson.get_compiler('cpp')
 
@@ -31,11 +36,10 @@ priv_inc = include_directories('src')
 
 subdir('src/SFML')
 
-sfml_dep = declare_dependency(include_directories: pub_inc,
-    link_with: [audio_lib,
-                graphics_lib,
-                network_lib,
-                window_lib,
-                system_lib] + (host_machine.system() == 'windows' ? [main_lib] : []),
-    compile_args: get_option('default_library') == 'shared' ? [] : ['-DSFML_STATIC'],
+sfml_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: [audio_lib, graphics_lib, network_lib, window_lib, system_lib] + (
+    host_machine.system() == 'windows' ? [main_lib] : []
+  ),
+  compile_args: get_option('default_library') == 'shared' ? [] : ['-DSFML_STATIC'],
 )
