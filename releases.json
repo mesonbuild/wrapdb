@@ -528,7 +528,7 @@
       "3.3.7-1"
     ]
   },
-  "glib": {
+  "glib": { 
     "dependency_names": [
       "gthread-2.0",
       "gobject-2.0",
