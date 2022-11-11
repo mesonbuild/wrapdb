@@ -1,8 +1,8 @@
-protoc_src = [ 'google/protobuf/compiler/main.cc' ]
+protoc_src = ['google/protobuf/compiler/main.cc']
 protoc = executable(
   'protoc',
   protoc_src,
-  include_directories: include_directories('.'),
+  include_directories: incdir,
   link_with: libprotoc,
   install: true,
 )
@@ -12,17 +12,17 @@ if meson.is_cross_build()
     'protoc-native',
     [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
     native: true,
-    include_directories: include_directories('.'),
+    include_directories: incdir,
     dependencies: dependency('threads', native: true),
   )
 else
   protoc_native = protoc
-  meson.override_find_program('protoc', protoc)
 endif
 
-protoc_gen = generator(protoc_native,
+protoc_gen = generator(
+  protoc_native,
   output: ['@BASENAME@.pb.cc', '@BASENAME@.pb.h'],
-  arguments: ['@EXTRA_ARGS@', '--proto_path=' + meson.current_source_dir(), '--cpp_out=@BUILD_DIR@', '@INPUT@']
+  arguments: ['@EXTRA_ARGS@', '--proto_path=' + meson.current_source_dir(), '--cpp_out=@BUILD_DIR@', '@INPUT@'],
 )
 
 install_headers(
@@ -103,15 +103,15 @@ install_headers(
   'google/protobuf/compiler/plugin.h',
   'google/protobuf/compiler/plugin.pb.h',
   'google/protobuf/compiler/plugin.proto',
-  subdir: 'google/protobuf/compiler'
+  subdir: 'google/protobuf/compiler',
 )
 
 install_headers(
-  'google/protobuf/compiler/cpp/cpp_file.h',
-  'google/protobuf/compiler/cpp/cpp_generator.h',
-  'google/protobuf/compiler/cpp/cpp_helpers.h',
-  'google/protobuf/compiler/cpp/cpp_names.h',
-  subdir: 'google/protobuf/compiler/cpp'
+  'google/protobuf/compiler/cpp/file.h',
+  'google/protobuf/compiler/cpp/generator.h',
+  'google/protobuf/compiler/cpp/helpers.h',
+  'google/protobuf/compiler/cpp/names.h',
+  subdir: 'google/protobuf/compiler/cpp',
 )
 
 install_headers(
@@ -119,42 +119,36 @@ install_headers(
   'google/protobuf/compiler/csharp/csharp_generator.h',
   'google/protobuf/compiler/csharp/csharp_names.h',
   'google/protobuf/compiler/csharp/csharp_options.h',
-  subdir: 'google/protobuf/compiler/csharp'
+  subdir: 'google/protobuf/compiler/csharp',
 )
 
 install_headers(
   'google/protobuf/compiler/java/java_generator.h',
-  'google/protobuf/compiler/java/java_kotlin_generator.h',
-  'google/protobuf/compiler/java/java_names.h',
-  subdir: 'google/protobuf/compiler/java'
-)
-
-install_headers(
-  'google/protobuf/compiler/js/js_generator.h',
-  subdir: 'google/protobuf/compiler/js'
+  'google/protobuf/compiler/java/names.h',
+  subdir: 'google/protobuf/compiler/java',
 )
 
 install_headers(
   'google/protobuf/compiler/objectivec/objectivec_generator.h',
   'google/protobuf/compiler/objectivec/objectivec_helpers.h',
-  subdir: 'google/protobuf/compiler/objectivec'
+  subdir: 'google/protobuf/compiler/objectivec',
 )
 
 install_headers(
   'google/protobuf/compiler/php/php_generator.h',
-  subdir: 'google/protobuf/compiler/php'
+  subdir: 'google/protobuf/compiler/php',
 )
 
 install_headers(
-  'google/protobuf/compiler/python/python_generator.h',
-  'google/protobuf/compiler/python/python_pyi_generator.h',
-  'google/protobuf/compiler/python/python_helpers.h',
-  subdir: 'google/protobuf/compiler/python'
+  'google/protobuf/compiler/python/generator.h',
+  'google/protobuf/compiler/python/pyi_generator.h',
+  'google/protobuf/compiler/python/helpers.h',
+  subdir: 'google/protobuf/compiler/python',
 )
 
 install_headers(
   'google/protobuf/compiler/ruby/ruby_generator.h',
-  subdir: 'google/protobuf/compiler/ruby'
+  subdir: 'google/protobuf/compiler/ruby',
 )
 
 install_headers(
@@ -167,7 +161,7 @@ install_headers(
   'google/protobuf/io/zero_copy_stream.h',
   'google/protobuf/io/zero_copy_stream_impl.h',
   'google/protobuf/io/zero_copy_stream_impl_lite.h',
-  subdir: 'google/protobuf/io'
+  subdir: 'google/protobuf/io',
 )
 
 install_headers(
@@ -188,7 +182,7 @@ install_headers(
   'google/protobuf/stubs/stringpiece.h',
   'google/protobuf/stubs/strutil.h',
   'google/protobuf/stubs/template_util.h',
-  subdir: 'google/protobuf/stubs'
+  subdir: 'google/protobuf/stubs',
 )
 
 install_headers(
@@ -200,5 +194,5 @@ install_headers(
   'google/protobuf/util/time_util.h',
   'google/protobuf/util/type_resolver.h',
   'google/protobuf/util/type_resolver_util.h',
-  subdir: 'google/protobuf/util'
+  subdir: 'google/protobuf/util',
 )
