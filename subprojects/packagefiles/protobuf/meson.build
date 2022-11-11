@@ -1,4 +1,11 @@
-project('protobuf', 'cpp', version: '3.20.1', license: 'protobuf', default_options: 'warning_level=0')
+project(
+  'protobuf',
+  'cpp',
+  version: '3.21.9',
+  license: 'protobuf',
+  default_options: 'warning_level=0',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('cpp')
 
@@ -6,7 +13,9 @@ ttype = cc.get_argument_syntax() == 'msvc' ? 'static_library' : 'library'
 
 deps = dependency('threads')
 
-libprotobuf_lite_src = [
+incdir = include_directories('src')
+
+libprotobuf_lite_src = files(
   'src/google/protobuf/any_lite.cc',
   'src/google/protobuf/arena.cc',
   'src/google/protobuf/arenastring.cc',
@@ -39,7 +48,7 @@ libprotobuf_lite_src = [
   'src/google/protobuf/stubs/strutil.cc',
   'src/google/protobuf/stubs/time.cc',
   'src/google/protobuf/wire_format_lite.cc',
-]
+)
 libprotobuf_lite = build_target(
   'protobuf-lite',
   libprotobuf_lite_src,
@@ -48,15 +57,15 @@ libprotobuf_lite = build_target(
   version: meson.project_version(),
   soversion: 31,
   install: true,
-  include_directories: include_directories('src'),
+  include_directories: incdir,
 )
 protobuf_lite_dep = declare_dependency(
   link_with: libprotobuf_lite,
-  include_directories: include_directories('src'),
+  include_directories: incdir,
 )
 
 
-libprotobuf_src = [
+libprotobuf_src = files(
   'src/google/protobuf/any.cc',
   'src/google/protobuf/any.pb.cc',
   'src/google/protobuf/api.pb.cc',
@@ -110,7 +119,7 @@ libprotobuf_src = [
   'src/google/protobuf/util/type_resolver_util.cc',
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wrappers.pb.cc',
-]
+)
 libprotobuf = build_target(
   'protobuf',
   libprotobuf_src,
@@ -119,31 +128,31 @@ libprotobuf = build_target(
   soversion: 31,
   link_with: libprotobuf_lite,
   install: true,
-  include_directories: include_directories('src')
+  include_directories: incdir,
 )
 protobuf_dep = declare_dependency(
   link_with: [libprotobuf_lite, libprotobuf],
-  include_directories: include_directories('src')
+  include_directories: incdir,
 )
 
-libprotoc_src = [
+libprotoc_src = files(
   'src/google/protobuf/compiler/code_generator.cc',
   'src/google/protobuf/compiler/command_line_interface.cc',
-  'src/google/protobuf/compiler/cpp/cpp_enum.cc',
-  'src/google/protobuf/compiler/cpp/cpp_enum_field.cc',
-  'src/google/protobuf/compiler/cpp/cpp_extension.cc',
-  'src/google/protobuf/compiler/cpp/cpp_field.cc',
-  'src/google/protobuf/compiler/cpp/cpp_file.cc',
-  'src/google/protobuf/compiler/cpp/cpp_generator.cc',
-  'src/google/protobuf/compiler/cpp/cpp_helpers.cc',
-  'src/google/protobuf/compiler/cpp/cpp_map_field.cc',
-  'src/google/protobuf/compiler/cpp/cpp_message.cc',
-  'src/google/protobuf/compiler/cpp/cpp_message_field.cc',
-  'src/google/protobuf/compiler/cpp/cpp_padding_optimizer.cc',
-  'src/google/protobuf/compiler/cpp/cpp_parse_function_generator.cc',
-  'src/google/protobuf/compiler/cpp/cpp_primitive_field.cc',
-  'src/google/protobuf/compiler/cpp/cpp_service.cc',
-  'src/google/protobuf/compiler/cpp/cpp_string_field.cc',
+  'src/google/protobuf/compiler/cpp/enum.cc',
+  'src/google/protobuf/compiler/cpp/enum_field.cc',
+  'src/google/protobuf/compiler/cpp/extension.cc',
+  'src/google/protobuf/compiler/cpp/field.cc',
+  'src/google/protobuf/compiler/cpp/file.cc',
+  'src/google/protobuf/compiler/cpp/generator.cc',
+  'src/google/protobuf/compiler/cpp/helpers.cc',
+  'src/google/protobuf/compiler/cpp/map_field.cc',
+  'src/google/protobuf/compiler/cpp/message.cc',
+  'src/google/protobuf/compiler/cpp/message_field.cc',
+  'src/google/protobuf/compiler/cpp/padding_optimizer.cc',
+  'src/google/protobuf/compiler/cpp/parse_function_generator.cc',
+  'src/google/protobuf/compiler/cpp/primitive_field.cc',
+  'src/google/protobuf/compiler/cpp/service.cc',
+  'src/google/protobuf/compiler/cpp/string_field.cc',
   'src/google/protobuf/compiler/csharp/csharp_doc_comment.cc',
   'src/google/protobuf/compiler/csharp/csharp_enum.cc',
   'src/google/protobuf/compiler/csharp/csharp_enum_field.cc',
@@ -160,37 +169,35 @@ libprotoc_src = [
   'src/google/protobuf/compiler/csharp/csharp_repeated_primitive_field.cc',
   'src/google/protobuf/compiler/csharp/csharp_source_generator_base.cc',
   'src/google/protobuf/compiler/csharp/csharp_wrapper_field.cc',
-  'src/google/protobuf/compiler/java/java_context.cc',
-  'src/google/protobuf/compiler/java/java_doc_comment.cc',
-  'src/google/protobuf/compiler/java/java_enum.cc',
-  'src/google/protobuf/compiler/java/java_enum_field.cc',
-  'src/google/protobuf/compiler/java/java_enum_field_lite.cc',
-  'src/google/protobuf/compiler/java/java_enum_lite.cc',
-  'src/google/protobuf/compiler/java/java_extension.cc',
-  'src/google/protobuf/compiler/java/java_extension_lite.cc',
-  'src/google/protobuf/compiler/java/java_field.cc',
-  'src/google/protobuf/compiler/java/java_file.cc',
-  'src/google/protobuf/compiler/java/java_generator.cc',
-  'src/google/protobuf/compiler/java/java_generator_factory.cc',
-  'src/google/protobuf/compiler/java/java_helpers.cc',
-  'src/google/protobuf/compiler/java/java_kotlin_generator.cc',
-  'src/google/protobuf/compiler/java/java_map_field.cc',
-  'src/google/protobuf/compiler/java/java_map_field_lite.cc',
-  'src/google/protobuf/compiler/java/java_message.cc',
-  'src/google/protobuf/compiler/java/java_message_builder.cc',
-  'src/google/protobuf/compiler/java/java_message_builder_lite.cc',
-  'src/google/protobuf/compiler/java/java_message_field.cc',
-  'src/google/protobuf/compiler/java/java_message_field_lite.cc',
-  'src/google/protobuf/compiler/java/java_message_lite.cc',
-  'src/google/protobuf/compiler/java/java_name_resolver.cc',
-  'src/google/protobuf/compiler/java/java_primitive_field.cc',
-  'src/google/protobuf/compiler/java/java_primitive_field_lite.cc',
-  'src/google/protobuf/compiler/java/java_service.cc',
-  'src/google/protobuf/compiler/java/java_shared_code_generator.cc',
-  'src/google/protobuf/compiler/java/java_string_field.cc',
-  'src/google/protobuf/compiler/java/java_string_field_lite.cc',
-  'src/google/protobuf/compiler/js/js_generator.cc',
-  'src/google/protobuf/compiler/js/well_known_types_embed.cc',
+  'src/google/protobuf/compiler/java/context.cc',
+  'src/google/protobuf/compiler/java/doc_comment.cc',
+  'src/google/protobuf/compiler/java/enum.cc',
+  'src/google/protobuf/compiler/java/enum_field.cc',
+  'src/google/protobuf/compiler/java/enum_field_lite.cc',
+  'src/google/protobuf/compiler/java/enum_lite.cc',
+  'src/google/protobuf/compiler/java/extension.cc',
+  'src/google/protobuf/compiler/java/extension_lite.cc',
+  'src/google/protobuf/compiler/java/field.cc',
+  'src/google/protobuf/compiler/java/file.cc',
+  'src/google/protobuf/compiler/java/generator.cc',
+  'src/google/protobuf/compiler/java/generator_factory.cc',
+  'src/google/protobuf/compiler/java/helpers.cc',
+  'src/google/protobuf/compiler/java/kotlin_generator.cc',
+  'src/google/protobuf/compiler/java/map_field.cc',
+  'src/google/protobuf/compiler/java/map_field_lite.cc',
+  'src/google/protobuf/compiler/java/message.cc',
+  'src/google/protobuf/compiler/java/message_builder.cc',
+  'src/google/protobuf/compiler/java/message_builder_lite.cc',
+  'src/google/protobuf/compiler/java/message_field.cc',
+  'src/google/protobuf/compiler/java/message_field_lite.cc',
+  'src/google/protobuf/compiler/java/message_lite.cc',
+  'src/google/protobuf/compiler/java/name_resolver.cc',
+  'src/google/protobuf/compiler/java/primitive_field.cc',
+  'src/google/protobuf/compiler/java/primitive_field_lite.cc',
+  'src/google/protobuf/compiler/java/service.cc',
+  'src/google/protobuf/compiler/java/shared_code_generator.cc',
+  'src/google/protobuf/compiler/java/string_field.cc',
+  'src/google/protobuf/compiler/java/string_field_lite.cc',
   'src/google/protobuf/compiler/objectivec/objectivec_enum.cc',
   'src/google/protobuf/compiler/objectivec/objectivec_enum_field.cc',
   'src/google/protobuf/compiler/objectivec/objectivec_extension.cc',
@@ -206,13 +213,13 @@ libprotoc_src = [
   'src/google/protobuf/compiler/php/php_generator.cc',
   'src/google/protobuf/compiler/plugin.cc',
   'src/google/protobuf/compiler/plugin.pb.cc',
-  'src/google/protobuf/compiler/python/python_generator.cc',
-  'src/google/protobuf/compiler/python/python_helpers.cc',
-  'src/google/protobuf/compiler/python/python_pyi_generator.cc',
+  'src/google/protobuf/compiler/python/generator.cc',
+  'src/google/protobuf/compiler/python/helpers.cc',
+  'src/google/protobuf/compiler/python/pyi_generator.cc',
   'src/google/protobuf/compiler/ruby/ruby_generator.cc',
   'src/google/protobuf/compiler/subprocess.cc',
   'src/google/protobuf/compiler/zip_writer.cc',
-]
+)
 libprotoc = build_target(
   'protoc',
   libprotoc_src,
@@ -220,13 +227,13 @@ libprotoc = build_target(
   version: meson.project_version(),
   soversion: 31,
   link_with: [libprotobuf_lite, libprotobuf],
-  include_directories: include_directories('src'),
+  include_directories: incdir,
   install: true,
 )
 
 protoc_dep = declare_dependency(
   link_with: [libprotobuf_lite, libprotobuf, libprotoc],
-  include_directories: include_directories('src')
+  include_directories: incdir,
 )
 
 pkg = import('pkgconfig')
