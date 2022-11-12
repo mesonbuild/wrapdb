@@ -16,7 +16,7 @@ cc = meson.get_compiler('c')
 
 api = '-D__LZO_EXPORT1=__attribute__((visibility("default")))'
 if host_machine.system() == 'windows'
-  api = '-D__LZO_EXPORT1=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
+  api = get_option('default_library') != 'static' ? '-D__LZO_EXPORT1=__declspec(dllexport)' : []
 endif
 
 add_project_arguments('-DLZO_ABI_@0@_ENDIAN=1'.format(host_machine.endian().to_upper()), language: 'c')
@@ -56,9 +56,9 @@ pconf.generate(
   subdirs: 'lzo',
 )
 
-api = '-D__LZO_EXPORT1=__attribute__((visibility("default")))'
-if host_machine.system() == 'windows'
-  api = '-D__LZO_EXPORT1=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+api = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  api += '-D__LZO_EXPORT1=__declspec(dllimport)'
 endif
 
 lzo2_dep = declare_dependency(
