@@ -2,7 +2,7 @@ project(
   'openal-soft',
   'cpp',
   version: '1.22.2',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.50.0',
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
@@ -33,7 +33,7 @@ endif
 add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
 add_project_arguments('-DNOMINMAX', language: 'cpp')
 
-if host_machine.system() == 'windows'
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   api = '__declspec(dllexport)'
 elif cpp.has_function_attribute('visibility:protected')
   api = '__attribute__((visibility("protected")))'
@@ -42,10 +42,8 @@ elif cpp.has_function_attribute('visibility:default')
 endif
 
 openal_args = []
-if get_option('buildtype') != 'static'
-  openal_args += '-DAL_API=@0@'.format(api)
-  openal_args += '-DALC_API=@0@'.format(api)
-endif
+openal_args += '-DAL_API=@0@'.format(api)
+openal_args += '-DALC_API=@0@'.format(api)
 
 common_sources = files(
   'common/alcomplex.cpp',
@@ -294,20 +292,13 @@ openal_lib = library(
   install: true,
 )
 
-if host_machine.system() == 'windows'
-  api = '__declspec(dllimport)'
-else
-  api = '__attribute__((visibility("default")))'
-endif
-
 export = []
-if get_option('buildtype') != 'static'
-  export += '-DAL_API=@0@'.format(api)
-  export += '-DALC_API=@0@'.format(api)
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  export += '-DAL_API=__declspec(dllimport)'
+  export += '-DALC_API=__declspec(dllimport)'
 endif
 
 openal_dep = declare_dependency(
-  #  compile_args: openal_args,
   compile_args: export,
   include_directories: ['.', 'include', 'include/AL', 'common'],
   link_with: [common_lib, openal_lib],
