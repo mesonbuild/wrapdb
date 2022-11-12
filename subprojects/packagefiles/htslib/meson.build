@@ -4,7 +4,7 @@ project(
   version: '1.16',
   default_options: ['buildtype=release', 'warning_level=0', 'c_std=c99', 'b_ndebug=if-release'],
   license: 'MIT',
-  meson_version: '>= 0.49.0',
+  meson_version: '>= 0.50.0',
 )
 
 cc = meson.get_compiler('c')
@@ -95,18 +95,18 @@ else
   htslib_config_h_config.set_quoted('PLUGIN_EXT', '.so')
 endif
 
-htslib_config_h = configure_file(output: 'config.h', configuration: htslib_config_h_config)
+configure_file(output: 'config.h', configuration: htslib_config_h_config)
 
 htslib_config_vars_h_config = configuration_data()
 htslib_config_vars_h_config.set('HTS_CC', '""')
 htslib_config_vars_h_config.set('HTS_CFLAGS', '""')
 htslib_config_vars_h_config.set('HTS_LDFLAGS', '""')
 htslib_config_vars_h_config.set('HTS_CPPFLAGS', '""')
-htslib_config_vars_h = configure_file(output: 'config_vars.h', configuration: htslib_config_vars_h_config)
+configure_file(output: 'config_vars.h', configuration: htslib_config_vars_h_config)
 
 htslib_version_h_config = configuration_data()
 htslib_version_h_config.set_quoted('HTS_VERSION_TEXT', meson.project_version())
-htslib_version_h = configure_file(output: 'version.h', configuration: htslib_version_h_config)
+configure_file(output: 'version.h', configuration: htslib_version_h_config)
 
 # install library if
 # - either running as a proper project
@@ -115,9 +115,6 @@ htslib_lib_install = (not meson.is_subproject()) or (get_option('default_library
 
 htslib_lib = library(
   'hts',
-  htslib_config_h,
-  htslib_config_vars_h,
-  htslib_version_h,
   htslib_sources,
   soversion: 3,
   version: meson.project_version(),
