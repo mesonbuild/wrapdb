@@ -3,7 +3,7 @@ project(
   'cpp',
   license: 'LGPL-2.1-or-later',
   version: '1.4.4',
-  meson_version: '>=0.48.0',
+  meson_version: '>=0.50.0',
 )
 
 cpp = meson.get_compiler('cpp')
@@ -16,7 +16,7 @@ if get_option('default_library') == 'static'
 endif
 
 if host_machine.system() == 'windows'
-  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
+  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '')
 else
   dllapi = '-DEBML_DLL_API=__attribute__((visibility("default")))'
 endif
@@ -102,10 +102,9 @@ libebml = library(
   install: true,
 )
 
-if host_machine.system() == 'windows'
-  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
-else
-  dllapi = '-DEBML_DLL_API=__attribute__((visibility("default")))'
+dllapi = '-DEBML_DLL_API='
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  dllapi = '-DEBML_DLL_API=__declspec(dllimport)'
 endif
 
 libebml_dep = declare_dependency(
