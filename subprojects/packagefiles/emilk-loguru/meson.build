@@ -42,7 +42,7 @@ compile_opts += '-DLOGURU_USE_FMTLIB=@0@'.format(fmt_dep.found().to_int())
 
 api = '-DLOGURU_EXPORT=__attribute__((visibility("default")))'
 if host_machine.system() == 'windows'
-  api = '-DLOGURU_EXPORT=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
+  api = get_option('default_library') != 'static' ? '-DLOGURU_EXPORT=__declspec(dllexport)' : []
 endif
 
 emilk_loguru_lib = library(
@@ -51,6 +51,7 @@ emilk_loguru_lib = library(
   include_directories: '.',
   cpp_args: [compile_opts, api],
   dependencies: loguru_deps_internal,
+  gnu_symbol_visibility: 'hidden',
   soversion: host_machine.system() == 'windows' ? '' : meson.project_version().split('.')[0],
   version: meson.project_version(),
   install: true,
@@ -65,9 +66,9 @@ pkgc.generate(
   description: 'A lightweight and flexible C++ logging library',
 )
 
-api = '-DLOGURU_EXPORT=__attribute__((visibility("default")))'
-if host_machine.system() == 'windows'
-  api = '-DLOGURU_EXPORT=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
+api = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  api = '-DLOGURU_EXPORT=__declspec(dllimport)'
 endif
 
 emilk_loguru_dep = declare_dependency(
