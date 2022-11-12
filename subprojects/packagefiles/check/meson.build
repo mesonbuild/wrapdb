@@ -107,9 +107,15 @@ regex_dep = dependency('regex', required: false)
 if cc.has_header_symbol('time.h', 'localtime_r', args: '-D_POSIX_C_SOURCE')
   cdata.set10('HAVE_DECL_LOCALTIME_R', true)
 endif
-cdata.set10('HAVE_REGCOMP', cc.has_function('regcomp', dependencies: regex_dep))
-cdata.set10('HAVE_REGEXEC', cc.has_function('regexec', dependencies: regex_dep))
-cdata.set('HAVE_VASPRINTF', cc.has_header_symbol('stdio.h', 'vasprintf', args: '-D_GNU_SOURCE'))
+if cc.has_function('regcomp', dependencies: regex_dep)
+  cdata.set10('HAVE_REGCOMP', true)
+endif
+if cc.has_function('regexec', dependencies: regex_dep)
+  cdata.set10('HAVE_REGEXEC', true)
+endif
+if cc.has_header_symbol('stdio.h', 'vasprintf', args: '-D_GNU_SOURCE')
+  cdata.set('HAVE_VASPRINTF', true)
+endif
 
 # Some check-specific definitions
 if not cdata.has('HAVE_VSNPRINTF') and not cdata.has('HAVE_SNPRINTF')
