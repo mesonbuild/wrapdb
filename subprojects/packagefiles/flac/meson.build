@@ -1,4 +1,9 @@
-project('flac', 'c', version: '1.4.1', meson_version: '>=0.49.0')
+project(
+  'flac',
+  'c',
+  version: '1.4.2',
+  meson_version: '>=0.50.0',
+)
 
 cc = meson.get_compiler('c')
 
