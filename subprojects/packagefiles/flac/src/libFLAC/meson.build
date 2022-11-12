@@ -1,4 +1,4 @@
-if get_option('default_library') == 'shared'
+if get_option('default_library') != 'static'
   extra_args = ['-DFLAC_API_EXPORTS', '-DFLAC__USE_VISIBILITY_ATTR']
 else
   extra_args = ['-DFLAC__NO_DLL']
@@ -48,6 +48,7 @@ flac_lib = library(
 )
 
 flac_dep = declare_dependency(
+  compile_args: get_option('default_library') != 'static' ? [] : '-DFLAC__NO_DLL',
   include_directories: main_inc,
   link_with: flac_lib,
 )
