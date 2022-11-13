@@ -1,4 +1,3 @@
-option('static', type: 'boolean', value: true)
 option('tests', type: 'boolean', value: false)
 option(
   'qt6',
