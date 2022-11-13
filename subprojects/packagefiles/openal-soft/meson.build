@@ -33,15 +33,19 @@ endif
 add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
 add_project_arguments('-DNOMINMAX', language: 'cpp')
 
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  api = '__declspec(dllexport)'
-elif cpp.has_function_attribute('visibility:protected')
-  api = '__attribute__((visibility("protected")))'
-elif cpp.has_function_attribute('visibility:default')
-  api = '__attribute__((visibility("default")))'
+openal_args = []
+api = ''
+if get_option('default_library') != 'static'
+  if host_machine.system() == 'windows'
+    api = '__declspec(dllexport)'
+  elif cpp.has_function_attribute('visibility:protected')
+    api = '__attribute__((visibility("protected")))'
+  elif cpp.has_function_attribute('visibility:default')
+    api = '__attribute__((visibility("default")))'
+  endif
+  openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 endif
 
-openal_args = []
 openal_args += '-DAL_API=@0@'.format(api)
 openal_args += '-DALC_API=@0@'.format(api)
 
@@ -225,7 +229,6 @@ vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 
 configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
 
-openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 if cdata.get('HAVE_SSE')
   openal_args += '-mfpmath=sse'
   openal_args += '-msse'
@@ -292,14 +295,8 @@ openal_lib = library(
   install: true,
 )
 
-export = []
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  export += '-DAL_API=__declspec(dllimport)'
-  export += '-DALC_API=__declspec(dllimport)'
-endif
-
 openal_dep = declare_dependency(
-  compile_args: export,
+  compile_args: get_option('default_library') == 'static' ? '-DAL_LIBTYPE_STATIC' : [],
   include_directories: ['.', 'include', 'include/AL', 'common'],
   link_with: [common_lib, openal_lib],
 )
