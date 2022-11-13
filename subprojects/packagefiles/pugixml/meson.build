@@ -8,17 +8,14 @@ project(
 
 sources = files('src/pugixml.cpp')
 
-win = host_machine.system() == 'windows'
-if win
+if host_machine.system() == 'windows'
   win_mod = import('windows')
   sources += win_mod.compile_resources('scripts/pugixml_dll.rc')
 endif
 
-args = []
-if win
-  args += '-DPUGIXML_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
-else
-  args += '-DPUGIXML_API=__attribute__((visibility("default")))'
+args = '-DPUGIXML_API=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  args = get_option('default_library') != 'static' ? '-DPUGIXML_API=__declspec(dllexport)' : []
 endif
 
 foreach opt : ['wchar_mode', 'compact', 'no_xpath', 'no_stl', 'no_exceptions']
@@ -31,21 +28,20 @@ pugixml_lib = library(
   'pugixml',
   sources,
   cpp_args: args,
-  name_prefix: win ? '' : [],
+  name_prefix: host_machine.system() == 'windows' ? '' : [],
   version: meson.project_version(),
   gnu_symbol_visibility: 'hidden',
-  soversion: win ? '' : '1',
+  soversion: host_machine.system() == 'windows' ? '' : '1',
   install: true,
 )
 
-if win
-  export = get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""'
-else
-  export = '__attribute__((visibility("default")))'
+export = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  export += '-DPUGIXML_API=__declspec(dllimport)'
 endif
 
 pugixml_dep = declare_dependency(
-  compile_args: '-DPUGIXML_API=@0@'.format(export),
+  compile_args: export,
   link_with: pugixml_lib,
   include_directories: 'src',
 )
@@ -81,7 +77,7 @@ pconf.generate(
 #endif
 
 #Windows doesn't compile with C++17 until next version
-if get_option('tests') and not win
+if get_option('tests')
   subdir('tests')
   pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
   test('pugixml-check', pugixml_check, workdir: meson.current_source_dir())
