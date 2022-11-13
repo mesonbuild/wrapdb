@@ -58,12 +58,12 @@ headers = files(
   'include/qarchive_global.hpp',
 )
 
-include_dirs = include_directories('include', '.')
+maininc = include_directories('include')
 
 moc_files = qt.preprocess(
   moc_sources: src,
   moc_headers: headers,
-  include_directories: include_dirs,
+  include_directories: maininc,
   dependencies: qt_dep
 )
 
@@ -72,12 +72,13 @@ qarchive_lib = library(
   src,
   moc_files,
   cpp_args: '-DQARCHIVE_BUILD',
-  include_directories: include_dirs,
+  include_directories: maininc,
   dependencies: [libarchive_dep, qt_dep]
 )
 
+depinc = include_directories('.')
 qarchive_dep = declare_dependency(
-  include_directories: include_dirs,
+  include_directories: depinc,
   link_with: qarchive_lib
 )
 
@@ -104,7 +105,7 @@ if get_option('tests')
     'tests/QArchiveMemoryExtractorTests.hpp',
   )
 
-  test_include_dirs = include_directories('tests')
+  test_include_dirs = include_directories('include', 'tests')
 
   test_moc_files = qt.preprocess(
     moc_sources: test_src,
@@ -115,17 +116,18 @@ if get_option('tests')
 
   test_dep = dependency(
     'qt6',
-    modules: ['Test', 'Concurrent'],
+    modules: ['Test', 'Core', 'Concurrent'],
     required: get_option('qt6'),
   )
   if not test_dep.found()
-    test_dep = dependency('qt5', modules: ['Test', 'Concurrent'])
+    test_dep = dependency('qt5', modules: ['Test', 'Core', 'Concurrent'])
   endif
 
   test_exe = executable(
     'QArchiveTests',
     test_src, test_moc_files,
-    include_directories: include_directories('tests'),
+    include_directories: test_include_dirs,
+    cpp_args: '-DBUILD_TESTS',
     dependencies: [qarchive_dep, test_dep],
   )
 
