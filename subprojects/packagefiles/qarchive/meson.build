@@ -22,7 +22,7 @@ configure_file(
   format: 'cmake@',
   input: 'other/cmake/config.h.in',
   output: 'config.h',
-  configuration: configuration_data({'QARCHIVE_STATIC': get_option('static')})
+  configuration: configuration_data({'QARCHIVE_STATIC': get_option('default_library') == 'static'})
 )
 
 src = files(
@@ -71,6 +71,7 @@ qarchive_lib = library(
   'qarchive',
   src,
   moc_files,
+  cpp_args: '-DQARCHIVE_BUILD',
   include_directories: include_dirs,
   dependencies: [libarchive_dep, qt_dep]
 )
