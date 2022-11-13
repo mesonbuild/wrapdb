@@ -1,16 +1,18 @@
 project(
   'QArchive',
   'cpp',
-  version: '2.2.0',
+  version: '2.2.1',
   license: 'BSD-3-Clause',
-  default_options: ['cpp_std=c++11'],
+  default_options: ['cpp_std=c++17'],
   meson_version: '>=0.49.0'
 )
 
 libarchive_dep = dependency('libarchive')
 qt_dep = dependency('qt6', modules: ['Core'], required: get_option('qt6'))
-if qt_dep.found()
+if qt_dep.found() and meson.version().version_compare('>=0.57.0')
   qt = import('qt6')
+elif qt_dep.found() and get_option('qt6').enabled()
+  error('Qt6 support needs meson 0.57.0 or higher')
 else
   qt_dep = dependency('qt5', modules: ['Core'])
   qt = import('qt5')
