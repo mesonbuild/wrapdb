@@ -78,6 +78,7 @@ libxslt = library(
 pkg.generate(libxslt)
 
 libxslt_dep = declare_dependency(
+  compile_args: get_option('default_library') == 'static' ? '-DLIBXSLT_STATIC' : [],
   link_with: libxslt,
   include_directories: incdir,
   dependencies: libxml2_dep,
