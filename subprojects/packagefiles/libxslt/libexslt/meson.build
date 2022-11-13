@@ -46,6 +46,7 @@ libexslt = library(
 pkg.generate(libexslt)
 
 libexslt_dep = declare_dependency(
+  compile_args: get_option('default_library') == 'static' ? '-DLIBEXSLT_STATIC' : [],
   link_with: libexslt,
   include_directories: incdir,
   dependencies: libxslt_dep,
