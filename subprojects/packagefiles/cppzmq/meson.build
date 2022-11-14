@@ -1,5 +1,5 @@
 project('cppzmq', 'cpp',
-  version : '4.8.1',
+  version : '4.9.0',
   license : 'MIT',
   meson_version: '>=0.47.0',
 )
