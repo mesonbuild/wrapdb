@@ -1,7 +1,7 @@
 project('cjson', 'c',
         version: '1.7.15',
-        meson_version: '>=0.49.0',
-        license: ['MIT'])
+        meson_version: '>=0.50.0',
+        license: 'MIT')
 
 dllimport_args = []
 cc = meson.get_compiler('c')
