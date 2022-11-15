@@ -4,7 +4,7 @@ project(
   version: '2.2.1',
   license: 'BSD-3-Clause',
   default_options: ['cpp_std=c++17'],
-  meson_version: '>=0.49.0'
+  meson_version: '>=0.49.0',
 )
 
 libarchive_dep = dependency('libarchive')
@@ -22,40 +22,40 @@ configure_file(
   format: 'cmake@',
   input: 'other/cmake/config.h.in',
   output: 'config.h',
-  configuration: configuration_data({'QARCHIVE_STATIC': get_option('default_library') == 'static'})
+  configuration: configuration_data({'QARCHIVE_STATIC': get_option('default_library') == 'static'}),
 )
 
 src = files(
   'src/qarchive_enums.cc',
-  'src/qarchiveutils_p.cc',
-  'src/qarchivememoryfile.cc',
-  'src/qarchivememoryextractoroutput.cc',
-  'src/qarchiveioreader_p.cc',
-  'src/qarchiveextractor_p.cc',
-  'src/qarchiveextractor.cc',
-  'src/qarchivecompressor_p.cc',
   'src/qarchivecompressor.cc',
-  'src/qarchivediskextractor.cc',
-  'src/qarchivememoryextractor.cc',
+  'src/qarchivecompressor_p.cc',
   'src/qarchivediskcompressor.cc',
+  'src/qarchivediskextractor.cc',
+  'src/qarchiveextractor.cc',
+  'src/qarchiveextractor_p.cc',
+  'src/qarchiveioreader_p.cc',
   'src/qarchivememorycompressor.cc',
+  'src/qarchivememoryextractor.cc',
+  'src/qarchivememoryextractoroutput.cc',
+  'src/qarchivememoryfile.cc',
+  'src/qarchiveutils_p.cc',
 )
 
 headers = files(
   'include/qarchive_enums.hpp',
-  'include/qarchiveutils_p.hpp',
-  'include/qarchivememoryfile.hpp',
-  'include/qarchivememoryextractoroutput.hpp',
-  'include/qarchiveioreader_p.hpp',
-  'include/qarchiveextractor_p.hpp',
-  'include/qarchiveextractor.hpp',
-  'include/qarchivecompressor_p.hpp',
-  'include/qarchivecompressor.hpp',
-  'include/qarchivediskextractor.hpp',
-  'include/qarchivememoryextractor.hpp',
-  'include/qarchivediskcompressor.hpp',
-  'include/qarchivememorycompressor.hpp',
   'include/qarchive_global.hpp',
+  'include/qarchivecompressor.hpp',
+  'include/qarchivecompressor_p.hpp',
+  'include/qarchivediskcompressor.hpp',
+  'include/qarchivediskextractor.hpp',
+  'include/qarchiveextractor.hpp',
+  'include/qarchiveextractor_p.hpp',
+  'include/qarchiveioreader_p.hpp',
+  'include/qarchivememorycompressor.hpp',
+  'include/qarchivememoryextractor.hpp',
+  'include/qarchivememoryextractoroutput.hpp',
+  'include/qarchivememoryfile.hpp',
+  'include/qarchiveutils_p.hpp',
 )
 
 maininc = include_directories('include')
@@ -64,7 +64,7 @@ moc_files = qt.preprocess(
   moc_sources: src,
   moc_headers: headers,
   include_directories: maininc,
-  dependencies: qt_dep
+  dependencies: qt_dep,
 )
 
 qarchive_lib = library(
@@ -73,13 +73,13 @@ qarchive_lib = library(
   moc_files,
   cpp_args: '-DQARCHIVE_BUILD',
   include_directories: maininc,
-  dependencies: [libarchive_dep, qt_dep]
+  dependencies: [libarchive_dep, qt_dep],
 )
 
 depinc = include_directories('.')
 qarchive_dep = declare_dependency(
   include_directories: depinc,
-  link_with: qarchive_lib
+  link_with: qarchive_lib,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -88,21 +88,21 @@ endif
 
 if get_option('tests')
   test_src = files(
-    'tests/main.cc',
-    'tests/TestRunner.cc',
     'tests/QArchiveDiskCompressorTests.cc',
-    'tests/QArchiveMemoryCompressorTests.cc',
     'tests/QArchiveDiskExtractorTests.cc',
+    'tests/QArchiveMemoryCompressorTests.cc',
     'tests/QArchiveMemoryExtractorTests.cc',
+    'tests/TestRunner.cc',
+    'tests/main.cc',
   )
 
   test_headers = files(
-    'tests/TestRunner.hpp',
-    'tests/QArchiveTestCases.hpp',
     'tests/QArchiveDiskCompressorTests.hpp',
-    'tests/QArchiveMemoryCompressorTests.hpp',
     'tests/QArchiveDiskExtractorTests.hpp',
+    'tests/QArchiveMemoryCompressorTests.hpp',
     'tests/QArchiveMemoryExtractorTests.hpp',
+    'tests/QArchiveTestCases.hpp',
+    'tests/TestRunner.hpp',
   )
 
   test_include_dirs = include_directories('include', 'tests')
@@ -125,7 +125,8 @@ if get_option('tests')
 
   test_exe = executable(
     'QArchiveTests',
-    test_src, test_moc_files,
+    test_src,
+    test_moc_files,
     include_directories: test_include_dirs,
     cpp_args: '-DBUILD_TESTS',
     dependencies: [qarchive_dep, test_dep],
