@@ -13,16 +13,24 @@ libavutil_dep = dependency('libavutil')
 libjpeg_dep = dependency('libjpeg', required: get_option('jpeg'))
 libpng_dep = dependency('libpng', required: get_option('png'))
 
-ffmpegthumbnailer_deps = [libavcodec_dep, libavfilter_dep, libavformat_dep, libavutil_dep, libjpeg_dep, libpng_dep]
+ffmpegthumbnailer_deps = [libavcodec_dep, libavfilter_dep, libavformat_dep, libavutil_dep]
 
 cdata = configuration_data()
 cpp = meson.get_compiler('cpp')
 
-cdata.set('HAVE_PNG', libjpeg_dep.found())
-cdata.set('HAVE_JPEG', libpng_dep.found())
+vers = meson.project_version().split('.')
+cdata.set('PACKAGE', 'ffmpegthumbnailer')
+cdata.set('PACKAGE_VERSION_MAJOR', vers[0])
+cdata.set('PACKAGE_VERSION_MINOR', vers[1])
+cdata.set('PACKAGE_VERSION_PATCH', vers[2])
+#cdata.set('PACKAGE_VERSION', vers)
+cdata.set('HAVE_PNG', libpng_dep.found())
+cdata.set('HAVE_JPEG', libjpeg_dep.found())
 
 cfile = configure_file(
+  input: 'config.h.in',
   output: 'config.h',
+  format: 'cmake',
   configuration: cdata,
 )
 
