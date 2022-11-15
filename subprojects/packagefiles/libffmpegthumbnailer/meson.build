@@ -13,19 +13,24 @@ libavutil_dep = dependency('libavutil')
 libjpeg_dep = dependency('libjpeg', required: get_option('jpeg'))
 libpng_dep = dependency('libpng', required: get_option('png'))
 
-ffmpegthumbnailer_deps = [libavcodec_dep, libavfilter_dep, libavformat_dep, libavutil_dep]
+cpp = meson.get_compiler('cpp')
+if meson.version().version_compare('>= 0.62')
+  dl_dep = dependency('dl', required: get_option('gio'))
+else
+  dl_dep = cpp.find_library('dl', required: get_option('gio'))
+endif
+
+ffmpegthumbnailer_deps = [libavcodec_dep, libavfilter_dep, libavformat_dep, libavutil_dep, dl_dep]
 
 cdata = configuration_data()
-cpp = meson.get_compiler('cpp')
-
 vers = meson.project_version().split('.')
 cdata.set('PACKAGE', 'ffmpegthumbnailer')
 cdata.set('PACKAGE_VERSION_MAJOR', vers[0])
 cdata.set('PACKAGE_VERSION_MINOR', vers[1])
 cdata.set('PACKAGE_VERSION_PATCH', vers[2])
-#cdata.set('PACKAGE_VERSION', vers)
 cdata.set('HAVE_PNG', libpng_dep.found())
 cdata.set('HAVE_JPEG', libjpeg_dep.found())
+cdata.set('ENABLE_GIO', dl_dep.found())
 
 cfile = configure_file(
   input: 'config.h.in',
