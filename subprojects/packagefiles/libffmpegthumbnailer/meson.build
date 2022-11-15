@@ -87,3 +87,9 @@ libffmpegthumbnailer_dep = declare_dependency(
   include_directories: depinc,
   link_with: libffmpegthumbnailer,
 )
+
+#tests depend on catch2 and are currently broken upstream.
+catch_dep = dependency('catch2', required: false)
+if false
+  subdir('test')
+endif
