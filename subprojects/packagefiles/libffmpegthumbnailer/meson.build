@@ -39,7 +39,7 @@ cfile = configure_file(
   configuration: cdata,
 )
 
-libffmpegthumbnailer_incdir = include_directories('.', 'libffmpegthumbnailer')
+libffmpegthumbnailer_incdir = include_directories('libffmpegthumbnailer')
 
 compfiles = files(
   'libffmpegthumbnailer/filmstripfilter.cpp',
@@ -82,7 +82,8 @@ install_headers(
   subdir: 'libffmpegthumbnailer',
 )
 
+depinc = include_directories('.')
 libffmpegthumbnailer_dep = declare_dependency(
-  include_directories: libffmpegthumbnailer_incdir,
+  include_directories: depinc,
   link_with: libffmpegthumbnailer,
 )
