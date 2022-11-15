@@ -3,17 +3,17 @@ project(
   'cpp',
   license: 'LGPL-2.1-or-later OR MPL-1.1',
   version: '1.13',
-  meson_version: '>=0.47.0',
+  meson_version: '>=0.49.0',
   default_options: 'warning_level=0',
 )
 
 cpp = meson.get_compiler('cpp')
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'cpp')
-if get_option('default_library') != 'static'
-  add_project_arguments('-DMAKE_TAGLIB_LIB', language: 'cpp')
-else
-  add_project_arguments('-DTAGLIB_STATIC', language: 'cpp')
+cppargs = []
+cppargs += '-DHAVE_CONFIG_H'
+cppargs += '-DMAKE_TAGLIB_LIB'
+if get_option('default_library') == 'static'
+  cppargs += '-DTAGLIB_STATIC'
 endif
 
 cdata = configuration_data()
@@ -40,6 +40,7 @@ cdata.set('HAVE_VSPRINTF_S', cpp.has_function('vsprintf_s', prefix: '#include <c
 
 zlib_dep = dependency('zlib', required: get_option('zlib'))
 cdata.set('HAVE_ZLIB', zlib_dep.found())
+cdata.set('TESTS_DIR', meson.current_source_dir() / 'tests/')
 
 configure_file(
   input: 'config.h.cmake',
@@ -163,7 +164,7 @@ install_headers(
   subdir: 'taglib',
 )
 
-taglib_includes = [
+taglib_includes = include_directories(
   '.',
   '3rdparty',
   'taglib',
@@ -191,7 +192,7 @@ taglib_includes = [
   'taglib/trueaudio',
   'taglib/wavpack',
   'taglib/xm',
-]
+)
 
 taglib = library(
   'tag',
@@ -297,6 +298,8 @@ taglib = library(
   'taglib/wavpack/wavpackproperties.cpp',
   'taglib/xm/xmfile.cpp',
   'taglib/xm/xmproperties.cpp',
+  gnu_symbol_visibility: 'hidden',
+  cpp_args: cppargs,
   include_directories: taglib_includes,
   dependencies: [atomic_dep, zlib_dep],
   install: true,
@@ -310,7 +313,14 @@ pkg.generate(
   subdirs: 'taglib',
 )
 
+depinc = include_directories('.', 'taglib')
 taglib_dep = declare_dependency(
-  include_directories: taglib_includes,
+  compile_args: get_option('default_library') == 'static' ? '-DTAGLIB_STATIC' : [],
+  include_directories: depinc,
   link_with: taglib,
 )
+
+cppunit_dep = dependency('cppunit', required: false)
+if cppunit_dep.found()
+  subdir('tests')
+endif
