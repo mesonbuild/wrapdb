@@ -209,6 +209,7 @@ common_lib = library(
   link_with: stubdata_lib,
   dependencies: dl_dep,
   version: U_ICU_VERSION,
+  install: true,
 )
 
 icuuc_dep = declare_dependency(
