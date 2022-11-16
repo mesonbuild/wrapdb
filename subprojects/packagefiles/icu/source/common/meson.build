@@ -206,7 +206,7 @@ common_lib = library(
   include_directories: incdir,
   c_args: '-DU_COMMON_IMPLEMENTATION',
   cpp_args: '-DU_COMMON_IMPLEMENTATION',
-  link_whole: stubdata_lib,
+  link_with: stubdata_lib,
   dependencies: dl_dep,
   version: U_ICU_VERSION,
 )
