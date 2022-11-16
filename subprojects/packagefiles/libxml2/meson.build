@@ -1,4 +1,10 @@
-project('libxml2', 'c', version: '2.10.2', meson_version: '>=0.54.0', license: 'MIT')
+project(
+  'libxml2',
+  'c',
+  version: '2.10.3',
+  meson_version: '>=0.54.0',
+  license: 'MIT',
+)
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -82,13 +88,10 @@ else
   iconv_lib = dependency('', required: false)
 endif
 
+thread_dep = dependency('threads', required: false)
+
 lzma_dep = dependency('liblzma', required: false)
 cdata.set('HAVE_LIBLZMA', lzma_dep.found())
-
-thread_dep = dependency('threads', required: false)
-if (thread_dep.found())
-  c_args = ['-D_REENTRANT']
-endif
 
 zlib_dep = dependency('zlib', required: false)
 cdata.set('HAVE_LIBZ', zlib_dep.found())
@@ -101,13 +104,8 @@ cdata.set('HAVE_LIBHISTORY', history_lib.found())
 
 deps = [math_lib, iconv_lib, dl_lib, lzma_dep, thread_dep, zlib_dep, readline_lib, history_lib]
 
-libxml_static_args = []
 if target_machine.system() == 'windows'
   deps += cc.find_library('ws2_32')
-  if get_option('default_library') == 'static'
-    libxml_static_args = ['-DLIBXML_STATIC']
-    add_project_arguments(libxml_static_args, language: 'c')
-  endif
 endif
 
 configure_file(
@@ -131,18 +129,12 @@ withcdata.set('LIBXML_VERSION_STRING', '@0@'.format(version_number))
 withcdata.set('LIBXML_VERSION_EXTRA', '')
 
 need_trio = false
-pprefix = '#include <stdio.h>'
-if (
-  not cc.has_function('printf', prefix: pprefix) or not cc.has_function('sprintf', prefix: pprefix) or not cc.has_function(
-    'fprintf',
-    prefix: pprefix,
-  ) or not cc.has_function('snprintf', prefix: pprefix) or not cc.has_function('vfprintf', prefix: pprefix) or not cc.has_function(
-    'vsprintf',
-    prefix: pprefix,
-  ) or not cc.has_function('vsnprintf', prefix: pprefix) or not cc.has_function('sscanf', prefix: pprefix)
-)
-  need_trio = true
-endif
+foreach f : ['printf', 'sprintf', 'fprintf', 'snprintf', 'vfprintf', 'vsprintf', 'vsnprintf', 'sscanf']
+  if not cc.has_function(f, prefix: '#include <stdio.h>')
+    need_trio = true
+    break
+  endif
+endforeach
 withcdata.set10('WITH_TRIO', need_trio)
 
 withcdata.set10('WITH_THREADS', thread_dep.found())
@@ -195,68 +187,78 @@ withcdata.set10('WITH_LZMA', lzma_dep.found())
 
 subdir('include/libxml')
 
-trio_sources = ['triostr.c', 'trio.c', 'trionan.c']
-sources = [
-  'SAX.c',
-  'entities.c',
-  'encoding.c',
-  'error.c',
-  'parserInternals.c',
-  'parser.c',
-  'tree.c',
-  'hash.c',
-  'list.c',
-  'xmlIO.c',
-  'xmlmemory.c',
-  'uri.c',
-  'valid.c',
-  'xlink.c',
+sources = files(
   'HTMLparser.c',
   'HTMLtree.c',
-  'debugXML.c',
-  'xpath.c',
-  'xpointer.c',
-  'xinclude.c',
-  'nanohttp.c',
-  'nanoftp.c',
-  'catalog.c',
-  'globals.c',
-  'threads.c',
-  'c14n.c',
-  'xmlstring.c',
+  'SAX.c',
+  'SAX2.c',
   'buf.c',
+  'c14n.c',
+  'catalog.c',
+  'chvalid.c',
+  'debugXML.c',
+  'dict.c',
+  'encoding.c',
+  'entities.c',
+  'error.c',
+  'globals.c',
+  'hash.c',
+  'legacy.c',
+  'list.c',
+  'nanoftp.c',
+  'nanohttp.c',
+  'parser.c',
+  'parserInternals.c',
+  'pattern.c',
+  'relaxng.c',
+  'schematron.c',
+  'threads.c',
+  'tree.c',
+  'uri.c',
+  'valid.c',
+  'xinclude.c',
+  'xlink.c',
+  'xmlIO.c',
+  'xmlmemory.c',
+  'xmlmodule.c',
+  'xmlreader.c',
   'xmlregexp.c',
+  'xmlsave.c',
   'xmlschemas.c',
   'xmlschemastypes.c',
+  'xmlstring.c',
   'xmlunicode.c',
-  'xmlreader.c',
-  'relaxng.c',
-  'dict.c',
-  'SAX2.c',
   'xmlwriter.c',
-  'legacy.c',
-  'chvalid.c',
-  'pattern.c',
-  'xmlsave.c',
-  'xmlmodule.c',
-  'schematron.c',
+  'xpath.c',
+  'xpointer.c',
   'xzlib.c',
-]
+)
 
-if (need_trio)
-  sources += trio_sources
+if need_trio
+  sources += files('trio.c', 'trionan.c', 'triostr.c')
 endif
 
-incdir = include_directories('include')
+cargs = thread_dep.found() ? ['-D_REENTRANT'] : []
+cargs += get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : []
 
-xml2lib = library('xml2', sources, c_args: c_args, include_directories: incdir, dependencies: deps, install: true)
+incdir = include_directories('include')
+xml2lib = library(
+  'xml2',
+  sources,
+  c_args: cargs,
+  include_directories: incdir,
+  dependencies: deps,
+  install: true,
+)
+
 libxml2_dep = declare_dependency(
   link_with: xml2lib,
   include_directories: incdir,
   dependencies: deps,
   variables: {'modules': withcdata.get('WITH_MODULES').to_string()},
-  compile_args: libxml_static_args,
+  compile_args: get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : [],
 )
+
 pkg = import('pkgconfig')
 pkg.generate(
   xml2lib,
@@ -265,9 +267,8 @@ pkg.generate(
   filebase: 'libxml-2.0',
   subdirs: 'libxml2',
   variables: ['modules=@0@'.format(withcdata.get('WITH_MODULES'))],
-  extra_cflags: libxml_static_args,
+  extra_cflags: get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : [],
 )
-
 
 executable('xmllint', 'xmllint.c', dependencies: libxml2_dep, install: true)
 
