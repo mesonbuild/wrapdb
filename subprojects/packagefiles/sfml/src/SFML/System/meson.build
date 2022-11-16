@@ -17,7 +17,6 @@ if host_machine.system() == 'windows'
     'Win32/ClockImpl.cpp',
     'Win32/MutexImpl.cpp',
     'Win32/SleepImpl.cpp',
-    'Win32/SleepImpl.hpp',
     'Win32/ThreadImpl.cpp',
     'Win32/ThreadLocalImpl.cpp',
   )
@@ -34,7 +33,7 @@ endif
 system_lib = library(
   'sfml-system',
   system_sources,
-  cpp_args: get_option('default_library') == 'shared' ? ['-DSFML_SYSTEM_EXPORTS'] : ['-DSFML_STATIC'],
+  cpp_args: get_option('default_library') != 'static' ? '-DSFML_SYSTEM_EXPORTS' : '-DSFML_STATIC',
   include_directories: [pub_inc, priv_inc],
   dependencies: [thread_dep, winmm_dep],
 )

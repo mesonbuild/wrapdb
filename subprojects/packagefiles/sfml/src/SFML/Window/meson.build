@@ -72,18 +72,16 @@ elif host_machine.system() == 'darwin'
     'OSX/cg_sf_conversion.mm',
     'OSX/cpp_objc_conversion.mm',
   )
-  window_deps = [dependency('appleframeworks', modules: ['Foundation', 'AppKit', 'IOKit', 'Carbon'])]
+  window_deps = dependency('appleframeworks', modules: ['Foundation', 'AppKit', 'IOKit', 'Carbon'])
 else
   error('Not yet implemented.')
 endif
 
-symbol_args = get_option('default_library') == 'shared' ? ['-DSFML_WINDOW_EXPORTS'] : ['-DSFML_STATIC']
-
 window_lib = library(
   'sfml-window',
   window_sources,
-  cpp_args: symbol_args + ['-DUNICODE'],
-  link_with: [system_lib],
+  cpp_args: [get_option('default_library') != 'static' ? '-DSFML_WINDOW_EXPORTS' : '-DSFML_STATIC', '-DUNICODE'],
+  link_with: system_lib,
   include_directories: [pub_inc, priv_inc],
-  dependencies: [gl_dep, winmm_dep] + window_deps,
+  dependencies: [gl_dep, winmm_dep, window_deps],
 )

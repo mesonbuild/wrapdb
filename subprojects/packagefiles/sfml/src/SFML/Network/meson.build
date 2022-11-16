@@ -8,19 +8,14 @@ network_sources = files(
   'TcpListener.cpp',
   'TcpSocket.cpp',
   'UdpSocket.cpp',
+  '@0@/SocketImpl.cpp'.format(host_machine.system() == 'windows' ? 'Win32' : 'Unix'),
 )
-
-if host_machine.system() == 'windows'
-  network_sources += files('Win32/SocketImpl.cpp')
-else
-  network_sources += files('Unix/SocketImpl.cpp')
-endif
 
 network_lib = library(
   'sfml-network',
   network_sources,
-  cpp_args: get_option('default_library') == 'shared' ? ['-DSFML_NETWORK_EXPORTS'] : ['-DSFML_STATIC'],
+  cpp_args: get_option('default_library') != 'static' ? '-DSFML_NETWORK_EXPORTS' : '-DSFML_STATIC',
   include_directories: [pub_inc, priv_inc],
-  link_with: [system_lib],
-  dependencies: [w32_dep],
+  link_with: system_lib,
+  dependencies: w32_dep,
 )

@@ -21,8 +21,8 @@ endif
 openal_dep = dependency('openal')
 thread_dep = dependency('threads')
 gl_dep = dependency('gl')
-winmm_dep = cpp.find_library('winmm', required: false)
-w32_dep = cpp.find_library('ws2_32', required: false)
+winmm_dep = cpp.find_library('winmm', required: host_machine.system() == 'windows')
+w32_dep = cpp.find_library('ws2_32', required: host_machine.system() == 'windows')
 freetype_dep = dependency('freetype2')
 flac_dep = dependency('flac')
 ogg_dep = dependency('ogg')
@@ -38,8 +38,8 @@ subdir('src/SFML')
 
 sfml_dep = declare_dependency(
   include_directories: pub_inc,
-  link_with: [audio_lib, graphics_lib, network_lib, window_lib, system_lib] + (
-    host_machine.system() == 'windows' ? [main_lib] : []
-  ),
-  compile_args: get_option('default_library') == 'shared' ? [] : ['-DSFML_STATIC'],
+  link_with: [audio_lib, graphics_lib, network_lib, window_lib, system_lib, host_machine.system() == 'windows' ? main_lib : []],
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
 )
+
+subdir('examples')
