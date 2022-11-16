@@ -23,4 +23,5 @@ layoutex = library(
   cpp_args: '-DU_LAYOUTEX_IMPLEMENTATION',
   link_with: [common_lib],
   version: U_ICU_VERSION,
+  install: true,
 )
