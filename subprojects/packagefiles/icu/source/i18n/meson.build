@@ -251,8 +251,14 @@ sources = files(
   #  'filteredbrk.cpp',
 )
 
+if host_machine.system() == 'windows'
+  i18n_name = '@0@icuin@1@'.format(library_prefix, library_suffix)
+else
+  i18n_name = '@0@icui18n@1@'.format(library_prefix, library_suffix)
+endif
+
 i18n_lib = library(
-  'icui18n',
+  i18n_name,
   sources,
   include_directories: incdir,
   link_with: [common_lib],
