@@ -252,6 +252,13 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
+  sources += windows.compile_resources(
+    'i18n.rc',
+    include_directories: incdir
+  )
+endif
+
+if host_machine.system() == 'windows'
   i18n_name = '@0@icuin@1@'.format(library_prefix, library_suffix)
 else
   i18n_name = '@0@icui18n@1@'.format(library_prefix, library_suffix)

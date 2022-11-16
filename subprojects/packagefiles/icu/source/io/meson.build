@@ -13,6 +13,13 @@ sources = files(
   'ustream.cpp',
 )
 
+if host_machine.system() == 'windows'
+  sources += windows.compile_resources(
+    'io.rc',
+    include_directories: incdir
+  )
+endif
+
 io_lib = library(
   'icuio',
   sources,
