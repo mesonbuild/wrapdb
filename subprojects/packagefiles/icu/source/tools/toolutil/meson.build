@@ -34,7 +34,7 @@ if host_machine.system() != 'windows' and host_machine.system() != 'darwin'
 endif
 
 
-toolutil_lib = static_library(
+toolutil_lib = library(
   'toolutil',
   sources,
   include_directories: incdir,
