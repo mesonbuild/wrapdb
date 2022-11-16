@@ -27,6 +27,8 @@ else
   dl_dep = cpp.find_library('dl', required: false)
 endif
 
+windows = import('windows')
+
 # Compiler flags the users of this library must use.
 usage_args = []
 
