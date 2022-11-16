@@ -20,7 +20,6 @@
     "zstd",
     "ludocode-mpack",
     "m4",
-    "miniz",
     "tinyply"
   ],
   "broken_darwin": [
