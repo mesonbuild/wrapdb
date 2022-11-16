@@ -25,8 +25,8 @@ audio_sources = files(
 audio_lib = library(
   'sfml-audio',
   audio_sources,
-  cpp_args: get_option('default_library') == 'shared' ? ['-DSFML_AUDIO_EXPORTS'] : ['-DSFML_STATIC'],
-  link_with: [system_lib],
+  cpp_args: get_option('default_library') != 'static' ? '-DSFML_AUDIO_EXPORTS' : '-DSFML_STATIC',
+  link_with: system_lib,
   include_directories: [pub_inc, priv_inc],
   dependencies: [openal_dep, flac_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, ogg_dep],
 )
