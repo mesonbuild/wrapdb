@@ -7,6 +7,8 @@ project(
   default_options: 'cpp_std=c++17',
 )
 
+U_ICU_VERSION = meson.project_version()
+
 cpp = meson.get_compiler('cpp')
 
 if host_machine.system() == 'windows'

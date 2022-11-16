@@ -271,6 +271,7 @@ i18n_lib = library(
   link_with: [common_lib],
   c_args: '-DU_I18N_IMPLEMENTATION',
   cpp_args: '-DU_I18N_IMPLEMENTATION',
+  version: U_ICU_VERSION,
 )
 
 icui18n_dep = declare_dependency(

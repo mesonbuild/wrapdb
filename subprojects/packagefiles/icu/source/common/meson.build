@@ -208,6 +208,7 @@ common_lib = library(
   cpp_args: '-DU_COMMON_IMPLEMENTATION',
   link_whole: stubdata_lib,
   dependencies: dl_dep,
+  version: U_ICU_VERSION,
 )
 
 icuuc_dep = declare_dependency(

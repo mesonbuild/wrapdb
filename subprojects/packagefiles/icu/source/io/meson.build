@@ -27,6 +27,7 @@ io_lib = library(
   c_args: '-DU_IO_IMPLEMENTATION',
   cpp_args: '-DU_IO_IMPLEMENTATION',
   link_with: [i18n_lib, common_lib],
+  version: U_ICU_VERSION,
 )
 
 icuio_dep = declare_dependency(
