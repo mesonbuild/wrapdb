@@ -12,6 +12,8 @@ endif
 stubdata_lib = library(
   'stubdata',
   sources,
+  c_args: '-DSTUBDATA_BUILD',
+  cpp_args: '-DSTUBDATA_BUILD',
   include_directories: incdir,
   version: U_ICU_VERSION,
   install: true,
