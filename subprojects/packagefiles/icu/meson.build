@@ -34,6 +34,20 @@ if get_option('default_library') == 'static'
   add_project_arguments('-DU_STATIC_IMPLEMENTATION', language: 'c')
   add_project_arguments('-DU_STATIC_IMPLEMENTATION', language: 'cpp')
   usage_args = ['-DU_STATIC_IMPLEMENTATION']
+  if cpp.get_argument_syntax() == 'msvc'
+    library_prefix = ''
+    library_suffix = ''
+  else
+    library_prefix = 's'
+    if get_option('buildtype') == 'debug'
+      library_suffix = 'd'
+    else
+      library_suffix = ''
+    endif
+  endif
+else
+  library_prefix = ''
+  library_suffix = ''
 endif
 
 subdir('source')

@@ -6,8 +6,10 @@ sources = files(
   'plruns.cpp',
 )
 
+layoutex_name = '@0@lx@1@'.format(library_prefix, library_suffix)
+
 layoutex = library(
-  'layoutex',
+  layoutex_name,
   sources,
   include_directories: [incdir, include_directories('..')],
   c_args: '-DU_LAYOUTEX_IMPLEMENTATION',
