@@ -13,4 +13,5 @@ stubdata_lib = library(
   'stubdata',
   sources,
   include_directories: incdir,
+  version: U_ICU_VERSION,
 )
