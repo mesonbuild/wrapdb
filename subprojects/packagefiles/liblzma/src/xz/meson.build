@@ -25,5 +25,5 @@ xz = executable(
   sources,
   c_args: ['-DHAVE_CONFIG_H'],
   include_directories: [confinc, xzinc],
-  link_with: liblzma,
+  dependencies: lzma_dep,
 )
