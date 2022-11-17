@@ -327,3 +327,10 @@ headers = files(
 install_headers(headers,
   subdir: 'unicode'
 )
+
+pkg.generate(
+  common_lib,
+  name: 'icu-uc',
+  description: '@0@: Common and Data libraries'.format(PACKAGE_ICU_DESCRIPTION),
+  url: PACKAGE_ICU_URL
+)

@@ -36,3 +36,9 @@ if meson.version().version_compare('>=0.54.0')
   meson.override_dependency('icu-lx', layoutex_lib)
 endif
 
+pkg.generate(
+  layoutex_lib,
+  name: 'icu-lx',
+  description: '@0@: Paragraph Layout library @1@'.format(PACKAGE_ICU_DESCRIPTION, ''),
+  url: PACKAGE_ICU_URL
+)
