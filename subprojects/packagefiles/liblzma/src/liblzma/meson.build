@@ -32,6 +32,7 @@ thread_sources = files(
   'common/hardware_cputhreads.c',
   'common/outqueue.c',
   'common/stream_encoder_mt.c',
+  '../common/tuklib_cpucores.c',
 )
 
 main_dec_sources = files(
@@ -115,6 +116,10 @@ if get_option('filter_delta')
   endif
 endif
 
+api = ['-DHAVE_CONFIG_H', '-DTUKLIB_SYMBOL_PREFIX=lzma_']
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  api += '-DDLL_EXPORT'
+endif
 
 lzmainc = include_directories('api', 'common', 'check', 'lz', 'rangecoder', 'lzma', 'delta', 'simple', '../common')
 
@@ -128,11 +133,22 @@ liblzma = library(
   lzma1_sources,
   lz_sources,
   delta_sources,
+  thread_sources,
+  gnu_symbol_visibility: 'hidden',
   include_directories: [confinc, lzmainc],
-  c_args: ['-DHAVE_CONFIG_H', '-DTUKLIB_SYMBOL_PREFIX=lzma_'],
+  dependencies: [nls_dep, thread_dep],
+  c_args: api,
+  link_args: largs,
 )
 
+api = []
+if host_machine.system() == 'windows' and get_option('default_library') == 'static'
+  api += '-DLZMA_API_STATIC'
+endif
+
 lzma_dep = declare_dependency(
+  compile_args: api,
   link_with: liblzma,
   include_directories: include_directories('api'),
+  dependencies: [nls_dep, thread_dep],
 )

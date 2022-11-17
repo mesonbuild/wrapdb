@@ -22,17 +22,20 @@
 /* Define to 1 if you have the <byteswap.h> header file. */
 #mesondefine HAVE_BYTESWAP_H
 
+/* Define to 1 if Capsicum is available. */
+#mesondefine HAVE_CAPSICUM
+
 /* Define to 1 if the system has the type `CC_SHA256_CTX'. */
 #mesondefine HAVE_CC_SHA256_CTX
 
 /* Define to 1 if you have the `CC_SHA256_Init' function. */
 #mesondefine HAVE_CC_SHA256_INIT
 
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
-   CoreFoundation framework. */
-#mesondefine HAVE_CFLOCALECOPYCURRENT
+/* Define to 1 if you have the Mac OS X function
+   CFLocaleCopyPreferredLanguages in the CoreFoundation framework. */
+#mesondefine HAVE_CFLOCALECOPYPREFERREDLANGUAGES
 
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 #mesondefine HAVE_CFPREFERENCESCOPYAPPVALUE
 
@@ -63,6 +66,9 @@
    to 0 if you don't. */
 #mesondefine HAVE_DECL_PROGRAM_INVOCATION_NAME
 
+/* Define to 1 if any of HAVE_DECODER_foo have been defined. */
+#mesondefine HAVE_DECODERS
+
 /* Define to 1 if arm decoder is enabled. */
 #mesondefine HAVE_DECODER_ARM
 
@@ -90,11 +96,11 @@
 /* Define to 1 if x86 decoder is enabled. */
 #mesondefine HAVE_DECODER_X86
 
-/* Define to 1 if any of HAVE_DECODER_foo have been defined. */
-#mesondefine HAVE_DECODERS
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if any of HAVE_ENCODER_foo have been defined. */
+#mesondefine HAVE_ENCODERS
 
 /* Define to 1 if arm encoder is enabled. */
 #mesondefine HAVE_ENCODER_ARM
@@ -122,9 +128,6 @@
 
 /* Define to 1 if x86 encoder is enabled. */
 #mesondefine HAVE_ENCODER_X86
-
-/* Define to 1 if any of HAVE_ENCODER_foo have been defined. */
-#mesondefine HAVE_ENCODERS
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #mesondefine HAVE_FCNTL_H
@@ -162,9 +165,6 @@
 /* Define to 1 if mbrtowc and mbstate_t are properly declared. */
 #mesondefine HAVE_MBRTOWC
 
-/* Define to 1 if you have the <memory.h> header file. */
-#mesondefine HAVE_MEMORY_H
-
 /* Define to 1 to enable bt2 match finder. */
 #mesondefine HAVE_MF_BT2
 
@@ -180,14 +180,11 @@
 /* Define to 1 to enable hc4 match finder. */
 #mesondefine HAVE_MF_HC4
 
-/* Define to 1 if you have the <minix/sha2.h> header file. */
-#mesondefine HAVE_MINIX_SHA2_H
+/* Define to 1 if you have the <minix/config.h> header file. */
+#mesondefine HAVE_MINIX_CONFIG_H
 
 /* Define to 1 if getopt.h declares extern int optreset. */
 #mesondefine HAVE_OPTRESET
-
-/* Define to 1 if you have the `pipe2' function. */
-#mesondefine HAVE_PIPE2
 
 /* Define to 1 if you have the `posix_fadvise' function. */
 #mesondefine HAVE_POSIX_FADVISE
@@ -225,6 +222,9 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #mesondefine HAVE_STDINT_H
 
+/* Define to 1 if you have the <stdio.h> header file. */
+#mesondefine HAVE_STDIO_H
+
 /* Define to 1 if you have the <stdlib.h> header file. */
 #mesondefine HAVE_STDLIB_H
 
@@ -249,8 +249,15 @@
 /* Define to 1 if `st_uatime' is a member of `struct stat'. */
 #mesondefine HAVE_STRUCT_STAT_ST_UATIME
 
+/* Define to 1 to if GNU/Linux-specific details are wanted for symbol
+   versioning. This must be used together with liblzma_linux.map. */
+#mesondefine HAVE_SYMBOL_VERSIONS_LINUX
+
 /* Define to 1 if you have the <sys/byteorder.h> header file. */
 #mesondefine HAVE_SYS_BYTEORDER_H
+
+/* Define to 1 if you have the <sys/capsicum.h> header file. */
+#mesondefine HAVE_SYS_CAPSICUM_H
 
 /* Define to 1 if you have the <sys/endian.h> header file. */
 #mesondefine HAVE_SYS_ENDIAN_H
@@ -283,14 +290,28 @@
    declarations. */
 #mesondefine HAVE_VISIBILITY
 
+/* Define to 1 if you have the <wchar.h> header file. */
+#mesondefine HAVE_WCHAR_H
+
 /* Define to 1 if you have the `wcwidth' function. */
 #mesondefine HAVE_WCWIDTH
 
 /* Define to 1 if the system has the type `_Bool'. */
 #mesondefine HAVE__BOOL
 
+/* Define to 1 if you have the `_futime' function. */
+#mesondefine HAVE__FUTIME
+
 /* Define to 1 if _mm_movemask_epi8 is available. */
 #mesondefine HAVE__MM_MOVEMASK_EPI8
+
+/* Define to 1 if the GNU C extension __builtin_assume_aligned is supported.
+   */
+#mesondefine HAVE___BUILTIN_ASSUME_ALIGNED
+
+/* Define to 1 if the GNU C extensions __builtin_bswap16/32/64 are supported.
+   */
+#mesondefine HAVE___BUILTIN_BSWAPXX
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #mesondefine LT_OBJDIR
@@ -337,7 +358,9 @@
 /* The size of `size_t', as computed by sizeof. */
 #mesondefine SIZEOF_SIZE_T
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #mesondefine STDC_HEADERS
 
 /* Define to 1 if the number of available CPU cores can be detected with
@@ -347,6 +370,10 @@
 /* Define to 1 if the number of available CPU cores can be detected with
    pstat_getdynamic(). */
 #mesondefine TUKLIB_CPUCORES_PSTAT_GETDYNAMIC
+
+/* Define to 1 if the number of available CPU cores can be detected with
+   sched_getaffinity() */
+#mesondefine TUKLIB_CPUCORES_SCHED_GETAFFINITY
 
 /* Define to 1 if the number of available CPU cores can be detected with
    sysconf(_SC_NPROCESSORS_ONLN) or sysconf(_SC_NPROC_ONLN). */
@@ -388,25 +415,96 @@
    sysinfo(). */
 #mesondefine TUKLIB_PHYSMEM_SYSINFO
 
+/* Define to 1 to use unsafe type punning, e.g. char *x = ...; *(int *)x =
+   123; which violates strict aliasing rules and thus is undefined behavior
+   and might result in broken code. */
+#mesondefine TUKLIB_USE_UNSAFE_TYPE_PUNNING
+
 /* Enable extensions on AIX 3, Interix.  */
 #ifndef _ALL_SOURCE
-# undef _ALL_SOURCE
+#mesondefine _ALL_SOURCE
 #endif
-/* Enable GNU extensions on systems that have them.  */
-#ifndef _GNU_SOURCE
-# undef _GNU_SOURCE
-#endif
-/* Enable threading extensions on Solaris.  */
-#ifndef _POSIX_PTHREAD_SEMANTICS
-# undef _POSIX_PTHREAD_SEMANTICS
-#endif
-/* Enable extensions on HP NonStop.  */
-#ifndef _TANDEM_SOURCE
-# undef _TANDEM_SOURCE
+/* Enable general extensions on macOS.  */
+#ifndef _DARWIN_C_SOURCE
+#mesondefine _DARWIN_C_SOURCE
 #endif
 /* Enable general extensions on Solaris.  */
 #ifndef __EXTENSIONS__
-# undef __EXTENSIONS__
+#mesondefine __EXTENSIONS__
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+#mesondefine _GNU_SOURCE
+#endif
+/* Enable X/Open compliant socket functions that do not require linking
+   with -lxnet on HP-UX 11.11.  */
+#ifndef _HPUX_ALT_XOPEN_SOCKET_API
+#mesondefine _HPUX_ALT_XOPEN_SOCKET_API
+#endif
+/* Identify the host operating system as Minix.
+   This macro does not affect the system headers' behavior.
+   A future release of Autoconf may stop defining this macro.  */
+#ifndef _MINIX
+#mesondefine _MINIX
+#endif
+/* Enable general extensions on NetBSD.
+   Enable NetBSD compatibility extensions on Minix.  */
+#ifndef _NETBSD_SOURCE
+#mesondefine _NETBSD_SOURCE
+#endif
+/* Enable OpenBSD compatibility extensions on NetBSD.
+   Oddly enough, this does nothing on OpenBSD.  */
+#ifndef _OPENBSD_SOURCE
+#mesondefine _OPENBSD_SOURCE
+#endif
+/* Define to 1 if needed for POSIX-compatible behavior.  */
+#ifndef _POSIX_SOURCE
+#mesondefine _POSIX_SOURCE
+#endif
+/* Define to 2 if needed for POSIX-compatible behavior.  */
+#ifndef _POSIX_1_SOURCE
+#mesondefine _POSIX_1_SOURCE
+#endif
+/* Enable POSIX-compatible threading on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+#mesondefine _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-5:2014.  */
+#ifndef __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+#mesondefine __STDC_WANT_IEC_60559_ATTRIBS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-1:2014.  */
+#ifndef __STDC_WANT_IEC_60559_BFP_EXT__
+#mesondefine __STDC_WANT_IEC_60559_BFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-2:2015.  */
+#ifndef __STDC_WANT_IEC_60559_DFP_EXT__
+#mesondefine __STDC_WANT_IEC_60559_DFP_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-4:2015.  */
+#ifndef __STDC_WANT_IEC_60559_FUNCS_EXT__
+#mesondefine __STDC_WANT_IEC_60559_FUNCS_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TS 18661-3:2015.  */
+#ifndef __STDC_WANT_IEC_60559_TYPES_EXT__
+#mesondefine __STDC_WANT_IEC_60559_TYPES_EXT__
+#endif
+/* Enable extensions specified by ISO/IEC TR 24731-2:2010.  */
+#ifndef __STDC_WANT_LIB_EXT2__
+#mesondefine __STDC_WANT_LIB_EXT2__
+#endif
+/* Enable extensions specified by ISO/IEC 24747:2009.  */
+#ifndef __STDC_WANT_MATH_SPEC_FUNCS__
+#mesondefine __STDC_WANT_MATH_SPEC_FUNCS__
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+#mesondefine _TANDEM_SOURCE
+#endif
+/* Enable X/Open extensions.  Define to 500 only if necessary
+   to make mbstate_t available.  */
+#ifndef _XOPEN_SOURCE
+#mesondefine _XOPEN_SOURCE
 #endif
 
 
@@ -425,26 +523,11 @@
 # endif
 #endif
 
-/* Enable large inode numbers on Mac OS X 10.5.  */
-#ifndef _DARWIN_USE_64_BIT_INODE
-# define _DARWIN_USE_64_BIT_INODE 1
-#endif
-
 /* Number of bits in a file offset, on hosts where this is settable. */
 #mesondefine _FILE_OFFSET_BITS
 
 /* Define for large files, on AIX-style hosts. */
 #mesondefine _LARGE_FILES
-
-/* Define to 1 if on MINIX. */
-#mesondefine _MINIX
-
-/* Define to 2 if the system does not provide POSIX.1 features except with
-   this defined. */
-#mesondefine _POSIX_1_SOURCE
-
-/* Define to 1 if you need to in order for `stat' and other things to work. */
-#mesondefine _POSIX_SOURCE
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
