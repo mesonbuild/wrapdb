@@ -45,5 +45,5 @@ toolutil_lib = library(
 
 toolutil_dep = declare_dependency(
   link_with: toolutil_lib,
-  include_directories: '.',
+  include_directories: include_directories('.'),
 )
