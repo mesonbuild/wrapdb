@@ -2,8 +2,8 @@ project(
   'sqlite3',
   'c',
   license: 'pd',
-  version: '3.39.4',
-  meson_version: '>=0.50.0',
+  version: '3.40.0',
+  meson_version: '>=0.48.0',
 )
 
 cc = meson.get_compiler('c')
@@ -14,6 +14,7 @@ else
 endif
 libm = cc.find_library('m', required: false)
 
+sources = files('shell.c', 'sqlite3.c')
 if host_machine.system() == 'windows'
   sqlite_args = get_option('default_library') != 'static' ? '-DSQLITE_API=__declspec(dllexport)' : []
 else
@@ -22,7 +23,7 @@ endif
 
 libsqlite3 = library(
   'sqlite3',
-  'sqlite3.c',
+  sources,
   c_args: sqlite_args,
   dependencies: [libdl, libm, dependency('threads')],
   install: true,
@@ -36,9 +37,10 @@ if host_machine.system() == 'windows' and get_option('default_library') != 'stat
   sqlite_args += '-DSQLITE_API=__declspec(dllimport)'
 endif
 
+depinc = include_directories('.')
 sqlite3_dep = declare_dependency(
   compile_args: sqlite_args,
-  include_directories: '.',
+  include_directories: depinc,
   link_with: libsqlite3,
 )
 
