@@ -15,7 +15,7 @@ endif
 
 layoutex_name = '@0@lx@1@'.format(library_prefix, library_suffix)
 
-layoutex = library(
+layoutex_lib = library(
   layoutex_name,
   sources,
   include_directories: [incdir, include_directories('..')],
@@ -25,3 +25,14 @@ layoutex = library(
   version: U_ICU_VERSION,
   install: true,
 )
+
+layoutex_dep = declare_dependency(
+  link_with: common_lib,
+  compile_args: usage_args,
+  include_directories: [incdir, include_directories('..')],
+)
+
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('icu-lx', layoutex_lib)
+endif
+
