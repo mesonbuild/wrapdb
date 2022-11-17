@@ -9,7 +9,14 @@ if host_machine.system() == 'windows' and get_option('default_library') == 'stat
 endif
 
 if cpp.get_argument_syntax() == 'msvc'
-  icudata_asm_output = '@0@.c'.format(U_ICUDATA_NAME)
+  ## Uncomment if you want to use MASM (>= 0.64), but be aware
+  ## it is Very Slow to build.
+  # if add_languages('masm', required: false)
+  #   icudata_asm_output = '@0@.masm'.format(U_ICUDATA_NAME)
+  #   icudata_command += ['-a', 'masm']
+  # else
+    icudata_asm_output = '@0@.c'.format(U_ICUDATA_NAME)
+  # endif
 elif host_machine.system() == 'cygwin'
   icudata_asm_output = '@0@.S'.format(U_ICUDATA_NAME)
   icudata_command += ['-a', 'gcc-cygwin']
