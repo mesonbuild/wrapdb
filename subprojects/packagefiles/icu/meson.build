@@ -8,6 +8,8 @@ project(
 )
 
 U_ICU_VERSION = meson.project_version()
+PACKAGE_ICU_DESCRIPTION = 'International Components for Unicode'
+PACKAGE_ICU_URL = 'http://icu-project.org'
 
 cpp = meson.get_compiler('cpp')
 
@@ -30,6 +32,7 @@ else
 endif
 
 windows = import('windows')
+pkg = import('pkgconfig')
 
 # Compiler flags the users of this library must use.
 usage_args = []

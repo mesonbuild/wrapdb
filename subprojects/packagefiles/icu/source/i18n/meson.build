@@ -380,3 +380,10 @@ headers = files(
 install_headers(headers,
   subdir: 'unicode'
 )
+
+pkg.generate(
+  i18n_lib,
+  name: 'icu-i18n',
+  description: '@0@: Internationalization library'.format(PACKAGE_ICU_DESCRIPTION),
+  url: PACKAGE_ICU_URL
+)

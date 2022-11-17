@@ -39,3 +39,10 @@ icuio_dep = declare_dependency(
 if meson.version().version_compare('>=0.54.0')
   meson.override_dependency('icu-io', icuio_dep)
 endif
+
+pkg.generate(
+  io_lib,
+  name: 'icu-io',
+  description: '@0@: Stream and I/O Library'.format(PACKAGE_ICU_DESCRIPTION),
+  url: PACKAGE_ICU_URL
+)
