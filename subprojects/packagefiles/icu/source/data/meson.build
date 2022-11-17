@@ -42,6 +42,17 @@ icudata_asm = custom_target(
 
 sources = [icudata_asm]
 
+python_exe = import('python').find_installation('python3')
+
+icudata_exports = custom_target(
+  'icudata_exports',
+  command: [
+    python_exe, '@INPUT@', '@0@_dat'.format(U_ICUDATA_NAME), '@OUTDIR@/module.def'
+  ],
+  input: 'export_module.py',
+  output: 'module.def'
+)
+
 if host_machine.system() == 'windows'
   sources += windows.compile_resources(
     'misc/icudata.rc',
@@ -54,6 +65,7 @@ icudata = library(
     sources,
     include_directories: incdir,
     version: U_ICU_VERSION,
+    vs_module_defs: icudata_exports,
     install: true,
 )
 
