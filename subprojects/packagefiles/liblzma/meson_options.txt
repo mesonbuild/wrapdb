@@ -26,3 +26,5 @@ option('filter_simple', type : 'boolean', value : true)
 option('filter_lzma1', type : 'boolean', value : true)
 option('filter_lz', type : 'boolean', value : true)
 option('filter_delta', type : 'boolean', value : true)
+
+option('nls', type: 'feature')
