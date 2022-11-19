@@ -28,11 +28,10 @@ sources = files(
 toolutil_c_args = ['-DU_TOOLUTIL_IMPLEMENTATION']
 toolutil_cpp_args = ['-DU_TOOLUTIL_IMPLEMENTATION']
 
-if host_machine.system() != 'windows' and host_machine.system() != 'darwin'
-  toolutil_c_args += ['-DU_ELF']
-  toolutil_cpp_args += ['-DU_ELF']
+if have_elf_h
+  toolutil_c_args += ['-DU_HAVE_ELF_H']
+  toolutil_cpp_args += ['-DU_HAVE_ELF_H']
 endif
-
 
 toolutil_lib = library(
   'toolutil',
