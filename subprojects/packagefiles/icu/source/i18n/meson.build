@@ -275,8 +275,29 @@ i18n_lib = library(
   install: true,
 )
 
+if meson.can_run_host_binaries()
+  i18n_native_lib = i18n_lib
+else
+  i18n_native_lib = library(
+    '@0@-native'.format(i18n_name),
+    sources,
+    include_directories: incdir,
+    link_with: [common_native_lib],
+    c_args: '-DU_I18N_IMPLEMENTATION',
+    cpp_args: '-DU_I18N_IMPLEMENTATION',
+    version: U_ICU_VERSION,
+    native: true,
+  )
+endif
+
 icui18n_dep = declare_dependency(
   link_with: [i18n_lib, common_lib],
+  compile_args: usage_args,
+  include_directories: incdir,
+)
+
+icui18n_native_dep = declare_dependency(
+  link_with: [i18n_native_lib, common_native_lib],
   compile_args: usage_args,
   include_directories: incdir,
 )

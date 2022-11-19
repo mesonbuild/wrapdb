@@ -12,6 +12,8 @@ PACKAGE_ICU_DESCRIPTION = 'International Components for Unicode'
 PACKAGE_ICU_URL = 'http://icu-project.org'
 
 cpp = meson.get_compiler('cpp')
+cpp_native = meson.get_compiler('cpp', native: true)
+
 have_elf_h = cpp.has_header('elf.h')
 
 if host_machine.system() == 'windows'
@@ -28,8 +30,10 @@ endif
 
 if meson.version().version_compare('>= 0.62')
   dl_dep = dependency('dl', required: false)
+  dl_native_dep = dependency('dl', required: false, native: true)
 else
   dl_dep = cpp.find_library('dl', required: false)
+  dl_native_dep = cpp_native.find_library('dl', required: false, native: true)
 endif
 
 windows = import('windows')

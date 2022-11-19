@@ -42,7 +42,26 @@ toolutil_lib = library(
   link_with: [i18n_lib, common_lib],
 )
 
+if meson.can_run_host_binaries()
+  toolutil_native_lib = toolutil_lib
+else
+  toolutil_native_lib = library(
+    'toolutil-native',
+    sources,
+    include_directories: incdir,
+    c_args: toolutil_c_args,
+    cpp_args: toolutil_cpp_args,
+    link_with: [i18n_native_lib, common_native_lib],
+    native: true,
+  )
+endif
+
 toolutil_dep = declare_dependency(
   link_with: toolutil_lib,
+  include_directories: include_directories('.'),
+)
+
+toolutil_native_dep = declare_dependency(
+  link_with: toolutil_native_lib,
   include_directories: include_directories('.'),
 )
