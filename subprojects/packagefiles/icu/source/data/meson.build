@@ -1,7 +1,7 @@
 U_ICUDATA_NAME = 'icudt@0@'.format(U_ICU_VERSION.split('.')[0])
 
 icudata_command = [
-  genccode_exe, '-d', '@OUTDIR@', '-e', U_ICUDATA_NAME, '-f', U_ICUDATA_NAME, '@CURRENT_SOURCE_DIR@/in/@0@l.dat'.format(U_ICUDATA_NAME)
+  genccode_native_exe, '-d', '@OUTDIR@', '-e', U_ICUDATA_NAME, '-f', U_ICUDATA_NAME, '@CURRENT_SOURCE_DIR@/in/@0@l.dat'.format(U_ICUDATA_NAME)
 ]
 
 if host_machine.system() == 'windows' and get_option('default_library') == 'static'
