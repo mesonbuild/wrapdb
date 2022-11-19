@@ -33,6 +33,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'jbig.def',
         'jbig85.def'
     ],
+    'icu': [
+        'export_module.py'
+    ],
     'lame': [
         'lame.h',
     ],
