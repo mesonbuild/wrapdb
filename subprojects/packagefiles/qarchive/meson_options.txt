@@ -1,7 +1,0 @@
-option('tests', type: 'boolean', value: true)
-option(
-  'qt6',
-  type: 'feature',
-  value: 'auto',
-  description: 'enabled: do not fall back on Qt 5, disabled: always use Qt 5',
-)
