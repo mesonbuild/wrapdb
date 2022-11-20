@@ -959,6 +959,7 @@
       "libffmpegthumbnailer"
     ],
     "versions": [
+      "2.2.2-2",
       "2.2.2-1"
     ]
   },
