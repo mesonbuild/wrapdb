@@ -1,27 +1,32 @@
-project('minizip-ng', 'c',
-  version: '3.0.6',
+project(
+  'minizip-ng',
+  'c',
+  version: '3.0.7',
+  license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
+  meson_version: '>=0.49.0',
 )
 
 if host_machine.system() == 'windows' and get_option('buildtype') != 'static'
   add_project_arguments('-DMZ_EXPORTS', language: 'c')
 endif
 
+margs = []
 cc = meson.get_compiler('c')
 if cc.has_header('stdint.h')
-  add_project_arguments('-DHAVE_STDINT_H', language: 'c')
+  margs += '-DHAVE_STDINT_H'
 endif
 
 if cc.has_header('inttypes.h')
-  add_project_arguments('-DHAVE_INTTYPES_H', language: 'c')
+  margs += '-DHAVE_INTTYPES_H'
 endif
 
 if cc.has_function('getrandom')
-  add_project_arguments('-DHAVE_GETRANDOM', language: 'c')
+  margs += '-DHAVE_GETRANDOM'
 endif
 
 if not cc.has_function('fseeko')
-  add_project_arguments('-DNO_FSEEKO', language: 'c')
+  margs += '-DNO_FSEEKO'
 endif
 
 sources = files(
@@ -44,20 +49,20 @@ endif
 compat = get_option('compat')
 if compat
   sources += files('mz_compat.c')
-  add_project_arguments('-DHAVE_COMPAT', language: 'c')
+  margs += '-DHAVE_COMPAT'
 endif
 
 bsd_dep = dependency('libbsd', required: get_option('bsd'))
 if bsd_dep.found()
-  add_project_arguments('-DHAVE_LIBBSD', language: 'c')
+  margs += '-DHAVE_LIBBSD'
 endif
 
 if cc.has_function('arc4random_buf', dependencies: bsd_dep)
-  add_project_arguments('-DHAVE_ARC4RANDOM_BUF', language: 'c')
+  margs += '-DHAVE_ARC4RANDOM_BUF'
 endif
 
 if cc.has_function('arc4random', dependencies: bsd_dep)
-  add_project_arguments('-DHAVE_ARC4RANDOM', language: 'c')
+  margs += '-DHAVE_ARC4RANDOM'
 endif
 
 crypt_dep = dependency('openssl', required: get_option('wzaes'))
@@ -69,7 +74,7 @@ elif host_machine.system() == 'windows'
     sources += files('mz_crypt_win32.c')
   endif
 elif host_machine.system() == 'darwin'
-  crypt_dep = dependency('appleframeworks', modules : [ 'CoreFoundation', 'Security' ], required: get_option('wzaes'))
+  crypt_dep = dependency('appleframeworks', modules: ['CoreFoundation', 'Security'], required: get_option('wzaes'))
   if crypt_dep.found()
     sources += files('mz_crypt_apple.c')
   endif
@@ -77,69 +82,85 @@ endif
 
 if crypt_dep.found()
   sources += files('mz_strm_wzaes.c')
-  add_project_arguments('-DHAVE_WZAES', language: 'c')
-  add_project_arguments('-DMZ_ZIP_SIGNING', language: 'c')
+  margs += '-DHAVE_WZAES'
+  margs += '-DMZ_ZIP_SIGNING'
 else
-  add_project_arguments('-DMZ_ZIP_NO_ENCRYPTION', language: 'c')
-  add_project_arguments('-DMZ_ZIP_NO_CRYPTO', language: 'c')
+  margs += '-DMZ_ZIP_NO_ENCRYPTION'
+  margs += '-DMZ_ZIP_NO_CRYPTO'
 endif
 
-iconv_dep = dependency('iconv', required: get_option('iconv'))
+if meson.version().version_compare('>= 0.60')
+  iconv_dep = dependency('iconv', required: get_option('iconv'))
+else
+  iconv_dep = dependency('', required: false)
+endif
 if iconv_dep.found()
-  add_project_arguments('-DHAVE_ICONV', language: 'c')
+  margs += '-DHAVE_ICONV'
 endif
 
 bzip2_dep = dependency('bzip2', required: get_option('bzip2'))
 if bzip2_dep.found()
   sources += files('mz_strm_bzip.c')
-  add_project_arguments('-DHAVE_BZIP2', language: 'c')
+  margs += '-DHAVE_BZIP2'
 endif
 
 lzma_dep = dependency('liblzma', required: get_option('lzma'))
 if lzma_dep.found()
   sources += files('mz_strm_lzma.c')
-  add_project_arguments('-DHAVE_LZMA', language: 'c')
+  margs += '-DHAVE_LZMA'
 endif
 
 zlib_dep = dependency('zlib-ng', required: get_option('zlib'))
 if not zlib_dep.found()
   zlib_dep = dependency('zlib', required: get_option('zlib'))
   if zlib_dep.found()
-    add_project_arguments('-DZLIB_COMPAT', language: 'c')
+    margs += '-DZLIB_COMPAT'
   endif
 endif
 if zlib_dep.found()
   sources += files('mz_strm_zlib.c')
-  add_project_arguments('-DHAVE_ZLIB', language: 'c')
+  margs += '-DHAVE_ZLIB'
 endif
 
 zstd_dep = dependency('libzstd', required: get_option('zstd'))
 if zstd_dep.found()
   sources += files('mz_strm_zstd.c')
-  add_project_arguments('-DHAVE_ZSTD', language: 'c')
+  margs += '-DHAVE_ZSTD'
 endif
 
 if not zlib_dep.found() and not zstd_dep.found() and not bzip2_dep.found() and not lzma_dep.found()
-  add_project_arguments('-DMZ_ZIP_NO_DECOMPRESSION', language: 'c')
-  add_project_arguments('-DMZ_ZIP_NO_COMPRESSION', language: 'c')
+  margs += '-DMZ_ZIP_NO_DECOMPRESSION'
+  margs += '-DMZ_ZIP_NO_COMPRESSION'
 endif
 
-minizip_ng = library(compat ? 'minizip' : 'minizip-ng',
+minizip_ng = library(
+  compat ? 'minizip' : 'minizip-ng',
   sources,
+  c_args: margs,
   version: meson.project_version(),
   soversion: host_machine.system() == 'windows' ? '' : '3',
   vs_module_defs: 'mz.def',
-  dependencies: [ bsd_dep, crypt_dep, iconv_dep, bzip2_dep, lzma_dep, zlib_dep, zstd_dep, ],
+  dependencies: [
+    bsd_dep,
+    crypt_dep,
+    iconv_dep,
+    bzip2_dep,
+    lzma_dep,
+    zlib_dep,
+    zstd_dep,
+  ],
   install: true,
 )
 
+depinc = include_directories('.')
 minizip_ng_dep = declare_dependency(
-  include_directories: '.',
+  include_directories: depinc,
   link_with: minizip_ng,
 )
 
 pconf = import('pkgconfig')
-pconf.generate(minizip_ng,
+pconf.generate(
+  minizip_ng,
   description: 'Minizip zip file manipulation library',
 )
 
@@ -185,3 +206,9 @@ endif
 install_headers(
   headers,
 )
+
+gtest_dep = dependency('gtest', required: get_option('tests'))
+if gtest_dep.found()
+  testdir = meson.current_source_dir()
+  subdir('test')
+endif
