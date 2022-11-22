@@ -23,8 +23,10 @@ deps += dependency('libcurl')
 expat_dep = dependency('expat', required: get_option('expat'))
 deps += expat_dep
 
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+if get_option('default_library') != 'static'
   add_project_arguments('-DDLL_EXPORT', language: 'cpp')
+else
+  add_project_arguments('-DUPNP_STATIC_LIB', language: 'cpp')
 endif
 
 add_project_arguments('-DSMALLUT_NO_REGEX', language: 'cpp')
@@ -139,6 +141,7 @@ install_headers(
 )
 
 libnpupnp_dep = declare_dependency(
+  compile_args: get_option('default_library') == 'static' ? '-DUPNP_STATIC_LIB' : [],
   include_directories: libnpupnp_incdir,
   link_with: libnpupnp,
 )

@@ -33,6 +33,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'jbig.def',
         'jbig85.def'
     ],
+    'icu': [
+        'export_module.py'
+    ],
     'lame': [
         'lame.h',
     ],
@@ -337,7 +340,7 @@ class TestReleases(unittest.TestCase):
                         print('cannot verify in wrapdb due to missing dependency')
                         return
             raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
-        subprocess.check_call(['meson', 'compile', '-C', builddir])
+        subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)
         try:
             subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'])
         except subprocess.CalledProcessError:

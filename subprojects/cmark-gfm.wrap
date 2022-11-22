@@ -1,0 +1,9 @@
+[wrap-file]
+directory = cmark-gfm-0.29.0.gfm.6
+source_url = https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.6.tar.gz
+source_filename = cmark-gfm-0.29.0.gfm.6.tar.gz
+source_hash = b17d86164c0822b5db3818780b44cb130ff30e9c6ec6a64f199b6d142684dba0
+patch_directory = cmark-gfm
+
+[provide]
+libcmark-gfm = cmark_gfm_dep

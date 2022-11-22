@@ -12,6 +12,6 @@ executable(
   'utils.c',
   win32_utf8,
   dependencies: [flac_dep, m_dep],
-  link_with: [flac_lib, grabbag, libgetopt, utf8lib],
+  link_with: [grabbag, libgetopt, utf8lib],
   install: true,
 )

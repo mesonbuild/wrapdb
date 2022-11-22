@@ -1,6 +1,4 @@
 
-sdl2main_is_dummy = false
-
 if platform_is_haiku
     subdir('haiku')
 elif platform_is_nacl

@@ -1,6 +1,10 @@
-project('imgui-sfml', 'cpp',
-        version: '2.5',
-        license: 'MIT')
+project(
+  'imgui-sfml',
+  'cpp',
+  version: '2.5',
+  license: 'MIT',
+  meson_version: '>=0.50.0',
+)
 
 imgui_dep = dependency('imgui')
 sfml_dep = dependency('sfml')
@@ -14,9 +18,20 @@ opengl_dep = dependency('gl')
 # This is suboptimal, hopefully this can be fixed once we have
 # more usage experience.
 
-is_lib = library('imgui-sfml', 'imgui-SFML.cpp',
-    dependencies: [sfml_dep, imgui_dep, opengl_dep])
+api = []
+if get_option('default_library') != 'static'
+  api += '-DIMGUI_SFML_SHARED_LIB'
+endif
 
-imgui_sfml_dep = declare_dependency(include_directories: '.',
-                                    dependencies: imgui_dep,
-                                    link_with: is_lib)
+is_lib = library(
+  'imgui-sfml',
+  'imgui-SFML.cpp',
+  cpp_args: api,
+  dependencies: [sfml_dep, imgui_dep, opengl_dep],
+)
+
+imgui_sfml_dep = declare_dependency(
+  include_directories: '.',
+  compile_args: api,
+  dependencies: imgui_dep, link_with: is_lib,
+)

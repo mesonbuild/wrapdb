@@ -1,9 +1,10 @@
-project('pugixml', 'cpp', default_options : 'cpp_std=c++14', version: '1.12.1', meson_version: '>=0.46.0')
-
-cxx = meson.get_compiler('cpp')
-
-version = meson.project_version().split('.')
-soversion = '.'.join([ version[0], version[1] ])
+project(
+  'pugixml',
+  'cpp',
+  default_options: 'cpp_std=c++14',
+  version: '1.13',
+  meson_version: '>=0.50.0',
+)
 
 sources = files('src/pugixml.cpp')
 
@@ -12,34 +13,46 @@ if host_machine.system() == 'windows'
   sources += win_mod.compile_resources('scripts/pugixml_dll.rc')
 endif
 
-args = []
-if cxx.get_id() == 'msvc'
-  if get_option('default_library') == 'shared'
-    args +='-DPUGIXML_API=__declspec(dllexport)'
-  elif get_option('default_library') == 'both'
-    error('cannot build both shared and static on MSVC due to declspec')
-  endif
+args = '-DPUGIXML_API=__attribute__((visibility("default")))'
+if host_machine.system() == 'windows'
+  args = get_option('default_library') != 'static' ? '-DPUGIXML_API=__declspec(dllexport)' : []
 endif
 
-foreach opt: ['wchar_mode', 'compact', 'no_xpath', 'no_stl', 'no_exceptions']
+foreach opt : ['wchar_mode', 'compact', 'no_xpath', 'no_stl', 'no_exceptions']
   if get_option(opt)
     args += '-DPUGIXML_' + opt.to_upper()
   endif
 endforeach
 
-pugixml_lib = library('pugixml', sources,
+pugixml_lib = library(
+  'pugixml',
+  sources,
   cpp_args: args,
-  version: soversion,
+  name_prefix: host_machine.system() == 'windows' ? '' : [],
+  version: meson.project_version(),
+  gnu_symbol_visibility: 'hidden',
+  soversion: host_machine.system() == 'windows' ? '' : '1',
   install: true,
 )
-install_headers('src/pugiconfig.hpp', 'src/pugixml.hpp')
+
+export = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  export += '-DPUGIXML_API=__declspec(dllimport)'
+endif
 
 pugixml_dep = declare_dependency(
+  compile_args: export,
   link_with: pugixml_lib,
-  include_directories: include_directories('src')
+  include_directories: 'src',
 )
 
-import('pkgconfig').generate(
+install_headers(
+  'src/pugiconfig.hpp',
+  'src/pugixml.hpp',
+)
+
+pconf = import('pkgconfig')
+pconf.generate(
   pugixml_lib,
   description: 'Light-weight, simple and fast XML parser for C++ with XPath support.',
   url: 'https://pugixml.org/',
@@ -64,7 +77,7 @@ import('pkgconfig').generate(
 #endif
 
 #Windows doesn't compile with C++17 until next version
-if get_option('tests') and host_machine.system() != 'windows'
+if get_option('tests')
   subdir('tests')
   pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
   test('pugixml-check', pugixml_check, workdir: meson.current_source_dir())

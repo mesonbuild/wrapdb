@@ -2,7 +2,7 @@ project(
   'openal-soft',
   'cpp',
   version: '1.22.2',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.50.0',
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
@@ -33,19 +33,21 @@ endif
 add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
 add_project_arguments('-DNOMINMAX', language: 'cpp')
 
-if host_machine.system() == 'windows'
-  api = '__declspec(dllexport)'
-elif cpp.has_function_attribute('visibility:protected')
-  api = '__attribute__((visibility("protected")))'
-elif cpp.has_function_attribute('visibility:default')
-  api = '__attribute__((visibility("default")))'
+openal_args = []
+api = ''
+if get_option('default_library') != 'static'
+  if host_machine.system() == 'windows'
+    api = '__declspec(dllexport)'
+  elif cpp.has_function_attribute('visibility:protected')
+    api = '__attribute__((visibility("protected")))'
+  elif cpp.has_function_attribute('visibility:default')
+    api = '__attribute__((visibility("default")))'
+  endif
+  openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 endif
 
-openal_args = []
-if get_option('buildtype') != 'static'
-  openal_args += '-DAL_API=@0@'.format(api)
-  openal_args += '-DALC_API=@0@'.format(api)
-endif
+openal_args += '-DAL_API=@0@'.format(api)
+openal_args += '-DALC_API=@0@'.format(api)
 
 common_sources = files(
   'common/alcomplex.cpp',
@@ -227,7 +229,6 @@ vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 
 configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
 
-openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 if cdata.get('HAVE_SSE')
   openal_args += '-mfpmath=sse'
   openal_args += '-msse'
@@ -294,21 +295,8 @@ openal_lib = library(
   install: true,
 )
 
-if host_machine.system() == 'windows'
-  api = '__declspec(dllimport)'
-else
-  api = '__attribute__((visibility("default")))'
-endif
-
-export = []
-if get_option('buildtype') != 'static'
-  export += '-DAL_API=@0@'.format(api)
-  export += '-DALC_API=@0@'.format(api)
-endif
-
 openal_dep = declare_dependency(
-  #  compile_args: openal_args,
-  compile_args: export,
+  compile_args: get_option('default_library') == 'static' ? '-DAL_LIBTYPE_STATIC' : [],
   include_directories: ['.', 'include', 'include/AL', 'common'],
   link_with: [common_lib, openal_lib],
 )

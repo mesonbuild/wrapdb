@@ -6,6 +6,10 @@ option('iconv', type: 'feature',
   description: 'Build with iconv support',
 )
 
+option('tests', type: 'feature',
+  description: 'Build tests. Requires GTest.',
+)
+
 option('compat', type : 'boolean',
   description : 'Build with compatibility support for traditional minizip',
   value: false,

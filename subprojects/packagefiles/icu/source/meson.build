@@ -1,6 +1,12 @@
 incdir = include_directories('common', 'i18n')
 toolinc = include_directories('tools/toolutil')
 
+if host_machine.system() == 'windows'
+  icudata_name = '@0@icudt@1@'.format(library_prefix, library_suffix)
+else
+  icudata_name = '@0@icudata@1@'.format(library_prefix, library_suffix)
+endif
+
 subdir('stubdata')
 subdir('common')
 subdir('i18n')
@@ -9,5 +15,7 @@ subdir('io')
 #subdir('layoutex')
 
 subdir('tools')
+
+subdir('data')
 
 subdir('test')

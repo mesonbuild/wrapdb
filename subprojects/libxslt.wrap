@@ -1,6 +1,7 @@
 [wrap-file]
 directory = libxslt-1.1.37
 source_url = https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.37.tar.xz
+source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/libxslt/1.1/libxslt-1.1.37.tar.xz
 source_filename = libxslt-1.1.37.tar.xz
 source_hash = 3a4b27dc8027ccd6146725950336f1ec520928f320f144eb5fa7990ae6123ab4
 patch_directory = libxslt

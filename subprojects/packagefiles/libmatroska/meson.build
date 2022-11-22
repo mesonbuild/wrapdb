@@ -7,7 +7,7 @@ project(
 )
 
 if host_machine.system() == 'windows'
-  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '""')
+  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '')
 else
   dllapi = '-DMATROSKA_DLL_API=__attribute__ ((visibility("default")))'
 endif
@@ -84,10 +84,9 @@ libmatroska = library(
   install: true,
 )
 
-if host_machine.system() == 'windows'
-  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '""')
-else
-  dllapi = '-DMATROSKA_DLL_API=__attribute__ ((visibility("default")))'
+dllapi = '-DMATROSKA_DLL_API='
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  dllapi = '-DMATROSKA_DLL_API=__declspec(dllimport)'
 endif
 
 libmatroska_dep = declare_dependency(

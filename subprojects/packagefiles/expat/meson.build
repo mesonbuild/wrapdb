@@ -23,7 +23,7 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.4.9',
+  version: '2.5.0',
   meson_version: '>= 0.49.0',
 )
 
@@ -74,7 +74,6 @@ else
   config.set('BYTEORDER', 4321)
 endif
 
-
 if not cc.has_header_symbol('sys/types.h', 'off_t')
   config.set('off_t', 'long')
 endif
@@ -97,19 +96,15 @@ expat_static_args = []
 
 add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language: 'c')
 add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language: 'c')
-if cc.has_argument('-fno-strict-aliasing')
-  add_project_arguments('-fno-strict-aliasing', language: 'c')
-endif
+add_project_arguments(cc.get_supported_arguments('-fno-strict-aliasing'), language: 'c')
 if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language: 'c')
 endif
 
 if host_machine.system() == 'windows'
   add_project_arguments('-DXMLCALL=WINAPIV', language: 'c')
-  if get_option('default_library') != 'static'
-    add_project_arguments('-DXMLIMPORT=__declspec(dllexport)', language: 'c')
-  else
-    add_project_arguments('-DXMLIMPORT=__declspec(dllimport)', language: 'c')
+  add_project_arguments('-DXMLIMPORT=__declspec(dllimport)', language: 'c')
+  if get_option('default_library') == 'static'
     add_project_arguments('-DXML_STATIC', language: 'c')
     expat_static_args += '-DXML_STATIC'
   endif
@@ -139,7 +134,7 @@ libexpat = library(
   'lib/xmltok.c',
   include_directories: incdir,
   dependencies: dep_libbsd,
-  version: '1.8.9',
+  version: '1.8.10',
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
   gnu_symbol_visibility: 'hidden',

@@ -8,7 +8,6 @@
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
     "arduinocore-avr",
-    "protobuf-c",
     "zstd"
   ],
   "broken_windows": [
@@ -16,13 +15,11 @@
     "google-woff2",
     "libgpiod",
     "mocklibc",
-    "protobuf-c",
     "termbox",
     "unit-system",
     "zstd",
     "ludocode-mpack",
     "m4",
-    "miniz",
     "tinyply"
   ],
   "broken_darwin": [
@@ -31,7 +28,6 @@
     "graphite2",
     "libgpiod",
     "mocklibc",
-    "protobuf-c",
     "rtaudio",
     "tinyxml2",
     "unit-system",
@@ -169,6 +165,18 @@
       "darwin": false,
       "windows": false
     },
+    "_comment": "- Upstream has no idea how to use feature options",
+    "build_options": [
+      "libdrm:amdgpu=enabled",
+      "libdrm:etnaviv=enabled",
+      "libdrm:exynos=enabled",
+      "libdrm:freedreno=enabled",
+      "libdrm:intel=enabled",
+      "libdrm:nouveau=enabled",
+      "libdrm:omap=enabled",
+      "libdrm:radeon=enabled",
+      "libdrm:tegra=enabled"
+    ],
     "debian_packages": [
       "libpciaccess-dev"
     ]
@@ -384,10 +392,10 @@
     ],
     "brew_packages": [
         "libarchive",
-        "qt5"
+        "qt6"
     ],
     "build_options": [
-      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig:/usr/local/opt/qt@5/lib/pkgconfig"
+      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig"
     ]
   },
   "quazip": {

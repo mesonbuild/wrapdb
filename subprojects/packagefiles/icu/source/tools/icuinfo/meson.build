@@ -13,4 +13,5 @@ executable(
   include_directories: [toolinc],
   link_with: [toolutil_lib],
   dependencies: [icui18n_dep],
+  install: true,
 )

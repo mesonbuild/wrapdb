@@ -7,6 +7,6 @@ grabbag = static_library(
   'replaygain.c',
   'seektable.c',
   'snprintf.c',
-  include_directories: main_inc,
-  link_with: [flac_lib, replaygain_analysis],
+  dependencies: flac_dep,
+  link_with: replaygain_analysis,
 )
