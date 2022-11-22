@@ -47,6 +47,7 @@ if platform_is_unixlike_or_apple
 
     c_sources += files(
         'linux/SDL_evdev_capabilities.c',
+        'linux/SDL_sandbox.c',
         'linux/SDL_threadprio.c',
     )
 endif
