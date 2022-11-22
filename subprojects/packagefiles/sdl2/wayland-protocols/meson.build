@@ -3,6 +3,7 @@ protocols = [
     'idle-inhibit-unstable-v1',
     'keyboard-shortcuts-inhibit-unstable-v1',
     'pointer-constraints-unstable-v1',
+    'primary-selection-unstable-v1',
     'relative-pointer-unstable-v1',
     'tablet-unstable-v2',
     'text-input-unstable-v3',

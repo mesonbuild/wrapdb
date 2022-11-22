@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-    version : '2.24.2',
+    version : '2.26.0',
     license : 'zlib',
     meson_version : '>=0.48.0',
     default_options : ['c_std=none'],
@@ -497,6 +497,8 @@ check_headers = [
     'sys/types.h',
     'wchar.h',
 
+    'linux/input.h',
+
     'usbhid.h',
     'libusbhid.h',
     'usb.h',
@@ -726,6 +728,10 @@ cdata.set10('HAVE_INPUT_EVENTS',
         name : 'input events test'
     )
 )
+
+if cdata.get('HAVE_INPUT_EVENTS', 0) == 1
+    cdata.set('SDL_INPUT_LINUXEV', 1)
+endif
 
 if platform_is_linux
     cdata.set10('HAVE_INPUT_KD',
