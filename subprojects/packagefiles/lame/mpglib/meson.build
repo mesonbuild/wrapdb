@@ -1,4 +1,4 @@
-mpglib_sources = [
+mpglib_sources = files(
   'common.c',
   'dct64_i386.c',
   'decode_i386.c',
@@ -7,13 +7,17 @@ mpglib_sources = [
   'layer2.c',
   'layer3.c',
   'tabinit.c',
-]
+)
 
-mpglib = static_library('mpgdecoder',
+mpglib = static_library(
+  'mpgdecoder',
   mpglib_sources,
-  include_directories : [confinc, lameinc],
-  c_args : common_args,
-  install : false)
+  include_directories: [confinc, lameinc],
+  c_args: common_args,
+  install: false,
+)
+
 mpglib_dep = declare_dependency(
-  link_with : mpglib,
-  include_directories: include_directories('.'))
+  link_with: mpglib,
+  include_directories: include_directories('.'),
+)
