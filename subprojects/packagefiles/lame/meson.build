@@ -27,8 +27,8 @@ check_headers = [
   'string.h',
 ]
 
-if cpu_family == 'x86_64' or cpu_family == 'x86'
-  check_headers += ['xmmintrin.h']
+if cc.check_header('xmmintrin.h')
+  cdata.set('HAVE_XMMINTRIN_H', 1)
 endif
 
 if build_tools
@@ -76,18 +76,18 @@ if build_decoder
   cdata.set('DECODE_ON_THE_FLY', 1)
 endif
 
-check_functions = [
-# check token HAVE_ICONV
-# check token HAVE_NASM
-  ['HAVE_MEMCPY', 'memcpy', '#include<string.h>'],
-  ['HAVE_STRCHR', 'strchr', '#include<string.h>'],
-]
+check_functions = {
+  # check token HAVE_ICONV
+  # check token HAVE_NASM
+  'memcpy': 'string.h',
+  'strchr': 'string.h',
+}
 
 if build_tools
-  check_functions += [
-    ['HAVE_SOCKET', 'socket', '#include<sys/socket.h>'],
-# check token HAVE_TERMCAP
-  ]
+  check_functions += {
+    'socket': 'sys/socket.h',
+    # check token HAVE_TERMCAP
+  }
 endif
 
 # HACK
@@ -102,20 +102,20 @@ if cc.has_header('stdint.h')
   cdata.set('HAVE_INT64_T', true)
 endif
 
-foreach f : check_functions
-  if cc.has_function(f.get(1), prefix : f.get(2))
-    cdata.set(f.get(0), 1)
+foreach f, h : check_functions
+  if cc.has_function(f, prefix: '#include <@0@>'.format(h))
+    cdata.set('HAVE_'.format(f.underscorify().to_upper()), 1)
   endif
 endforeach
 
 # These functions are used unconditionally
-need_functions = [
-  ['HAVE_STRTOL', 'strtol', '#include<stdlib.h>'],
-]
+need_functions = {
+  'strtol': 'stdlib.h',
+}
 
-foreach f : need_functions
-  if not cc.has_function(f.get(1), prefix : f.get(2))
-    error('Need @0@() from @1@'.format(f.get(1), f.get(2)))
+foreach f, h : need_functions
+  if not cc.has_function(f, prefix: '#include <@0@>'.format(h))
+    error('Need @0@() from @1@'.format(f, h))
   endif
 endforeach
 
