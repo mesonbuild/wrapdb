@@ -73,6 +73,7 @@ endif
 # Enable the decoder
 if build_decoder
   cdata.set('HAVE_MPGLIB', 1)
+  cdata.set('DECODE_ON_THE_FLY', 1)
 endif
 
 check_functions = [
