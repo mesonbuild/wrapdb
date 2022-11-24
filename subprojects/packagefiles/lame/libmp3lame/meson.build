@@ -43,6 +43,7 @@ lamelib = library('mp3lame',
   version : '0.0.0',
   include_directories : [lameinc, confinc],
   c_args : common_args,
+  gnu_symbol_visibility: 'hidden',
   dependencies : lame_deps,
   install : true)
 
