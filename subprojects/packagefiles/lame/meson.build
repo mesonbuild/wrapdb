@@ -80,7 +80,6 @@ if build_decoder
 endif
 
 check_functions = {
-  # check token HAVE_ICONV
   # check token HAVE_NASM
   'memcpy': 'string.h',
   'strchr': 'string.h',
@@ -121,6 +120,16 @@ foreach f, h : need_functions
     error('Need @0@() from @1@'.format(f, h))
   endif
 endforeach
+
+if meson.version().version_compare('>= 0.60')
+  iconv_dep = dependency('iconv', required: get_option('iconv'))
+else
+  iconv_dep = dependency('', required: false)
+endif
+
+if iconv_dep.found()
+  cdata.set('HAVE_ICONV', 1)
+endif
 
 cdata.set('SIZEOF_DOUBLE', cc.sizeof('double'))
 cdata.set('SIZEOF_FLOAT', cc.sizeof('float'))
