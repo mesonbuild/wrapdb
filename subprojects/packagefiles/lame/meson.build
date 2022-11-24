@@ -161,7 +161,7 @@ configure_file(
 )
 
 common_args = ['-DHAVE_CONFIG_H']
-lameinc = include_directories('include', 'libmp3lame')
+lameinc = include_directories('include-workaround-meson', 'include-workaround-meson/lame', 'libmp3lame')
 confinc = include_directories('.')
 
 m_dep = cc.find_library('m', required: false)
