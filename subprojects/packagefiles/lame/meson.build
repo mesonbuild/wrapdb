@@ -157,6 +157,8 @@ confinc = include_directories('.')
 
 m_dep = cc.find_library('m', required : false)
 
+windows = import('windows')
+
 if build_decoder
   subdir('mpglib')
 endif
