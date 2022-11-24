@@ -1,4 +1,4 @@
-option('decoder', type : 'boolean', value : false,
-       description : 'Build the decoder')
+option('decoder', type : 'boolean', value : true,
+       description : 'Build the mpg123 decoder')
 option('tools', type : 'boolean', value : false,
        description : 'Build command-line tools')
