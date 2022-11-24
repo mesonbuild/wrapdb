@@ -133,15 +133,9 @@ cdata.set('SIZEOF_UNSIGNED_SHORT', cc.sizeof('unsigned short'))
 cdata.set('ieee754_float32_t', 'float')
 cdata.set('ieee754_float64_t', 'double')
 
-have_visibility_hidden = cc.has_argument('-fvisibility=hidden')
-if have_visibility_hidden
-  add_project_arguments('-fvisibility=hidden', language: 'c')
-endif
-
-if cc.get_id() == 'msvc' and get_option('default_library') != 'static'
+if cc.get_argument_syntax() == 'msvc' and get_option('default_library') != 'static'
   export_define = '__declspec(dllexport) extern'
 elif cc.has_argument('-fvisibility=hidden')
-  add_project_arguments('-fvisibility=hidden', language: 'c')
   export_define = 'extern __attribute__ ((visibility ("default")))'
 else
   export_define = 'extern'
