@@ -1,4 +1,6 @@
 option('decoder', type : 'boolean', value : true,
        description : 'Build the mpg123 decoder')
+option('iconv', type : 'feature',
+       description : 'Build tools with iconv support')
 option('tools', type : 'boolean', value : false,
        description : 'Build command-line tools')
