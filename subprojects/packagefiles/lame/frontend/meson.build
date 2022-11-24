@@ -8,7 +8,7 @@ common_sources = files(
   'timestatus.c',
 )
 
-tools_deps = [lame_dep]
+tools_deps = [lame_dep, nls_dep]
 if host_machine.system() == 'windows'
   tools_deps += [cc.find_library('ws2_32')]
 endif
