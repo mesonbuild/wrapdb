@@ -21,6 +21,13 @@ lame_sources = [
   'version.c',
 ]
 
+if host_machine.system() == 'windows'
+  lame_sources += windows.compile_resources(
+    'lame.rc',
+    include_directories: [lameinc, confinc]
+  )
+endif
+
 vector_sources = []
 if cdata.has('HAVE_XMMINTRIN_H')
   vector_sources += ['vector/xmm_quantize_sub.c']
