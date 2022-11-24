@@ -1,6 +1,7 @@
 project(
   'sdl2 mixer',
   'c',
+  version : '2.6.2'
 )
 
 cc = meson.get_compiler('c')
