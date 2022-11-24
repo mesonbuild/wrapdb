@@ -99,7 +99,7 @@ if cc.check_header('immintrin.h')
   cdata.set('HAVE_IMMINTRIN_H', 1)
 endif
 
-if cdata.get('HAVE_IMMINTRIN_H') == 1 and cc.has_header_symbol('immintrin.h', '_mm_movemask_epi8')
+if cdata.has('HAVE_IMMINTRIN_H') and cc.has_header_symbol('immintrin.h', '_mm_movemask_epi8')
   cdata.set('HAVE__MM_MOVEMASK_EPI8', 1)
 endif
 
