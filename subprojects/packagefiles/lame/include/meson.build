@@ -1,5 +1,3 @@
-headers = [
-  'lame.h',
-]
+headers = files('lame.h')
 
-install_headers(headers, subdir : 'lame/')
+install_headers(headers, subdir: 'lame/')

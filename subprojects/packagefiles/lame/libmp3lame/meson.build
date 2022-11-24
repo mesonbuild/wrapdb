@@ -1,4 +1,5 @@
-lame_sources = [
+lame_sources = files(
+  'VbrTag.c',
   'bitstream.c',
   'encoder.c',
   'fft.c',
@@ -17,20 +18,12 @@ lame_sources = [
   'takehiro.c',
   'util.c',
   'vbrquantize.c',
-  'VbrTag.c',
   'version.c',
-]
+  cdata.has('HAVE_XMMINTRIN_H') ? 'vector/xmm_quantize_sub.c' : [],
+)
 
 if host_machine.system() == 'windows'
-  lame_sources += windows.compile_resources(
-    'lame.rc',
-    include_directories: [lameinc, confinc]
-  )
-endif
-
-vector_sources = []
-if cdata.has('HAVE_XMMINTRIN_H')
-  vector_sources += ['vector/xmm_quantize_sub.c']
+  lame_sources += windows.compile_resources('lame.rc', include_directories: [lameinc, confinc])
 endif
 
 lame_deps = [m_dep]
@@ -38,16 +31,18 @@ if build_decoder
   lame_deps += [mpglib_dep]
 endif
 
-lamelib = library('mp3lame',
-  lame_sources, vector_sources,
+lamelib = library(
+  'mp3lame',
+  lame_sources,
   version : '0.0.0',
   include_directories : [lameinc, confinc],
   c_args : common_args,
   gnu_symbol_visibility: 'hidden',
-  dependencies : lame_deps,
-  install : true)
+  dependencies: lame_deps,
+  install: true,
+)
 
 lame_dep = declare_dependency(
-  include_directories : [lameinc, confinc],
-  link_with : lamelib,
-  )
+  include_directories: [lameinc, confinc],
+  link_with: lamelib,
+)

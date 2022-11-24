@@ -1,7 +1,10 @@
-project('lame', 'c',
-        version : '3.100',
-        meson_version : '>=0.49',
-        license: 'LGPL-2.1-or-later')
+project(
+  'lame',
+  'c',
+  version: '3.100',
+  meson_version: '>=0.49',
+  license: 'LGPL-2.1-or-later',
+)
 
 cc = meson.get_compiler('c')
 cpu_family = host_machine.cpu_family()
@@ -143,14 +146,16 @@ endif
 
 cdata.set('LAME_EXPORT', export_define)
 
-configure_file(output : 'config.h',
-  configuration : cdata)
+configure_file(
+  output: 'config.h',
+  configuration: cdata,
+)
 
 common_args = ['-DHAVE_CONFIG_H']
 lameinc = include_directories('include', 'libmp3lame')
 confinc = include_directories('.')
 
-m_dep = cc.find_library('m', required : false)
+m_dep = cc.find_library('m', required: false)
 
 windows = import('windows')
 
