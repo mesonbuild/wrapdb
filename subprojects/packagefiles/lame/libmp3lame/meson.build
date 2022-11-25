@@ -38,6 +38,7 @@ lamelib = library(
   include_directories : [lameinc, confinc],
   c_args : common_args,
   gnu_symbol_visibility: 'hidden',
+  vs_module_defs: '../include/lame.def',
   dependencies: lame_deps,
   install: true,
 )
