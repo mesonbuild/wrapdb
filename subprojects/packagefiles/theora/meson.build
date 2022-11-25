@@ -30,6 +30,8 @@ endif
 
 ogg_dep = dependency('ogg', version: '>= 1.1', required: true)
 
+libpng_dep = dependency('libpng', required: false)
+
 asm = not get_option('asm').disabled()
 if asm
   if host_machine.cpu_family() == 'x86_64'

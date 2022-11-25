@@ -214,7 +214,7 @@ theoraenc_dep = declare_dependency(
 libtheora = library(
   'theora',
   encoder_sources + decoder_sources,
-  dependencies: [m_dep, ogg_dep, config_dep],
+  dependencies: [m_dep, libpng_dep, ogg_dep, config_dep],
   include_directories: incdir,
   c_args: compile_args,
   link_args: theora_version_flag,
