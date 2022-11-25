@@ -67,3 +67,5 @@ google_benchmark_main_dep = declare_dependency(
   link_with: lib_benchmark_main,
   include_directories: inc,
 )
+
+subdir('test')
