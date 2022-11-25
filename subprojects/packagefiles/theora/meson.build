@@ -10,6 +10,23 @@ project(
 
 conf = configuration_data()
 
+valgrind_testing = get_option('valgrind-testing')
+
+valgrind_exe = find_program('valgrind', required: valgrind_testing)
+
+if valgrind_exe.found()
+  add_test_setup(
+    'valgrind',
+    exe_wrapper: [
+      valgrind_exe,
+      '-q',
+      '--leak-check=yes',
+      '--show-reachable=yes',
+      '--num-callers=100',
+    ],
+  )
+endif
+
 compile_args = []
 
 cc = meson.get_compiler('c')
@@ -57,3 +74,5 @@ windows = import('windows')
 subdir('include')
 
 subdir('lib')
+
+subdir('tests')
