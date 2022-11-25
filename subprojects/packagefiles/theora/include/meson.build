@@ -7,4 +7,4 @@ theorainclude_headers = files(
 
 install_headers(theorainclude_headers, subdir: 'theora')
 
-incdir = include_directories('.')
+incdir = include_directories('.', '..')
