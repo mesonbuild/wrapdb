@@ -36,9 +36,6 @@ PER_PROJECT_PERMITTED_FILES = {
     'icu': [
         'export_module.py'
     ],
-    'lame': [
-        'lame.h',
-    ],
     'libexif': [
         'def.py',
     ],
