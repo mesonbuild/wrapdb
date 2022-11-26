@@ -218,7 +218,7 @@ libtheora = library(
   include_directories: incdir,
   c_args: compile_args,
   link_args: theora_version_flag,
-  # vs_module_defs: 'theora.def', # Missing in the official tarballs
+  vs_module_defs: 'theora.def', # Missing in the official tarballs
   install: true,
 )
 
