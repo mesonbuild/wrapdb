@@ -101,6 +101,12 @@ if cairo_dep.found()
   conf.set('HAVE_CAIRO', true)
 endif
 
+mem_constraint = get_option('mem-constraint')
+
+if mem_constraint.enabled()
+  conf.set('HAVE_MEMORY_CONSTRAINT', language: 'c')
+endif
+
 asm = not get_option('asm').disabled()
 if asm
   if host_machine.cpu_family() == 'x86_64'
