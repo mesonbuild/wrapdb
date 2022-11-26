@@ -156,6 +156,7 @@ endif
 cdata.set('LAME_EXPORT', export_define)
 
 configure_file(
+  input: 'config.h.meson',
   output: 'config.h',
   configuration: cdata,
 )
