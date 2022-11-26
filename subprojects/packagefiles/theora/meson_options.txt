@@ -1,3 +1,4 @@
 option('valgrind-testing', type: 'feature', value: 'disabled', description: 'Enable running of tests inside Valgrind')
 option('asm', type: 'feature', value: 'enabled', description: 'Enable assembly optimizations')
+option('examples', type: 'feature', value: 'disabled', description: 'Enable examples')
 option('collect-metrics', type: 'boolean', value: 'false', description: 'Enable metrics collection for mode training')
