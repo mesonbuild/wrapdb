@@ -93,6 +93,14 @@ else
   unistd_dep = disabler()
 endif
 
+telemetry = get_option('telemetry')
+
+cairo_dep = dependency('cairo', required: telemetry)
+
+if cairo_dep.found()
+  conf.set('HAVE_CAIRO', true)
+endif
+
 asm = not get_option('asm').disabled()
 if asm
   if host_machine.cpu_family() == 'x86_64'
