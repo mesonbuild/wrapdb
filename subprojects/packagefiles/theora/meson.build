@@ -140,3 +140,76 @@ if examples.auto() or examples.enabled()
 endif
 
 subdir('tests')
+
+spec = get_option('spec')
+
+if spec.auto() or spec.enabled()
+  # Note: unlike the original autotools script, here we use
+  # latexmk to do the dependency management for us.
+  # This implicates that we've got to copy spec.{tex,bib}
+  # to the build folder in /doc/spec/ to make all files
+  # live in the same folder.
+  latexmk_exe = find_program('latexmk', required: spec)
+  transfig_exe = find_program('fig2dev', required: spec)
+  # used indirectly by latexmk
+  pdflatex = find_program('pdflatex', required: spec)
+  bibtex = find_program('bibtex', required: spec)
+
+  if (
+    latexmk_exe.found()
+    and pdflatex.found()
+    and bibtex.found()
+    and transfig_exe.found()
+  )
+    check_needed_tex_packages = find_program(
+      'doc/spec/check-needed-tex-packages.py',
+      required: true,
+    )
+    test_tex_packages = find_program(
+      'doc/spec/test-tex-packages.py',
+      required: true,
+    )
+
+    message(
+      'Checking for packages in @0@...'.format(
+        meson.current_source_dir() / 'doc/spec/spec.tex',
+      ),
+    )
+
+    packages = run_command(
+      check_needed_tex_packages,
+      capture: true,
+      check: true,
+    ).stdout().split()
+
+    tex_pkg_ok = true
+
+    foreach pkg : packages
+      message('for Tex package @0@'.format(pkg))
+
+      pkg_test = run_command(test_tex_packages, '--pdflatex', pdflatex, pkg)
+      if pkg_test.returncode() != 0
+        message = 'The \'@0@\' TeX package is missing or broken'.format(pkg)
+
+        if spec.enabled()
+          error(message)
+        else
+          warning(message)
+          tex_pkg_ok = false
+        endif
+        break
+      endif
+    endforeach
+  else
+    tex_pkg_ok = false
+  endif
+
+  if tex_pkg_ok and meson.project_version() > '1.2.0alpha1'
+    # libtheora <= 1.2.0alpha1 has a tex file which is incompatible
+    # with TeX distributions < 2015 at the least.
+    # See commit fbb275803696085225c310773474ef4dcf8a4528.
+    subdir('doc/spec')
+  else
+    message('*** Format Specification will not be built.')
+  endif
+endif

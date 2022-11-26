@@ -1,3 +1,4 @@
+option('spec', type: 'feature', value: 'auto', description: 'Build the specification')
 option('valgrind-testing', type: 'feature', value: 'disabled', description: 'Enable running of tests inside Valgrind')
 option('asm', type: 'feature', value: 'enabled', description: 'Enable assembly optimizations')
 option('telemetry', type: 'feature', value: 'disabled', description: 'Enable debugging output controls')
