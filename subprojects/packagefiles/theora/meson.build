@@ -141,6 +141,18 @@ endif
 
 subdir('tests')
 
+doc = get_option('doc')
+
+doc_root_dir = meson.current_source_dir()
+
+doxygen_exe = find_program(
+  'doxygen',
+  required: doc,
+  disabler: true,
+)
+
+subdir('doc')
+
 spec = get_option('spec')
 
 if spec.auto() or spec.enabled()
