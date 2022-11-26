@@ -3,7 +3,7 @@ project(
   'cpp',
   default_options: 'cpp_std=c++14',
   version: '1.13',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.49.0',
 )
 
 sources = files('src/pugixml.cpp')
@@ -28,7 +28,6 @@ pugixml_lib = library(
   'pugixml',
   sources,
   cpp_args: args,
-  name_prefix: host_machine.system() == 'windows' ? '' : [],
   version: meson.project_version(),
   gnu_symbol_visibility: 'hidden',
   soversion: host_machine.system() == 'windows' ? '' : '1',
@@ -40,10 +39,12 @@ if host_machine.system() == 'windows' and get_option('default_library') != 'stat
   export += '-DPUGIXML_API=__declspec(dllimport)'
 endif
 
+incdir = include_directories('src')
+
 pugixml_dep = declare_dependency(
   compile_args: export,
   link_with: pugixml_lib,
-  include_directories: 'src',
+  include_directories: incdir,
 )
 
 install_headers(
