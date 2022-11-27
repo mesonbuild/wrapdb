@@ -1602,6 +1602,14 @@
       "1.3.0-1"
     ]
   },
+  "nowide": {
+    "dependency_names": [
+      "nowide"
+    ],
+    "versions": [
+      "11.2.0-1"
+    ]
+  },
   "ogg": {
     "dependency_names": [
       "ogg"
