@@ -4,7 +4,7 @@ project(
     version: '11.2.0',
     license: 'BSL-1.0',
     default_options : ['cpp_std=c++14'],
-    meson_version : '>=0.37.0',
+    meson_version : '>=0.53.0',
 )
 
 compile_args = []
@@ -31,3 +31,7 @@ nowide_dep = declare_dependency(
     include_directories: includes,
     link_with: nowide_lib,
 )
+
+if get_option('tests')
+    subdir('test')
+endif
