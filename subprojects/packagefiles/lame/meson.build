@@ -174,13 +174,13 @@ if curses_dep.found()
   cdata.set('HAVE_TERMCAP', 1)
 endif
 
-if meson.version().version_compare('>= 0.60')
+if meson.version().version_compare('>= 0.60') and cc.has_header('langinfo.h')
   iconv_dep = dependency('iconv', required: get_option('iconv'))
 else
   iconv_dep = dependency('', required: false)
 endif
 
-if iconv_dep.found()
+if iconv_dep.found() and cc.has_header('langinfo.h')
   cdata.set('HAVE_ICONV', 1)
 
   iconv_const_test = '''
