@@ -182,7 +182,13 @@ endif
 
 if iconv_dep.found()
   cdata.set('HAVE_ICONV', 1)
-  cdata.set('ICONV_CONST', '')
+
+  iconv_const_test = '''
+      #include <iconv.h>
+      size_t iconv(iconv_t, const char**, size_t*, char**, size_t*);
+      int main(){}
+      '''
+  cdata.set('ICONV_CONST', cc.compiles(iconv_const_test, dependencies: iconv_dep) ? 'const' : '')
 endif
 
 if cc.get_argument_syntax() == 'msvc' and get_option('default_library') != 'static'
