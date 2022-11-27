@@ -333,6 +333,11 @@
       "mpdecimal:tests=true"
     ]
   },
+  "nowide": {
+    "build_options": [
+      "nowide:tests=true"
+    ]
+  },
   "openh264": {
     "brew_packages": [
       "nasm"
