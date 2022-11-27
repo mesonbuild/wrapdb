@@ -4,6 +4,7 @@ project(
   version: '3.100',
   meson_version: '>=0.49',
   license: 'LGPL-2.1-or-later',
+  default_options: ['warning_level=0'],
 )
 
 cc = meson.get_compiler('c')
@@ -14,20 +15,26 @@ build_decoder = get_option('decoder')
 
 cdata = configuration_data()
 check_headers = [
+  'alloca.h',
   'ctype.h',
   'errno.h',
   'fcntl.h',
   'inttypes.h',
   'limits.h',
-  # used by misc/*.c which we don't build right now
-  #'linux/soundcard.h',
-  #'sys/soundcard.h',
+  'linux/soundcard.h',
+  'sys/soundcard.h',
+  'memory.h',
   'stdarg.h',
   'stddef.h',
   'stdint.h',
   'stdio.h',
   'stdlib.h',
   'string.h',
+  'strings.h',
+  'sys/stat.h',
+  'sys/time.h',
+  'sys/types.h',
+  'unistd.h',
 ]
 
 if cc.check_header('xmmintrin.h')
@@ -47,6 +54,51 @@ foreach h : check_headers
     cdata.set('HAVE_' + h.underscorify().to_upper(), 1)
   endif
 endforeach
+
+stdtypes = [
+  'int8_t',
+  'int16_t',
+  'int32_t',
+  'int64_t',
+  'uint8_t',
+  'uint16_t',
+  'uint32_t',
+  'uint64_t',
+  'long double',
+]
+
+foreach t : stdtypes
+  if cc.has_type(t, prefix: '#include <stdint.h>')
+    cdata.set('HAVE_@0@'.format(t.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+cdata.set('A_INT32_T', 'int')
+cdata.set('A_INT64_T', cc.sizeof('long') == 8 ? 'long' : 'long long')
+cdata.set('A_UINT32_T', 'unsigned int')
+cdata.set('A_UINT64_T', cc.sizeof('long') == 8 ? 'unsigned long' : 'unsigned long long')
+
+sizes = [
+  'double',
+  'float',
+  'int',
+  'long',
+  'long long',
+  'long double',
+  'short',
+  'unsigned int',
+  'unsigned long',
+  'unsigned long long',
+  'unsigned short',
+]
+
+foreach s : sizes
+  cdata.set('SIZEOF_@0@'.format(s.underscorify().to_upper()), cc.sizeof(s))
+endforeach
+
+if cc.sizeof('long double') > cc.sizeof('double')
+  cdata.set('HAVE_LONG_DOUBLE_WIDER', 1)
+endif
 
 # mingw32 does not enable SSE by default
 if cc.get_argument_syntax() == 'gcc' and cpu_family == 'x86'
@@ -80,33 +132,23 @@ if build_decoder
 endif
 
 check_functions = {
-  # check token HAVE_NASM
+  'alloca': 'alloca.h',
+  'gettimeofday': 'sys/time.h',
   'memcpy': 'string.h',
+  'socket': 'sys/socket.h',
   'strchr': 'string.h',
+  'strtol': 'stdlib.h',
 }
 
 if build_tools
   check_functions += {
     'socket': 'sys/socket.h',
-    # check token HAVE_TERMCAP
   }
-endif
-
-# HACK
-if cc.has_header('stdint.h')
-  cdata.set('HAVE_UINT8_T', true)
-  cdata.set('HAVE_UINT16_T', true)
-  cdata.set('HAVE_UINT32_T', true)
-  cdata.set('HAVE_UINT64_T', true)
-  cdata.set('HAVE_INT8_T', true)
-  cdata.set('HAVE_INT16_T', true)
-  cdata.set('HAVE_INT32_T', true)
-  cdata.set('HAVE_INT64_T', true)
 endif
 
 foreach f, h : check_functions
   if cc.has_function(f, prefix: '#include <@0@>'.format(h))
-    cdata.set('HAVE_'.format(f.underscorify().to_upper()), 1)
+    cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
   endif
 endforeach
 
@@ -121,6 +163,32 @@ foreach f, h : need_functions
   endif
 endforeach
 
+if meson.version().version_compare('>= 0.62')
+  dl_dep = dependency('dl', required: false)
+else
+  dl_dep = cc.find_library('dl', required: false)
+endif
+
+if dl_dep.found() and cc.has_header('dlfcn.h')
+  cdata.set('HAVE_DLFCN_H', 1)
+endif
+
+if meson.version().version_compare('>= 0.54')
+  curses_dep = dependency('curses', required: false)
+else
+  curses_dep = dependency('', required: false)
+endif
+
+if curses_dep.found()
+  if cc.has_header('ncurses/termcap.h')
+    cdata.set('HAVE_NCURSES_TERMCAP_H', 1)
+  endif
+  if cc.has_header('termcap.h')
+    cdata.set('HAVE_TERMCAP_H', 1)
+  endif
+  cdata.set('HAVE_TERMCAP', 1)
+endif
+
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency('iconv', required: get_option('iconv'))
 else
@@ -129,21 +197,8 @@ endif
 
 if iconv_dep.found()
   cdata.set('HAVE_ICONV', 1)
+  cdata.set('ICONV_CONST', '')
 endif
-
-cdata.set('SIZEOF_DOUBLE', cc.sizeof('double'))
-cdata.set('SIZEOF_FLOAT', cc.sizeof('float'))
-cdata.set('SIZEOF_INT', cc.sizeof('int'))
-cdata.set('SIZEOF_LONG', cc.sizeof('long'))
-cdata.set('SIZEOF_LONG_DOUBLE', cc.sizeof('long double'))
-cdata.set('SIZEOF_LONG_LONG', cc.sizeof('long long'))
-cdata.set('SIZEOF_SHORT', cc.sizeof('short'))
-cdata.set('SIZEOF_UNSIGNED_INT', cc.sizeof('unsigned int'))
-cdata.set('SIZEOF_UNSIGNED_LONG', cc.sizeof('unsigned long'))
-cdata.set('SIZEOF_UNSIGNED_LONG_LONG', cc.sizeof('unsigned long long'))
-cdata.set('SIZEOF_UNSIGNED_SHORT', cc.sizeof('unsigned short'))
-cdata.set('ieee754_float32_t', 'float')
-cdata.set('ieee754_float64_t', 'double')
 
 if cc.get_argument_syntax() == 'msvc' and get_option('default_library') != 'static'
   export_define = '__declspec(dllexport) extern'
@@ -154,6 +209,29 @@ else
 endif
 
 cdata.set('LAME_EXPORT', export_define)
+
+cdata.set_quoted('PACKAGE', meson.project_name())
+cdata.set_quoted('PACKAGE_NAME', meson.project_name())
+cdata.set_quoted('PACKAGE_TARNAME', meson.project_name())
+cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
+cdata.set_quoted('VERSION', meson.project_version())
+cdata.set_quoted('PACKAGE_BUGREPORT', 'lame-dev@lists.sf.net')
+cdata.set_quoted('PACKAGE_URL', '')
+cdata.set('PACKAGE_STRING', '"@0@ @1@"'.format(meson.project_name(), meson.project_version()))
+
+cdata.set('TIME_WITH_SYS_TIME', 1)
+cdata.set_quoted('LT_OBJDIR', '.libs/')
+cdata.set('LAME_LIBRARY_BUILD', 1)
+cdata.set('_POSIX_PTHREAD_SEMANTICS', 1)
+cdata.set('_ALL_SOURCE', 1)
+cdata.set('_GNU_SOURCE', 1)
+cdata.set('_TANDEM_SOURCE', 1)
+cdata.set('__EXTENSIONS__', 1)
+
+#hacks
+cdata.set('TAKEHIRO_IEEE754_HACK', 1)
+cdata.set('USE_FAST_LOG', 1)
+cdata.set('HAVE_IEEE854_FLOAT80', 1)
 
 configure_file(
   input: 'config.h.meson',
