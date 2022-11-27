@@ -8,12 +8,12 @@ common_sources = files(
   'timestatus.c',
 )
 
-tools_deps = [lame_dep, nls_dep]
+tools_deps = [lame_dep, m_dep, iconv_dep, curses_dep]
 if host_machine.system() == 'windows'
   tools_deps += [cc.find_library('ws2_32')]
 endif
 
-lame = executable(
+executable(
   'lame',
   common_sources,
   'lame_main.c',
@@ -21,7 +21,7 @@ lame = executable(
   dependencies: tools_deps,
 )
 
-mp3rtp = executable(
+executable(
   'mp3rpt',
   common_sources,
   'mp3rtp.c',

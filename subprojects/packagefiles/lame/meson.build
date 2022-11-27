@@ -10,7 +10,6 @@ project(
 cc = meson.get_compiler('c')
 cpu_family = host_machine.cpu_family()
 
-build_tools = get_option('tools')
 build_decoder = get_option('decoder')
 
 cdata = configuration_data()
@@ -39,14 +38,6 @@ check_headers = [
 
 if cc.check_header('xmmintrin.h')
   cdata.set('HAVE_XMMINTRIN_H', 1)
-endif
-
-if build_tools
-  check_headers += [
-    'ncurses/termcap.h',
-    'termcap.h',
-    'unistd.h',
-  ]
 endif
 
 foreach h : check_headers
@@ -140,12 +131,6 @@ check_functions = {
   'strtol': 'stdlib.h',
 }
 
-if build_tools
-  check_functions += {
-    'socket': 'sys/socket.h',
-  }
-endif
-
 foreach f, h : check_functions
   if cc.has_function(f, prefix: '#include <@0@>'.format(h))
     cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
@@ -174,7 +159,7 @@ if dl_dep.found() and cc.has_header('dlfcn.h')
 endif
 
 if meson.version().version_compare('>= 0.54')
-  curses_dep = dependency('curses', required: false)
+  curses_dep = dependency('curses', required: get_option('tools'))
 else
   curses_dep = dependency('', required: false)
 endif
@@ -252,6 +237,6 @@ if build_decoder
   subdir('mpglib')
 endif
 subdir('libmp3lame')
-if build_tools
+if curses_dep.found()
   subdir('frontend')
 endif
