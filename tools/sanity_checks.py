@@ -60,6 +60,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'netstring-c': [
         'netstring-c.def',
     ],
+    'nowide': [
+        'test_iostream_interactive.py',
+    ],
     'openssl': [
         'bn_conf.h',
         'dso_conf.h',
