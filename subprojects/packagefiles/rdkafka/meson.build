@@ -103,9 +103,8 @@ curl = dependency('libcurl', required: get_option('WITH_CURL'))
 zlib = dependency('zlib', required: get_option('WITH_ZLIB'))
 zstd = dependency('libzstd', required: get_option('WITH_ZSTD'))
 lz4 = dependency('liblz4', required: get_option('WITH_LZ4_EXT'))
-sasl = dependency('libsasl2', required: get_option('WITH_SASL')) # TODO: make SASL usable without libsasl2 on windows 
-ssl = dependency('libssl', required: get_option('WITH_SSL'))
-crypto = dependency('libcrypto', required: get_option('WITH_SSL'))
+sasl = dependency('libsasl2', required: get_option('WITH_SASL')) # TODO: make SASL usable without libsasl2 on windows
+ssl = dependency('openssl', required: get_option('WITH_SSL'), method: 'pkg-config')
 if meson.version().version_compare('>= 0.62.0')
   dl = dependency('dl', required: get_option('WITH_LIBDL'))
 else
@@ -127,7 +126,7 @@ conf.set10('WITH_OAUTHBEARER_OIDC', false)
 conf.set10('WITH_ZSTD', zstd.found())
 conf.set10('WITH_LIBDL', dl.found())
 conf.set10('WITH_PLUGINS', dl.found())
-conf.set10('WITH_SSL', ssl.found() and crypto.found())
+conf.set10('WITH_SSL', ssl.found())
 conf.set10('WITH_SASL', sasl.found())
 conf.set10('WITH_SASL_CYRUS', sasl.found() and host_machine.system() != 'windows')
 conf.set10('WITH_LZ4_EXT', lz4.found())
@@ -138,7 +137,7 @@ conf.set10('WITH_C11THREADS', cc.has_function('thrd_create'))
 conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', host_machine.system() == 'windows' ? '.dll' : '.so')
 
 built_with = 'meson ' + cc.get_id() + ' ' + cpp.get_id()
-if ssl.found() and crypto.found()
+if ssl.found()
   built_with += ' SSL'
   srcc += 'src/rdkafka_ssl.c'
 endif
@@ -151,7 +150,7 @@ if host_machine.system() == 'windows'
 elif sasl.found()
   srcc += 'src/rdkafka_sasl_cyrus.c'
   built_with += ' SASL_CYRUS'
-  if ssl.found() and crypto.found()
+  if ssl.found()
     srcc += [ 'src/rdkafka_sasl_scram.c', 'src/rdkafka_sasl_oauthbearer.c']
     conf.set10('WITH_SASL_SCRAM', true)
     conf.set10('WITH_SASL_OAUTHBEARER', true)
@@ -204,7 +203,7 @@ configure_file(configuration: conf,
   format: 'cmake',
 )
 
-rdkafka_deps = [math, regex, threads, dl, cjson, zlib, zstd, sasl, ssl, crypto, lz4, curl]
+rdkafka_deps = [math, regex, threads, dl, cjson, zlib, zstd, sasl, ssl, lz4, curl]
 if host_machine.system() == 'windows'
   rdkafka_deps += [cpp.find_library('ws2_32'), cpp.find_library('iphlpapi'), cpp.find_library('secur32')]
   if ssl.found()
