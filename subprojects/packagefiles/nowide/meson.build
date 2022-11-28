@@ -20,10 +20,14 @@ subdir('src')  # fills in 'sources'
 
 includes = include_directories('include')
 
+install_subdir('include/nowide', install_dir: get_option('includedir'))
+
 nowide_lib = library(
     'nowide',
     sources,
     include_directories: includes,
+    version: meson.project_version(),
+    install: true
 )
 
 nowide_dep = declare_dependency(
