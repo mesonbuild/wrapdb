@@ -3,7 +3,7 @@ project(
   'c',
   version: '1.4.1',
   license: 'BSD-2',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.49.0',
 )
 
 incdir = include_directories('.')

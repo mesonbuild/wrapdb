@@ -1,18 +1,5 @@
 protoc_dep = dependency('protoc')
 
-proto = configure_file(input: 'protobuf-c.proto', output: 'protobuf-c.proto', copy: true)
-protoc = find_program('protoc')
-pbgen = custom_target(
-  'pb-gen',
-  input: proto,
-  output: ['protobuf-c.pb.h', 'protobuf-c.pb.cc'],
-  command: [
-    protoc,
-    '--cpp_out', '@BUILD_ROOT@/subprojects/protobuf-c-1.4.1',
-    '@INPUT@',
-  ],
-)
-
 install_headers('protobuf-c.h')
 
 libprotobuf_c = library(
@@ -31,7 +18,8 @@ pkgconfig.generate(
   url: 'https://github.com/protobuf-c/protobuf-c',
 )
 
+depinc = include_directories('.')
 libprotobuf_c_dep = declare_dependency(
-  include_directories: '.',
+  include_directories: depinc,
   link_with: libprotobuf_c,
 )
