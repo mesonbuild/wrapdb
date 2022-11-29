@@ -1,4 +1,10 @@
-project('pupnp', 'c', license: 'BSD-3-Clause', version: '1.14.14', meson_version: '>=0.49.0')
+project(
+  'pupnp',
+  'c',
+  license: 'BSD-3-Clause',
+  version: '1.14.15',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
@@ -126,7 +132,7 @@ aconf.merge_from(uconf)
 uconf.set('UPNP_VERSION_STRING', meson.project_version())
 aconf.set_quoted('UPNP_VERSION_STRING', meson.project_version())
 aconf.set10('UPNP_HAVE_DEBUG', get_option('debug'))
-aconf.set10('UPNP_USE_RWLOCK', cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', prefix: '#define _XOPEN_SOURCE 500'))
+aconf.set10('UPNP_USE_RWLOCK', cc.has_header_symbol('pthread.h', 'pthread_rwlock_t', args: '-D_XOPEN_SOURCE=500'))
 aconf.set10('HAVE_STRNDUP', cc.has_function('strndup'))
 aconf.set10('HAVE_STRNLEN', cc.has_function('strnlen'))
 
@@ -157,12 +163,10 @@ libupnp = library(
 pkg = import('pkgconfig')
 pkg.generate(libupnp, name: 'libupnp', subdirs: 'upnp')
 
-headers = [
+headers = files(
   'ixml/inc/ixml.h',
   'ixml/inc/ixmldebug.h',
   'upnp/inc/Callback.h',
-  'upnp/inc/list.h',
-  'upnp/inc/upnp.h',
   'upnp/inc/UpnpActionComplete.h',
   'upnp/inc/UpnpActionRequest.h',
   'upnp/inc/UpnpDiscovery.h',
@@ -179,11 +183,14 @@ headers = [
   'upnp/inc/UpnpString.h',
   'upnp/inc/UpnpSubscriptionRequest.h',
   'upnp/inc/UpnpUniStd.h',
-  ufile,
-]
+  'upnp/inc/list.h',
+  'upnp/inc/upnp.h',
+)
+
+headers += ufile
 
 if get_option('tools')
-  headers += 'upnp/inc/upnptools.h'
+  headers += files('upnp/inc/upnptools.h')
 endif
 
 install_headers(headers, subdir: 'upnp')
@@ -200,13 +207,15 @@ if get_option('samples') and get_option('tools')
     configuration: sample_conf,
   )
 
+  toolinc = include_directories('upnp/sample/common')
+
   if get_option('client')
     executable(
       'tv_ctrlpt',
       'upnp/sample/common/sample_util.c',
       'upnp/sample/common/tv_ctrlpt.c',
       'upnp/sample/linux/tv_ctrlpt_main.c',
-      include_directories: 'upnp/sample/common',
+      include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
       install: true,
     )
@@ -219,7 +228,7 @@ if get_option('samples') and get_option('tools')
       'upnp/sample/common/tv_ctrlpt.c',
       'upnp/sample/common/tv_device.c',
       'upnp/sample/linux/tv_combo_main.c',
-      include_directories: 'upnp/sample/common',
+      include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
       install: true,
     )
@@ -231,7 +240,7 @@ if get_option('samples') and get_option('tools')
       'upnp/sample/common/sample_util.c',
       'upnp/sample/common/tv_device.c',
       'upnp/sample/linux/tv_device_main.c',
-      include_directories: 'upnp/sample/common',
+      include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
       install: true,
     )
