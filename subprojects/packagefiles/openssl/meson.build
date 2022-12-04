@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '3.0.2',
+  version: '3.0.7',
   license : 'Apache-2.0',
   meson_version: '>= 0.55',
   default_options: [
@@ -67,7 +67,6 @@ is_aarch64 = host_machine.cpu_family() == 'aarch64'
 is_mips64 = host_machine.cpu_family() == 'mips64'
 is_s390x = host_machine.cpu_family() == 's390x'
 is_arm = host_machine.cpu_family() == 'arm'
-is_ppc = host_machine.cpu_family() == 'ppc'
 is_ppc64 = host_machine.cpu_family() == 'ppc64'
 is_riskv64 = host_machine.cpu_family() == 'riscv64'
 
@@ -101,14 +100,10 @@ if gas_or_nasm
       arch_subdir = 'linux-aarch64'
     elif is_arm
       arch_subdir = 'linux-armv4'
-    elif is_ppc
-      arch_subdir = 'linux-ppc'
-    elif is_ppc64 and host_machine.endian() == 'big'
-      arch_subdir = 'linux-ppc64'
     elif is_ppc64
       arch_subdir = 'linux-ppc64le'
     elif is_x86
-      arch_subdir = 'linux-x32'
+      arch_subdir = 'linux-elf'
     elif is_x86_64
       arch_subdir = 'linux-x86_64'
     else
@@ -215,14 +210,10 @@ if asm == 'no-asm'
       arch_subdir = 'linux-aarch64'
     elif is_arm
       arch_subdir = 'linux-armv4'
-    elif is_ppc
-      arch_subdir = 'linux-ppc'
-    elif is_ppc64 and host_machine.endian() == 'big'
-      arch_subdir = 'linux-ppc64'
     elif is_ppc64
       arch_subdir = 'linux-ppc64le'
     elif is_x86
-      arch_subdir = 'linux-x32'
+      arch_subdir = 'linux-elf'
     elif is_x86_64
       arch_subdir = 'linux-x86_64'
     else

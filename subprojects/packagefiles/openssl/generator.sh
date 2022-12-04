@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # Node.js version should bundle OpenSSL of matching version to one specified in wrap file
-node_version=v17.7.1
+node_version=v19.2.0
 openssl_version="$OPENSSL_VERSION"
 
 if [ -z "$openssl_version" ]; then
@@ -41,8 +41,6 @@ find config/archs -iname '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$
 rm -rf ../../../generated-config/archs/aix*
 # 32-bit s390x supported in Meson
 rm -rf ../../../generated-config/archs/linux32-s390x
-# Linux ELF is useless in Meson
-rm -rf ../../../generated-config/archs/linux-elf
 # This is for old gas/nasm versions, we do not care about them
 rm -rf ../../../generated-config/archs/*/asm_avx2
 # Remove build info files, we use hardcoded deterministic one instead
