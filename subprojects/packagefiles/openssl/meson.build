@@ -13,6 +13,11 @@ project(
 fs = import('fs')
 if not fs.exists('generated-config')
   message('Generating OpenSSL configs...')
+
+  if host_machine.system() != 'linux'
+    error('Generator only works on Linux, other platforms are not supported')
+  endif
+
   run_command(
     'generator.sh',
     check: true,
