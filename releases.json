@@ -2133,6 +2133,16 @@
       "1.1.2-1"
     ]
   },
+  "theora": {
+    "dependency_names": [
+      "theoraenc",
+      "theoradec",
+      "theora"
+    ],
+    "versions": [
+      "1.1.1-1"
+    ]
+  },
   "tinyfsm": {
     "dependency_names": [
       "tinyfsm"

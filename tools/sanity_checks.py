@@ -74,6 +74,15 @@ PER_PROJECT_PERMITTED_FILES = {
     'sdl2': [
         'find-dylib-name.py'
     ],
+    'theora': [
+        'check-needed-tex-packages.py',
+        'latexmk-wrapper.py',
+        'test-tex-packages.py',
+        'doxyfile-patcher.py',
+        'arm2gnu-wrapper.py',
+        'generate_windows_rc.py',
+        'theora.def'
+    ],
     'vorbis': [
         'vorbis.def',
         'vorbisenc.def',
