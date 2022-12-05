@@ -11,14 +11,13 @@ CompilerAndABI = NamedTuple(
         ("abi", str)
     ]
 )
-# generic abi identifier that usually defaults to the 32-bit one
+
+# default abi identifier, usually the 32-bit one,
+# shortcut for "last one in the abilist"
 STANDARD_ABI = "standard"
 
 # common abi + compiler defintions
-ANY_32 = CompilerAndABI(compiler="any", abi="32")
-ANY_64 = CompilerAndABI(compiler="any", abi="64")
 GCC = CompilerAndABI(compiler="gcc", abi=STANDARD_ABI)
-GCC_32 = CompilerAndABI(compiler="gcc", abi="32")
 GCC_64 = CompilerAndABI(compiler="gcc", abi="64")
 CC = CompilerAndABI(compiler="cc", abi=STANDARD_ABI)
 CC_64 = CompilerAndABI(compiler="cc", abi="64")
@@ -42,6 +41,9 @@ ABIOptions = NamedTuple(
         ("mpn_search_path", List[str]),
         ("mpn_extra_functions", List[str]),
         ("calling_conventions_objs", List[str]),
+        ("speed_cyclecounter_obj", Optional[str]),
+        ("cyclecounter_size", int),
+        ("testlist", List[str]), # tests for any compiler with that abi
     ]
 )
 
@@ -51,8 +53,6 @@ Options = NamedTuple(
         ("compilers", Dict[CompilerAndABI, CompilerOptions]),
         ("abis", Dict[str, ABIOptions]),  # ABI name -> objs
         ("gmp_asm_syntax_testing", bool),
-        ("speed_cyclecounter_obj", Optional[str])
-        ("cyclecounter_size", int)
     ]
 )
 
@@ -84,6 +84,9 @@ def default_abi_options() -> ABIOptions:
         mpn_search_path=[],
         mpn_extra_functions=[],
         calling_conventions_objs=[],
+        speed_cyclecounter_obj=None,
+        cyclecounter_size=2,
+        testlist=[],
     )
 
 def default_options() -> Options:
@@ -96,8 +99,6 @@ def default_options() -> Options:
             STANDARD_ABI: default_abi_options()
         },
         gmp_asm_syntax_testing=True,
-        speed_cyclecounter_obj=None,
-        cyclecounter_size=2,
     )
 
 def empty_compiler_options() -> CompilerOptions:
@@ -243,7 +244,7 @@ def options_for_alpha(host: str, host_cpu: str, assembly: bool) -> Options:
     
     if not match(host, "*-*-unicos*"):
         # tune/alpha.asm assumes int==4bytes but unicos uses int==8bytes
-        options = options._replace(
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
             speed_cyclecounter_obj="alpha.lo",
             cyclecounter_size=1
         )
@@ -464,7 +465,8 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
     options = default_options()
     options.abis[STANDARD_ABI] = default_abi_options()._replace(
         mpn_search_path=mpn_search_path_for_arm(host_cpu),
-        calling_conventions_objs=["arm32call.lo", "arm32check.lo"]
+        calling_conventions_objs=["arm32call.lo", "arm32check.lo"],
+        testlist=["sizeof-void*-4"]
     )
     if profiling != "gprof":
         options.compilers[GCC] = options.compilers[GCC]._replace(
@@ -481,14 +483,11 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
         testlist=["gcc-arm-umodsi"]
     )
 
-    options.compilers[ANY_32] = empty_compiler_options()._replace(
-        testlist=["sizeof-void*-4"]
-    )
-
     if arm_cpu_has_64_abi(host_cpu):
         options.abis["64"] = default_abi_options()._replace(
             mpn_search_path=mpn_search_path_for_arm_64(host_cpu),
-            calling_conventions_objs=[]
+            calling_conventions_objs=[],
+            testlist=["sizeof-void*-8"]
         )
         options.compilers[CC_64] = default_cc_options()
         options.compilers[GCC_64] = default_gcc_options()._replace(
@@ -497,9 +496,6 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
                 ("tune", options.compilers[GCC].optional_flags["tune"])
             ]),
             testlist=[]
-        )
-        options.compilers[ANY_64] = empty_compiler_options()._replace(
-            testlist=["sizeof-void*-8"]
         )
         if match(host, "*-*-mingw*"):
             options.abis["64"] = options.abis["64"]._replace(limb="longlong")
@@ -520,6 +516,121 @@ def options_for_fujitsu() -> Options:
         abis={STANDARD_ABI: abi_options}
     )
 
+def mpn_search_path_for_hp(host_cpu: str) -> List[str]:
+    # FIXME: For hppa2.0*, path should be "pa32/hppa2_0 pa32/hppa1_1 pa32".
+    # (Can't remember why this isn't done already, have to check what .asm
+    # files are available in each and how they run on a typical 2.0 cpu.)
+    if match(host_cpu, "hppa1.0*"):
+        return ["pa32"]
+    elif match(host_cpu, "hppa7000*"):
+        return ["pa32/hppa1_1", "pa32"]
+    elif match(host_cpu, "hppa2.0*", "hppa64"):
+        return ["pa32/hppa2_0", "pa32/hppa1_1/pa7100", "pa32/hppa1_1", "pa32"]
+    else:  # default to 7100
+        return ["pa32/hppa1_1/pa7100", "pa32/hppa1_1", "pa32"]
+
+def arch_flags_for_hp_gcc(host_cpu: str) -> List[str]:
+    # gcc 2.7.2.3 knows -mpa-risc-1-0 and -mpa-risc-1-1
+    # gcc 2.95 adds -mpa-risc-2-0, plus synonyms -march=1.0, 1.1 and 2.0
+    #
+    # We don't use -mpa-risc-2-0 in ABI=1.0 because 64-bit registers may not
+    # be saved by the kernel on an old system.  Actually gcc (as of 3.2)
+    # only adds a few float instructions with -mpa-risc-2-0, so it would
+    # probably be safe, but let's not take the chance.  In any case, a
+    # configuration like --host=hppa2.0 ABI=1.0 is far from optimal.
+    if match(host_cpu, "hppa1.0*"):
+        return ["-mpa-risc-1-0"]
+    else:  # default to 7100
+        return ["-mpa-risc-1-1"]
+
+def flags_for_hp_cc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "hppa1.0*"):
+        return ["+O2"]
+    else:  # default to 7100
+        return ["+DA1.1", "+O2"]
+
+def options_for_hp(host: str, host_cpu: str) -> Options:
+    # HP cc (the one sold separately) is K&R by default, but AM_C_PROTOTYPES
+    # will add "-Ae", or "-Aa -D_HPUX_SOURCE", to put it into ansi mode, if
+    # possible.
+    
+    # gcc for hppa 2.0 can be built either for 2.0n (32-bit) or 2.0w
+    # (64-bit), but not both, so there's no option to choose the desired
+    # mode, we must instead detect which of the two it is.  This is done by
+    # checking sizeof(long), either 4 or 8 bytes respectively.  Do this in
+    # ABI=1.0 too, in case someone tries to build that with a 2.0w gcc.
+    options = default_options()
+    options.compilers[GCC] = default_gcc_options()._replace(
+        optional_flags=OrderedDict([
+            ("arch", arch_flags_for_hp_gcc(host_cpu)),
+        ]),
+        testlist=["sizeof-long-4"]
+    )
+    options.compilers[CC] = default_cc_options()._replace(
+        flags=flags_for_hp_cc(host_cpu)
+    )
+    options.abis[STANDARD_ABI] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_hp(host_cpu),
+        speed_cyclecounter_obj="hppa.lo",
+        cyclecounter_size=1
+    )
+
+    if match(host, "hppa2.0*-*-*", "hppa64-*-*"):
+        ABI_20N = "2.0n"
+        options.abis[ABI_20N] = default_abi_options()._replace(
+            mpn_search_path=["pa64"],
+            limb="longlong",
+            speed_cyclecounter_obj="hppa2.lo",
+            cyclecounter_size=2,
+            testlist=["sizeof-long-4"]
+        )
+        GCC_20N = CompilerAndABI(compiler="gcc", abi=ABI_20N)
+
+        # -mpa-risc-2-0 is only an optional flag, in case an old gcc is
+        # used.  Assembler support for 2.0 is essential though, for our asm
+        # files.
+        options.compilers[GCC_20N] = default_gcc_options()._replace(
+            optional_flags=OrderedDict([
+                ("arch", ["-mpa-risc-2-0", "-mpa-risc-1-1"]),
+            ]),
+            testlist=["sizeof-long-4", "hppa-level-2.0"],
+        )
+        CC_20N = CompilerAndABI(compiler="cc", abi=ABI_20N)
+        options.compiler[CC_20N] = empty_compiler_options()._replace(
+            flags=["+DA2.0", "+e", "+O2", "-Wl,+vnocompatwarnings"],
+            testlist=["hpc-hppa-2-0"]
+        )
+
+        # ABI=2.0w is available for hppa2.0w and hppa2.0, but not for
+        # hppa2.0n, on the assumption that that the latter indicates a
+        # desire for ABI=2.0n.
+        # HPUX 10 and earlier cannot run 2.0w.  Not sure about other
+        # systems (GNU/Linux for instance), but lets assume they're ok.
+        if (
+            not match(host, "hppa2.0n-*-*")
+            and not match(host, "*-*-hpux[1-9]", "*-*-hpux[1-9].*", "*-*-hpux10", "*-*-hpux10.*")
+        ):
+            ABI_20W = "2.0w"
+            GCC_20W = CompilerAndABI(compiler="gcc", abi=ABI_20W)
+            options.compilers[GCC_20W] = default_gcc_options()._replace(
+                flags=default_gcc_flags() + ["-mpa-risc-2-0"]
+            )
+            CC_20W = CompilerAndABI(compiler="cc", abi=ABI_20W)
+            options.compiler[CC_20W] = empty_compiler_options()._replace(
+                flags=["+DD64", "+O2"],
+                testlist=["hpc-hppa-2-0"]
+            )
+            options.abis[ABI_20W] = default_abi_options()._replace(
+                mpn_search_path=["pa64"],
+                speed_cyclecounter_obj="hppa2w.lo",
+                cyclecounter_size=2,
+                testlist=["sizeof-long-8"]
+            )
+
+def options_for_itanium(host: str, host_cpu: str) -> Options:
+    options = default_options()
+
+
 def options_for(
     host: str,
     host_cpu: str,
@@ -534,6 +645,10 @@ def options_for(
         return options_for_arm(host, host_cpu, profiling)
     elif match(host, "f30[01]-fujitsu-sysv*"):
         return options_for_fujitsu()
+    elif match(host, "hppa*-*-*"):
+        return options_for_hp(host, host_cpu)
+    elif match(host, "ia64*-*-*", "itanium-*-*", "itanium2-*-*"):
+        return options_for_itanium(host, host_cpu)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
