@@ -254,7 +254,7 @@ def options_for_cray() -> Options:
     # Cray vector machines.
     # This must come after alpha* so that we can recognize present and future
     # vector processors with a wildcard.
-    options = default_options()
+
     # We used to have -hscalar0 here as a workaround for miscompilation of
     # mpz/import.c, but let's hope Cray fixes their bugs instead, since
     # -hscalar0 causes disastrously poor code to be generated.
@@ -327,6 +327,22 @@ def mpn_search_path_for_arm(host_cpu: str) -> List[str]:
         return ["arm/v7a/cora15/neon", "arm/neon", "arm/v7a/cora15", "arm/v6t2", "arm/v6", "arm/v5", "arm"]
     else:
         return ["arm"]
+
+def mpn_search_path_for_arm_64(host_cpu: str) -> List[str]:
+    if match(host_cpu, "armcortexa53", "armcortexa53neon", "armcortexa55", "armcortexa55neon"):
+        return ["arm64/cora53", "arm64"]
+    elif match(
+        host_cpu,
+        "armcortexa57", "armcortexa57neon",
+        "armcortexa7[2-9]", "armcortexa7[2-9]neon"
+    ):
+        return ["arm64/cora57", "arm64"]
+    elif match(host_cpu, "armexynosm1", "armthunderx", "aarch64*"):
+        return ["arm64"]
+    elif match(host_cpu, "armxgene1"):
+        return ["arm64/xgene1", "arm64"]
+    else:
+        return []
 
 def arch_flags_for_arm_gcc(host_cpu: str) -> List[str]:
     if match(host_cpu, "armxscale", "arm7ej", "arm9te", "arm9e*", "arm10*", "armv5*"):
@@ -422,17 +438,34 @@ def neon_flags_for_arm_gcc(host_cpu: str) -> List[str]:
     else:
         return []
 
+def fpmode_flags_from_arm_gcc(host: str) -> List[str]:
+    # This is needed for clang, which is not content with flags like -mfpu=neon
+    # alone.
+    if match(host, "*-*-*eabi"):
+        return ["-mfloat-abi=softfp"]
+    elif match(host, "*-*-*eabihf"):
+        return ["-mfloat-abi=hard"]
+    else:
+        return ()
+
+def arm_cpu_has_64_abi(host_cpu: str) -> boolean:
+    return match(
+        host_cpu,
+        "armcortexa53", "armcortexa53neon", "armcortexa55", "armcortexa55neon",
+        "armcortexa57", "armcortexa57neon",
+        "armcortexa7[2-9]", "armcortexa7[2-9]neon",
+        "armexynosm1",
+        "armthunderx",
+        "armxgene1",
+        "aarch64*",
+    )
+
 def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
     options = default_options()
     options.abis[STANDARD_ABI] = default_abi_options()._replace(
         mpn_search_path=mpn_search_path_for_arm(host_cpu),
         calling_conventions_objs=["arm32call.lo", "arm32check.lo"]
     )
-    options.abis["64"] = default_abi_options()._replace(
-        calling_conventions_objs=[]
-    )
-    options.calling_conventions_objs["64"] = []
-    options.compilers[CC_64] = default_cc_options()
     if profiling != "gprof":
         options.compilers[GCC] = options.compilers[GCC]._replace(
             flags=default_gcc_flags() + ["-fomit-frame-pointer"]
@@ -441,36 +474,51 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
     options.compilers[GCC] = options.compilers[GCC]._replace(
         optional_flags=OrderedDict([
             ("arch", arch_flags_for_arm_gcc(host_cpu)),
-            ("fpmode", []),
+            ("fpmode", fpmode_flags_from_arm_gcc(host)),
             ("neon", neon_flags_for_arm_gcc(host_cpu)),
             ("tune", tune_flags_for_arm_gcc(host_cpu))
         ]),
         testlist=["gcc-arm-umodsi"]
     )
-    options.compilers[GCC_64] = default_gcc_options()._replace(
-        optional_flags=OrderedDict([
-            ("arch", []),
-            ("tune", [])
-        ]),
-        testlist=[]
-    )
 
     options.compilers[ANY_32] = empty_compiler_options()._replace(
         testlist=["sizeof-void*-4"]
     )
-    options.compilers[ANY_64] = empty_compiler_options()._replace(
-        testlist=["sizeof-void*-8"]
+
+    if arm_cpu_has_64_abi(host_cpu):
+        options.abis["64"] = default_abi_options()._replace(
+            mpn_search_path=mpn_search_path_for_arm_64(host_cpu),
+            calling_conventions_objs=[]
+        )
+        options.compilers[CC_64] = default_cc_options()
+        options.compilers[GCC_64] = default_gcc_options()._replace(
+            optional_flags=OrderedDict([
+                ("arch", options.compilers[GCC].optional_flags["arch"]),
+                ("tune", options.compilers[GCC].optional_flags["tune"])
+            ]),
+            testlist=[]
+        )
+        options.compilers[ANY_64] = empty_compiler_options()._replace(
+            testlist=["sizeof-void*-8"]
+        )
+        if match(host, "*-*-mingw*"):
+            options.abis["64"] = options.abis["64"]._replace(limb="longlong")
+
+
+def options_for_fujitsu() -> Options:
+    VCC = CompilerAndABI(compiler="vcc", abi=STANDARD_ABI)
+    # FIXME: flags for vcc?
+    vcc_options = empty_compiler_options()._replace(flags="-g")
+    abi_options = default_abi_options()._replace(
+        mpn_search_path=["fujitsu"]
     )
-
-    # This is needed for clang, which is not content with flags like -mfpu=neon
-    # alone.
-    if match(host, "*-*-*eabi"):
-        options.compilers[GCC].optional_flags["fpmode"] = ["-mfloat-abi=softfp"]
-    elif match(host, "*-*-*eabihf"):
-        options.compilers[GCC].optional_flags["fpmode"] = ["-mfloat-abi=hard"]
-    elif match(host, "*-*-mingw*"):
-        options.abis["64"] = options.abis["64"]._replace(limb="longlong")
-
+    return default_options()._replace(
+        compilers={
+            GCC: default_gcc_options(),
+            VCC: vcc_options
+        },
+        abis={STANDARD_ABI: abi_options}
+    )
 
 def options_for(
     host: str,
@@ -484,6 +532,8 @@ def options_for(
         return options_for_cray()
     elif match(host, "arm*-*-*", "aarch64*-*-*"):
         return options_for_arm(host, host_cpu, profiling)
+    elif match(host, "f30[01]-fujitsu-sysv*"):
+        return options_for_fujitsu()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
