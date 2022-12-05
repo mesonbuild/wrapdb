@@ -15,9 +15,11 @@ profiling = get_option('profiling')
 if profiling != 'no'
   conf.set('WANT_PROFILING_' + profiling.to_upper(), 1)
 endif
-fomit_frame_pointer = []
-if profiling == 'gprof':
-  fomit_frame_pointer += ['-fomit-frame-pointer']
+
+fomit_frame_pointer = ['-fomit-frame-pointer']
+# -fomit-frame-pointer is incompatible with -pg on some chips
+if profiling == 'gprof'
+  fomit_frame_pointer = []
 endif
 
 fake_cpuid = get_option('fake-cpuid')
@@ -37,25 +39,6 @@ endif
 host_machine_cpu = host_machine.cpu()
 conf.set('HAVE_HOST_CPU_' + host_machine.cpu(), 1)
 conf.set('HAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), 1)
-
-abi_list = ['standard']
-cc_list = ['gcc', 'cc']
-gcc_cflags = ['-O2', '-pedantic']
-gcc_64_cflags = ['-O2', '-pedantic']
-cc_cflags = ['-O']
-cc_64_cflags = ['-O']
-SPEED_CYCLECOUNTER_OBJ = []
-cyclecounter_size = 2
-mpn_search_path = []
-
-conf.set('HAVE_HOST_CPU_FAMILY_power', 0)
-conf.set('HAVE_HOST_CPU_FAMILY_powerpc', 0)
-
-variables = {
-  'alpha': {
-    'mpn_search_path': []
-  }
-}
 
 
 check_headers = [
