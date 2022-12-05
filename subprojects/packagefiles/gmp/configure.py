@@ -18,14 +18,17 @@ STANDARD_ABI = "standard"
 
 # common abi + compiler defintions
 GCC = CompilerAndABI(compiler="gcc", abi=STANDARD_ABI)
+GCC_32 = CompilerAndABI(compiler="gcc", abi="32")
 GCC_64 = CompilerAndABI(compiler="gcc", abi="64")
 CC = CompilerAndABI(compiler="cc", abi=STANDARD_ABI)
+CC_32 = CompilerAndABI(compiler="cc", abi="32")
 CC_64 = CompilerAndABI(compiler="cc", abi="64")
 
 CompilerOptions = NamedTuple(
     "CompilerOptions"
     [
         ("flags", List[str]),
+        ("cpp_flags", List[str])
         ("flags_maybe", List[str]),
         ("optional_flags", OrderedDict[str, List[str]]),
         ("testlist", List[str])
@@ -62,6 +65,7 @@ def default_gcc_flags() -> List[str]:
 def default_gcc_options() -> CompilerOptions:
     return CompilerOptions(
         flags=default_gcc_flags(),
+        cpp_flags=[],
         flags_maybe=[],
         optional_flags=OrderedDict(),
         testlist=[]
@@ -71,6 +75,7 @@ def default_gcc_options() -> CompilerOptions:
 def default_cc_options() -> CompilerOptions:
     return CompilerOptions(
         flags=["-O"],
+        cpp_flags=[],
         flags_maybe=[],
         optional_flags=OrderedDict(),
         testlist=[]
@@ -499,6 +504,8 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
         )
         if match(host, "*-*-mingw*"):
             options.abis["64"] = options.abis["64"]._replace(limb="longlong")
+    
+    return options
 
 
 def options_for_fujitsu() -> Options:
@@ -626,11 +633,84 @@ def options_for_hp(host: str, host_cpu: str) -> Options:
                 cyclecounter_size=2,
                 testlist=["sizeof-long-8"]
             )
+    
+    return options
+
+def mpn_search_path_for_itanium(host_cpu: str) -> List[str]:
+    if match(host_cpu, "itanium"):
+        return ["ia64/itanium", "ia64"]
+    elif match(host_cpu, "itanium2"):
+        return ["ia64/itanium2", "ia64"]
+    else:
+        return ["ia64"]
+
+def tune_flags_for_itanium_gcc(host_cpu: str) -> List[str]:
+    # gcc pre-release 3.4 adds -mtune itanium and itanium2
+    if match(host_cpu, "itanium"):
+        return ["-mtune=itanium"]
+    elif match(host_cpu, "itanium2"):
+        return ["-mtune=itanium2"]
+    else:
+        return []    
 
 def options_for_itanium(host: str, host_cpu: str) -> Options:
     options = default_options()
+    options.abis[STANDARD_ABI] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_itanium(host_cpu),
+        speed_cyclecounter_obj="ia64.lo",
+    )
+    options.compilers[GCC].optional_flags["tune"] = tune_flags_for_itanium_gcc(host_cpu)
+    if match(host, "*-*-linux*"):
+        ICC = CompilerAndABI(compiler="icc", abi=STANDARD_ABI)
+        options.compilers[ICC] = empty_compiler_options()._replace(
+            flags=["-no-gcc"],
+            # Don't use -O3, it is for "large data sets" and also miscompiles GMP.
+            # But icc miscompiles GMP at any optimization level, at higher levels
+            # it miscompiles more files...
+            optional_flags=OrderedDict([("opt", ["-O2", "-O1"])])
+            # Stepland: the original script had this defintion
+            # icc_cflags_opt_maybe="-fp-model~precise"
+            # but it looks like it goes completely unused by the configure script ...
+        )
+    elif match(host, "*-*-hpux*"):
+        # HP cc sometimes gets internal errors if the optimization level is
+        # too high.  GMP_PROG_CC_WORKS detects this, the "_opt" fallbacks
+        # let us use whatever seems to work.
+        options.abis["32"] = default_abi_options()._replace(
+            mpn_search_path=["ia64"],
+            limb="longlong",
+            speed_cyclecounter_obj="ia64.lo",
+            cyclecounter_size=2,
+            testlist=["sizeof-long-4"]
+        )
+        options.abis["64"] = default_abi_options()._replace(
+            testlist=["sizeof-long-8"]
+        )
+        options.compilers[GCC_32] = copy.deepcopy(options.compilers[GCC])._replace(
+            flags=default_gcc_flags() + ["-milp32"]
+        )
+        options.compiler[CC_32] = default_cc_options()._replace(
+            flags=[],
+            optional_flags=OrderedDict([("opt", ["+O2", "+O1"])])
+        )
 
+        # Must have +DD64 in CPPFLAGS to get the right __LP64__ for headers,
+        # but also need it in CFLAGS for linking programs, since automake
+        # only uses CFLAGS when linking, not CPPFLAGS.
+        # FIXME: Maybe should use cc_64_ldflags for this, but that would
+        # need GMP_LDFLAGS used consistently by all the programs.
+        options.compiler[CC] = options.compiler[CC]._replace(
+            flags=["+DD64"],
+            cpp_flags=["+DD64"],
+            optional_flags=OrderedDict([("opt", ["+O2", "+O1"])])
+        )
+        options.compiler[GCC] = options.compiler[GCC]._replace(
+            flags=default_gcc_flags() + ["-mlp64"]
+        )
+    
+    return options
 
+        
 def options_for(
     host: str,
     host_cpu: str,
