@@ -2,7 +2,7 @@ configure_file(
   input: 'xmlversion.h.in',
   output: 'xmlversion.h',
   configuration: withcdata,
-  install_dir: join_paths(get_option('includedir'), 'libxml2', 'libxml'),
+  install_dir: get_option('includedir') / 'libxml2' / 'libxml',
 )
 
 libxml_headers = files(

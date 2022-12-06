@@ -8,6 +8,12 @@ project(
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
+#hack to get rand_r working on windows
+cc = meson.get_compiler('c')
+if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
+  add_project_arguments('-D_POSIX_THREAD_SAFE_FUNCTIONS', language: 'c')
+endif
+
 cdata = configuration_data()
 
 cdata.set('PACKAGE', meson.project_name())
@@ -19,94 +25,162 @@ cdata.set('PACKAGE_BUGREPORT', 'xml@gnome.org')
 cdata.set('PACKAGE_VERSION', meson.project_version())
 cdata.set('VERSION', meson.project_version())
 
-cc = meson.get_compiler('c')
-
-cdata.set('SUPPORT_IP6', cc.has_header_symbol('sys/socket.h', 'AF_INET6'))
-cdata.set('XML_SOCKLEN_T', 'socklen_t')
-cdata.set('SEND_ARG2_CAST', '')
-cdata.set('GETHOSTBYNAME_ARG_CAST', '')
-
 if cc.has_function_attribute('destructor')
   cdata.set('ATTRIBUTE_DESTRUCTOR', '__attribute__((destructor))')
 endif
 
-checked_headers = [
-  'arpa/inet.h',
-  'dl.h',
-  'dlfcn.h',
-  'fcntl.h',
-  'float.h',
-  'inttypes.h',
-  'netdb.h',
-  'netinet/in.h',
-  'poll.h',
-  'pthread.h',
-  'stdint.h',
-  'sys/mman.h',
-  'sys/select.h',
-  'sys/socket.h',
-  'sys/stat.h',
-  'sys/time.h',
-  'sys/timeb.h',
-  'unistd.h',
-  'zlib.h',
-]
+if cc.has_header_symbol('sys/socket.h', 'AF_INET6') or cc.has_header_symbol('winsock2.h', 'AF_INET6')
+  cdata.set('SUPPORT_IP6', 1)
+endif
 
-foreach h : checked_headers
-  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
-endforeach
+if cc.compiles('#include <stdarg.h> void a(va_list*) {}int main(){va_list ap1,ap2;a(&ap1);ap2=(va_list)ap1;return 0;}')
+  cdata.set('VA_LIST_IS_ARRAY', 1)
+endif
 
-checked_funcs = [
-  'ftime',
-  'gettimeofday',
-  'isascii',
-  'mmap',
-  'munmap',
-  'putenv',
-  'rand_r',
-  'stat',
-  'va_copy',
-  '__va_copy',
-]
+if cc.compiles('#include <sys/socket.h> int main(){send(1,(const char*)"",1,1);}') or cc.compiles('#include <winsock2.h> int main(){send(1,(const char*)"",1,1);}')
+  cdata.set('SEND_ARG2_CAST', '/**/')
+else
+  cdata.set('SEND_ARG2_CAST', '(char *)')
+endif
 
-foreach f : checked_funcs
-  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
-endforeach
+if cc.compiles('#include <netdb.h> int main(){gethostbyname((const char*)"");}') or cc.compiles('#include <ws2tcpip.h> int main(){gethostbyname((const char*)"");}')
+  cdata.set('GETHOSTBYNAME_ARG_CAST', '/**/')
+else
+  cdata.set('GETHOSTBYNAME_ARG_CAST', '(char *)')
+endif
+
+if cc.has_header_symbol('stdlib.h', 'rand_r', args: '-D_POSIX_THREAD_SAFE_FUNCTIONS')
+  cdata.set('HAVE_RAND_R', 1)
+endif
+
+if cc.has_header_symbol('stdarg.h', 'va_copy')
+  cdata.set('HAVE_VA_COPY', 1)
+endif
+
+if cc.has_header_symbol('stdarg.h', '__va_copy')
+  cdata.set('HAVE___VA_COPY', 1)
+endif
+
+deps = []
 
 if meson.version().version_compare('>= 0.62')
-  dl_lib = dependency('dl', required: false)
+  dl_lib = dependency('dl', disabler: true, required: false)
 else
-  dl_lib = cc.find_library('dl', required: false)
+  dl_lib = cc.find_library('dl', disabler: true, required: false)
 endif
-cdata.set('HAVE_DLOPEN', cc.has_function('dlopen', dependencies: dl_lib))
+if dl_lib.found()
+  deps += dl_lib
+endif
 
 math_lib = cc.find_library('m', required: false)
+if math_lib.found()
+  deps += math_lib
+endif
 
 if meson.version().version_compare('>= 0.60')
   iconv_lib = dependency('iconv', required: false)
 else
   iconv_lib = dependency('', required: false)
 endif
+if iconv_lib.found()
+  deps += iconv_lib
+endif
 
-thread_dep = dependency('threads', required: false)
+thread_dep = dependency('threads', disabler: true, required: false)
+if thread_dep.found()
+  deps += thread_dep
+endif
 
 lzma_dep = dependency('liblzma', required: false)
-cdata.set('HAVE_LIBLZMA', lzma_dep.found())
+if lzma_dep.found()
+  cdata.set('HAVE_LIBLZMA', 1)
+  deps += lzma_dep
+endif
 
-zlib_dep = dependency('zlib', required: false)
-cdata.set('HAVE_LIBZ', zlib_dep.found())
+zlib_dep = dependency('zlib', disabler: true, required: false)
+if zlib_dep.found()
+  cdata.set('HAVE_LIBZ', 1)
+  deps += zlib_dep
+endif
 
 readline_lib = cc.find_library('readline', required: false)
-cdata.set('HAVE_LIBREADLINE', readline_lib.found())
+if readline_lib.found()
+  cdata.set('HAVE_LIBREADLINE', 1)
+  deps += readline_lib
+endif
 
 history_lib = cc.find_library('history', required: false)
-cdata.set('HAVE_LIBHISTORY', history_lib.found())
-
-deps = [math_lib, iconv_lib, dl_lib, lzma_dep, thread_dep, zlib_dep, readline_lib, history_lib]
-
-if target_machine.system() == 'windows'
-  deps += cc.find_library('ws2_32')
+if history_lib.found()
+  cdata.set('HAVE_LIBHISTORY', 1)
+  deps += history_lib
 endif
+
+ws2_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
+if ws2_dep.found()
+  deps += ws2_dep
+endif
+
+foreach t : ['socklen_t', 'size_t', 'int']
+  if cc.compiles('#include <sys/socket.h> int main(){getsockopt(1,1,1,0,(@0@*)0);}'.format(t))
+    cdata.set('XML_SOCKLEN_T', t)
+    break
+  endif
+  if cc.compiles('#include <winsock2.h> int main(){getsockopt(1,1,1,0,(@0@*)0);}'.format(t), dependencies: ws2_dep)
+    cdata.set('XML_SOCKLEN_T', t)
+    break
+  endif
+endforeach
+
+checked_headers = {
+  'arpa/inet.h': [],
+  'arpa/nameser.h': [],
+  'dl.h': dl_lib,
+  'dlfcn.h': dl_lib,
+  'fcntl.h': [],
+  'float.h': [],
+  'inttypes.h': [],
+  'netdb.h': [],
+  'netinet/in.h': [],
+  'poll.h': [],
+  'pthread.h': thread_dep,
+  'resolv.h': [],
+  'stdint.h': [],
+  'sys/mman.h': [],
+  'sys/select.h': [],
+  'sys/socket.h': [],
+  'sys/stat.h': [],
+  'sys/time.h': [],
+  'sys/timeb.h': [],
+  'sys/types.h': [],
+  'unistd.h': [],
+  'zlib.h': zlib_dep,
+}
+
+foreach h, d : checked_headers
+  if cc.has_header(h, dependencies: d)
+    cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+checked_funcs = {
+  'dlopen': dl_lib,
+  'ftime': [],
+  'getaddrinfo': ws2_dep,
+  'gettimeofday': [],
+  'isascii': [],
+  'mmap': [],
+  'munmap': [],
+  'putenv': [],
+  'stat': [],
+}
+
+foreach f, d : checked_funcs
+  if cc.has_function(f, dependencies: d)
+    cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+cdata.set('LT_OBJDIR', '.libs/')
 
 configure_file(
   input: 'config.h.cmake.in',
@@ -146,11 +220,11 @@ withcdata.set10('WITH_READER', true)
 withcdata.set10('WITH_PATTERN', true)
 withcdata.set10('WITH_WRITER', true)
 withcdata.set10('WITH_SAX1', true)
-withcdata.set10('WITH_FTP', true)
+withcdata.set10('WITH_FTP', false)
 withcdata.set10('WITH_HTTP', true)
 withcdata.set10('WITH_VALID', true)
 withcdata.set10('WITH_HTML', true)
-withcdata.set10('WITH_LEGACY', true)
+withcdata.set10('WITH_LEGACY', false)
 withcdata.set10('WITH_C14N', true)
 withcdata.set10('WITH_CATALOG', true)
 withcdata.set10('WITH_DOCB', true)
@@ -238,6 +312,10 @@ if need_trio
   sources += files('trio.c', 'trionan.c', 'triostr.c')
 endif
 
+if host_machine.system() == 'windows'
+  subdir('win32')
+endif
+
 cargs = thread_dep.found() ? ['-D_REENTRANT'] : []
 cargs += get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : []
 
@@ -255,7 +333,7 @@ libxml2_dep = declare_dependency(
   link_with: xml2lib,
   include_directories: incdir,
   dependencies: deps,
-  variables: {'modules': withcdata.get('WITH_MODULES').to_string()},
+  variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')),
   compile_args: get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : [],
 )
 
@@ -266,7 +344,7 @@ pkg.generate(
   description: 'libXML library version2.',
   filebase: 'libxml-2.0',
   subdirs: 'libxml2',
-  variables: ['modules=@0@'.format(withcdata.get('WITH_MODULES'))],
+  variables: 'modules=@0@'.format(withcdata.get('WITH_MODULES')),
   extra_cflags: get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : [],
 )
 
