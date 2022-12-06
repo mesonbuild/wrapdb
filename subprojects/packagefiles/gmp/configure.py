@@ -57,6 +57,7 @@ Options = NamedTuple(
         ("compilers", Dict[CompilerAndABI, CompilerOptions]),
         ("abis", Dict[str, ABIOptions]),  # ABI name -> objs
         ("gmp_asm_syntax_testing", bool),
+        ("defines", Dict[str, Optional[str]])
     ]
 )
 
@@ -117,6 +118,7 @@ def default_options() -> Options:
             STANDARD_ABI: default_abi_options()
         },
         gmp_asm_syntax_testing=True,
+        defines={}
     )
 
 def match(text: str, *patterns: str) -> bool:
@@ -234,7 +236,9 @@ def options_for_alpha_cc(host: str, host_cpu: str) -> CompilerOptions:
         return options
 
 def options_for_alpha(host: str, host_cpu: str, assembly: bool) -> Options:
-    options = default_options()
+    options = default_options()._replace(
+        defines={"HAVE_HOST_CPU_FAMILY_alpha": None}
+    )
     abi_options = default_abi_options()._replace(
         mpn_search_path=mpn_search_path_for_alpha(host_cpu)
     )
@@ -743,7 +747,9 @@ def mpn_search_path_for_motorola_68k(host_cpu: str) -> List[str]:
 
 def options_for_motorola_68k(host_cpu: str, profiling: str) -> Options:
     # Motorola 68k
-    options = default_options()
+    options = default_options()._replace(
+        defines={"HAVE_HOST_CPU_FAMILY_m68k": None}
+    )
     if profiling != "gprof":
         options.compilers[GCC] = options.compilers[GCC]._replace(
             flags=default_gcc_flags() + ["-fomit-frame-pointer"]
@@ -1143,7 +1149,9 @@ def options_for_powerpc(host: str, host_cpu: str) -> Options:
     # (Note also that the darwin assembler doesn't accept "-mppc", so any
     # -Wa,-mppc was used only if it worked.  The right flag on darwin would be
     # "-arch ppc" or some such, but that's already the default.)
-    options = default_options()
+    options = default_options()._replace(
+        defines={"HAVE_HOST_CPU_FAMILY_powerpc": None}
+    )
     options.compilers[CC] = options.compilers[CC]._replace(flags=["-O2"])
     options.compilers[GCC] = options.compilers[GCC]._replace(
         flags_maybe=["-m32"],
@@ -1217,7 +1225,8 @@ def options_for_power32(host: str, assembly: bool) -> Options:
             optional_flags=OrderedDict([
                 ("cpu", cpu_flags_for_power32(host))
             ])
-        )}
+        )},
+        defines={"HAVE_HOST_CPU_FAMILY_power": "1"}
     )
 
     if assembly:
@@ -1233,6 +1242,99 @@ def options_for_power32(host: str, assembly: bool) -> Options:
         )
     
     return options
+
+def options_for_risc_v() -> Options:
+    return default_options()._replace(
+        compilers={GCC: default_gcc_options()},
+        abis={STANDARD_ABI: default_abi_options()._replace(
+            mpn_search_path=["riscv/64"]
+        )}
+    )
+
+def cpu_id_for_ibm(host_cpu: str) -> Optional[str]:
+    if match(host_cpu, "z900", "z900esa"):
+        return "z900"
+    elif match(host_cpu, "z990", "z990esa"):
+        return "z990"
+    elif match(host_cpu, "z9", "z9esa"):
+        return "z9"
+    elif match(host_cpu, "z10", "z10esa"):
+        return "z10"
+    elif match(host_cpu, "z196", "z196esa"):
+        return "z196"
+    else:
+        return None
+
+def gccarch_for_ibm(host_cpu: str) -> Optional[str]:
+    if match(host_cpu, "z9", "z9esa"):
+        return "z9-109"
+    else:
+        return cpu_id_for_ibm(host_cpu)
+
+
+def arch_flags_for_ibm_gcc(host_cpu: str) -> List[str]:
+    gccarch = gccarch_for_ibm(host_cpu)
+    if gccarch is None:
+        return []
+    else:
+        return ["-march=" + gccarch]
+
+S390_PATTERN = ["s390-*-*", "z900esa-*-*", "z990esa-*-*", "z9esa-*-*", "z10esa-*-*", "z196esa-*-*"]
+S390X_PATTERN = ["s390x-*-*", "z900-*-*", "z990-*-*", "z9-*-*", "z10-*-*", "z196-*-*"]
+
+def options_for_ibm(host: str, host_cpu: str, assembly: bool, profiling: str) -> Options:
+    options = default_options()
+    if profiling != "gprof":
+        options.compilers[GCC] = options.compilers[GCC]._replace(
+            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
+        )
+    options.compilers[GCC].optional_flags["arch"] = arch_flags_for_ibm_gcc(host_cpu)
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=["s390_32"]
+    )
+    if assembly:
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            mpn_extra_functions=["udiv_w_sdiv"]
+        )
+    options.compilers[GCC] = options.compilers[GCC]._replace(
+        flags_maybe=["-m31"]
+    )
+    cpu_id = cpu_id_for_ibm(host_cpu)
+    if cpu_id is not None:
+        options.defines["HAVE_HOST_CPU_s390_" + cpu_id] = None
+        options.defines["HAVE_HOST_CPU_s390_zarch"] = None
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            mpn_extra_functions=[]
+        )
+    
+    if match(host, *S390X_PATTERN):
+        options.compilers[GCC_64] = default_gcc_options()._replace(
+            flags=default_gcc_flags() + ["-m64"]
+        )
+        options.compilers[GCC_64].optional_flags["arch"] = arch_flags_for_ibm_gcc(host_cpu)
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            mpn_search_path=[
+                "s390_64/" + host_cpu,
+                "s390_64"
+            ],
+            mpn_extra_functions=[]
+        )
+    
+    return options
+
+def options_for_sh() -> Options:
+    return default_options()._replace(
+        abis={STANDARD_ABI: default_abi_options()._replace(
+            mpn_search_path=["sh"]
+        )}
+    )
+
+def options_for_sh2() -> Options:
+    return default_options()._replace(
+        abis={STANDARD_ABI: default_abi_options()._replace(
+            mpn_search_path=["sh/sh2", "sh"]
+        )}
+    )
 
 def options_for(
     host: str,
@@ -1264,6 +1366,14 @@ def options_for(
         return options_for_powerpc(host, host_cpu)
     elif match(host, "power-*-*", "power[12]-*-*", "power2sc-*-*"):
         return options_for_power32(host, assembly)
+    elif match(host, "riscv64-*-*"):
+        return options_for_risc_v()
+    elif match(host, *S390_PATTERN, *S390X_PATTERN):
+        return options_for_ibm(host, host_cpu, assembly, profiling)
+    elif match(host, "sh-*-*"):
+        return options_for_sh()
+    elif match(host, "sh[2-4]-*-*"):
+        return options_for_sh2()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
