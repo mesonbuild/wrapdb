@@ -710,7 +710,63 @@ def options_for_itanium(host: str, host_cpu: str) -> Options:
     
     return options
 
-        
+def arch_flags_for_motorola_68k_gcc(host_cpu: str) -> List[str]:
+    # gcc 2.7.2 knows -m68000, -m68020, -m68030, -m68040.
+    # gcc 2.95 adds -mcpu32, -m68060.
+    # FIXME: Maybe "-m68020 -mnobitfield" would suit cpu32 on 2.7.2.
+    if match(host_cpu, "m68020"):
+        return ["-m68020"]
+    elif match(host_cpu, "m68030"):
+        return ["-m68030"]
+    elif match(host_cpu, "m68040"):
+        return ["-m68040"]
+    elif match(host_cpu, "m68060"):
+        return ["-m68060", "-m68000"]
+    elif match(host_cpu, "m68360"):
+        return ["-mcpu32", "-m68000"]
+    else:
+        return ["-m68000"]
+
+def mpn_search_path_for_motorola_68k(host_cpu: str) -> List[str]:
+    # FIXME: m68k/mc68020 looks like it's ok for cpu32, but this wants to be
+    # tested.  Will need to introduce an m68k/cpu32 if m68k/mc68020 ever uses
+    # the bitfield instructions.
+    if match(host_cpu, "m680[234]0", "m68360"):
+        return ["m68k/mc68020", "m68k"]
+    else:
+        return ["m68k"]
+
+def options_for_motorola_68k(host_cpu: str, profiling: str) -> Options:
+    # Motorola 68k
+    options = default_options()
+    if profiling != "gprof":
+        options.compilers[GCC] = options.compilers[GCC]._replace(
+            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
+        )
+    
+    options.compilers[GCC].optional_flags["arch"] = arch_flags_for_motorola_68k_gcc(host_cpu)
+    options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=mpn_search_path_for_motorola_68k(host_cpu)
+    )
+    return options
+
+def options_for_motorola_88k() -> Options:
+    options = default_options()
+    options.abi[STANDARD_ABI] = options.abi[STANDARD_ABI]._replace(
+        mpn_search_path=["m88k"]
+    )
+    return options
+
+def options_for_motorola_88110() -> Options:
+    options = default_options()
+    options.compilers[GCC] = options.compilers[GCC]._replace(
+        flags=default_gcc_flags() + ["-m88110"]
+    )
+    options.abi[STANDARD_ABI] = options.abi[STANDARD_ABI]._replace(
+        mpn_search_path=["m88k/mc88110", "m88k"]
+    )
+    return options
+
 def options_for(
     host: str,
     host_cpu: str,
@@ -729,6 +785,12 @@ def options_for(
         return options_for_hp(host, host_cpu)
     elif match(host, "ia64*-*-*", "itanium-*-*", "itanium2-*-*"):
         return options_for_itanium(host, host_cpu)
+    elif match(host, "m68k-*-*", "m68[0-9][0-9][0-9]-*-*"):
+        return options_for_motorola_68k(host_cpu) 
+    elif match(host, "m88k*-*-*"):
+        return options_for_motorola_88k()
+    elif match(host, "m88110*-*-*"):
+        return options_for_motorola_88110()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
