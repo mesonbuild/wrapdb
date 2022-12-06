@@ -28,9 +28,10 @@ CompilerOptions = NamedTuple(
     "CompilerOptions"
     [
         ("flags", List[str]),
-        ("cpp_flags", List[str])
-        ("flags_maybe", List[str]),
-        ("optional_flags", OrderedDict[str, List[str]]),
+        ("cpp_flags", List[str]),
+        ("flags_maybe", List[str]),  # single flags to use if they work
+        ("optional_flags", OrderedDict[str, List[str]]), # the first working flag of each list is kept
+        ("ld_flags"),  # -Wc,-foo flags for libtool linking with compiler xx
         ("testlist", List[str])
     ],
 )
@@ -38,9 +39,9 @@ CompilerOptions = NamedTuple(
 ABIOptions = NamedTuple(
     "ABIOptions",
     [
-        ("ar_flags", List[str]),
-        ("nm_flags", List[str]),
-        ("limb", Optional[str]),
+        ("ar_flags", List[str]),  # extra flags for $AR
+        ("nm_flags", List[str]),  # extra flags for $NM
+        ("limb", Optional[str]),  # limb size, can be "longlong"
         ("mpn_search_path", List[str]),
         ("mpn_extra_functions", List[str]),
         ("calling_conventions_objs", List[str]),
@@ -68,6 +69,7 @@ def default_gcc_options() -> CompilerOptions:
         cpp_flags=[],
         flags_maybe=[],
         optional_flags=OrderedDict(),
+        ld_flags=[],
         testlist=[]
     )    
 
@@ -78,6 +80,7 @@ def default_cc_options() -> CompilerOptions:
         cpp_flags=[],
         flags_maybe=[],
         optional_flags=OrderedDict(),
+        ld_flags=[],
         testlist=[]
     )
 
@@ -767,6 +770,65 @@ def options_for_motorola_88110() -> Options:
     )
     return options
 
+def mpn_search_path_for_mips_64(host_cpu: str) -> List[str]:
+    if match(host_cpu, "mips64r[6789]*", "mipsisa64r[6789]*"):
+        return ["mips64/r6", "mips64"]
+    else:
+        return ["mips64/hilo", "mips64"]
+
+def options_for_mips(host: str, host_cpu: str) -> Options:
+    # IRIX 5 and earlier can only run 32-bit o32.
+    #
+    # IRIX 6 and up always has a 64-bit mips CPU can run n32 or 64.  n32 is
+    # preferred over 64, but only because that's been the default in past
+    # versions of GMP.  The two are equally efficient.
+    #
+    # Linux kernel 2.2.13 arch/mips/kernel/irixelf.c has a comment about not
+    # supporting n32 or 64.
+    #
+    # For reference, libtool (eg. 1.5.6) recognises the n32 ABI and knows the
+    # right options to use when linking (both cc and gcc), so no need for
+    # anything special from us.
+    options = default_options()
+    options.compilers[GCC].optional_flags["abi"] = ["-mabi=32", "-m32"]
+    options.compilers[GCC] = options.compilers[GCC]._replace(
+        testlist=["gcc-mips-o32"]
+    )
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=["mips32"]
+    )
+    options.compilers[CC] = options.compilers[CC]._replace(
+        flags=["-O2", "-o32"]  # no -g, it disables all optimizations
+    )
+
+    if match(host, "mips64*-*-*", "mipsisa64*-*-*", "mips*-*-irix[6789]*"):
+        ABI_N32 = "n32"
+        GCC_N32 = CompilerAndABI(compiler="gcc", abi=ABI_N32)
+        options.compilers[GCC_N32] = default_gcc_options()
+        options.compilers[GCC_N32].optional_flags["abi"] = ["-mabi=n32", "-mn32"]
+        CC_N32 = CompilerAndABI(compiler="cc", abi=ABI_N32)
+        options.compilers[CC_N32] = default_cc_options()._replace(
+            flags=["-O2", "-n32"]  # no -g, it disables all optimizations
+        )
+        options.abis[ABI_N32] = default_abi_options()._replace(
+            mpn_search_path=mpn_search_path_for_mips_n32(host_cpu),
+            limb="longlong"
+        )
+
+        options.compilers[GCC_64] = default_gcc_options()._replace(
+            ld_flags=["-Wc,-mabi=64"]
+        )
+        options.compilers[GCC_64].optional_flags["abi"] = ["-mabi=64", "-m64"]
+        options.compilers[CC_64] = default_cc_options()._replace(
+            flags=["-O2", "-64"],  # no -g, it disables all optimizations
+            ld_flags=["-Wc,-64"]
+        )
+        options.abis["64"] = default_abi_options()._replace(
+            mpn_search_path=mpn_search_path_for_mips_n32(host_cpu)
+        )
+    
+    return options
+
 def options_for(
     host: str,
     host_cpu: str,
@@ -791,6 +853,8 @@ def options_for(
         return options_for_motorola_88k()
     elif match(host, "m88110*-*-*"):
         return options_for_motorola_88110()
+    elif match(host, "mips*-*-*"):
+        return options_for_mips(host, host_cpu)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
