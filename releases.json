@@ -2343,6 +2343,14 @@
       "1.24-1"
     ]
   },
+  "websocketpp": {
+    "dependency_names": [
+      "websocketpp"
+    ],
+    "versions": [
+      "0.8.2-1"
+    ]
+  },
   "wren": {
     "dependency_names": [
       "wren"
