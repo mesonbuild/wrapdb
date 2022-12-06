@@ -45,7 +45,7 @@ foreach h : check_headers
   cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-foreach f : [ 'fseeko', 'mmap', 'setmode' ]
+foreach f : ['fseeko', 'mmap', 'setmode']
   cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
@@ -90,5 +90,7 @@ cdata.set('CHECK_JPEG_YCBCR_SUBSAMPLING', true)
 
 subdir('libtiff')
 
-libtiff4_dep = declare_dependency(include_directories: 'libtiff',
-  link_with: tiff4_lib)
+libtiff4_dep = declare_dependency(
+  include_directories: 'libtiff',
+  link_with: tiff4_lib,
+)
