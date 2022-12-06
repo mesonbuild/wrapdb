@@ -25,13 +25,13 @@ CC_32 = CompilerAndABI(compiler="cc", abi="32")
 CC_64 = CompilerAndABI(compiler="cc", abi="64")
 
 CompilerOptions = NamedTuple(
-    "CompilerOptions"
+    "CompilerOptions",
     [
         ("flags", List[str]),
         ("cpp_flags", List[str]),
         ("flags_maybe", List[str]),  # single flags to use if they work
         ("optional_flags", OrderedDict[str, List[str]]), # the first working flag of each list is kept
-        ("ld_flags"),  # -Wc,-foo flags for libtool linking with compiler xx
+        ("ld_flags", List[str]),  # -Wc,-foo flags for libtool linking with compiler xx
         ("testlist", List[str])
     ],
 )
@@ -59,6 +59,16 @@ Options = NamedTuple(
         ("gmp_asm_syntax_testing", bool),
     ]
 )
+
+def empty_compiler_options() -> CompilerOptions:
+    return CompilerOptions(
+        flags=[],
+        cpp_flags=[],
+        flags_maybe=[],
+        optional_flags=OrderedDict(),
+        ld_flags=[],
+        testlist=[]
+    )
 
 def default_gcc_flags() -> List[str]:
     return ["-O2", "-pedantic"]
@@ -107,14 +117,6 @@ def default_options() -> Options:
             STANDARD_ABI: default_abi_options()
         },
         gmp_asm_syntax_testing=True,
-    )
-
-def empty_compiler_options() -> CompilerOptions:
-    return CompilerOptions(
-        flags=[],
-        flags_maybe=[],
-        optional_flags=OrderedDict(),
-        testlist=[]
     )
 
 def match(text: str, *patterns: str) -> bool:
@@ -455,9 +457,9 @@ def fpmode_flags_from_arm_gcc(host: str) -> List[str]:
     elif match(host, "*-*-*eabihf"):
         return ["-mfloat-abi=hard"]
     else:
-        return ()
+        return []
 
-def arm_cpu_has_64_abi(host_cpu: str) -> boolean:
+def arm_cpu_has_64_abi(host_cpu: str) -> bool:
     return match(
         host_cpu,
         "armcortexa53", "armcortexa53neon", "armcortexa55", "armcortexa55neon",
@@ -514,7 +516,7 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
 def options_for_fujitsu() -> Options:
     VCC = CompilerAndABI(compiler="vcc", abi=STANDARD_ABI)
     # FIXME: flags for vcc?
-    vcc_options = empty_compiler_options()._replace(flags="-g")
+    vcc_options = empty_compiler_options()._replace(flags=["-g"])
     abi_options = default_abi_options()._replace(
         mpn_search_path=["fujitsu"]
     )
@@ -606,7 +608,7 @@ def options_for_hp(host: str, host_cpu: str) -> Options:
             testlist=["sizeof-long-4", "hppa-level-2.0"],
         )
         CC_20N = CompilerAndABI(compiler="cc", abi=ABI_20N)
-        options.compiler[CC_20N] = empty_compiler_options()._replace(
+        options.compilers[CC_20N] = empty_compiler_options()._replace(
             flags=["+DA2.0", "+e", "+O2", "-Wl,+vnocompatwarnings"],
             testlist=["hpc-hppa-2-0"]
         )
@@ -626,7 +628,7 @@ def options_for_hp(host: str, host_cpu: str) -> Options:
                 flags=default_gcc_flags() + ["-mpa-risc-2-0"]
             )
             CC_20W = CompilerAndABI(compiler="cc", abi=ABI_20W)
-            options.compiler[CC_20W] = empty_compiler_options()._replace(
+            options.compilers[CC_20W] = empty_compiler_options()._replace(
                 flags=["+DD64", "+O2"],
                 testlist=["hpc-hppa-2-0"]
             )
@@ -692,7 +694,7 @@ def options_for_itanium(host: str, host_cpu: str) -> Options:
         options.compilers[GCC_32] = copy.deepcopy(options.compilers[GCC])._replace(
             flags=default_gcc_flags() + ["-milp32"]
         )
-        options.compiler[CC_32] = default_cc_options()._replace(
+        options.compilers[CC_32] = default_cc_options()._replace(
             flags=[],
             optional_flags=OrderedDict([("opt", ["+O2", "+O1"])])
         )
@@ -702,12 +704,12 @@ def options_for_itanium(host: str, host_cpu: str) -> Options:
         # only uses CFLAGS when linking, not CPPFLAGS.
         # FIXME: Maybe should use cc_64_ldflags for this, but that would
         # need GMP_LDFLAGS used consistently by all the programs.
-        options.compiler[CC] = options.compiler[CC]._replace(
+        options.compilers[CC] = options.compilers[CC]._replace(
             flags=["+DD64"],
             cpp_flags=["+DD64"],
             optional_flags=OrderedDict([("opt", ["+O2", "+O1"])])
         )
-        options.compiler[GCC] = options.compiler[GCC]._replace(
+        options.compilers[GCC] = options.compilers[GCC]._replace(
             flags=default_gcc_flags() + ["-mlp64"]
         )
     
@@ -755,7 +757,7 @@ def options_for_motorola_68k(host_cpu: str, profiling: str) -> Options:
 
 def options_for_motorola_88k() -> Options:
     options = default_options()
-    options.abi[STANDARD_ABI] = options.abi[STANDARD_ABI]._replace(
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
         mpn_search_path=["m88k"]
     )
     return options
@@ -765,7 +767,7 @@ def options_for_motorola_88110() -> Options:
     options.compilers[GCC] = options.compilers[GCC]._replace(
         flags=default_gcc_flags() + ["-m88110"]
     )
-    options.abi[STANDARD_ABI] = options.abi[STANDARD_ABI]._replace(
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
         mpn_search_path=["m88k/mc88110", "m88k"]
     )
     return options
@@ -811,7 +813,7 @@ def options_for_mips(host: str, host_cpu: str) -> Options:
             flags=["-O2", "-n32"]  # no -g, it disables all optimizations
         )
         options.abis[ABI_N32] = default_abi_options()._replace(
-            mpn_search_path=mpn_search_path_for_mips_n32(host_cpu),
+            mpn_search_path=mpn_search_path_for_mips_64(host_cpu),
             limb="longlong"
         )
 
@@ -824,7 +826,410 @@ def options_for_mips(host: str, host_cpu: str) -> Options:
             ld_flags=["-Wc,-64"]
         )
         options.abis["64"] = default_abi_options()._replace(
-            mpn_search_path=mpn_search_path_for_mips_n32(host_cpu)
+            mpn_search_path=mpn_search_path_for_mips_64(host_cpu)
+        )
+    
+    return options
+
+def mpn_search_path_for_powerpc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "powerpc740", "powerpc750"):
+        return ["powerpc32/750", "powerpc32"]
+    elif match(host_cpu, "powerpc7400", "powerpc7410"):
+        return ["powerpc32/vmx", "powerpc32/750", "powerpc32"]
+    elif match(host_cpu, "powerpc74[45]?"):
+        return ["powerpc32/vmx", "powerpc32"]
+    else:
+        return ["powerpc32"]
+
+def cpu_flags_for_powerpc_gcc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "powerpc401"):
+        return ["-mcpu=401"]
+    elif match(host_cpu, "powerpc403"):
+        return ["-mcpu=403"]
+    elif match(host_cpu, "powerpc405"):
+        return ["-mcpu=405"]
+    elif match(host_cpu, "powerpc505"):
+        return ["-mcpu=505"]
+    elif match(host_cpu, "powerpc601"):
+        return ["-mcpu=601"]
+    elif match(host_cpu, "powerpc602"):
+        return ["-mcpu=602"]
+    elif match(host_cpu, "powerpc603"):
+        return ["-mcpu=603"]
+    elif match(host_cpu, "powerpc603e"):
+        return ["-mcpu=603e", "-mcpu=603"]
+    elif match(host_cpu, "powerpc604"):
+        return ["-mcpu=604"]
+    elif match(host_cpu, "powerpc604e"):
+        return ["-mcpu=604e", "-mcpu=604"]
+    elif match(host_cpu, "powerpc620"):
+        return ["-mcpu=620"]
+    elif match(host_cpu, "powerpc630"):
+        return ["-mcpu=630"]
+    elif match(host_cpu, "powerpc740"):
+        return ["-mcpu=740"]
+    elif match(host_cpu, "powerpc7400", "powerpc7410"):
+        return ["-mcpu=7400", "-mcpu=750"]
+    elif match(host_cpu, "powerpc74[45]?"):
+        return ["-mcpu=7450"]
+    elif match(host_cpu, "powerpc750"):
+        return ["-mcpu=750"]
+    elif match(host_cpu, "powerpc801"):
+        return ["-mcpu=801"]
+    elif match(host_cpu, "powerpc821"):
+        return ["-mcpu=821"]
+    elif match(host_cpu, "powerpc823"):
+        return ["-mcpu=823"]
+    elif match(host_cpu, "powerpc860"):
+        return ["-mcpu=860"]
+    elif match(host_cpu, "powerpc970"):
+        return ["-mtune=970"]  # Stepland: not -mcpu ?
+    elif match(host_cpu, "power4"):
+        return ["-mtune=power4"]
+    elif match(host_cpu, "power5"):
+        return ["-mtune=power5", "-mtune=power4"]
+    elif match(host_cpu, "power6"):
+        return ["-mtune=power6"]
+    elif match(host_cpu, "power7"):
+        return ["-mtune=power7", "-mtune=power5"]
+    elif match(host_cpu, "power8"):
+        return ["-mtune=power8", "-mtune=power7", "-mtune=power5"]
+    elif match(host_cpu, "power9"):
+        return ["-mtune=power9", "-mtune=power8", "-mtune=power7", "-mtune=power5"]
+    else:
+        return []
+
+def arch_flags_for_powerpc_xlc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "powerpc403"):
+        return ["-qarch=403", "-qarch=ppc"]
+    elif match(host_cpu, "powerpc601"):
+        return ["-qarch=601", "-qarch=ppc"]
+    elif match(host_cpu, "powerpc602"):
+        return ["-qarch=602", "-qarch=ppc"]
+    elif match(host_cpu, "powerpc603", "powerpc603e"):
+        return ["-qarch=603", "-qarch=ppc"]
+    elif match(host_cpu, "powerpc604", "powerpc604e"):
+        return ["-qarch=604", "-qarch=ppc"]
+    elif match(host_cpu, "powerpc630"):
+        return ["-qarch=pwr3"]
+    elif match(host_cpu, "powerpc970"):
+        return ["-qarch=970", "-qarch=pwr3"]
+    elif match(host_cpu, "power4"):
+        return ["-qarch=pwr4"]
+    elif match(host_cpu, "power5"):
+        return ["-qarch=pwr5"]
+    elif match(host_cpu, "power6"):
+        return ["-qarch=pwr6"]
+    elif match(host_cpu, "power7"):
+        return ["-qarch=pwr7", "-qarch=pwr5"]
+    elif match(host_cpu, "power8"):
+        return ["-qarch=pwr8", "-qarch=pwr7", "-qarch=pwr5"]
+    elif match(host_cpu, "power9"):
+        return ["-qarch=pwr9", "-qarch=pwr8", "-qarch=pwr7", "-qarch=pwr5"]
+    else:
+        return []    
+
+def cpu_path_for_powerpc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "powerpc630"):
+        return ["p3", "p3-p7"]
+    elif match(host_cpu, "powerpc970", "power4"):
+        return ["p4", "p3-p7"]
+    elif match(host_cpu, "power5"):
+        return ["p5", "p4", "p3-p7"]
+    elif match(host_cpu, "power6"):
+        return ["p6", "p3-p7"]
+    elif match(host_cpu, "power7"):
+        return ["p7", "p5", "p4", "p3-p7"]
+    elif match(host_cpu, "power8"):
+        return ["p8", "p7", "p5", "p4", "p3-p7"]
+    elif match(host_cpu, "power9"):
+        return ["p9", "p8", "p7", "p5", "p4", "p3-p7"]
+    else:
+        return []     
+
+def vmx_path_for_powerpc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "powerpc970"):
+        return ["powerpc64/vmx"]
+    else:
+        return []   
+
+def mpn_search_path_for_powerpc_with_abi(host_cpu: str, abi: str) -> List[str]:
+    res = [
+        base + cpu_path
+        for cpu_path in cpu_path_for_powerpc(host_cpu)
+        for base in (
+            "powerpc64/{}/".format(abi),
+            "powerpc64/")
+    ]
+    res.extend([
+        "powerpc64/{}".format(abi),
+        *vmx_path_for_powerpc(host_cpu),
+        "powerpc64"
+    ])
+    return res
+
+def extended_mpn_search_path_for_powerpc(host_cpu: str) -> List[str]:
+    return [
+        "powerpc32/" + cpu_path
+        for cpu_path in cpu_path_for_powerpc(host_cpu)
+    ]
+
+def options_for_powerpc_aix_64(options: Options, host_cpu: str) -> Options:
+    # On AIX a true 64-bit ABI is available.
+    # Need -Wc to pass object type flags through to the linker.
+    MODE64 = "mode64"
+    GCC_MODE64 = CompilerAndABI(compiler="gcc", abi=MODE64)
+    options.compilers[GCC_MODE64] = default_gcc_options()._replace(
+        flags=default_gcc_flags() + ["-maix64", "-mpowerpc64"],
+        ld_flags=["-Wc,-maix64"]
+    )
+    options.compilers[GCC_MODE64].optional_flags["cpu"] = cpu_flags_for_powerpc_gcc(host_cpu)
+    XLC_MODE64 = CompilerAndABI(compiler="xlc", abi=MODE64)
+    options.compilers[XLC_MODE64] = empty_compiler_options()._replace(
+        flags=["-O2", "-q64", "-qmaxmem=20000"],
+        ld_flags=["-Wc,-q64"]
+    )
+    options.compilers[XLC_MODE64].optional_flags["arch"] = arch_flags_for_powerpc_xlc(host_cpu)
+    options.abis[MODE64] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_powerpc_with_abi(host_cpu, MODE64),
+        ar_flags=["-X64"],
+        nm_flags=["-X64"],
+        # grab this object, though it's not a true cycle counter routine
+        speed_cyclecounter_obj="powerpc64.lo",
+        cyclecounter_size=0
+    )
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=(
+            extended_mpn_search_path_for_powerpc(host_cpu)
+            + options.abis[STANDARD_ABI].mpn_search_path
+        ),
+    )
+    return options  
+
+def options_for_powerpc_darwin_64(options: Options, host_cpu: str) -> Options:
+    # On Darwin we can use 64-bit instructions with a longlong limb,
+    # but the chip still in 32-bit mode.
+    # In theory this can be used on any OS which knows how to save
+    # 64-bit registers in a context switch.
+
+    # Note that we must use -mpowerpc64 with gcc, since the
+    # longlong.h macros expect limb operands in a single 64-bit
+    # register, not two 32-bit registers as would be given for a
+    # long long without -mpowerpc64.  In theory we could detect and
+    # accommodate both styles, but the proper 64-bit registers will
+    # be fastest and are what we really want to use.
+
+    # One would think -mpowerpc64 would set the assembler in the right
+    # mode to handle 64-bit instructions.  But for that, also
+    # -force_cpusubtype_ALL is needed.
+
+    # Do not use -fast for Darwin, it actually adds options
+    # incompatible with a shared library.
+    options.compilers[GCC] = options.compilers[GCC]._replace(
+        flags=["-O2", "-O1"]  # will this become used?
+    )
+    MODE32 = "mode32"
+    GCC_MODE32 = CompilerAndABI(compiler="gcc", abi=MODE32)
+    options.compilers[GCC_MODE32] = default_gcc_options()._replace(
+        flags=["-mpowerpc64"],
+        flags_maybe=["-m32"],
+        optional_flags=OrderedDict([
+            ("subtype", ["-force_cpusubtype_ALL"]),
+            ("cpu", cpu_flags_for_powerpc_gcc(host_cpu)),
+            ("opt", ["-O2", "-O1"]),
+        ])
+    )
+    options.abis[MODE32] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_powerpc_with_abi(host_cpu, MODE32),
+        limb="longlong"
+    )
+    MODE64 = "mode64"
+    GCC_MODE64 = CompilerAndABI(compiler="gcc", abi=MODE64)
+    options.compilers[GCC_MODE64] = default_gcc_options()._replace(
+        flags=["-m64"],
+        optional_flags=OrderedDict([
+            ("cpu", cpu_flags_for_powerpc_gcc(host_cpu)),
+            ("opt", ["-O2", "-O1"])
+        ])
+    )
+    options.abis[MODE64] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_powerpc_with_abi(host_cpu, MODE64),
+        speed_cyclecounter_obj="powerpc64.lo",
+        cyclecounter_size=0,
+        testlist=["sizeof-long-8"]
+    )
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=(
+            extended_mpn_search_path_for_powerpc(host_cpu)
+            + options.abis[STANDARD_ABI].mpn_search_path
+        ),
+    )
+    return options
+
+def options_for_powerpc_linux_64(options: Options, host_cpu: str) -> Options:
+    # On GNU/Linux, assume the processor is in 64-bit mode.  Some
+    # environments have a gcc that is always in 64-bit mode, while
+    # others require -m64, hence the use of cflags_maybe.  The
+    # sizeof-long-8 test checks the mode is right (for the no option
+    # case).
+
+    # -mpowerpc64 is not used, since it should be the default in
+    # 64-bit mode.  (We need its effect for the various longlong.h
+    # asm macros to be right of course.)
+
+    # gcc64 was an early port of gcc to 64-bit mode, but should be
+    # obsolete before too long.  We prefer plain gcc when it knows
+    # 64-bits.
+    MODE32 = "mode32"
+    GCC_MODE32 = CompilerAndABI(compiler="gcc", abi=MODE32)
+    options.compilers[GCC_MODE32] = default_gcc_options()._replace(
+        flags=["-mpowerpc64"],
+        flags_maybe=["-m32"],
+        optional_flags=OrderedDict([
+            ("cpu", cpu_flags_for_powerpc_gcc(host_cpu)),
+            ("opt", ["-O2", "-O1"]),
+        ])
+    )
+    options.abis[MODE32] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_powerpc_with_abi(host_cpu, MODE32),
+        limb="longlong"
+    )
+    MODE64 = "mode64"
+    GCC_MODE64 = CompilerAndABI(compiler="gcc", abi=MODE64)
+    options.compilers[GCC_MODE64] = default_gcc_options()._replace(
+        flags=["-m64"],
+        optional_flags=OrderedDict([
+            ("cpu", cpu_flags_for_powerpc_gcc(host_cpu)),
+            ("opt", ["-O2", "-O1"])
+        ])
+    )
+    options.abis[MODE64] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_powerpc_with_abi(host_cpu, MODE64),
+        speed_cyclecounter_obj="powerpc64.lo",
+        cyclecounter_size=0,
+        testlist=["sizeof-long-8"]
+    )
+    GCC64_MODE64 = CompilerAndABI(compiler="gcc64", abi=MODE64)
+    # Stepland : I don't understand which defaults actually end up being
+    # used for gcc64 ...
+    options.compilers[GCC64_MODE64] = default_gcc_options()
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=(
+            extended_mpn_search_path_for_powerpc(host_cpu)
+            + options.abis[STANDARD_ABI].mpn_search_path
+        ),
+    )
+    return options
+
+def options_for_powerpc(host: str, host_cpu: str) -> Options:
+    # Darwin (powerpc-apple-darwin1.3) has it's hacked gcc installed as cc.
+    # Our usual "gcc in disguise" detection means gcc_cflags etc here gets
+    # used.
+
+    # The darwin pre-compiling preprocessor is disabled with -no-cpp-precomp
+    # since it doesn't like "__attribute__ ((mode (SI)))" etc in gmp-impl.h,
+    # and so always ends up running the plain preprocessor anyway.  This could
+    # be done in CPPFLAGS rather than CFLAGS, but there's not many places
+    # preprocessing is done separately, and this is only a speedup, the normal
+    # preprocessor gets run if there's any problems.
+
+    # We used to use -Wa,-mppc with gcc, but can't remember exactly why.
+    # Presumably it was for old versions of gcc where -mpowerpc doesn't put
+    # the assembler in the right mode.  In any case -Wa,-mppc is not good, for
+    # instance -mcpu=604 makes recent gcc use -m604 to get access to the
+    # "fsel" instruction, but a -Wa,-mppc overrides that, making code that
+    # comes out with fsel fail.
+
+    # (Note also that the darwin assembler doesn't accept "-mppc", so any
+    # -Wa,-mppc was used only if it worked.  The right flag on darwin would be
+    # "-arch ppc" or some such, but that's already the default.)
+    options = default_options()
+    options.compilers[CC] = options.compilers[CC]._replace(flags=["-O2"])
+    options.compilers[GCC] = options.compilers[GCC]._replace(
+        flags_maybe=["-m32"],
+        optional_flags=OrderedDict([
+            ("precomp", ["-no-cpp-precomp"]),
+            ("subtype", ["-force_cpusubtype_ALL"]),  # for vmx on darwin
+            ("asm", []),
+            ("cpu", cpu_flags_for_powerpc_gcc(host_cpu)),
+        ])
+    )
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=mpn_search_path_for_powerpc(host_cpu),
+        # grab this object, though it's not a true cycle counter routine
+        speed_cyclecounter_obj="powerpc.lo",
+        cyclecounter_size=0
+    )
+    if match(host, "*-*-aix*"):
+        options.compilers[GCC] = options.compilers[GCC]._replace(
+            flags_maybe=["-maix32"],
+        )
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            ar_flags=["-X32"],
+            nm_flags=["-X32"]
+        )
+        XLC = CompilerAndABI(compiler="xlc", abi=STANDARD_ABI)
+        options.compilers[XLC] = empty_compiler_options()._replace(
+            flags=["-O2", "-qmaxmem=20000"],
+            flags_maybe=["-q32"]
+        )
+        options.compilers[XLC].optional_flags["arch"] = arch_flags_for_powerpc_xlc(host_cpu)
+    
+    # POWERPC64_PATTERN
+    if match(
+        host,
+        "powerpc64-*-*",
+        "powerpc64le-*-*",
+        "powerpc620-*-*",
+        "powerpc630-*-*",
+        "powerpc970-*-*",
+        "power[3-9]-*-*"
+    ):
+        if match(host, "*-*-aix*"):
+            return options_for_powerpc_aix_64(options, host_cpu)
+        elif match(host, "*-*-darwin*"):
+            return options_for_powerpc_darwin_64(options, host_cpu)
+        elif match(host, "*-*-linux*", "*-*-*bsd*"):
+            return options_for_powerpc_linux_64(options, host_cpu)
+    
+    return options
+
+def cpu_flags_for_power32(host: str) -> List[str]:
+    # gcc 2.7.2 knows rios1, rios2, rsc
+
+    # -mcpu=rios2 can tickle an AIX assembler bug (see GMP_PROG_CC_WORKS) so
+    # there needs to be a fallback to just -mpower.
+    if match(host, "power-*-*"):
+        return ["-mcpu=power", "-mpower"]
+    elif match(host, "power1-*-*"):
+        return ["-mcpu=rios1", "-mpower"]
+    elif match(host, "power2-*-*"):
+        return ["-mcpu=rios2", "-mpower"]
+    elif match(host, "power2sc-*-*"):
+        return ["-mcpu=rsc", "-mpower"]
+    else:
+        return []
+
+def options_for_power32(host: str, assembly: bool) -> Options:
+    # POWER 32-bit
+    options = default_options()._replace(
+        compilers={GCC: default_gcc_options()._replace(
+            optional_flags=OrderedDict([
+                ("cpu", cpu_flags_for_power32(host))
+            ])
+        )}
+    )
+
+    if assembly:
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            mpn_search_path=["power"],
+            mpn_extra_functions=["udiv_w_sdiv"]
+        )
+    
+    if match(host, "*-*-aix*"):
+        XLC = CompilerAndABI(compiler="xlc", abi=STANDARD_ABI)
+        options.compilers[XLC] = empty_compiler_options()._replace(
+            flags=["-O2", "-qarch=pwr", "-qmaxmem=20000"]
         )
     
     return options
@@ -848,13 +1253,17 @@ def options_for(
     elif match(host, "ia64*-*-*", "itanium-*-*", "itanium2-*-*"):
         return options_for_itanium(host, host_cpu)
     elif match(host, "m68k-*-*", "m68[0-9][0-9][0-9]-*-*"):
-        return options_for_motorola_68k(host_cpu) 
+        return options_for_motorola_68k(host_cpu, profiling) 
     elif match(host, "m88k*-*-*"):
         return options_for_motorola_88k()
     elif match(host, "m88110*-*-*"):
         return options_for_motorola_88110()
     elif match(host, "mips*-*-*"):
         return options_for_mips(host, host_cpu)
+    elif match(host, "powerpc*-*-*", "power[3-9]-*-*"):
+        return options_for_powerpc(host, host_cpu)
+    elif match(host, "power-*-*", "power[12]-*-*", "power2sc-*-*"):
+        return options_for_power32(host, assembly)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
