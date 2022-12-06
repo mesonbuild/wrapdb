@@ -42,11 +42,15 @@ check_headers = [
 ]
 
 foreach h : check_headers
-  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+  if cc.has_header(h)
+    cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
+  endif
 endforeach
 
 foreach f : ['fseeko', 'mmap', 'setmode']
-  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+  if cc.has_function(f)
+    cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
 endforeach
 
 cdata.set('HAVE_JBG_NEWLEN', jbig_dep.found())
@@ -94,3 +98,5 @@ libtiff4_dep = declare_dependency(
   include_directories: 'libtiff',
   link_with: tiff4_lib,
 )
+
+subdir('test')
