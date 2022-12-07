@@ -199,14 +199,19 @@ libtheoraenc = library(
   install: true,
 )
 
+# In 1.1.1 the source pkg-config specifies an incorrect
+# dependency on theoradec which is relied on by GStreamer.
+# Otherwise th_version_string is invisible according to the
+# version scripts/.def files.
 pkg.generate(
   libtheoraenc,
+  requires: libtheoradec,
   description: 'Theora video codec (encoder)',
   version: meson.project_version(),
 )
 
 theoraenc_dep = declare_dependency(
-  link_with: libtheoraenc,
+  link_with: [libtheoraenc, libtheoradec],
   dependencies: [m_dep, libpng_dep, ogg_dep, config_dep],
   include_directories: incdir,
 )
