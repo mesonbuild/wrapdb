@@ -23,17 +23,16 @@ endif
 io_lib = library(
   'icuio',
   sources,
-  include_directories: incdir,
   c_args: '-DU_IO_IMPLEMENTATION',
   cpp_args: '-DU_IO_IMPLEMENTATION',
-  link_with: [i18n_lib, common_lib],
+  dependencies: icui18n_dep,
   version: U_ICU_VERSION,
   install: true,
 )
 
 icuio_dep = declare_dependency(
-  link_with: [io_lib, common_lib],
-  include_directories: incdir,
+  link_with: io_lib,
+  dependencies: icui18n_dep,
 )
 
 if meson.version().version_compare('>=0.54.0')
