@@ -232,12 +232,14 @@ icuuc_dep = declare_dependency(
   link_with: common_lib,
   compile_args: usage_args,
   include_directories: incdir,
+  dependencies: dl_dep,
 )
 
 icuuc_native_dep = declare_dependency(
   link_with: common_native_lib,
   compile_args: usage_args,
   include_directories: incdir,
+  dependencies: dl_native_dep,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -285,7 +287,7 @@ headers = files(
   'unicode/std_string.h',
   'unicode/strenum.h',
   'unicode/stringoptions.h',
-  'unicode/stringpiece.h', 
+  'unicode/stringpiece.h',
   'unicode/stringtriebuilder.h',
   'unicode/symtable.h',
   'unicode/ubidi.h',
