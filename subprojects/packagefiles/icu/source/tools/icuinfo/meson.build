@@ -3,7 +3,7 @@
 # debug it, uncomment and have fun.
 
 #shared_library('plugin', 'testplug.c',
-  #dependencies: toolutil_dep,
+#dependencies: toolutil_dep,
 #)
 
 executable(
