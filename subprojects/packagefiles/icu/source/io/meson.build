@@ -14,10 +14,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'io.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('io.rc', include_directories: incdir)
 endif
 
 io_lib = library(
@@ -43,5 +40,5 @@ pkg.generate(
   io_lib,
   name: 'icu-io',
   description: '@0@: Stream and I/O Library'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

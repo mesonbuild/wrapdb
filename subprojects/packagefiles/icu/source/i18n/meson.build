@@ -252,10 +252,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'i18n.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('i18n.rc', include_directories: incdir)
 endif
 
 if host_machine.system() == 'windows'
@@ -391,16 +388,17 @@ headers = files(
   'unicode/uspoof.h',
   'unicode/utmscale.h',
   'unicode/utrans.h',
-  'unicode/vtzone.h'
+  'unicode/vtzone.h',
 )
 
-install_headers(headers,
-  subdir: 'unicode'
+install_headers(
+  headers,
+  subdir: 'unicode',
 )
 
 pkg.generate(
   i18n_lib,
   name: 'icu-i18n',
   description: '@0@: Internationalization library'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

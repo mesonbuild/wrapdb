@@ -192,10 +192,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'common.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('common.rc', include_directories: incdir)
 endif
 
 icuuc_name = '@0@icuuc@1@'.format(library_prefix, library_suffix)
@@ -301,9 +298,9 @@ headers = files(
   'unicode/uchriter.h',
   'unicode/uclean.h',
   'unicode/ucnv.h',
-  'unicode/ucnvsel.h',
   'unicode/ucnv_cb.h',
   'unicode/ucnv_err.h',
+  'unicode/ucnvsel.h',
   'unicode/uconfig.h',
   'unicode/ucpmap.h',
   'unicode/ucptrie.h',
@@ -345,16 +342,17 @@ headers = files(
   'unicode/utrace.h',
   'unicode/utypes.h',
   'unicode/uvernum.h',
-  'unicode/uversion.h'
+  'unicode/uversion.h',
 )
 
-install_headers(headers,
-  subdir: 'unicode'
+install_headers(
+  headers,
+  subdir: 'unicode',
 )
 
 pkg.generate(
   common_lib,
   name: 'icu-uc',
   description: '@0@: Common and Data libraries'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

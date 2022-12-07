@@ -3,10 +3,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    '../data/misc/icudata.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('../data/misc/icudata.rc', include_directories: incdir)
 endif
 
 stubdata_lib = library(
