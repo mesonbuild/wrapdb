@@ -54,6 +54,8 @@ else
   )
 endif
 
+toolinc = include_directories('.')
+
 toolutil_dep = declare_dependency(
   link_with: toolutil_lib,
   dependencies: icui18n_dep,
