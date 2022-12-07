@@ -14,3 +14,8 @@ ctestfw = library(
   cpp_args: '-DT_CTEST_IMPLEMENTATION',
   dependencies: toolutil_dep,
 )
+
+ctestfw_dep = declare_dependency(
+  link_with: ctestfw,
+  dependencies: toolutil_dep,
+)
