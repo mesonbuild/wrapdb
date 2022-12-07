@@ -71,6 +71,8 @@ if cpp.get_id() != 'msvc'
   )
 
   icudata_dep = declare_dependency(
+    link_with: icudata,
+    include_directories: incdir,
     compile_args: usage_args,
   )
 
