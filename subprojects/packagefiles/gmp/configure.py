@@ -486,6 +486,12 @@ def arm_cpu_has_64_abi(host_cpu: str) -> bool:
         "aarch64*",
     )
 
+def omit_frame_pointer_if_needed(options: Options, profiling: str) -> Options:
+    if profiling != "gprof":
+        options.compilers[GCC].flags.append("-fomit-frame-pointer")
+    
+    return options
+
 def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
     options = default_options()
     options.abis[STANDARD_ABI] = default_abi_options()._replace(
@@ -493,11 +499,7 @@ def options_for_arm(host: str, host_cpu: str, profiling: str) -> Options:
         calling_conventions_objs=["arm32call.lo", "arm32check.lo"],
         testlist=["sizeof-void*-4"]
     )
-    if profiling != "gprof":
-        options.compilers[GCC] = options.compilers[GCC]._replace(
-            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
-        )
-
+    options = omit_frame_pointer_if_needed(options, profiling)
     options.compilers[GCC] = options.compilers[GCC]._replace(
         optional_flags=OrderedDict([
             ("arch", arch_flags_for_arm_gcc(host_cpu)),
@@ -763,11 +765,7 @@ def options_for_motorola_68k(host_cpu: str, profiling: str) -> Options:
         defines={"HAVE_HOST_CPU_FAMILY_m68k": None},
         gmp_include_mpn=["m68k/m68k-defs.m4"]
     )
-    if profiling != "gprof":
-        options.compilers[GCC] = options.compilers[GCC]._replace(
-            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
-        )
-    
+    options = omit_frame_pointer_if_needed(options, profiling) 
     options.compilers[GCC].optional_flags["arch"] = arch_flags_for_motorola_68k_gcc(host_cpu)
     options.abis[STANDARD_ABI]._replace(
         mpn_search_path=mpn_search_path_for_motorola_68k(host_cpu)
@@ -1298,10 +1296,7 @@ S390X_PATTERN = ["s390x-*-*", "z900-*-*", "z990-*-*", "z9-*-*", "z10-*-*", "z196
 
 def options_for_ibm(host: str, host_cpu: str, assembly: bool, profiling: str) -> Options:
     options = default_options()
-    if profiling != "gprof":
-        options.compilers[GCC] = options.compilers[GCC]._replace(
-            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
-        )
+    options = omit_frame_pointer_if_needed(options, profiling)
     options.compilers[GCC].optional_flags["arch"] = arch_flags_for_ibm_gcc(host_cpu)
     options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
         mpn_search_path=["s390_32"]
@@ -1597,10 +1592,7 @@ def options_for_sparc(host: str, host_cpu: str) -> Options:
 
 def options_for_vax(assembly: bool, profiling: str) -> Options:
     options = default_options()
-    if profiling != "gprof":
-        options.compilers[GCC] = options.compilers[GCC]._replace(
-            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
-        )
+    options = omit_frame_pointer_if_needed(options, profiling)
     if assembly:
         options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
             mpn_extra_functions=["udiv_w_sdiv"]
@@ -1613,7 +1605,464 @@ def options_for_vax_elf(assembly: bool, profiling: str) -> Options:
         gmp_include_mpn=["vax/elf.m4"]
     )
 
-def options_for(
+def cpu_has_mulx_x86(host_cpu: str) -> bool:
+    return match(
+        host_cpu,
+        "excavator", "bd4", "excavatornoavx", "bd4noavx",
+        "zen", "zennoavx",
+        "zen2", "zen2noavx", "zen3", "zen3noavx",
+        "coreihwl", "coreihwlnoavx", "haswell", "haswellnoavx",
+        "coreibwl", "coreibwlnoavx", "broadwell", "broadwellnoavx",
+        "skylake", "skylakenoavx", "kabylake", "kabylakenoavx"
+    )
+
+def cpu_flags_for_x86_gcc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "i386*"):
+        return ["-mtune=i386", "-mcpu=i386", "-m386"]
+    elif match(host_cpu, "i486*"):
+        return ["-mtune=i486", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "i586", "pentium"):
+        return ["-mtune=pentium", "-mcpu=pentium", "-m486"]
+    elif match(host_cpu, "pentiummmx"):
+        return ["-mtune=pentium-mmx", "-mcpu=pentium-mmx", "-mcpu=pentium", "-m486"]
+    elif match(host_cpu, "i686", "pentiumpro"):
+        return ["-mtune=pentiumpro", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "pentium2"):
+        return ["-mtune=pentium2", "-mcpu=pentium2", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "pentium3"):
+        return ["-mtune=pentium3", "-mcpu=pentium3", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "pentiumm"):
+        return ["-mtune=pentium3", "-mcpu=pentium3", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "k6"):
+        return ["-mtune=k6", "-mcpu=k6", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "k62"):
+        return ["-mtune=k6-2", "-mcpu=k6-2", "-mcpu=k6", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "k63"):
+        return ["-mtune=k6-3", "-mcpu=k6-3", "-mcpu=k6", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "geode"):
+        return ["-mtune=k6-3", "-mcpu=k6-3", "-mcpu=k6", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "athlon"):
+        return ["-mtune=athlon", "-mcpu=athlon", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "i786", "pentium4"):
+        return ["-mtune=pentium4", "-mcpu=pentium4", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "viac32"):
+        return ["-mtune=c3-2", "-mcpu=c3-2", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "viac3*"):
+        return ["-mtune=c3", "-mcpu=c3", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "athlon64", "k8", "x86_64"):
+        return ["-mtune=k8", "-mcpu=athlon", "-mcpu=pentiumpro", "-mcpu=i486", "-m486"]
+    elif match(host_cpu, "k10"):
+        return ["-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "bobcat"):
+        return ["-mtune=btver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "jaguar", "jaguarnoavx"):
+        return ["-mtune=btver2", "-mtune=btver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "bulldozer", "bd1", "bulldozernoavx", "bd1noavx"):
+        return ["-mtune=bdver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "piledriver", "bd2", "piledrivernoavx", "bd2noavx"):
+        return ["-mtune=bdver2", "-mtune=bdver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "steamroller", "bd3", "steamrollernoavx", "bd3noavx"):
+        return ["-mtune=bdver3", "-mtune=bdver2", "-mtune=bdver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "excavator", "bd4", "excavatornoavx", "bd4noavx"):
+        return ["-mtune=bdver4", "-mtune=bdver3", "-mtune=bdver2", "-mtune=bdver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "zen", "zennoavx"):
+        return ["-mtune=znver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "zen2", "zen2noavx", "zen3", "zen3noavx"):
+        return ["-mtune=znver2", "-mtune=znver1", "-mtune=amdfam10", "-mtune=k8"]
+    elif match(host_cpu, "core2"):
+        return ["-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "corei", "coreinhm", "coreiwsm", "nehalem", "westmere"):
+        return ["-mtune=nehalem", "-mtune=corei7", "-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "coreisbr", "coreisbrnoavx", "coreiibr", "coreiibrnoavx", "sandybridge", "sandybridgenoavx", "ivybridge", "ivybridgenoavx"):
+        return ["-mtune=sandybridge", "-mtune=corei7", "-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "coreihwl", "coreihwlnoavx", "haswell", "haswellnoavx"):
+        return ["-mtune=haswell", "-mtune=corei7", "-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "coreibwl", "coreibwlnoavx", "broadwell", "broadwellnoavx"):
+        return ["-mtune=broadwell", "-mtune=corei7", "-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "skylake", "skylakenoavx", "kabylake", "kabylakenoavx"):
+        return ["-mtune=skylake", "-mtune=broadwell", "-mtune=corei7", "-mtune=core2", "-mtune=k8"]
+    elif match(host_cpu, "atom"):
+        return ["-mtune=atom", "-mtune=pentium3"]
+    elif match(host_cpu, "silvermont"):
+        return ["-mtune=slm", "-mtune=atom", "-mtune=pentium3"]
+    elif match(host_cpu, "goldmont"):
+        return ["-mtune=slm", "-mtune=atom", "-mtune=pentium3"]
+    elif match(host_cpu, "nano"):
+        return ["-mtune=nano"]
+    else:
+        return ["-mtune=i486", "-mcpu=i486", "-m486"]
+
+def arch_flags_for_x86_gcc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "i386*"):
+        return ["-march=i386"]
+    elif match(host_cpu, "i486*"):
+        return ["-march=i486"]
+    elif match(host_cpu, "i586", "pentium"):
+        return ["-march=pentium"]
+    elif match(host_cpu, "pentiummmx"):
+        return ["-march=pentium-mmx", "-march=pentium"]
+    elif match(host_cpu, "i686", "pentiumpro"):
+        return ["-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "pentium2"):
+        return ["-march=pentium2", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "pentium3"):
+        return ["-march=pentium3", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "pentiumm"):
+        return ["-march=pentium3", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "k6"):
+        return ["-march=k6"]
+    elif match(host_cpu, "k62"):
+        return ["-march=k6-2", "-march=k6"]
+    elif match(host_cpu, "k63"):
+        return ["-march=k6-3", "-march=k6"]
+    elif match(host_cpu, "geode"):
+        return ["-march=k6-3", "-march=k6"]
+    elif match(host_cpu, "athlon"):
+        return ["-march=athlon", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "i786", "pentium4"):
+        return ["-march=pentium4", "-march=pentium4~-mno-sse2", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "viac32"):
+        return ["-march=c3-2", "-march=pentium3", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "viac3*"):
+        return ["-march=c3", "-march=pentium-mmx", "-march=pentium"]
+    elif match(host_cpu, "athlon64", "k8", "x86_64"):
+        return ["-march=k8", "-march=k8~-mno-sse2", "-march=athlon", "-march=pentiumpro", "-march=pentium"]
+    elif match(host_cpu, "k10"):
+        return ["-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "bobcat"):
+        return ["-march=btver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "jaguar", "jaguarnoavx"):
+        return ["-march=btver2", "-march=btver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "bulldozer", "bd1", "bulldozernoavx", "bd1noavx"):
+        return ["-march=bdver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "piledriver", "bd2", "piledrivernoavx", "bd2noavx"):
+        return ["-march=bdver2", "-march=bdver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "steamroller", "bd3", "steamrollernoavx", "bd3noavx"):
+        return ["-march=bdver3", "-march=bdver2", "-march=bdver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "excavator", "bd4", "excavatornoavx", "bd4noavx"):
+        return ["-march=bdver4", "-march=bdver3", "-march=bdver2", "-march=bdver1", "-march=amdfam10", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "zen", "zennoavx"):
+        return ["-march=znver1", "-march=amdfam10", "-march=k8"]
+    elif match(host_cpu, "zen2", "zen2noavx", "zen3", "zen3noavx"):
+        return ["-march=znver2", "-march=znver1", "-march=amdfam10", "-march=k8"]
+    elif match(host_cpu, "core2"):
+        return ["-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "corei", "coreinhm", "coreiwsm", "nehalem", "westmere"):
+        return ["-march=nehalem", "-march=corei7", "-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "coreisbr", "coreisbrnoavx", "coreiibr", "coreiibrnoavx", "sandybridge", "sandybridgenoavx", "ivybridge", "ivybridgenoavx"):
+        return ["-march=sandybridge", "-march=corei7", "-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "coreihwl", "coreihwlnoavx", "haswell", "haswellnoavx"):
+        return ["-march=haswell", "-march=corei7", "-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "coreibwl", "coreibwlnoavx", "broadwell", "broadwellnoavx"):
+        return ["-march=broadwell", "-march=corei7", "-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "skylake", "skylakenoavx", "kabylake", "kabylakenoavx"):
+        return ["-march=broadwell", "-march=corei7", "-march=core2", "-march=core2~-mno-sse2", "-march=k8", "-march=k8~-mno-sse2"]
+    elif match(host_cpu, "atom"):			
+        return ["-march=atom", "-march=pentium3"]
+    elif match(host_cpu, "silvermont"):		
+        return ["-march=slm", "-march=atom", "-march=pentium3"]
+    elif match(host_cpu, "goldmont"):			
+        return ["-march=slm", "-march=atom", "-march=pentium3"]
+    elif match(host_cpu, "nano"):
+        return ["-march=nano"]
+    else:
+        return ["-march=i486"]
+
+def noavx_flags_for_x86_gcc(host: str) -> List[str]:
+    # Disable AVX if the CPU part tells us AVX is unavailable, but also
+    # unconditionally for NetBSD where they don't work but OSXSAVE is set
+    # to claim the contrary.
+    if match(host, "*noavx-*-*", "*-*-netbsd*"):
+        return ["-mno-avx"]
+    else:
+        return []
+
+def mpn_search_path_for_x86(host_cpu: str) -> List[str]:
+    if match(host_cpu, "i386*"):
+        return ["x86"]
+    elif match(host_cpu, "i486*"):
+        return ["x86/i486", "x86"]
+    elif match(host_cpu, "i586", "pentium"):
+        return ["x86/pentium", "x86"]
+    elif match(host_cpu, "pentiummmx"):
+        return ["x86/pentium/mmx", "x86/pentium", "x86/mmx", "x86"]
+    elif match(host_cpu, "i686", "pentiumpro"):
+        return ["x86/p6", "x86"]
+    elif match(host_cpu, "pentium2"):
+        return ["x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "pentium3"):
+        return ["x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "pentiumm"):
+        return ["x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "k6"):
+        return ["x86/k6/mmx", "x86/k6", "x86/mmx", "x86"]
+    elif match(host_cpu, "k62"):
+        return ["x86/k6/k62mmx", "x86/k6/mmx", "x86/k6", "x86/mmx", "x86"]
+    elif match(host_cpu, "k63"):
+        return ["x86/k6/k62mmx", "x86/k6/mmx", "x86/k6", "x86/mmx", "x86"]
+    elif match(host_cpu, "geode"):
+        return ["x86/geode", "x86/k6/k62mmx", "x86/k6/mmx", "x86/k6", "x86/mmx", "x86"]
+    elif match(host_cpu, "athlon"):
+        return ["x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "i786", "pentium4"):
+        return ["x86/pentium4/sse2", "x86/pentium4/mmx", "x86/pentium4", "x86/mmx", "x86"]
+    elif match(host_cpu, "viac32"):
+        return ["x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "viac3*"):
+        return ["x86/pentium/mmx", "x86/pentium", "x86/mmx", "x86"]
+    elif match(host_cpu, "athlon64", "k8", "x86_64"):
+        return ["x86/k8", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "k10"):
+        return ["x86/k10", "x86/k8", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "bobcat"):
+        return ["x86/bt1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "jaguar", "jaguarnoavx"):
+        return ["x86/bt2", "x86/bt1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "bulldozer", "bd1", "bulldozernoavx", "bd1noavx"):
+        return ["x86/bd1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "piledriver", "bd2", "piledrivernoavx", "bd2noavx"):
+        return ["x86/bd2", "x86/bd1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "steamroller", "bd3", "steamrollernoavx", "bd3noavx"):
+        return ["x86/bd3", "x86/bd2", "x86/bd1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "excavator", "bd4", "excavatornoavx", "bd4noavx"):
+        return ["x86/bd4", "x86/bd3", "x86/bd2", "x86/bd1", "x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "zen", "zennoavx"):
+        return ["x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "zen2", "zen2noavx", "zen3", "zen3noavx"):
+        return ["x86/k7/mmx", "x86/k7", "x86/mmx", "x86"]
+    elif match(host_cpu, "core2"):
+        return ["x86/core2", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "corei", "coreinhm", "coreiwsm", "nehalem", "westmere"):
+        return ["x86/coreinhm", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "coreisbr", "coreisbrnoavx", "coreiibr", "coreiibrnoavx", "sandybridge", "sandybridgenoavx", "ivybridge", "ivybridgenoavx"):
+        return ["x86/coreisbr", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "coreihwl", "coreihwlnoavx", "haswell", "haswellnoavx"):
+        return ["x86/coreihwl", "x86/coreisbr", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "coreibwl", "coreibwlnoavx", "broadwell", "broadwellnoavx"):
+        return ["x86/coreihwl", "x86/coreisbr", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "skylake", "skylakenoavx", "kabylake", "kabylakenoavx"):
+        return ["x86/coreihwl", "x86/coreisbr", "x86/p6/sse2", "x86/p6/p3mmx", "x86/p6/mmx", "x86/p6", "x86/mmx", "x86"]
+    elif match(host_cpu, "atom"):			
+        return ["x86/atom/sse2", "x86/atom/mmx", "x86/atom", "x86/mmx", "x86"]
+    elif match(host_cpu, "silvermont"):		
+        return ["x86/silvermont", "x86/atom/sse2", "x86/atom/mmx", "x86/atom", "x86/mmx", "x86"]
+    elif match(host_cpu, "goldmont"):			
+        return ["x86/goldmont", "x86/atom/sse2", "x86/atom/mmx", "x86/atom", "x86/mmx", "x86"]
+    elif match(host_cpu, "nano"):
+        return ["x86/nano", "x86/mmx", "x86"]
+    else:
+        return ["x86"]
+
+def cpu_flags_for_x86_gcc_64(host_cpu: str) -> List[str]:
+    if match(host_cpu, "i786", "pentium4"):
+        return ["-mtune=nocona"]
+    else:
+        return []
+
+def mpn_search_path_for_x86_64(host_cpu: str) -> List[str]:
+    if match(
+        host_cpu,
+        "i386*",
+        "i486*", "i586",
+        "pentium",
+        "pentiummmx", "i686",
+        "pentiumpro",
+        "pentium2",
+        "pentium3",
+        "pentiumm",
+        "k6",
+        "k62",
+        "k63",
+        "geode",
+        "athlon",
+        "viac32",
+        "viac3*"
+    ):
+        return []
+    elif match(host_cpu, "i786", "pentium4"):
+        return ["x86_64/pentium4", "x86_64"]
+    elif match(host_cpu, "athlon64", "k8", "x86_64"):
+        return ["x86_64/k8", "x86_64"]
+    elif match(host_cpu, "k10"):
+        return ["x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "bobcat"):
+        return ["x86_64/bt1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "jaguar", "jaguarnoavx"):
+        return ["x86_64/bt2", "x86_64/bt1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "bulldozer", "bd1", "bulldozernoavx", "bd1noavx"):
+        return ["x86_64/bd1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "piledriver", "bd2", "piledrivernoavx", "bd2noavx"):
+        return ["x86_64/bd2", "x86_64/bd1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "steamroller", "bd3", "steamrollernoavx", "bd3noavx"):
+        return ["x86_64/bd3", "x86_64/bd2", "x86_64/bd1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "excavator", "bd4", "excavatornoavx", "bd4noavx"):
+        return ["x86_64/bd4", "x86_64/bd3", "x86_64/bd2", "x86_64/bd1", "x86_64/k10", "x86_64/k8", "x86_64"]
+    elif match(host_cpu, "zen", "zennoavx"):
+        return ["x86_64/zen", "x86_64"]
+    elif match(host_cpu, "zen2", "zen2noavx", "zen3", "zen3noavx"):
+        return ["x86_64/zen2", "x86_64/zen", "x86_64"]
+    elif match(host_cpu, "core2"):
+        return ["x86_64/core2", "x86_64"]
+    elif match(host_cpu, "corei", "coreinhm", "coreiwsm", "nehalem", "westmere"):
+        return ["x86_64/coreinhm", "x86_64/core2", "x86_64"]
+    elif match(host_cpu, "coreisbr", "coreisbrnoavx", "coreiibr", "coreiibrnoavx", "sandybridge", "sandybridgenoavx", "ivybridge", "ivybridgenoavx"):
+        return ["x86_64/coreisbr", "x86_64/coreinhm", "x86_64/core2", "x86_64"]
+    elif match(host_cpu, "coreihwl", "coreihwlnoavx", "haswell", "haswellnoavx"):
+        return ["x86_64/coreihwl", "x86_64/coreisbr", "x86_64/coreinhm", "x86_64/core2", "x86_64"]
+    elif match(host_cpu, "coreibwl", "coreibwlnoavx", "broadwell", "broadwellnoavx"):
+        return ["x86_64/coreibwl", "x86_64/coreihwl", "x86_64/coreisbr", "x86_64/coreinhm", "x86_64/core2", "x86_64"]
+    elif match(host_cpu, "skylake", "skylakenoavx", "kabylake", "kabylakenoavx"):
+        return ["x86_64/skylake", "x86_64/coreibwl", "x86_64/coreihwl", "x86_64/coreisbr", "x86_64/coreinhm", "x86_64/core2", "x86_64"]
+    elif match(host_cpu, "atom"):			
+        return ["x86_64/atom", "x86_64"]
+    elif match(host_cpu, "silvermont"):		
+        return ["x86_64/silvermont", "x86_64/atom", "x86_64"]
+    elif match(host_cpu, "goldmont"):			
+        return ["x86_64/goldmont", "x86_64/silvermont", "x86_64/atom", "x86_64"]
+    elif match(host_cpu, "nano"):
+        return ["x86_64/nano", "x86_64"]
+    else:
+        return ["x86_64"]
+
+X86_PATTERN = [
+    "i?86*-*-*",
+    "k[5-8]*-*-*",
+    "pentium*-*-*",
+    "athlon-*-*",
+    "viac3*-*-*",
+    "geode*-*-*",
+    "atom-*-*"
+]
+
+X86_64_PATTERN = [
+    "athlon64-*-*",
+    "k8-*-*",
+    "k10-*-*",
+    "bobcat-*-*",
+    "jaguar*-*-*",
+    "bulldozer*-*-*",
+    "piledriver*-*-*",
+    "steamroller*-*-*",
+    "excavator*-*-*",
+    "zen*-*-*",
+    "pentium4-*-*",
+    "atom-*-*",
+    "silvermont-*-*",
+    "goldmont-*-*",
+    "core2-*-*",
+    "corei*-*-*",
+    "x86_64-*-*",
+    "nano-*-*",
+    "nehalem*-*-*",
+    "westmere*-*-*",
+    "sandybridge*-*-*",
+    "ivybridge*-*-*",
+    "haswell*-*-*",
+    "broadwell*-*-*",
+    "skylake*-*-*",
+    "kabylake*-*-*"
+]
+
+def options_from_x86(host: str, host_cpu: str, assembly: bool, profiling: str) -> Options:
+    # AMD and Intel x86 configurations, including AMD64
+
+    # Rumour has it gcc -O2 used to give worse register allocation than just
+    # -O, but lets assume that's no longer true.
+
+    # -m32 forces 32-bit mode on a bi-arch 32/64 amd64 build of gcc.  -m64 is
+    # the default in such a build (we think), so -m32 is essential for ABI=32.
+    # This is, of course, done for any $host_cpu, not just x86_64, so we can
+    # get such a gcc into the right mode to cross-compile to say i486-*-*.
+
+    # -m32 is not available in gcc 2.95 and earlier, hence cflags_maybe to use
+    # it when it works.  We check sizeof(long)==4 to ensure we get the right
+    # mode, in case -m32 has failed not because it's an old gcc, but because
+    # it's a dual 32/64-bit gcc without a 32-bit libc, or whatever.
+    options = default_options()
+    options = omit_frame_pointer_if_needed(options, profiling)
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=mpn_search_path_for_x86(host_cpu),
+        calling_conventions_objs=["x86call.lo", "x86check$U.lo"],
+        # Availability of rdtsc is checked at run-time.
+        speed_cyclecounter_obj="pentium.lo"
+    )
+    options.compilers[GCC_32] = default_gcc_options()._replace(
+        flags_maybe=["-m32"]
+    )
+    # like seen previously, the original configure script creates a variable
+    # icc_cflags_opt_maybe="-fp-model~precise"
+    # but it doesn't seem to be used anywhere ???
+    options.abis["32"] = default_abi_options()._replace(
+        testlist=["sizeof-long-4"]
+    )
+    x86_has_mulx = cpu_has_mulx_x86(host_cpu)
+    options.compilers[GCC].optional_flags["cpu"] = cpu_flags_for_x86_gcc(host_cpu)
+    options.compilers[GCC].optional_flags["arch"] = arch_flags_for_x86_gcc(host_cpu)
+    options.compilers[GCC].optional_flags["noavx"] = noavx_flags_for_x86_gcc(host)
+
+    if not match(host, *X86_64_PATTERN):
+        ICC = CompilerAndABI(compiler="icc", abi=STANDARD_ABI)
+        options.compilers[ICC] = empty_compiler_options()._replace(
+            flags=["-no-gcc"]
+        )
+        options.compilers[ICC].optional_flags["opt"] = ["-O3", "-O2", "-O1"]
+    if match(host, *X86_64_PATTERN):
+        options.compilers[GCC_64] = default_gcc_options()._replace(
+            flags=default_gcc_flags() + ["-m64"]
+        )
+        options.compilers[GCC_64].optional_flags["cpu"] = (
+            cpu_flags_for_x86_gcc(host_cpu) + cpu_flags_for_x86_gcc_64(host_cpu)
+        )
+        options.compilers[GCC_64].optional_flags["arch"] = arch_flags_for_x86_gcc(host_cpu)
+        options.compilers[GCC_64].optional_flags["noavx"] = noavx_flags_for_x86_gcc(host)
+        options.abis["64"] = default_abi_options()._replace(
+            mpn_search_path=mpn_search_path_for_x86_64(host_cpu),
+            calling_conventions_objs=["amd64call.lo", "amd64check$U.lo"],
+            speed_cyclecounter_obj="x86_64.lo",
+            cyclecounter_size=2
+        )
+
+        X32_ABI = "x32"
+        GCC_X32 = CompilerAndABI(compiler="gcc", abi=X32_ABI)
+        options.compilers[GCC_X32] = default_gcc_options()._replace(
+            flags=default_gcc_flags() + ["-mx32"]
+        )
+        options.compilers[GCC_X32].optional_flags["cpu"] = (
+            cpu_flags_for_x86_gcc(host_cpu) + cpu_flags_for_x86_gcc_64(host_cpu)
+        )
+        options.compilers[GCC_X32].optional_flags["arch"] = arch_flags_for_x86_gcc(host_cpu)
+        options.compilers[GCC_X32].optional_flags["noavx"] = noavx_flags_for_x86_gcc(host)
+        options.abis[X32_ABI] = default_abi_options()._replace(
+            mpn_search_path=mpn_search_path_for_x86_64(host_cpu),
+            calling_conventions_objs=["amd64call.lo", "amd64check$U.lo"],
+            speed_cyclecounter_obj="x86_64.lo",
+            cyclecounter_size=2,
+            limb="longlong",
+            testlist=["sizeof-long-4"],
+        )
+        CC_X32 = CompilerAndABI(compiler="cc", abi=X32_ABI)
+        options.compilers[CC_X32] = default_cc_options()
+
+        if assembly:
+            options.abis["64"].mpn_extra_functions.append("invert_limb_table")
+            options.abis[X32_ABI] = options.abis[X32_ABI]._replace(
+                mpn_extra_functions=options.abis["64"].mpn_extra_functions
+            )
+        
+        if match(host, "*-*-solaris*"):
+            options.compilers[CC_64] = options.compilers[CC_64]._replace(
+                flags=["-xO3", "-m64"]
+            )
+        elif match(host, "*-*-mingw*", "*-*-msys", "*-*-cygwin"):
+            options.abis["64"] = options.abis["64"]._replace(
+                limb="longlong",
+                calling_conventions_objs=[]
+            )
+            options.defines["HOST_DOS64"] = "1"
+    
+    return options
+
+def options_for_host(
     host: str,
     host_cpu: str,
     assembly: bool,
@@ -1657,6 +2106,26 @@ def options_for(
         return options_for_vax_elf(assembly, profiling)
     elif match(host, "vax*-*-*"):
         return options_for_vax(assembly, profiling)
+    elif match(host, *X86_PATTERN, *X86_64_PATTERN):
+        return options_from_x86(host, host_cpu, assembly, profiling)
+    else:
+        return default_options()
+
+def options_for(
+    host: str,
+    host_cpu: str,
+    assembly: bool,
+    profiling: str
+) -> Options:
+    options = options_for_host(host, host_cpu, assembly, profiling)
+    # mingw can be built by the cygwin gcc if -mno-cygwin is added.  For
+    # convenience add this automatically if it works.  Actual mingw gcc accepts
+    # -mno-cygwin too, but of course is the default.  mingw only runs on the
+    # x86s, but allow any CPU here so as to catch "none" too.
+    if match(host, "*-*-mingw*", "*-*-msys"):
+        options.compilers[GCC].optional_flags["nocygwin"] = ["-mno-cygwin"]
+    
+    return options
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -1671,3 +2140,4 @@ if __name__ == "__main__":
         args.assembly,
         args.profiling
     )
+    print(options)
