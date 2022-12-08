@@ -2,7 +2,7 @@ project(
   'openal-soft',
   'cpp',
   version: '1.22.2',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.49.0',
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
@@ -43,9 +43,11 @@ if get_option('default_library') != 'static'
   elif cpp.has_function_attribute('visibility:default')
     api = '__attribute__((visibility("default")))'
   endif
-  openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
+else
+  openal_args += '-DAL_LIBTYPE_STATIC'
 endif
 
+openal_args += ['-DAL_BUILD_LIBRARY', '-DAL_ALEXT_PROTOTYPES']
 openal_args += '-DAL_API=@0@'.format(api)
 openal_args += '-DALC_API=@0@'.format(api)
 
@@ -260,8 +262,16 @@ endif
 common_lib = static_library(
   'common',
   common_sources,
-  include_directories: ['include', 'common', 'alc'],
 )
+
+common_inc = include_directories('.')
+
+common_dep = declare_dependency(
+  link_with: common_lib,
+  include_directories: common_inc,
+)
+
+openal_inc = include_directories('common', 'include')
 
 openal_lib = library(
   'openal',
@@ -270,8 +280,8 @@ openal_lib = library(
   alc_sources,
   hrtf_h,
   cpp_args: openal_args,
-  include_directories: ['include', 'common', 'alc'],
   dependencies: [
+    common_dep,
     dl_dep,
     thread_dep,
     alsa_dep,
@@ -288,7 +298,7 @@ openal_lib = library(
     sndio_dep,
     solaris_dep,
   ],
-  link_with: common_lib,
+  include_directories: openal_inc,
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
   soversion: host_machine.system() == 'windows' ? '' : '1',
@@ -296,9 +306,10 @@ openal_lib = library(
 )
 
 openal_dep = declare_dependency(
+  link_with: openal_lib,
+  include_directories: openal_inc,
+  dependencies: common_dep,
   compile_args: get_option('default_library') == 'static' ? '-DAL_LIBTYPE_STATIC' : [],
-  include_directories: ['.', 'include', 'include/AL', 'common'],
-  link_with: [common_lib, openal_lib],
 )
 
 if meson.version().version_compare('>=0.54.0')
