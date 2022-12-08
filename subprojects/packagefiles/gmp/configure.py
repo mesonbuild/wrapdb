@@ -58,7 +58,8 @@ Options = NamedTuple(
         ("abis", Dict[str, ABIOptions]),  # ABI name -> objs
         ("gmp_asm_syntax_testing", bool),
         ("defines", Dict[str, Optional[str]]),
-        ("testlist", List[str])  # tests for any compiler
+        ("testlist", List[str]),  # tests for any compiler
+        ("gmp_include_mpn", List[str])
     ]
 )
 
@@ -123,7 +124,8 @@ def default_options() -> Options:
         },
         gmp_asm_syntax_testing=True,
         defines={},
-        testlist=[]
+        testlist=[],
+        gmp_include_mpn=[]
     )
 
 def match(text: str, *patterns: str) -> bool:
@@ -228,7 +230,7 @@ def options_for_alpha_cc(host: str, host_cpu: str) -> CompilerOptions:
     if match(host, "*-cray-unicos*"):
         # no -g, it silently disables all optimizations
         return options._replace(flags=["-O"])
-    elif match(host, "*-cray-unicos*"):
+    elif match(host, "*-*-osf*"):
         return options._replace(
             flags=[],
             optional_flags=OrderedDict([
@@ -244,6 +246,7 @@ def options_for_alpha(host: str, host_cpu: str, assembly: bool) -> Options:
     options = default_options()._replace(
         defines={"HAVE_HOST_CPU_FAMILY_alpha": None}
     )
+    options.gmp_include_mpn.append("alpha/alpha-defs.m4")
     abi_options = default_abi_options()._replace(
         mpn_search_path=mpn_search_path_for_alpha(host_cpu)
     )
@@ -260,7 +263,10 @@ def options_for_alpha(host: str, host_cpu: str, assembly: bool) -> Options:
     if match(host, "*-cray-unicos*"):
         # Don't perform any assembly syntax tests on this beast.
         options = options._replace(gmp_asm_syntax_testing=False)
-    
+        options.gmp_include_mpn.append("alpha/unicos.m4")
+    else:
+        options.gmp_include_mpn.append("alpha/default.m4")
+
     if not match(host, "*-*-unicos*"):
         # tune/alpha.asm assumes int==4bytes but unicos uses int==8bytes
         options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
@@ -534,7 +540,8 @@ def options_for_fujitsu() -> Options:
             GCC: default_gcc_options(),
             VCC: vcc_options
         },
-        abis={STANDARD_ABI: abi_options}
+        abis={STANDARD_ABI: abi_options},
+        gmp_include_mpn=["ia64/ia64-defs.m4"]
     )
 
 def mpn_search_path_for_hp(host_cpu: str) -> List[str]:
@@ -753,7 +760,8 @@ def mpn_search_path_for_motorola_68k(host_cpu: str) -> List[str]:
 def options_for_motorola_68k(host_cpu: str, profiling: str) -> Options:
     # Motorola 68k
     options = default_options()._replace(
-        defines={"HAVE_HOST_CPU_FAMILY_m68k": None}
+        defines={"HAVE_HOST_CPU_FAMILY_m68k": None},
+        gmp_include_mpn=["m68k/m68k-defs.m4"]
     )
     if profiling != "gprof":
         options.compilers[GCC] = options.compilers[GCC]._replace(
@@ -803,6 +811,7 @@ def options_for_mips(host: str, host_cpu: str) -> Options:
     # right options to use when linking (both cc and gcc), so no need for
     # anything special from us.
     options = default_options()
+    options.gmp_include_mpn.append("mips32/mips-defs.m4")
     options.compilers[GCC].optional_flags["abi"] = ["-mabi=32", "-m32"]
     options.compilers[GCC] = options.compilers[GCC]._replace(
         testlist=["gcc-mips-o32"]
@@ -1506,9 +1515,10 @@ def sun_cc_64_for_spark(host_cpu: str) -> CompilerOptions:
     options = default_cc_options()._replace(
         flags=flags_for_sun_cc_64(host_cpu)
     )
-    option.optional_flags["cpu"] = cpu_flags_for_spark_sun_cc(host_cpu)
+    options.optional_flags["cpu"] = cpu_flags_for_spark_sun_cc(host_cpu)
+    return options
 
-def options_for_64_bits_spark(options: Options, host_cpu: str) -> Options:
+def options_for_64_bits_spark(options: Options, host: str, host_cpu: str) -> Options:
     options.compilers[GCC_64] = gcc_64_options_for_spark(host_cpu)
     options.abis["64"] = default_abi_options()._replace(
         mpn_search_path=mpn_search_path_for_spark64(host_cpu),
@@ -1521,7 +1531,7 @@ def options_for_64_bits_spark(options: Options, host_cpu: str) -> Options:
     
     return options
 
-def options_for_spark(host: str, host_cpu: str) -> Options:
+def options_for_sparc(host: str, host_cpu: str) -> Options:
     # sizeof(long)==4 or 8 is tested, to ensure we get the right ABI.  We've
     # had various bug reports where users have set CFLAGS for their desired
     # mode, but not set our ABI.  For some reason it's sparc where this
@@ -1530,7 +1540,8 @@ def options_for_spark(host: str, host_cpu: str) -> Options:
     # reject ABI=64 in favour of ABI=32 if the user has forced the flags to
     # 32-bit mode.
     options = default_options()._replace(
-        testlist=["sizeof-long-4"]
+        testlist=["sizeof-long-4"],
+        gmp_include_mpn=["sparc32/sparc-defs.m4"]
     )
     options.compilers[GCC].optional_flags["cpu"] = cpu_flags_for_spark_gcc(host_cpu)
     options.compilers[GCC].optional_flags["asm"] = asm_flags_for_spark_gcc(host_cpu)
@@ -1566,7 +1577,7 @@ def options_for_spark(host: str, host_cpu: str) -> Options:
             # is the default, but it doesn't hurt to add it.  v9 CPUs always
             # use the sparc64 port, since the plain 32-bit sparc ports don't
             # run on a v9.
-            options = options_for_64_bits_spark(options, host_cpu)
+            options = options_for_64_bits_spark(options, host, host_cpu)
         else:
             # For all other systems, we try both 64 and 32.
 
@@ -1580,9 +1591,27 @@ def options_for_spark(host: str, host_cpu: str) -> Options:
                 speed_cyclecounter_obj="sparcv9.lo",
                 cyclecounter_size=2
             )
-            options = options_for_64_bits_spark(options, host_cpu)
+            options = options_for_64_bits_spark(options, host, host_cpu)
 
     return options
+
+def options_for_vax(assembly: bool, profiling: str) -> Options:
+    options = default_options()
+    if profiling != "gprof":
+        options.compilers[GCC] = options.compilers[GCC]._replace(
+            flags=default_gcc_flags() + ["-fomit-frame-pointer"]
+        )
+    if assembly:
+        options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+            mpn_extra_functions=["udiv_w_sdiv"]
+        )
+    return options
+
+def options_for_vax_elf(assembly: bool, profiling: str) -> Options:
+    # Use elf conventions (i.e., '%' register prefix, no global prefix)
+    return options_for_vax(assembly, profiling)._replace(
+        gmp_include_mpn=["vax/elf.m4"]
+    )
 
 def options_for(
     host: str,
@@ -1624,6 +1653,10 @@ def options_for(
         return options_for_sh2()
     elif match(host, "*sparc*-*-*"):
         return options_for_sparc(host, host_cpu)
+    elif match(host, "vax*-*-*elf*"):
+        return options_for_vax_elf(assembly, profiling)
+    elif match(host, "vax*-*-*"):
+        return options_for_vax(assembly, profiling)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
