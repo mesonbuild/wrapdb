@@ -285,12 +285,16 @@ else
   )
 endif
 
+i18ninc = include_directories('.')
+
 icui18n_dep = declare_dependency(
+  include_directories: i18ninc,
   link_with: i18n_lib,
   dependencies: icuuc_dep,
 )
 
 icui18n_native_dep = declare_dependency(
+  include_directories: i18ninc,
   link_with: i18n_native_lib,
   dependencies: icuuc_native_dep,
 )
