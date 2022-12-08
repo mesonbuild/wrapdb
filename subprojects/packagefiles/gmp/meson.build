@@ -5,6 +5,10 @@ project(
   version : '6.2.1',
 )
 
+if host_machine.cpu_family() != 'x86_64':
+  error('Unsupported cpu family : ', host_machine.cpu_family())
+endif
+
 conf = configuration_data()
 
 conf.set('WANT_ASSERT', get_option('assert').to_int())
@@ -39,6 +43,73 @@ endif
 host_machine_cpu = host_machine.cpu()
 conf.set('HAVE_HOST_CPU_' + host_machine.cpu(), 1)
 conf.set('HAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), 1)
+
+path_per_cpu = {
+  'i786': ['x86_64/pentium4'],
+  'pentium4': ['x86_64/pentium4'],
+  'athlon64': ['x86_64/k8'],
+  'k8': ['x86_64/k8'],
+  'x86_64': ['x86_64/k8'],
+  'k10': ['x86_64/k10', 'x86_64/k8'],
+  'bobcat': ['x86_64/bt1', 'x86_64/k10', 'x86_64/k8'],
+  'jaguar': ['x86_64/bt2', 'x86_64/bt1', 'x86_64/k10', 'x86_64/k8'],
+  'jaguarnoavx': ['x86_64/bt2', 'x86_64/bt1', 'x86_64/k10', 'x86_64/k8'],
+  'bulldozer': ['x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd1': ['x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bulldozernoavx': ['x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd1noavx': ['x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'piledriver': ['x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd2': ['x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'piledrivernoavx': ['x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd2noavx': ['x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'steamroller': ['x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd3': ['x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'steamrollernoavx': ['x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd3noavx': ['x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'excavator': ['x86_64/bd4', 'x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd4': ['x86_64/bd4', 'x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'excavatornoavx': ['x86_64/bd4', 'x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'bd4noavx': ['x86_64/bd4', 'x86_64/bd3', 'x86_64/bd2', 'x86_64/bd1', 'x86_64/k10', 'x86_64/k8'],
+  'zen': ['x86_64/zen'],
+  'zennoavx': ['x86_64/zen'],
+  'zen2': ['x86_64/zen2', 'x86_64/zen'],
+  'zen2noavx': ['x86_64/zen2', 'x86_64/zen'],
+  'zen3': ['x86_64/zen2', 'x86_64/zen'],
+  'zen3noavx': ['x86_64/zen2', 'x86_64/zen'],
+  'core2': ['x86_64/core2'],
+  'corei': ['x86_64/coreinhm', 'x86_64/core2'],
+  'coreinhm': ['x86_64/coreinhm', 'x86_64/core2'],
+  'coreiwsm': ['x86_64/coreinhm', 'x86_64/core2'],
+  'nehalem': ['x86_64/coreinhm', 'x86_64/core2'],
+  'westmere': ['x86_64/coreinhm', 'x86_64/core2'],
+  'coreisbr': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreisbrnoavx': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreiibr': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreiibrnoavx': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'sandybridge': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'sandybridgenoavx': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'ivybridge': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'ivybridgenoavx': ['x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreihwl': ['x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreihwlnoavx': ['x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'haswell': ['x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'haswellnoavx': ['x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreibwl': ['x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'coreibwlnoavx': ['x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'broadwell': ['x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'broadwellnoavx': ['x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'skylake': ['x86_64/skylake', 'x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'skylakenoavx': ['x86_64/skylake', 'x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'kabylake': ['x86_64/skylake', 'x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'kabylakenoavx': ['x86_64/skylake', 'x86_64/coreibwl', 'x86_64/coreihwl', 'x86_64/coreisbr', 'x86_64/coreinhm', 'x86_64/core2'],
+  'atom': ['x86_64/atom'],
+  'silvermont': ['x86_64/silvermont', 'x86_64/atom'],
+  'goldmont': ['x86_64/goldmont', 'x86_64/silvermont', 'x86_64/atom'],
+  'nano': ['x86_64/nano']
+}
+
+mpn_search_path = path_per_cpu.get(host_machine.cpu(), []) + ['x86_64']
+
 
 
 check_headers = [
