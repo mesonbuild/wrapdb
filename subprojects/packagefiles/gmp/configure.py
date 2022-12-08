@@ -47,7 +47,7 @@ ABIOptions = NamedTuple(
         ("calling_conventions_objs", List[str]),
         ("speed_cyclecounter_obj", Optional[str]),
         ("cyclecounter_size", int),
-        ("testlist", List[str]), # tests for any compiler with that abi
+        ("testlist", List[str]),  # tests for any compiler with that abi
     ]
 )
 
@@ -57,7 +57,8 @@ Options = NamedTuple(
         ("compilers", Dict[CompilerAndABI, CompilerOptions]),
         ("abis", Dict[str, ABIOptions]),  # ABI name -> objs
         ("gmp_asm_syntax_testing", bool),
-        ("defines", Dict[str, Optional[str]])
+        ("defines", Dict[str, Optional[str]]),
+        ("testlist", List[str])  # tests for any compiler
     ]
 )
 
@@ -85,9 +86,12 @@ def default_gcc_options() -> CompilerOptions:
     )    
 
 
+def default_cc_flags() -> List[str]:
+    return ["-O"]
+
 def default_cc_options() -> CompilerOptions:
     return CompilerOptions(
-        flags=["-O"],
+        flags=default_cc_flags(),
         cpp_flags=[],
         flags_maybe=[],
         optional_flags=OrderedDict(),
@@ -118,7 +122,8 @@ def default_options() -> Options:
             STANDARD_ABI: default_abi_options()
         },
         gmp_asm_syntax_testing=True,
-        defines={}
+        defines={},
+        testlist=[]
     )
 
 def match(text: str, *patterns: str) -> bool:
@@ -1336,6 +1341,249 @@ def options_for_sh2() -> Options:
         )}
     )
 
+def mpn_search_path_for_sparc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "sparcv8", "microsparc", "turbosparc"):
+        return ["sparc32/v8", "sparc32"]
+    elif match(host_cpu, "supersparc"):
+        return ["sparc32/v8/supersparc", "sparc32/v8", "sparc32"]
+    elif match(host_cpu, "sparc64", "sparcv9*", "ultrasparc", "ultrasparc[234]*"):
+        return ["sparc32/v9", "sparc32/v8", "sparc32"]
+    elif match(host_cpu, "ultrasparct[12345]"):
+        return ["sparc32/ultrasparct1", "sparc32/v8", "sparc32"]
+    else:
+        return ["sparc32"]
+
+def cpu_flags_for_spark_gcc(host_cpu: str) -> List[str]:
+    # gcc 2.7.2 knows -mcypress, -msupersparc, -mv8, -msparclite.
+    # gcc 2.95 knows -mcpu= v7, hypersparc, sparclite86x, f930, f934,
+    #   sparclet, tsc701, v9, ultrasparc.  A warning is given that the
+    #   plain -m forms will disappear.
+    # gcc 3.3 adds ultrasparc3.
+    if match(host_cpu, "supersparc*"):
+        return ["-mcpu=supersparc", "-msupersparc"]
+    elif match(host_cpu, "sparcv8", "microsparc*", "turbosparc", "hypersparc*"):
+        return ["-mcpu=v8", "-mv8"]
+    elif match(host_cpu, "sparc64", "sparcv9*"):
+        return ["-mcpu=v9"]
+    elif match(host_cpu, "ultrasparc1", "ultrasparc2*"):
+        return ["-mcpu=ultrasparc", "-mcpu=v9"]
+    elif match(host_cpu, "ultrasparc[34]"):
+        return ["-mcpu=ultrasparc3", "-mcpu=ultrasparc", "-mcpu=v9"]
+    elif match(host_cpu, "ultrasparct[12]"):
+        return ["-mcpu=niagara", "-mcpu=v9"]
+    elif match(host_cpu, "ultrasparct3"):
+        return ["-mcpu=niagara3", "-mcpu=niagara", "-mcpu=v9"]
+    elif match(host_cpu, "ultrasparct[45]"):
+        return ["-mcpu=niagara4", "-mcpu=niagara3", "-mcpu=niagara", "-mcpu=v9"]
+    else:
+        return ["-mcpu=v7", "-mcypress"]
+
+def asm_flags_for_spark_gcc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "supersparc*", "sparcv8", "microsparc*", "turbosparc", "hypersparc*"):
+        return ["-Wa,-Av8", "-Wa,-xarch=v8"]
+    else:
+        return []
+
+def asm_flags_for_spark_gcc_32(host_cpu: str) -> List[str]:
+    if match(host_cpu, "sparc64", "sparcv9*"):
+        return ["-Wa,-Av8", "-Wa,-xarch=v8plus"]
+    elif match(host_cpu, "ultrasparc1", "ultrasparc2*"):
+        return ["-Wa,-Av8plusa", "-Wa,-xarch=v8plusa"]
+    elif match(host_cpu, "ultrasparc[34]"):
+        return ["-Wa,-Av8plusb", "-Wa,-xarch=v8plusb"]
+    elif match(host_cpu, "ultrasparct[12]"):
+        return ["-Wa,-Av8plusc", "-Wa,-xarch=v8plusc"]
+    elif match(host_cpu, "ultrasparct[345]"):
+        return ["-Wa,-Av8plusd", "-Wa,-xarch=v8plusd"]
+    else:
+        return []    
+
+def asm_flags_for_spark_gcc_64(host_cpu: str) -> List[str]:
+    if match(host_cpu, "sparc64", "sparcv9*"):
+        return ["-Wa,-Av9", "-Wa,-xarch=v9"]
+    elif match(host_cpu, "ultrasparc1", "ultrasparc2*"):
+        return ["-Wa,-Av9a", "-Wa,-xarch=v9a"]
+    elif match(host_cpu, "ultrasparc[34]"):
+        return ["-Wa,-Av9b", "-Wa,-xarch=v9b"]
+    elif match(host_cpu, "ultrasparct[12]"):
+        return ["-Wa,-Av9c", "-Wa,-xarch=v9c"]
+    elif match(host_cpu, "ultrasparct[345]"):
+        return ["-Wa,-Av9d", "-Wa,-xarch=v9d"]
+    else:
+        return []     
+
+def arch_flags_for_spark_sun_cc(host_cpu: str) -> List[str]:
+    if match(host_cpu, "sparcv8", "microsparc*", "supersparc*", "turbosparc", "hypersparc*"):
+        return ["-xarch=v8"]
+    elif match(host_cpu, "ultrasparct[345]"):
+        return ["-xarch=v8plusd"]
+    elif match(host_cpu, "sparc64", "sparcv9*", "ultrasparc*"):
+        return ["-xarch=v8plus"]
+    else:
+        return ["-xarch=v7"]
+
+def cpu_flags_for_spark_sun_cc(host_cpu: str) -> List[str]:
+    # SunOS cc doesn't know -xchip and doesn't seem to have an equivalent.
+    # SunPRO cc 5 recognises -xchip=generic, old, super, super2, micro,
+    #   micro2, hyper, hyper2, powerup, ultra, ultra2, ultra2i.
+    # SunPRO cc 6 adds -xchip=ultra2e, ultra3cu.
+    if match(host_cpu, "supersparc*"):
+        return ["-xchip=super"]
+    elif match(host_cpu, "microsparc*"):
+        return ["-xchip=micro"]
+    elif match(host_cpu, "turbosparc"):
+        return ["-xchip=micro2"]
+    elif match(host_cpu, "hypersparc*"):
+        return ["-xchip=hyper"]
+    elif match(host_cpu, "ultrasparc"):
+        return ["-xchip=ultra"]
+    elif match(host_cpu, "ultrasparc2"):
+        return ["-xchip=ultra2", "-xchip=ultra"]
+    elif match(host_cpu, "ultrasparc2i"):
+        return ["-xchip=ultra2i", "-xchip=ultra2", "-xchip=ultra"]
+    elif match(host_cpu, "ultrasparc3"):
+        return ["-xchip=ultra3", "-xchip=ultra"]
+    elif match(host_cpu, "ultrasparc4"):
+        return ["-xchip=ultra4", "-xchip=ultra3", "-xchip=ultra"]
+    elif match(host_cpu, "ultrasparct1"):
+        return ["-xchip=ultraT1"]
+    elif match(host_cpu, "ultrasparct2"):
+        return ["-xchip=ultraT2", "-xchip=ultraT1"]
+    elif match(host_cpu, "ultrasparct3"):
+        return ["-xchip=ultraT3", "-xchip=ultraT2"]
+    elif match(host_cpu, "ultrasparct4"):
+        return ["-xchip=T4"]
+    elif match(host_cpu, "ultrasparct5"):
+        return ["-xchip=T5", "-xchip=T4"]
+    else:
+        return ["-xchip=generic"]
+
+def gcc_32_options_for_spark(host_cpu: str) -> CompilerOptions:
+    # Note it's GCC_32 and not GCC because the latter would be used in the
+    # 64-bit ABI on systems like "*bsd" where abilist="64" only.
+    options = default_gcc_options()._replace(
+        flags_maybe=["-m32"]
+    )
+    options.optional_flags["cpu"] = cpu_flags_for_spark_gcc(host_cpu)
+    options.optional_flags["asm"] = asm_flags_for_spark_gcc_32(host_cpu) 
+    return options   
+
+def gcc_64_options_for_spark(host_cpu: str) -> CompilerOptions:
+    options = default_gcc_options()._replace(
+        flags=default_gcc_flags()+["-m64", "-mptr64"],
+        ld_flags=["-Wc,-m64"]
+    )
+    options.optional_flags["cpu"] = cpu_flags_for_spark_gcc(host_cpu)
+    options.optional_flags["asm"] = asm_flags_for_spark_gcc_64(host_cpu)
+    return options
+
+def mpn_search_path_for_spark64(host_cpu: str) -> List[str]:
+    if match(host_cpu, "ultrasparc", "ultrasparc2", "ultrasparc2i"):
+        return ["sparc64/ultrasparc1234", "sparc64"]
+    elif match(host_cpu, "ultrasparc[34]"):
+        return ["sparc64/ultrasparc34", "sparc64/ultrasparc1234", "sparc64"]
+    elif match(host_cpu, "ultrasparct[12]"):
+        return ["sparc64/ultrasparct1", "sparc64"]
+    elif match(host_cpu, "ultrasparct3"):
+        return ["sparc64/ultrasparct3", "sparc64"]
+    elif match(host_cpu, "ultrasparct[45]"):
+        return ["sparc64/ultrasparct45", "sparc64/ultrasparct3", "sparc64"]
+    else:
+        return ["sparc64"]
+
+def flags_for_sun_cc_64(host_cpu: str) -> List[str]:
+    # Sun cc.
+
+    # We used to have -fast and some fixup options here, but it
+    # recurrently caused problems with miscompilation.  Of course,
+    # -fast is documented as miscompiling things for the sake of speed.
+    if match(host_cpu, "ultrasparct[345]"):
+        return default_cc_flags() + ["-xO3", "-xarch=v9d"]
+    else:
+        return ["-xO3", "-xarch=v9"]
+
+def sun_cc_64_for_spark(host_cpu: str) -> CompilerOptions:
+    options = default_cc_options()._replace(
+        flags=flags_for_sun_cc_64(host_cpu)
+    )
+    option.optional_flags["cpu"] = cpu_flags_for_spark_sun_cc(host_cpu)
+
+def options_for_64_bits_spark(options: Options, host_cpu: str) -> Options:
+    options.compilers[GCC_64] = gcc_64_options_for_spark(host_cpu)
+    options.abis["64"] = default_abi_options()._replace(
+        mpn_search_path=mpn_search_path_for_spark64(host_cpu),
+        testlist=["sizeof-long-8"],
+        speed_cyclecounter_obj="sparcv9.lo",
+        cyclecounter_size=2
+    )
+    if match(host, "*-*-solaris*"):
+        options.compilers[CC_64] = sun_cc_64_for_spark(host_cpu)
+    
+    return options
+
+def options_for_spark(host: str, host_cpu: str) -> Options:
+    # sizeof(long)==4 or 8 is tested, to ensure we get the right ABI.  We've
+    # had various bug reports where users have set CFLAGS for their desired
+    # mode, but not set our ABI.  For some reason it's sparc where this
+    # keeps coming up, presumably users there are accustomed to driving the
+    # compiler mode that way.  The effect of our testlist setting is to
+    # reject ABI=64 in favour of ABI=32 if the user has forced the flags to
+    # 32-bit mode.
+    options = default_options()._replace(
+        testlist=["sizeof-long-4"]
+    )
+    options.compilers[GCC].optional_flags["cpu"] = cpu_flags_for_spark_gcc(host_cpu)
+    options.compilers[GCC].optional_flags["asm"] = asm_flags_for_spark_gcc(host_cpu)
+    ACC = CompilerAndABI(compiler="acc", abi=STANDARD_ABI)
+    options.compilers[ACC] = empty_compiler_options()
+    options.abis[STANDARD_ABI] = options.abis[STANDARD_ABI]._replace(
+        mpn_search_path=mpn_search_path_for_sparc(host_cpu)
+    )
+    
+    # SunPRO cc and acc, and SunOS bundled cc
+    if match(host, "*-*-solaris*", "*-*-sunos*"):
+        # Note no -g, it disables all optimizations.
+        options.compilers[CC] = empty_compiler_options()
+        # SunOS <= 4 cc doesn't know -xO3, fallback to -O2.
+        options.compilers[CC].optional_flags["opt"] = ["-xO3", "-O2"]
+        # SunOS cc doesn't know -xarch, apparently always generating v7
+        # code, so make this optional
+        options.compilers[CC].optional_flags["arch"] = arch_flags_for_spark_sun_cc(host_cpu)
+        options.compilers[CC].optional_flags["cpu"] = cpu_flags_for_spark_sun_cc(host_cpu)
+
+    if match(host_cpu, "sparc64", "sparcv9*", "ultrasparc*"):
+        if match(host, "*-*-solaris2.[0-6]", "*-*-solaris2.[0-6].*"):
+            # Solaris 6 and earlier cannot run ABI=64 since it doesn't save
+            # registers properly, so ABI=32 is left as the only choice.
+            options.compilers[GCC_32] = gcc_32_options_for_spark(host_cpu)
+            options.abis["32"] = default_abi_options()._replace(
+                speed_cyclecounter_obj="sparcv9.lo",
+                cyclecounter_size=2
+            )
+        elif match(host, "*-*-*bsd*"):
+            # BSD sparc64 ports are 64-bit-only systems, so ABI=64 is the only
+            # choice.  In fact they need no special compiler flags, gcc -m64
+            # is the default, but it doesn't hurt to add it.  v9 CPUs always
+            # use the sparc64 port, since the plain 32-bit sparc ports don't
+            # run on a v9.
+            options = options_for_64_bits_spark(options, host_cpu)
+        else:
+            # For all other systems, we try both 64 and 32.
+
+            # GNU/Linux sparc64 has only recently gained a 64-bit user mode.
+            # In the past sparc64 meant a v9 cpu, but there were no 64-bit
+            # operations in user mode.  We assume that if "gcc -m64" works
+            # then the system is suitable.  Hopefully even if someone attempts
+            # to put a new gcc and/or glibc on an old system it won't run.
+            options.compilers[GCC_32] = gcc_32_options_for_spark(host_cpu)
+            options.abis["32"] = default_abi_options()._replace(
+                speed_cyclecounter_obj="sparcv9.lo",
+                cyclecounter_size=2
+            )
+            options = options_for_64_bits_spark(options, host_cpu)
+
+    return options
+
 def options_for(
     host: str,
     host_cpu: str,
@@ -1374,6 +1622,8 @@ def options_for(
         return options_for_sh()
     elif match(host, "sh[2-4]-*-*"):
         return options_for_sh2()
+    elif match(host, "*sparc*-*-*"):
+        return options_for_sparc(host, host_cpu)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
