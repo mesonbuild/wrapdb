@@ -108,39 +108,3 @@ option(
     value : false,
     description: 'enable GMP_CPU_TYPE faking cpuid',
 )
-
-option(
-    'abi',
-    type : 'combo',
-    choices : [
-        'auto',
-        # arm, aarch64, armcortexa5(3|5|7)(neon)?, armcortexa7[2-9](neon)?
-        # armexynosm1, armthunderx, armxgene1, ia64*, itanium, itanium2
-        # powerpc*, power[3-9], s390, z900esa, z990esa, z9esa, z10esa, s390x
-        # z900, z990, z9, z10, z196, *sparc*, x86, x86_64
-        '32',
-        # armcortexa5(3|5|7)(neon)?, armcortexa7[2-9](neon)?, armexynosm1
-        # armthunderx, armxgene1, aarch64, ia64*, itanium, itanium2, mips64*,
-        # mipsisa64*, mips*-*-irix[6-9]*, s390x, z900, z990, z9, z10, z196
-        # sparc64 with BSD, sparcv9* with BSD, ultrasparc* with BSD, x86_64
-        '64',
-        # hppa2.0*, hppa64
-        '1.0',
-        # hppa2.0*, hppa64
-        '2.0n',
-        # hppa2.0 or 2.0 w with HPUX > 10
-        '2.0w',
-        # mips*
-        'o32',
-        # mips64*, mipsisa64*, mips*-*-irix[6-9]*
-        'n32',
-        # *-*-aix*, *-*-darwin*
-        'mode64',
-        # *-*-darwin*
-        'mode32',
-        # x86_64
-        'x32'
-    ],
-    value : 'auto',
-    description: 'desired ABI (for processors supporting more than one ABI)'
-)

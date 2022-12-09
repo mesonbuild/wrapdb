@@ -1,9 +1,10 @@
 project(
   'gmp',
   'c',
-  'cpp',
   version : '6.2.1',
 )
+
+add_languages('cpp', required: get_option('cxx'))
 
 if host_machine.cpu_family() != 'x86_64':
   error('Unsupported cpu family : ', host_machine.cpu_family())
@@ -20,10 +21,17 @@ if profiling != 'no'
   conf.set('WANT_PROFILING_' + profiling.to_upper(), 1)
 endif
 
-fomit_frame_pointer = ['-fomit-frame-pointer']
 # -fomit-frame-pointer is incompatible with -pg on some chips
-if profiling == 'gprof'
-  fomit_frame_pointer = []
+if profiling != 'gprof'
+  add_project_arguments('-fomit-frame-pointer', ['c, cpp'])
+endif
+
+if profiling == 'prof':
+  add_project_arguments('-p', ['c'])
+elif profiling == 'gprof'
+  add_project_arguments('-pg', ['c'])
+elif profiling == 'instrument'
+  add_project_arguments('-finstrument-functions', ['c'])
 endif
 
 fake_cpuid = get_option('fake-cpuid')
@@ -109,8 +117,201 @@ path_per_cpu = {
 }
 
 mpn_search_path = path_per_cpu.get(host_machine.cpu(), []) + ['x86_64']
+calling_conventions_objs = ['amd64call.lo', 'amd64check$U.lo']
+speed_cyclecounter_obj = 'x86_64.lo'
+cyclecounter_size = 2
+conf.set('HAVE_SPEED_CYCLECOUNTER', cyclecounter_size)
 
 
+mpn_extra_functions = []
+if assembly
+  mpn_extra_functions += ['invert_limb_table']
+endif
+
+limb = []
+if host_machine.system() == 'cygwin'
+  calling_conventions_objs = []
+  limb = ['longlong']
+  conf.set('HOST_DOS64', 1)
+endif
+
+if assembly and calling_conventions_objs.length() > 0
+  conf.set('HAVE_CALLING_CONVENTIONS', 1)
+endif
+
+cc = meson.get_compiler('c')
+
+# If we're supposed to be using a "long long" for a limb, check that it works.
+if limb.get(0, '') == 'longlong'
+  if not cc.compiles(
+    '''
+    long long  foo;
+    long long  bar () { return foo; }
+    int main () { return 0; }
+    '''
+  )
+    error('the chosen compiler does not support long long')
+  conf.set('DEFN_LONG_LONG_LIMB', '#define _LONG_LONG_LIMB 1')
+else:
+  conf.set('DEFN_LONG_LONG_LIMB', '/* #undef _LONG_LONG_LIMB */')
+endif
+
+fat_path = []
+fat_functions = []
+fat_thresholds = []
+if fat
+  mpn_search_path = ['x86_64/fat', 'x86_64']
+  fat_path = [
+    'x86_64',
+    'x86_64/fat',
+    'x86_64/k8',
+    'x86_64/k10',
+    'x86_64/bd1',
+    'x86_64/bt1',
+    'x86_64/bt2',
+    'x86_64/zen',
+    'x86_64/pentium4',
+    'x86_64/core2',
+    'x86_64/coreinhm',
+    'x86_64/coreisbr',
+    'x86_64/coreihwl',
+    'x86_64/coreibwl',
+    'x86_64/skylake',
+    'x86_64/atom',
+    'x86_64/silvermont',
+    'x86_64/goldmont',
+    'x86_64/nano',
+  ]
+  fat_functions = [
+    'add_n',
+    'addmul_1',
+    'bdiv_dbm1c',
+    'com',
+    'cnd_add_n',
+    'cnd_sub_n',
+    'copyd',
+    'copyi',
+    'dive_1',
+    'divrem_1',
+    'gcd_11',
+    'lshift',
+    'lshiftc',
+    'mod_1',
+    'mod_1_1',
+    'mod_1_1_cps',
+    'mod_1_2',
+    'mod_1_2_cps',
+    'mod_1_4',
+    'mod_1_4_cps',
+    'mod_34lsub1',
+    'mode1o',
+    'mul_1',
+    'mul_basecase',
+    'mullo_basecase',
+    'pre_divrem_1',
+    'pre_mod_1',
+    'redc_1',
+    'redc_2',
+    'rshift',
+    'sqr_basecase',
+    'sub_n',
+    'submul_1',
+  ] + [  # 64-bits-specific functions
+    'addmul_2',
+    'addlsh1_n',
+    'addlsh2_n',
+    'sublsh1_n'
+  ]
+  fat_thresholds = [
+    'MUL_TOOM22_THRESHOLD',
+    'MUL_TOOM33_THRESHOLD',
+    'SQR_TOOM2_THRESHOLD',
+    'SQR_TOOM3_THRESHOLD',
+    'BMOD_1_TO_MOD_1_THRESHOLD',
+  ]
+endif
+
+new_path = []
+if get_option('nails')
+  foreach p : mpn_search_path
+    new_path += [p, p+'/nails']
+  endforeach
+  mpn_search_path = new_path
+endif
+
+if not assembly
+  mpn_search_path = ['generic']
+  conf.set('NO_ASM', 1)
+endif
+
+if get_option('default_library') != 'static'
+    add_project_link_arguments(
+      '-no-undefined',
+      '-Wl,--export-all-symbols'
+      language: ['c', 'cpp']
+    )
+endif
+
+check_declarations = [
+  ['fgetc', 'stdio.h'],
+  ['fscanf', 'stdio.h'],
+  ['optarg', 'unistd.h'],
+  ['ungetc', 'stdio.h'],
+  ['vfprintf', 'stdio.h'],
+  ['sys_errlist', 'errno.h'],
+  ['sys_nerr', 'errno.h'],
+]
+
+foreach f : check_functions
+  if cc.has_header_symbol(f.get(1), f.get(0))
+    conf.set('HAVE_DECL_' + f.get(0).to_upper(), 1)
+  endif
+endforeach
+
+check_types = [
+  'intmax_t',
+  'intptr_t',
+  'long double',
+  'long long',
+  'ptrdiff_t',
+  'quad_t',
+	'uint_least32_t',
+]
+
+foreach t : check_types
+  if cc.has_type(t)
+    conf.set('HAVE_' + t.underscorify().to_upper(), 1)
+  endif
+endforeach
+
+# check token ['HAVE_ATTRIBUTE_CONST']
+# check token ['HAVE_ATTRIBUTE_MALLOC']
+# check token ['HAVE_ATTRIBUTE_MODE']
+# check token ['HAVE_ATTRIBUTE_NORETURN']
+
+check_attributes = [
+  'const',
+  'malloc',
+  'no_return'
+]
+
+foreach a : check_attributes
+  if cc.has_function_attribute(a)
+    conf.set('HAVE_ATTRIBUTE_' + &.underscorify().to_upper(), 1)
+  endif
+endforeach
+
+conf.set('HAVE_ATTRIBUTE_MODE', 0)
+
+if cc.compiles(
+  '''
+  void hid() __attribute__ ((visibility("hidden")));
+  void hid() {}
+  void pub() __attribute__ ((alias("hid")));
+  '''
+)
+  conf.set('HAVE_HIDDEN_ALIAS', 1)
+endif
 
 check_headers = [
   'alloca.h',
@@ -123,7 +324,7 @@ check_headers = [
   'locale.h',
   'machine/hal/sysinfo.h',
   'memory.h',
-  'nl/types.h',
+  'nl_types.h',
   'stdint.h',
   'stdlib.h',
   'strings.h',
@@ -146,8 +347,6 @@ check_headers = [
   'unistd.h',
 ]
 
-cc = meson.get_compiler('c')
-
 foreach h : check_headers
   if cc.has_header(h)
     conf.set('HAVE_' + h.underscorify().to_upper(), 1)
@@ -157,22 +356,13 @@ endforeach
 check_functions = [
   ['HAVE_ALARM', 'alarm', '#include<unistd.h>'],
   ['HAVE_ALLOCA', 'alloca', '#include<alloca.h>'],
-# check token ['HAVE_ATTRIBUTE_CONST']
-# check token ['HAVE_ATTRIBUTE_MALLOC']
-# check token ['HAVE_ATTRIBUTE_MODE']
-# check token ['HAVE_ATTRIBUTE_NORETURN']
 # check token ['HAVE_ATTR_GET']
-# check token ['HAVE_CALLING_CONVENTIONS']
   ['HAVE_CLOCK', 'clock', '#include<time.h>'],
   ['HAVE_CLOCK_GETTIME', 'clock_gettime', '#include<time.h>'],
 # check token ['HAVE_CPUTIME']
-# check token ['HAVE_DECL_FGETC']
-# check token ['HAVE_DECL_FSCANF']
-# check token ['HAVE_DECL_OPTARG']
-# check token ['HAVE_DECL_SYS_ERRLIST']
-# check token ['HAVE_DECL_SYS_NERR']
-# check token ['HAVE_DECL_UNGETC']
-# check token ['HAVE_DECL_VFPRINTF']
+# check token ['HAVE_LIMB_BIG_ENDIAN']
+# check token ['HAVE_LIMB_LITTLE_ENDIAN']
+# check token ['HAVE_LOCALECONV']
 # check token ['HAVE_DOUBLE_IEEE_BIG_ENDIAN']
 # check token ['HAVE_DOUBLE_IEEE_LITTLE_ENDIAN']
 # check token ['HAVE_DOUBLE_IEEE_LITTLE_SWAPPED']
@@ -190,13 +380,6 @@ check_functions = [
 # check token ['HAVE_HOST_CPU_FAMILY_powerpc']
 # check token ['HAVE_HOST_CPU_FAMILY_x86']
 # check token ['HAVE_HOST_CPU_FAMILY_x86_64']
-# check token ['HAVE_INTMAX_T']
-# check token ['HAVE_INTPTR_T']
-# check token ['HAVE_LIMB_BIG_ENDIAN']
-# check token ['HAVE_LIMB_LITTLE_ENDIAN']
-# check token ['HAVE_LOCALECONV']
-# check token ['HAVE_LONG_DOUBLE']
-# check token ['HAVE_LONG_LONG']
   ['HAVE_MEMSET', 'memset', '#include<string.h>'],
   ['HAVE_MMAP', 'mmap', '#include<sys/mman.h>'],
   ['HAVE_MPROTECT', 'mprotect', '#include<sys/mman.h>'],
@@ -325,14 +508,11 @@ check_functions = [
 # check token ['HAVE_PROCESSOR_INFO']
 # check token ['HAVE_PSP_ITICKSPERCLKTICK']
 # check token ['HAVE_PSTAT_GETPROCESSOR']
-# check token ['HAVE_PTRDIFF_T']
-# check token ['HAVE_QUAD_T']
   ['HAVE_RAISE', 'raise', '#include<signal.h>'],
 # check token ['HAVE_READ_REAL_TIME']
   ['HAVE_SIGACTION', 'sigaction', '#include<signal.h>'],
   ['HAVE_SIGALTSTACK', 'sigaltstack', '#include<signal.h>'],
 # check token ['HAVE_SIGSTACK']
-# check token ['HAVE_SPEED_CYCLECOUNTER']
 # check token ['HAVE_SSTREAM']
 # check token ['HAVE_STACK_T']
 # check token ['HAVE_STD__LOCALE']
@@ -346,7 +526,6 @@ check_functions = [
   ['HAVE_SYSCTLBYNAME', 'sysctlbyname', '#include<sys/sysctl.h>'],
 # check token ['HAVE_SYSSGI']
   ['HAVE_TIMES', 'times', '#include<sys/times.h>'],
-# check token ['HAVE_UINT_LEAST32_T']
   ['HAVE_VSNPRINTF', 'vsnprintf', '#include<stdio.h>'],
 ]
 
