@@ -6,7 +6,7 @@ project(
 
 add_languages('cpp', required: get_option('cxx'))
 
-if host_machine.cpu_family() != 'x86_64':
+if host_machine.cpu_family() != 'x86_64'
   error('Unsupported cpu family : ', host_machine.cpu_family())
 endif
 
@@ -23,10 +23,10 @@ endif
 
 # -fomit-frame-pointer is incompatible with -pg on some chips
 if profiling != 'gprof'
-  add_project_arguments('-fomit-frame-pointer', ['c, cpp'])
+  add_project_arguments('-fomit-frame-pointer', language: ['c', 'cpp'])
 endif
 
-if profiling == 'prof':
+if profiling == 'prof'
   add_project_arguments('-p', ['c'])
 elif profiling == 'gprof'
   add_project_arguments('-pg', ['c'])
@@ -151,8 +151,9 @@ if limb.get(0, '') == 'longlong'
     '''
   )
     error('the chosen compiler does not support long long')
+  endif
   conf.set('DEFN_LONG_LONG_LIMB', '#define _LONG_LONG_LIMB 1')
-else:
+else
   conf.set('DEFN_LONG_LONG_LIMB', '/* #undef _LONG_LONG_LIMB */')
 endif
 
@@ -247,7 +248,7 @@ endif
 if get_option('default_library') != 'static'
     add_project_link_arguments(
       '-no-undefined',
-      '-Wl,--export-all-symbols'
+      '-Wl,--export-all-symbols',
       language: ['c', 'cpp']
     )
 endif
@@ -275,7 +276,7 @@ check_types = [
   'long long',
   'ptrdiff_t',
   'quad_t',
-	'uint_least32_t',
+  'uint_least32_t',
 ]
 
 foreach t : check_types
@@ -292,12 +293,12 @@ endforeach
 check_attributes = [
   'const',
   'malloc',
-  'no_return'
+  'noreturn'
 ]
 
 foreach a : check_attributes
   if cc.has_function_attribute(a)
-    conf.set('HAVE_ATTRIBUTE_' + &.underscorify().to_upper(), 1)
+    conf.set('HAVE_ATTRIBUTE_' + a.underscorify().to_upper(), 1)
   endif
 endforeach
 
