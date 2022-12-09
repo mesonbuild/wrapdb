@@ -12,9 +12,9 @@ endif
 
 conf = configuration_data()
 
-conf.set('WANT_ASSERT', get_option('assert').to_int())
-conf.set('WANT_FFT', get_option('fft').to_int())
-conf.set('WANT_OLD_FFT_FULL', get_option('old-fft-full').to_int())
+conf.set10('WANT_ASSERT', get_option('assert'))
+conf.set10('WANT_FFT', get_option('fft'))
+conf.set10('WANT_OLD_FFT_FULL', get_option('old-fft-full'))
 
 profiling = get_option('profiling')
 if profiling != 'no'
