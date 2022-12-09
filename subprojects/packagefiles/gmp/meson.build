@@ -262,9 +262,9 @@ check_declarations = [
   ['sys_nerr', 'errno.h'],
 ]
 
-foreach f : check_functions
-  if cc.has_header_symbol(f.get(1), f.get(0))
-    conf.set('HAVE_DECL_' + f.get(0).to_upper(), 1)
+foreach d : check_declarations
+  if cc.has_header_symbol(d.get(1), d.get(0))
+    conf.set('HAVE_DECL_' + d.get(0).to_upper(), 1)
   endif
 endforeach
 
