@@ -252,10 +252,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'i18n.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('i18n.rc', include_directories: incdir)
 endif
 
 if host_machine.system() == 'windows'
@@ -267,8 +264,7 @@ endif
 i18n_lib = library(
   i18n_name,
   sources,
-  include_directories: incdir,
-  link_with: [common_lib],
+  dependencies: icuuc_dep,
   c_args: '-DU_I18N_IMPLEMENTATION',
   cpp_args: '-DU_I18N_IMPLEMENTATION',
   version: U_ICU_VERSION,
@@ -281,8 +277,7 @@ else
   i18n_native_lib = library(
     '@0@-native'.format(i18n_name),
     sources,
-    include_directories: incdir,
-    link_with: [common_native_lib],
+    dependencies: icuuc_native_dep,
     c_args: '-DU_I18N_IMPLEMENTATION',
     cpp_args: '-DU_I18N_IMPLEMENTATION',
     version: U_ICU_VERSION,
@@ -290,16 +285,18 @@ else
   )
 endif
 
+i18ninc = include_directories('.')
+
 icui18n_dep = declare_dependency(
-  link_with: [i18n_lib, common_lib],
-  compile_args: usage_args,
-  include_directories: incdir,
+  include_directories: i18ninc,
+  link_with: i18n_lib,
+  dependencies: icuuc_dep,
 )
 
 icui18n_native_dep = declare_dependency(
-  link_with: [i18n_native_lib, common_native_lib],
-  compile_args: usage_args,
-  include_directories: incdir,
+  include_directories: i18ninc,
+  link_with: i18n_native_lib,
+  dependencies: icuuc_native_dep,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -395,16 +392,17 @@ headers = files(
   'unicode/uspoof.h',
   'unicode/utmscale.h',
   'unicode/utrans.h',
-  'unicode/vtzone.h'
+  'unicode/vtzone.h',
 )
 
-install_headers(headers,
-  subdir: 'unicode'
+install_headers(
+  headers,
+  subdir: 'unicode',
 )
 
 pkg.generate(
   i18n_lib,
   name: 'icu-i18n',
   description: '@0@: Internationalization library'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

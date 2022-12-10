@@ -12,6 +12,10 @@ ctestfw = library(
   sources,
   c_args: '-DT_CTEST_IMPLEMENTATION',
   cpp_args: '-DT_CTEST_IMPLEMENTATION',
-  include_directories: [incdir, toolinc],
-  link_with: [toolutil_lib, common_lib],
+  dependencies: toolutil_dep,
+)
+
+ctestfw_dep = declare_dependency(
+  link_with: ctestfw,
+  dependencies: toolutil_dep,
 )

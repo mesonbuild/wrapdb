@@ -3,15 +3,12 @@
 # debug it, uncomment and have fun.
 
 #shared_library('plugin', 'testplug.c',
-#  include_directories : [incdir, toolinc],
-#  link_with : [toolutil, i18n, common],
+#dependencies: toolutil_dep,
 #)
 
 executable(
   'icuinfo',
   'icuinfo.cpp',
-  include_directories: [toolinc],
-  link_with: [toolutil_lib],
-  dependencies: [icui18n_dep],
+  dependencies: toolutil_dep,
   install: true,
 )

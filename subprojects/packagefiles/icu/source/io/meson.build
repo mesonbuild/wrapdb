@@ -14,26 +14,22 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'io.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('io.rc', include_directories: incdir)
 endif
 
 io_lib = library(
   'icuio',
   sources,
-  include_directories: incdir,
   c_args: '-DU_IO_IMPLEMENTATION',
   cpp_args: '-DU_IO_IMPLEMENTATION',
-  link_with: [i18n_lib, common_lib],
+  dependencies: icui18n_dep,
   version: U_ICU_VERSION,
   install: true,
 )
 
 icuio_dep = declare_dependency(
-  link_with: [io_lib, common_lib],
-  include_directories: incdir,
+  link_with: io_lib,
+  dependencies: icui18n_dep,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -44,5 +40,5 @@ pkg.generate(
   io_lib,
   name: 'icu-io',
   description: '@0@: Stream and I/O Library'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

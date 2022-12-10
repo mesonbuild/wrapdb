@@ -192,10 +192,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'common.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('common.rc', include_directories: incdir)
 endif
 
 icuuc_name = '@0@icuuc@1@'.format(library_prefix, library_suffix)
@@ -232,12 +229,14 @@ icuuc_dep = declare_dependency(
   link_with: common_lib,
   compile_args: usage_args,
   include_directories: incdir,
+  dependencies: dl_dep,
 )
 
 icuuc_native_dep = declare_dependency(
   link_with: common_native_lib,
   compile_args: usage_args,
   include_directories: incdir,
+  dependencies: dl_native_dep,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -285,7 +284,7 @@ headers = files(
   'unicode/std_string.h',
   'unicode/strenum.h',
   'unicode/stringoptions.h',
-  'unicode/stringpiece.h', 
+  'unicode/stringpiece.h',
   'unicode/stringtriebuilder.h',
   'unicode/symtable.h',
   'unicode/ubidi.h',
@@ -299,9 +298,9 @@ headers = files(
   'unicode/uchriter.h',
   'unicode/uclean.h',
   'unicode/ucnv.h',
-  'unicode/ucnvsel.h',
   'unicode/ucnv_cb.h',
   'unicode/ucnv_err.h',
+  'unicode/ucnvsel.h',
   'unicode/uconfig.h',
   'unicode/ucpmap.h',
   'unicode/ucptrie.h',
@@ -343,16 +342,17 @@ headers = files(
   'unicode/utrace.h',
   'unicode/utypes.h',
   'unicode/uvernum.h',
-  'unicode/uversion.h'
+  'unicode/uversion.h',
 )
 
-install_headers(headers,
-  subdir: 'unicode'
+install_headers(
+  headers,
+  subdir: 'unicode',
 )
 
 pkg.generate(
   common_lib,
   name: 'icu-uc',
   description: '@0@: Common and Data libraries'.format(PACKAGE_ICU_DESCRIPTION),
-  url: PACKAGE_ICU_URL
+  url: PACKAGE_ICU_URL,
 )

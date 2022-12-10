@@ -1,7 +1,14 @@
 U_ICUDATA_NAME = 'icudt@0@'.format(U_ICU_VERSION.split('.')[0])
 
 icudata_command = [
-  genccode_native_exe, '-d', '@OUTDIR@', '-e', U_ICUDATA_NAME, '-f', U_ICUDATA_NAME, '@CURRENT_SOURCE_DIR@/in/@0@l.dat'.format(U_ICUDATA_NAME)
+  genccode_native_exe,
+  '-d',
+  '@OUTDIR@',
+  '-e',
+  U_ICUDATA_NAME,
+  '-f',
+  U_ICUDATA_NAME,
+  '@CURRENT_SOURCE_DIR@/in/@0@l.dat'.format(U_ICUDATA_NAME),
 ]
 
 if host_machine.system() == 'windows' and get_option('default_library') == 'static'
@@ -15,7 +22,7 @@ if cpp.get_argument_syntax() == 'msvc'
   #   icudata_asm_output = '@0@.masm'.format(U_ICUDATA_NAME)
   #   icudata_command += ['-a', 'masm']
   # else
-    icudata_asm_output = '@0@.c'.format(U_ICUDATA_NAME)
+  icudata_asm_output = '@0@.c'.format(U_ICUDATA_NAME)
   # endif
 elif host_machine.system() == 'cygwin'
   icudata_asm_output = '@0@.S'.format(U_ICUDATA_NAME)
@@ -35,9 +42,9 @@ else
 endif
 
 icudata_asm = custom_target(
-    'icudata_asm',
-    command: icudata_command,
-    output: icudata_asm_output
+  'icudata_asm',
+  command: icudata_command,
+  output: icudata_asm_output,
 )
 
 sources = [icudata_asm]
@@ -46,18 +53,13 @@ python_exe = import('python').find_installation('python3')
 
 icudata_exports = custom_target(
   'icudata_exports',
-  command: [
-    python_exe, '@INPUT@', '@0@_dat'.format(U_ICUDATA_NAME), '@OUTDIR@/module.def'
-  ],
+  command: [python_exe, '@INPUT@', '@0@_dat'.format(U_ICUDATA_NAME), '@OUTDIR@/module.def'],
   input: 'export_module.py',
-  output: 'module.def'
+  output: 'module.def',
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources(
-    'misc/icudata.rc',
-    include_directories: incdir
-  )
+  sources += windows.compile_resources('misc/icudata.rc', include_directories: incdir)
 endif
 
 if cpp.get_id() != 'msvc'
@@ -71,6 +73,8 @@ if cpp.get_id() != 'msvc'
   )
 
   icudata_dep = declare_dependency(
+    link_with: icudata,
+    include_directories: incdir,
     compile_args: usage_args,
   )
 

@@ -1,7 +1,7 @@
 genccode_exe = executable(
   'genccode',
   'genccode.c',
-  dependencies: [toolutil_dep, icuuc_dep],
+  dependencies: toolutil_dep,
   install: true,
 )
 
@@ -11,7 +11,7 @@ else
   genccode_native_exe = executable(
     'genccode-native',
     'genccode.c',
-    dependencies: [toolutil_native_dep, icuuc_native_dep],
+    dependencies: toolutil_native_dep,
     native: true,
   )
 endif

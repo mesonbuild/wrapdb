@@ -36,10 +36,9 @@ endif
 toolutil_lib = library(
   'toolutil',
   sources,
-  include_directories: incdir,
   c_args: toolutil_c_args,
   cpp_args: toolutil_cpp_args,
-  link_with: [i18n_lib, common_lib],
+  dependencies: icui18n_dep,
 )
 
 if meson.can_run_host_binaries()
@@ -48,20 +47,23 @@ else
   toolutil_native_lib = library(
     'toolutil-native',
     sources,
-    include_directories: incdir,
     c_args: toolutil_c_args,
     cpp_args: toolutil_cpp_args,
-    link_with: [i18n_native_lib, common_native_lib],
+    dependencies: icui18n_native_dep,
     native: true,
   )
 endif
 
+toolinc = include_directories('.')
+
 toolutil_dep = declare_dependency(
   link_with: toolutil_lib,
-  include_directories: include_directories('.'),
+  dependencies: icui18n_dep,
+  include_directories: toolinc,
 )
 
 toolutil_native_dep = declare_dependency(
   link_with: toolutil_native_lib,
-  include_directories: include_directories('.'),
+  dependencies: icui18n_native_dep,
+  include_directories: toolinc,
 )
