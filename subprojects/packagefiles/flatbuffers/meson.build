@@ -1,4 +1,4 @@
-project('flatbuffers', 'cpp', version: '2.0.8', license: 'Apache-2.0', meson_version: '>=0.49.0')
+project('flatbuffers', 'cpp', version: '22.11.23', license: 'Apache-2.0', meson_version: '>=0.49.0')
 
 cpp = meson.get_compiler('cpp')
 
@@ -127,6 +127,7 @@ flatc_lib_dep = declare_dependency(
 flatc_sources = files(
   'src/annotated_binary_text_gen.cpp',
   'src/bfbs_gen_lua.cpp',
+  'src/bfbs_gen_nim.cpp',
   'src/binary_annotator.cpp',
   'src/code_generators.cpp',
   'src/flatc_main.cpp',
