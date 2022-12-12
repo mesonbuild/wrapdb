@@ -88,12 +88,12 @@ option(
     description: 'readline support in demo programs',
 )
 
-option(
-    'fat',
-    type : 'boolean',
-    value : false,
-    description: 'build fat libraries on systems that support it',
-)
+# option(
+#     'fat',
+#     type : 'boolean',
+#     value : false,
+#     description: 'build fat libraries on systems that support it',
+# )
 
 option(
     'minithres',
