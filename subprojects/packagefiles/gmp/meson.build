@@ -2,15 +2,16 @@ project(
   'gmp',
   'c',
   version : '6.2.1',
-  default_options : ['c_std=c99'],
+  default_options: ['optimization=2']
 )
-
-cpp = get_option('cxx')
-add_languages('cpp', required: cpp)
 
 if host_machine.cpu_family() != 'x86_64'
   error('Unsupported cpu family : ', host_machine.cpu_family())
 endif
+
+
+cpp = get_option('cxx')
+add_languages('cpp', required: cpp)
 
 conf = configuration_data()
 conf.set('CFLAGS', '')  # only used by gmp.in.h when complied for tests, maybe not very important
@@ -20,6 +21,14 @@ conf.set('HAVE_HOST_CPU_FAMILY_powerpc', 0)
 conf.set10('WANT_ASSERT', get_option('assert'))
 conf.set10('WANT_FFT', get_option('fft'))
 conf.set10('WANT_OLD_FFT_FULL', get_option('old-fft-full'))
+
+# Tell gmp.h it's building gmp, not an application, used by windows DLL stuff.
+add_project_arguments(
+  '-pedantic',
+  '-D__GMP_WITHIN_GMP',
+  '-DHAVE_CONFIG_H',
+  language: ['c', 'cpp'],
+)
 
 profiling = get_option('profiling')
 if profiling != 'no'
@@ -337,13 +346,13 @@ configure_file(
   configuration: conf,
 )
 
-configure_file(
+gmp_h = configure_file(
   input: 'gmp.in.meson',
   output: 'gmp.h',
   configuration: conf,
 )
 
-install_headers('gmp.h')
+install_headers(gmp_h)
 
 if cpp
   install_headers('gmpxx.h')
@@ -394,13 +403,12 @@ endif
 gmp_lib = library(
     'gmp',
     sources,
-    include_directories: include_directories(''),
+    include_directories: include_directories('.'),
     version: meson.project_version(),
     install: true
 )
 
 gmp_dep = declare_dependency(
-    compile_args: compile_args,
-    include_directories: include_directories(''),
-    link_with: nowide_lib,
+    include_directories: include_directories('.'),
+    link_with: gmp_lib,
 )
