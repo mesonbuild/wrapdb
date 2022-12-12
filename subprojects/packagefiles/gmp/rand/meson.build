@@ -1,0 +1,15 @@
+sources += files(
+  'randbui.c',
+  'rand.c',
+  'randclr.c',
+  'randdef.c',
+  'randiset.c',
+  'randlc2s.c',
+  'randlc2x.c',
+  'randmt.c',
+  'randmts.c',
+  'randmui.c',
+  'rands.c',
+  'randsd.c',
+  'randsdui.c',
+)

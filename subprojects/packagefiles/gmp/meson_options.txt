@@ -24,8 +24,8 @@ option(
 
 option(
     'cxx',
-    type : 'feature',
-    value : 'disabled',
+    type : 'boolean',
+    value : false,
     description: 'enable C++ support',
 )
 
@@ -50,23 +50,25 @@ option(
     description: 'enable old mpn_mul_fft_full for multiplication',
 )
 
-option(
-    'nails',
-    type : 'boolean',
-    value : false,
-    description: 'use nails on limbs', # wtf are these ?
-)
+# Look like none of the x86_64 CPUs support nails so let's not bother for now
+#
+# option(
+#     'nails',
+#     type : 'boolean',
+#     value : false,
+#     description: 'use nails on limbs', # wtf are these ?
+# )
 
-option(
-    'nail_size',
-    type : 'integer',
-    value : 1,
-    min: 1,
-    max: 50,
-    description: 
-        'number of pairs of nail bits to use (only makes sense when the nails'
-        + 'option is used)', # again, wtf are these ?
-)
+# option(
+#     'nail_size',
+#     type : 'integer',
+#     value : 1,
+#     min: 1,
+#     max: 50,
+#     description: 
+#         'number of pairs of nail bits to use (only makes sense when the nails'
+#         + 'option is used)', # again, wtf are these ?
+# )
 
 option(
     'profiling',
@@ -95,12 +97,12 @@ option(
 #     description: 'build fat libraries on systems that support it',
 # )
 
-option(
-    'minithres',
-    type : 'boolean',
-    value : false,
-    description: 'choose minimal thresholds for testing',
-)
+# option(
+#     'minithres',
+#     type : 'boolean',
+#     value : false,
+#     description: 'choose minimal thresholds for testing',
+# )
 
 option(
     'fake-cpuid',
