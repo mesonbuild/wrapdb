@@ -1,8 +1,8 @@
 [wrap-file]
-directory = SDL2_ttf-2.0.12
-source_url = https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
-source_filename = SDL2_ttf-2.0.12.tar.gz
-source_hash = 8728605443ea1cca5cad501dc34dc0cb15135d1e575551da6d151d213d356f6e
+directory = SDL2_ttf-2.20.1
+source_url = https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.20.1.tar.gz
+source_filename = SDL2_ttf-2.20.1.tar.gz
+source_hash = 78cdad51f3cc3ada6932b1bb6e914b33798ab970a1e817763f22ddbfd97d0c57
 patch_directory = sdl2_ttf
 
 [provide]
