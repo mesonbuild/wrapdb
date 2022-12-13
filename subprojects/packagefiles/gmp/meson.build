@@ -15,12 +15,15 @@ add_languages('cpp', required: cpp)
 
 conf = configuration_data()
 conf.set('CFLAGS', '')  # only used by gmp.in.h when complied for tests, maybe not very important
-conf.set('GMP_NAIL_BITS', 0)
+GMP_NAIL_BITS = 0
+conf.set('GMP_NAIL_BITS', GMP_NAIL_BITS)
 conf.set('HAVE_HOST_CPU_FAMILY_power', 0)
 conf.set('HAVE_HOST_CPU_FAMILY_powerpc', 0)
 conf.set10('WANT_ASSERT', get_option('assert'))
 conf.set10('WANT_FFT', get_option('fft'))
 conf.set10('WANT_OLD_FFT_FULL', get_option('old-fft-full'))
+conf.set_quoted('VERSION', meson.project_version())
+conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 # Tell gmp.h it's building gmp, not an application, used by windows DLL stuff.
 add_project_arguments(
@@ -41,11 +44,11 @@ if profiling != 'gprof'
 endif
 
 if profiling == 'prof'
-  add_project_arguments('-p', ['c'])
+  add_project_arguments('-p', language: ['c'])
 elif profiling == 'gprof'
-  add_project_arguments('-pg', ['c'])
+  add_project_arguments('-pg', language: ['c'])
 elif profiling == 'instrument'
-  add_project_arguments('-finstrument-functions', ['c'])
+  add_project_arguments('-finstrument-functions', language: ['c'])
 endif
 
 fake_cpuid = get_option('fake-cpuid')
@@ -66,7 +69,9 @@ host_machine_cpu = host_machine.cpu()
 mpn_search_path = ['generic']
 conf.set('NO_ASM', 1)
 conf.set('HAVE_HOST_CPU_' + host_machine.cpu(), 1)
+add_project_arguments('-DHAVE_HOST_CPU_' + host_machine.cpu(), language: ['c'])
 conf.set('HAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), 1)
+add_project_arguments('-DHAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), language: ['c'])
 calling_conventions_objs = ['amd64call.lo', 'amd64check$U.lo']
 speed_cyclecounter_obj = 'x86_64.lo'
 cyclecounter_size = 2
@@ -103,7 +108,8 @@ else
 endif
 conf.set('DEFN_LONG_LONG_LIMB', DEFN_LONG_LONG_LIMB)
 
-if get_option('default_library') != 'static'
+conf.set('LIBGMP_DLL', 0)
+if get_option('default_library') != 'static' and host_machine.system() == 'windows'
     add_project_link_arguments(
       '-no-undefined',
       '-Wl,--export-all-symbols',
@@ -171,17 +177,22 @@ endif
 
 alloca = get_option('alloca')
 if alloca == 'yes'
-  gmp_cv_option_alloca = 'alloca'
+  conf.set('WANT_TMP_ALLOCA', 1)
+  add_project_arguments('-DWANT_TMP_ALLOCA', language: ['c'])
 elif alloca == 'no'
-  gmp_cv_option_alloca = 'malloc-reentrant'
+  conf.set('WANT_TMP_REENTRANT', 1)
+  add_project_arguments('-DWANT_TMP_REENTRANT', language: ['c'])
 elif alloca == 'reentrant' or alloca == 'notreentrant'
   if cc.has_function('alloca', prefix : '#include<alloca.h>')
-    gmp_cv_option_alloca = 'alloca'
+    conf.set('WANT_TMP_ALLOCA', 1)
+    add_project_arguments('-DWANT_TMP_ALLOCA', language: ['c'])
   else
-    gmp_cv_option_alloca = 'malloc-' + alloca
+    conf.set('WANT_TMP_' + alloca.to_upper(), 1)
+    add_project_arguments('-DWANT_TMP_' + alloca.to_upper(), language: ['c'])
   endif
 else
-  gmp_cv_option_alloca = alloca
+  conf.set(WANT_TMP_DEBUG, 1)
+  add_project_arguments('-DWANT_TMP_DEBUG' + alloca.to_upper(), language: ['c'])
 endif
 
 GMP_INCLUDE_GMP_H = (
@@ -306,8 +317,9 @@ SIZEOF_MP_LIMB_T = cc.sizeof(
   prefix: GMP_INCLUDE_GMP_H,
   include_directories: include_directories('')
 )
+GMP_LIMB_BITS = 8 * SIZEOF_MP_LIMB_T
 conf.set('SIZEOF_MP_LIMB_T', SIZEOF_MP_LIMB_T)
-conf.set('GMP_LIMB_BITS', 8 * SIZEOF_MP_LIMB_T)
+conf.set('GMP_LIMB_BITS', GMP_LIMB_BITS)
 conf.set('SIZEOF_UNSIGNED', cc.sizeof('unsigned'))
 conf.set('SIZEOF_UNSIGNED_LONG', cc.sizeof('unsigned long'))
 conf.set('SIZEOF_UNSIGNED_SHORT', cc.sizeof('unsigned short'))
@@ -340,7 +352,9 @@ endif
 #   mpn_search_path = ['minithres'] + mpn_search_path
 # endif
 
-configure_file(
+generated_sources = []
+
+generated_sources += configure_file(
   input: 'config.in.meson',
   output: 'config.h',
   configuration: conf,
@@ -351,7 +365,7 @@ gmp_h = configure_file(
   output: 'gmp.h',
   configuration: conf,
 )
-
+generated_sources += [gmp_h]
 install_headers(gmp_h)
 
 if cpp
@@ -360,16 +374,9 @@ endif
 
 sources = files(
   'assert.c',
-  'bootstrap.c',
   'compat.c',
   'errno.c',
   'extract-dbl.c',
-  'gen-bases.c',
-  'gen-fac.c',
-  'gen-fib.c',
-  'gen-jacobitab.c',
-  'gen-psqr.c',
-  'gen-trialdivtab.c',
   'invalid.c',
   'memory.c',
   'mp_bpl.c',
@@ -380,10 +387,78 @@ sources = files(
   'mp_set_fns.c',
   'nextprime.c',
   'primesieve.c',
+  'version.c',
+)
+
+extra_sources = files(
   'tal-debug.c',
   'tal-notreent.c',
   'tal-reent.c',
-  'version.c',
+)
+
+gen_bases = executable('gen-bases', 'gen-bases.c')
+generated_sources += custom_target(
+  'mp_bases.h',
+  output: ['mp_bases.h'],
+  command: [gen_bases, 'header', GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true
+)
+generated_sources += custom_target(
+  'mp_bases.c',
+  output: ['mp_bases.c'],
+  command: [gen_bases, 'table', GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true  
+)
+
+gen_fac = executable('gen-fac', 'gen-fac.c')
+generated_sources += custom_target(
+  'fac_table.h',
+  output: ['fac_table.h'],
+  command: [gen_fac, GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true,
+)
+
+gen_fib = executable('gen-fib', 'gen-fib.c')
+generated_sources += custom_target(
+  'fib_table.h',
+  output: ['fib_table.h'],
+  command: [gen_fib, 'header', GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true,
+)
+generated_sources += custom_target(
+  'fib_table.c',
+  output: ['fib_table.c'],
+  command: [gen_fib, 'table', GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true,
+)
+
+gen_jacobitab = executable('gen-jacobitab', 'gen-jacobitab.c')
+generated_sources += custom_target(
+  'jacobitab.h',
+  output: ['jacobitab.h'],
+  command: [gen_jacobitab],
+  capture: true,
+)
+
+gen_psqr = executable('gen-psqr', 'gen-psqr.c')
+generated_sources += custom_target(
+  'perfsqr.h',
+  output: ['perfsqr.h'],
+  command: [gen_psqr, GMP_LIMB_BITS.to_string(), GMP_NAIL_BITS.to_string()],
+  capture: true,
+)
+
+gen_trialdivtab = executable('gen-trialdivtab', 'gen-trialdivtab.c')
+generated_sources += custom_target(
+  'trialdivtab.h',
+  output: ['trialdivtab.h'],
+  command: [gen_trialdivtab, GMP_LIMB_BITS.to_string(), '8000'],
+  capture: true,
+)
+
+includes = include_directories(
+  '.',
+  'mpn/generic'  # quick hack so we don't have to copy gmp-mparam.h over
 )
 
 subdir('mpn')
@@ -402,13 +477,13 @@ endif
 
 gmp_lib = library(
     'gmp',
-    sources,
-    include_directories: include_directories('.'),
+    sources + generated_sources,
+    include_directories: includes,
     version: meson.project_version(),
     install: true
 )
 
 gmp_dep = declare_dependency(
-    include_directories: include_directories('.'),
+    include_directories: includes,
     link_with: gmp_lib,
 )

@@ -71,7 +71,7 @@ sources += files(
   'jacbase.c',
   'jacobi_2.c',
   'jacobi.c',
-  'logops_n.c',
+# 'logops_n.c',  multifunction file : dealt with below
   'lshift.c',
   'lshiftc.c',
   'matrix22_mul1_inverse_vector.c',
@@ -103,7 +103,7 @@ sources += files(
   'nussbaumer_mul.c',
   'perfpow.c',
   'perfsqr.c',
-  'popham.c',
+# 'popham.c',  multifunction file : dealt with below
   'pow_1.c',
   'powlo.c',
   'powm.c',
@@ -125,11 +125,11 @@ sources += files(
   'sbpi1_div_qr.c',
   'scan0.c',
   'scan1.c',
-  'sec_aors_1.c',
-  'sec_div.c',
+# 'sec_aors_1.c',  multifunction file : dealt with below
+# 'sec_div.c',  multifunction file : dealt with below
   'sec_invert.c',
   'sec_mul.c',
-  'sec_pi1_div.c',
+# 'sec_pi1_div.c',  multifunction file : dealt with below
   'sec_powm.c',
   'sec_sqr.c',
   'sec_tabselect.c',
@@ -183,7 +183,27 @@ sources += files(
   'toom_interpolate_7pts.c',
   'toom_interpolate_8pts.c',
   'trialdiv.c',
-  'udiv_w_sdiv.c',
+  # 'udiv_w_sdiv.c', not needed for x86_64
   'zero.c',
   'zero_p.c',
 )
+
+multifunction_files = {
+  'logops_n.c': ['and_n', 'andn_n', 'nand_n', 'ior_n', 'iorn_n', 'nior_n', 'xor_n', 'xnor_n'],
+  'popham.c': ['popcount', 'hamdist'],
+  'sec_aors_1.c': ['sec_add_1', 'sec_sub_1'],
+  'sec_div.c': ['sec_div_qr', 'sec_div_r'],
+  'sec_pi1_div.c': ['sec_pi1_div_qr', 'sec_pi1_div_r'],
+}
+
+foreach file, functions : multifunction_files
+  foreach function : functions
+    sources += static_library(
+      file + ':' + function,
+      file,
+      generated_sources,
+      include_directories: includes,
+      c_args: ['-DOPERATION_' + function],
+    )
+  endforeach
+endforeach
