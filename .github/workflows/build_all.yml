@@ -121,6 +121,7 @@ jobs:
         with:
           msystem: ${{matrix.platform}}
           install: >-
+            bison
             dos2unix
             git
           pacboy: >-

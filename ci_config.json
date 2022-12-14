@@ -566,6 +566,24 @@
       "libxml2-dev"
     ]
   },
+  "libxkbcommon": {
+    "build_options": [
+      "libxkbcommon:enable-docs=false",
+      "libxkbcommon:enable-tools=false",
+      "libxkbcommon:enable-wayland=false",
+      "libxkbcommon:enable-x11=false",
+      "libxkbcommon:enable-xkbregistry=false"
+    ],
+    "alpine_packages": [
+      "bison"
+    ],
+    "brew_packages": [
+      "bison"
+    ],
+    "choco_packages": [
+      "winflexbison"
+    ]
+  },
   "libxrandr": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
