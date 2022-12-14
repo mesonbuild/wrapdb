@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libxkbcommon-1.7.0
+source_url = https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz
+source_filename = libxkbcommon-1.7.0.tar.xz
+source_hash = 65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247
+
+[provide]
+xkbcommon = dep_libxkbcommon
