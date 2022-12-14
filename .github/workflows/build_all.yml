@@ -17,7 +17,7 @@ jobs:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
@@ -38,7 +38,7 @@ jobs:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
@@ -61,7 +61,7 @@ jobs:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
