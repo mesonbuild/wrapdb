@@ -2099,6 +2099,14 @@
       "3.34.1-1"
     ]
   },
+  "sqlitecpp": {
+    "dependency_names": [
+      "sqlitecpp"
+    ],
+    "versions": [
+      "3.2.1-1"
+    ]
+  },
   "tabulate": {
     "dependency_names": [
       "tabulate"

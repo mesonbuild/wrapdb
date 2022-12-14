@@ -447,6 +447,12 @@
       "windows": false
     }
   },
+  "sqlitecpp":{
+    "build_options": [
+      "sqlitecpp:SQLITECPP_BUILD_TESTS=true",
+      "sqlitecpp:SQLITECPP_BUILD_EXAMPLES=true"
+    ]
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
