@@ -50,7 +50,7 @@ option(
     description: 'enable old mpn_mul_fft_full for multiplication',
 )
 
-# Look like none of the x86_64 CPUs support nails so let's not bother for now
+# Looks like none of the x86_64 CPUs support nails so let's not bother for now
 #
 # option(
 #     'nails',

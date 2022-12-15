@@ -29,21 +29,21 @@ from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
+    'icu': [
+        'export_module.py'
+    ],
     'jbigkit': [
         'jbig.def',
         'jbig85.def'
     ],
-    'icu': [
-        'export_module.py'
-    ],
     'libexif': [
         'def.py',
     ],
-    'lmdb': [
-        'lmdb.def',
-    ],
     'liblbfgs': [
         'liblbfgs.def'
+    ],
+    'lmdb': [
+        'lmdb.def',
     ],
     'm4': [
         'm4_test_runner.py',
@@ -60,6 +60,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'nowide': [
         'test_iostream_interactive.py',
     ],
+    'openal-soft': [
+        'hexify.py'
+    ],
     'openssl': [
         'bn_conf.h',
         'dso_conf.h',
@@ -67,9 +70,6 @@ PER_PROJECT_PERMITTED_FILES = {
         'generate_gypi.pl.patch',
         'meson.build.tmpl',
         'README.md',
-    ],
-    'openal-soft': [
-        'hexify.py'
     ],
     'sdl2': [
         'find-dylib-name.py'

@@ -198,7 +198,7 @@ multifunction_files = {
 
 foreach file, functions : multifunction_files
   foreach function : functions
-    sources += static_library(
+    static_libs += static_library(
       file + ':' + function,
       file,
       generated_sources,

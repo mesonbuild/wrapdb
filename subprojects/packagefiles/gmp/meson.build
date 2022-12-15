@@ -69,9 +69,7 @@ host_machine_cpu = host_machine.cpu()
 mpn_search_path = ['generic']
 conf.set('NO_ASM', 1)
 conf.set('HAVE_HOST_CPU_' + host_machine.cpu(), 1)
-add_project_arguments('-DHAVE_HOST_CPU_' + host_machine.cpu(), language: ['c'])
 conf.set('HAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), 1)
-add_project_arguments('-DHAVE_HOST_CPU_FAMILY_' + host_machine.cpu_family(), language: ['c'])
 calling_conventions_objs = ['amd64call.lo', 'amd64check$U.lo']
 speed_cyclecounter_obj = 'x86_64.lo'
 cyclecounter_size = 2
@@ -175,24 +173,29 @@ if cc.compiles(
   conf.set('HAVE_HIDDEN_ALIAS', 1)
 endif
 
-alloca = get_option('alloca')
-if alloca == 'yes'
+requested_allocator = get_option('alloca')
+alloca_func_available = cc.has_function('alloca', prefix : '#include<alloca.h>')
+if requested_allocator == 'yes'
   conf.set('WANT_TMP_ALLOCA', 1)
-  add_project_arguments('-DWANT_TMP_ALLOCA', language: ['c'])
-elif alloca == 'no'
+elif requested_allocator == 'no'
   conf.set('WANT_TMP_REENTRANT', 1)
-  add_project_arguments('-DWANT_TMP_REENTRANT', language: ['c'])
-elif alloca == 'reentrant' or alloca == 'notreentrant'
-  if cc.has_function('alloca', prefix : '#include<alloca.h>')
+elif requested_allocator == 'reentrant' or requested_allocator == 'notreentrant'
+  if alloca_func_available
     conf.set('WANT_TMP_ALLOCA', 1)
-    add_project_arguments('-DWANT_TMP_ALLOCA', language: ['c'])
   else
     conf.set('WANT_TMP_' + alloca.to_upper(), 1)
-    add_project_arguments('-DWANT_TMP_' + alloca.to_upper(), language: ['c'])
   endif
 else
   conf.set(WANT_TMP_DEBUG, 1)
-  add_project_arguments('-DWANT_TMP_DEBUG' + alloca.to_upper(), language: ['c'])
+endif
+
+allocator_implementation = []
+if requested_allocator == 'debug'
+  allocator_implementation += files('tal-debug.c')
+elif requested_allocator == 'notreentrant' and not alloca_func_available
+  allocator_implementation += files('tal-notreent.c')
+else
+  allocator_implementation += files('tal-reent.c')
 endif
 
 GMP_INCLUDE_GMP_H = (
@@ -337,9 +340,10 @@ endif
 # C++ tests, when required
 if cpp
   cppc = meson.get_compiler('cpp')
-  # Reasons for testing:
+  # Original reasons for testing:
   #   <sstream> - not in g++ 2.95.2
   #   std::locale - not in g++ 2.95.4
+  # Should this REALLY be kept in 2023 ???
   if cppc.has_header('sstream')
     conf.set('HAVE_SSTREAM', 1)
   endif
@@ -353,15 +357,14 @@ endif
 # endif
 
 generated_sources = []
-
 generated_sources += configure_file(
-  input: 'config.in.meson',
+  input: 'config.h.meson',
   output: 'config.h',
   configuration: conf,
 )
 
 gmp_h = configure_file(
-  input: 'gmp.in.meson',
+  input: 'gmp.h.meson',
   output: 'gmp.h',
   configuration: conf,
 )
@@ -389,12 +392,7 @@ sources = files(
   'primesieve.c',
   'version.c',
 )
-
-extra_sources = files(
-  'tal-debug.c',
-  'tal-notreent.c',
-  'tal-reent.c',
-)
+sources += allocator_implementation
 
 gen_bases = executable('gen-bases', 'gen-bases.c')
 generated_sources += custom_target(
@@ -461,6 +459,8 @@ includes = include_directories(
   'mpn/generic'  # quick hack so we don't have to copy gmp-mparam.h over
 )
 
+static_libs = []  # filled-in by subdir('mpn')
+
 subdir('mpn')
 subdir('mpz')
 subdir('mpq')
@@ -479,8 +479,9 @@ gmp_lib = library(
     'gmp',
     sources + generated_sources,
     include_directories: includes,
+    install: true,
+    link_with: static_libs,
     version: meson.project_version(),
-    install: true
 )
 
 gmp_dep = declare_dependency(
