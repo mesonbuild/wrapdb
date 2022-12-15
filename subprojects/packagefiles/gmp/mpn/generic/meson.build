@@ -188,6 +188,9 @@ sources += files(
   'zero_p.c',
 )
 
+# A "Multi-function file" is a single .c file that can be compiled to give the
+# implementation of different functions depending on which OPERATION_XXX
+# macro you compile them with
 multifunction_files = {
   'logops_n.c': ['and_n', 'andn_n', 'nand_n', 'ior_n', 'iorn_n', 'nior_n', 'xor_n', 'xnor_n'],
   'popham.c': ['popcount', 'hamdist'],
