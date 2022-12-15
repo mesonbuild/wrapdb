@@ -202,7 +202,7 @@ multifunction_files = {
 foreach file, functions : multifunction_files
   foreach function : functions
     static_libs += static_library(
-      file + ':' + function,
+      file + '_' + function,
       file,
       generated_sources,
       include_directories: includes,
