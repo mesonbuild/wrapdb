@@ -909,6 +909,14 @@
       "2.12-1"
     ]
   },
+  "libarchive": {
+    "dependency_names": [
+      "libarchive"
+    ],
+    "versions": [
+      "3.6.2-1"
+    ]
+  },
   "libccp4c": {
     "dependency_names": [
       "libccp4c"
