@@ -183,7 +183,7 @@ elif requested_allocator == 'reentrant' or requested_allocator == 'notreentrant'
   if alloca_func_available
     conf.set('WANT_TMP_ALLOCA', 1)
   else
-    conf.set('WANT_TMP_' + alloca.to_upper(), 1)
+    conf.set('WANT_TMP_' + requested_allocator.to_upper(), 1)
   endif
 else
   conf.set(WANT_TMP_DEBUG, 1)
