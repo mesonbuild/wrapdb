@@ -1,8 +1,13 @@
-project('tiff', 'c', version: files('VERSION'))
+project(
+  'tiff',
+  'c',
+  version: files('VERSION'),
+  meson_version: '>=0.57.0',
+)
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required: false)
-jbig_dep = cc.find_library('libjbig', required: get_option('jbig'))
+jbig_dep = cc.find_library('jbig', required: get_option('jbig'))
 jpeg_dep = dependency('libjpeg', required: get_option('jpeg'))
 lerc_dep = dependency('liblerc', required: get_option('lerc'))
 lzma_dep = dependency('liblzma', required: get_option('lzma'))
