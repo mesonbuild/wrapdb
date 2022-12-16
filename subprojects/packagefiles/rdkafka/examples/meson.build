@@ -1,8 +1,4 @@
-if host_machine.system() == 'windows'
-  win_sources = ['../win32/wingetopt.c', '../win32/wingetopt.h']
-else
-  win_sources = []
-endif
+win_sources = host_machine.system() == 'windows' ? files('../win32/wingetopt.c') : []
 
 examples = [
   {'e': 'producer', 's': 'producer.c'},
@@ -21,8 +17,10 @@ if host_machine.system() != 'windows'
   ]
 endif
 
-foreach ex: examples
-  executable(ex['e'], [ex['s']] + win_sources,
+foreach ex : examples
+  executable(
+    ex['e'],
+    [ex['s']] + win_sources,
     dependencies: rdkafka_dep,
     include_directories: include_directories('../src', '../src-cpp'),
     build_by_default: false,
