@@ -587,6 +587,14 @@
       "0.9.9.8-1"
     ]
   },
+  "gmp": {
+    "dependency_names": [
+      "gmp"
+    ],
+    "versions": [
+      "6.2.1-1"
+    ]
+  },
   "google-benchmark": {
     "dependency_names": [
       "benchmark"

@@ -1,0 +1,667 @@
+/* config.in.  Generated from configure.ac by autoheader.  */
+
+/*
+
+Copyright 1996-2020 Free Software Foundation, Inc.
+
+This file is part of the GNU MP Library.
+
+The GNU MP Library is free software; you can redistribute it and/or modify
+it under the terms of either:
+
+  * the GNU Lesser General Public License as published by the Free
+    Software Foundation; either version 3 of the License, or (at your
+    option) any later version.
+
+or
+
+  * the GNU General Public License as published by the Free Software
+    Foundation; either version 2 of the License, or (at your option) any
+    later version.
+
+or both in parallel, as here.
+
+The GNU MP Library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received copies of the GNU General Public License and the
+GNU Lesser General Public License along with the GNU MP Library.  If not,
+see https://www.gnu.org/licenses/.
+*/
+
+/* Define if building universal (internal helper macro) */
+#mesondefine AC_APPLE_UNIVERSAL_BUILD
+
+/* The gmp-mparam.h file (a string) the tune program should suggest updating.
+   */
+#mesondefine GMP_MPARAM_H_SUGGEST
+
+/* Define to 1 if you have the `alarm' function. */
+#mesondefine HAVE_ALARM
+
+/* Define to 1 if alloca() works (via gmp-impl.h). */
+#mesondefine HAVE_ALLOCA
+
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
+#mesondefine HAVE_ALLOCA_H
+
+/* Define to 1 if the compiler accepts gcc style __attribute__ ((const)) */
+#mesondefine HAVE_ATTRIBUTE_CONST
+
+/* Define to 1 if the compiler accepts gcc style __attribute__ ((malloc)) */
+#mesondefine HAVE_ATTRIBUTE_MALLOC
+
+/* Define to 1 if the compiler accepts gcc style __attribute__ ((mode (XX)))
+   */
+#mesondefine HAVE_ATTRIBUTE_MODE
+
+/* Define to 1 if the compiler accepts gcc style __attribute__ ((noreturn)) */
+#mesondefine HAVE_ATTRIBUTE_NORETURN
+
+/* Define to 1 if you have the `attr_get' function. */
+#mesondefine HAVE_ATTR_GET
+
+/* Define to 1 if tests/libtests has calling conventions checking for the CPU
+   */
+#mesondefine HAVE_CALLING_CONVENTIONS
+
+/* Define to 1 if you have the `clock' function. */
+#mesondefine HAVE_CLOCK
+
+/* Define to 1 if you have the `clock_gettime' function */
+#mesondefine HAVE_CLOCK_GETTIME
+
+/* Define to 1 if you have the `cputime' function. */
+#mesondefine HAVE_CPUTIME
+
+/* Define to 1 if you have the declaration of `fgetc', and to 0 if you don't.
+   */
+#mesondefine HAVE_DECL_FGETC
+
+/* Define to 1 if you have the declaration of `fscanf', and to 0 if you don't.
+   */
+#mesondefine HAVE_DECL_FSCANF
+
+/* Define to 1 if you have the declaration of `optarg', and to 0 if you don't.
+   */
+#mesondefine HAVE_DECL_OPTARG
+
+/* Define to 1 if you have the declaration of `sys_errlist', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_SYS_ERRLIST
+
+/* Define to 1 if you have the declaration of `sys_nerr', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_SYS_NERR
+
+/* Define to 1 if you have the declaration of `ungetc', and to 0 if you don't.
+   */
+#mesondefine HAVE_DECL_UNGETC
+
+/* Define to 1 if you have the declaration of `vfprintf', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_VFPRINTF
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define one of the following to 1 for the format of a `double'.
+   If your format is not among these choices, or you don't know what it is,
+   then leave all undefined.
+   IEEE_LITTLE_SWAPPED means little endian, but with the two 4-byte halves
+   swapped, as used by ARM CPUs in little endian mode.  */
+#mesondefine HAVE_DOUBLE_IEEE_BIG_ENDIAN
+#mesondefine HAVE_DOUBLE_IEEE_LITTLE_ENDIAN
+#mesondefine HAVE_DOUBLE_IEEE_LITTLE_SWAPPED
+#mesondefine HAVE_DOUBLE_VAX_D
+#mesondefine HAVE_DOUBLE_VAX_G
+#mesondefine HAVE_DOUBLE_CRAY_CFP
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#mesondefine HAVE_FCNTL_H
+
+/* Define to 1 if you have the <float.h> header file. */
+#mesondefine HAVE_FLOAT_H
+
+/* Define to 1 if you have the `getpagesize' function. */
+#mesondefine HAVE_GETPAGESIZE
+
+/* Define to 1 if you have the `getrusage' function. */
+#mesondefine HAVE_GETRUSAGE
+
+/* Define to 1 if you have the `getsysinfo' function. */
+#mesondefine HAVE_GETSYSINFO
+
+/* Define to 1 if you have the `gettimeofday' function. */
+#mesondefine HAVE_GETTIMEOFDAY
+
+/* Define to 1 if the compiler accepts gcc style __attribute__ ((visibility))
+   and __attribute__ ((alias)) */
+#mesondefine HAVE_HIDDEN_ALIAS
+
+/* Define one of these to 1 for the host CPU family.
+   If your CPU is not in any of these families, leave all undefined.
+   For an AMD64 chip, define "x86" in ABI=32, but not in ABI=64. */
+#mesondefine HAVE_HOST_CPU_FAMILY_alpha
+#mesondefine HAVE_HOST_CPU_FAMILY_m68k
+#mesondefine HAVE_HOST_CPU_FAMILY_power
+#mesondefine HAVE_HOST_CPU_FAMILY_powerpc
+#mesondefine HAVE_HOST_CPU_FAMILY_x86
+#mesondefine HAVE_HOST_CPU_FAMILY_x86_64
+
+/* Define one of the following to 1 for the host CPU, as per the output of
+   ./config.guess.  If your CPU is not listed here, leave all undefined.  */
+#mesondefine HAVE_HOST_CPU_alphaev67
+#mesondefine HAVE_HOST_CPU_alphaev68
+#mesondefine HAVE_HOST_CPU_alphaev7
+#mesondefine HAVE_HOST_CPU_m68020
+#mesondefine HAVE_HOST_CPU_m68030
+#mesondefine HAVE_HOST_CPU_m68040
+#mesondefine HAVE_HOST_CPU_m68060
+#mesondefine HAVE_HOST_CPU_m68360
+#mesondefine HAVE_HOST_CPU_powerpc604
+#mesondefine HAVE_HOST_CPU_powerpc604e
+#mesondefine HAVE_HOST_CPU_powerpc750
+#mesondefine HAVE_HOST_CPU_powerpc7400
+#mesondefine HAVE_HOST_CPU_supersparc
+#mesondefine HAVE_HOST_CPU_i386
+#mesondefine HAVE_HOST_CPU_i586
+#mesondefine HAVE_HOST_CPU_i686
+#mesondefine HAVE_HOST_CPU_pentium
+#mesondefine HAVE_HOST_CPU_pentiummmx
+#mesondefine HAVE_HOST_CPU_pentiumpro
+#mesondefine HAVE_HOST_CPU_pentium2
+#mesondefine HAVE_HOST_CPU_pentium3
+#mesondefine HAVE_HOST_CPU_pentium4
+#mesondefine HAVE_HOST_CPU_core2
+#mesondefine HAVE_HOST_CPU_nehalem
+#mesondefine HAVE_HOST_CPU_westmere
+#mesondefine HAVE_HOST_CPU_sandybridge
+#mesondefine HAVE_HOST_CPU_ivybridge
+#mesondefine HAVE_HOST_CPU_haswell
+#mesondefine HAVE_HOST_CPU_broadwell
+#mesondefine HAVE_HOST_CPU_skylake
+#mesondefine HAVE_HOST_CPU_silvermont
+#mesondefine HAVE_HOST_CPU_goldmont
+#mesondefine HAVE_HOST_CPU_k8
+#mesondefine HAVE_HOST_CPU_k10
+#mesondefine HAVE_HOST_CPU_bulldozer
+#mesondefine HAVE_HOST_CPU_piledriver
+#mesondefine HAVE_HOST_CPU_steamroller
+#mesondefine HAVE_HOST_CPU_excavator
+#mesondefine HAVE_HOST_CPU_zen
+#mesondefine HAVE_HOST_CPU_bobcat
+#mesondefine HAVE_HOST_CPU_jaguar
+#mesondefine HAVE_HOST_CPU_s390_z900
+#mesondefine HAVE_HOST_CPU_s390_z990
+#mesondefine HAVE_HOST_CPU_s390_z9
+#mesondefine HAVE_HOST_CPU_s390_z10
+#mesondefine HAVE_HOST_CPU_s390_z196
+
+/* Define to 1 iff we have a s390 with 64-bit registers.  */
+#mesondefine HAVE_HOST_CPU_s390_zarch
+
+/* Define to 1 if the system has the type `intmax_t'. */
+#mesondefine HAVE_INTMAX_T
+
+/* Define to 1 if the system has the type `intptr_t'. */
+#mesondefine HAVE_INTPTR_T
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <invent.h> header file. */
+#mesondefine HAVE_INVENT_H
+
+/* Define to 1 if you have the <langinfo.h> header file. */
+#mesondefine HAVE_LANGINFO_H
+
+/* Define one of these to 1 for the endianness of `mp_limb_t'.
+   If the endianness is not a simple big or little, or you don't know what
+   it is, then leave both undefined. */
+#mesondefine HAVE_LIMB_BIG_ENDIAN
+#mesondefine HAVE_LIMB_LITTLE_ENDIAN
+
+/* Define to 1 if you have the `localeconv' function. */
+#mesondefine HAVE_LOCALECONV
+
+/* Define to 1 if you have the <locale.h> header file. */
+#mesondefine HAVE_LOCALE_H
+
+/* Define to 1 if the system has the type `long double'. */
+#mesondefine HAVE_LONG_DOUBLE
+
+/* Define to 1 if the system has the type `long long'. */
+#mesondefine HAVE_LONG_LONG
+
+/* Define to 1 if you have the <machine/hal_sysinfo.h> header file. */
+#mesondefine HAVE_MACHINE_HAL_SYSINFO_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#mesondefine HAVE_MEMORY_H
+
+/* Define to 1 if you have the `memset' function. */
+#mesondefine HAVE_MEMSET
+
+/* Define to 1 if you have the `mmap' function. */
+#mesondefine HAVE_MMAP
+
+/* Define to 1 if you have the `mprotect' function. */
+#mesondefine HAVE_MPROTECT
+
+/* Define to 1 each of the following for which a native (ie. CPU specific)
+    implementation of the corresponding routine exists.  */
+#mesondefine HAVE_NATIVE_mpn_add_n
+#mesondefine HAVE_NATIVE_mpn_add_n_sub_n
+#mesondefine HAVE_NATIVE_mpn_add_nc
+#mesondefine HAVE_NATIVE_mpn_addaddmul_1msb0
+#mesondefine HAVE_NATIVE_mpn_addlsh1_n
+#mesondefine HAVE_NATIVE_mpn_addlsh2_n
+#mesondefine HAVE_NATIVE_mpn_addlsh_n
+#mesondefine HAVE_NATIVE_mpn_addlsh1_nc
+#mesondefine HAVE_NATIVE_mpn_addlsh2_nc
+#mesondefine HAVE_NATIVE_mpn_addlsh_nc
+#mesondefine HAVE_NATIVE_mpn_addlsh1_n_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh2_n_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh_n_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh1_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh2_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_addlsh1_n_ip2
+#mesondefine HAVE_NATIVE_mpn_addlsh2_n_ip2
+#mesondefine HAVE_NATIVE_mpn_addlsh_n_ip2
+#mesondefine HAVE_NATIVE_mpn_addlsh1_nc_ip2
+#mesondefine HAVE_NATIVE_mpn_addlsh2_nc_ip2
+#mesondefine HAVE_NATIVE_mpn_addlsh_nc_ip2
+#mesondefine HAVE_NATIVE_mpn_addmul_1c
+#mesondefine HAVE_NATIVE_mpn_addmul_2
+#mesondefine HAVE_NATIVE_mpn_addmul_3
+#mesondefine HAVE_NATIVE_mpn_addmul_4
+#mesondefine HAVE_NATIVE_mpn_addmul_5
+#mesondefine HAVE_NATIVE_mpn_addmul_6
+#mesondefine HAVE_NATIVE_mpn_addmul_7
+#mesondefine HAVE_NATIVE_mpn_addmul_8
+#mesondefine HAVE_NATIVE_mpn_addmul_2s
+#mesondefine HAVE_NATIVE_mpn_and_n
+#mesondefine HAVE_NATIVE_mpn_andn_n
+#mesondefine HAVE_NATIVE_mpn_bdiv_dbm1c
+#mesondefine HAVE_NATIVE_mpn_bdiv_q_1
+#mesondefine HAVE_NATIVE_mpn_pi1_bdiv_q_1
+#mesondefine HAVE_NATIVE_mpn_cnd_add_n
+#mesondefine HAVE_NATIVE_mpn_cnd_sub_n
+#mesondefine HAVE_NATIVE_mpn_com
+#mesondefine HAVE_NATIVE_mpn_copyd
+#mesondefine HAVE_NATIVE_mpn_copyi
+#mesondefine HAVE_NATIVE_mpn_div_qr_1n_pi1
+#mesondefine HAVE_NATIVE_mpn_div_qr_2
+#mesondefine HAVE_NATIVE_mpn_divexact_1
+#mesondefine HAVE_NATIVE_mpn_divexact_by3c
+#mesondefine HAVE_NATIVE_mpn_divrem_1
+#mesondefine HAVE_NATIVE_mpn_divrem_1c
+#mesondefine HAVE_NATIVE_mpn_divrem_2
+#mesondefine HAVE_NATIVE_mpn_gcd_1
+#mesondefine HAVE_NATIVE_mpn_gcd_11
+#mesondefine HAVE_NATIVE_mpn_gcd_22
+#mesondefine HAVE_NATIVE_mpn_hamdist
+#mesondefine HAVE_NATIVE_mpn_invert_limb
+#mesondefine HAVE_NATIVE_mpn_ior_n
+#mesondefine HAVE_NATIVE_mpn_iorn_n
+#mesondefine HAVE_NATIVE_mpn_lshift
+#mesondefine HAVE_NATIVE_mpn_lshiftc
+#mesondefine HAVE_NATIVE_mpn_lshsub_n
+#mesondefine HAVE_NATIVE_mpn_mod_1
+#mesondefine HAVE_NATIVE_mpn_mod_1_1p
+#mesondefine HAVE_NATIVE_mpn_mod_1c
+#mesondefine HAVE_NATIVE_mpn_mod_1s_2p
+#mesondefine HAVE_NATIVE_mpn_mod_1s_4p
+#mesondefine HAVE_NATIVE_mpn_mod_34lsub1
+#mesondefine HAVE_NATIVE_mpn_modexact_1_odd
+#mesondefine HAVE_NATIVE_mpn_modexact_1c_odd
+#mesondefine HAVE_NATIVE_mpn_mul_1
+#mesondefine HAVE_NATIVE_mpn_mul_1c
+#mesondefine HAVE_NATIVE_mpn_mul_2
+#mesondefine HAVE_NATIVE_mpn_mul_3
+#mesondefine HAVE_NATIVE_mpn_mul_4
+#mesondefine HAVE_NATIVE_mpn_mul_5
+#mesondefine HAVE_NATIVE_mpn_mul_6
+#mesondefine HAVE_NATIVE_mpn_mul_basecase
+#mesondefine HAVE_NATIVE_mpn_mullo_basecase
+#mesondefine HAVE_NATIVE_mpn_nand_n
+#mesondefine HAVE_NATIVE_mpn_nior_n
+#mesondefine HAVE_NATIVE_mpn_popcount
+#mesondefine HAVE_NATIVE_mpn_preinv_divrem_1
+#mesondefine HAVE_NATIVE_mpn_preinv_mod_1
+#mesondefine HAVE_NATIVE_mpn_redc_1
+#mesondefine HAVE_NATIVE_mpn_redc_2
+#mesondefine HAVE_NATIVE_mpn_rsblsh1_n
+#mesondefine HAVE_NATIVE_mpn_rsblsh2_n
+#mesondefine HAVE_NATIVE_mpn_rsblsh_n
+#mesondefine HAVE_NATIVE_mpn_rsblsh1_nc
+#mesondefine HAVE_NATIVE_mpn_rsblsh2_nc
+#mesondefine HAVE_NATIVE_mpn_rsblsh_nc
+#mesondefine HAVE_NATIVE_mpn_rsh1add_n
+#mesondefine HAVE_NATIVE_mpn_rsh1add_nc
+#mesondefine HAVE_NATIVE_mpn_rsh1sub_n
+#mesondefine HAVE_NATIVE_mpn_rsh1sub_nc
+#mesondefine HAVE_NATIVE_mpn_rshift
+#mesondefine HAVE_NATIVE_mpn_sbpi1_bdiv_r
+#mesondefine HAVE_NATIVE_mpn_sqr_basecase
+#mesondefine HAVE_NATIVE_mpn_sqr_diagonal
+#mesondefine HAVE_NATIVE_mpn_sqr_diag_addlsh1
+#mesondefine HAVE_NATIVE_mpn_sub_n
+#mesondefine HAVE_NATIVE_mpn_sub_nc
+#mesondefine HAVE_NATIVE_mpn_sublsh1_n
+#mesondefine HAVE_NATIVE_mpn_sublsh2_n
+#mesondefine HAVE_NATIVE_mpn_sublsh_n
+#mesondefine HAVE_NATIVE_mpn_sublsh1_nc
+#mesondefine HAVE_NATIVE_mpn_sublsh2_nc
+#mesondefine HAVE_NATIVE_mpn_sublsh_nc
+#mesondefine HAVE_NATIVE_mpn_sublsh1_n_ip1
+#mesondefine HAVE_NATIVE_mpn_sublsh2_n_ip1
+#mesondefine HAVE_NATIVE_mpn_sublsh_n_ip1
+#mesondefine HAVE_NATIVE_mpn_sublsh1_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_sublsh2_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_sublsh_nc_ip1
+#mesondefine HAVE_NATIVE_mpn_submul_1c
+#mesondefine HAVE_NATIVE_mpn_tabselect
+#mesondefine HAVE_NATIVE_mpn_udiv_qrnnd
+#mesondefine HAVE_NATIVE_mpn_udiv_qrnnd_r
+#mesondefine HAVE_NATIVE_mpn_umul_ppmm
+#mesondefine HAVE_NATIVE_mpn_umul_ppmm_r
+#mesondefine HAVE_NATIVE_mpn_xor_n
+#mesondefine HAVE_NATIVE_mpn_xnor_n
+
+/* Define to 1 if you have the `nl_langinfo' function. */
+#mesondefine HAVE_NL_LANGINFO
+
+/* Define to 1 if you have the <nl_types.h> header file. */
+#mesondefine HAVE_NL_TYPES_H
+
+/* Define to 1 if you have the `obstack_vprintf' function. */
+#mesondefine HAVE_OBSTACK_VPRINTF
+
+/* Define to 1 if you have the `popen' function. */
+#mesondefine HAVE_POPEN
+
+/* Define to 1 if you have the `processor_info' function. */
+#mesondefine HAVE_PROCESSOR_INFO
+
+/* Define to 1 if <sys/pstat.h> `struct pst_processor' exists and contains
+   `psp_iticksperclktick'. */
+#mesondefine HAVE_PSP_ITICKSPERCLKTICK
+
+/* Define to 1 if you have the `pstat_getprocessor' function. */
+#mesondefine HAVE_PSTAT_GETPROCESSOR
+
+/* Define to 1 if the system has the type `ptrdiff_t'. */
+#mesondefine HAVE_PTRDIFF_T
+
+/* Define to 1 if the system has the type `quad_t'. */
+#mesondefine HAVE_QUAD_T
+
+/* Define to 1 if you have the `raise' function. */
+#mesondefine HAVE_RAISE
+
+/* Define to 1 if you have the `read_real_time' function. */
+#mesondefine HAVE_READ_REAL_TIME
+
+/* Define to 1 if you have the `sigaction' function. */
+#mesondefine HAVE_SIGACTION
+
+/* Define to 1 if you have the `sigaltstack' function. */
+#mesondefine HAVE_SIGALTSTACK
+
+/* Define to 1 if you have the `sigstack' function. */
+#mesondefine HAVE_SIGSTACK
+
+/* Tune directory speed_cyclecounter, undef=none, 1=32bits, 2=64bits) */
+#mesondefine HAVE_SPEED_CYCLECOUNTER
+
+/* Define to 1 if you have the <sstream> header file. */
+#mesondefine HAVE_SSTREAM
+
+/* Define to 1 if the system has the type `stack_t'. */
+#mesondefine HAVE_STACK_T
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if the system has the type `std::locale'. */
+#mesondefine HAVE_STD__LOCALE
+
+/* Define to 1 if you have the `strchr' function. */
+#mesondefine HAVE_STRCHR
+
+/* Define to 1 if you have the `strerror' function. */
+#mesondefine HAVE_STRERROR
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if you have the `strnlen' function. */
+#mesondefine HAVE_STRNLEN
+
+/* Define to 1 if you have the `strtol' function. */
+#mesondefine HAVE_STRTOL
+
+/* Define to 1 if you have the `strtoul' function. */
+#mesondefine HAVE_STRTOUL
+
+/* Define to 1 if you have the `sysconf' function. */
+#mesondefine HAVE_SYSCONF
+
+/* Define to 1 if you have the `sysctl' function. */
+#mesondefine HAVE_SYSCTL
+
+/* Define to 1 if you have the `sysctlbyname' function. */
+#mesondefine HAVE_SYSCTLBYNAME
+
+/* Define to 1 if you have the `syssgi' function. */
+#mesondefine HAVE_SYSSGI
+
+/* Define to 1 if you have the <sys/attributes.h> header file. */
+#mesondefine HAVE_SYS_ATTRIBUTES_H
+
+/* Define to 1 if you have the <sys/iograph.h> header file. */
+#mesondefine HAVE_SYS_IOGRAPH_H
+
+/* Define to 1 if you have the <sys/mman.h> header file. */
+#mesondefine HAVE_SYS_MMAN_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#mesondefine HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/processor.h> header file. */
+#mesondefine HAVE_SYS_PROCESSOR_H
+
+/* Define to 1 if you have the <sys/pstat.h> header file. */
+#mesondefine HAVE_SYS_PSTAT_H
+
+/* Define to 1 if you have the <sys/resource.h> header file. */
+#mesondefine HAVE_SYS_RESOURCE_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#mesondefine HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/sysctl.h> header file. */
+#mesondefine HAVE_SYS_SYSCTL_H
+
+/* Define to 1 if you have the <sys/sysinfo.h> header file. */
+#mesondefine HAVE_SYS_SYSINFO_H
+
+/* Define to 1 if you have the <sys/syssgi.h> header file. */
+#mesondefine HAVE_SYS_SYSSGI_H
+
+/* Define to 1 if you have the <sys/systemcfg.h> header file. */
+#mesondefine HAVE_SYS_SYSTEMCFG_H
+
+/* Define to 1 if you have the <sys/times.h> header file. */
+#mesondefine HAVE_SYS_TIMES_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#mesondefine HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the `times' function. */
+#mesondefine HAVE_TIMES
+
+/* Define to 1 if the system has the type `uint_least32_t'. */
+#mesondefine HAVE_UINT_LEAST32_T
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Define to 1 if you have the `vsnprintf' function and it works properly. */
+#mesondefine HAVE_VSNPRINTF
+
+/* Define to 1 for Windos/64 */
+#mesondefine HOST_DOS64
+
+/* Assembler local label prefix */
+#mesondefine LSYM_PREFIX
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Define to 1 to disable the use of inline assembly */
+#mesondefine NO_ASM
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+/* Define as the return type of signal handlers (`int' or `void'). */
+#mesondefine RETSIGTYPE
+
+/* The size of `mp_limb_t', as computed by sizeof. */
+#mesondefine SIZEOF_MP_LIMB_T
+
+/* The size of `unsigned', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED
+
+/* The size of `unsigned long', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_LONG
+
+/* The size of `unsigned short', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_SHORT
+
+/* The size of `void *', as computed by sizeof. */
+#mesondefine SIZEOF_VOID_P
+
+/* Define to 1 if sscanf requires writable inputs */
+#mesondefine SSCANF_WRITABLE_INPUT
+
+/* Define to 1 if you have the ANSI C header files. */
+#mesondefine STDC_HEADERS
+
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+#mesondefine TIME_WITH_SYS_TIME
+
+/* Maximum size the tune program can test for SQR_TOOM2_THRESHOLD */
+#mesondefine TUNE_SQR_TOOM2_MAX
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* Define to 1 to enable ASSERT checking, per --enable-assert */
+#mesondefine WANT_ASSERT
+
+/* Define to 1 to enable GMP_CPU_TYPE faking cpuid, per --enable-fake-cpuid */
+#mesondefine WANT_FAKE_CPUID
+
+/* Define to 1 when building a fat binary. */
+#mesondefine WANT_FAT_BINARY
+
+/* Define to 1 to enable FFTs for multiplication, per --enable-fft */
+#mesondefine WANT_FFT
+
+/* Define to 1 to enable old mpn_mul_fft_full for multiplication, per
+   --enable-old-fft-full */
+#mesondefine WANT_OLD_FFT_FULL
+
+/* Define to 1 if --enable-profiling=gprof */
+#mesondefine WANT_PROFILING_GPROF
+
+/* Define to 1 if --enable-profiling=instrument */
+#mesondefine WANT_PROFILING_INSTRUMENT
+
+/* Define to 1 if --enable-profiling=prof */
+#mesondefine WANT_PROFILING_PROF
+
+/* Define one of these to 1 for the desired temporary memory allocation
+   method, per --enable-alloca. */
+#mesondefine WANT_TMP_ALLOCA
+#mesondefine WANT_TMP_REENTRANT
+#mesondefine WANT_TMP_NOTREENTRANT
+#mesondefine WANT_TMP_DEBUG
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#  undef WORDS_BIGENDIAN
+# endif
+#endif
+
+/* Define to 1 if the assembler understands the mulx instruction */
+#mesondefine X86_ASM_MULX
+
+/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
+   `char[]'. */
+#mesondefine YYTEXT_POINTER
+
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#undef inline
+#endif
+
+/* Define to the equivalent of the C99 'restrict' keyword, or to
+   nothing if this is not supported.  Do not define if restrict is
+   supported directly.  */
+#undef restrict
+/* Work around a bug in Sun C++: it does not support _Restrict or
+   __restrict__, even though the corresponding Sun C compiler ends up with
+   "#define restrict _Restrict" or "#define restrict __restrict__" in the
+   previous line.  Perhaps some future version of Sun C++ will work with
+   restrict; if so, hopefully it defines __RESTRICT like Sun C does.  */
+#if defined __SUNPRO_CC && !defined __RESTRICT
+# define _Restrict
+# define __restrict__
+#endif
+
+/* Define to empty if the keyword `volatile' does not work. Warning: valid
+   code using `volatile' can become incorrect without. Disable with care. */
+#undef volatile
