@@ -2,7 +2,10 @@ project(
   'gmp',
   'c',
   version : '6.2.1',
-  default_options: ['optimization=2']
+  default_options: [
+    'optimization=2',
+    'warning_level=3'
+  ]
 )
 
 if host_machine.cpu_family() != 'x86_64'
@@ -27,7 +30,6 @@ conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 # Tell gmp.h it's building gmp, not an application, used by windows DLL stuff.
 add_project_arguments(
-  '-pedantic',
   '-D__GMP_WITHIN_GMP',
   '-DHAVE_CONFIG_H',
   language: ['c', 'cpp'],
@@ -36,11 +38,6 @@ add_project_arguments(
 profiling = get_option('profiling')
 if profiling != 'no'
   conf.set('WANT_PROFILING_' + profiling.to_upper(), 1)
-endif
-
-# -fomit-frame-pointer is incompatible with -pg on some chips
-if profiling != 'gprof'
-  add_project_arguments('-fomit-frame-pointer', language: ['c', 'cpp'])
 endif
 
 if profiling == 'prof'
@@ -108,12 +105,14 @@ conf.set('DEFN_LONG_LONG_LIMB', DEFN_LONG_LONG_LIMB)
 
 conf.set('LIBGMP_DLL', 0)
 if get_option('default_library') != 'static' and host_machine.system() == 'windows'
+  if cc.get_linker_id() != 'link'
     add_project_link_arguments(
       '-no-undefined',
       '-Wl,--export-all-symbols',
       language: ['c', 'cpp']
     )
-    conf.set('LIBGMP_DLL', 1)
+  endif
+  conf.set('LIBGMP_DLL', 1)
 endif
 
 check_declarations = [
