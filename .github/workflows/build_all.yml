@@ -66,13 +66,10 @@ jobs:
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
 
-
       - name: Install packages
         run: |
           brew update
           brew install ninja python
-          # github actions overwrites brew's python. Force it to reassert itself.
-          brew unlink python3 && brew link --overwrite python3
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Sanity Checks
