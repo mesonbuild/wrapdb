@@ -271,7 +271,7 @@ common_dep = declare_dependency(
   include_directories: common_inc,
 )
 
-openal_inc = include_directories('common', 'include')
+openal_inc = include_directories('common', 'include', 'include/AL')
 
 openal_lib = library(
   'openal',
