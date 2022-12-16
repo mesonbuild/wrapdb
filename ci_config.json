@@ -390,15 +390,10 @@
       "windows": false
     },
     "debian_packages": [
-        "libarchive-dev",
         "qtbase5-dev"
     ],
     "brew_packages": [
-        "libarchive",
         "qt6"
-    ],
-    "build_options": [
-      "pkg_config_path=/usr/local/opt/libarchive/lib/pkgconfig"
     ]
   },
   "quazip": {
