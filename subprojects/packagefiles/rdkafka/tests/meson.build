@@ -118,9 +118,9 @@ sources = files(
   '0123-connections_max_idle.c',
   '0124-openssl_invalid_engine.c',
   '8000-idle.cpp',
+  'rusage.c',
   'test.c',
   'testcpp.cpp',
-  'rusage.c',
 )
 
 if host_machine.system() == 'windows'
@@ -134,7 +134,9 @@ if host_machine.system() != 'windows' and host_machine.system() != 'apple'
   subdir('interceptor_test')
 endif
 
-e = executable('test-runner', sources,
+e = executable(
+  'test-runner',
+  sources,
   dependencies: rdkafkapp_dep,
   include_directories: ['../src', '../src-cpp', 'include-workaround-meson'],
   export_dynamic: true,
