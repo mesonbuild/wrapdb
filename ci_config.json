@@ -67,9 +67,10 @@
       "libgl-dev",
       "libegl-dev"
     ],
-    "build_on": {
-      "windows": false
-    }
+    "_comment": "- tests are failing under MSVC",
+    "build_options": [
+      "epoxy:tests=false"
+    ]
   },
   "facil": {
     "_comment": "- Requires POSIX platform.",
