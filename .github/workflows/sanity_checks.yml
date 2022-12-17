@@ -57,7 +57,7 @@ jobs:
       - name: Install packages
         run: |
           brew update
-          brew install ninja python
+          brew install ninja
           python3 -m pip install --pre meson
 
       - name: Sanity Checks
