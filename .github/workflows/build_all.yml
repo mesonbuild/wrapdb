@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install build-essential python3-pip ninja-build
-          pip install git+https://github.com/mesonbuild/meson
+          python3 -m pip install --pre meson
 
       - name: Sanity Checks
         run: |
@@ -43,12 +43,9 @@ jobs:
       - name: Fetch tags and unshallow
         run: git fetch --unshallow --tags
 
-      - name: Avoid broken pip 22.0 release
-        run: python -m pip install 'pip!=22.0.*'
-
       - name: Install packages
         run: |
-          pip install git+https://github.com/mesonbuild/meson
+          python -m pip install --pre meson
 
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Sanity Checks
