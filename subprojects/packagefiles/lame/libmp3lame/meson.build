@@ -31,13 +31,19 @@ if build_decoder
   lame_deps += [mpglib_dep]
 endif
 
+lame_def = configure_file(
+  input: '../include/lame.def',
+  output: 'lame.def',
+  command: [find_program('fix_def.py'), '@INPUT@', '@OUTPUT@'],
+)
+
 lamelib = library(
   'mp3lame',
   lame_sources,
   version : '0.0.0',
   include_directories : [lameinc, confinc],
   c_args : common_args,
-  vs_module_defs: '../include/lame.def',
+  vs_module_defs: lame_def,
   dependencies: lame_deps,
   install: true,
 )
