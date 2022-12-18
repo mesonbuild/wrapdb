@@ -55,6 +55,7 @@ libgdbm = library(
   'gdbm',
   src,
   include_directories: autoconf_include,
+  dependencies: deps,
 )
 
 depinc = include_directories('.')

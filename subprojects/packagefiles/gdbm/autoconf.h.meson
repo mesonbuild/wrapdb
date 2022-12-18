@@ -1,0 +1,169 @@
+/* autoconf.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#mesondefine ENABLE_NLS
+
+/* Define if support for atomic failures is enabled */
+#mesondefine GDBM_FAILURE_ATOMIC
+
+/* TLS qualifier */
+#mesondefine GDBM_THREAD_LOCAL
+
+/* Define to 1 if you have the Mac OS X function
+   CFLocaleCopyPreferredLanguages in the CoreFoundation framework. */
+#mesondefine HAVE_CFLOCALECOPYPREFERREDLANGUAGES
+
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
+   the CoreFoundation framework. */
+#mesondefine HAVE_CFPREFERENCESCOPYAPPVALUE
+
+/* Define if the GNU dcgettext() function is already present or preinstalled.
+   */
+#mesondefine HAVE_DCGETTEXT
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if you have the `flock' function. */
+#mesondefine HAVE_FLOCK
+
+/* Define to 1 if you have the `fsync' function. */
+#mesondefine HAVE_FSYNC
+
+/* Define to 1 if you have the `ftruncate' function. */
+#mesondefine HAVE_FTRUNCATE
+
+/* Define to 1 if you have the `getline' function. */
+#mesondefine HAVE_GETLINE
+
+/* Define to 1 if you have the <getopt.h> header file. */
+#mesondefine HAVE_GETOPT_H
+
+/* Define to 1 if you have the `getopt_long' function. */
+#mesondefine HAVE_GETOPT_LONG
+
+/* Define to 1 if you have the `getpagesize' function. */
+#mesondefine HAVE_GETPAGESIZE
+
+/* Define if the GNU gettext() function is already present or preinstalled. */
+#mesondefine HAVE_GETTEXT
+
+/* Define if you have the iconv() function and it works. */
+#mesondefine HAVE_ICONV
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <locale.h> header file. */
+#mesondefine HAVE_LOCALE_H
+
+/* Define to 1 if you have the `lockf' function. */
+#mesondefine HAVE_LOCKF
+
+/* Define to 1 if you have a working `mmap' system call. */
+#mesondefine HAVE_MMAP
+
+/* Define to 1 if you have the `msync' function. */
+#mesondefine HAVE_MSYNC
+
+/* Define to 1 if you have the <readline/readline.h> header file. */
+#mesondefine HAVE_READLINE_READLINE_H
+
+/* Define to 1 if you have the `rl_completion_matches' function. */
+#mesondefine HAVE_RL_COMPLETION_MATCHES
+
+/* Define to 1 if you have the `setlocale' function. */
+#mesondefine HAVE_SETLOCALE
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#mesondefine HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if `st_blksize' is a member of `struct stat'. */
+#mesondefine HAVE_STRUCT_STAT_ST_BLKSIZE
+
+/* Define to 1 if `st_mtim' is a member of `struct stat'. */
+#mesondefine HAVE_STRUCT_STAT_ST_MTIM
+
+/* Define to 1 if `st_mtimespec' is a member of `struct stat'. */
+#mesondefine HAVE_STRUCT_STAT_ST_MTIMESPEC
+
+/* Define to 1 if you have the <sys/file.h> header file. */
+#mesondefine HAVE_SYS_FILE_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#mesondefine HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#mesondefine HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Define to 1 if the system has the type `unsigned long long int'. */
+#mesondefine HAVE_UNSIGNED_LONG_LONG_INT
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+/* The size of `off_t', as computed by sizeof. */
+#mesondefine SIZEOF_OFF_T
+
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
+#mesondefine STDC_HEADERS
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* Enable use of readline */
+#mesondefine WITH_READLINE
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#mesondefine _FILE_OFFSET_BITS
+
+/* Define for large files, on AIX-style hosts. */
+#mesondefine _LARGE_FILES
+
+/* Define to empty if `const' does not conform to ANSI C. */
+#mesondefine const
+
+/* Define to `long int' if <sys/types.h> does not define. */
+#mesondefine off_t
