@@ -317,6 +317,7 @@ class TestReleases(unittest.TestCase):
         debian_packages = ci.get('debian_packages', [])
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])
+        vcpkg_packages = ci.get('vcpkg_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -339,6 +340,14 @@ class TestReleases(unittest.TestCase):
                     meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
             else:
                 s = ', '.join(choco_packages)
+                print(f'The following packages could be required: {s}')
+        elif vcpkg_packages and is_windows():
+            if is_ci():
+                subprocess.check_call(['vcpkg', '--triplet', 'x64-windows', 'install'] + vcpkg_packages)
+                packs = [f'C:/vcpkg/packages/{p}_x64-windows/lib/pkgconfig' for p in vcpkg_packages]
+                options.append('-Dpkg_config_path=' + ':'.join(packs))
+            else:
+                s = ', '.join(vcpkg_packages)
                 print(f'The following packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
