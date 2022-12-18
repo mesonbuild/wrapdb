@@ -24,7 +24,7 @@ project(
   'c',
   license: 'MIT',
   version: '2.5.0',
-  meson_version: '>= 0.49.0',
+  meson_version: '>= 0.54.0',
 )
 
 config = configuration_data()
@@ -146,6 +146,7 @@ expat_dep = declare_dependency(
   include_directories: incdir,
   compile_args: expat_static_args,
 )
+meson.override_dependency('expat', expat_dep)
 
 pkg = import('pkgconfig')
 pkg.generate(libexpat)
