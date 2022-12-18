@@ -44,25 +44,6 @@ foreach s : ['st_blksize', 'st_mtim', 'st_mtimespec']
 endforeach
 
 deps = []
-if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', disabler: true, required: get_option('dl'))
-else
-  dl_dep = cpp.find_library('dl', disabler: true, required: get_option('dl'))
-endif
-if dl_dep.found()
-  deps += dl_dep
-endif
-
-if meson.version().version_compare('>= 0.60')
-  iconv_dep = dependency('iconv', disabler: true, required: get_option('nls'))
-else
-  iconv_dep = dependency('', disabler: true, required: false)
-endif
-if iconv_dep.found()
-  conf.set('HAVE_ICONV', 1)
-  deps += iconv_dep
-endif
-
 if meson.version().version_compare('>= 0.59')
   intl_dep = dependency('intl', disabler: true, required: get_option('nls'))
 else
@@ -73,18 +54,10 @@ if intl_dep.found()
   deps += intl_dep
 endif
 
-readline_dep = dependency('readline', disabler: true, required: false)
-if readline_dep.found()
-  conf.set('WITH_READLINE', 1)
-  deps += readline_dep
-endif
-
 headers = {
-  'dlfcn.h': dl_dep,
   'getopt.h': [],
   'inttypes.h': [],
   'locale.h': [],
-  'readline/readline.h': readline_dep,
   'stdint.h': [],
   'stdio.h': [],
   'stdlib.h': [],
@@ -114,7 +87,6 @@ functions = {
   'getpagesize': [],
   'gettext': intl_dep,
   'lockf': [],
-  'rl_completion_matches': readline_dep,
   'setlocale': [],
 }
 
