@@ -1,3 +1,5 @@
 option('mmap', type: 'boolean', value: true)
 option('compat', type: 'boolean', value: false)
 option('gdbm_debug', type: 'boolean', value: false)
+option('dl', type: 'feature')
+option('nls', type: 'feature')
