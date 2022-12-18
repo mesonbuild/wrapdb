@@ -29,8 +29,8 @@ jobs:
     runs-on: windows-latest
 
     env:
-      CMAKE_TOOLCHAIN_FILE: $env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
-      PKG_CONFIG: $env:VCPKG_INSTALLATION_ROOT/packages/pkgconf_x64-windows/tools/pkgconf/pkgconf
+      CMAKE_TOOLCHAIN_FILE: C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+      PKG_CONFIG: C:/vcpkg/packages/pkgconf_x64-windows/tools/pkgconf/pkgconf
 
     steps:
       - uses: actions/checkout@v3

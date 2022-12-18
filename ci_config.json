@@ -45,10 +45,9 @@
     "brew_packages": [
       "zeromq"
     ],
-    "_comment": "- libzmq not yet available as wrap",
-    "build_on": {
-      "windows": false
-    }
+    "vcpkg_packages": [
+      "zeromq"
+    ]
   },
   "cpr": {
     "debian_packages": [
