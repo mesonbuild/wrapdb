@@ -77,6 +77,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'sdl2': [
         'find-dylib-name.py'
     ],
+    'taglib': [
+        'checked.h'
+    ],
     'theora': [
         'check-needed-tex-packages.py',
         'latexmk-wrapper.py',
