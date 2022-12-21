@@ -166,7 +166,6 @@ install_headers(
 
 taglib_includes = include_directories(
   '.',
-  '3rdparty',
   'taglib',
   'taglib/ape',
   'taglib/asf',
@@ -193,6 +192,8 @@ taglib_includes = include_directories(
   'taglib/wavpack',
   'taglib/xm',
 )
+
+utfcpp_dep = dependency('utfcpp')
 
 taglib = library(
   'tag',
@@ -301,7 +302,7 @@ taglib = library(
   gnu_symbol_visibility: 'hidden',
   cpp_args: cppargs,
   include_directories: taglib_includes,
-  dependencies: [atomic_dep, zlib_dep],
+  dependencies: [atomic_dep, utfcpp_dep, zlib_dep],
   install: true,
   version: '1.18.0',
 )
