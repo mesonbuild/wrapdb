@@ -29,6 +29,7 @@ sources = files(
   'tif_fax3sm.c',
   'tif_flush.c',
   'tif_getimage.c',
+  'tif_hash_set.c',
   'tif_jbig.c',
   'tif_jpeg.c',
   'tif_jpeg_12.c',

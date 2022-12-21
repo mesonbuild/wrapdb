@@ -96,6 +96,7 @@ cdata.set('ZIP_SUPPORT', zlib_dep.found())
 cdata.set('PIXARLOG_SUPPORT', zlib_dep.found())
 
 cdata.set('CHECK_JPEG_YCBCR_SUBSAMPLING', true)
+cdata.set('TIFF_MAX_DIR_COUNT', 1048576)
 
 subdir('libtiff')
 
