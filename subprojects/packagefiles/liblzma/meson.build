@@ -2,7 +2,7 @@
 project(
   'liblzma',
   'c',
-  version: '5.2.8',
+  version: '5.2.10',
   license: 'pd/lgpl2/gpl2/gpl3',
   meson_version: '>=0.49.0',
 )
@@ -21,6 +21,7 @@ check_headers = [
   'inttypes.h',
   'limits.h',
   'memory.h',
+  'minix/config.h',
   'minix/sha2.h',
   'sha256.h',
   'sha2.h',
@@ -42,12 +43,22 @@ check_headers = [
 
 functions = [
   '__builtin_assume_aligned',
+  '_futime',
   'futimens',
+  'futimes',
+  'futimesat',
   'getopt_long',
   'mbrtowc',
   'posix_fadvise',
+  'utime',
   'wcwidth',
 ]
+
+macros = {
+  'bswap_16': 'byteswap.h',
+  'bswap_32': 'byteswap.h',
+  'bswap_64': 'byteswap.h',
+}
 
 decoders = [
   'decoder_arm',
@@ -95,6 +106,12 @@ foreach h : check_headers
   endif
 endforeach
 
+foreach m, h : macros
+  if cc.has_header_symbol(h, m)
+    cdata.set('HAVE_@0@'.format(m.underscorify().to_upper()), 1)
+  endif
+endforeach
+
 if cc.check_header('immintrin.h')
   cdata.set('HAVE_IMMINTRIN_H', 1)
 endif
@@ -117,13 +134,12 @@ if cc.has_function('sched_getaffinity')
   cdata.set('TUKLIB_CPUCORES_SCHED_GETAFFINITY', 1)
 endif
 
-#if cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC')
-if false
+if cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC')
   cdata.set('HAVE_DECL_CLOCK_MONOTONIC', 1)
 endif
 
-#if cc.has_header_symbol('getopt.h', 'optreset', args: '-D_BSD_SOURCE')
 if false
+#if cc.has_header_symbol('getopt.h', 'optreset', args: '-D_BSD_SOURCE')
   cdata.set('HAVE_OPTRESET', 1)
 endif
 
@@ -140,7 +156,8 @@ if cc.has_function('pthread_condattr_setclock', dependencies: thread_dep)
   cdata.set('HAVE_PTHREAD_CONDATTR_SETCLOCK', 1)
 endif
 
-if cc.has_function('clock_gettime', dependencies: thread_dep)
+#if cc.has_function('clock_gettime', dependencies: thread_dep)
+if cc.has_function('clock_gettime')
   cdata.set('HAVE_CLOCK_GETTIME', 1)
 endif
 
