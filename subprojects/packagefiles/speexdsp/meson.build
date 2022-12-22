@@ -25,7 +25,6 @@ cdata = configuration_data()
 arm_neon_code = '''
 #include <stdint.h>
 #include <arm_neon.h>
-#include <math.h>
 
 static void square4_serial(float*);
 static void square4_vectorized(float*);
@@ -49,7 +48,7 @@ static int compare4(const float* a, const float* b) {
     for (uint8_t i = 0; i < 4; ++i) {
         sum_of_diffs += fabsf(a[i] - b[i]);
     }
-    const int rounded_sum = (int)(roundf(sum_of_diffs));
+    const int rounded_sum = (int)(sum_of_diffs + 0.5f);
     return rounded_sum;
 }
 
