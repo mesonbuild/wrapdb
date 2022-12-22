@@ -24,7 +24,12 @@ endif
 
 install_headers('backward.hpp', subdir : 'backward')
 
-backward = library('backward-cpp', 'backward.cpp', dependencies: deps, install: true)
+if build_machine.system() == 'windows'
+    backward = static_library('backward-cpp', 'backward.cpp', dependencies: deps, install: true)
+else
+    backward = library('backward-cpp', 'backward.cpp', dependencies: deps, install: true)
+endif
+
 backward_dep = declare_dependency(dependencies: deps, link_with: backward)
 
 tests = ['test', 'stacktrace', 'rectrace', 'select_signals']
