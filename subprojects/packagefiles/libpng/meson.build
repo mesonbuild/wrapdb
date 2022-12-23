@@ -1,4 +1,4 @@
-project('libpng', 'c', version : '1.6.37', license : 'libpng')
+project('libpng', 'c', version : '1.6.39', license : 'libpng')
 
 png_versions = meson.project_version().split('.')
 png_major_version = png_versions[0]
@@ -52,7 +52,7 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
         'arm/arm_init.c',
         'arm/filter_neon_intrinsics.c',
         'arm/palette_neon_intrinsics.c',
-        
+
     ])
     if cc.get_id() == 'msvc'
         cl = find_program('cl')
@@ -75,7 +75,7 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
         # https://github.com/glennrp/libpng/issues/398
         c_args += ['-D__aarch64__']
     else
-        png_src += files(['arm/filter_neon.S'])    
+        png_src += files(['arm/filter_neon.S'])
     endif
 
     c_args += ['-DPNG_ARM_NEON_OPT=2']
