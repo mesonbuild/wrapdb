@@ -66,75 +66,75 @@ int main() {
 # Set SIMD config data and flags
 simd_type = 'None'
 if get_option('simd')
-    if host_cpu_family == 'x86_64'
-        # x86-64 compilers all leverage SSE and SSE2 instructions by default (GCC, Clang, and MSVC)
-        # so no additional flags are needed here.
-        # Refs:
-        #  - https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
-        #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-x86
-        cdata.set('USE_SSE', true)
-        cdata.set('USE_SSE2', true)
-        simd_type = 'SSE2'
+  if host_cpu_family == 'x86_64'
+    # x86-64 compilers all leverage SSE and SSE2 instructions by default (GCC, Clang, and MSVC)
+    # so no additional flags are needed here.
+    # Refs:
+    #  - https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+    #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-x86
+    cdata.set('USE_SSE', true)
+    cdata.set('USE_SSE2', true)
+    simd_type = 'SSE2'
 
-    elif host_cpu_family == 'x86'
-        # On 32-bit x86, setting "-mfpmath=sse" is the only way to both enable and use SSE extensions.
-        # Ref: https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
-        cdata.set('USE_SSE', true)
-        cdata.set('USE_SSE2', true)
-        simd_type = 'SSE2'
-        sse_flags = [
-            '-mfpmath=sse',
-            '-msse',
-            '-msse2',
-        ]
-        add_project_arguments(
-            cc.get_supported_arguments(sse_flags),
-            language: 'c',
-        )
+  elif host_cpu_family == 'x86'
+    # On 32-bit x86, setting "-mfpmath=sse" is the only way to both enable and use SSE extensions.
+    # Ref: https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+    cdata.set('USE_SSE', true)
+    cdata.set('USE_SSE2', true)
+    simd_type = 'SSE2'
+    sse_flags = [
+      '-mfpmath=sse',
+      '-msse',
+      '-msse2',
+    ]
+    add_project_arguments(
+      cc.get_supported_arguments(sse_flags),
+      language: 'c',
+    )
 
-    elif host_cpu_family == 'arm'
-        # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions.
-        # Refs:
-        #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-        #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
-        neon_flags = cc.get_supported_arguments(
-            [
-                '-march=armv7-a',
-                '-mfpu=neon',
-                '/arch:VFPv4',
-            ],
-        )
-        # The SIMD test code might need libmath to link
-        m_dep = cc.find_library('m', required: false)
-        neon_test = cc.run(
-            arm_neon_code,
-            args: neon_flags,
-            dependencies: m_dep,
-            name: 'system supports ARM NEON instructions',
-        )
-        can_use_neon = (neon_test.compiled() and neon_test.returncode() == 0)
-        if can_use_neon
-            cdata.set('USE_NEON', true)
-            simd_type = 'NEON (armv7-a)'
-            add_project_arguments(
-                neon_flags,
-                language: 'c',
-            )
-        endif
-
-    elif host_cpu_family == 'aarch64'
-        # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
-        # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
-        # Refs:
-        #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
-        #  - https://developer.arm.com/documentation/101754/0618/armclang-Reference/armclang-Command-line-Options/-mcpu
-        cdata.set('USE_NEON', true)
-        simd_type = 'NEON (armv8-a)'
-        add_project_arguments(
-            cc.get_supported_arguments('-march=armv8-a+simd'),
-            language: 'c',
-        )
+  elif host_cpu_family == 'arm'
+    # Armv7.0-A refers to the generic Armv7-A architecture without any incremental architecture extensions.
+    # Refs:
+    #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+    #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
+    neon_flags = cc.get_supported_arguments(
+      [
+        '-march=armv7-a',
+        '-mfpu=neon',
+        '/arch:VFPv4',
+      ],
+    )
+    # The SIMD test code might need libmath to link
+    m_dep = cc.find_library('m', required: false)
+    neon_test = cc.run(
+      arm_neon_code,
+      args: neon_flags,
+      dependencies: m_dep,
+      name: 'system supports ARM NEON instructions',
+    )
+    can_use_neon = (neon_test.compiled() and neon_test.returncode() == 0)
+    if can_use_neon
+      cdata.set('USE_NEON', true)
+      simd_type = 'NEON (armv7-a)'
+      add_project_arguments(
+        neon_flags,
+        language: 'c',
+      )
     endif
+
+  elif host_cpu_family == 'aarch64'
+    # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
+    # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
+    # Refs:
+    #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
+    #  - https://developer.arm.com/documentation/101754/0618/armclang-Reference/armclang-Command-line-Options/-mcpu
+    cdata.set('USE_NEON', true)
+    simd_type = 'NEON (armv8-a)'
+    add_project_arguments(
+      cc.get_supported_arguments('-march=armv8-a+simd'),
+      language: 'c',
+    )
+  endif
 endif
 
 # Set numerical representation config data
@@ -164,7 +164,12 @@ else
 endif
 
 summary(
-  {'Optimization level': get_option('optimization'), 'SIMD instructions': simd_type, 'Numerical type': numerical_type, 'FFT library': fft_library},
+  {
+    'Optimization level': get_option('optimization'),
+    'SIMD instructions': simd_type,
+    'Numerical type': numerical_type,
+    'FFT library': fft_library,
+  },
   section: 'Library Summary',
 )
 
