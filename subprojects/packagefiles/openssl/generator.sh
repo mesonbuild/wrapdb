@@ -31,11 +31,12 @@ rm -rf config/archs
 LANG=C make -C config
 
 # Copy generated files back into correct place
-find config/archs -name 'meson.build' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
-find config/archs -name '*.asm' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
-find config/archs -name '*.c' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
-find config/archs -name '*.h' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
-find config/archs -iname '*.s' | xargs -I % sh -c 'mkdir -p ../../../generated-$(dirname %); cp % ../../../generated-%'
+cmd='mkdir -p ../../../generated-$(dirname "$1"); cp "$1" ../../../generated-"$1"'
+find config/archs -name 'meson.build' -exec sh -c "$cmd" _ignored {} \;
+find config/archs -name '*.asm' -exec sh -c "$cmd" _ignored {} \;
+find config/archs -name '*.c' -exec sh -c "$cmd" _ignored {} \;
+find config/archs -name '*.h' -exec sh -c "$cmd" _ignored {} \;
+find config/archs -iname '*.s' -exec sh -c "$cmd" _ignored {} \;
 
 # AIX is not supported by Meson
 rm -rf ../../../generated-config/archs/aix*
