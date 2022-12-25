@@ -777,12 +777,6 @@
       "libxrandr-dev"
     ]
   },
-  "slirp": {
-    "_comment": "- relies on lots of POSIX interfaces",
-    "build_on": {
-      "windows": false
-    }
-  },
   "sqlpp11": {
     "_comment": "hard to set up PostgreSQL via choco",
     "build_on": {
