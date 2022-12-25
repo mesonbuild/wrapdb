@@ -482,12 +482,6 @@
       "libxrandr-dev"
     ]
   },
-  "slirp": {
-    "_comment": "- relies on lots of POSIX interfaces",
-    "build_on": {
-      "windows": false
-    }
-  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
