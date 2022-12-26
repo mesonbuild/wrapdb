@@ -8,6 +8,13 @@ project(
   default_options: ['c_std=c11'],
 )
 
+theora_libversion = '0.3.10'
+theora_darwin_version = ['4.0.0', '4.10.0']
+theoradec_libversion = '1.1.4'
+theoradec_darwin_version = ['3.0.0', '3.4.0']
+theoraenc_libversion = '1.1.2'
+theoraenc_darwin_version = ['3.0.0', '3.2.0']
+
 conf = configuration_data()
 
 valgrind_testing = get_option('valgrind-testing')
