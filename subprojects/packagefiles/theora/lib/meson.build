@@ -170,6 +170,8 @@ libtheoradec = library(
   vs_module_defs: '../win32/xmingw32/libtheoradec-all.def',
   c_args: compile_args,
   link_args: theoradec_version_flag,
+  version: theoradec_libversion,
+  darwin_versions: theoradec_darwin_version,
   install: true,
 )
 
@@ -193,6 +195,8 @@ libtheoraenc = library(
   vs_module_defs: '../win32/xmingw32/libtheoraenc-all.def',
   c_args: compile_args,
   link_args: theoraenc_version_flag,
+  version: theoraenc_libversion,
+  darwin_versions: theoraenc_darwin_version,
   install: true,
 )
 
@@ -221,6 +225,8 @@ libtheora = library(
   c_args: compile_args,
   link_args: theora_version_flag,
   vs_module_defs: 'theora.def', # Missing in the official tarballs
+  version: theora_libversion,
+  darwin_versions: theora_darwin_version,
   install: true,
 )
 
