@@ -55,5 +55,5 @@ test(
 )
 
 if jpeg_dep.found()
-  test('raw_decode', executable('raw_decode', 'raw_decode.c', dependencies: [libtiff4_dep, tiff_port]), workdir: meson.current_source_dir())
+  test('raw_decode', executable('raw_decode', 'raw_decode.c', dependencies: [libtiff4_dep, tiff_port, jpeg_dep]), workdir: meson.current_source_dir())
 endif
