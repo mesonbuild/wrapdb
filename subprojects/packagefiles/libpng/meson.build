@@ -77,6 +77,12 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
   endif
 
   c_args += '-DPNG_ARM_NEON_OPT=2'
+elif host_machine.cpu_family() in ['x86', 'x86_64']
+  png_src += files(
+    'intel/filter_sse2_intrinsics.c',
+    'intel/intel_init.c',
+  )
+  c_args += '-DPNG_INTEL_SSE_OPT=1'
 endif
 
 libpng = library(
