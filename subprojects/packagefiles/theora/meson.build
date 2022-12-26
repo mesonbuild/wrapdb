@@ -116,6 +116,7 @@ if asm
       conf.set('OC_X86_64_ASM', true)
     endif
   elif host_machine.cpu_family() == 'x86'
+    conf.set('CPU_x86_32', true)
     conf.set('OC_X86_ASM', true)
   endif
 endif

@@ -64,8 +64,6 @@ if asm
         'x86/mmxfrag.c',
         'x86/mmxidct.c',
         'x86/mmxstate.c',
-        'x86/sse2idct.c',
-        'x86/x86cpu.c',
         'x86/x86state.c',
       )
       encoder_sources += files(
@@ -74,7 +72,6 @@ if asm
         'x86/mmxfrag.c',
         'x86/mmxidct.c',
         'x86/mmxstate.c',
-        'x86/x86cpu.c',
         'x86/x86enc.c',
         'x86/x86state.c',
       )
