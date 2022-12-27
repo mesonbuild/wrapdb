@@ -105,4 +105,11 @@ libtiff4_dep = declare_dependency(
   link_with: tiff4_lib,
 )
 
+import('pkgconfig').generate(
+  tiff4_lib,
+  filebase: 'libtiff-4',
+  name: 'libtiff',
+  description: 'Tag Image File Format (TIFF) library.',
+)
+
 subdir('test')
