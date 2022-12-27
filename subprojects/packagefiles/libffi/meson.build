@@ -387,7 +387,7 @@ if not get_option('raw_api')
   ffi_conf.set('FFI_NO_RAW_API', 1)
 endif
 if get_option('exe_static_tramp')
-  if is_windows
+  if host_system == 'cygwin'
     # Only define static trampolines if we are using the cygwin runtime.
     # Will this need to be changed for mingw?
     if is_gnu_like
