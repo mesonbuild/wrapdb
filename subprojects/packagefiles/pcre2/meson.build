@@ -299,11 +299,13 @@ if (
     workdir: meson.current_build_dir(),
   )
 
-  test(
-    'RunGrepTest',
-    rungreptest,
-    should_fail: host_machine.system() == 'windows',
-    env: 'srcdir=@0@'.format(meson.current_source_dir()),
-    workdir: meson.current_build_dir(),
-  )
+  if get_option('grep')
+    test(
+      'RunGrepTest',
+      rungreptest,
+      should_fail: host_machine.system() == 'windows',
+      env: 'srcdir=@0@'.format(meson.current_source_dir()),
+      workdir: meson.current_build_dir(),
+    )
+  endif
 endif
