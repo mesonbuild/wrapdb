@@ -1,4 +1,4 @@
-configure_file(
+tiffconf_h = configure_file(
   input: 'tiffconf.h.cmake.in',
   output: 'tiffconf.h',
   format: 'cmake@',
@@ -63,4 +63,11 @@ tiff4_lib = library(
   install: true,
   dependencies: [m_dep, jbig_dep, jpeg_dep, lerc_dep, lzma_dep, webp_dep, zlib_dep, zstd_dep],
   vs_module_defs: 'libtiff.def',
+)
+
+install_headers(
+  'tiff.h',
+  'tiffio.h',
+  'tiffvers.h',
+  tiffconf_h,
 )
