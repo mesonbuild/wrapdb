@@ -283,6 +283,14 @@ if (
     link_args: link_args,
   )
 
+  pcre2posix_test = executable(
+    'pcre2posix_test',
+    'src/pcre2posix_test.c',
+    dependencies: [libpcre2_8, libpcre2_posix],
+    link_args: link_args,
+  )
+  test('pcre2posix_test', pcre2posix_test)
+
   if c_compiler.get_argument_syntax() == 'msvc'
     runtest = find_program('RunTest.bat')
     rungreptest = find_program('RunGrepTest.bat')
