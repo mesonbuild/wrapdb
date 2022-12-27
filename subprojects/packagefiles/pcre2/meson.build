@@ -114,13 +114,24 @@ pcre2_8_lib = library(
   install: true,
 )
 
+libpcre2_8 = declare_dependency(
+  link_with: pcre2_8_lib,
+  include_directories: includes,
+  compile_args: static_defs,
+)
+
 pcre2_posix_lib = library(
   'pcre2-posix',
   'src/pcre2posix.c',
-  include_directories: includes,
-  link_with: pcre2_8_lib,
+  dependencies: libpcre2_8,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
   install: true,
+)
+
+libpcre2_posix = declare_dependency(
+  link_with: pcre2_posix_lib,
+  include_directories: includes,
+  compile_args: static_defs,
 )
 
 pcre2_16_lib = library(
@@ -131,30 +142,18 @@ pcre2_16_lib = library(
   install: true,
 )
 
+libpcre2_16 = declare_dependency(
+  link_with: pcre2_16_lib,
+  include_directories: includes,
+  compile_args: static_defs,
+)
+
 pcre2_32_lib = library(
   'pcre2-32',
   sources,
   include_directories: includes,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
   install: true,
-)
-
-libpcre2_8 = declare_dependency(
-  link_with: pcre2_8_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
-
-libpcre2_posix = declare_dependency(
-  link_with: pcre2_posix_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
-
-libpcre2_16 = declare_dependency(
-  link_with: pcre2_16_lib,
-  include_directories: includes,
-  compile_args: static_defs,
 )
 
 libpcre2_32 = declare_dependency(
@@ -167,14 +166,13 @@ if get_option('grep')
   pcre2grep = executable(
     'pcre2grep',
     'src/pcre2grep.c',
-    include_directories: includes,
-    link_with: [pcre2_8_lib],
+    dependencies: libpcre2_8,
     c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
     install: true,
   )
 endif
 
-install_headers([pcre2_h, 'src/pcre2posix.h'])
+install_headers(pcre2_h, 'src/pcre2posix.h')
 
 ########### pkg-config #############
 
@@ -214,9 +212,8 @@ if (
 
   pcre2test = executable(
     'pcre2test',
-    ['src/pcre2test.c'],
-    include_directories: includes,
-    link_with: [pcre2_8_lib, pcre2_posix_lib, pcre2_16_lib, pcre2_32_lib],
+    'src/pcre2test.c',
+    dependencies: [libpcre2_8, libpcre2_posix, libpcre2_16, libpcre2_32],
     c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
     link_args: link_args,
   )
@@ -233,7 +230,7 @@ if (
     'RunTest',
     runtest,
     should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
-    env: ['srcdir=@0@'.format(meson.current_source_dir())],
+    env: 'srcdir=@0@'.format(meson.current_source_dir()),
     workdir: meson.current_build_dir(),
   )
 
@@ -241,7 +238,7 @@ if (
     'RunGrepTest',
     rungreptest,
     should_fail: host_machine.system() == 'windows',
-    env: ['srcdir=@0@'.format(meson.current_source_dir())],
+    env: 'srcdir=@0@'.format(meson.current_source_dir()),
     workdir: meson.current_build_dir(),
   )
 endif
