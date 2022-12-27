@@ -100,6 +100,7 @@ endif
 zlib_dep = dependency('zlib', disabler: true, required: false)
 if zlib_dep.found()
   cdata.set('HAVE_LIBZ', 1)
+  cdata.set('HAVE_ZLIB_H', 1)
   deps += zlib_dep
 endif
 
@@ -153,7 +154,6 @@ checked_headers = {
   'sys/timeb.h': [],
   'sys/types.h': [],
   'unistd.h': [],
-  'zlib.h': zlib_dep,
 }
 
 foreach h, d : checked_headers
