@@ -62,6 +62,13 @@
       "windows": false
     }
   },
+  "dlfcn-win32": {
+    "_comment": "- Requires Windows",
+    "build_on": {
+      "darwin": false,
+      "linux": false
+    }
+  },
   "epoxy": {
     "debian_packages": [
       "libgl-dev",
