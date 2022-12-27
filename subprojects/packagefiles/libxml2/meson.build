@@ -78,9 +78,29 @@ if math_lib.found()
 endif
 
 if meson.version().version_compare('>= 0.60')
-  iconv_lib = dependency('iconv', required: false)
+  iconv_lib = dependency('iconv', required: get_option('iconv'))
 else
-  iconv_lib = dependency('', required: false)
+  if get_option('iconv').disabled()
+    iconv_lib = dependency('', required: false)
+  else
+    iconv_check = '''
+    #include <iconv.h>
+    int main() {
+      iconv_open("", "");
+    }
+    '''
+    if cc.links(iconv_check, name: 'iconv_open')
+      iconv_lib = declare_dependency()
+    else
+      iconv_lib = cc.find_library('iconv', required: false)
+      if not cc.links(iconv_check, name: 'iconv_open in libiconv', dependencies: iconv_lib)
+        iconv_lib = dependency('', required: false)
+        if get_option('iconv').enabled()
+          error('iconv enabled and not found')
+        endif
+      endif
+    endif
+  endif
 endif
 if iconv_lib.found()
   deps += iconv_lib

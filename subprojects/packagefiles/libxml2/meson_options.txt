@@ -1,0 +1,1 @@
+option('iconv', type: 'feature', description: 'Build with iconv support')
