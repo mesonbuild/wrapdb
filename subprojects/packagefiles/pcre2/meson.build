@@ -6,7 +6,7 @@ project(
   version: '10.42',
 )
 
-c_compiler = meson.get_compiler('c')
+cc = meson.get_compiler('c')
 
 pcre2_h = configure_file(
   input: 'src/pcre2.h.generic',
@@ -17,12 +17,6 @@ pcre2_h = configure_file(
 chartables = configure_file(
   input: 'src/pcre2_chartables.c.dist',
   output: 'pcre2_chartables.c',
-  copy: true,
-)
-
-config_h = configure_file(
-  input: 'src/config.h.generic',
-  output: 'config.h',
   copy: true,
 )
 
@@ -56,110 +50,164 @@ sources = files(
 )
 sources += chartables
 
-includes = include_directories('.', 'src')
+cdata = configuration_data()
 
 check_headers = [
-  'inttypes.h',
   'bzlib.h',
+  'dirent.h',
+  'dlfcn.h',
+  'inttypes.h',
+  'limits.h',
+  'stdint.h',
+  'stdio.h',
+  'stdlib.h',
+  'string.h',
+  'strings.h',
   'sys/stat.h',
   'sys/types.h',
   'sys/wait.h',
-  'inttypes.h',
-  'dirent.h',
-  'dlfcn.h',
-  'limits.h',
-  'stdint.h',
-  'stdlib.h',
-  'string.h',
+  'wchar.h',
   'windows.h',
   'unistd.h',
+  'zlib.h',
 ]
 
-config_h_defs = []
 foreach h : check_headers
-  if c_compiler.has_header(h)
-    config_h_defs += '-DHAVE_' + h.underscorify().to_upper()
+  if cc.has_header(h)
+    cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
   endif
 endforeach
 
 check_funs = [
+  'bcopy',
+  'memfd_create',
   'memmove',
+  'mkostemp',
+  'realpath',
+  'secure_getemv',
   'strerror',
 ]
 
 foreach f : check_funs
-  if c_compiler.has_function(f)
-    config_h_defs += '-DHAVE_@0@'.format(f.to_upper())
+  if cc.has_function(f)
+    cdata.set('HAVE_@0@'.format(f.to_upper()), 1)
   endif
 endforeach
 
-config_h_defs += [
-  '-DSTDC_HEADERS',
-  '-DSUPPORT_PCRE2_8',
-  '-DSUPPORT_UNICODE',
-]
-
-if get_option('default_library') == 'static'
-  static_defs = ['-DPCRE2_STATIC']
-  config_h_defs += static_defs
-else
-  static_defs = []
+if cc.compiles('char buf[128] __attribute__((uninitialized));')
+  cdata.set('HAVE_ATTRIBUTE_UNINITIALIZED', 1)
 endif
+
+if cc.has_function_attribute('visibility')
+  cdata.set('HAVE_VISIBILITY', 1)
+endif
+
+if cc.has_function_attribute('dllexport') and get_option('default_library') != 'static'
+  export_define = '__declspec(dllexport) extern'
+elif cc.has_argument('-fvisibility=hidden')
+  export_define = 'extern __attribute__ ((visibility ("default")))'
+else
+  export_define = 'extern'
+endif
+
+cdata.set('PCRE2POSIX_EXP_DECL', export_define)
+cdata.set('PCRE2_EXP_DECL', export_define)
+cdata.set('PCRE2POSIX_EXP_DEFN', export_define)
+cdata.set('PCRE2_EXP_DEFN', export_define)
+
+cdata.set('HEAP_LIMIT', 20000000)
+cdata.set('LINK_SIZE', 2)
+cdata.set('MATCH_LIMIT', 10000000)
+cdata.set('MATCH_LIMIT_DEPTH', 'MATCH_LIMIT')
+cdata.set('MAX_NAME_COUNT', 10000)
+cdata.set('MAX_NAME_SIZE', 32)
+cdata.set('NEWLINE_DEFAULT', 2)
+cdata.set('PARENS_NEST_LIMIT', 250)
+cdata.set('PCRE2GREP_BUFSIZE', 20480)
+cdata.set('PCRE2GREP_MAX_BUFSIZE', 1048576)
+
+cdata.set('SUPPORT_PCRE2_8', '/**/')
+cdata.set('SUPPORT_PCRE2_16', '/**/')
+cdata.set('SUPPORT_PCRE2_32', '/**/')
+cdata.set('SUPPORT_PCRE2GREP_CALLOUT', '/**/')
+cdata.set('SUPPORT_PCRE2GREP_CALLOUT_FORK', '/**/')
+cdata.set('SUPPORT_UNICODE', '/**/')
+
+cdata.set_quoted('PACKAGE', meson.project_name())
+cdata.set_quoted('PACKAGE_TARNAME', meson.project_name())
+cdata.set_quoted('PACKAGE_NAME', meson.project_name().to_upper())
+cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
+cdata.set_quoted('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name().to_upper(), meson.project_version()))
+cdata.set_quoted('PACKAGE_BUGREPORT', '')
+cdata.set_quoted('PACKAGE_URL', '')
+cdata.set_quoted('LT_OBJDIR', '.libs/')
+
+config_h = configure_file(
+  input: 'config.h.meson',
+  output: 'config.h',
+  configuration: cdata,
+)
+
+includes = include_directories('.', 'src')
 
 pcre2_8_lib = library(
   'pcre2-8',
   sources,
+  gnu_symbol_visibility: 'hidden',
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  c_args: ['-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
   install: true,
 )
 
 libpcre2_8 = declare_dependency(
   link_with: pcre2_8_lib,
   include_directories: includes,
-  compile_args: static_defs,
+  compile_args: get_option('default_library') == 'static' ? '-DPCRE2_STATIC' : [],
 )
 
 pcre2_posix_lib = library(
   'pcre2-posix',
   'src/pcre2posix.c',
+  gnu_symbol_visibility: 'hidden',
   dependencies: libpcre2_8,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  c_args: ['-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
   install: true,
 )
 
 libpcre2_posix = declare_dependency(
   link_with: pcre2_posix_lib,
   include_directories: includes,
-  compile_args: static_defs,
+  compile_args: get_option('default_library') == 'static' ? '-DPCRE2_STATIC' : [],
 )
 
 pcre2_16_lib = library(
   'pcre2-16',
   sources,
+  gnu_symbol_visibility: 'hidden',
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
+  c_args: ['-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
   install: true,
 )
 
 libpcre2_16 = declare_dependency(
   link_with: pcre2_16_lib,
   include_directories: includes,
-  compile_args: static_defs,
+  compile_args: get_option('default_library') == 'static' ? '-DPCRE2_STATIC' : [],
 )
 
 pcre2_32_lib = library(
   'pcre2-32',
   sources,
+  gnu_symbol_visibility: 'hidden',
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
+  c_args: ['-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
   install: true,
 )
 
 libpcre2_32 = declare_dependency(
   link_with: pcre2_32_lib,
   include_directories: includes,
-  compile_args: static_defs,
+  compile_args: get_option('default_library') == 'static' ? '-DPCRE2_STATIC' : [],
 )
 
 if get_option('grep')
@@ -167,7 +215,7 @@ if get_option('grep')
     'pcre2grep',
     'src/pcre2grep.c',
     dependencies: libpcre2_8,
-    c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
+    c_args: '-DHAVE_CONFIG_H',
     install: true,
   )
 endif
@@ -206,7 +254,7 @@ if (
   and not meson.is_cross_build() # wine wrappers are not bat-friendly, this would need better testing
 )
   link_args = []
-  if c_compiler.get_argument_syntax() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc'
     link_args += '/STACK:2500000'
   endif
 
@@ -214,11 +262,11 @@ if (
     'pcre2test',
     'src/pcre2test.c',
     dependencies: [libpcre2_8, libpcre2_posix, libpcre2_16, libpcre2_32],
-    c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
+    c_args: '-DHAVE_CONFIG_H',
     link_args: link_args,
   )
 
-  if c_compiler.get_argument_syntax() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc'
     runtest = find_program('RunTest.bat')
     rungreptest = find_program('RunGrepTest.bat')
   else
@@ -229,7 +277,7 @@ if (
   test(
     'RunTest',
     runtest,
-    should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
+    should_fail: host_machine.system() == 'windows' and cc.get_argument_syntax() != 'msvc',
     env: 'srcdir=@0@'.format(meson.current_source_dir()),
     workdir: meson.current_build_dir(),
   )
