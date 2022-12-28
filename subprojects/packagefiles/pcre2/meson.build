@@ -2,7 +2,7 @@ project(
   'pcre2',
   'c',
   license: 'BSD-3',
-  meson_version: '>=0.49.0',
+  meson_version: '>= 0.52.0',
   version: '10.42',
 )
 
@@ -93,6 +93,7 @@ foreach f : check_funs
   endif
 endforeach
 
+# TODO: also define SUPPORT_PCRE2_16 and SUPPORT_PCRE2_32 if available?
 config_h_defs += [
   '-DSTDC_HEADERS',
   '-DSUPPORT_PCRE2_8',
@@ -106,61 +107,86 @@ else
   static_defs = []
 endif
 
-pcre2_8_lib = library(
-  'pcre2-8',
-  sources,
-  include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
-  install: true,
-)
+pcre2_deps = []
 
-libpcre2_8 = declare_dependency(
-  link_with: pcre2_8_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
+if not get_option('pcre2-8').disabled() # enable on auto
+  pcre2_8_lib = library(
+    'pcre2-8',
+    sources,
+    include_directories: includes,
+    c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+    install: true,
+  )
 
-pcre2_posix_lib = library(
-  'pcre2-posix',
-  'src/pcre2posix.c',
-  dependencies: libpcre2_8,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
-  install: true,
-)
+  libpcre2_8 = declare_dependency(
+    link_with: pcre2_8_lib,
+    include_directories: includes,
+    compile_args: static_defs,
+  )
 
-libpcre2_posix = declare_dependency(
-  link_with: pcre2_posix_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
+  pcre2_posix_lib = library(
+    'pcre2-posix',
+    'src/pcre2posix.c',
+    dependencies: libpcre2_8,
+    c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+    install: true,
+  )
 
-pcre2_16_lib = library(
-  'pcre2-16',
-  sources,
-  include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
-  install: true,
-)
+  libpcre2_posix = declare_dependency(
+    link_with: pcre2_posix_lib,
+    include_directories: includes,
+    compile_args: static_defs,
+  )
 
-libpcre2_16 = declare_dependency(
-  link_with: pcre2_16_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
+  pcre2_deps += [libpcre2_8, libpcre2_posix]
+else
+  libpcre2_8 = disabler()
+  libpcre2_posix = disabler()
+endif
 
-pcre2_32_lib = library(
-  'pcre2-32',
-  sources,
-  include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
-  install: true,
-)
+if get_option('pcre2-16').enabled() # disable on auto
+  pcre2_16_lib = library(
+    'pcre2-16',
+    sources,
+    include_directories: includes,
+    c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
+    install: true,
+  )
 
-libpcre2_32 = declare_dependency(
-  link_with: pcre2_32_lib,
-  include_directories: includes,
-  compile_args: static_defs,
-)
+  libpcre2_16 = declare_dependency(
+    link_with: pcre2_16_lib,
+    include_directories: includes,
+    compile_args: static_defs,
+  )
+
+  pcre2_deps += [libpcre2_16]
+else
+  libpcre2_16 = disabler()
+endif
+
+if get_option('pcre2-32').enabled() # disable on auto
+  pcre2_32_lib = library(
+    'pcre2-32',
+    sources,
+    include_directories: includes,
+    c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
+    install: true,
+  )
+
+  libpcre2_32 = declare_dependency(
+    link_with: pcre2_32_lib,
+    include_directories: includes,
+    compile_args: static_defs,
+  )
+
+  pcre2_deps += [libpcre2_32]
+else
+  libpcre2_32 = disabler()
+endif
+
+if pcre2_deps.length() == 0
+  error('At least one of the 8, 16 or 32 bit libraries must be enabled')
+endif
 
 if get_option('grep')
   pcre2grep = executable(
@@ -178,26 +204,32 @@ install_headers(pcre2_h, 'src/pcre2posix.h')
 
 pkg = import('pkgconfig')
 
-pkg.generate(
-  pcre2_8_lib,
-  name: 'libpcre2-8',
-  description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 8 bit character support',
-  version: meson.project_version(),
-)
+if not is_disabler(libpcre2_8)
+  pkg.generate(
+    pcre2_8_lib,
+    name: 'libpcre2-8',
+    description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 8 bit character support',
+    version: meson.project_version(),
+  )
+endif
 
-pkg.generate(
-  pcre2_16_lib,
-  name: 'libpcre2-16',
-  description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 16 bit character support',
-  version: meson.project_version(),
-)
+if not is_disabler(libpcre2_16)
+  pkg.generate(
+    pcre2_16_lib,
+    name: 'libpcre2-16',
+    description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 16 bit character support',
+    version: meson.project_version(),
+  )
+endif
 
-pkg.generate(
-  pcre2_32_lib,
-  name: 'libpcre2-32',
-  description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support',
-  version: meson.project_version(),
-)
+if not is_disabler(libpcre2_32)
+  pkg.generate(
+    pcre2_32_lib,
+    name: 'libpcre2-32',
+    description: 'PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support',
+    version: meson.project_version(),
+  )
+endif
 
 #### tests
 
@@ -213,7 +245,7 @@ if (
   pcre2test = executable(
     'pcre2test',
     'src/pcre2test.c',
-    dependencies: [libpcre2_8, libpcre2_posix, libpcre2_16, libpcre2_32],
+    dependencies: pcre2_deps,
     c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
     link_args: link_args,
   )

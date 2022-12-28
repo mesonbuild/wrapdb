@@ -6,3 +6,15 @@ option(
   'test', type: 'boolean', value: true,
   description: 'Compile the test executable and enable tests'
 )
+option(
+  'pcre2-8', type: 'feature', value: 'enabled',
+  description: '8 bit character support'
+)
+option(
+  'pcre2-16', type: 'feature', value: 'disabled',
+  description: '16 bit character support'
+)
+option(
+  'pcre2-32', type: 'feature', value: 'disabled',
+  description: '32 bit character support'
+)
