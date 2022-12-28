@@ -29,27 +29,27 @@ add_project_arguments(objc_args, language: 'objc')
 # BEGIN platform detection logic
 
 # FIXME: detect this properly
-platform_is_linux_desktop = (host_machine.system() == 'linux')
-platform_is_android = (host_machine.system() == 'android')
+platform_is_linux_desktop = (target_machine.system() == 'linux')
+platform_is_android = (target_machine.system() == 'android')
 platform_is_linux = platform_is_android or platform_is_linux_desktop
 
-platform_is_darwin = (host_machine.system() == 'darwin')
+platform_is_darwin = (target_machine.system() == 'darwin')
 # FIXME: detect this properly
 platform_is_macos = platform_is_darwin
 platform_is_ios = false
 
-platform_is_windows = (host_machine.system() == 'windows')
+platform_is_windows = (target_machine.system() == 'windows')
 # FIXME: detect this properly
 platform_is_win32 = platform_is_windows
 platform_is_winrt = false
 
-platform_is_vita = (host_machine.system() == 'vita')
-platform_is_os2 = (host_machine.system() == 'os2')
+platform_is_vita = (target_machine.system() == 'vita')
+platform_is_os2 = (target_machine.system() == 'os2')
 
-platform_is_dragonflybsd = (host_machine.system() == 'dragonfly')
-platform_is_freebsd = (host_machine.system() == 'freebsd')
-platform_is_netbsd = (host_machine.system() == 'netbsd')
-platform_is_openbsd = (host_machine.system() == 'openbsd')
+platform_is_dragonflybsd = (target_machine.system() == 'dragonfly')
+platform_is_freebsd = (target_machine.system() == 'freebsd')
+platform_is_netbsd = (target_machine.system() == 'netbsd')
+platform_is_openbsd = (target_machine.system() == 'openbsd')
 
 platform_is_bsd = (
     platform_is_dragonflybsd or
@@ -58,14 +58,14 @@ platform_is_bsd = (
     platform_is_openbsd or
 false)
 
-platform_is_haiku = (host_machine.system() == 'haiku')
+platform_is_haiku = (target_machine.system() == 'haiku')
 
-platform_is_emscripten = (host_machine.system() == 'emscripten')
+platform_is_emscripten = (target_machine.system() == 'emscripten')
 
-platform_is_psp = (host_machine.system() == 'psp')
+platform_is_psp = (target_machine.system() == 'psp')
 
 # FIXME: verify this
-platform_is_nacl = (host_machine.system() == 'nacl')
+platform_is_nacl = (target_machine.system() == 'nacl')
 
 # FIXME: darwin is technically a unix system, but we cannot differenciate between macOS and darwin
 platform_is_unixlike = (
@@ -930,7 +930,7 @@ elif platform_is_emscripten
     sys_video_driver = ['emscripten']
     sys_dynamic_api = false
 else
-    error('Unsupported platform @0@, please add.'.format(host_machine.system()))
+    error('Unsupported platform @0@, please add.'.format(target_machine.system()))
 endif
 
 if sys_dynamic_api
