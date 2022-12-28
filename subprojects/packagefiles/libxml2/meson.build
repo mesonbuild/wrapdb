@@ -69,6 +69,8 @@ else
   dl_lib = cc.find_library('dl', disabler: true, required: false)
 endif
 if dl_lib.found()
+  cdata.set('HAVE_DLOPEN', 1)
+  cdata.set('HAVE_DLFCN_H', 1)
   deps += dl_lib
 endif
 
@@ -155,8 +157,7 @@ endforeach
 checked_headers = {
   'arpa/inet.h': [],
   'arpa/nameser.h': [],
-  'dl.h': dl_lib,
-  'dlfcn.h': dl_lib,
+  'dl.h': [],
   'fcntl.h': [],
   'float.h': [],
   'inttypes.h': [],
@@ -183,7 +184,6 @@ foreach h, d : checked_headers
 endforeach
 
 checked_funcs = {
-  'dlopen': dl_lib,
   'ftime': [],
   'getaddrinfo': ws2_dep,
   'gettimeofday': [],
