@@ -194,12 +194,13 @@ endif
 
 deps = []
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', disabler: true, required: false)
+  dl_dep = dependency('dl', required: false)
 else
   dl_dep = cc.find_library('dl', required: false)
 endif
 
 if dl_dep.found()
+  cdata.set('HAVE_DLFCN_H', 1)
   deps += dl_dep
 endif
 
@@ -324,7 +325,6 @@ headers = {
   'copyfile.h': [],
   'ctype.h': [],
   'direct.h': [],
-  'dlfcn.h': dl_dep,
   'errno.h': [],
   'ext2fs/ext2_fs.h': [],
   'fcntl.h': [],
