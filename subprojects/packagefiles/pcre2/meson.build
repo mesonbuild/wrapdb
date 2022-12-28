@@ -93,12 +93,20 @@ foreach f : check_funs
   endif
 endforeach
 
-# TODO: also define SUPPORT_PCRE2_16 and SUPPORT_PCRE2_32 if available?
 config_h_defs += [
   '-DSTDC_HEADERS',
-  '-DSUPPORT_PCRE2_8',
   '-DSUPPORT_UNICODE',
 ]
+
+if not get_option('pcre2-8').disabled()
+  config_h_defs += ['-DSUPPORT_PCRE2_8']
+endif
+if get_option('pcre2-16').enabled()
+  config_h_defs += ['-DSUPPORT_PCRE2_16']
+endif
+if get_option('pcre2-32').enabled()
+  config_h_defs += ['-DSUPPORT_PCRE2_32']
+endif
 
 if get_option('default_library') == 'static'
   static_defs = ['-DPCRE2_STATIC']
