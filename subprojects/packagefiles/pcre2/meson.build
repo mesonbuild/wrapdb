@@ -13,23 +13,57 @@ pcre2_posix_lib_version = '3.0.2'
 
 c_compiler = meson.get_compiler('c')
 
-pcre2_h = configure_file(
-  input: 'src/pcre2.h.generic',
-  output: 'pcre2.h',
-  copy: true,
-)
+platform_is_unixlike = host_machine.system() in [
+  'dragonfly',
+  'freebsd',
+  'netbsd',
+  'openbsd',
+  'haiku',
+  'linux',
+  'android',
+  'darwin',
+  'cygwin'
+]
 
-chartables = configure_file(
-  input: 'src/pcre2_chartables.c.dist',
-  output: 'pcre2_chartables.c',
-  copy: true,
-)
+platform_supports_sljit = host_machine.system() in [
+  'linux',
+  'android',
+  'netbsd'
+]
 
-config_h = configure_file(
-  input: 'src/config.h.generic',
-  output: 'config.h',
-  copy: true,
-)
+cdata = configuration_data()
+# pcre2.h
+varr = meson.project_version().split('.')
+cdata.set('PCRE2_MAJOR', varr[0])
+cdata.set('PCRE2_MINOR', varr[1])
+cdata.set('PCRE2_PRERELEASE', '')
+cdata.set('PCRE2_DATE', '2022-12-11')
+
+# config.h
+cdata.set('PCRE2_LINK_SIZE', '2')
+cdata.set('PCRE2_HEAP_LIMIT', '20000000')
+cdata.set('PCRE2_MATCH_LIMIT', '10000000')
+cdata.set('PCRE2_MATCH_LIMIT_DEPTH', 'MATCH_LIMIT')
+cdata.set('NEWLINE_DEFAULT', '2') # default in config.h.generic
+cdata.set('PCRE2_PARENS_NEST_LIMIT', '250')
+cdata.set('PCRE2GREP_BUFSIZE', '20480')
+cdata.set('PCRE2GREP_MAX_BUFSIZE', '1048576')
+
+jit_deps = []
+if not get_option('jit').disabled() and platform_is_unixlike
+  jit_deps += dependency('threads')
+  cdata.set10('SUPPORT_JIT', true)
+endif
+
+if not get_option('jit_sealloc').disabled()
+  if c_compiler.has_function('mkostemp', prefix: '#include <stdlib.h>', args: ['-D_GNU_SOURCE'])
+    if platform_supports_sljit
+      cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
+    elif get_option('jit_sealloc').enabled()
+      error('Your configuration is not supported')
+    endif
+  endif
+endif
 
 sources = files(
   'src/pcre2_auto_possess.c',
@@ -59,7 +93,6 @@ sources = files(
   'src/pcre2_valid_utf.c',
   'src/pcre2_xclass.c',
 )
-sources += chartables
 
 includes = include_directories('.', 'src')
 
@@ -80,42 +113,63 @@ check_headers = [
   'unistd.h',
 ]
 
-config_h_defs = []
 foreach h : check_headers
   if c_compiler.has_header(h)
-    config_h_defs += '-DHAVE_' + h.underscorify().to_upper()
+    cdata.set10('HAVE_' + h.underscorify().to_upper(), true)
   endif
 endforeach
 
 check_funs = [
+  'bcopy',
+  'memfd_create',
   'memmove',
+  'secure_getenv',
   'strerror',
 ]
 
 foreach f : check_funs
   if c_compiler.has_function(f)
-    config_h_defs += '-DHAVE_@0@'.format(f.to_upper())
+    cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
   endif
 endforeach
 
-config_h_defs += [
-  '-DSTDC_HEADERS',
-  '-DSUPPORT_PCRE2_8',
-  '-DSUPPORT_UNICODE',
-]
+cdata.set10('SUPPORT_PCRE2_8', true)
+cdata.set10('SUPPORT_UNICODE', true)
 
 if get_option('default_library') == 'static'
   static_defs = ['-DPCRE2_STATIC']
-  config_h_defs += static_defs
 else
   static_defs = []
 endif
 
+pcre2_h = configure_file(
+  input: 'src/pcre2.h.in',
+  output: 'pcre2.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
+
+chartables = configure_file(
+  input: 'src/pcre2_chartables.c.dist',
+  output: 'pcre2_chartables.c',
+  copy: true,
+)
+sources += chartables
+
+config_h = configure_file(
+  input: 'config-cmake.h.in',
+  output: 'config.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
+
+general_c_args = [static_defs, '-DHAVE_CONFIG_H', '-D_GNU_SOURCE']
 pcre2_8_lib = library(
   'pcre2-8',
   sources,
+  dependencies: jit_deps,
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8'],
   version: pcre2_8_lib_version,
   install: true,
 )
@@ -130,7 +184,7 @@ pcre2_posix_lib = library(
   'pcre2-posix',
   'src/pcre2posix.c',
   dependencies: libpcre2_8,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8'],
   version: pcre2_posix_lib_version,
   install: true,
 )
@@ -144,8 +198,9 @@ libpcre2_posix = declare_dependency(
 pcre2_16_lib = library(
   'pcre2-16',
   sources,
+  dependencies: jit_deps,
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
+  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=16'],
   version: pcre2_16_lib_version,
   install: true,
 )
@@ -159,8 +214,9 @@ libpcre2_16 = declare_dependency(
 pcre2_32_lib = library(
   'pcre2-32',
   sources,
+  dependencies: jit_deps,
   include_directories: includes,
-  c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
+  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=32'],
   version: pcre2_32_lib_version,
   install: true,
 )
@@ -176,7 +232,7 @@ if get_option('grep')
     'pcre2grep',
     'src/pcre2grep.c',
     dependencies: libpcre2_8,
-    c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
+    c_args: general_c_args,
     install: true,
   )
 endif
@@ -223,7 +279,7 @@ if (
     'pcre2test',
     'src/pcre2test.c',
     dependencies: [libpcre2_8, libpcre2_posix, libpcre2_16, libpcre2_32],
-    c_args: [config_h_defs, '-DHAVE_CONFIG_H'],
+    c_args: general_c_args,
     link_args: link_args,
   )
 
