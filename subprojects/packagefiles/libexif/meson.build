@@ -1,9 +1,19 @@
-project('exif', 'c', license: 'LGPL-2.1', version: '0.6.24')
+project(
+  'exif',
+  'c',
+  license: 'LGPL-2.1',
+  version: '0.6.24',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('c')
 
 m_dep = cc.find_library('m', required: false)
-intl_dep = dependency('intl', required: get_option('nls'))
+if meson.version().version_compare('>= 0.59')
+  intl_dep = dependency('intl', required: get_option('nls'))
+else
+  intl_dep = dependency('', required: false)
+endif
 
 #bugfix for msvc builds
 if cc.get_argument_syntax() == 'msvc'
@@ -12,7 +22,7 @@ endif
 
 cdata = configuration_data()
 cdata.set('HAVE_LOCALTIME_R', cc.has_function('localtime_r'))
-cdata.set('HAVE_LOCALTIME_S', cc.has_function('localtime_s'))
+cdata.set('HAVE_LOCALTIME_S', cc.has_header_symbol('time.h', 'localtime_s'))
 cdata.set('ENABLE_NLS', intl_dep.found())
 cdata.set_quoted('GETTEXT_PACKAGE', '@0@-@1@'.format(meson.project_name(), meson.project_version()))
 cdata.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
@@ -87,8 +97,9 @@ install_headers(
   subdir: 'libexif',
 )
 
+depinc = include_directories('.')
 exif_dep = declare_dependency(
-  include_directories: '.',
+  include_directories: depinc,
   link_with: exif,
 )
 
