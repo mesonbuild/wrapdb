@@ -6,6 +6,11 @@ project(
   version: '10.42',
 )
 
+pcre2_8_lib_version = '0.11.0'
+pcre2_16_lib_version = '0.11.0'
+pcre2_32_lib_version = '0.11.0'
+pcre2_posix_lib_version = '3.0.2'
+
 c_compiler = meson.get_compiler('c')
 
 pcre2_h = configure_file(
@@ -111,6 +116,7 @@ pcre2_8_lib = library(
   sources,
   include_directories: includes,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  version: pcre2_8_lib_version,
   install: true,
 )
 
@@ -125,6 +131,7 @@ pcre2_posix_lib = library(
   'src/pcre2posix.c',
   dependencies: libpcre2_8,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  version: pcre2_posix_lib_version,
   install: true,
 )
 
@@ -139,6 +146,7 @@ pcre2_16_lib = library(
   sources,
   include_directories: includes,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=16'],
+  version: pcre2_16_lib_version,
   install: true,
 )
 
@@ -153,6 +161,7 @@ pcre2_32_lib = library(
   sources,
   include_directories: includes,
   c_args: [config_h_defs, '-DHAVE_CONFIG_H', '-DPCRE2_CODE_UNIT_WIDTH=32'],
+  version: pcre2_32_lib_version,
   install: true,
 )
 
