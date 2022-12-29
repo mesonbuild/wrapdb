@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import os, sys
+"""Module providing file I/O"""
+import sys
 
-ifile = sys.argv[1]
-ofile = sys.argv[2]
+with open(sys.argv[1], 'r', encoding="utf-8") as inputfile:
+    bs = inputfile.read()
 
-bs = open(ifile, 'r').read()
-with open(ofile, 'w') as of:
-    of.write(f'EXPORTS\n;\n')
+with open(sys.argv[2], 'w', encoding="utf-8") as of:
+    of.write('EXPORTS\n;\n')
     of.write(bs)
