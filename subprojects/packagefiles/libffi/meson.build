@@ -22,7 +22,6 @@ host_system = host_machine.system()
 cc = meson.get_compiler('c')
 is_msvc_like = cc.get_argument_syntax() == 'msvc'
 is_gnu_like = cc.get_argument_syntax() == 'gcc'
-is_windows = host_system in ['cygwin', 'windows']
 
 if is_gnu_like
   add_project_arguments('-fexceptions', language: 'c')
@@ -75,11 +74,12 @@ endforeach
 # Default values
 c_sources = ['ffi.c']
 asm_sources = ['sysv.S']
+masm_args = []
 targetdir = ''
 have_long_double = ''
 have_long_double_variant = false
 
-if host_cpu_family == 'aarch64' and is_windows
+if host_cpu_family == 'aarch64' and host_system in ['cygwin', 'windows']
   target = 'ARM_WIN64'
   targetdir = 'aarch64'
   if is_msvc_like
@@ -95,7 +95,7 @@ elif host_cpu_family.startswith('alpha')
 elif host_cpu_family.startswith('arc')
   target = 'ARC'
   asm_sources = ['arcompact.S']
-elif host_cpu_family == 'arm' and is_windows
+elif host_cpu_family == 'arm' and host_system in ['cygwin', 'windows']
   target = 'ARM_WIN32'
   targetdir = 'arm'
   if is_msvc_like
@@ -130,13 +130,14 @@ elif host_cpu_family == 'x86' and host_system in ['freebsd', 'openbsd']
   if is_msvc_like
     asm_sources = ['sysv_intel.S']
   endif
-elif (host_cpu_family == 'x86' and (is_windows or host_system in ['os2', 'interix'])) or \
-     (host_cpu_family == 'x86_64' and is_windows)
+elif (host_cpu_family == 'x86' and host_system in ['cygwin', 'windows', 'os2', 'interix']) or \
+     (host_cpu_family == 'x86_64' and host_system in ['cygwin', 'windows'])
   targetdir = 'x86'
   if size_t == 4
     target = 'X86_WIN32'
     if is_msvc_like
       asm_sources = ['sysv_intel.S']
+      masm_args += '/safeseh'
     endif
   else
     target = 'X86_WIN64'
@@ -147,7 +148,6 @@ elif (host_cpu_family == 'x86' and (is_windows or host_system in ['os2', 'interi
       asm_sources = ['win64.S']
     endif
   endif
-  # FIXME: AM_LTLDFLAGS='-no-undefined -bindir "$(bindir)"'
 elif host_cpu_family in ['x86', 'x86_64'] and host_system in ['darwin', 'ios']
   targetdir = 'x86'
   if size_t == 4
@@ -165,8 +165,8 @@ elif host_cpu_family in ['x86', 'x86_64']
   if size_t == 4
     if cc.compiles('int foo (void) { return __x86_64__; }', name: 'X32')
       target = 'X86_64'
-    c_sources = ['ffi64.c', 'ffiw64.c']
-    asm_sources = ['unix64.S', 'win64.S']
+      c_sources = ['ffi64.c', 'ffiw64.c']
+      asm_sources = ['unix64.S', 'win64.S']
     else
       target = 'X86'
       if is_msvc_like
@@ -343,7 +343,7 @@ endif
 if host_cpu_family in ['arm', 'aarch64'] and host_system == 'darwin'
   message('Cannot use PROT_EXEC on this target, using fallback')
   ffi_conf.set('FFI_EXEC_TRAMPOLINE_TABLE', 1)
-elif host_system in ['android', 'darwin', 'openbsd', 'freebsd', 'solaris']
+elif host_system in ['android', 'darwin', 'openbsd', 'freebsd', 'solaris', 'qnx']
   message('Cannot use malloc on this target, using fallback')
   ffi_conf.set('FFI_MMAP_EXEC_WRIT', 1)
 endif
@@ -353,6 +353,11 @@ if target == 'X86_64'
   if run_command(t, cc.cmd_array(), check: false).returncode() == 0
     ffi_conf.set('HAVE_AS_X86_64_UNWIND_SECTION_TYPE', 1)
   endif
+endif
+
+if host_system == 'windows' and is_gnu_like
+  # so printf supports long double under mingw-w64 (used in cls_longdouble_va)
+  add_project_arguments('-D__USE_MINGW_ANSI_STDIO=1', language: 'c')
 endif
 
 if is_gnu_like
@@ -387,7 +392,7 @@ if not get_option('raw_api')
   ffi_conf.set('FFI_NO_RAW_API', 1)
 endif
 if get_option('exe_static_tramp')
-  if is_windows
+  if host_system == 'cygwin'
     # Only define static trampolines if we are using the cygwin runtime.
     # Will this need to be changed for mingw?
     if is_gnu_like
