@@ -17,3 +17,4 @@ option('exe_static_tramp', type : 'boolean', value : true)
 option('doc', type : 'boolean', value : false)
 # Toggle this if you don't want to run testsuite
 option('tests', type : 'boolean', value : true)
+option('tests_optimizations', type : 'array', value : [])

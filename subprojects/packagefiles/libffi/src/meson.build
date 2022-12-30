@@ -56,6 +56,7 @@ endif
 
 ffi_lib = library('ffi', ffi_c_sources, ffi_asm_sources,
   c_args : ['-DTARGET=' + target, '-DFFI_BUILDING_DLL', public_c_args],
+  masm_args : masm_args,
   include_directories : ffiinc,
   link_args: ffi_link_args,
   link_depends: ffi_map_file,

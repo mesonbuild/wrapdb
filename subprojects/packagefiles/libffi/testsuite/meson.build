@@ -216,7 +216,6 @@ feature_check_code = '''
 '''
 
 feature_check = {
-  'bhaible': '#if FFI_CLOSURES',
   'closures': '#if FFI_CLOSURES',
   'complex': '#ifdef FFI_TARGET_HAS_COMPLEX_TYPE',
   'go': '#if FFI_GO_CLOSURES',
@@ -224,16 +223,126 @@ feature_check = {
 
 add_languages('cpp', native: false)
 
+# We generate a full set of tests for each optimization
+tests_optimizations = get_option('tests_optimizations')
+if tests_optimizations == []
+  tests_optimizations = is_gnu_like ? ['-O0', '-O2'] : ['']
+endif
+
+common_c_args = []
+if cc.get_id() == 'clang'
+  common_c_args = ['-W', '-Wall']
+elif cc.get_id() == 'gcc'
+  common_c_args = ['-W', '-Wall', '-Wno-psabi']
+endif
+
+# We generate a full set of tests for each ABI
+tests_abis = [['']]
+if cc.get_id() == 'gcc'
+  if cc.compiles(feature_check_code.format('#ifdef __i386__'))
+    tests_abis += [
+      ['-DABI_NUM=FFI_STDCALL', '-DABI_ATTR=__STDCALL__'],
+      ['-DABI_NUM=FFI_THISCALL', '-DABI_ATTR=__THISCALL__'],
+      ['-DABI_NUM=FFI_FASTCALL', '-DABI_ATTR=__FASTCALL__'],
+    ]
+  elif host_cpu_family == 'x86_64' and \
+       cc.compiles(feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'))
+    tests_abis += [
+      ['-DABI_NUM=FFI_GNUW64', '-DABI_ATTR=__MSABI__'],
+    ]
+  endif
+endif
+
 foreach suite, sources : tests
+  # Skip this set of tests if the feature is not supported
   if suite in feature_check
     code = feature_check_code.format(feature_check[suite])
     if not cc.compiles(code, include_directories: ffiinc)
       continue
     endif
   endif
+
+  # Add suite specific cflags
+  suite_c_args = []
+  if is_msvc_like
+    # -wd4996  suggest use of vsprintf_s instead of vsprintf
+    # -wd4116  unnamed type definition
+    # -wd4101  unreferenced local variable
+    # -wd4244  implicit conversion to type of smaller size
+    # -wd4005  macro redefinition
+    # -wd4305  truncation to smaller type
+    # -wd4477  printf %lu of uintptr_t
+    # -wd4312  implicit conversion to type of greater size
+    # -wd4311  pointer truncation to unsigned long
+    # -EHsc    C++ Exception Handling (no SEH exceptions)
+    if suite == 'bhaible'
+      suite_c_args += ['-wd4996', '-wd4116', '-wd4101', '-wd4244']
+    elif suite == 'call'
+      suite_c_args += ['-wd4005', '-wd4244', '-wd4305', '-wd4477', '-wd4312', '-wd4311', '-EHsc']
+    elif suite == 'closure'
+      suite_c_args += ['-wd4005', '-wd4244', '-wd4305', '-wd4477', '-wd4312', '-wd4311', '-EHsc']
+    endif
+  elif cc.get_id() == 'gcc'
+    if suite == 'bhaible'
+      suite_c_args += ['-Wno-unused-variable', '-Wno-unused-parameter', '-Wno-unused-but-set-variable',
+                       '-Wno-uninitialized']
+    endif
+  else
+    if suite == 'bhaible'
+      suite_c_args += ['-Wno-unused-variable', '-Wno-unused-parameter', '-Wno-uninitialized']
+    endif
+  endif
+
   foreach src : sources
-    name = fs.stem(src)
-    exe = executable(name, f'libffi.@suite@/@src@', dependencies: ffi_dep)
-    test(name, exe, suite: suite)
+    # No C++ for or1k
+    if src.endswith('.cc') and host_cpu_family.startswith('or1k')
+      continue
+    endif
+
+    base_name = fs.stem(src)
+    src = f'libffi.@suite@/@src@'
+
+    # Some tests need to be duplicated for each of those extra cflag
+    tests_extra_c_args = []
+    if suite == 'bhaible' and base_name == 'test-call'
+      foreach i : range(1, 82)
+        tests_extra_c_args += f'-DDGTEST=@i@'
+      endforeach
+    elif suite == 'bhaible' and base_name == 'test-callback'
+      code = feature_check_code.format('#if FFI_CLOSURES')
+      if not cc.compiles(code, include_directories: ffiinc)
+        continue
+      endif
+      foreach i : range(1, 81)
+        tests_extra_c_args += f'-DDGTEST=@i@'
+      endforeach
+    else
+      tests_extra_c_args += ''
+    endif
+
+    tests_abis_c_args = fs.read(src).contains('ABI_NUM') ? tests_abis : [['']]
+    foreach abi_c_args : tests_abis_c_args
+      foreach opt_c_arg : tests_optimizations
+        foreach extra_c_arg : tests_extra_c_args
+          matrix_c_args = []
+          matrix_c_args += abi_c_args != [''] ? abi_c_args : []
+          matrix_c_args += opt_c_arg != '' ? opt_c_arg : []
+          matrix_c_args += extra_c_arg != '' ? extra_c_arg : []
+          test_name = base_name
+          exe_name = base_name
+          if matrix_c_args != []
+            test_name += ' ' + ' '.join(matrix_c_args)
+            exe_name += ''.join(matrix_c_args).underscorify()
+          endif
+          exe = executable(exe_name, src,
+            dependencies: ffi_dep,
+            c_args: [common_c_args, suite_c_args, matrix_c_args],
+            cpp_args: [common_c_args, suite_c_args, matrix_c_args],
+            override_options: ['optimization=plain'],
+          )
+          test(test_name, exe, suite: suite)
+        endforeach
+      endforeach
+    endforeach
   endforeach
 endforeach
