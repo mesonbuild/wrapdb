@@ -55,8 +55,8 @@ platform_is_bsd = (
     platform_is_dragonflybsd or
     platform_is_freebsd or
     platform_is_netbsd or
-    platform_is_openbsd or
-false)
+    platform_is_openbsd
+)
 
 platform_is_haiku = (host_machine.system() == 'haiku')
 
@@ -72,8 +72,8 @@ platform_is_unixlike = (
     platform_is_bsd or
     platform_is_emscripten or
     platform_is_haiku or
-    platform_is_linux or
-false)
+    platform_is_linux
+)
 
 platform_is_apple = (
     platform_is_macos or
@@ -98,6 +98,7 @@ opt_locale= get_option('use_locale')
 opt_power = get_option('use_power')
 opt_render = get_option('use_render')
 opt_sensor = get_option('use_sensor')
+opt_system_iconv = get_option('system_iconv')
 opt_threads = get_option('use_threads')
 opt_timers = get_option('use_timers')
 opt_video = get_option('use_video')
@@ -367,10 +368,23 @@ endif
 core_deps = [
     cc.find_library('m', required : false),
     cc.find_library('dl', required : false),
-    cc.find_library('iconv', required : false),
     dbus_dep,
     ibus_dep,
 ]
+
+if not opt_system_iconv.disabled()
+    iconv_dep = cc.find_library('iconv', required : opt_system_iconv)
+else
+    iconv_dep = fake_dep
+endif
+
+if cc.links('#include <iconv.h>\nint main() { iconv_open("", ""); }', name : 'iconv_open test', dependencies : iconv_dep)
+    cdata.set10('HAVE_ICONV', true)
+    cdata.set10('HAVE_SYSTEM_ICONV', true)
+    if iconv_dep.found()
+        core_deps += iconv_dep
+    endif
+endif
 
 extra_deps = []
 
@@ -597,7 +611,6 @@ check_functions = [
     ['getauxval', 'sys/auxv.h'],
     ['getenv', 'stdlib.h'],
     ['getpagesize', 'unistd.h'],
-    ['iconv', 'iconv.h'],
     ['index', 'strings.h'],
     ['inotify_init', 'sys/inotify.h'],
     ['inotify_init1', 'sys/inotify.h'],
