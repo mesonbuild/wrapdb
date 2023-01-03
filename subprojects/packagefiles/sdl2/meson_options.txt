@@ -21,6 +21,12 @@ option(
 )
 
 option(
+    'system_iconv',
+    type : 'feature',
+    description: 'Use iconv() from system-installed libraries'
+)
+
+option(
     'use_threads',
     type : 'feature',
     description : 'Enable threads support'
