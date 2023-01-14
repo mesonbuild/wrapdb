@@ -22,7 +22,7 @@ endif
 
 if get_option('compile_library')
   spdlog_compile_args += '-DSPDLOG_COMPILED_LIB'
-  if get_option('buildtype') != 'static'
+  if get_option('default_library') != 'static'
     spdlog_compile_args += '-DSPDLOG_SHARED_LIB'
     spdlog_compile_args += '-Dspdlog_EXPORTS'
     if not fmt_dep.found()
