@@ -2,10 +2,10 @@ project(
   'fluidsynth',
   'c',
   'cpp',
-  version: '2.3.0',
+  version: '2.3.2',
   license: 'LGPL-2.1-or-later',
   default_options: ['b_ndebug=if-release'],
-  meson_version: '>= 0.53.0',
+  meson_version: '>= 0.54.1',
 )
 
 cc = meson.get_compiler('c')
@@ -28,18 +28,7 @@ if host_machine.system() == 'windows'
 endif
 
 # Detect if compiling in an MSYS2-based MinGW/Clang environment
-host_is_msys2 = false
-if host_machine.system() == 'windows'
-  shell_cmd = find_program('sh', required: false, disabler: true)
-  host_is_msys2 = (
-    run_command(
-      shell_cmd,
-      '-c',
-      '[ ! -z "$MSYSTEM" ] && [ "$MSYSTEM" != "MSYS" ] && exit 0; exit 1',
-      check: false,
-    ).returncode() == 0
-  )
-endif
+host_is_msys2 = host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
 
 # config file
 #
@@ -158,6 +147,10 @@ endif
 
 if openmp_dep.found()
   conf.set('HAVE_OPENMP', 1)
+  if cc.get_id() == 'clang-cl'
+    lib_args += '-openmp:llvm'
+    lib_args += '-openmp:experimental'
+  endif
 endif
 summary(
   'OpenMP 4.0',
