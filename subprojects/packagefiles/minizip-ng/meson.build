@@ -1,13 +1,13 @@
 project(
   'minizip-ng',
   'c',
-  version: '3.0.7',
+  version: '3.0.8',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
 )
 
-if host_machine.system() == 'windows' and get_option('buildtype') != 'static'
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   add_project_arguments('-DMZ_EXPORTS', language: 'c')
 endif
 
