@@ -1,8 +1,8 @@
 [wrap-file]
-directory = imgui-1.88
-source_url = https://github.com/ocornut/imgui/archive/refs/tags/v1.88.tar.gz
-source_filename = imgui-1.88.tar.gz
-source_hash = 9f14c788aee15b777051e48f868c5d4d959bd679fc5050e3d2a29de80d8fd32e
+directory = imgui-1.89.2
+source_url = https://github.com/ocornut/imgui/archive/refs/tags/v1.89.2.tar.gz
+source_filename = imgui-1.89.2.tar.gz
+source_hash = e110beffda505e6954feb7b13541d35a7c12a176b9723290c853684713df6a67
 patch_directory = imgui
 
 [provide]
