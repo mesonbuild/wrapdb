@@ -1,4 +1,10 @@
-project('imgui', 'cpp', license: 'MIT', version: '1.88', meson_version: '>=0.50.0')
+project(
+  'imgui',
+  'cpp',
+  license: 'MIT',
+  version: '1.89.2',
+  meson_version: '>=0.50.0',
+)
 
 if host_machine.system() == 'darwin'
   add_languages('objcpp')
@@ -96,7 +102,7 @@ endif
 
 api = '-DIMGUI_API=__attribute__((visibility("default")))'
 if host_machine.system() == 'windows'
-  api = '-DIMGUI_API=@0@'.format(get_option('buildtype') != 'static' ? '__declspec(dllexport)' : '""')
+  api = '-DIMGUI_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '')
 endif
 
 imgui = library(
@@ -109,7 +115,7 @@ imgui = library(
 )
 
 if host_machine.system() == 'windows'
-  api = '-DIMGUI_API=@0@'.format(get_option('buildtype') != 'static' ? '__declspec(dllimport)' : '""')
+  api = '-DIMGUI_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllimport)' : '')
 endif
 
 imgui_dep = declare_dependency(
