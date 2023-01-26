@@ -372,19 +372,18 @@ core_deps = [
     ibus_dep,
 ]
 
-if not opt_system_iconv.disabled()
-    iconv_dep = cc.find_library('iconv', required : opt_system_iconv)
-else
-    iconv_dep = fake_dep
-endif
-
-if cc.links('#include <iconv.h>\nint main() { iconv_open("", ""); }', name : 'iconv_open test', dependencies : iconv_dep)
-    cdata.set10('HAVE_ICONV', true)
-    cdata.set10('HAVE_SYSTEM_ICONV', true)
-    if iconv_dep.found()
-        core_deps += iconv_dep
+if opt_system_iconv
+    iconv_dep = cc.find_library('iconv', required: false)
+    if cc.links('#include <iconv.h>\nint main() { iconv_open("", ""); }', name : 'iconv_open library test', dependencies : iconv_dep)
+        cdata.set10('HAVE_ICONV', true)
+        cdata.set10('HAVE_SYSTEM_ICONV', true)
+        if iconv_dep.found()
+            core_deps += iconv_dep
+        endif
     endif
 endif
+
+# Check if iconv is available using the previously defined dependency
 
 extra_deps = []
 

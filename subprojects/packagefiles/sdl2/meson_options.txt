@@ -22,7 +22,8 @@ option(
 
 option(
     'system_iconv',
-    type : 'feature',
+    type : 'boolean',
+    value : true,
     description: 'Use iconv() from system-installed libraries'
 )
 
