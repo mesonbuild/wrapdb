@@ -1,8 +1,8 @@
 [wrap-file]
-directory = QArchive-2.2.4
-source_url = https://github.com/antony-jr/QArchive/archive/refs/tags/v2.2.4.tar.gz
-source_filename = QArchive-2.2.4.tar.gz
-source_hash = 7c7f0e3bf3d6fb5130aa4632201873511944cd98ab16b273da5072198f53ad7b
+directory = QArchive-2.2.6
+source_url = https://github.com/antony-jr/QArchive/archive/refs/tags/v2.2.6.tar.gz
+source_filename = QArchive-2.2.6.tar.gz
+source_hash = c0cad2bc79eeb4ab4180fd97822a967b8a0e3c594387ccf921733449ee5bd3e6
 
 [provide]
 qarchive = qarchive_dep
