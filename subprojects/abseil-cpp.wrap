@@ -2,7 +2,7 @@
 directory = abseil-cpp-20220623.0
 source_url = https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz
 source_filename = abseil-cpp-20220623.0.tar.gz
-source_hash = 4208129b49006089ba1d6710845a45e31c59b0ab6bff9e5788a87f55c5abd602
+source_hash = 46c6aaccd6808dbbe53dbc499b99fc2d736b64edca295ded2e82ab3da2915e6c
 patch_directory = abseil-cpp
 
 [provide]
