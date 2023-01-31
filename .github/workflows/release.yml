@@ -29,8 +29,8 @@ jobs:
     steps:
       - name: Install package
         run: |
-          sudo apt-get -y install python3-pip ninja-build libjson-glib-dev
-          python3 -m pip install hotdoc chevron strictyaml
+          sudo apt-get -y install libjson-glib-dev
+          python3 -m pip install hotdoc chevron strictyaml ninja
       - name: Setup SSH Keys and known_hosts
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
