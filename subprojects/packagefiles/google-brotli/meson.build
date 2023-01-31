@@ -112,17 +112,25 @@ libbrotli_encoder = library(
   install : install,
 )
 
+bdll = []
+if get_option('default_library') != 'static'
+  bdll = '-DBROTLI_SHARED_COMPILATION'
+endif
+
 brotli_common_dep = declare_dependency(
   link_with : libbrotli_common,
   include_directories : inc,
+  compile_args: bdll,
 )
 
 brotli_encoder_dep = declare_dependency(
   link_with : [libbrotli_common, libbrotli_encoder],
   include_directories : inc,
+  compile_args: bdll,
 )
 
 brotli_decoder_dep = declare_dependency(
   link_with : [libbrotli_common, libbrotli_decoder],
   include_directories : inc,
+  compile_args: bdll,
 )
