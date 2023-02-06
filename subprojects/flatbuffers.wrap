@@ -3,6 +3,7 @@ directory = flatbuffers-23.1.21
 source_url = https://github.com/google/flatbuffers/archive/v23.1.21.tar.gz
 source_filename = flatbuffers-23.1.21.tar.gz
 source_hash = d84cb25686514348e615163b458ae0767001b24b42325f426fd56406fd384238
+patch_directory = flatbuffers
 
 [provide]
 flatbuffers = flatbuffers_dep
