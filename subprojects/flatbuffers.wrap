@@ -1,9 +1,8 @@
 [wrap-file]
-directory = flatbuffers-22.11.23
-source_url = https://github.com/google/flatbuffers/archive/v22.11.23.tar.gz
-source_filename = flatbuffers-22.11.23.tar.gz
-source_hash = 8e9bacc942db59ca89a383dd7923f3e69a377d6e579d1ba13557de1fdfddf56a
-patch_directory = flatbuffers
+directory = flatbuffers-23.1.21
+source_url = https://github.com/google/flatbuffers/archive/v23.1.21.tar.gz
+source_filename = flatbuffers-23.1.21.tar.gz
+source_hash = d84cb25686514348e615163b458ae0767001b24b42325f426fd56406fd384238
 
 [provide]
 flatbuffers = flatbuffers_dep
