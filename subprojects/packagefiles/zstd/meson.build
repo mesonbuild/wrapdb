@@ -12,12 +12,19 @@ project('zstd',
   ['c', 'cpp'],
   license: ['BSD', 'GPLv2'],
   default_options : [
-    'c_std=gnu99',
+    # There shouldn't be any need to force a C standard convention for zstd
+    # but in case one would want that anyway, this can be done here.
+    # 'c_std=gnu99',
+    # c++11 standard is useful for pzstd
     'cpp_std=c++11',
-    'buildtype=release'
+    'buildtype=release',
+    'warning_level=3',
+    # -Wdocumentation does not actually pass, nor do the test binaries,
+    # so this isn't safe
+    #'werror=true'
   ],
-  version: '1.4.5',
-  meson_version: '>=0.47.0')
+  version: '1.5.4',
+  meson_version: '>=0.50.0')
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -36,11 +43,8 @@ compiler_gcc = 'gcc'
 compiler_clang = 'clang'
 compiler_msvc = 'msvc'
 
-if cc_id == compiler_msvc
-  error('MSVC 2019 compiler is not supported and not tested in Zstd')
-endif
-
 zstd_version = meson.project_version()
+
 zstd_libversion = zstd_version
 
 # =============================================================================
@@ -81,7 +85,7 @@ feature_lz4 = get_option('lz4')
 # Dependencies
 # =============================================================================
 
-libm_dep = cc.find_library('m', required: bin_tests)
+libm_dep = cc.find_library('m', required: false)
 thread_dep = dependency('threads', required: feature_multi_thread)
 use_multi_thread = thread_dep.found()
 # Arguments in dependency should be equivalent to those passed to pkg-config
@@ -98,11 +102,11 @@ use_lz4 = lz4_dep.found()
 
 add_project_arguments('-DXXH_NAMESPACE=ZSTD_', language: ['c'])
 
+pzstd_warning_flags = []
 if [compiler_gcc, compiler_clang].contains(cc_id)
-  common_warning_flags = [ '-Wextra', '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]
+  common_warning_flags = [ '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]
+  pzstd_warning_flags = ['-Wno-shadow', '-Wno-deprecated-declarations']
   if cc_id == compiler_clang
-    # Should use Meson's own --werror build option
-    #common_warning_flags += '-Werror'
     common_warning_flags += ['-Wconversion', '-Wno-sign-conversion', '-Wdocumentation']
   endif
   cc_compile_flags = cc.get_supported_arguments(common_warning_flags + ['-Wstrict-prototypes'])

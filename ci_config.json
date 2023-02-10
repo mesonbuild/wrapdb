@@ -7,8 +7,7 @@
                "explicitly disable that Operating System in build_on.",
                "Please remove projects from those lists once they are updated."],
   "broken_linux": [
-    "arduinocore-avr",
-    "zstd"
+    "arduinocore-avr"
   ],
   "broken_windows": [
     "arduinocore-avr",
@@ -16,7 +15,6 @@
     "libgpiod",
     "mocklibc",
     "termbox",
-    "zstd",
     "ludocode-mpack",
     "m4",
     "tinyply"
@@ -28,8 +26,7 @@
     "libgpiod",
     "mocklibc",
     "rtaudio",
-    "tinyxml2",
-    "zstd"
+    "tinyxml2"
   ],
   "cexception": {
     "build_options": [
