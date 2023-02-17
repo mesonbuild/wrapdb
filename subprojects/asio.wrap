@@ -1,0 +1,9 @@
+[wrap-file]
+directory = asio-1.24.0
+source_url = https://sourceforge.net/projects/asio/files/asio/1.24.0%20%28Stable%29/asio-1.24.0.tar.gz/download
+source_filename = asio-1.24.0.tar.gz
+source_hash = 2f23ef6eada06ecc1472af5df6365ed4f15452ccd07dc0a6851fa20d571dba94 
+patch_directory = asio
+
+[provide]
+asio = asio_dep
