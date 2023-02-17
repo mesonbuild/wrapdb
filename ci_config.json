@@ -154,6 +154,14 @@
       "gettext"
     ]
   },
+  "imgui": {
+    "debian_packages": [
+      "liballegro5-dev",
+      "libglfw3-dev",
+      "libsdl2-dev",
+      "libvulkan-dev"
+    ]
+  },
   "imgui-sfml": {
     "debian_packages": [
       "libgl-dev",
