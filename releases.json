@@ -52,6 +52,14 @@
       "2.2-1"
     ]
   },
+  "asio": {
+    "dependency_names": [
+      "asio"
+    ],
+    "versions": [
+      "1.24.0-1"
+    ]
+  },
   "backward-cpp": {
     "dependency_names": [
       "backward-cpp"
