@@ -125,6 +125,14 @@
       "1.1.5-1"
     ]
   },
+  "centurion": {
+    "dependency_names": [
+      "centurion"
+    ],
+    "versions": [
+      "7.2.0-1"
+    ]
+  },
   "cereal": {
     "dependency_names": [
       "cereal"
