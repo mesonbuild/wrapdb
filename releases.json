@@ -1579,6 +1579,14 @@
       "2.5.0-1"
     ]
   },
+  "msgpackc-cxx": {
+    "dependency_names": [
+      "msgpackc-cxx"
+    ],
+    "versions": [
+      "5.0.0-1"
+    ]
+  },
   "mt32emu": {
     "dependency_names": [
       "mt32emu"
