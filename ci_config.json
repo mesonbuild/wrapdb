@@ -344,6 +344,23 @@
       "mpdecimal:tests=true"
     ]
   },
+  "msgpackc-cxx": {
+    "_comment": "- depends on Boost, which is not available on WrapDB",
+    "build_on": {
+      "windows": false
+    },
+    "brew_packages": [
+      "boost"
+    ],
+    "debian_packages": [
+      "libboost-dev",
+      "libboost-system-dev",
+      "libboost-test-dev"
+    ],
+    "build_options": [
+      "msgpackc-cxx:tests=true"
+    ]
+  },
   "nowide": {
     "build_options": [
       "nowide:tests=true"

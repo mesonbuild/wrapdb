@@ -1,0 +1,9 @@
+[wrap-file]
+directory = msgpack-cxx-5.0.0
+source_url = https://github.com/msgpack/msgpack-c/releases/download/cpp-5.0.0/msgpack-cxx-5.0.0.tar.gz
+source_filename = msgpack-cxx-5.0.0.tar.gz
+source_hash = 80f997575acff12b1b64158ef9dbad4cff32595f985532e16c6ea67e317452d5
+patch_directory = msgpackc-cxx
+
+[provide]
+msgpackc-cxx = msgpackc_cxx_dep

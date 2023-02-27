@@ -1,0 +1,3 @@
+option('boost', type: 'feature', value: 'enabled', description: 'Use Boost libraries')
+option('x3_parse', type: 'boolean', value: false, description: 'Use Boost X3 parse')
+option('tests', type: 'boolean', value: false, description: 'Build unit tests')
