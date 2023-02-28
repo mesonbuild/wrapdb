@@ -8,7 +8,7 @@ src = files(
 )
 
 if not fmt_dep.found()
-  src += files('fmt.cpp')
+  src += files('bundled_fmtlib_format.cpp')
 endif
 
 spdlog_lib = library(
