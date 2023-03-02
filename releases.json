@@ -1915,6 +1915,14 @@
       "0.2.5-1"
     ]
   },
+  "libzmq": {
+    "dependency_names": [
+      "libzmq"
+    ],
+    "versions": [
+      "4.3.5-1"
+    ]
+  },
   "lmdb": {
     "dependency_names": [
       "lmdb"
