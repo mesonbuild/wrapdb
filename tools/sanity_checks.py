@@ -295,12 +295,11 @@ class TestReleases(unittest.TestCase):
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
         system = platform.system().lower()
         ci = self.ci_config.get(name, {})
-        # kept for backwards compatibility
-        expect_working = True
-        if ci.get('linux_only', False) and not is_linux():
-            expect_working = False
-        elif not ci.get('build_on', {}).get(system, True):
-            expect_working = False
+        build_on = ci.get('build_on', {})
+        expect_working = build_on.get(system, True)
+        if not expect_working and not build_on.get('try', True):
+            print(f'Wrap {name} is not supported on {system}. Skipping.')
+            return
 
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])

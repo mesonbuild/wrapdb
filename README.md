@@ -56,8 +56,10 @@ meson compile -C builddir
     on MacOS CI runners.
   - `choco_packages`: (Optional) List of extra packages that will be installed
     on Windows CI runners.
-  - `linux_only`: (Optional) If set to `true`, indicates the wrap should be tested
-    only on Linux CI.
+  - `build_on`: (Optional) Dict mapping platforms to bool indicating if it is
+    expected to build on the given platform (Default to true). Extra `"try": false`
+    can be added in the case the wrap does not support at all those platforms
+    and it should not even be tried.
   - `fatal_warnings`: (Optional) If set to `false` removes --fatal-meson-warning.
     Use this only when there is no other way to fix the warning.
   - `skip_dependency_check`: (Optional) List of platform specific dependency
