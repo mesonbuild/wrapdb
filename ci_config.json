@@ -469,7 +469,8 @@
   "slirp": {
     "_comment": "- relies on lots of POSIX interfaces",
     "build_on": {
-      "windows": false
+      "windows": false,
+      "try": false
     }
   },
   "tinyfsm": {
