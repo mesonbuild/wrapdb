@@ -481,7 +481,8 @@
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
       "darwin": false,
-      "windows": false
+      "windows": false,
+      "try": false
     },
     "build_options": [
       "wayland:documentation=false"
