@@ -28,6 +28,13 @@
     "rtaudio",
     "tinyxml2"
   ],
+  "boost_di": {
+    "_comment": "- DI: C++14 Dependency Injection Library",
+    "build_options": [
+      "boost_di:BOOST_DI_OPT_BUILD_TESTS=true",
+      "boost_di:BOOST_DI_OPT_BUILD_EXAMPLES=true"
+    ]
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"

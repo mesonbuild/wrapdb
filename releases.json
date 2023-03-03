@@ -78,6 +78,14 @@
       "7.6.8-1"
     ]
   },
+  "boost_di": {
+    "dependency_names": [
+      "boost_di"
+    ],
+    "versions": [
+      "1.2.0-1"
+    ]
+  },
   "box2d": {
     "dependency_names": [
       "box2d"

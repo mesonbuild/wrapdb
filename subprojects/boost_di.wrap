@@ -1,0 +1,9 @@
+[wrap-file]
+directory = di-1.2.0
+
+source_url = https://github.com/boost-ext/di/archive/refs/tags/v1.2.0.tar.gz 
+source_filename = di-1.2.0.tar.gz 
+source_hash = 47ed660a1198f61394d30890cbb9a68b0fd6d17f41283e1de0036d10c1d24a55
+
+[provide]
+boost_di = boost_di_dep
