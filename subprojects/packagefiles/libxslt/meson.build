@@ -1,9 +1,10 @@
-project('libxslt', 'c', license: 'MIT', version: '1.1.37', meson_version: '>=0.54.0')
-
-#time_r functions under MinGW
-if host_machine.system() == 'windows'
-  add_project_arguments('-D_POSIX_C_SOURCE', language: 'c')
-endif
+project(
+  'libxslt',
+  'c',
+  license: 'MIT',
+  version: '1.1.37',
+  meson_version: '>=0.54.0',
+)
 
 exslt_version = '0.8.20'
 pkg = import('pkgconfig')
@@ -34,25 +35,7 @@ headers = [
 
 foreach h : headers
   if cc.has_header(h)
-    config.set10('HAVE_' + h.underscorify().to_upper(), true)
-  endif
-endforeach
-
-functions = {
-  'ftime': 'sys/timeb.h',
-  'gettimeofday': 'sys/time.h',
-  'gmtime_r': 'time.h',
-  'localtime_r': 'time.h',
-  'snprintf': 'stdio.h',
-  'strxfrm_l': 'string.h',
-  'stat': 'sys/stat.h',
-  'vsnprintf': 'stdio.h',
-  '_stat': 'sys/stat.h',
-}
-
-foreach f, h : functions
-  if cc.has_header_symbol(h, f, args: '-D_POSIX_C_SOURCE')
-    config.set10('HAVE_' + f.underscorify().to_upper(), true)
+    config.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
   endif
 endforeach
 
@@ -64,7 +47,29 @@ endif
 
 libm = cc.find_library('m', required: false)
 librt = cc.find_library('rt', required: false)
-config.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime', dependencies: [librt, threads_dep]))
+
+functions = {
+  'clock_gettime': [librt, threads_dep],
+  'ftime': [],
+  'gettimeofday': [],
+  'gmtime_r': [],
+  'localtime_r': [],
+  'strxfrm_l': [],
+  'stat': [],
+  '_stat': [],
+}
+
+foreach f, d : functions
+  if cc.has_function(f, dependencies: d)
+    config.set('HAVE_@0@'.format(f.to_upper()), 1)
+  endif
+endforeach
+
+foreach m : ['snprintf', 'vsnprintf']
+  if cc.has_header_symbol('stdio.h', m)
+    config.set('HAVE_@0@'.format(m.to_upper()), 1)
+  endif
+endforeach
 
 trio_functions = [
   'printf',
@@ -86,8 +91,11 @@ foreach f : trio_functions
 endforeach
 
 libgcrypt_dep = dependency('libgcrypt', version: '>=1.1.42', required: get_option('crypto'))
+if libgcrypt_dep.found()
+  config.set('HAVE_GCRYPT', 1)
+endif
 
-libxml2_dep = dependency('libxml-2.0')
+libxml2_dep = dependency('libxml-2.0', version: '>=2.9.10')
 with_modules = libxml2_dep.get_variable(pkgconfig: 'modules', internal: 'modules', default_value: '0').to_int() != 0
 
 configure_file(
