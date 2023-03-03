@@ -40,6 +40,7 @@ class CreateRelease:
             self.read_wrap()
             self.find_upload_url()
             self.create_patch_zip()
+            self.create_source_fallback()
             self.create_wrap_file()
 
     def read_wrap(self):
@@ -150,6 +151,14 @@ class CreateRelease:
         params = { 'name': path.name }
         response = requests.post(self.upload_url, headers=headers, params=params, data=path.read_bytes())
         response.raise_for_status()
+
+    def create_source_fallback(self):
+        response = requests.get(self.wrap_section['source_url'])
+        response.raise_for_status()
+        filename = Path(self.wrap_section['source_filename'])
+        filename.write_bytes(response.content)
+        self.upload(filename, 'application/zip')
+        self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
 
 def run(repo: T.Optional[str], token: T.Optional[str]):
     with open('releases.json', 'r') as f:
