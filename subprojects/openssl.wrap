@@ -1,7 +1,7 @@
 [wrap-file]
 directory = openssl-3.0.7
 source_url = https://www.openssl.org/source/openssl-3.0.7.tar.gz
-source_filename = openssl-3.0.72.tar.gz
+source_filename = openssl-3.0.7.tar.gz
 source_hash = 83049d042a260e696f62406ac5c08bf706fd84383f945cf21bd61e9ed95c396e
 patch_directory = openssl
 
