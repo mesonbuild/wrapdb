@@ -44,10 +44,16 @@ elif host_machine.system() == 'darwin'
 endif
 
 c_args = []
+bcs = []
+bds = []
+bes = []
 install = false
 if get_option('default_library') == 'shared'
   c_args += ['-DBROTLI_SHARED_COMPILATION', '-DBROTLI_BUILD_PORTABLE']
   install = true
+  bcs = '-DBROTLICOMMON_SHARED_COMPILATION'
+  bds = '-DBROTLIDEC_SHARED_COMPILATION'
+  bes = '-DBROTLIENC_SHARED_COMPILATION'
 elif get_option('default_library') == 'both'
   error('both not yet supported.')
 endif
@@ -59,7 +65,7 @@ libbrotli_common = library(
   'c/common/dictionary.c',
   'c/common/platform.c',
   'c/common/transform.c',
-  c_args : c_args,
+  c_args : [c_args, bcs],
   include_directories : inc,
   version : meson.project_version(),
   install : install,
@@ -73,7 +79,7 @@ libbrotli_decoder = library(
     'c/dec/huffman.c',
     'c/dec/state.c',
   ],
-  c_args : c_args,
+  c_args : [c_args, bds],
   include_directories : inc,
   link_with : libbrotli_common,
   version : meson.project_version(),
@@ -104,7 +110,7 @@ libbrotli_encoder = library(
     'c/enc/static_dict.c',
     'c/enc/utf8_util.c',
   ],
-  c_args : c_args,
+  c_args : [c_args, bes],
   include_directories : inc,
   link_with : libbrotli_common,
   dependencies : dep_m,
