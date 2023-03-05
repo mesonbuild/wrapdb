@@ -103,7 +103,7 @@ endif
 
 if host_machine.system() == 'windows'
   add_project_arguments('-DXMLCALL=WINAPIV', language: 'c')
-  add_project_arguments('-DXMLIMPORT=__declspec(dllimport)', language: 'c')
+  add_project_arguments('-DXMLIMPORT=__declspec(dllexport)', language: 'c')
   if get_option('default_library') == 'static'
     add_project_arguments('-DXML_STATIC', language: 'c')
     expat_static_args += '-DXML_STATIC'
