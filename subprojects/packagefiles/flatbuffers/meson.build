@@ -1,4 +1,4 @@
-project('flatbuffers', 'cpp', version: '23.1.21', license: 'Apache-2.0', meson_version: '>=0.49.0')
+project('flatbuffers', 'cpp', version: '23.3.3', license: 'Apache-2.0', meson_version: '>=0.49.0')
 
 cpp = meson.get_compiler('cpp')
 
@@ -18,7 +18,6 @@ headers = files(
   'include/flatbuffers/allocator.h',
   'include/flatbuffers/array.h',
   'include/flatbuffers/base.h',
-  'include/flatbuffers/bfbs_generator.h',
   'include/flatbuffers/buffer.h',
   'include/flatbuffers/buffer_ref.h',
   'include/flatbuffers/code_generators.h',
@@ -52,6 +51,8 @@ install_headers(
 )
 
 flatbuffers_lib_sources = files(
+  'src/code_generators.cpp',
+  'src/idl_gen_binary.cpp',
   'src/idl_gen_text.cpp',
   'src/idl_parser.cpp',
   'src/reflection.cpp',
@@ -129,7 +130,6 @@ flatc_sources = files(
   'src/bfbs_gen_lua.cpp',
   'src/bfbs_gen_nim.cpp',
   'src/binary_annotator.cpp',
-  'src/code_generators.cpp',
   'src/flatc_main.cpp',
   'src/idl_gen_cpp.cpp',
   'src/idl_gen_csharp.cpp',
