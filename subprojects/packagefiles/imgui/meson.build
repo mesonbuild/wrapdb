@@ -2,7 +2,7 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.89.2',
+  version: '1.89.3',
   meson_version: '>=0.50.0',
 )
 
@@ -79,7 +79,7 @@ if glfw_dep.found()
 endif
 sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 if sdl2_dep.found()
-  sources += 'backends/imgui_impl_sdl.cpp'
+  sources += 'backends/imgui_impl_sdl2.cpp'
   dependencies += sdl2_dep
 endif
 osx_dep = dependency('appleframeworks', modules: ['Carbon', 'Cocoa', 'GameController'], required: get_option('osx'))
