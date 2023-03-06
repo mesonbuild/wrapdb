@@ -19,14 +19,16 @@ opengl_dep = dependency('gl')
 # more usage experience.
 
 api = ['-DImGuiKey_=ImGuiKey', '-DImGuiNavInput_=ImGuiNavInput']
+exp = []
 if get_option('default_library') != 'static'
   api += '-DIMGUI_SFML_SHARED_LIB'
+  exp += '-DIMGUI_SFML_EXPORTS'
 endif
 
 is_lib = library(
   'imgui-sfml',
   'imgui-SFML.cpp',
-  cpp_args: api,
+  cpp_args: [api, exp],
   dependencies: [sfml_dep, imgui_dep, opengl_dep],
 )
 
