@@ -214,6 +214,7 @@ endif
 zlib_dep = dependency('zlib', disabler: true, required: get_option('zlib'))
 if zlib_dep.found()
   cdata.set('HAVE_LIBZ', 1)
+  cdata.set('HAVE_ZLIB_H', 1)
   deps += zlib_dep
 endif
 
@@ -238,8 +239,9 @@ endif
 zstd_dep = dependency('libzstd', disabler: true, required: get_option('zstd'))
 if zstd_dep.found()
   cdata.set('HAVE_LIBZSTD', 1)
+  cdata.set('HAVE_ZSTD_H', 1)
   deps += zstd_dep
-  if cc.has_function('ZSTD_compressStream', dependencies: zstd_dep)
+  if zstd_dep.version().version_compare('>=0.7.5')
     cdata.set('HAVE_LIBZSTD_COMPRESSOR', 1)
   endif
 endif
@@ -421,8 +423,6 @@ headers = {
   'wincrypt.h': [],
   'windows.h': [],
   'winioctl.h': [],
-  'zlib.h': zlib_dep,
-  'zstd.h': zstd_dep,
 }
 
 foreach h, d : headers
