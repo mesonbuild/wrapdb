@@ -2,10 +2,17 @@ protoc_dep = dependency('protoc')
 
 install_headers('protobuf-c.h')
 
+api = []
+exp = []
+if get_option('default_library') != 'static'
+  api += '-DPROTOBUF_C_USE_SHARED_LIB'
+  exp += '-DPROTOBUF_C_EXPORT'
+endif
+
 libprotobuf_c = library(
   'protobuf-c',
   'protobuf-c.c',
-  c_args: get_option('default_library') != 'static' ? '-DPROTOBUF_C_USE_SHARED_LIB' : '',
+  c_args: [api, exp],
   dependencies: protoc_dep,
   install: true,
 )
@@ -20,6 +27,7 @@ pkgconfig.generate(
 
 depinc = include_directories('.')
 libprotobuf_c_dep = declare_dependency(
+  compile_args: api,
   include_directories: depinc,
   link_with: libprotobuf_c,
 )
