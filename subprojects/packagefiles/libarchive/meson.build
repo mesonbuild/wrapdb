@@ -2,7 +2,7 @@ project(
   'libarchive',
   'c',
   version: '3.6.2',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.54.1',
 )
 
 cdata = configuration_data()
