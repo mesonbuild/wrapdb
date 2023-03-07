@@ -1,4 +1,4 @@
-option('progs', type: 'array', choices: ['all', 'bsdtar', 'bsdcat', 'bsdcpio'], value: ['bsdtar', 'bsdcat'],
+option('progs', type: 'array', choices: ['all', 'bsdtar', 'bsdcat', 'bsdcpio'], value: ['all'],
   description: 'Which programs should be built')
 
 # enable deps
