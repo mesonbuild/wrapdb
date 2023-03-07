@@ -299,16 +299,46 @@ else
   cdata.set('ICONV_CONST', cc.compiles(iconv_const_test) ? 'const' : '')
 endif
 
-regex_dep = disabler()
-pcre_dep = dependency('libpcre', disabler: true, required: get_option('regex'))
-if pcre_dep.found()
-  deps += pcre_dep
-elif get_option('regex').auto()
-  regex_dep = cc.find_library('regex', required: false)
-  if cc.has_function('regcomp', dependencies: regex_dep)
-    deps += regex_dep
+rx_support = false
+rx_dep = dependency('', required: false)
+if not get_option('regex').disabled()
+  # If `regex` is support is enabled, check for
+  # - glibc support first
+  # - `libregex` second
+  # - `libpcreposix` last
+  if cc.has_function('regcomp', prefix: '#include <regex.h>')
+    rx_dep = declare_dependency()
+    cdata.set('HAVE_REGEX_H', 1)
+    rx_support = 'glibc'
+  endif
+  if not rx_dep.found()
+    regex_dep = cc.find_library('regex', disabler: true, required: false)
+    if cc.has_function('regcomp', dependencies: regex_dep, prefix: '#include <regex.h>')
+      rx_dep = regex_dep
+      cdata.set('HAVE_REGEX_H', 1)
+      rx_support = 'libregex'
+    endif
+  endif
+  if not rx_dep.found()
+    pcre_dep = dependency('libpcreposix', disabler: true, required: false)
+    # Note: on macOS, Apple provides a system pcre with pkg-config but without headers…
+    if cc.has_header(
+      'pcreposix.h',
+      dependencies: pcre_dep.partial_dependency(
+        compile_args: true,
+        includes: true,
+      ),
+    )
+      rx_dep = pcre_dep
+      cdata.set('HAVE_PCREPOSIX_H', 1)
+      rx_support = 'libpcreposix'
+    endif
+  endif
+  if not rx_dep.found() and get_option('regex').enabled()
+    error('Feature regex cannot be enabled')
   endif
 endif
+deps += rx_dep
 
 libacl_dep = dependency('libacl', disabler: true, required: get_option('acl'))
 if libacl_dep.found()
@@ -349,13 +379,11 @@ headers = {
   'membership.h': [],
   'memory.h': [],
   'paths.h': [],
-  'pcreposix.h': pcre_dep,
   'poll.h': [],
   'process.h': [],
   'pthread.h': [],
   'pwd.h': [],
   'readpassphrase.h': [],
-  'regex.h': regex_dep,
   'signal.h': [],
   'spawn.h': [],
   'stdarg.h': [],
@@ -523,3 +551,21 @@ endif
 incdirs = include_directories('.')
 
 subdir('libarchive')
+
+if get_option('progs').length() > 0
+
+  subdir('libarchive_fe')
+
+  foreach _prog : [
+    'cat',
+    'cpio',
+    'tar',
+  ]
+    if 'all' in get_option('progs') or 'bsd' + _prog in get_option('progs')
+      subdir(_prog)
+    endif
+  endforeach
+
+endif
+
+summary({'regex support': rx_support}, bool_yn: true)
