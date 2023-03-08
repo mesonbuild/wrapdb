@@ -1127,6 +1127,14 @@
       "1.6.3-1"
     ]
   },
+  "libmicrohttpd": {
+    "dependency_names": [
+      "libmicrohttpd"
+    ],
+    "versions": [
+      "0.9.76-1"
+    ]
+  },
   "libnpupnp": {
     "dependency_names": [
       "libnpupnp"

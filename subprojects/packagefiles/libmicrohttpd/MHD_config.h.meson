@@ -1,0 +1,674 @@
+/* MHD_config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define if building universal (internal helper macro) */
+#mesondefine AC_APPLE_UNIVERSAL_BUILD
+
+/* Define to 1 if libmicrohttpd is compiled with basic Auth support. */
+#mesondefine BAUTH_SUPPORT
+
+/* This is a Cygwin system */
+#mesondefine CYGWIN
+
+/* Define to 1 if libmicrohttpd is compiled with digest Auth support. */
+#mesondefine DAUTH_SUPPORT
+
+/* Define to 1 to enable epoll support */
+#mesondefine EPOLL_SUPPORT
+
+/* This is a FreeBSD system */
+#mesondefine FREEBSD
+
+/* Define to '1' if '__attribute__((no_sanitize("address")))' works for
+   pointers compare */
+#mesondefine FUNC_ATTR_NOSANITIZE_WORKS
+
+/* Define to '1' if
+   '__attribute__((no_sanitize("pointer-compare","pointer-subtract")))' works
+   */
+#mesondefine FUNC_ATTR_PTRCOMPARE_WOKRS
+
+/* Define to `1' if host machine runs on GNU Hurd. */
+#mesondefine GNU_HURD
+
+/* Define to 1 if you have the `accept4' function. */
+#mesondefine HAVE_ACCEPT4
+
+/* Define to 1 if you have the <arpa/inet.h> header file. */
+#mesondefine HAVE_ARPA_INET_H
+
+/* Define if you have usable assert() and assert.h */
+#mesondefine HAVE_ASSERT
+
+/* Define to 1 if you have the `gmtime_s' function in C11 form. */
+#mesondefine HAVE_C11_GMTIME_S
+
+/* Define to 1 if you have the usable `calloc' function. */
+#mesondefine HAVE_CALLOC
+
+/* Have clock_gettime */
+#mesondefine HAVE_CLOCK_GETTIME
+
+/* Define to 1 if you have `clock_get_time', `host_get_clock_service' and
+   `mach_port_deallocate' functions. */
+#mesondefine HAVE_CLOCK_GET_TIME
+
+/* Define to 1 if your compiler supports 'alignof()' */
+#mesondefine HAVE_C_ALIGNOF
+
+/* Define to 1 if C supports variable-length arrays. */
+#mesondefine HAVE_C_VARARRAYS
+
+/* Define to 1 if you have Darwin-style sendfile(2). */
+#mesondefine HAVE_DARWIN_SENDFILE
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if you have the <endian.h> header file. */
+#mesondefine HAVE_ENDIAN_H
+
+/* Define if you have epoll_create1 function. */
+#mesondefine HAVE_EPOLL_CREATE1
+
+/* Define to 1 if you have the <errno.h> header file. */
+#mesondefine HAVE_ERRNO_H
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#mesondefine HAVE_FCNTL_H
+
+/* Define to 1 if you have the usable `fork' function. */
+#mesondefine HAVE_FORK
+
+/* Define to 1 if you have FreeBSD-style sendfile(2). */
+#mesondefine HAVE_FREEBSD_SENDFILE
+
+/* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
+#mesondefine HAVE_FSEEKO
+
+/* Define to 1 if you have the <gcrypt.h> header file. */
+#mesondefine HAVE_GCRYPT_H
+
+/* Define to 1 if you have `gethrtime' function. */
+#mesondefine HAVE_GETHRTIME
+
+/* Define to 1 if you have the `getsockname' function. */
+#mesondefine HAVE_GETSOCKNAME
+
+/* Define to 1 if you have `gettimeofday' function. */
+#mesondefine HAVE_GETTIMEOFDAY
+
+/* Define to 1 if you have the `gmtime_r' function. */
+#mesondefine HAVE_GMTIME_R
+
+/* Define to 1 if you have the <gnutls/gnutls.h> header file. */
+#mesondefine HAVE_GNUTLS_GNUTLS_H
+
+/* Provides IPv6 headers */
+#mesondefine HAVE_INET6
+
+/* Define to 1 if you have the <inetLib.h> header file. */
+#mesondefine HAVE_INETLIB_H
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
+
+/* Define to 1 if you have a functional curl library. */
+#mesondefine HAVE_LIBCURL
+
+/* Define to 1 if you have the <limits.h> header file. */
+#mesondefine HAVE_LIMITS_H
+
+/* Define to 1 if you have linux-style sendfile(2). */
+#mesondefine HAVE_LINUX_SENDFILE
+
+/* can use shutdown on listen sockets */
+#mesondefine HAVE_LISTEN_SHUTDOWN
+
+/* Define to 1 if you have the `lseek64' function. */
+#mesondefine HAVE_LSEEK64
+
+/* Define to 1 if you have the <machine/endian.h> header file. */
+#mesondefine HAVE_MACHINE_ENDIAN_H
+
+/* Define to 1 if you have the <machine/param.h> header file. */
+#mesondefine HAVE_MACHINE_PARAM_H
+
+/* Define to 1 if you have the `memmem' function. */
+#mesondefine HAVE_MEMMEM
+
+/* Define to 1 if you have the <memory.h> header file. */
+#mesondefine HAVE_MEMORY_H
+
+/* Define to 1 to enable support for error messages. */
+#mesondefine HAVE_MESSAGES
+
+/* Define to 1 if you have the `nanosleep' function. */
+#mesondefine HAVE_NANOSLEEP
+
+/* Define to 1 if you have the <netdb.h> header file. */
+#mesondefine HAVE_NETDB_H
+
+/* Define to 1 if you have the <netinet/icmp_var.h> header file. */
+#mesondefine HAVE_NETINET_ICMP_VAR_H
+
+/* Define to 1 if you have the <netinet/in.h> header file. */
+#mesondefine HAVE_NETINET_IN_H
+
+/* Define to 1 if you have the <netinet/ip.h> header file. */
+#mesondefine HAVE_NETINET_IP_H
+
+/* Define to 1 if you have the <netinet/ip_icmp.h> header file. */
+#mesondefine HAVE_NETINET_IP_ICMP_H
+
+/* Define to 1 if you have the <netinet/tcp.h> header file. */
+#mesondefine HAVE_NETINET_TCP_H
+
+/* Define to 1 if you have the <net/if.h> header file. */
+#mesondefine HAVE_NET_IF_H
+
+/* Define if you have usable pipe2(2) function */
+#mesondefine HAVE_PIPE2_FUNC
+
+/* Define to 1 if you have the `poll' function. */
+#mesondefine HAVE_POLL
+
+/* Define to 1 if you have the <poll.h> header file. */
+#mesondefine HAVE_POLL_H
+
+/* Define to 1 if libmicrohttpd is compiled with postprocessor support. */
+#mesondefine HAVE_POSTPROCESSOR
+
+/* Define to 1 if you have the `pread' function. */
+#mesondefine HAVE_PREAD
+
+/* Define to 1 if you have the `pread64' function. */
+#mesondefine HAVE_PREAD64
+
+/* Define if you have IBM i form (or Solaris form) of
+   pthread_attr_setname_np(3) function. */
+#mesondefine HAVE_PTHREAD_ATTR_SETNAME_NP_IBMI
+
+/* Define if you have NetBSD form (or OSF1 form) of pthread_attr_setname_np(3)
+   function. */
+#mesondefine HAVE_PTHREAD_ATTR_SETNAME_NP_NETBSD
+
+/* Define to 1 if you have the <pthread.h> header file. */
+#mesondefine HAVE_PTHREAD_H
+
+/* Define to 1 if you have the <pthread_np.h> header file. */
+#mesondefine HAVE_PTHREAD_NP_H
+
+/* Have PTHREAD_PRIO_INHERIT. */
+#mesondefine HAVE_PTHREAD_PRIO_INHERIT
+
+/* Define if you have Darwin form of pthread_setname_np(3) function. */
+#mesondefine HAVE_PTHREAD_SETNAME_NP_DARWIN
+
+/* Define if you have GNU/Linux form of pthread_setname_np(3) function. */
+#mesondefine HAVE_PTHREAD_SETNAME_NP_GNU
+
+/* Define if you have NetBSD form (or OSF1 form) of pthread_setname_np(3)
+   function. */
+#mesondefine HAVE_PTHREAD_SETNAME_NP_NETBSD
+
+/* Define if you have FreeBSD form of pthread_set_name_np(3) function. */
+#mesondefine HAVE_PTHREAD_SET_NAME_NP_FREEBSD
+
+/* Define to 1 if you have the pthread_sigmask(3) function. */
+#mesondefine HAVE_PTHREAD_SIGMASK
+
+/* Define to 1 if you have the `rand' function. */
+#mesondefine HAVE_RAND
+
+/* Define to 1 if you have the `random' function. */
+#mesondefine HAVE_RANDOM
+
+/* Define to 1 if you have the real boolean type. */
+#mesondefine HAVE_REAL_BOOL
+
+/* Define to 1 if you have the <sanitizer/asan_interface.h> header file. */
+#mesondefine HAVE_SANITIZER_ASAN_INTERFACE_H
+
+/* Define to 1 if you have the <sdkddkver.h> header file. */
+#mesondefine HAVE_SDKDDKVER_H
+
+/* Define to 1 if you have the <search.h> header file and your system have
+   properly functioning tsearch(), tfind() and tdelete() functions */
+#mesondefine HAVE_SEARCH_H
+
+/* Define to 1 if you have the `sendfile64' function. */
+#mesondefine HAVE_SENDFILE64
+
+/* Define if your platform supports sendmsg */
+#mesondefine HAVE_SENDMSG
+
+/* Define to 1 if you have the <signal.h> header file. */
+#mesondefine HAVE_SIGNAL_H
+
+/* Define to 1 if you have the `snprintf' function. */
+#mesondefine HAVE_SNPRINTF
+
+/* Define to 1 if you have the <sockLib.h> header file. */
+#mesondefine HAVE_SOCKLIB_H
+
+/* SOCK_NONBLOCK is defined in a socket header */
+#mesondefine HAVE_SOCK_NONBLOCK
+
+/* Define to 1 if you have Solaris-style sendfile(3). */
+#mesondefine HAVE_SOLARIS_SENDFILE
+
+/* Define to 1 if you have the <stdalign.h> header file. */
+#mesondefine HAVE_STDALIGN_H
+
+/* Define to 1 if you have the <stdbool.h> header file and <stdbool.h> defines
+   'bool' type. */
+#mesondefine HAVE_STDBOOL_H
+
+/* Define to 1 if you have the <stddef.h> header file. */
+#mesondefine HAVE_STDDEF_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#mesondefine HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#mesondefine HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#mesondefine HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define to 1 if `sin6_len' is a member of `struct sockaddr_in6'. */
+#mesondefine HAVE_STRUCT_SOCKADDR_IN6_SIN6_LEN
+
+/* Define to 1 if `sin_len' is a member of `struct sockaddr_in'. */
+#mesondefine HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+
+/* Define to 1 if `ss_len' is a member of `struct sockaddr_storage'. */
+#mesondefine HAVE_STRUCT_SOCKADDR_STORAGE_SS_LEN
+
+/* Define to 1 if you have the `sysconf' function. */
+#mesondefine HAVE_SYSCONF
+
+/* Define to 1 if you have the `sysctl' function. */
+#mesondefine HAVE_SYSCTL
+
+/* Define to 1 if you have the `sysctlbyname' function. */
+#mesondefine HAVE_SYSCTLBYNAME
+
+/* Define to 1 if you have the <sys/byteorder.h> header file. */
+#mesondefine HAVE_SYS_BYTEORDER_H
+
+/* Define to 1 if you have the <sys/endian.h> header file. */
+#mesondefine HAVE_SYS_ENDIAN_H
+
+/* Define to 1 if you have the <sys/eventfd.h> header file. */
+#mesondefine HAVE_SYS_EVENTFD_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#mesondefine HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/isa_defs.h> header file. */
+#mesondefine HAVE_SYS_ISA_DEFS_H
+
+/* Define to 1 if you have the <sys/machine.h> header file. */
+#mesondefine HAVE_SYS_MACHINE_H
+
+/* Define to 1 if you have the <sys/mman.h> header file. */
+#mesondefine HAVE_SYS_MMAN_H
+
+/* Define to 1 if you have the <sys/msg.h> header file. */
+#mesondefine HAVE_SYS_MSG_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#mesondefine HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/select.h> header file. */
+#mesondefine HAVE_SYS_SELECT_H
+
+/* Define to 1 if you have the <sys/socket.h> header file. */
+#mesondefine HAVE_SYS_SOCKET_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#mesondefine HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/sysctl.h> header file. */
+#mesondefine HAVE_SYS_SYSCTL_H
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#mesondefine HAVE_SYS_TIME_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#mesondefine HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have C11 `mhd_cv_func_timespec_get' function and
+   TIME_UTC macro. */
+#mesondefine HAVE_TIMESPEC_GET
+
+/* Define to 1 if you have the <time.h> header file. */
+#mesondefine HAVE_TIME_H
+
+/* Define to 1 if you have the `tsearch' function. */
+#mesondefine HAVE_TSEARCH
+
+/* Define to 1 if you have the `twalk' function. */
+#mesondefine HAVE_TWALK
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#mesondefine HAVE_UNISTD_H
+
+/* Define to 1 if you have the `usleep' function. */
+#mesondefine HAVE_USLEEP
+
+/* Define to 1 if you have the `gmtime_s' function in W32 form. */
+#mesondefine HAVE_W32_GMTIME_S
+
+/* Define to 1 if you have the usable `waitpid' function. */
+#mesondefine HAVE_WAITPID
+
+/* Define to 1 if you have the <windows.h> header file. */
+#mesondefine HAVE_WINDOWS_H
+
+/* Define to 1 if you have the <winsock2.h> header file. */
+#mesondefine HAVE_WINSOCK2_H
+
+/* Define to 1 if you have the `writev' function. */
+#mesondefine HAVE_WRITEV
+
+/* Define to 1 if you have the <ws2tcpip.h> header file. */
+#mesondefine HAVE_WS2TCPIP_H
+
+/* Define to 1 if you have the <zlib.h> header file. */
+#mesondefine HAVE_ZLIB_H
+
+/* Define to 1 if your compiler supports __FUNCTION__ magic-macro. */
+#mesondefine HAVE___FUNCTION__
+
+/* Define to 1 if your compiler supports __func__ magic-macro. */
+#mesondefine HAVE___FUNC__
+
+/* Define to 1 if libmicrohttpd is compiled with HTTPS support. */
+#mesondefine HTTPS_SUPPORT
+
+/* Define to 1 if your C compiler supports inline functions. */
+#mesondefine INLINE_FUNC
+
+/* Defined if libcurl supports AsynchDNS */
+#mesondefine LIBCURL_FEATURE_ASYNCHDNS
+
+/* Defined if libcurl supports IDN */
+#mesondefine LIBCURL_FEATURE_IDN
+
+/* Defined if libcurl supports IPv6 */
+#mesondefine LIBCURL_FEATURE_IPV6
+
+/* Defined if libcurl supports KRB4 */
+#mesondefine LIBCURL_FEATURE_KRB4
+
+/* Defined if libcurl supports libz */
+#mesondefine LIBCURL_FEATURE_LIBZ
+
+/* Defined if libcurl supports NTLM */
+#mesondefine LIBCURL_FEATURE_NTLM
+
+/* Defined if libcurl supports SSL */
+#mesondefine LIBCURL_FEATURE_SSL
+
+/* Defined if libcurl supports SSPI */
+#mesondefine LIBCURL_FEATURE_SSPI
+
+/* Defined if libcurl supports DICT */
+#mesondefine LIBCURL_PROTOCOL_DICT
+
+/* Defined if libcurl supports FILE */
+#mesondefine LIBCURL_PROTOCOL_FILE
+
+/* Defined if libcurl supports FTP */
+#mesondefine LIBCURL_PROTOCOL_FTP
+
+/* Defined if libcurl supports FTPS */
+#mesondefine LIBCURL_PROTOCOL_FTPS
+
+/* Defined if libcurl supports HTTP */
+#mesondefine LIBCURL_PROTOCOL_HTTP
+
+/* Defined if libcurl supports HTTPS */
+#mesondefine LIBCURL_PROTOCOL_HTTPS
+
+/* Defined if libcurl supports IMAP */
+#mesondefine LIBCURL_PROTOCOL_IMAP
+
+/* Defined if libcurl supports LDAP */
+#mesondefine LIBCURL_PROTOCOL_LDAP
+
+/* Defined if libcurl supports POP3 */
+#mesondefine LIBCURL_PROTOCOL_POP3
+
+/* Defined if libcurl supports RTSP */
+#mesondefine LIBCURL_PROTOCOL_RTSP
+
+/* Defined if libcurl supports SMTP */
+#mesondefine LIBCURL_PROTOCOL_SMTP
+
+/* Defined if libcurl supports TELNET */
+#mesondefine LIBCURL_PROTOCOL_TELNET
+
+/* Defined if libcurl supports TFTP */
+#mesondefine LIBCURL_PROTOCOL_TFTP
+
+/* This is a Linux kernel */
+#mesondefine LINUX
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Define to '1' if you have address sanitizer enabled */
+#mesondefine MHD_ASAN_ACTIVE
+
+/* Define to '1' if user memory poison is used */
+#mesondefine MHD_ASAN_POISON_ACTIVE
+
+/* Define to 1 if you have suitable libmagic. */
+#mesondefine MHD_HAVE_LIBMAGIC
+
+/* Define to 1 if you have __builtin_bswap32() builtin function */
+#mesondefine MHD_HAVE___BUILTIN_BSWAP32
+
+/* Define to 1 if you have __builtin_bswap64() builtin function */
+#mesondefine MHD_HAVE___BUILTIN_BSWAP64
+
+/* Define to `1' if HTTPS require initialisation of libgcrypt */
+#mesondefine MHD_HTTPS_REQUIRE_GCRYPT
+
+/* Define to 1 to disable setting name on generated threads */
+#mesondefine MHD_NO_THREAD_NAMES
+
+/* tls plugins */
+#mesondefine MHD_PLUGIN_INSTALL_PREFIX
+
+/* gnuTLS lib version - used in conjunction with cURL */
+#mesondefine MHD_REQ_CURL_GNUTLS_VERSION
+
+/* NSS lib version - used in conjunction with cURL */
+#mesondefine MHD_REQ_CURL_NSS_VERSION
+
+/* required cURL SSL version to run tests */
+#mesondefine MHD_REQ_CURL_OPENSSL_VERSION
+
+/* required cURL version to run tests */
+#mesondefine MHD_REQ_CURL_VERSION
+
+/* Define if you have usable `getsockname' function. */
+#mesondefine MHD_USE_GETSOCKNAME
+
+/* Define if you have usable PAGESIZE macro */
+#mesondefine MHD_USE_PAGESIZE_MACRO
+
+/* Define if you have PAGESIZE macro usable for static init */
+#mesondefine MHD_USE_PAGESIZE_MACRO_STATIC
+
+/* Define if you have usable PAGE_SIZE macro */
+#mesondefine MHD_USE_PAGE_SIZE_MACRO
+
+/* Define if you have PAGE_SIZE macro usable for static init */
+#mesondefine MHD_USE_PAGE_SIZE_MACRO_STATIC
+
+/* define to use pthreads */
+#mesondefine MHD_USE_POSIX_THREADS
+
+/* define to use W32 threads */
+#mesondefine MHD_USE_W32_THREADS
+
+/* This is a MinGW system */
+#mesondefine MINGW
+
+/* Define to disable usage of debug asserts. */
+#mesondefine NDEBUG
+
+/* This is a NetBSD system */
+#mesondefine NETBSD
+
+/* This is an OpenBSD system */
+#mesondefine OPENBSD
+
+/* This is a OS/390 system */
+#mesondefine OS390
+
+/* This is an OS X system */
+#mesondefine OSX
+
+/* Some strange OS */
+#mesondefine OTHEROS
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+/* Define to necessary symbol if this constant uses a non-standard name on
+   your system. */
+#mesondefine PTHREAD_CREATE_JOINABLE
+
+/* The size of `size_t', as computed by sizeof. */
+#mesondefine SIZEOF_SIZE_T
+
+/* The size of `tv_sec' member of `struct timeval', as computed by sizeof */
+#mesondefine SIZEOF_STRUCT_TIMEVAL_TV_SEC
+
+/* The size of `uint64_t', as computed by sizeof. */
+#mesondefine SIZEOF_UINT64_T
+
+/* The size of `unsigned int', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_INT
+
+/* The size of `unsigned long long', as computed by sizeof. */
+#mesondefine SIZEOF_UNSIGNED_LONG_LONG
+
+/* This is a Solaris system */
+#mesondefine SOLARIS
+
+/* This is a BSD system */
+#mesondefine SOMEBSD
+
+/* Define to 1 if you have the ANSI C header files. */
+#mesondefine STDC_HEADERS
+
+/* Define to 1 if libmicrohttpd is compiled with HTTP Upgrade support. */
+#mesondefine UPGRADE_SUPPORT
+
+/* Define to 1 if your kernel supports IPv6 and IPv6 is enabled and useful for
+   testing. */
+#mesondefine USE_IPV6_TESTING
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* This is a Windows system */
+#mesondefine WINDOWS
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#  undef WORDS_BIGENDIAN
+# endif
+#endif
+
+/* Enable large inode numbers on Mac OS X 10.5.  */
+#ifndef _DARWIN_USE_64_BIT_INODE
+# define _DARWIN_USE_64_BIT_INODE 1
+#endif
+
+/* Define to use debug asserts. */
+#mesondefine _DEBUG
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#mesondefine _FILE_OFFSET_BITS
+
+/* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
+#mesondefine _LARGEFILE_SOURCE
+
+/* Define for large files, on AIX-style hosts. */
+#mesondefine _LARGE_FILES
+
+/* defines how to decorate public symbols while building */
+#mesondefine _MHD_EXTERN
+
+/* Define to 1 to enable "heavy" test paths. */
+#mesondefine _MHD_HEAVY_TESTS
+
+/* Define to use eventFD for inter-thread communication */
+#mesondefine _MHD_ITC_EVENTFD
+
+/* Define to use pipe for inter-thread communication */
+#mesondefine _MHD_ITC_PIPE
+
+/* Define to use socketpair for inter-thread communication */
+#mesondefine _MHD_ITC_SOCKETPAIR
+
+/* Define to supported 'noreturn' function declaration */
+#mesondefine _MHD_NORETURN
+
+/* Define to prefix which will be used with MHD static inline functions. */
+#mesondefine _MHD_static_inline
+
+/* Need with solaris or errno does not work */
+#mesondefine _REENTRANT
+
+/* Define to type name which will be used as boolean type. */
+#mesondefine bool
+
+/* Define curl_free() as free() if our version of curl lacks curl_free. */
+#mesondefine curl_free
+
+/* Define to value interpreted by compiler as boolean "false", if "false" is
+   not defined by system headers. */
+#mesondefine false
+
+/* Define to value interpreted by compiler as boolean "true", if "true" is not
+   defined by system headers. */
+#mesondefine true
