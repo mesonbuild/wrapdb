@@ -1,15 +1,13 @@
 project(
   'protobuf',
   'cpp',
-  version: '3.21.9',
+  version: '3.21.12',
   license: 'protobuf',
   default_options: 'warning_level=0',
   meson_version: '>=0.49.0',
 )
 
 cc = meson.get_compiler('cpp')
-
-ttype = cc.get_argument_syntax() == 'msvc' ? 'static_library' : 'library'
 
 deps = dependency('threads')
 
@@ -49,21 +47,32 @@ libprotobuf_lite_src = files(
   'src/google/protobuf/stubs/time.cc',
   'src/google/protobuf/wire_format_lite.cc',
 )
-libprotobuf_lite = build_target(
+api = []
+if host_machine.system() == 'windows'
+  api += '-DLIBPROTOBUF_EXPORTS'
+  if get_option('default_library') != 'static'
+    api += '-DPROTOBUF_USE_DLLS'
+  endif
+endif
+libprotobuf_lite = library(
   'protobuf-lite',
   libprotobuf_lite_src,
+  cpp_args: api,
   dependencies: deps,
-  target_type: ttype,
   version: meson.project_version(),
   soversion: 31,
   install: true,
   include_directories: incdir,
 )
+imp = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  imp += '-DPROTOBUF_USE_DLLS'
+endif
 protobuf_lite_dep = declare_dependency(
+  compile_args: imp,
   link_with: libprotobuf_lite,
   include_directories: incdir,
 )
-
 
 libprotobuf_src = files(
   'src/google/protobuf/any.cc',
@@ -120,18 +129,30 @@ libprotobuf_src = files(
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wrappers.pb.cc',
 )
-libprotobuf = build_target(
+api = []
+if host_machine.system() == 'windows'
+  api += '-DLIBPROTOBUF_EXPORTS'
+  if get_option('default_library') != 'static'
+    api += '-DPROTOBUF_USE_DLLS'
+  endif
+endif
+libprotobuf = library(
   'protobuf',
+  libprotobuf_lite_src,
   libprotobuf_src,
-  target_type: ttype,
+  cpp_args: api,
   version: meson.project_version(),
   soversion: 31,
-  link_with: libprotobuf_lite,
   install: true,
   include_directories: incdir,
 )
+imp = []
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+  imp += '-DPROTOBUF_USE_DLLS'
+endif
 protobuf_dep = declare_dependency(
-  link_with: [libprotobuf_lite, libprotobuf],
+  compile_args: imp,
+  link_with: libprotobuf,
   include_directories: incdir,
 )
 
@@ -220,20 +241,25 @@ libprotoc_src = files(
   'src/google/protobuf/compiler/subprocess.cc',
   'src/google/protobuf/compiler/zip_writer.cc',
 )
-libprotoc = build_target(
+api = []
+if host_machine.system() == 'windows'
+  api += '-DLIBPROTOC_EXPORTS'
+  if get_option('default_library') != 'static'
+    api += '-DPROTOBUF_USE_DLLS'
+  endif
+endif
+libprotoc = library(
   'protoc',
   libprotoc_src,
-  target_type: ttype,
+  cpp_args: api,
+  dependencies: protobuf_dep,
   version: meson.project_version(),
   soversion: 31,
-  link_with: [libprotobuf_lite, libprotobuf],
-  include_directories: incdir,
   install: true,
 )
-
 protoc_dep = declare_dependency(
-  link_with: [libprotobuf_lite, libprotobuf, libprotoc],
-  include_directories: incdir,
+  dependencies: protobuf_dep,
+  link_with: libprotoc,
 )
 
 pkg = import('pkgconfig')
