@@ -28,6 +28,11 @@
     "rtaudio",
     "tinyxml2"
   ],
+  "c-flags": {
+    "build_options": [
+      "c-flags:tests=true"
+    ]
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"
