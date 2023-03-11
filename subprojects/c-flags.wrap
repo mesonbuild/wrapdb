@@ -1,0 +1,8 @@
+[wrap-file]
+directory = c-flags-1.5.4
+source_url = https://github.com/DieTime/c-flags/archive/1.5.4.tar.gz
+source_filename = c-flags-1.5.4.tar.gz
+source_hash = 890345a0a378bc1a2dcff8c39b0e7745947153bd2c2e1fd0e6b60944f78b46ae
+
+[provide]
+c-flags = libcflags_dep
