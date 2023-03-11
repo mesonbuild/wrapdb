@@ -92,6 +92,14 @@
       "2.3.1-2"
     ]
   },
+  "c-flags": {
+    "dependency_names": [
+        "c-flags"
+    ],
+    "versions": [
+        "1.5.4-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",
