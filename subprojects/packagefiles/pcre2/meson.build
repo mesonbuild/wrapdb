@@ -31,23 +31,26 @@ platform_supports_sljit = host_machine.system() in [
   'netbsd'
 ]
 
-cdata = configuration_data()
 # pcre2.h
+pcredata = configuration_data()
 varr = meson.project_version().split('.')
-cdata.set('PCRE2_MAJOR', varr[0])
-cdata.set('PCRE2_MINOR', varr[1])
-cdata.set('PCRE2_PRERELEASE', '')
-cdata.set('PCRE2_DATE', '2022-12-11')
+pcredata.set('PCRE2_MAJOR', varr[0])
+pcredata.set('PCRE2_MINOR', varr[1])
+pcredata.set('PCRE2_PRERELEASE', '')
+pcredata.set('PCRE2_DATE', '2022-12-11')
 
 # config.h
-cdata.set('PCRE2_LINK_SIZE', '2')
-cdata.set('PCRE2_HEAP_LIMIT', '20000000')
-cdata.set('PCRE2_MATCH_LIMIT', '10000000')
-cdata.set('PCRE2_MATCH_LIMIT_DEPTH', 'MATCH_LIMIT')
+cdata = configuration_data()
+cdata.set('LINK_SIZE', '2')
+cdata.set('HEAP_LIMIT', '20000000')
+cdata.set('MATCH_LIMIT', '10000000')
+cdata.set('MATCH_LIMIT_DEPTH', 'MATCH_LIMIT')
 cdata.set('NEWLINE_DEFAULT', '2') # default in config.h.generic
-cdata.set('PCRE2_PARENS_NEST_LIMIT', '250')
+cdata.set('PARENS_NEST_LIMIT', '250')
 cdata.set('PCRE2GREP_BUFSIZE', '20480')
 cdata.set('PCRE2GREP_MAX_BUFSIZE', '1048576')
+cdata.set('MAX_NAME_SIZE', '32')
+cdata.set('MAX_NAME_COUNT', '10000')
 
 jit_deps = []
 if not get_option('jit').disabled() and platform_is_unixlike
@@ -97,18 +100,9 @@ sources = files(
 includes = include_directories('.', 'src')
 
 check_headers = [
-  'inttypes.h',
-  'bzlib.h',
   'sys/stat.h',
   'sys/types.h',
-  'sys/wait.h',
-  'inttypes.h',
   'dirent.h',
-  'dlfcn.h',
-  'limits.h',
-  'stdint.h',
-  'stdlib.h',
-  'string.h',
   'windows.h',
   'unistd.h',
 ]
@@ -123,6 +117,7 @@ check_funs = [
   'bcopy',
   'memfd_create',
   'memmove',
+  'realpath',
   'secure_getenv',
   'strerror',
 ]
@@ -145,8 +140,7 @@ endif
 pcre2_h = configure_file(
   input: 'src/pcre2.h.in',
   output: 'pcre2.h',
-  format: 'cmake@',
-  configuration: cdata,
+  configuration: pcredata,
 )
 
 chartables = configure_file(
@@ -157,9 +151,7 @@ chartables = configure_file(
 sources += chartables
 
 config_h = configure_file(
-  input: 'config-cmake.h.in',
   output: 'config.h',
-  format: 'cmake@',
   configuration: cdata,
 )
 
