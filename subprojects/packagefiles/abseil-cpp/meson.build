@@ -1,5 +1,5 @@
 project('abseil-cpp', 'cpp',
-  version : '20220623.0',
+  version : '20230125.1',
   license : 'Apache-2.0',
   default_options : [
     'cpp_std=c++14',
@@ -11,14 +11,6 @@ cpp_flags = [
   '-Wno-sign-compare'
 ]
 
-if host_machine.cpu_family() == 'x86_64'
-  cpp_flags += [ '-maes', '-msse4.1' ]
-elif host_machine.cpu_family() == 'aarch64' and cpp.sizeof('void*') == 8
-  cpp_flags += [ '-march=armv8-a+crypto' ]
-elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
-  cpp_flags += [ '-mfpu=neon' ]
-endif
-
 flags = cpp.get_supported_arguments(cpp_flags)
 
 if cpp.get_argument_syntax() == 'msvc'
@@ -28,6 +20,16 @@ endif
 if cpp.get_id() == 'clang'
   flags += ['-Wno-gcc-compat']
 endif
+
+hw_cpp_flags = []
+if host_machine.cpu_family() == 'x86_64'
+  hw_cpp_flags += [ '-maes', '-msse4.1' ]
+elif host_machine.cpu_family() == 'aarch64' and cpp.sizeof('void*') == 8
+  hw_cpp_flags += [ '-march=armv8-a+crypto' ]
+elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
+  hw_cpp_flags += [ '-mfpu=neon' ]
+endif
+hw_flags = cpp.get_supported_arguments(hw_cpp_flags)
 
 add_project_arguments(flags, language: 'cpp')
 
@@ -70,6 +72,17 @@ absl_container_sources = files(
   'absl/container/internal/raw_hash_set.cc',
 )
 
+absl_crc_sources = files(
+  'absl/crc/crc32c.cc',
+  'absl/crc/internal/cpu_detect.cc',
+  'absl/crc/internal/crc.cc',
+  'absl/crc/internal/crc_cord_state.cc',
+  'absl/crc/internal/crc_memcpy_fallback.cc',
+  'absl/crc/internal/crc_memcpy_x86_64.cc',
+  'absl/crc/internal/crc_non_temporal_memcpy.cc',
+  'absl/crc/internal/crc_x86_arm_combined.cc',
+)
+
 absl_debugging_sources = files(
   'absl/debugging/failure_signal_handler.cc',
   'absl/debugging/internal/address_is_readable.cc',
@@ -102,6 +115,23 @@ absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
   'absl/hash/internal/low_level_hash.cc',
+)
+
+absl_log_sources = files(
+  'absl/log/die_if_null.cc',
+  'absl/log/flags.cc',
+  'absl/log/globals.cc',
+  'absl/log/initialize.cc',
+  'absl/log/internal/check_op.cc',
+  'absl/log/internal/conditions.cc',
+  'absl/log/internal/globals.cc',
+  'absl/log/internal/log_format.cc',
+  'absl/log/internal/log_message.cc',
+  'absl/log/internal/log_sink_set.cc',
+  'absl/log/internal/nullguard.cc',
+  'absl/log/internal/proto.cc',
+  'absl/log/log_entry.cc',
+  'absl/log/log_sink.cc',
 )
 
 absl_numeric_sources = files(
@@ -154,6 +184,7 @@ absl_strings_sources = files(
   'absl/strings/internal/cordz_handle.cc',
   'absl/strings/internal/cordz_info.cc',
   'absl/strings/internal/cordz_sample_token.cc',
+  'absl/strings/internal/damerau_levenshtein_distance.cc',
   'absl/strings/internal/escaping.cc',
   'absl/strings/internal/memutil.cc',
   'absl/strings/internal/ostringstream.cc',
@@ -164,6 +195,7 @@ absl_strings_sources = files(
   'absl/strings/internal/str_format/float_conversion.cc',
   'absl/strings/internal/str_format/output.cc',
   'absl/strings/internal/str_format/parser.cc',
+  'absl/strings/internal/stringify_sink.cc',
   'absl/strings/internal/utf8.cc',
   'absl/strings/match.cc',
   'absl/strings/numbers.cc',
@@ -257,10 +289,21 @@ absl_debugging_lib = static_library(
   dependencies: libatomic,
 )
 
+absl_crc_lib = static_library(
+  'absl_crc',
+  absl_crc_sources,
+  include_directories: absl_include_dir,
+  link_with: [
+    absl_base_lib,
+  ],
+  dependencies: libatomic,
+)
+
 absl_random_lib = static_library(
   'absl_random',
   absl_random_sources,
   include_directories: absl_include_dir,
+  cpp_args: hw_flags,
   link_with: [
     absl_base_lib,
     absl_strings_lib,
@@ -335,6 +378,18 @@ absl_status_lib = static_library(
   ],
 )
 
+absl_log_lib = static_library(
+  'absl_log',
+  absl_log_sources,
+  include_directories: absl_include_dir,
+  link_with: [
+    absl_base_lib,
+    absl_strings_lib,
+    absl_flags_lib,
+  ],
+  dependencies: libatomic,
+)
+
 # Dependencies
 absl_base_dep = declare_dependency(
   include_directories: absl_include_dir,
@@ -375,6 +430,14 @@ absl_random_dep = declare_dependency(
   dependencies: [
     absl_base_dep,
     absl_strings_dep,
+  ],
+)
+
+absl_crc_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  link_with: absl_crc_lib,
+  dependencies: [
+    absl_base_dep,
   ],
 )
 
@@ -424,6 +487,16 @@ absl_flags_dep = declare_dependency(
     absl_hash_dep,
     absl_strings_dep,
     absl_synchronization_dep,
+  ],
+)
+
+absl_log_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  link_with: absl_log_lib,
+  dependencies: [
+    absl_base_dep,
+    absl_strings_dep,
+    absl_flags_dep,
   ],
 )
 
