@@ -1,16 +1,18 @@
 [wrap-file]
-directory = abseil-cpp-20220623.0
-source_url = https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz
-source_filename = abseil-cpp-20220623.0.tar.gz
-source_hash = 4208129b49006089ba1d6710845a45e31c59b0ab6bff9e5788a87f55c5abd602
+directory = abseil-cpp-20230125.1
+source_url = https://github.com/abseil/abseil-cpp/archive/20230125.1.tar.gz
+source_filename = abseil-cpp-20230125.1.tar.gz
+source_hash = 81311c17599b3712069ded20cca09a62ab0bf2a89dfa16993786c8782b7ed145
 patch_directory = abseil-cpp
 
 [provide]
 absl_base = absl_base_dep
 absl_container = absl_container_dep
 absl_debugging = absl_debugging_dep
+absl_log = absl_log_dep
 absl_flags = absl_flags_dep
 absl_hash = absl_hash_dep
+absl_crc = absl_crc_dep
 absl_numeric = absl_numeric_dep
 absl_random = absl_random_dep
 absl_status = absl_status_dep
