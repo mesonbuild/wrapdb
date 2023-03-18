@@ -27,7 +27,8 @@ jobs:
 
   VisualStudio:
     runs-on: windows-latest
-
+    matrix:
+      cxx: ['cl', 'clang-cl']
     steps:
       - uses: actions/checkout@v3
 
@@ -40,6 +41,8 @@ jobs:
 
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Sanity Checks
+        env:
+          CXX: ${{matrix.cxx}}
         run: |
           python tools/sanity_checks.py
 
