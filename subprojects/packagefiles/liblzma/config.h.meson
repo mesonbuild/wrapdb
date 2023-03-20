@@ -249,8 +249,11 @@
 /* Define to 1 if `st_uatime' is a member of `struct stat'. */
 #mesondefine HAVE_STRUCT_STAT_ST_UATIME
 
-/* Define to 1 to if GNU/Linux-specific details are wanted for symbol
-   versioning. This must be used together with liblzma_linux.map. */
+/* Define to 1 to if GNU/Linux-specific details are unconditionally wanted for
+   symbol versioning. Define to 2 to if these are wanted only if also PIC is
+   defined (allows building both shared and static liblzma at the same time
+   with Libtool if neither --with-pic nor --without-pic is used). This define
+   must be used together with liblzma_linux.map. */
 #mesondefine HAVE_SYMBOL_VERSIONS_LINUX
 
 /* Define to 1 if you have the <sys/byteorder.h> header file. */

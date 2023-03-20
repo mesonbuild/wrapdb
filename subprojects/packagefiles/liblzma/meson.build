@@ -2,7 +2,7 @@
 project(
   'liblzma',
   'c',
-  version: '5.2.10',
+  version: '5.2.11',
   license: 'pd/lgpl2/gpl2/gpl3',
   meson_version: '>=0.49.0',
 )
@@ -134,7 +134,7 @@ if cc.has_function('sched_getaffinity')
   cdata.set('TUKLIB_CPUCORES_SCHED_GETAFFINITY', 1)
 endif
 
-if cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC')
+if cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC') and host_machine.system() != 'windows'
   cdata.set('HAVE_DECL_CLOCK_MONOTONIC', 1)
 endif
 
