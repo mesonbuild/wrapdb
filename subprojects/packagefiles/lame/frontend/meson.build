@@ -8,6 +8,10 @@ common_sources = files(
   'timestatus.c',
 )
 
+frontend_includes = mp3lame_includes + [
+  include_directories('.'),
+]
+
 tools_deps = [lame_dep, m_dep, iconv_dep, curses_dep]
 if host_machine.system() == 'windows'
   tools_deps += [cc.find_library('ws2_32')]
@@ -18,6 +22,7 @@ executable(
   common_sources,
   'lame_main.c',
   c_args: common_args,
+  include_directories: frontend_includes,
   dependencies: tools_deps,
 )
 
@@ -27,6 +32,7 @@ executable(
   'mp3rtp.c',
   'rtp.c',
   c_args: common_args,
+  include_directories: frontend_includes,
   dependencies: tools_deps,
 )
 

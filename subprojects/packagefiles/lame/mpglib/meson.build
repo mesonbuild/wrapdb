@@ -9,10 +9,17 @@ mpglib_sources = files(
   'tabinit.c',
 )
 
+mpglib_includes = [
+  include_directories('.'),
+  include_directories('../libmp3lame'),
+  lameinc,
+  confinc,
+]
+
 mpglib = static_library(
   'mpgdecoder',
   mpglib_sources,
-  include_directories: [confinc, lameinc],
+  include_directories: mpglib_includes,
   c_args: common_args,
   install: false,
 )
