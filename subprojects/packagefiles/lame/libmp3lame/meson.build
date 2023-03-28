@@ -22,8 +22,14 @@ lame_sources = files(
   cdata.has('HAVE_XMMINTRIN_H') ? 'vector/xmm_quantize_sub.c' : [],
 )
 
+mp3lame_includes = [
+  include_directories('.'),
+  lameinc,
+  confinc,
+]
+
 if host_machine.system() == 'windows'
-  lame_sources += windows.compile_resources('lame.rc', include_directories: [lameinc, confinc])
+  lame_sources += windows.compile_resources('lame.rc', include_directories: mp3lame_includes)
 endif
 
 lame_deps = [m_dep]
@@ -41,7 +47,7 @@ lamelib = library(
   'mp3lame',
   lame_sources,
   version : '0.0.0',
-  include_directories : [lameinc, confinc],
+  include_directories : mp3lame_includes,
   c_args : common_args,
   vs_module_defs: lame_def,
   dependencies: lame_deps,
@@ -49,6 +55,7 @@ lamelib = library(
 )
 
 lame_dep = declare_dependency(
-  include_directories: [lameinc, confinc],
+  include_directories: lameinc,
   link_with: lamelib,
+  dependencies: lame_deps,
 )
