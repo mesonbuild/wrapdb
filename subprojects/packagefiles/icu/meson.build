@@ -28,6 +28,9 @@ if cpp.get_argument_syntax() == 'msvc'
   add_project_arguments('/utf-8', language: 'c')
 endif
 
+# per icudefs.mk.in:
+# "U_ATTRIBUTE_DEPRECATED is defined to hide warnings about deprecated API warnings."
+add_project_arguments('-DU_ATTRIBUTE_DEPRECATED=', language: 'cpp')
 if meson.version().version_compare('>= 0.62')
   dl_dep = dependency('dl', required: false)
   dl_native_dep = dependency('dl', required: false, native: true)
