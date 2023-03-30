@@ -1,6 +1,9 @@
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 gencmn_exe = executable(
   'gencmn',
-  'gencmn.c',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )

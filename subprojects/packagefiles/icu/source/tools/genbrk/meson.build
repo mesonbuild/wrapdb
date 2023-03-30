@@ -1,6 +1,9 @@
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 genbrk_exe = executable(
   'genbrk',
-  'genbrk.cpp',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )

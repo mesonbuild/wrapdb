@@ -1,7 +1,9 @@
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 pkgdata = executable(
   'pkgdata',
-  'pkgdata.cpp',
-  'pkgtypes.c',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )

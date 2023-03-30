@@ -6,9 +6,12 @@
 #dependencies: toolutil_dep,
 #)
 
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 executable(
   'icuinfo',
-  'icuinfo.cpp',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )

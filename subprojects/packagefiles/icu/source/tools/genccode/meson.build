@@ -1,6 +1,9 @@
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 genccode_exe = executable(
   'genccode',
-  'genccode.c',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )
