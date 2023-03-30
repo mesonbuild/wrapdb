@@ -1,10 +1,5 @@
-sources = files(
-  'LXUtilities.cpp',
-  'ParagraphLayout.cpp',
-  'RunArrays.cpp',
-  'playout.cpp',
-  'plruns.cpp',
-)
+fs = import('fs')
+sources = fs.read('sources.txt').split()
 
 if host_machine.system() == 'windows'
   sources += windows.compile_resources('layoutex.rc', include_directories: incdir)

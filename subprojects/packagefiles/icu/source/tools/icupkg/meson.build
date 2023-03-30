@@ -1,6 +1,9 @@
+fs = import('fs')
+sources = fs.read('sources.txt').split()
+
 icupkg = executable(
   'icupkg',
-  'icupkg.cpp',
+  sources,
   dependencies: toolutil_dep,
   install: true,
 )
