@@ -98,7 +98,6 @@ jobs:
           brew install --force python3 && brew unlink python3 && brew unlink python3 && brew link --overwrite python3
       - name: Install packages
         run: |
-          brew install ninja
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Sanity Checks
