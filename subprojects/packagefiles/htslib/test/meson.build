@@ -16,7 +16,7 @@ tests = {
   'fieldarith': files('fieldarith.sam'),
   'hfile': [],
   'hts_endian': [],
-  'sam': files('ce.fa', 'faidx.fa', 'fastqs.fq'),
+  'sam': files('ce.fa', 'faidx/faidx.fa', 'faidx/fastqs.fq'),
   'test_bgzf': files('bgziptest.txt'),
   'test_expr': [],
   'test_kfunc': [],
