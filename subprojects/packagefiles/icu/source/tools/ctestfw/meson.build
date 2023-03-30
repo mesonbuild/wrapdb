@@ -1,11 +1,5 @@
-sources = files(
-  'ctest.c',
-  'datamap.cpp',
-  'testdata.cpp',
-  'tstdtmod.cpp',
-  'ucln_ct.c',
-  'uperf.cpp',
-)
+fs = import('fs')
+sources = fs.read('sources.txt').split()
 
 ctestfw = library(
   'ctestfw',

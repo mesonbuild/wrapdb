@@ -1,29 +1,5 @@
-sources = files(
-  'collationinfo.cpp',
-  'dbgutil.cpp',
-  'denseranges.cpp',
-  'filestrm.cpp',
-  'filetools.cpp',
-  'flagparser.cpp',
-  'package.cpp',
-  'pkg_genc.cpp',
-  'pkg_gencmn.cpp',
-  'pkg_icu.cpp',
-  'pkgitems.cpp',
-  'ppucd.cpp',
-  'swapimpl.cpp',
-  'toolutil.cpp',
-  'ucbuf.cpp',
-  'ucln_tu.cpp',
-  'ucm.cpp',
-  'ucmstate.cpp',
-  'udbgutil.cpp',
-  'unewdata.cpp',
-  'uoptions.cpp',
-  'uparse.cpp',
-  'writesrc.cpp',
-  'xmlparser.cpp',
-)
+fs = import('fs')
+sources = fs.read('sources.txt').split()
 
 toolutil_c_args = ['-DU_TOOLUTIL_IMPLEMENTATION']
 toolutil_cpp_args = ['-DU_TOOLUTIL_IMPLEMENTATION']
