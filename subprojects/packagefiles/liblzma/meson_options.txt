@@ -28,3 +28,5 @@ option('filter_lz', type : 'boolean', value : true)
 option('filter_delta', type : 'boolean', value : true)
 
 option('nls', type: 'feature')
+
+option('threads', type: 'feature', value: 'auto')
