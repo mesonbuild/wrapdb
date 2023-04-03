@@ -151,7 +151,7 @@ if cc.has_header_symbol('unistd.h', '_SC_PAGESIZE') and cc.has_header_symbol('un
   cdata.set('TUKLIB_PHYSMEM_SYSCONF', 1)
 endif
 
-thread_dep = dependency('threads', required: false)
+thread_dep = dependency('threads', required: get_option('threads'))
 if cc.has_function('pthread_condattr_setclock', dependencies: thread_dep)
   cdata.set('HAVE_PTHREAD_CONDATTR_SETCLOCK', 1)
 endif
