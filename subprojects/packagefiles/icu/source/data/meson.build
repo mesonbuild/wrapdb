@@ -30,7 +30,7 @@ elif host_machine.system() == 'cygwin'
 elif host_machine.system() == 'darwin'
   icudata_asm_output = '@0@.S'.format(U_ICUDATA_NAME)
   icudata_command += ['-a', 'gcc-darwin']
-elif cpp.get_id() == 'gcc' or cpp.get_id() == 'clang'
+elif cpp.get_argument_syntax() == 'gcc'
   icudata_asm_output = '@0@.S'.format(U_ICUDATA_NAME)
   if host_machine.system() == 'windows'
     icudata_command += ['-a', 'gcc-mingw64']
@@ -62,7 +62,7 @@ if host_machine.system() == 'windows'
   sources += windows.compile_resources('misc/icudata.rc', include_directories: incdir)
 endif
 
-if cpp.get_id() != 'msvc'
+if cpp.get_argument_syntax() != 'msvc'
   icudata = library(
     icudata_name,
     sources,

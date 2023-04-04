@@ -19,13 +19,10 @@ have_elf_h = cpp.has_header('elf.h')
 if host_machine.system() == 'windows'
   add_project_arguments('-DU_PLATFORM_USES_ONLY_WIN32_API', language: 'cpp')
   add_project_arguments('-DWIN32', '-DWIN64', '-D_MBCS', language: 'cpp')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
   add_project_arguments('-DU_PLATFORM_USES_ONLY_WIN32_API', language: 'c')
   add_project_arguments('-DWIN32', '-DWIN64', '-D_MBCS', language: 'c')
-endif
-
-if cpp.get_argument_syntax() == 'msvc'
-  add_project_arguments('/utf-8', language: 'cpp')
-  add_project_arguments('/utf-8', language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
 endif
 
 # per icudefs.mk.in:
