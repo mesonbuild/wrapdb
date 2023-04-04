@@ -52,7 +52,6 @@ uchardet_sources = files(
 
 uchardet_args = [
     '-DVERSION="@0@"'.format(meson.project_version()),
-    '-Wall',
 ]
 
 uchardet = library(
