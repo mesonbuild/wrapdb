@@ -11,6 +11,7 @@ iterator_test = {
 foreach name, sources : iterator_test
   exe = executable('range.v3.test.@0@'.format(name),
                    sources: sources,
+                   cpp_args: meson.get_compiler('cpp').get_supported_arguments('-Wno-incompatible-pointer-types', '/wd6011'),
                    dependencies: range_dep)
   test(name, exe)
 endforeach
