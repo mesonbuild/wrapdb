@@ -29,28 +29,41 @@ benchmark_sources = files(
   'src/timers.cc',
 )
 
-benchmark_main_sources = ['src/benchmark_main.cc']
+benchmark_main_sources = files('src/benchmark_main.cc')
 inc = include_directories('include')
 
-lib_benchmark_deps = [dependency('threads')]
+args = ['-DNDEBUG']
+if get_option('default_library') != 'static'
+  args += '-Dbenchmark_EXPORTS'
+else
+  args += '-DBENCHMARK_STATIC_DEFINE'
+endif
 
+lib_benchmark_deps = [dependency('threads')]
 if host_machine.system() == 'windows'
   cc = meson.get_compiler('cpp')
-  lib_benchmark_deps += cc.find_library('shlwapi', required: true)
-  if get_option('buildtype') != 'static'
-    add_project_arguments('-Dbenchmark_EXPORTS', language: 'cpp')
+  if cc.get_argument_syntax() == 'msvc'
+    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
   endif
+  lib_benchmark_deps += cc.find_library('shlwapi', required: true)
 endif
 
 lib_benchmark = library(
   'gbenchmark',
   benchmark_sources,
   include_directories: inc,
-  cpp_args: '-DNDEBUG',
+  cpp_args: args,
+  gnu_symbol_visibility: 'hidden',
   dependencies: lib_benchmark_deps,
 )
 
+dargs = []
+if get_option('default_library') == 'static'
+  dargs += '-DBENCHMARK_STATIC_DEFINE'
+endif
+
 google_benchmark_dep = declare_dependency(
+  compile_args: dargs,
   link_with: lib_benchmark,
   include_directories: inc,
 )
@@ -59,11 +72,12 @@ lib_benchmark_main = library(
   'benchmark-main',
   benchmark_main_sources,
   include_directories: inc,
-  cpp_args: '-DNDEBUG',
+  cpp_args: args,
   dependencies: google_benchmark_dep,
 )
 
 google_benchmark_main_dep = declare_dependency(
+  compile_args: dargs,
   link_with: lib_benchmark_main,
   include_directories: inc,
 )
