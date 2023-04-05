@@ -21,7 +21,7 @@ unittest_cpp_src += files(
     'XmlTestReporter.cpp'
 )
 
-if build_machine.system() == 'windows'
+if host_machine.system() == 'windows'
     subdir('Win32')
 else
     subdir('Posix')
