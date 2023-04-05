@@ -1,4 +1,4 @@
-add_languages('c')
+add_languages('c', native: false)
 
 utils = {
   'openal-info.c': openal_dep,
