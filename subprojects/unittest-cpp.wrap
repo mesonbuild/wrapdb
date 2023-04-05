@@ -4,3 +4,6 @@ source_url = https://github.com/unittest-cpp/unittest-cpp/archive/v2.0.0.tar.gz
 source_filename = unittest-cpp-2.0.0.tar.gz
 source_hash = 74852198877dc2fdebdc4e5e9bd074018bf8ee03a13de139bfe41f4585b2f5b9
 patch_directory = unittest-cpp
+
+[provide]
+unittest-cpp = unittest_cpp_dep
