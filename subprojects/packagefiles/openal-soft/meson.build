@@ -1,8 +1,8 @@
 project(
   'openal-soft',
   'cpp',
-  version: '1.22.2',
-  meson_version: '>=0.49.0',
+  version: '1.23.0',
+  meson_version: '>=0.54.1',
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
@@ -17,28 +17,28 @@ opensl_dep = dependency('opensl', required: get_option('opensl'))
 oss_dep = dependency('oss', required: get_option('oss'))
 pipewire_dep = dependency('libpipewire-0.3', required: get_option('pipewire'))
 portaudio_dep = dependency('portaudio', required: get_option('portaudio'))
+pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
+rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
 sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 sndio_dep = dependency('sndio', required: get_option('sndio'))
 solaris_dep = dependency('audioio', required: get_option('solaris'))
 
-#fixed in next version
-if host_machine.system() != 'windows'
-  pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
-  rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
-else
-  pulseaudio_dep = dependency('', required: false)
-  rtkit_dep = dependency('', required: false)
+if host_machine.system() == 'windows'
+  add_project_arguments('-DNOMINMAX', language: 'cpp')
+  if cpp.get_argument_syntax() == 'msvc'
+    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
+    add_project_arguments('/wd5051', language: 'cpp')
+  endif
 endif
 
 add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
-add_project_arguments('-DNOMINMAX', language: 'cpp')
 
 openal_args = []
 api = ''
 if get_option('default_library') != 'static'
-  if host_machine.system() == 'windows'
+  if cpp.has_function_attribute('dllexport')
     api = '__declspec(dllexport)'
-  elif cpp.has_function_attribute('visibility:protected')
+  elif cpp.has_function_attribute('visibility:protected') and host_machine.system() != 'darwin'
     api = '__attribute__((visibility("protected")))'
   elif cpp.has_function_attribute('visibility:default')
     api = '__attribute__((visibility("default")))'
@@ -154,9 +154,9 @@ alc_sources += files(
 
 hrtf_h = custom_target(
   'hrtf-header',
-  output: 'hrtf_default.h',
+  output: 'default_hrtf.txt',
   input: 'hrtf/Default HRTF.mhr',
-  command: ['hexify.py', '@INPUT@', '@OUTPUT@', 'hrtf_default'],
+  command: ['hexify.py', '@INPUT@', '@OUTPUT@', 'default_hrtf'],
 )
 
 cdata = configuration_data()
@@ -232,29 +232,28 @@ vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
 
 if cdata.get('HAVE_SSE')
-  openal_args += '-mfpmath=sse'
-  openal_args += '-msse'
+  openal_args += cpp.get_supported_arguments('-msse', '/arch:SSE', '-mfpmath=sse')
   core_sources += 'core/mixer/mixer_sse.cpp'
 endif
 
 if cdata.get('HAVE_SSE2')
-  openal_args += '-msse2'
+  openal_args += cpp.get_supported_arguments('-msse2', '/arch:SSE2')
   core_sources += 'core/mixer/mixer_sse2.cpp'
 endif
 
 if cdata.get('HAVE_SSE3')
-  openal_args += '-msse3'
+  openal_args += cpp.get_supported_arguments('-msse3', '/arch:SSE3')
   core_sources += 'core/mixer/mixer_sse3.cpp'
 endif
 
 if cdata.get('HAVE_SSE4_1')
-  openal_args += '-msse4.1'
+  openal_args += cpp.get_supported_arguments('-msse4.1', '/arch:SSE4.1')
   core_sources += 'core/mixer/mixer_sse41.cpp'
 endif
 
 if cdata.get('HAVE_NEON')
   if cpp.sizeof('void*') == 4
-    openal_args += '-mfpu=neon'
+    openal_args += cpp.get_supported_arguments('-mfpu=neon')
   endif
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
