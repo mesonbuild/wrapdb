@@ -1,1 +1,2 @@
 subdir('component')
+subdir('dom')
