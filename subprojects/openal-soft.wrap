@@ -1,8 +1,8 @@
 [wrap-file]
-directory = openal-soft-1.22.2
-source_url = https://github.com/kcat/openal-soft/archive/refs/tags/1.22.2.tar.gz
-source_filename = openal-soft-1.22.2.tar.gz
-source_hash = 3e58f3d4458f5ee850039b1a6b4dac2343b3a5985a6a2e7ae2d143369c5b8135
+directory = openal-soft-1.23.0
+source_url = https://github.com/kcat/openal-soft/archive/refs/tags/1.23.0.tar.gz
+source_filename = openal-soft-1.23.0.tar.gz
+source_hash = af2abf9cb539c9d66296a83ba63a75eb5868658d0f0b28b27c556f45e70c5231
 patch_directory = openal-soft
 
 [provide]
