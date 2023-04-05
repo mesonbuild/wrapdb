@@ -1,0 +1,43 @@
+doms = [
+  'border',
+  'border_style',
+  'color_gallery',
+  'color_info_palette256',
+  'color_truecolor_HSV',
+  'color_truecolor_RGB',
+  'dbox',
+  'canvas',
+  'gauge',
+  'gauge_direction',
+  'graph',
+  'gridbox',
+  'hflow',
+  'html_like',
+  'package_manager',
+  'paragraph',
+  'separator',
+  'separator_style',
+  'size',
+  'spinner',
+  'style_blink',
+  'style_bold',
+  'style_color',
+  'style_dim',
+  'style_gallery',
+  'style_inverted',
+  'style_strikethrough',
+  'style_underlined',
+  'style_underlined_double',
+  'table',
+  'vbox_hbox',
+  'vflow',
+  'window',
+]
+
+foreach d : doms
+  executable(
+    d,
+    '@0@.cpp'.format(d),
+    dependencies: [screen_dep, component_dep, thread_dep],
+  )
+endforeach
