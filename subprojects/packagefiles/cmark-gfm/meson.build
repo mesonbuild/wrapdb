@@ -1,7 +1,7 @@
 project(
     'cmark-gfm',
     'c',
-    version: '0.29.0.gfm.6',
+    version: '0.29.0.gfm.10',
     default_options: ['warning_level=3'],
     meson_version: '>=0.49.0',
     license: 'BSD-2-Clause',
