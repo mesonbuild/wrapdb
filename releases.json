@@ -2407,7 +2407,11 @@
     ]
   },
   "unittest-cpp": {
+    "dependency_names": [
+      "unittest-cpp"
+    ],
     "versions": [
+      "2.0.0-2",
       "2.0.0-1"
     ]
   },

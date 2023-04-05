@@ -4,9 +4,13 @@ project('UnitTest++', 'cpp',
 
 unittest_cpp_src = []
 
+if meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
+endif
+
 subdir('UnitTest++')
 
-unittest_cpp_lib = static_library('unittest-cpp', 
+unittest_cpp_lib = static_library('unittest-cpp',
     unittest_cpp_src,
     include_directories : '.')
 
