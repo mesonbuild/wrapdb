@@ -64,23 +64,14 @@ check_function = [
   'vasprintf',
   'vsnprintf',
   'vprintf',
-  'open',
   'realloc',
   'setlocale',
   'uselocale',
   'strcasecmp',
-  'strncasecmp',
   'strdup',
   'strerror',
   'vsyslog',
 ]
-
-foreach function : check_function
-  if cc.has_function(function)
-    conf.set10('HAVE_' + function.to_upper(), true)
-  endif
-endforeach
-conf.set10('HAVE_DOPRNT', cc.has_function('_doprnt'))
 
 if cc.get_argument_syntax() == 'msvc'
   if cc.has_function('strtoll')
@@ -90,7 +81,16 @@ if cc.get_argument_syntax() == 'msvc'
     conf.set10('HAVE_STRTOLL', true)
     conf.set('json_c_strtoll', '_strtoi64')
   endif
+else
+  check_function += ['open', 'strncasecmp']
 endif
+
+foreach function : check_function
+  if cc.has_function(function)
+    conf.set10('HAVE_' + function.to_upper(), true)
+  endif
+endforeach
+conf.set10('HAVE_DOPRNT', cc.has_function('_doprnt'))
 
 size = cc.sizeof('size_t', prefix: '#include <stddef.h>')
 conf.set('SIZEOF_SIZE_T', size)
