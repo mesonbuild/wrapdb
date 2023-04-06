@@ -5,9 +5,12 @@ project('cjson', 'c',
 
 dllimport_args = []
 cc = meson.get_compiler('c')
-if cc.get_id() == 'msvc' and get_option('buildtype') != 'static'
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  if get_option('buildtype') != 'static'
     add_project_arguments('-DCJSON_EXPORT_SYMBOLS', language : 'c')
     dllimport_args = ['-DCJSON_IMPORT_SYMBOLS']
+  endif
 endif
 add_project_arguments('-DCJSON_API_VISIBILITY', language: 'c')
 
