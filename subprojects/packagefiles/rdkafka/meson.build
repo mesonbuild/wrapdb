@@ -2,7 +2,7 @@ project(
   'rdkafka',
   'c',
   'cpp',
-  version: '1.9.2',
+  version: '2.1.0',
   default_options: ['cpp_std=c++17', 'c_std=c11', 'warning_level=0'],
   meson_version: '>=0.57.0',
 )
@@ -10,6 +10,33 @@ project(
 cc = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 pkgconfig = import('pkgconfig')
+
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cc.get_supported_arguments(
+      '-Wno-deprecated-declarations',
+      '-Wno-format',
+      '-Wno-incompatible-pointer-types',
+      '-Wno-pointer-sign',
+      '-Wno-self-assign-field',
+      '-Wno-visibility',
+    ),
+    language: 'c',
+  )
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cpp.get_supported_arguments(
+      '-Wno-deprecated-declarations',
+      '-Wno-format',
+      '-Wno-incompatible-pointer-types',
+      '-Wno-pointer-sign',
+      '-Wno-self-assign-field',
+      '-Wno-visibility',
+    ),
+    language: 'cpp',
+  )
+endif
 
 hdr = files(
   'src-cpp/rdkafkacpp.h',
@@ -39,6 +66,7 @@ srcc = files(
   'src/rdkafka_error.c',
   'src/rdkafka_event.c',
   'src/rdkafka_feature.c',
+  'src/rdkafka_fetcher.c',
   'src/rdkafka_header.c',
   'src/rdkafka_idempotence.c',
   'src/rdkafka_interceptor.c',
@@ -208,10 +236,9 @@ configure_file(
 
 rdkafka_deps = [math, regex, threads, dl, cjson, zlib, zstd, sasl, ssl, lz4, curl]
 if host_machine.system() == 'windows'
-  rdkafka_deps += [cpp.find_library('ws2_32'), cpp.find_library('iphlpapi'), cpp.find_library('secur32')]
-  if ssl.found()
-    rdkafka_deps += cpp.find_library('crypt32')
-  endif
+  rdkafka_deps += [cpp.find_library('ws2_32'), cpp.find_library('iphlpapi')]
+  rdkafka_deps += cpp.find_library('crypt32', required: get_option('WITH_SSL'))
+  rdkafka_deps += cpp.find_library('secur32', required: get_option('WITH_SASL'))
 endif
 
 rdkafka = library(

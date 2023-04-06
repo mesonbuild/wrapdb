@@ -443,6 +443,12 @@
       "qtbase5-dev"
     ]
   },
+  "rdkafka": {
+    "_comment": "- broken CI finds bad version of OpenSSL on Windows",
+    "build_options": [
+      "rdkafka:WITH_SSL=disabled"
+    ]
+  },
   "re2": {
     "build_options": [
       "cpp_std=c++14"
