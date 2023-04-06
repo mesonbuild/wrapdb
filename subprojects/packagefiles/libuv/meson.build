@@ -1,14 +1,15 @@
-project('libuv', 'c',
-  version : '1.44.2',
-  license : 'libuv',
+project(
+  'libuv',
+  'c',
+  version: '1.44.2',
+  license: 'libuv',
   default_options : [ 'c_std=gnu99' ],
+  meson_version: '>=0.49.0',
 )
 
 # get compiler type
 cc = meson.get_compiler('c')
-cc_clang = cc.get_id().contains('clang')
-cc_gnu = cc.get_id().contains('gcc')
-cc_msvc = cc.get_id().contains('msvc')
+cc_msvc = cc.get_argument_syntax() == 'msvc'
 
 # get system type
 win32 = host_machine.system() == 'windows'
@@ -27,6 +28,10 @@ aix = cc.get_define('_AIX') != ''
 os390 = false # TODO: detect
 os400 = false # TODO: detect
 message('System: ' + host_machine.system())
+
+if cc_msvc
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+endif
 
 # get options
 libuv_build_tests = get_option('build_tests')
@@ -53,7 +58,7 @@ if libuv_qemu
   libuv_cargs += '-D__QEMU__=1'
 endif
 
-if libuv_asan and (cc_gnu or cc_clang)
+if libuv_asan and cc.get_argument_syntax() == 'gcc'
   libuv_cargs += '-D__ASAN__=1'
 endif
 
@@ -71,7 +76,6 @@ if cc_msvc
     '/wd4459',  # no_hides_global
     '/wd4706',  # no_conditional_assignment
     '/wd4496',  # no_unsafe
-    '/utf-8',   # utf-8
   ]
 
   foreach flag : cc_msvc_cargs_all
@@ -621,7 +625,7 @@ if libuv_build_tests
     'test/test-walk-handles.c',
     'test/test-watcher-cross-stop.c',
   ]
-  libuv_test_cargs = []
+  libuv_test_cargs = cc.get_supported_arguments('-Wno-int-conversion')
   if cc_msvc
     if get_option('default_library') == 'both'
       error('default_library=both is not supported with MSVC')
