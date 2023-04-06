@@ -35,7 +35,6 @@ headers = [
   'pthread.h',
   'pthread_np.h',
   'sdkdkver.h',
-  'search.h',
   'signal.h',
   'socklib.h',
   'stdalign.h',
@@ -131,6 +130,14 @@ cdata.set('SIZEOF_UINT64_T', 8)
 cdata.set('HAVE_PIPE2_FUNC', cc.has_function('pipe2'))
 cdata.set('MHD_HAVE___BUILTIN_BSWAP32', cc.has_function('__builtin_bswap32'))
 cdata.set('MHD_HAVE___BUILTIN_BSWAP64', cc.has_function('__builtin_bswap64'))
+
+if cdata.get('HAVE_TSEARCH', 0) == 1
+  cdata.set('HAVE_SEARCH_H', 1)
+endif
+
+if cdata.get('HAVE_GMTIME_R', 0) == 0
+  cdata.set('HAVE_W32_GMTIME_S', cc.has_header_symbol('time.h', 'gmtime_s'))
+endif
 
 if cdata.get('HAVE_GETSOCKNAME', 0) == 1
   cdata.set('MHD_USE_GETSOCKNAME', 1)
