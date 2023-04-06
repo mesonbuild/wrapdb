@@ -1,7 +1,17 @@
-project('libssh2', 'c', version: '1.10.0', license: 'BSD-3', meson_version: '>=0.46.0')
+project(
+  'libssh2',
+  'c',
+  version: '1.10.0',
+  license: 'BSD-3',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('c')
 pkgconfig = import('pkgconfig')
+
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+endif
 
 if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   add_project_arguments('-D_WINDLL', language: 'c')
