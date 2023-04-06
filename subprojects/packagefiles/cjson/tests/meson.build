@@ -26,7 +26,7 @@ unity = static_library('unity', 'unity/src/unity.c')
 unity_dep = declare_dependency(link_with: unity, include_directories: 'unity/src')
 
 foreach t : tests
-    src = cc.get_id() == 'msvc' ? ['unity_setup.c'] : []
+    src = cc.get_argument_syntax() == 'msvc' ? ['unity_setup.c'] : []
     e = executable(
         t,
         '@0@.c'.format(t), src,
