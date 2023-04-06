@@ -1,8 +1,8 @@
 [wrap-file]
-directory = librdkafka-1.9.2
-source_url = https://github.com/edenhill/librdkafka/archive/v1.9.2.tar.gz
-source_filename = librdkafka-1.9.2.tar.gz
-source_hash = 3fba157a9f80a0889c982acdd44608be8a46142270a389008b22d921be1198ad
+directory = librdkafka-2.1.0
+source_url = https://github.com/confluentinc/librdkafka/archive/v2.1.0.tar.gz
+source_filename = librdkafka-2.1.0.tar.gz
+source_hash = d8e76c4b1cde99e283a19868feaaff5778aa5c6f35790036c5ef44bc5b5187aa
 patch_directory = rdkafka
 
 [provide]
