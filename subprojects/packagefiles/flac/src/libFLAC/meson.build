@@ -4,6 +4,10 @@ else
   extra_args = ['-DFLAC__NO_DLL']
 endif
 
+if cc.get_argument_syntax() == 'msvc' and cdata.get('WITH_AVX')
+  extra_args += '/arch:AVX2'
+endif
+
 flac_lib = library(
   'FLAC',
   'bitmath.c',

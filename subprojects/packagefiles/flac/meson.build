@@ -2,7 +2,7 @@ project(
   'flac',
   'c',
   version: '1.4.2',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.54.1',
 )
 
 cc = meson.get_compiler('c')
@@ -10,6 +10,10 @@ cc = meson.get_compiler('c')
 add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 if host_machine.system() == 'darwin'
   add_project_arguments('-D_DARWIN_C_SOURCE', language: 'c')
+endif
+
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
 endif
 
 ogg_dep = dependency('ogg')
