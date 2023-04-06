@@ -41,7 +41,14 @@ foreach h : check_example_headers
     example_libssh2_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-foreach f : ['strcasecmp', '_stricmp', 'snprintf', '_snprintf']
+if cc.get_argument_syntax() == 'msvc'
+  check_example_functions = ['_stricmp']
+  example_libssh2_config.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_header_symbol('stdio.h', '_snprintf'))
+else
+  check_example_functions = ['strcasecmp', 'snprintf']
+endif
+
+foreach f : check_example_functions
     example_libssh2_config.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
