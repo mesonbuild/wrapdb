@@ -26,6 +26,33 @@ def verbose(*args):
     print(*args, file=sys.stderr)
 
 
+# TODO cross-compilation support for this awful hack somehow
+def ldconf_dirs(ldconf='/etc/ld.so.conf'):
+    ldconf = pathlib.Path(ldconf)
+
+    try:
+        text = ldconf.read_text()
+    except Exception as e:
+        verbose('Failed to read ', str(ldconf), ': ', str(e))
+        return []
+
+    entries = []
+
+    for line in text.split('\n'):
+        line = line.strip()
+
+        if not line or line.startswith('#'):
+            continue
+
+        if line.startswith('include '):
+            for d in glob.glob(line[8:].lstrip()):
+                entries += ldconf_dirs(d)
+        else:
+            entries.append(line)
+
+    return entries
+
+
 def main(argv):
     libname = argv[1]
     cc = argv[2:]
