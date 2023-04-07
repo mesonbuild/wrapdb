@@ -13,7 +13,7 @@ if host_machine.system() == 'windows'
   sources += win_mod.compile_resources('scripts/pugixml_dll.rc')
 endif
 
-args = '-DPUGIXML_API=__attribute__((visibility("default")))'
+args = ['-DPUGIXML_API=__attribute__((visibility("default")))']
 if host_machine.system() == 'windows'
   args = get_option('default_library') != 'static' ? '-DPUGIXML_API=__declspec(dllexport)' : []
 endif
