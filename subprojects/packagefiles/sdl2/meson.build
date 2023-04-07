@@ -912,7 +912,9 @@ elif platform_is_windows
     endif
 
     if sys_joystick.contains('xinput') and cdata.get('HAVE_WINDOWS_GAMING_INPUT_H', 0) == 1
-        sys_joystick += 'wgi'
+        if not get_option('use_joystick_wgi').disabled()
+            sys_joystick += 'wgi'
+        endif
     endif
 elif platform_is_macos
     sys_audio_driver = ['coreaudio']
