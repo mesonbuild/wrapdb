@@ -105,6 +105,12 @@ option(
 )
 
 option(
+    'use_joystick_wgi',
+    type : 'feature',
+    description : 'Enable the Windows.Gaming.Input joystick driver'
+)
+
+option(
     'use_joystick_virtual',
     type : 'feature',
     description : 'Enable the virtual joystick driver'
