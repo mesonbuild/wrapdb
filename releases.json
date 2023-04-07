@@ -95,6 +95,14 @@
       "2.3.1-2"
     ]
   },
+  "bshoshany-thread-pool": {
+    "dependency_names": [
+      "bshoshany-thread-pool"
+    ],
+    "versions": [
+      "3.3.0-1"
+    ]
+  },
   "c-flags": {
     "dependency_names": [
         "c-flags"
