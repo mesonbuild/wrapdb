@@ -1,7 +1,7 @@
 project('sdl2', 'c',
-    version : '2.26.0',
+    version : '2.26.5',
     license : 'zlib',
-    meson_version : '>=0.48.0',
+    meson_version : '>=0.54.1',
     default_options : ['c_std=none'],
 )
 
@@ -12,6 +12,8 @@ if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
 endif
 
 c_args = cc.get_supported_arguments(
+    '-msse3',
+    '-Wno-deprecated-declarations',
     '-Wdeclaration-after-statement',
     '-Wshadow',
     '-fno-strict-aliasing',
@@ -1088,12 +1090,12 @@ all_sources = [c_sources]
 test_all_source = [test_c_sources]
 
 if platform_is_darwin
-    add_languages('objc')
+    add_languages('objc', native: false)
     all_sources += [objc_sources]
 endif
 
 if platform_is_winrt or platform_is_haiku
-    add_languages('cpp')
+    add_languages('cpp', native: false)
     all_sources += [cxx_sources]
 endif
 
