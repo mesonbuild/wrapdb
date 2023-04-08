@@ -1,0 +1,6 @@
+option(
+    'main_glbinding_includes_aux',
+    type : 'boolean',
+    value: false,
+    description : 'Make glbinding dependency include both glbinding and glbinding-aux, otherwise glbinding-aux will only be available as a separate dependency. Provided for convenience when using as a fallback.'
+)
