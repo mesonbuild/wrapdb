@@ -32,6 +32,15 @@ PER_PROJECT_PERMITTED_FILES = {
     'box2d': [
         'doctest.h'
     ],
+    'glbinding': [
+        'pch.h',
+        'glbinding_api.h',
+        'glbinding_features.h',
+        'glbinding_export.h',
+        'glbinding-aux_api.h',
+        'glbinding-aux_features.h',
+        'glbinding-aux_export.h'
+    ],
     'jbigkit': [
         'jbig.def',
         'jbig85.def'
