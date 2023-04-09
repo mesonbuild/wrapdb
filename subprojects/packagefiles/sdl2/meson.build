@@ -7,7 +7,7 @@ project('sdl2', 'c',
 
 cc = meson.get_compiler('c')
 
-if get_option('default_library') == 'both' and cc.get_id() == 'msvc'
+if get_option('default_library') == 'both' and cc.get_argument_syntax() == 'msvc'
   error('default_library=both not supported when compiling with MSVC')
 endif
 
@@ -1112,7 +1112,7 @@ sdl2main = static_library('sdl2main',
     install : do_install,
 )
 
-if cc.get_id() == 'msvc'
+if cc.get_argument_syntax() == 'msvc'
     main_link_with += sdl2main
 else
     main_link_whole += sdl2main
