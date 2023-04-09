@@ -1,4 +1,10 @@
-project('libsndfile', 'c', license: 'LGPL-2.1-or-later', version: '1.1.0', meson_version: '>=0.49.0')
+project(
+  'libsndfile',
+  'c',
+  license: 'LGPL-2.1-or-later',
+  version: '1.2.0',
+  meson_version: '>=0.54.1',
+)
 
 #needed for time_r functions
 if host_machine.system() == 'windows'
@@ -6,6 +12,10 @@ if host_machine.system() == 'windows'
 endif
 
 cc = meson.get_compiler('c')
+
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+endif
 
 cdata = configuration_data()
 cdata.set('CPACK_PACKAGE_VERSION_FULL', meson.project_version())
@@ -27,8 +37,6 @@ cdata.set10('WIN32_TARGET_DLL', host_machine.system() == 'windows' and get_optio
 
 # code errors if this is not 8
 cdata.set('SIZEOF_SF_COUNT_T_CODE', '#define SIZEOF_SF_COUNT_T 8')
-
-#cdata.set('INLINE_CODE', '')
 
 libm_dep = cc.find_library('m', required: false)
 cdata.set10('HAVE_LIBM', libm_dep.found())
@@ -64,10 +72,12 @@ cdata.set('SF_COUNT_MAX', 'INT64_MAX')
 headers = [
   'alsa/asoundlib.h',
   'byteswap.h',
+  'direct.h',
   'dlfcn.h',
   'endian.h',
   'immintrin.h',
   'inttypes.h',
+  'io.h',
   'locale.h',
   'memory.h',
   'stdbool.h',
@@ -144,7 +154,7 @@ foreach s, h : sizes
     'SIZEOF_@0@_CODE'.format(upper),
     '#define @0@ @1@'.format(
       'SIZEOF_@0@'.format(upper),
-      cc.sizeof(s, prefix: h.contains('.h') ? '#include <@0@>'.format(s) : ''),
+      cc.sizeof(s, prefix: h.contains('.h') ? '#include <@0@>'.format(h) : ''),
     ),
   )
 endforeach
@@ -156,17 +166,7 @@ cfile = configure_file(
   configuration: cdata,
 )
 
-snddata = configuration_data()
-snddata.set('SF_COUNT_MAX', 'INT64_MAX')
-snddata.set('TYPEOF_SF_COUNT_T', 'int64_t')
-sndfile = configure_file(
-  input: 'include/sndfile.h.in',
-  output: 'sndfile.h',
-  format: 'cmake@',
-  configuration: snddata,
-)
-
-incdirs = include_directories('.', 'src')
+incdirs = include_directories('.', 'include', 'src')
 
 libsndfile_sources = files(
   'src/ALAC/ALACBitUtilities.c',
@@ -301,7 +301,7 @@ pconf.generate(
 )
 
 install_headers(
-  sndfile,
+  'include/sndfile.h',
   'include/sndfile.hh',
 )
 
