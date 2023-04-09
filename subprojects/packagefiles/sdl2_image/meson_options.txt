@@ -1,0 +1,29 @@
+option('avif',
+  type: 'feature',
+  description: 'Support loading AVIF images',
+)
+
+option('jpg',
+  type: 'feature',
+  description: 'Support loading JPEG images',
+)
+
+option('jxl',
+  type: 'feature',
+  description: 'Support loading JXL images',
+)
+
+option('png',
+  type: 'feature',
+  description: 'Support loading PNG images',
+)
+
+option('tif',
+  type: 'feature',
+  description: 'Support loading TIFF images',
+)
+
+option('webp',
+  type: 'feature',
+  description: 'Support loading WEBP images',
+)
