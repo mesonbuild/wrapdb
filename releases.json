@@ -2079,9 +2079,12 @@
   },
   "sdl2": {
     "dependency_names": [
-      "sdl2"
+      "sdl2",
+      "sdl2main",
+      "sdl2_test"
     ],
     "versions": [
+      "2.26.5-4",
       "2.26.5-3",
       "2.26.5-2",
       "2.26.5-1",

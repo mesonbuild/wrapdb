@@ -1,27 +1,3 @@
-test_deps = []
-
-if cdata.get('HAVE_LIBUNWIND_H', 0) == 1
-    test_deps += dependency('libunwind', required : false)
-    test_deps += dependency('libunwind-generic', required : false)
-endif
-
-sdl2_test = static_library('sdl2_test',
-    test_all_source,
-    include_directories : core_inc,
-    c_args : core_args,
-    link_args : core_ldflags,
-    dependencies : [deps, test_deps],
-    override_options : ['c_std=none'],
-    objects: sdl2.extract_all_objects(recursive: true),
-)
-
-sdl2_test_dep = declare_dependency(
-    link_with : sdl2_test,
-    dependencies : deps,
-    include_directories : core_inc,
-    compile_args : c_args,
-)
-
 tests = [
     { 'name': 'checkkeys',          'sources': ['checkkeys.c']},
     { 'name': 'checkkeysthreads',   'sources': ['checkkeysthreads.c']},
@@ -97,7 +73,7 @@ tests = [
 ]
 
 foreach test_entry : tests
-    test_executable = executable(test_entry['name'], test_entry['sources'], dependencies: sdl2_test_dep)
+    test_executable = executable(test_entry['name'], test_entry['sources'], dependencies: [sdl2main_dep, sdl2_test_dep])
     if get_option('run_test')
         test(test_entry['name'], test_executable, is_parallel: false)
     endif
