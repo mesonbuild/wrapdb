@@ -1,7 +1,7 @@
 project('sdl2', 'c',
     version : '2.26.5',
     license : 'zlib',
-    meson_version : '>=0.54.1',
+    meson_version : '>=0.60',
     default_options : ['c_std=none'],
 )
 
@@ -267,7 +267,7 @@ wayland_libdecor_dep = dependency('libdecor-0', required : opt_video_wayland_lib
 
 if wayland_scanner_dep.found()
     wayland_scanner = find_program(
-        wayland_scanner_dep.get_pkgconfig_variable('wayland_scanner'),
+        wayland_scanner_dep.get_variable(pkgconfig : 'wayland_scanner', default_value : 'wayland-scanner'),
         required : opt_video_wayland
     )
 
@@ -390,7 +390,7 @@ endif
 
 extra_deps = []
 
-if meson.get_cross_property('threads_dep_is_broken', false)
+if meson.get_external_property('threads_dep_is_broken', false)
     if opt_threads.disabled()
         threads_dep = fake_dep
     else
@@ -1150,12 +1150,35 @@ sdl2_dep = declare_dependency(
     compile_args : c_args,
 )
 
-if meson.version().version_compare('>=0.54')
-    meson.override_dependency('sdl2', sdl2_dep)
+test_deps = []
+
+if cdata.get('HAVE_LIBUNWIND_H', 0) == 1
+    test_deps += dependency('libunwind', required : false)
+    test_deps += dependency('libunwind-generic', required : false)
 endif
 
 # MSVC does not correctly resolve the symbols when linking dynamically
 # works fine when linking statically or MinGW
+sdl2_test = static_library('sdl2_test',
+    test_all_source,
+    c_args : core_args,
+    link_args : core_ldflags,
+    dependencies : [sdl2_dep, test_deps],
+    override_options : ['c_std=none'],
+    build_by_default : false,
+)
+
+sdl2_test_dep = declare_dependency(
+    link_with : sdl2_test,
+    dependencies : [sdl2_dep],
+    include_directories : core_inc,
+    compile_args : c_args,
+)
+
+meson.override_dependency('sdl2', sdl2_dep)
+meson.override_dependency('sdl2main', sdl2main_dep)
+meson.override_dependency('sdl2_test', sdl2_test_dep)
+
 if get_option('test')
     subdir('test')
 endif

@@ -7,3 +7,5 @@ patch_directory = sdl2
 
 [provide]
 sdl2 = sdl2_dep
+sdl2main = sdl2main_dep
+sdl2_test = sdl2_test_dep
