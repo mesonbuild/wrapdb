@@ -77,6 +77,47 @@ jobs:
         run: |
           python tools/sanity_checks.py
 
+  MSYS2:
+    if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
+    runs-on: windows-latest
+    name: MSYS2-${{matrix.platform}}
+    env:
+      TEST_BUILD_ALL: 1
+      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
+    strategy:
+      matrix:
+        platform: ['UCRT64', 'CLANG32', 'CLANG64']
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Fetch tags and unshallow
+        run: git fetch --unshallow --tags
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          path-type: strict
+          msystem: ${{matrix.platform}}
+          install: >-
+            git
+          pacboy: >-
+            cc:p
+            cmake:p
+            curl:p
+            ninja:p
+            pkgconf:p
+            python-certifi:p
+            python-pip:p
+
+      - name: Install packages
+        shell: msys2 {0}
+        run: |
+          python -m pip install git+https://github.com/mesonbuild/meson
+
+      - name: Sanity Checks
+        shell: msys2 {0}
+        run: |
+          python tools/sanity_checks.py
+
   MacOS:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: macos-latest

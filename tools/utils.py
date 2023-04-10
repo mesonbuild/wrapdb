@@ -96,8 +96,10 @@ def is_linux() -> bool:
     return platform.system().lower() == 'linux'
 
 def is_windows() -> bool:
-    platname = platform.system().lower()
-    return platname == 'windows'
+    return platform.system().lower() == 'windows' and not "MSYSTEM" in os.environ
+
+def is_msys() -> bool:
+    return platform.system().lower() == 'windows' and "MSYSTEM" in os.environ
 
 def is_macos():
     return any(platform.mac_ver()[0])
