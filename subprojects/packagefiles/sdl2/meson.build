@@ -1137,6 +1137,7 @@ sdl2 = library('sdl2',
     dependencies : deps,
     override_options : ['c_std=none'],
     install : do_install,
+    gnu_symbol_visibility: 'hidden',
 )
 
 if platform_is_windows and get_option('with_main')
