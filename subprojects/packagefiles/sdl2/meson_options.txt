@@ -234,6 +234,7 @@ option(
 option(
     'with_main',
     type : 'boolean',
-    value : true,
-    description : 'automatically link against sdl2main'
+    value : false,
+    deprecated: true,
+    description : 'automatically link against sdl2main (deprecated, link to dependency sdl2_main instead)'
 )
