@@ -1,5 +1,3 @@
-cc = meson.get_compiler('c')
-
 if sdl2_dep.type_name() == 'internal'
   sdl2_test_dep = dependency('sdl2_test')
   sdl2main_dep = dependency('sdl2main')
