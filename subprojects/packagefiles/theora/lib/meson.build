@@ -40,7 +40,7 @@ decoder_sources = files(
 
 if asm
   if conf.get('CPU_x86_64', false)
-    if cc.get_id() != 'msvc'
+    if cc.get_argument_syntax() != 'msvc'
       encoder_sources += files(
         'x86/mmxencfrag.c',
         'x86/mmxfdct.c',
@@ -59,7 +59,7 @@ if asm
       )
     endif
   elif conf.get('CPU_x86_32', false)
-    if cc.get_id() != 'msvc'
+    if cc.get_argument_syntax() != 'msvc'
       decoder_sources += files(
         'x86/mmxfrag.c',
         'x86/mmxidct.c',

@@ -9,7 +9,7 @@ if cc.has_header_symbol('unistd.h', 'getopt_long')
     dependencies: config_dep,
   )
 else
-  if cc.get_id() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc'
     getopt_sources = files(
       '../win32/getopt.c',
       '../win32/getopt1.c',
