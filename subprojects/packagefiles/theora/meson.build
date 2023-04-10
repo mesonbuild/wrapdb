@@ -34,17 +34,13 @@ if valgrind_exe.found()
   )
 endif
 
-compile_args = []
-
 cc = meson.get_compiler('c')
 
-if cc.get_argument_syntax() != 'msvc'
-  compile_args += cc.get_supported_arguments(
-    '-Wno-parentheses',
-    '-Wno-shift-op-parentheses',
-    '-Wno-shift-negative-value',
-  )
-endif
+compile_args = cc.get_supported_arguments(
+  '-Wno-parentheses',
+  '-Wno-shift-op-parentheses',
+  '-Wno-shift-negative-value',
+)
 
 m_dep = cc.find_library('m', required: false)
 
@@ -52,7 +48,7 @@ if get_option('collect-metrics')
   add_project_arguments('-DOC_COLLECT_METRICS', language: 'c')
 endif
 
-ogg_dep = dependency('ogg', version: '>= 1.1', required: true)
+ogg_dep = dependency('ogg', version: '>= 1.1')
 
 vorbis_dep = dependency(
   'vorbis',
@@ -69,7 +65,6 @@ vorbisenc_dep = dependency(
 )
 
 sdl_dep = dependency('sdl', required: false, disabler: true)
-
 if not sdl_dep.found()
   message('*** Unable to find SDL -- Not compiling example players ***')
 endif
@@ -100,10 +95,7 @@ else
   unistd_dep = disabler()
 endif
 
-telemetry = get_option('telemetry')
-
-cairo_dep = dependency('cairo', required: telemetry)
-
+cairo_dep = dependency('cairo', required: get_option('telemetry'))
 if cairo_dep.found()
   conf.set('HAVE_CAIRO', true)
 endif
@@ -118,7 +110,7 @@ asm = not get_option('asm').disabled()
 if asm
   if host_machine.cpu_family() == 'x86_64'
     conf.set('CPU_x86_64', true)
-    if cc.get_id() != 'msvc'
+    if cc.get_argument_syntax() != 'msvc'
       conf.set('OC_X86_ASM', true)
       conf.set('OC_X86_64_ASM', true)
     endif
