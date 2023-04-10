@@ -14,17 +14,14 @@
 
 project(
   'cmocka',
-  ['c'],
-  version : '1.1.5',
-  license : 'APLv2',
-  meson_version : '>= 0.48.0',
-  default_options : ['c_std=c99', 'buildtype=debugoptimized'],
+  'c',
+  version: '1.1.7',
+  license: 'APLv2',
+  meson_version: '>= 0.54.1',
+  default_options: ['c_std=c99', 'buildtype=debugoptimized'],
 )
 
-lib_version = '0.5.0'
-
-# TODO: pkg-config
-# TODO: cmake-config
+lib_version = '0.8.0'
 
 inc_include = include_directories('include')
 
@@ -35,15 +32,13 @@ inc_include = include_directories('include')
 cc_dict = {
     'compiler': meson.get_compiler('c'),
     'machine': host_machine,
-    'config_h_subdir': 'private',
-    'native': false
+    'native': false,
 }
 
 cc_native_dict = {
     'compiler': meson.get_compiler('c', native: true),
     'machine': build_machine,
-    'config_h_subdir': 'private_native',
-    'native': true
+    'native': true,
 }
 
 configurations = [cc_dict, cc_native_dict]
@@ -55,7 +50,7 @@ foreach entry : configurations
 
   config = configuration_data()
 
-  if ['gcc', 'clang'].contains(compiler.get_id())
+  if compiler.get_argument_syntax() == 'gcc'
     add_project_arguments(
       # I've explicitly skipped the duplicated -W versions when they also test
       # for the -Werror version
@@ -79,30 +74,29 @@ foreach entry : configurations
         '-Werror=format-security',
         '-Wno-gnu-zero-variadic-macro-arguments',
         '-fno-common',
+        '-D_GNU_SOURCE',
       ),
-      language : ['c'],
+      language: 'c',
       native: is_native
     )
     # We can't test the build type, so we can' add -D_FORTIFY_SOURCE=2 here
     if machine.system() == 'darwin'
-      if compiler.has_argument('-Wno-deprecated-declarations')
-        add_project_arguments('-Wno-deprecated-declarations', language : ['c'], native: is_native)
-      endif
+      add_project_arguments(compiler.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c', native: is_native)
     endif
-  elif compiler.get_id() == 'msvc'
+  else
     add_project_arguments(
       '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1',
       '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1',
       '/D_CRT_NONSTDC_NO_WARNINGS=1',
       '/D_CRT_SECURE_NO_WARNINGS=1',
-      language : ['c'],
+      language: 'c',
       native: is_native
     )
   endif
 
   # TODO: solaris extensions
 
-  foreach h : ['assert.h', 'inttypes.h', 'io.h', 'malloc.h', 'memory.h',
+  foreach h : ['assert.h', 'dlfcn.h', 'inttypes.h', 'io.h', 'malloc.h', 'memory.h',
                'setjmp.h', 'signal.h', 'stdarg.h', 'stddef.h', 'stdint.h',
                'stdio.h', 'stdlib.h', 'string.h', 'strings.h', 'sys/stat.h',
                'sys/types.h', 'time.h', 'unistd.h']
@@ -112,7 +106,7 @@ foreach entry : configurations
   endforeach
 
   if config.get('HAVE_TIME_H', 0) == 1
-    if compiler.has_member('struct timespec', 'tv_sec', prefix : '#include <time.h>')
+    if compiler.has_member('struct timespec', 'tv_sec', prefix: '#include <time.h>')
       config.set('HAVE_STRUCT_TIMESPEC', 1)
     endif
   endif
@@ -144,26 +138,10 @@ else
   endforeach
 endif
 
-  if machine.system() == 'windows'
-    if compiler.compiles('''
-        __declspec(thread) int tls;
-
-        int main(void) {
-          return 0;
-        }''',
-        name : 'Thread Local Storage')
-      config.set('HAVE_MSVC_THREAD_LOCAL_STORAGE', 1)
-    endif
+  if compiler.get_argument_syntax() == 'msvc'
+    config.set('HAVE_MSVC_THREAD_LOCAL_STORAGE', compiler.compiles('__declspec(thread) int tls;'))
   else
-    if compiler.compiles('''
-        __thread int tls;
-
-        int main(void) {
-          return 0;
-        }''',
-        name : 'Thread Local Storage')
-      config.set('HAVE_GCC_THREAD_LOCAL_STORAGE', 1)
-    endif
+    config.set10('HAVE_GCC_THREAD_LOCAL_STORAGE', compiler.compiles('__thread int tls;'))
   endif
 
   if (config.get('HAVE_TIME_H', 0) == 1 and
@@ -178,19 +156,42 @@ endif
   if machine.endian() == 'big'
     config.set('WORDS_BIGENDIAN', 1)
   endif
-
-  # Execute subdir to create config.h for this pass
-  # This requires the use of the variable named "config" for configuration_data(),
-  # as this variable is used in each configuration header subdirectory.
-  subdir(entry.get('config_h_subdir'))
-
 endforeach
+
+cfile = configure_file(
+  input: 'config.h.cmake',
+  output: 'config.h',
+  format: 'cmake',
+  configuration: config,
+)
 
 ###########################
 # Subdirectory Processing #
 ###########################
 
-subdir('src')
+libcmocka = library(
+  'cmocka',
+  'src/cmocka.c',
+  c_args: '-DHAVE_CONFIG_H=1',
+  include_directories: inc_include,
+  vs_module_defs: 'src/cmocka.def',
+  soversion: host_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
+  version: lib_version,
+  install: true,
+)
+
+libcmocka_native = library(
+  'cmocka_native',
+  'src/cmocka.c',
+  c_args: '-DHAVE_CONFIG_H=1',
+  include_directories: inc_include,
+  vs_module_defs: 'src/cmocka.def',
+  soversion: build_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
+  version: lib_version,
+  install: false, # Cannot install native targets in cross builds
+  native: true,
+  build_by_default: false,
+)
 
 ######################
 # Dependency Targets #
@@ -201,13 +202,13 @@ subdir('src')
 # going to install it.
 
 cmocka_dep = declare_dependency(
-  link_with : libcmocka,
-  include_directories : inc_include,
-  version : meson.project_version(),
+  link_with: libcmocka,
+  include_directories: inc_include,
+  version: meson.project_version(),
 )
 
 cmocka_native_dep = declare_dependency(
-  link_with : libcmocka_native,
-  include_directories : inc_include,
-  version : meson.project_version(),
+  link_with: libcmocka_native,
+  include_directories: inc_include,
+  version: meson.project_version(),
 )
