@@ -172,6 +172,8 @@ glbinding_aux_dep = declare_dependency(
   compile_args: glbinding_aux_public_args
 )
 
+subdir('source/tests')
+
 if get_option('main_glbinding_includes_aux')
   glbinding_dep = declare_dependency(
     dependencies: [glbinding_dep, glbinding_aux_dep]
