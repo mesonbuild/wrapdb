@@ -25,7 +25,7 @@ import tempfile
 import platform
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows
+from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows, is_msys
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -293,7 +293,10 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
 
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
-        system = platform.system().lower()
+        if is_msys():
+            system = 'msys2'
+        else:
+            system = platform.system().lower()
         ci = self.ci_config.get(name, {})
         # kept for backwards compatibility
         expect_working = True
@@ -317,6 +320,7 @@ class TestReleases(unittest.TestCase):
         debian_packages = ci.get('debian_packages', [])
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])
+        msys_packages = ci.get('msys_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -339,6 +343,12 @@ class TestReleases(unittest.TestCase):
                     meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
             else:
                 s = ', '.join(choco_packages)
+                print(f'The following packages could be required: {s}')
+        elif msys_packages and is_msys():
+            if is_ci():
+                subprocess.check_call(['sh', '-lc', '$@', 'bash', 'pacboy', '--noconfirm', 'sync'] + [p + ':p' for p in msys_packages])
+            else:
+                s = ', '.join(msys_packages)
                 print(f'The following packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
