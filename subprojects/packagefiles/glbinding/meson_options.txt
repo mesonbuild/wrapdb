@@ -4,3 +4,17 @@ option(
     value: false,
     description : 'Make glbinding dependency include both glbinding and glbinding-aux, otherwise glbinding-aux will only be available as a separate dependency. Provided for convenience when using as a fallback.'
 )
+
+option(
+    'build_tests',
+    type : 'feature',
+    value: 'auto',
+    description : 'Build tests. Requires glfw3, gtest and gmock.'
+)
+
+option(
+    'run_tests',
+    type : 'boolean',
+    value: false,
+    description : 'Run tests. Requires video output and will not work on headless machines.'
+)
