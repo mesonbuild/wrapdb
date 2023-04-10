@@ -26,6 +26,8 @@ option('use_imageio',
 
 option('use_wic',
   type: 'feature',
+  # It is disabled by default in upstream build system, plus CI fails to load WIC
+  value: 'disabled',
   description: 'Use WIC (Windows Imaging Component) for supported formats',
 )
 
