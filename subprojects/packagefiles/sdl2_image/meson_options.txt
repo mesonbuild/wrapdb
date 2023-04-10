@@ -6,6 +6,12 @@ option('test',
   description: 'Build tests',
 )
 
+option('force_builtin_bmp',
+  type: 'boolean',
+  value: true,
+  description: 'Do not use backend-provided BMP loaders. Potentially slower but pixel-perfect. Recommended for tests.',
+)
+
 # Backends
 
 option('use_stbimage',
@@ -20,7 +26,6 @@ option('use_imageio',
 
 option('use_wic',
   type: 'feature',
-  value: 'disabled',
   description: 'Use WIC (Windows Imaging Component) for supported formats',
 )
 
@@ -32,9 +37,8 @@ option('jpg',
 )
 
 option('jpg_save',
-  type: 'boolean',
-  value: true,
-  description: 'Support saving JPEG images, depends on JPEG loading support',
+  type: 'feature',
+  description: 'Support saving JPEG images',
 )
 
 option('png',
@@ -43,32 +47,27 @@ option('png',
 )
 
 option('png_save',
-  type: 'boolean',
-  value: true,
-  description: 'Support saving PNG images, depends on PNG loading support',
+  type: 'feature',
+  description: 'Support saving PNG images',
 )
 
 option('avif',
   type: 'feature',
-  value: 'disabled',
   description: 'Support loading AVIF images',
 )
 
 option('jxl',
   type: 'feature',
-  value: 'disabled',
   description: 'Support loading JXL images',
 )
 
 option('tif',
   type: 'feature',
-  value: 'disabled',
   description: 'Support loading TIFF images',
 )
 
 option('webp',
   type: 'feature',
-  value: 'disabled',
   description: 'Support loading WEBP images',
 )
 
