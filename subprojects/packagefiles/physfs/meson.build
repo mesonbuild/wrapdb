@@ -6,10 +6,10 @@ project(
 )
 
 feature_args = []
-extra_library_args = []
+public_args = []
 
 if get_option('default_library') == 'static'
-    extra_library_args += '-DPHYSFS_STATIC'
+    public_args += '-DPHYSFS_STATIC'
 endif
 
 # Files that don't correspond to configurable archivers
@@ -61,7 +61,7 @@ foreach archiver, default_value : archivers
   summary(archiver, is_enabled.to_string('enabled', 'disabled'), section: 'Archive support')
 endforeach
 
-full_library_args = [feature_args, extra_library_args]
+full_library_args = [feature_args, public_args]
 
 physfs_lib = library(
   'physfs',
@@ -77,4 +77,5 @@ depinc = include_directories('src')
 physfs_dep = declare_dependency(
   include_directories: depinc,
   link_with: physfs_lib,
+  compile_args: public_args,
 )
