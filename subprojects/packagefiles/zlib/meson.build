@@ -28,19 +28,13 @@ endif
 
 src = files(
   'adler32.c',
-  'compress.c',
   'crc32.c',
   'deflate.c',
-  'gzclose.c',
-  'gzlib.c',
-  'gzread.c',
-  'gzwrite.c',
   'infback.c',
   'inffast.c',
   'inflate.c',
   'inftrees.c',
   'trees.c',
-  'uncompr.c',
   'zutil.c',
 )
 
@@ -55,8 +49,22 @@ if host_machine.system() == 'windows'
   src += win.compile_resources('win32/zlib1.rc', args: win_args)
 endif
 
+solo_args = []
 if get_option('solo')
-  compile_args += ['-DZ_SOLO']
+  if host_machine.system() == 'windows' and get_option('default_library') != 'static'
+    error('-Dsolo=true is incompatible with building a DLL')
+  endif
+  solo_args = ['-DZ_SOLO']
+  add_project_arguments(solo_args, language: 'c')
+else
+  src += files(
+    'compress.c',
+    'uncompr.c',
+    'gzclose.c',
+    'gzlib.c',
+    'gzread.c',
+    'gzwrite.c',
+  )
 endif
 
 zlib = library(
@@ -70,6 +78,7 @@ zlib = library(
 
 depinc = include_directories('.')
 zlib_dep = declare_dependency(
+  compile_args: solo_args,
   link_with: zlib,
   include_directories: depinc,
 )
@@ -82,6 +91,7 @@ pkg.generate(
   zlib,
   name: 'zlib',
   description: 'zlib compression library',
+  extra_cflags: solo_args,
 )
 
 subdir('test')
