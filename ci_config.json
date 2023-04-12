@@ -256,14 +256,10 @@
     ]
   },
   "libnpupnp": {
-    "brew_packages": [
-      "libmicrohttpd"
-    ],
     "debian_packages": [
-      "libcurl4-gnutls-dev",
-      "libmicrohttpd-dev"
+      "libcurl4-gnutls-dev"
     ],
-    "_comment": "libmicrohttpd and libcurl are not available with MSVC CI",
+    "_comment": "libcurl is not available with MSVC CI",
     "build_on": {
       "windows": false
     }
