@@ -72,8 +72,14 @@ sdl2_mixer_dep = declare_dependency(
   link_with: sdl2_mixer_lib,
 )
 
+if sdl2_dep.type_name() == 'internal'
+  sdl2main_dep = dependency('sdl2main')
+else
+  sdl2main_dep = cc.find_library('SDL2main')
+endif
+
 executable(
   'playmus',
   'playmus.c',
-  dependencies: [sdl2_dep, sdl2_mixer_dep],
+  dependencies: [sdl2_dep, sdl2main_dep, sdl2_mixer_dep],
 )
