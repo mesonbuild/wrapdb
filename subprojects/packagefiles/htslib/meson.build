@@ -19,9 +19,9 @@ endif
 add_project_arguments('-D_XOPEN_SOURCE=600', language: 'c')
 
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required: false)
+  dl_dep = dependency('dl')
 else
-  dl_dep = cc.find_library('dl', required: false)
+  dl_dep = cc.find_library('dl')
 endif
 libm_dep = cc.find_library('m', required: false)
 regex_dep = dependency('regex', required: host_machine.system() == 'windows')
