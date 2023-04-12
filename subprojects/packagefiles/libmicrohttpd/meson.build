@@ -267,7 +267,7 @@ libmicrohttpd = library(
   install: true,
 )
 
-depinc = include_directories('.')
+depinc = include_directories('.', 'src/include')
 libmicrohttpd_dep = declare_dependency(
   include_directories: depinc,
   link_with: libmicrohttpd,
