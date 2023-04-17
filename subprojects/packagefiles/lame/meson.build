@@ -231,7 +231,7 @@ configure_file(
 )
 
 common_args = ['-DHAVE_CONFIG_H']
-subdir('include')
+subdir('include/lame')
 lameinc = include_directories('include')
 confinc = include_directories('.')
 
