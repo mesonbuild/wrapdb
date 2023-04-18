@@ -8,6 +8,9 @@ project(
 )
 
 cc = meson.get_compiler('cpp')
+if cc.get_argument_syntax() == 'msvc'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'cpp')
+endif
 
 deps = dependency('threads')
 
