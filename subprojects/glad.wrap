@@ -1,0 +1,10 @@
+[wrap-file]
+directory = glad-v0.1.36
+source_url = https://github.com/Dav1dde/glad/archive/refs/tags/v0.1.36.tar.gz
+source_filename = v0.1.36.tar.gz
+source_hash = 8470ed1b0e9fbe88e10c34770505c8a1dc8ccb78cadcf673331aaf5224f963d2
+patch_directory = glad
+
+[provide]
+glad = glad_dep
+
