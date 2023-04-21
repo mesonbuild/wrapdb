@@ -3,6 +3,7 @@ project(
   'c',
   version: '3.2.0',
   meson_version: '>=0.54.0',
+  default_options: ['c_std=gnu99'],
 )
 
 feature_args = []
