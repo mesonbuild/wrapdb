@@ -32,7 +32,7 @@ libsqlite3 = library(
   version: '0.8.6',
 )
 
-sqlite_args = []
+sqlite_args = ['-D_GNU_SOURCE']
 if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   sqlite_args += '-DSQLITE_API=__declspec(dllimport)'
 endif
