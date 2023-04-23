@@ -11,7 +11,11 @@ deps = [bfd, dw, dwarf, unwind]
 
 if bfd.found()
     add_project_arguments('-DBACKWARDS_HAS_BFD=1', language: 'cpp')
-    deps += cpp.find_library('dl')
+    if meson.version().version_compare('>= 0.62')
+        deps += dependency('dl')
+    else
+        deps += cpp.find_library('dl')
+    endif
 endif
 
 if dw.found()
@@ -24,7 +28,8 @@ endif
 
 install_headers('backward.hpp', subdir : 'backward')
 
-if build_machine.system() == 'windows'
+if host_machine.system() == 'windows'
+    deps += cpp.find_library('dbghelp')
     backward = static_library('backward-cpp', 'backward.cpp', dependencies: deps, install: true)
 else
     backward = library('backward-cpp', 'backward.cpp', dependencies: deps, install: true)
