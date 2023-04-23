@@ -67,7 +67,7 @@ jobs:
     name: MSYS2-${{matrix.platform}}
     strategy:
       matrix:
-        platform: ['UCRT64', 'CLANG32', 'CLANG64']
+        platform: ['UCRT64', 'CLANG64']
     steps:
       - uses: actions/checkout@v3
 

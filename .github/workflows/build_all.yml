@@ -86,7 +86,7 @@ jobs:
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     strategy:
       matrix:
-        platform: ['UCRT64', 'CLANG32', 'CLANG64']
+        platform: ['UCRT64', 'CLANG64']
     steps:
       - uses: actions/checkout@v3
 
