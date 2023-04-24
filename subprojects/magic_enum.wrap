@@ -1,8 +1,8 @@
 [wrap-file]
-directory = magic_enum-0.8.1
-source_url = https://github.com/Neargye/magic_enum/archive/refs/tags/v0.8.1.tar.gz
-source_filename = magic_enum-v0.8.1.tar.gz
-source_hash = 6b948d1680f02542d651fc82154a9e136b341ce55c5bf300736b157e23f9df11
+directory = magic_enum-0.8.2
+source_url = https://github.com/Neargye/magic_enum/archive/refs/tags/v0.8.2.tar.gz
+source_filename = magic_enum-v0.8.2.tar.gz
+source_hash = 62bd7034bbbfc3d7806001767d5775ab42f3ff33bb38366e1ceb21102f0dff9a
 
 [provide]
 magic_enum = magic_enum_dep

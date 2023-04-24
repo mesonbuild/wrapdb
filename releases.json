@@ -1596,6 +1596,7 @@
   },
   "magic_enum": {
     "versions": [
+      "0.8.2-1",
       "0.8.1-1"
     ],
     "dependency_names": [
