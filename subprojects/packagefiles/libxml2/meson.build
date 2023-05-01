@@ -1,17 +1,21 @@
 project(
   'libxml2',
   'c',
-  version: '2.10.4',
+  version: '2.11.1',
   meson_version: '>=0.54.1',
   license: 'MIT',
 )
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
-#hack to get rand_r working on windows
 cc = meson.get_compiler('c')
-if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
-  add_project_arguments('-D_POSIX_THREAD_SAFE_FUNCTIONS', language: 'c')
+if host_machine.system() == 'windows'
+  if cc.get_argument_syntax() == 'gcc'
+    #hack to get rand_r working on windows
+    add_project_arguments('-D_POSIX_THREAD_SAFE_FUNCTIONS', language: 'c')
+  else
+    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  endif
 endif
 
 cdata = configuration_data()
