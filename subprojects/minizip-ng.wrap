@@ -1,8 +1,8 @@
 [wrap-file]
-directory = minizip-ng-3.0.8
-source_url = https://github.com/zlib-ng/minizip-ng/archive/refs/tags/3.0.8.tar.gz
-source_filename = 3.0.8.tar.gz
-source_hash = 27cc2f62cd02d79b71b346fc6ace02728385f8ba9c6b5f124062b0790a04629a
+directory = minizip-ng-3.0.10
+source_url = https://github.com/zlib-ng/minizip-ng/archive/refs/tags/3.0.10.tar.gz
+source_filename = 3.0.10.tar.gz
+source_hash = d4a549731d8c7074e421dbab6d8b8ad0a93067752fe767c464f0f40fa5f0a80d
 patch_directory = minizip-ng
 
 [provide]
