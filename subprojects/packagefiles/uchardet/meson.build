@@ -1,7 +1,7 @@
 project(
     'uchardet',
     ['c', 'cpp'],
-    version: '0.0.7',
+    version: '0.0.8',
     license: ['MPL-1.1', 'GPL-2.0-or-later', '  LGPL-2.1-or-later'],
     meson_version: '>=0.53.0',
     default_options: ['cpp_std=c++14', 'warning_level=1'],
@@ -16,6 +16,7 @@ use_sse2 = not get_option('use_sse2').disabled()
 
 if cxx.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cxx.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cxx.get_supported_arguments('-Wno-deprecated-declarations'), language: 'cpp')
 endif
 
 # these cppflags only make sense on the x86 architecture
