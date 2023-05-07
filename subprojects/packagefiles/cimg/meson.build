@@ -12,7 +12,6 @@ compile_args = []
 
 # Feature option/define name : library name
 simple_deps = {
-  'openmp'  : 'openmp', # Meson's built-in support
   'opencv'  : 'OpenCV', # CMake module
   'zlib'    : 'zlib',
   'curl'    : 'libcurl',
@@ -33,6 +32,12 @@ foreach depname, libname: simple_deps
     compile_args += '-Dcimg_use_@0@'.format(depname)
   endif
 endforeach
+
+# Do not define macro to zero if not found - it's broken
+openmp_dep = dependency('openmp', required: get_option('openmp'))
+if openmp_dep.found()
+  deps += openmp_dep
+endif
 
 # FFTW3 requires us to link to an additional library
 fftw3_dep = dependency('fftw3', required: get_option('fftw3'))
