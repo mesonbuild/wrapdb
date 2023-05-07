@@ -41,6 +41,9 @@
   "cimg": {
     "build_options": [
       "cimg:examples=true"
+    ],
+    "brew_packages": [
+      "libomp"
     ]
   },
   "cli11": {

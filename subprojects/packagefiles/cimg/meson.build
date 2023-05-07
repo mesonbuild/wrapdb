@@ -3,12 +3,18 @@ project(
   'cpp',
   version: '3.2.3',
   meson_version: '>=0.59.0',
+  default_options: ['werror=false']
 )
 
 cpp = meson.get_compiler('cpp')
 
 deps = [dependency('threads')]
 compile_args = []
+
+if host_machine.system() == 'windows'
+  # This helps in certain environments like msys2
+  compile_args += '-Dcimg_OS=2'
+endif
 
 # Feature option/define name : library name
 simple_deps = {
