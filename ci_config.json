@@ -38,6 +38,11 @@
       "cexception:werror=false"
     ]
   },
+  "cimg": {
+    "build_options": [
+      "cimg:examples=true"
+    ]
+  },
   "cli11": {
     "build_options": [
       "cpp_std=c++14"

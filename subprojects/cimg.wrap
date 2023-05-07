@@ -1,0 +1,9 @@
+[wrap-file]
+directory = CImg-3.2.3
+source_url = http://cimg.eu/files/CImg_3.2.3.zip
+source_filename = CImg_3.2.3.zip
+source_hash = 3961967cb5958a95c5fe152945b17a23fa96ebe9be48fe798effc1a7bd5a9e6c 
+patch_directory = cimg
+
+[provide]
+cimg = cimg_dep

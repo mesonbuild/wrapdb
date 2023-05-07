@@ -1,0 +1,116 @@
+# Build settings
+
+option('examples',
+  type: 'boolean',
+  value: false,
+  description: 'Build examples',
+)
+
+# Library settings
+
+option('display',
+  type : 'combo',
+  choices : ['auto', 'none', 'X11', 'GDI32'],
+  value : 'auto',
+  description: 'Windowing backend to use',
+)
+
+option('xshm',
+  type: 'feature',
+  description: 'Use XSHM for accelerated image rendering when using X11',
+)
+
+option('xrandr',
+  type: 'feature',
+  description: 'Use XRandr for modesetting when using X11',
+)
+
+option('veborsity',
+  type : 'combo',
+  choices : ['auto', 'quiet', 'normal_console', 'normal_gui', 'veborse_console', 'veborse_gui'],
+  value : 'auto',
+  description: 'Logging configuration (auto will select one of normal settings depending on setup)',
+)
+
+option('colorize_log',
+  type: 'feature',
+  description: 'Use VT100 codes when printing messages to console',
+)
+
+# External image processing related libraries that don't directly correspond to formats
+
+option('openmp',
+  type: 'feature',
+  description: 'Use OpenMP to accelerate image processing on multicore systems',
+)
+
+option('opencv',
+  type: 'feature',
+  description: 'Use OpenCV for camera access and video processing',
+)
+
+option('zlib',
+  type: 'feature',
+  description: 'Use zlib to support compressed data in .cimgz format',
+)
+
+option('curl',
+  type: 'feature',
+  description: 'Use libcurl to download files from the network',
+)
+
+option('magick',
+  type: 'feature',
+  description: 'Use libmagick++ to support variety of file formats',
+)
+
+option('fftw3',
+  type: 'feature',
+  description: 'Use libfftw3 for Fast Fourier Transform computation',
+)
+
+# libboard seems to be dead
+#option('board',
+#  type: 'feature',
+#  description: 'Use libboard for basic 3D support',
+#)
+
+option('lapack',
+  type: 'feature',
+  description: 'Use liblapack to accelerate matrix computations',
+)
+
+# Image format support
+
+option('png',
+  type: 'feature',
+  description: 'Native PNG support, requires libpng',
+)
+
+option('jpeg',
+  type: 'feature',
+  description: 'Native JPEG support, requires libjpeg',
+)
+
+option('tiff',
+  type: 'feature',
+  description: 'Native TIFF support, requires libtiff',
+)
+
+option('heif',
+  type: 'feature',
+  description: 'Native HEIF support, requires libheif',
+)
+
+# libminc2 has rather broken CMake config file and cimg doesn't properly prefix its includes for it
+#option('minc',
+#  type: 'feature',
+#  description: 'Native MINC support, requires libminc2',
+#)
+
+option('openexr',
+  type: 'feature',
+  description: 'Native EXR support, requires libopenexr',
+)
+
+# tinyexr is not supported by this wrap (it comes with shared library, but cimg expects it to be header-only)
