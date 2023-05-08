@@ -4,4 +4,5 @@
 @__kernel_rwf_t_compat@
 @__kernel_timespec_compat@
 @open_how_compat@
+@no_glibc_statx@
 #endif

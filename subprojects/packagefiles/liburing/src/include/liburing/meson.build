@@ -37,7 +37,9 @@ conf_data.set('__kernel_timespec_compat', __kernel_timespec_compat)
 conf_data.set('open_how_compat', open_how_compat)
 
 if not glibc_statx and has_statx
-  conf_data.set('no_glibc_statx', '#include <stat/stat.h>')
+  conf_data.set('no_glibc_statx', '#include <sys/stat.h>')
+else
+  conf_data.set('no_glibc_statx', '')
 endif
 
 configure_file(input: 'compat.h.meson',
