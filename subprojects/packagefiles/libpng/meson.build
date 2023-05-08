@@ -46,7 +46,7 @@ png_src = files(
 )
 
 
-if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON') != ''
+if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip() != ''
   png_src += files(
     'arm/arm_init.c',
     'arm/filter_neon_intrinsics.c',
