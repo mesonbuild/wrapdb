@@ -1,5 +1,5 @@
 project('liburing', ['c','cpp'],
-        version: '2.2',
+        version: '2.3',
         license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
         meson_version: '>=0.57.0',
         default_options: ['default_library=both',
@@ -92,9 +92,7 @@ has_cxx = cpp.compiles(code, name: 'C++')
 has_ucontext = (cc.has_type('ucontext_t', prefix: '#include <ucontext.h>')
   and cc.has_function('makecontext', prefix: '#include <ucontext.h>'))
 
-has_memfd_create = cc.has_function('memfd_create',
-                                   args: ['-D_GNU_SOURCE'],
-                                   prefix: '#include <sys/mman.h>')
+has_nvme_uring_cmd = cc.has_type('struct nvme_uring_cmd', prefix: '#include <linux/nvme_ioctl.h>')
 
 conf_data = configuration_data()
 conf_data.set('CONFIG_HAVE_KERNEL_RWF_T', has__kernel_rwf_t)
@@ -104,7 +102,7 @@ conf_data.set('CONFIG_HAVE_STATX', has_statx)
 conf_data.set('CONFIG_HAVE_GLIBC_STATX', glibc_statx)
 conf_data.set('CONFIG_HAVE_CXX', has_cxx)
 conf_data.set('CONFIG_HAVE_UCONTEXT', has_ucontext)
-conf_data.set('CONFIG_HAVE_MEMFD_CREATE', has_memfd_create)
+conf_data.set('CONFIG_HAVE_NVME_URING', has_nvme_uring_cmd)
 configure_file(output: 'config-host.h',
                configuration: conf_data)
 
