@@ -1,17 +1,22 @@
-executable('io_uring-cp',
-           'io_uring-cp.c',
-           dependencies: uring)
-
-executable('io_uring-test',
-           'io_uring-test.c',
-           dependencies: uring)
-
-executable('link-cp',
-           'link-cp.c',
-           dependencies: uring)
+all_examples = [
+  'io_uring-cp.c',
+  'io_uring-test.c',
+  'io_uring-udp.c',
+  'link-cp.c',
+  'poll-bench.c',
+  'send-zerocopy.c',
+]
 
 if has_ucontext
-    executable('ucontext-cp',
-               'ucontext-cp.c',
-               dependencies: uring)
+  all_examples += 'ucontext-cp.c'
 endif
+
+fs = import('fs')
+
+foreach example_source : all_examples
+  executable(
+    fs.stem(example_source),
+    example_source,
+    dependencies: uring,
+  )
+endforeach
