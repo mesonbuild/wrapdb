@@ -536,6 +536,7 @@ install_headers(files('signature_of_eigen3_matrix_library'), subdir: 'eigen3')
 pkgc = import('pkgconfig')
 pkgc.generate(name: 'eigen3',
     version: meson.project_version(),
+    subdirs: 'eigen3',
     description: 'A C++ template library for linear algebra: vectors, matrices, and related algorithms'
 )
 
