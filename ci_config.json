@@ -290,7 +290,8 @@
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
       "darwin": false,
-      "windows": false
+      "windows": false,
+      "msys2": false
     }
   },
   "libusb": {
