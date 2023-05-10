@@ -2097,6 +2097,14 @@
       "3.0.1-1"
     ]
   },
+  "robin-map": {
+    "dependency_names": [
+      "robin-map"
+    ],
+    "versions": [
+      "1.2.1"
+    ]
+  },
   "rtaudio": {
     "dependency_names": [
       "rtaudio"
