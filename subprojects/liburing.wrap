@@ -6,4 +6,4 @@ source_hash = 60b367dbdc6f2b0418a6e0cd203ee0049d9d629a36706fcf91dfb9428bae23c8
 patch_directory = liburing
 
 [provide]
-uring = uring
+dependency_names = liburing, uring
