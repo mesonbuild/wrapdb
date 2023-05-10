@@ -16,3 +16,6 @@ liburing = library('uring',
 
 uring = declare_dependency(link_with: liburing,
                            include_directories: inc)
+
+meson.override_dependency('liburing', uring)
+meson.override_dependency('uring', uring)
