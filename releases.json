@@ -410,6 +410,14 @@
       "1.5.9-1"
     ]
   },
+  "exiv2": {
+    "dependency_names": [
+      "exiv2"
+    ],
+    "versions": [
+      "0.28.0-1"
+    ]
+  },
   "expat": {
     "dependency_names": [
       "expat"
