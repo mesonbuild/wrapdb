@@ -1,8 +1,7 @@
-[wrap-file]
-directory = unit-system-0.6.1
-source_url = https://github.com/noah1510/unit-system/archive/refs/tags/v0.6.1.tar.gz
-source_filename = unit-system-0.6.1.tar.gz
-source_hash = d863c02bc2c99daf710e857ff21fc0ed915dab37af26f9b91a04d32a21e2768d
+[wrap-git]
+directory = unit-system-0.7.0
+url = https://github.com/noah1510/unit-system.git
+revision = v0.7.0
 
 [provide]
 unit-system = unit_system_dep
