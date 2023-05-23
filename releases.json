@@ -107,10 +107,10 @@
   },
   "c-flags": {
     "dependency_names": [
-        "c-flags"
+      "c-flags"
     ],
     "versions": [
-        "1.5.4-1"
+      "1.5.4-1"
     ]
   },
   "catch": {
