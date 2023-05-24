@@ -13,6 +13,12 @@ fmt_lib = library(
   'src/os.cc',
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
+  install: true,
+)
+
+install_subdir('include',
+  strip_directory: true,
+  install_dir: get_option('includedir'),
 )
 
 fmt_dep = declare_dependency(
@@ -28,4 +34,10 @@ endif
 fmt_header_only_dep = declare_dependency(
   include_directories: 'include',
   compile_args: '-DFMT_HEADER_ONLY',
+)
+
+pkg_mod = import('pkgconfig')
+pkg_mod.generate(fmt_lib,
+  name: 'fmt',
+  filebase: 'fmt',
 )
