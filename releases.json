@@ -107,10 +107,10 @@
   },
   "c-flags": {
     "dependency_names": [
-        "c-flags"
+      "c-flags"
     ],
     "versions": [
-        "1.5.4-1"
+      "1.5.4-1"
     ]
   },
   "catch": {
@@ -1616,6 +1616,7 @@
   },
   "magic_enum": {
     "versions": [
+      "0.9.2-1",
       "0.8.2-1",
       "0.8.1-1"
     ],
