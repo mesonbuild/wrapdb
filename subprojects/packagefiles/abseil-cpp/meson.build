@@ -406,6 +406,11 @@ absl_numeric_dep = declare_dependency(
   link_with: absl_numeric_lib,
 )
 
+absl_profiling_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  link_with: absl_profiling_lib,
+)
+
 absl_strings_dep = declare_dependency(
   include_directories: absl_include_dir,
   link_with: absl_strings_lib,
