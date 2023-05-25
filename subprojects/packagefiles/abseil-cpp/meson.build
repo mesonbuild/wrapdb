@@ -1,5 +1,5 @@
 project('abseil-cpp', 'cpp',
-  version : '20230125.1',
+  version : '20230125.2',
   license : 'Apache-2.0',
   default_options : [
     'cpp_std=c++14',
