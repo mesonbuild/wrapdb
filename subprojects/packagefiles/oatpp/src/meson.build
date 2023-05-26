@@ -7,8 +7,12 @@ deps += dependency('threads')
 
 is_mingw = cpp.get_id() == 'gcc' and host_machine.system() == 'windows'
 is_msvc_or_similar = cpp.get_id() == 'msvc' or cpp.get_id() == 'clang-cl'
-
-if is_msvc_or_similar or is_mingw
+is_msys2 = (
+    is_mingw
+    or (host_machine.system() == 'windows'
+    and cpp.get_id() == 'clang')
+)
+if is_msvc_or_similar or is_msys2
     deps += cpp.find_library('wsock32')
     deps += cpp.find_library('ws2_32')
 elif (host_machine.system() != 'darwin' and host_machine.system() != 'freebsd')
