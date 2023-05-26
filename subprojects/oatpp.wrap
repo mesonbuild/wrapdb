@@ -1,0 +1,11 @@
+
+[wrap-git]
+url = https://github.com/oatpp/oatpp.git
+revision = 1.3.0
+depth = 1
+directory = oatpp
+patch_directory = oatpp
+
+[provide]
+oatpp = oatpp_dep
+oatpp-test = oatpp_test_dep

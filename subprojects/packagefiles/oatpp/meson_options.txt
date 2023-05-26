@@ -1,0 +1,99 @@
+option(
+    'shared_libs',
+    type: 'boolean',
+    value: false,
+    description: 'Build shared libraries',
+)
+option(
+    'install',
+    type: 'boolean',
+    value: true,
+    description: 'Create installation target for oat++',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Create test target for oat++',
+)
+option(
+    'link_atomic',
+    type: 'boolean',
+    value: true,
+    description: 'Link atomic library for other platform than MSVC|MINGW|APPLE|FreeBSD',
+)
+option(
+    'msvc_link_static_runtime',
+    type: 'boolean',
+    value: false,
+    description: 'MSVC: Link with static runtime (/MT and /MTd).',
+)
+option(
+    'disable_env_object_counters',
+    type: 'boolean',
+    value: false,
+    description: 'Disable object counting for Release builds for better performance',
+)
+option(
+    'disable_pool_allocations',
+    type: 'boolean',
+    value: false,
+    description: 'This will make oatpp::base::memory::MemoryPool, method obtain and free call new and delete directly',
+    deprecated: true,
+)
+option(
+    'thread_hardware_concurrency',
+    type: 'feature',
+    value: 'auto',
+    description: 'Predefined value for function oatpp::concurrency::Thread::getHardwareConcurrency()',
+)
+option(
+    'compat_build_no_thread_local',
+    type: 'boolean',
+    value: false,
+    description: 'Disable \'thread_local\' feature',
+)
+option(
+    'compat_build_no_set_affinity',
+    type: 'boolean',
+    value: false,
+    description: 'No \'pthread_setaffinity_np\' method',
+)
+option(
+    'disable_logv',
+    type: 'boolean',
+    value: false,
+    description: 'DISABLE logs priority V',
+)
+option(
+    'disable_logd',
+    type: 'boolean',
+    value: false,
+    description: 'DISABLE logs priority D',
+)
+option(
+    'disable_logi',
+    type: 'boolean',
+    value: false,
+    description: 'DISABLE logs priority I',
+)
+option(
+    'disable_logw',
+    type: 'boolean',
+    value: false,
+    description: 'DISABLE logs priority W',
+)
+option(
+    'disable_loge',
+    type: 'boolean',
+    value: false,
+    description: 'DISABLE logs priority E',
+)
+
+option(
+    'thread_distributed_mem_pool_shards_count',
+    type: 'boolean',
+    value: false,
+    description: 'Define OATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT',
+    deprecated: true,
+)

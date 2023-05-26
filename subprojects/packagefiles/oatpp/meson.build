@@ -1,0 +1,144 @@
+
+project(
+    'oatpp',
+    'cpp',
+    default_options: ['default_library=static', 'cpp_std=c++11'],
+    version: '1.3.0',
+    license: 'Apache-2.0',
+)
+
+oatpp_version = meson.project_version()
+oatpp_so_version = (
+    oatpp_version.split('.').get(0) + '.' + oatpp_version.split('.').get(1)
+)
+
+flags = []
+
+
+if get_option('disable_env_object_counters')
+    flags += '-DOATPP_DISABLE_ENV_OBJECT_COUNTERS'
+endif
+
+if get_option('disable_pool_allocations')
+    flags += '-DOATPP_DISABLE_POOL_ALLOCATIONS'
+    warning(
+        'WARNING: disable_pool_allocations option is deprecated and has no effect.',
+    )
+endif
+
+if not get_option('thread_hardware_concurrency').auto()
+    flags += (
+        '-DOATPP_THREAD_HARDWARE_CONCURRENCY=' + get_option(
+            'thread_hardware_concurrency',
+        ).enabled().to_string().to_upper()
+    )
+endif
+
+if get_option('thread_distributed_mem_pool_shards_count')
+    flags += (
+        '-DOATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT=' + get_option(
+            'thread_hardware_concurrency',
+        ).enabled().to_string().to_upper()
+    )
+
+    warning(
+        'WARNING: OATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT option is deprecated and has no effect.',
+    )
+endif
+
+if get_option('compat_build_no_thread_local')
+    flags += '-DOATPP_COMPAT_BUILD_NO_THREAD_LOCAL'
+endif
+
+
+if get_option('compat_build_no_set_affinity')
+    flags += '-DOATPP_COMPAT_BUILD_NO_SET_AFFINITY'
+endif
+
+if get_option('disable_logv')
+    flags += '-DOATPP_DISABLE_LOGV'
+endif
+
+if get_option('disable_logd')
+    flags += '-DOATPP_DISABLE_LOGD'
+endif
+
+if get_option('disable_logi')
+    flags += '-DOATPP_DISABLE_LOGI'
+endif
+
+if get_option('disable_logv')
+    flags += '-DOATPP_DISABLE_LOGV'
+endif
+
+if get_option('disable_logw')
+    flags += '-DOATPP_DISABLE_LOGW'
+endif
+
+if get_option('disable_loge')
+    flags += '-DOATPP_DISABLE_LOGE'
+endif
+
+
+cpp = meson.get_compiler('cpp')
+if cpp.get_id() == 'gcc' and cpp.version().version_compare('<5.0.0') == false
+    flags += '-DOATPP_DISABLE_STD_PUT_TIME'
+endif
+
+
+deps = []
+src_files = []
+inc_dirs = []
+
+test_module_deps = []
+test_module_src_files = []
+test_module_inc_dirs = []
+
+
+subdir('src')
+
+# TODO: install isn't well tought out atm
+lib_oatpp = library(
+    'oatpp',
+    src_files,
+    dependencies: deps,
+    include_directories: inc_dirs,
+    cpp_args: flags,
+    install: true,
+    soversion: oatpp_so_version,
+    version: oatpp_version,
+)
+
+
+oatpp_dep = declare_dependency(
+    include_directories: inc_dirs,
+    link_with: lib_oatpp,
+    version: oatpp_version,
+)
+
+
+
+# test module of oatpp (not the tests, but the module that is the test suite like e.g gtest)
+lib_test_oatpp = library(
+    'oatpp-test',
+    test_module_src_files,
+    dependencies: test_module_deps,
+    include_directories: test_module_inc_dirs,
+    cpp_args: flags,
+    soversion: oatpp_so_version,
+    version: oatpp_version,
+)
+
+
+oatpp_test_dep = declare_dependency(
+    dependencies: oatpp_dep,
+    include_directories: test_module_inc_dirs,
+    link_with: lib_test_oatpp,
+    version: oatpp_version,
+)
+
+
+
+if get_option('tests')
+    subdir('test')
+endif
