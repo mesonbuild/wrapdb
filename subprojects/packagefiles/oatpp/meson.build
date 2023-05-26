@@ -85,12 +85,12 @@ if cpp.get_id() == 'gcc' and cpp.version().version_compare('<5.0.0') == false
     flags += '-DOATPP_DISABLE_STD_PUT_TIME'
 endif
 
-
-if cpp.get_id() == 'msvc'
+is_msvc_or_similar = cpp.get_id() == 'msvc' or cpp.get_id() == 'clang-cl'
+if is_msvc_or_similar
     add_project_arguments('/permissive-', language: 'cpp')
 endif
 
-if cpp.get_id() == 'msvc'
+if is_msvc_or_similar
     if get_option('msvc_link_static_runtime')
         message('MSVC: using statically-linked runtime (/MT and /MTd).')
         flags += '/MT'
