@@ -90,6 +90,14 @@ if cpp.get_id() == 'msvc'
     add_project_arguments('/permissive-', language: 'cpp')
 endif
 
+if cpp.get_id() == 'msvc' and get_option('msvc_link_static_runtime')
+    message('MSVC: using statically-linked runtime (/MT and /MTd).')
+    flags += '/MT'
+else
+    message('MSVC: using dynamically-linked runtime (/MD and /MDd).')
+    flags += '/MD'
+endif
+
 
 deps = []
 src_files = []
