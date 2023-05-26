@@ -86,6 +86,11 @@ if cpp.get_id() == 'gcc' and cpp.version().version_compare('<5.0.0') == false
 endif
 
 
+if cpp.get_id() == 'msvc'
+    add_project_arguments('/permissive-', language: 'cpp')
+endif
+
+
 deps = []
 src_files = []
 inc_dirs = []

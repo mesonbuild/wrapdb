@@ -2,12 +2,6 @@ subdir('oatpp')
 
 inc_dirs += include_directories('.')
 
-cpp = meson.get_compiler('cpp')
-if cpp.get_id() == 'msvc'
-    add_project_arguments('/permissive-', language: 'cpp')
-endif
-
-
 deps += dependency('threads')
 
 

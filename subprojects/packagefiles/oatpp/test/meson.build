@@ -111,14 +111,6 @@ test_src_files = files(
 )
 
 
-
-
-cpp = meson.get_compiler('cpp')
-if cpp.get_id() == 'msvc'
-    add_project_arguments('/permissive-', language: 'cpp')
-endif
-
-
 all_tests = executable(
     'oatpp_all_tests',
     test_src_files,
