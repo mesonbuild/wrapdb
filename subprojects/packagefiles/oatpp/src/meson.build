@@ -9,10 +9,7 @@ is_mingw = cpp.get_id() == 'gcc' and host_machine.system() == 'windows'
 if cpp.get_id() == 'msvc' or is_mingw
     deps += cpp.find_library('wsock32')
     deps += cpp.find_library('ws2_32')
-elif (
-    host_machine.system() == 'darwin'
-    and not (host_machine.system() == 'freebsd')
-)
+elif (host_machine.system() != 'darwin' and host_machine.system() != 'freebsd')
     if get_option('link_atomic')
         deps += cpp.find_library('atomic')
     endif
