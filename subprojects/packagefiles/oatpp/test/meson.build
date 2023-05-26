@@ -126,5 +126,5 @@ all_tests = executable(
     include_directories: include_directories('.'),
     dependencies: [oatpp_dep, oatpp_test_dep],
 )
-# Note that these are extensive tests and take a long time! I ttakes ~ 5 Min on fast machines
+# Note that these are extensive tests and take a long time! It takes ~ 5 Min on fast machines
 test('oatpp all Tests', all_tests, timeout: 600)

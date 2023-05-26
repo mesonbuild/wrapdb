@@ -22,7 +22,7 @@ endif
 if get_option('disable_pool_allocations')
     flags += '-DOATPP_DISABLE_POOL_ALLOCATIONS'
     warning(
-        'WARNING: disable_pool_allocations option is deprecated and has no effect.',
+        'disable_pool_allocations option is deprecated and has no effect.',
     )
 endif
 
@@ -42,7 +42,7 @@ if get_option('thread_distributed_mem_pool_shards_count')
     )
 
     warning(
-        'WARNING: OATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT option is deprecated and has no effect.',
+        'OATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT option is deprecated and has no effect.',
     )
 endif
 
