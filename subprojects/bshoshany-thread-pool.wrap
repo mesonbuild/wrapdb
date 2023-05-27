@@ -1,8 +1,8 @@
 [wrap-file]
-directory = thread-pool-3.4.0
-source_url = https://github.com/bshoshany/thread-pool/archive/refs/tags/v3.4.0.zip
-source_filename = thread-pool-3.4.0.zip
-source_hash = 1ad78ac1b952d0735ac5defd1df8a8870a5f6bf14f1a49bf721e20835d55c77d
+directory = thread-pool-3.5.0
+source_url = https://github.com/bshoshany/thread-pool/archive/refs/tags/v3.5.0.zip
+source_filename = thread-pool-3.5.0.zip
+source_hash = 0cbfd770acbb88ec612abf48e04bfd774254ace805e648f112ec7022099e30c2
 patch_directory = bshoshany-thread-pool
 
 [provide]
