@@ -160,6 +160,7 @@
       "bshoshany-thread-pool"
     ],
     "versions": [
+      "3.5.0-1",
       "3.4.0-1",
       "3.3.0-1"
     ]
