@@ -141,6 +141,8 @@ header_files = files(
     'web/url/mapping/Router.hpp',
 )
 
+src_files += header_files
+
 src_files += files(
     'algorithm/CRC.cpp',
     'core/data/mapping/ObjectMapper.cpp',
@@ -242,7 +244,6 @@ src_files += files(
     'web/server/handler/ErrorHandler.cpp',
     'web/server/interceptor/AllowCorsGlobal.cpp',
     'web/url/mapping/Pattern.cpp',
-    header_files,
 )
 
 install_headers(header_files, subdir: 'oatpp')
