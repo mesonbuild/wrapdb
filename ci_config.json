@@ -383,6 +383,21 @@
     },
     "_comment": "openssl wrap fails on darwin (known) and the native openssl doesn't get detected (by default) so it can't be built atm"
   },
+  "oatpp-libressl": {
+    "debian_packages": [
+      "libssl3",
+      "libssl-dev",
+      "libtls22",
+      "libtls-dev"
+    ],
+    "brew_packages":[
+      "libressl"
+    ],
+    "_comment": "- libressl doesn't work on windows",
+    "build_on": {
+      "windows": false
+    }
+  },
   "openh264": {
     "brew_packages": [
       "nasm"
