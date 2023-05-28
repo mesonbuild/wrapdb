@@ -1871,6 +1871,14 @@
       "1.3.0-1"
     ]
   },
+  "oatpp-openssl": {
+    "dependency_names": [
+      "oatpp-openssl"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "oatpp-swagger": {
     "dependency_names": [
       "oatpp-swagger"
