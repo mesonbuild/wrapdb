@@ -115,8 +115,7 @@ all_tests = executable(
     'oatpp_all_tests',
     test_src_files,
     cpp_args: flags,
-    include_directories: include_directories('.'),
     dependencies: [oatpp_dep, oatpp_test_dep],
 )
 # Note that these are extensive tests and take a long time! It takes ~ 5 Min on fast machines
-test('oatpp all Tests', all_tests, timeout: 600)
+test('oatpp all tests', all_tests, timeout: 600)
