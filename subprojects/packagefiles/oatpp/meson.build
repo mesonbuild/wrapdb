@@ -152,7 +152,20 @@ oatpp_test_dep = declare_dependency(
 )
 
 
+# testst is a feature, so has three states: auto => run tests, if possible, enabled / disabled, run them always or never
 
-if get_option('tests')
+run_tests = get_option('tests').enabled()
+if get_option('tests').auto()
+    tests_are_fixed_on_windows = oatpp_version.version_compare('>=1.4.0')
+
+    if host_machine.system() == 'windows' and not tests_are_fixed_on_windows
+        run_tests = false
+    else
+        run_tests = true
+    endif
+endif
+
+
+if run_tests
     subdir('test')
 endif
