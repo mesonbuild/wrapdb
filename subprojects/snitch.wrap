@@ -1,0 +1,8 @@
+[wrap-file]
+directory = snitch-1.1.1
+source_url = https://github.com/cschreib/snitch/archive/v1.1.1.tar.gz
+source_filename = snitch-1.1.1.tar.gz
+source_hash = 65367572fb6a28fd5b7190ec8cbc623624fdbaa4dcff4431075f6deba2fc02a6
+
+[provide]
+snitch = snitch_dep

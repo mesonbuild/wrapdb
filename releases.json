@@ -2347,6 +2347,14 @@
       "4.6.1-1"
     ]
   },
+  "snitch": {
+    "dependency_names": [
+      "snitch"
+    ],
+    "versions": [
+      "1.1.1-1"
+    ]
+  },
   "spdlog": {
     "dependency_names": [
       "spdlog"
