@@ -108,17 +108,17 @@ test_module_deps = []
 test_module_src_files = []
 test_module_inc_dirs = []
 
+install = get_option('install')
 
 subdir('src')
 
-# TODO: install isn't well tought out atm
 lib_oatpp = library(
     'oatpp',
     src_files,
     dependencies: deps,
     include_directories: inc_dirs,
     cpp_args: flags,
-    install: true,
+    install: install,
     soversion: oatpp_so_version,
     version: oatpp_version,
 )
@@ -131,7 +131,6 @@ oatpp_dep = declare_dependency(
 )
 
 
-
 # test module of oatpp (not the tests, but the module that is the test suite like e.g gtest)
 lib_test_oatpp = library(
     'oatpp-test',
@@ -139,6 +138,7 @@ lib_test_oatpp = library(
     dependencies: test_module_deps,
     include_directories: test_module_inc_dirs,
     cpp_args: flags,
+    install: install,
     soversion: oatpp_so_version,
     version: oatpp_version,
 )
