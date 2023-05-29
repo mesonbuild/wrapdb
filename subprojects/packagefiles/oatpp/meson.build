@@ -110,9 +110,9 @@ endif
 
 if is_msvc_or_similar
     if get_option('msvc_link_static_runtime')
-        override_options += 'b_vscrt=from_buildtype'
-    else
         override_options += 'b_vscrt=static_from_buildtype'
+    else
+        override_options += 'b_vscrt=from_buildtype'
     endif
 endif
 
@@ -125,6 +125,7 @@ lib_oatpp = library(
     include_directories: inc_dirs,
     cpp_args: flags,
     install: install,
+    override_options: override_options,
     soversion: oatpp_so_version,
     version: oatpp_version,
 )
@@ -145,6 +146,7 @@ lib_test_oatpp = library(
     include_directories: test_module_inc_dirs,
     cpp_args: flags,
     install: install,
+    override_options: override_options,
     soversion: oatpp_so_version,
     version: oatpp_version,
 )
@@ -158,8 +160,7 @@ oatpp_test_dep = declare_dependency(
 )
 
 
-# testst is a feature, so has three states: auto => run tests, if possible, enabled / disabled, run them always or never
-
+# tests is a feature, so has three states: auto => run tests, if possible, enabled / disabled, run them always or never
 run_tests = get_option('tests').enabled()
 if get_option('tests').auto()
     tests_are_fixed_on_windows = oatpp_version.version_compare('>=1.4.0')
