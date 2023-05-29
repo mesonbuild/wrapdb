@@ -2239,6 +2239,14 @@
       "1.3.0-1"
     ]
   },
+  "oatpp-zlib": {
+    "dependency_names": [
+      "oatpp-zlib"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "ogg": {
     "dependency_names": [
       "ogg"
