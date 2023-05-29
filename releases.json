@@ -1897,6 +1897,14 @@
       "1.3.0-1"
     ]
   },
+  "oatpp-websocket": {
+    "dependency_names": [
+      "oatpp-websocket"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "ogg": {
     "dependency_names": [
       "ogg"

@@ -1,0 +1,24 @@
+option(
+    'shared_libs',
+    type: 'boolean',
+    value: false,
+    description: 'Build shared libraries',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Build tests for this module',
+)
+option(
+    'install',
+    type: 'boolean',
+    value: true,
+    description: 'Install module binaries',
+)
+option(
+    'msvc_link_static_runtime',
+    type: 'boolean',
+    value: false,
+    description: 'MSVC: Link with static runtime (/MT and /MTd).',
+)
