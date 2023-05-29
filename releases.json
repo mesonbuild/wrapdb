@@ -1867,6 +1867,14 @@
       "1.3.0-1"
     ]
   },
+  "oatpp-swagger": {
+    "dependency_names": [
+      "oatpp-swagger"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "ogg": {
     "dependency_names": [
       "ogg"

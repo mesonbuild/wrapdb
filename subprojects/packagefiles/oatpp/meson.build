@@ -90,15 +90,6 @@ if is_msvc_or_similar
     add_project_arguments('/permissive-', language: 'cpp')
 endif
 
-if is_msvc_or_similar
-    if get_option('msvc_link_static_runtime')
-        message('MSVC: using statically-linked runtime (/MT and /MTd).')
-        flags += '/MT'
-    else
-        message('MSVC: using dynamically-linked runtime (/MD and /MDd).')
-        flags += '/MD'
-    endif
-endif
 
 deps = []
 src_files = []
@@ -109,6 +100,21 @@ test_module_src_files = []
 test_module_inc_dirs = []
 
 install = get_option('install')
+
+override_options = []
+if get_option('shared_libs')
+    override_options += 'default_library=shared'
+else
+    override_options += 'default_library=static'
+endif
+
+if is_msvc_or_similar
+    if get_option('msvc_link_static_runtime')
+        override_options += 'b_vscrt=from_buildtype'
+    else
+        override_options += 'b_vscrt=static_from_buildtype'
+    endif
+endif
 
 subdir('src')
 
