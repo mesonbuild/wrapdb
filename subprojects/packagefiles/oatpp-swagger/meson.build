@@ -28,9 +28,9 @@ is_msvc_or_similar = cpp.get_id() == 'msvc' or cpp.get_id() == 'clang-cl'
 
 if is_msvc_or_similar
     if get_option('msvc_link_static_runtime')
-        override_options += 'b_vscrt=from_buildtype'
-    else
         override_options += 'b_vscrt=static_from_buildtype'
+    else
+        override_options += 'b_vscrt=from_buildtype'
     endif
 endif
 
