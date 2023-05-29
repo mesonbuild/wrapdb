@@ -1,0 +1,9 @@
+[wrap-file]
+directory = oatpp-zlib-1.3.0
+source_url = https://github.com/oatpp/oatpp-zlib/archive/refs/tags/1.3.0.tar.gz
+source_filename = oatpp-zlib-1.3.0.tar.gz
+source_hash = 6103b041a424b280e7de1f7ae75404f770049750044531f8d41ec4bafaa9497f
+patch_directory = oatpp-zlib
+
+[provide]
+oatpp-zlib = oatpp_zlib_dep
