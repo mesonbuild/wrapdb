@@ -118,6 +118,10 @@ absl_base_headers = files(
   'absl/base/policy_checks.h',
   'absl/base/port.h',
   'absl/base/thread_annotations.h',
+  # Dependent headers of absl_base
+  'absl/meta/type_traits.h',
+  'absl/utility/utility.h',
+  'absl/memory/memory.h',
 )
 
 absl_container_sources = files(
