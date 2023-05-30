@@ -2427,6 +2427,14 @@
       "3.34.1-1"
     ]
   },
+  "stduuid": {
+    "dependency_names": [
+      "stduuid"
+    ],
+    "versions": [
+      "1.2.3-1"
+    ]
+  },
   "tabulate": {
     "dependency_names": [
       "tabulate"
