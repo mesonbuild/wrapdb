@@ -1,0 +1,9 @@
+[wrap-file]
+directory = stduuid-1.2.3
+source_url = https://github.com/mariusbancila/stduuid/archive/refs/tags/v1.2.3.tar.gz
+source_filename = stduuid-1.2.3.tar.gz
+source_hash = b1176597e789531c38481acbbed2a6894ad419aab0979c10410d59eb0ebf40d3
+patch_directory = stduuid
+
+[provide]
+stduuid = stduuid_dep
