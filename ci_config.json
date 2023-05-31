@@ -429,6 +429,12 @@
       "--timeout-multiplier=2"
     ]
   },
+  "pixman": {
+    "_comment": "Some tests takes more than 2min to complete.",
+    "test_options": [
+      "--timeout-multiplier=3"
+    ]
+  },
   "pkgconf": {
     "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
     "build_options": [
