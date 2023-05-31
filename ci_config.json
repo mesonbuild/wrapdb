@@ -1,11 +1,13 @@
 {
-  "_comment": ["This is intentionally undocumented in README.md, do not use it.",
-               "Using it is an automatic CI error.",
-               "broken_linux, broken_windows and broken_macos are lists of wraps that are known",
-               "to be broken on the CI and ***MUST*** get repaired before updates",
-               "will be accepted. If upstream does not support an Operating System,",
-               "explicitly disable that Operating System in build_on.",
-               "Please remove projects from those lists once they are updated."],
+  "_comment": [
+    "This is intentionally undocumented in README.md, do not use it.",
+    "Using it is an automatic CI error.",
+    "broken_linux, broken_windows and broken_macos are lists of wraps that are known",
+    "to be broken on the CI and ***MUST*** get repaired before updates",
+    "will be accepted. If upstream does not support an Operating System,",
+    "explicitly disable that Operating System in build_on.",
+    "Please remove projects from those lists once they are updated."
+  ],
   "broken_linux": [
     "arduinocore-avr"
   ],
@@ -431,10 +433,10 @@
       "windows": false
     },
     "debian_packages": [
-        "qtbase5-dev"
+      "qtbase5-dev"
     ],
     "brew_packages": [
-        "qt6"
+      "qt6"
     ]
   },
   "quazip": {
