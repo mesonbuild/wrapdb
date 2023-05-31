@@ -414,6 +414,12 @@
       "openssl:build_cli=true"
     ]
   },
+  "pixman": {
+    "_comment": "Some tests takes more than 2min to complete.",
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "pkgconf": {
     "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
     "build_options": [
