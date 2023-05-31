@@ -24,7 +24,7 @@ project(
   'c',
   license: 'MIT',
   version: '2.5.0',
-  meson_version: '>= 0.49.0',
+  meson_version: '>= 0.54.1',
 )
 
 config = configuration_data()
