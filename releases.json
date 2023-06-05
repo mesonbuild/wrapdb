@@ -528,6 +528,21 @@
       "11.1.5.1-0"
     ]
   },
+  "ffmpeg": {
+    "dependency_names": [
+      "avcodec",
+      "avdevice",
+      "avfilter",
+      "avformat",
+      "avutil",
+      "postproc",
+      "swresample",
+      "swscale"
+    ],
+    "versions": [
+      "6.0"
+    ]
+  },
   "flac": {
     "dependency_names": [
       "flac"
