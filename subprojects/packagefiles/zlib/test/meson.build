@@ -1,5 +1,5 @@
 if get_option('tests').disabled()
-  sudbdir_done()
+  subdir_done()
 endif
 
 test('example', executable('example', 'example.c', dependencies: zlib_dep))
