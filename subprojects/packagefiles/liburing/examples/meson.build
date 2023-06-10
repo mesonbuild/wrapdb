@@ -1,10 +1,12 @@
 all_examples = [
+  'io_uring-close-test.c',
   'io_uring-cp.c',
   'io_uring-test.c',
   'io_uring-udp.c',
   'link-cp.c',
   'poll-bench.c',
   'send-zerocopy.c',
+  'rsrc-update-bench.c',
 ]
 
 if has_ucontext
@@ -17,6 +19,6 @@ foreach example_source : all_examples
   executable(
     fs.stem(example_source),
     example_source,
-    dependencies: uring,
+    dependencies: [uring, thread_dep],
   )
 endforeach
