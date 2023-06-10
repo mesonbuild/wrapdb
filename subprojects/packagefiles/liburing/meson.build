@@ -1,5 +1,5 @@
 project('liburing', ['c','cpp'],
-        version: '2.3',
+        version: '2.4',
         license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
         meson_version: '>=0.57.0',
         default_options: ['default_library=both',
@@ -12,12 +12,15 @@ if host_machine.system() != 'linux'
   error('Everything except Linux is unsupported. uring is a Linux framework')
 endif
 
+project_version = meson.project_version().split('.')
+major_version = project_version[0]
+minor_version = project_version[1]
+
 add_project_arguments('-D_GNU_SOURCE',
                       '-D__SANE_USERSPACE_TYPES__',
                       '-include', meson.current_build_dir() + '/config-host.h',
                       '-fno-stack-protector',
                       '-Wno-unused-parameter',
-                      '-Wno-sign-compare',
                       language: ['c', 'cpp'])
 
 thread_dep = dependency('threads')
@@ -103,6 +106,7 @@ conf_data.set('CONFIG_HAVE_GLIBC_STATX', glibc_statx)
 conf_data.set('CONFIG_HAVE_CXX', has_cxx)
 conf_data.set('CONFIG_HAVE_UCONTEXT', has_ucontext)
 conf_data.set('CONFIG_HAVE_NVME_URING', has_nvme_uring_cmd)
+conf_data.set('CONFIG_HAVE_FANOTIFY', cc.has_header('sys/fanotify.h'))
 configure_file(output: 'config-host.h',
                configuration: conf_data)
 
