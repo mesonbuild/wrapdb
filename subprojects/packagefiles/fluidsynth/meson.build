@@ -2,7 +2,7 @@ project(
   'fluidsynth',
   'c',
   'cpp',
-  version: '2.3.2',
+  version: '2.3.3',
   license: 'LGPL-2.1-or-later',
   default_options: ['b_ndebug=if-release'],
   meson_version: '>= 0.54.1',
