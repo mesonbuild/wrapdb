@@ -9,3 +9,4 @@ patch_directory = protobuf
 protobuf = protobuf_dep
 protobuf-lite = protobuf_lite_dep
 protoc = protoc_dep
+program_names = protoc
