@@ -19,6 +19,8 @@ else
   protoc_native = protoc
 endif
 
+meson.override_find_program('protoc', protoc_native)
+
 protoc_gen = generator(
   protoc_native,
   output: ['@BASENAME@.pb.cc', '@BASENAME@.pb.h'],
