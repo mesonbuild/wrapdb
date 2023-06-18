@@ -985,6 +985,14 @@
       "r51-1"
     ]
   },
+  "irepeat": {
+    "dependency_names": [
+      "irepeat"
+    ],
+    "versions": [
+      "0.6-1"
+    ]
+  },
   "jansson": {
     "dependency_names": [
       "jansson"
