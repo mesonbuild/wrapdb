@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libspng-0.7.2
+directory = libspng-0.7.4
 
-source_url = https://github.com/randy408/libspng/archive/refs/tags/v0.7.2.tar.gz
-source_filename = libspng-0.7.2.tar.gz
-source_hash = 4acf25571d31f540d0b7ee004f5461d68158e0a13182505376805da99f4ccc4e
+source_url = https://github.com/randy408/libspng/archive/refs/tags/v0.7.4.tar.gz
+source_filename = libspng-0.7.4.tar.gz
+source_hash = 47ec02be6c0a6323044600a9221b049f63e1953faf816903e7383d4dc4234487
 
 [provide]
 spng = spng_dep
