@@ -14,6 +14,7 @@ compat_version = '.'.join([v[0], v[1]])
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required: false)
+clang_dep = cc.find_library('clang_rt.builtins-x86_64', required: cc.get_id() == 'clang-cl')
 
 conf = configuration_data()
 
@@ -171,7 +172,11 @@ if machine == 'auto'
     if host_machine.cpu_family() == 'x86'
       machine = 'ppro'
     elif host_machine.cpu_family() == 'x86_64'
-      machine = 'x64'
+      if cc.get_argument_syntax() == 'msvc'
+        machine = 'x64'
+      else
+        machine = 'uint128'
+      endif
     else
       error('machine probing on Windows only supports x86/x64')
     endif
@@ -219,12 +224,8 @@ if machine == 'x64'
 elif machine == 'uint128'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
   add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language: 'c')
-  if host_machine.system() == 'windows'
-    error('machine "uint128" not supported on Windows')
-  else
-    add_project_arguments('-m64', language: ['c', 'cpp'])
-    add_project_link_arguments('-m64', language: ['c', 'cpp'])
-  endif
+  add_project_arguments('-m64', language: ['c', 'cpp'])
+  add_project_link_arguments('-m64', language: ['c', 'cpp'])
 
 elif machine == 'ansi64'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
@@ -342,11 +343,13 @@ if cc.get_argument_syntax() == 'msvc' and machine == 'x64'
     command: [ml, '/Cx', '/Fo', '@OUTPUT@', '/c', '@INPUT@'])
 endif
 
+
+
 libmpdec = library(
   'mpdec',
   libmpdec_sources,
   c_args: libmpdec_c_args,
-  dependencies: m_dep,
+  dependencies: [clang_dep, m_dep],
   version: library_version,
   soversion: library_soversion,
   darwin_versions: [compat_version, library_version],
@@ -365,7 +368,7 @@ libmpdecpp = library(
   'mpdec++',
   libmpdecpp_sources, mpdecimal_h,
   cpp_args: libmpdecpp_cpp_args,
-  dependencies: [m_dep, mpdec_dep],
+  dependencies: [clang_dep, m_dep, mpdec_dep],
   version: library_version,
   soversion: library_soversion,
   darwin_versions: [compat_version, library_version],

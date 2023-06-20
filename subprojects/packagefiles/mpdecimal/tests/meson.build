@@ -1,6 +1,8 @@
 runtest = executable(
   'runtest',
-  ['runtest.c', 'test.c'],
+  'runtest.c',
+  'test.c',
+  c_args: host_machine.system() == 'windows' ? '-Drandom=rand' : [],
   dependencies: mpdec_dep)
 
 testdata = custom_target(
