@@ -1,0 +1,9 @@
+[wrap-file]
+directory = opus-1.4
+
+source_url = https://downloads.xiph.org/releases/opus/opus-1.4.tar.gz
+source_filename = opus-1.4.tar.gz
+source_hash = c9b32b4253be5ae63d1ff16eea06b94b5f0f2951b7a02aceef58e3a3ce49c51f
+
+[provide]
+opus = opus_dep

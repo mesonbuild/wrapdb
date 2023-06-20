@@ -414,6 +414,14 @@
       "openssl:build_cli=true"
     ]
   },
+  "opus": {
+    "_comment": "Remove when fixed: https://github.com/xiph/opus/pull/285",
+    "fatal_warnings": false,
+    "_comment2": "Remove when fixed: https://github.com/xiph/opus/pull/287",
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "pkgconf": {
     "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
     "build_options": [
