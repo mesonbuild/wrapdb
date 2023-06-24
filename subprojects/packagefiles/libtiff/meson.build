@@ -17,8 +17,12 @@ zstd_dep = dependency('libzstd', required: get_option('zstd'))
 
 cdata = configuration_data()
 
-cdata.set('HOST_FILLORDER', host_machine.endian() == 'big' ? 'FILLORDER_LSB2MSB' : 'FILLORDER_LSB2MSB')
 cdata.set10('HOST_BIG_ENDIAN', host_machine.endian() == 'big')
+if host_machine.endian() == 'big'
+  # missing cmakedefine in tif_config.h.cmake.in.  this is how upstream
+  # handles it in cmake/ProcessorChecks.cmake
+  add_project_arguments('-DWORDS_BIGENDIAN', language : 'c')
+endif
 
 cdata.set('TIFF_INT8_T', 'int8_t')
 cdata.set('TIFF_UINT8_T', 'uint8_t')
@@ -97,6 +101,9 @@ cdata.set('PIXARLOG_SUPPORT', zlib_dep.found())
 
 cdata.set('CHECK_JPEG_YCBCR_SUBSAMPLING', true)
 cdata.set('TIFF_MAX_DIR_COUNT', 1048576)
+
+# example variable in tiffconf.h.cmake.in comment
+cdata.set('VAR', 'VAR')
 
 subdir('libtiff')
 
