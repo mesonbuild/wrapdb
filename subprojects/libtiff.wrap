@@ -1,8 +1,8 @@
 [wrap-file]
-directory = tiff-4.5.0
-source_url = http://download.osgeo.org/libtiff/tiff-4.5.0.tar.gz
-source_filename = tiff-4.5.0.tar.gz
-source_hash = c7a1d9296649233979fa3eacffef3fa024d73d05d589cb622727b5b08c423464
+directory = tiff-4.5.1
+source_url = https://download.osgeo.org/libtiff/tiff-4.5.1.tar.xz
+source_filename = tiff-4.5.1.tar.gz
+source_hash = 3c080867114c26edab3129644a63b708028a90514b7fe3126e38e11d24f9f88a
 patch_directory = libtiff
 
 [provide]
