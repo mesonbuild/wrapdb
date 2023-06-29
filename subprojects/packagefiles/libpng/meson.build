@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.39', license: 'libpng',
+  version: '1.6.40', license: 'libpng',
   meson_version: '>=0.50.0',
 )
 
@@ -18,8 +18,15 @@ include = include_directories('.')
 
 c_args = []
 
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  c_args += '-DPNG_BUILD_DLL'
+if host_machine.system() == 'windows'
+  add_project_arguments(
+    '-D_CRT_NONSTDC_NO_DEPRECATE',
+    '-D_CRT_SECURE_NO_DEPRECATE',
+    language : 'c'
+  )
+  if get_option('default_library') != 'static'
+    c_args += '-DPNG_BUILD_DLL'
+  endif
 endif
 
 libpng_deps = [
@@ -67,11 +74,6 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip()
       input: msvc_preprocessed_asm_files,
       command: [msvc_armasm, '@INPUT@', '/Fo@OUTPUT@', '-I@OUTDIR@'],
     )
-    # The additional __aarch64__ flag is a work-around to get the same
-    # behavior for arm64 on Windows as on Linux.
-    # This work-around should be eliminated if the this issue is fixed:
-    # https://github.com/glennrp/libpng/issues/398
-    c_args += '-D__aarch64__'
   else
     png_src += files('arm/filter_neon.S')
   endif
