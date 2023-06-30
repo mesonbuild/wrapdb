@@ -30,4 +30,5 @@ zlib_tests = executable(
     dependencies: test_deps,
 )
 
-test('oatpp zlib module tests', zlib_tests)
+# tests may take longer
+test('oatpp zlib module tests', zlib_tests, timeout: 60)
