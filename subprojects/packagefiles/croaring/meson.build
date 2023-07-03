@@ -35,7 +35,7 @@ croaring_headers = [
 ]
 
 croaring_lib = library(
-    'roaring', 
+    'croaring',
     croaring_sources,
     include_directories: croaring_headers,
 )
