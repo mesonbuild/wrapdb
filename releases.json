@@ -364,6 +364,14 @@
       "1.3.0-1"
     ]
   },
+  "croaring": {
+    "dependency_names": [
+      "croaring"
+    ],
+    "versions": [
+      "1.3.0"
+    ]
+  },
   "cxxopts": {
     "dependency_names": [
       "cxxopts"
