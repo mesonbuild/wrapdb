@@ -2,8 +2,8 @@ project(
   'taglib',
   'cpp',
   license: 'LGPL-2.1-or-later OR MPL-1.1',
-  version: '1.13',
-  meson_version: '>=0.49.0',
+  version: '1.13.1',
+  meson_version: '>=0.54.1',
   default_options: 'warning_level=0',
 )
 
