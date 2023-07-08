@@ -2,7 +2,7 @@ project(
   'taglib',
   'cpp',
   license: 'LGPL-2.1-or-later OR MPL-1.1',
-  version: '1.13',
+  version: '1.13.1',
   meson_version: '>=0.54.1',
   default_options: 'warning_level=0',
 )
@@ -37,6 +37,15 @@ cdata.set('HAVE_OPENBSD_BYTESWAP', cpp.has_function('swap64', prefix: '#include 
 
 cdata.set('HAVE_VSNPRINTF', cpp.has_function('vsnprintf', prefix: '#include <cstdio> #include <cstdarg>'))
 cdata.set('HAVE_VSPRINTF_S', cpp.has_function('vsprintf_s', prefix: '#include <cstdio> #include <cstdarg>'))
+
+add_project_arguments(
+  cpp.get_supported_arguments(
+    '/wd4244',
+    '/wd4251',
+    '/wd4910',
+  ),
+  language: 'cpp',
+)
 
 zlib_dep = dependency('zlib', required: get_option('zlib'))
 cdata.set('HAVE_ZLIB', zlib_dep.found())
