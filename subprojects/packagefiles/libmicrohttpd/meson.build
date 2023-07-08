@@ -1,7 +1,7 @@
 project(
   'libmicrohttpd',
   'c',
-  version: '0.9.76',
+  version: '0.9.77',
   meson_version: '>=0.49.0',
   default_options: ['warning_level=1'],
 )
