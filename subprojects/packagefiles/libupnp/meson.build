@@ -2,8 +2,8 @@ project(
   'pupnp',
   'c',
   license: 'BSD-3-Clause',
-  version: '1.14.15',
-  meson_version: '>=0.49.0',
+  version: '1.14.17',
+  meson_version: '>=0.54.1',
 )
 
 cc = meson.get_compiler('c')
@@ -57,7 +57,6 @@ upnp_sources = files(
   'upnp/src/genlib/util/list.c',
   'upnp/src/genlib/util/membuffer.c',
   'upnp/src/genlib/util/strintmap.c',
-  'upnp/src/genlib/util/upnp_timeout.c',
   'upnp/src/genlib/util/util.c',
   'upnp/src/threadutil/FreeList.c',
   'upnp/src/threadutil/LinkedList.c',
