@@ -10,8 +10,8 @@ option('tests', type: 'feature',
   description: 'Build tests. Requires GTest.',
 )
 
-option('compat', type : 'boolean',
-  description : 'Build with compatibility support for traditional minizip',
+option('ng', type : 'boolean',
+  description : 'Build without compatibility support for traditional minizip',
   value: false,
 )
 
