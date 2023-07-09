@@ -1998,9 +1998,10 @@
   },
   "opencl-headers": {
     "dependency_names": [
-      "openclheaders"
+      "opencl-headers"
     ],
     "versions": [
+      "2023.04.17-1",
       "2022.05.18-1",
       "2021.06.30-1"
     ]
