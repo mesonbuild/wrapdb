@@ -67,18 +67,22 @@ if cc.has_function('arc4random', dependencies: bsd_dep)
   margs += '-DHAVE_ARC4RANDOM'
 endif
 
-crypt_dep = dependency('openssl', required: get_option('wzaes'))
-if crypt_dep.found()
-  sources += files('mz_crypt_openssl.c')
-elif host_machine.system() == 'windows'
+bcrypt_dep = []
+if host_machine.system() == 'windows'
   crypt_dep = cc.find_library('crypt32', required: get_option('wzaes'))
   if crypt_dep.found()
     sources += files('mz_crypt_winvista.c')
   endif
+  bcrypt_dep = cc.find_library('bcrypt')
 elif host_machine.system() == 'darwin'
   crypt_dep = dependency('appleframeworks', modules: ['CoreFoundation', 'Security'], required: get_option('wzaes'))
   if crypt_dep.found()
     sources += files('mz_crypt_apple.c')
+  endif
+else
+  crypt_dep = dependency('openssl', required: get_option('wzaes'))
+  if crypt_dep.found()
+    sources += files('mz_crypt_openssl.c')
   endif
 endif
 
@@ -143,6 +147,7 @@ minizip_ng = library(
   soversion: host_machine.system() == 'windows' ? '' : '3',
   vs_module_defs: 'mz.def',
   dependencies: [
+    bcrypt_dep,
     bsd_dep,
     crypt_dep,
     iconv_dep,
@@ -158,6 +163,7 @@ pconf = import('pkgconfig')
 pconf.generate(
   minizip_ng,
   description: 'Minizip zip file manipulation library',
+  subdirs: 'minizip',
 )
 
 headers = files(
@@ -201,7 +207,9 @@ install_headers(
   headers,
 )
 
-depinc = include_directories('.')
+subdir('include-workaround-meson/minizip')
+
+depinc = include_directories('.', 'include-workaround-meson')
 minizip_ng_dep = declare_dependency(
   include_directories: depinc,
   link_with: minizip_ng,
