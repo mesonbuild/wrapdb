@@ -103,8 +103,6 @@ mz_zip_reader_locate_entry
 mz_zip_reader_entry_open
 mz_zip_reader_entry_close
 mz_zip_reader_entry_read
-mz_zip_reader_entry_has_sign
-mz_zip_reader_entry_sign_verify
 mz_zip_reader_entry_get_hash
 mz_zip_reader_entry_get_first_hash
 mz_zip_reader_entry_get_info
@@ -123,7 +121,6 @@ mz_zip_reader_get_zip_cd
 mz_zip_reader_get_comment
 mz_zip_reader_set_recover
 mz_zip_reader_set_encoding
-mz_zip_reader_set_sign_required
 mz_zip_reader_set_overwrite_cb
 mz_zip_reader_set_password_cb
 mz_zip_reader_set_progress_cb
@@ -191,8 +188,6 @@ mz_crypt_hmac_copy
 mz_crypt_hmac_set_algorithm
 mz_crypt_hmac_create
 mz_crypt_hmac_delete
-mz_crypt_sign
-mz_crypt_sign_verify
 mz_stream_open
 mz_stream_is_open
 mz_stream_read
