@@ -3,7 +3,7 @@ add_languages('cpp')
 testlib = static_library(
   'testlib',
   objects: minizip_ng.extract_all_objects(recursive: false),
-  dependencies: [bsd_dep, crypt_dep, iconv_dep, bzip2_dep, lzma_dep, zlib_dep, zstd_dep, minizip_ng_dep],
+  dependencies: [bcrypt_dep, bsd_dep, crypt_dep, iconv_dep, bzip2_dep, lzma_dep, zlib_dep, zstd_dep, minizip_ng_dep],
 )
 
 testinc = include_directories('.')
