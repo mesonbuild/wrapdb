@@ -1,5 +1,5 @@
 project('libjpeg-turbo', 'c',
-  version : '2.1.5.1',
+  version : '3.0.0',
   license : 'bsd-like',
   meson_version : '>= 0.55.0')
 
@@ -17,7 +17,7 @@ cdata.set('COPYRIGHT_YEAR', '1991-2023')
 
 jpeg_lib_version = 80
 so_major = jpeg_lib_version / 10
-so_age = 2
+so_age = 3
 so_minor = 2
 so_version = '@0@.@1@.@2@'.format(so_major, so_age, so_minor)
 vs_defs = 'win/jpeg8.def'
@@ -43,11 +43,8 @@ endif
 cdata.set('JPEG_LIB_VERSION', jpeg_lib_version)
 cdata.set('LIBJPEG_TURBO_VERSION_NUMBER', version_major + version_minor + version_revision)
 
-cdata.set('BITS_IN_JSAMPLE', '8')
-
 cdata.set('C_ARITH_CODING_SUPPORTED', true)
 cdata.set('D_ARITH_CODING_SUPPORTED', true)
-cdata.set('MEM_SRCDST_SUPPORTED', true)
 
 check_headers = ['local.h', 'stddef.h', 'stdlib.h', 'sys/types.h']
 if cc.get_id() == 'msvc'
@@ -129,12 +126,8 @@ incdir = include_directories('.')
 
 subdir('simd')
 cdata.set('WITH_SIMD', have_simd)
-if not have_simd
-  simd = static_library('simd', 'jsimd_none.c')
-endif
 
-jconfig_h_in = host_system == 'windows' ? 'win/jconfig.h.in' : 'jconfig.h.in'
-jconfig_h = configure_file(input: jconfig_h_in,
+jconfig_h = configure_file(input: 'jconfig.h.in',
   output: 'jconfig.h',
   format: 'cmake@',
   configuration: cdata)
@@ -151,19 +144,35 @@ configure_file(input: 'jversion.h.in',
 
 install_headers('jmorecfg.h', 'jerror.h', 'jpeglib.h', jconfig_h)
 
+jpeg16_sources = [
+  'jcapistd.c', 'jccolor.c', 'jcdiffct.c', 'jclossls.c', 'jcmainct.c',
+  'jcprepct.c', 'jcsample.c', 'jdapistd.c', 'jdcolor.c', 'jddiffct.c',
+  'jdlossls.c', 'jdmainct.c', 'jdpostct.c', 'jdsample.c', 'jutils.c',
+]
+jpeg12_sources = [
+  jpeg16_sources, 'jccoefct.c', 'jcdctmgr.c', 'jdcoefct.c', 'jddctmgr.c',
+  'jdmerge.c', 'jfdctfst.c', 'jfdctint.c', 'jidctflt.c', 'jidctfst.c',
+  'jidctint.c', 'jidctred.c', 'jquant1.c', 'jquant2.c',
+]
 sources = [
-  'jcapimin.c', 'jcapistd.c', 'jccoefct.c', 'jccolor.c', 'jcdctmgr.c', 'jchuff.c',
-  'jcicc.c', 'jcinit.c', 'jcmainct.c', 'jcmarker.c', 'jcmaster.c', 'jcomapi.c', 'jcparam.c',
-  'jcphuff.c', 'jcprepct.c', 'jcsample.c', 'jctrans.c', 'jdapimin.c', 'jdapistd.c', 'jdatadst.c',
-  'jdatasrc.c', 'jdcoefct.c', 'jdcolor.c', 'jddctmgr.c', 'jdhuff.c', 'jdicc.c', 'jdinput.c',
-  'jdmainct.c', 'jdmarker.c', 'jdmaster.c', 'jdmerge.c', 'jdphuff.c', 'jdpostct.c', 'jdsample.c',
-  'jdtrans.c', 'jerror.c', 'jfdctflt.c', 'jfdctfst.c', 'jfdctint.c', 'jidctflt.c', 'jidctfst.c',
-  'jidctint.c', 'jidctred.c', 'jquant1.c', 'jquant2.c', 'jutils.c', 'jmemmgr.c', 'jmemnobs.c',
-  'jaricom.c', 'jcarith.c', 'jdarith.c',
+  jpeg12_sources, 'jcapimin.c', 'jchuff.c', 'jcicc.c', 'jcinit.c',
+  'jclhuff.c', 'jcmarker.c', 'jcmaster.c', 'jcomapi.c', 'jcparam.c',
+  'jcphuff.c', 'jctrans.c', 'jdapimin.c', 'jdatadst.c', 'jdatasrc.c',
+  'jdhuff.c', 'jdicc.c', 'jdinput.c', 'jdlhuff.c', 'jdmarker.c',
+  'jdmaster.c', 'jdphuff.c', 'jdtrans.c', 'jerror.c', 'jfdctflt.c',
+  'jmemmgr.c', 'jmemnobs.c', 'jaricom.c', 'jcarith.c', 'jdarith.c',
 ]
 
+jpeg12 = static_library('jpeg12', jpeg12_sources,
+  c_args: ['-DBITS_IN_JSAMPLE=12'],
+  pic: get_option('default_library') != 'static',
+)
+jpeg16 = static_library('jpeg16', jpeg16_sources,
+  c_args: ['-DBITS_IN_JSAMPLE=16'],
+  pic: get_option('default_library') != 'static',
+)
 jpeg = library('jpeg', sources,
-  link_with: simd,
+  link_with: [jpeg12, jpeg16, simd],
   soversion: so_version,
   vs_module_defs: vs_defs,
   install: true,
