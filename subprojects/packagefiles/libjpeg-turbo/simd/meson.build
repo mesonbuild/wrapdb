@@ -34,6 +34,7 @@ simd_src_i386 = [
 ]
 
 have_simd = false
+simd = []
 
 simd_opt = get_option('simd')
 if simd_opt.disabled()
