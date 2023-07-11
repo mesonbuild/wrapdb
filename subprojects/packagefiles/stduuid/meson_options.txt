@@ -1,0 +1,30 @@
+option(
+    'install',
+    type: 'boolean',
+    value: true,
+    description: 'Create installation target',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Create test target',
+)
+option(
+    'system_generator',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable operating system uuid generator',
+)
+option(
+    'time_generator',
+    type: 'boolean',
+    value: false,
+    description: 'Enable experimental time-based uuid generator',
+)
+option(
+    'using_cxx20_span',
+    type: 'feature',
+    value: 'auto',
+    description: 'Using span from std instead of gsl',
+)

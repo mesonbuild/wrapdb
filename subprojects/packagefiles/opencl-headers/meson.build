@@ -1,8 +1,8 @@
 project(
   'OpenCLHeaders',
   'c',
-  license : 'Apache-2.0',
-  version : '2022.05.18',
+  license: 'Apache-2.0',
+  version: '2023.04.17',
 )
 
 install_headers(
@@ -23,18 +23,20 @@ install_headers(
   'CL/cl_va_api_media_sharing_intel.h',
   'CL/cl_version.h',
   'CL/opencl.h',
-  subdir : 'CL',
+  subdir: 'CL',
 )
 
 pkgc = import('pkgconfig')
-pkgc.generate(name: 'OpenCLHeaders',
-  version: '2.2',
-  description: 'C language headers for the OpenCL API'
+pkgc.generate(
+  name: 'OpenCL-Headers',
+  description: 'C language headers for the OpenCL API',
+  version: '3.0',
 )
 
+depinc = include_directories('.')
 opencl_headers_dep = declare_dependency(
-  include_directories : include_directories('.'),
-  version : '2.2',
+  include_directories: depinc,
+  version: '3.0',
 )
 
 if get_option('tests')

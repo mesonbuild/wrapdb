@@ -57,6 +57,13 @@ sources = files(
   'tif_@0@.c'.format(host_machine.system() == 'windows' ? 'win32' : 'unix'),
 )
 
+if host_machine.system() == 'windows'
+  sources += import('windows').compile_resources(
+    'tif_win32_versioninfo.rc',
+    include_directories : meson.current_build_dir(),
+  )
+endif
+
 tiff4_lib = library(
   'tiff4',
   sources,

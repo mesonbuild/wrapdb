@@ -1,7 +1,7 @@
 project(
   'minizip-ng',
   'c',
-  version: '3.0.10',
+  version: '4.0.0',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
@@ -51,11 +51,8 @@ else
   sources += files('mz_os_posix.c', 'mz_strm_os_posix.c')
 endif
 
-compat = get_option('compat')
-if compat
-  sources += files('mz_compat.c')
-  margs += '-DHAVE_COMPAT'
-endif
+sources += files('mz_compat.c')
+margs += '-DHAVE_COMPAT'
 
 bsd_dep = dependency('libbsd', required: get_option('bsd'))
 if bsd_dep.found()
@@ -70,18 +67,22 @@ if cc.has_function('arc4random', dependencies: bsd_dep)
   margs += '-DHAVE_ARC4RANDOM'
 endif
 
-crypt_dep = dependency('openssl', required: get_option('wzaes'))
-if crypt_dep.found()
-  sources += files('mz_crypt_openssl.c')
-elif host_machine.system() == 'windows'
+bcrypt_dep = []
+if host_machine.system() == 'windows'
   crypt_dep = cc.find_library('crypt32', required: get_option('wzaes'))
   if crypt_dep.found()
-    sources += files('mz_crypt_win32.c')
+    sources += files('mz_crypt_winvista.c')
   endif
+  bcrypt_dep = cc.find_library('bcrypt')
 elif host_machine.system() == 'darwin'
   crypt_dep = dependency('appleframeworks', modules: ['CoreFoundation', 'Security'], required: get_option('wzaes'))
   if crypt_dep.found()
     sources += files('mz_crypt_apple.c')
+  endif
+else
+  crypt_dep = dependency('openssl', required: get_option('wzaes'))
+  if crypt_dep.found()
+    sources += files('mz_crypt_openssl.c')
   endif
 endif
 
@@ -139,13 +140,14 @@ if not zlib_dep.found() and not zstd_dep.found() and not bzip2_dep.found() and n
 endif
 
 minizip_ng = library(
-  compat ? 'minizip' : 'minizip-ng',
+  'minizip',
   sources,
   c_args: margs,
   version: meson.project_version(),
   soversion: host_machine.system() == 'windows' ? '' : '3',
   vs_module_defs: 'mz.def',
   dependencies: [
+    bcrypt_dep,
     bsd_dep,
     crypt_dep,
     iconv_dep,
@@ -157,16 +159,11 @@ minizip_ng = library(
   install: true,
 )
 
-depinc = include_directories('.')
-minizip_ng_dep = declare_dependency(
-  include_directories: depinc,
-  link_with: minizip_ng,
-)
-
 pconf = import('pkgconfig')
 pconf.generate(
   minizip_ng,
   description: 'Minizip zip file manipulation library',
+  subdirs: 'minizip',
 )
 
 headers = files(
@@ -188,28 +185,34 @@ headers = files(
   'mz_zip_rw.h',
 )
 
-if compat
-  zip_h = configure_file(
-    input: 'mz_compat_shim.h.in',
-    output: 'zip.h',
-    format: 'cmake@',
-    configuration: {'MZ_COMPAT_FILE': 'MZ_COMPAT_ZIP', 'FILE_H': 'zip.h'},
-  )
+zip_h = configure_file(
+  input: 'mz_compat_shim.h.in',
+  output: 'zip.h',
+  format: 'cmake@',
+  configuration: {'MZ_COMPAT_FILE': 'MZ_COMPAT_ZIP', 'FILE_H': 'zip.h'},
+)
 
-  unzip_h = configure_file(
-    input: 'mz_compat_shim.h.in',
-    output: 'unzip.h',
-    format: 'cmake@',
-    configuration: {'MZ_COMPAT_FILE': 'MZ_COMPAT_UNZIP', 'FILE_H': 'unzip.h'},
-  )
+unzip_h = configure_file(
+  input: 'mz_compat_shim.h.in',
+  output: 'unzip.h',
+  format: 'cmake@',
+  configuration: {'MZ_COMPAT_FILE': 'MZ_COMPAT_UNZIP', 'FILE_H': 'unzip.h'},
+)
 
-  headers += files('mz_compat.h')
-  headers += zip_h
-  headers += unzip_h
-endif
+headers += files('mz_compat.h')
+headers += zip_h
+headers += unzip_h
 
 install_headers(
   headers,
+)
+
+subdir('include-workaround-meson/minizip')
+
+depinc = include_directories('.', 'include-workaround-meson')
+minizip_ng_dep = declare_dependency(
+  include_directories: depinc,
+  link_with: minizip_ng,
 )
 
 gtest_dep = dependency('gtest', required: get_option('tests'))

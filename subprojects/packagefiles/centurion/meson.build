@@ -1,4 +1,4 @@
-project('centurion', 'cpp', version: '7.2.0', license: 'MIT', meson_version: '>=0.60.0', default_options: ['cpp_std=c++17'])
+project('centurion', 'cpp', version: '7.3.0', license: 'MIT', meson_version: '>=0.60.0', default_options: ['cpp_std=c++17'])
 
 centurion_args = []
 centurion_deps = [dependency('sdl2')]

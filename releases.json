@@ -9,14 +9,75 @@
       "absl_hash",
       "absl_log",
       "absl_numeric",
+      "absl_profiling",
       "absl_random",
       "absl_status",
       "absl_strings",
       "absl_synchronization",
       "absl_time",
-      "absl_types"
+      "absl_types",
+      "absl_bad_any_cast_impl",
+      "absl_bad_optional_access",
+      "absl_bad_variant_access",
+      "absl_city",
+      "absl_civil_time",
+      "absl_cord",
+      "absl_cord_internal",
+      "absl_cordz_functions",
+      "absl_cordz_handle",
+      "absl_cordz_info",
+      "absl_cordz_sample_token",
+      "absl_debugging_internal",
+      "absl_demangle_internal",
+      "absl_examine_stack",
+      "absl_exponential_biased",
+      "absl_failure_signal_handler",
+      "absl_flags_commandlineflag",
+      "absl_flags_commandlineflag_internal",
+      "absl_flags_config",
+      "absl_flags_internal",
+      "absl_flags_marshalling",
+      "absl_flags_parse",
+      "absl_flags_private_handle_accessor",
+      "absl_flags_program_name",
+      "absl_flags_reflection",
+      "absl_flags_usage",
+      "absl_flags_usage_internal",
+      "absl_graphcycles_internal",
+      "absl_hashtablez_sampler",
+      "absl_int128",
+      "absl_leak_check",
+      "absl_log_severity",
+      "absl_low_level_hash",
+      "absl_periodic_sampler",
+      "absl_random_distributions",
+      "absl_random_internal_distribution_test_util",
+      "absl_random_internal_platform",
+      "absl_random_internal_pool_urbg",
+      "absl_random_internal_randen",
+      "absl_random_internal_randen_hwaes",
+      "absl_random_internal_randen_hwaes_impl",
+      "absl_random_internal_randen_slow",
+      "absl_random_internal_seed_material",
+      "absl_random_seed_gen_exception",
+      "absl_random_seed_sequences",
+      "absl_raw_hash_set",
+      "absl_raw_logging_internal",
+      "absl_scoped_set_env",
+      "absl_spinlock_wait",
+      "absl_stacktrace",
+      "absl_statusor",
+      "absl_strerror",
+      "absl_str_format_internal",
+      "absl_strings_internal",
+      "absl_symbolize",
+      "absl_throw_delegate",
+      "absl_time_zone"
     ],
     "versions": [
+      "20230125.1-4",
+      "20230125.1-3",
+      "20230125.1-2",
       "20230125.1-1",
       "20220623.0-2",
       "20220623.0-1",
@@ -101,6 +162,7 @@
       "bshoshany-thread-pool"
     ],
     "versions": [
+      "3.5.0-1",
       "3.4.0-1",
       "3.3.0-1"
     ]
@@ -152,6 +214,7 @@
       "centurion"
     ],
     "versions": [
+      "7.3.0-1",
       "7.2.0-1"
     ]
   },
@@ -301,6 +364,14 @@
       "1.3.0-1"
     ]
   },
+  "croaring": {
+    "dependency_names": [
+      "croaring"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "cxxopts": {
     "dependency_names": [
       "cxxopts"
@@ -423,6 +494,7 @@
       "expat"
     ],
     "versions": [
+      "2.5.0-3",
       "2.5.0-2",
       "2.5.0-1",
       "2.4.9-1",
@@ -506,6 +578,7 @@
       "fluidsynth"
     ],
     "versions": [
+      "2.3.3-1",
       "2.3.2-1",
       "2.3.0-1",
       "2.2.8-1",
@@ -542,12 +615,22 @@
       "4.1.0-1"
     ]
   },
+  "fontconfig": {
+    "dependency_names": [
+      "fontconfig"
+    ],
+    "versions": [
+      "2.14.2-1"
+    ]
+  },
   "freetype2": {
     "dependency_names": [
       "freetype2",
       "freetype"
     ],
     "versions": [
+      "2.13.1-1",
+      "2.13.0-1",
       "2.12.1-2",
       "2.12.1-1",
       "2.12.0-1",
@@ -555,6 +638,14 @@
       "2.11.0-1",
       "2.9.1-2",
       "2.9.1-1"
+    ]
+  },
+  "fribidi": {
+    "dependency_names": [
+      "fribidi"
+    ],
+    "versions": [
+      "1.0.13-1"
     ]
   },
   "frozen": {
@@ -655,6 +746,7 @@
       "gdbus-codegen"
     ],
     "versions": [
+      "2.76.3-1",
       "2.76.1-1",
       "2.74.4-1",
       "2.74.1-1",
@@ -918,6 +1010,14 @@
       "r53-1",
       "r52-1",
       "r51-1"
+    ]
+  },
+  "irepeat": {
+    "dependency_names": [
+      "irepeat"
+    ],
+    "versions": [
+      "0.6-1"
     ]
   },
   "jansson": {
@@ -1204,6 +1304,7 @@
       "libmicrohttpd"
     ],
     "versions": [
+      "0.9.77-1",
       "0.9.76-3",
       "0.9.76-2",
       "0.9.76-1"
@@ -1254,6 +1355,7 @@
       "libpng"
     ],
     "versions": [
+      "1.6.40-1",
       "1.6.39-3",
       "1.6.39-2",
       "1.6.39-1",
@@ -1318,6 +1420,7 @@
       "libtiff-4"
     ],
     "versions": [
+      "4.5.1-1",
       "4.5.0-3",
       "4.5.0-2",
       "4.5.0-1",
@@ -1353,6 +1456,7 @@
       "libupnp"
     ],
     "versions": [
+      "1.14.17-1",
       "1.14.15-1",
       "1.14.14-2",
       "1.14.14-1",
@@ -1561,9 +1665,11 @@
   },
   "lua": {
     "dependency_names": [
-      "lua-5.4"
+      "lua-5.4",
+      "lua"
     ],
     "versions": [
+      "5.4.6-1",
       "5.4.4-1",
       "5.4.3-2",
       "5.4.3-1",
@@ -1658,9 +1764,11 @@
   },
   "minizip-ng": {
     "dependency_names": [
-      "minizip-ng"
+      "minizip"
     ],
     "versions": [
+      "4.0.0-2",
+      "4.0.0-1",
       "3.0.10-1",
       "3.0.8-1",
       "3.0.7-1",
@@ -1798,6 +1906,48 @@
       "11.2.0-1"
     ]
   },
+  "oatpp": {
+    "dependency_names": [
+      "oatpp",
+      "oatpp-test"
+    ],
+    "versions": [
+      "1.3.0-2",
+      "1.3.0-1"
+    ]
+  },
+  "oatpp-openssl": {
+    "dependency_names": [
+      "oatpp-openssl"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
+  "oatpp-sqlite": {
+    "dependency_names": [
+      "oatpp-sqlite"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
+  "oatpp-swagger": {
+    "dependency_names": [
+      "oatpp-swagger"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
+  "oatpp-websocket": {
+    "dependency_names": [
+      "oatpp-websocket"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "ogg": {
     "dependency_names": [
       "ogg"
@@ -1840,9 +1990,10 @@
   },
   "opencl-headers": {
     "dependency_names": [
-      "openclheaders"
+      "opencl-headers"
     ],
     "versions": [
+      "2023.04.17-1",
       "2022.05.18-1",
       "2021.06.30-1"
     ]
@@ -1872,6 +2023,14 @@
       "1.1.1l-1",
       "1.1.1k-2",
       "1.1.1k-1"
+    ]
+  },
+  "opus": {
+    "dependency_names": [
+      "opus"
+    ],
+    "versions": [
+      "1.4-1"
     ]
   },
   "orcus": {
@@ -1943,11 +2102,20 @@
       "3.2.0-1"
     ]
   },
+  "pixman": {
+    "dependency_names": [
+      "pixman-1"
+    ],
+    "versions": [
+      "0.42.2-1"
+    ]
+  },
   "pkgconf": {
     "dependency_names": [
       "libpkgconf"
     ],
     "versions": [
+      "1.9.3-2",
       "1.9.3-1",
       "1.9.2-1",
       "1.9.0-1"
@@ -1959,7 +2127,11 @@
       "protobuf",
       "protoc"
     ],
+    "program_names": [
+      "protoc"
+    ],
     "versions": [
+      "3.21.12-3",
       "3.21.12-2",
       "3.21.12-1",
       "3.21.9-1",
@@ -2322,6 +2494,7 @@
       "spng"
     ],
     "versions": [
+      "0.7.4-1",
       "0.7.2-1",
       "0.7.0-1",
       "0.5.0-1",
@@ -2337,6 +2510,7 @@
       "sqlite3"
     ],
     "versions": [
+      "3.42.0-1",
       "3.41.2-2",
       "3.41.2-1",
       "3.41.1-1",
@@ -2347,6 +2521,14 @@
       "3.39.3-1",
       "3.38.0-1",
       "3.34.1-1"
+    ]
+  },
+  "stduuid": {
+    "dependency_names": [
+      "stduuid"
+    ],
+    "versions": [
+      "1.2.3-1"
     ]
   },
   "tabulate": {
@@ -2504,6 +2686,7 @@
       "unit-system"
     ],
     "versions": [
+      "0.7.1-1",
       "0.7.0-1",
       "0.6.1-1",
       "0.5.2-1",
@@ -2542,6 +2725,7 @@
       "utfcpp"
     ],
     "versions": [
+      "3.2.3-1",
       "3.2.2-1",
       "3.2.1-1",
       "2.3.5-1"
@@ -2670,6 +2854,7 @@
       "zlib"
     ],
     "versions": [
+      "1.2.13-4",
       "1.2.13-3",
       "1.2.13-2",
       "1.2.13-1",
