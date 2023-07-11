@@ -2,8 +2,8 @@ project(
   'libxslt',
   'c',
   license: 'MIT',
-  version: '1.1.37',
-  meson_version: '>=0.54.0',
+  version: '1.1.38',
+  meson_version: '>=0.54.1',
 )
 
 exslt_version = '0.8.20'
