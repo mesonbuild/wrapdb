@@ -358,6 +358,10 @@
       "lmdb:programs=true"
     ]
   },
+  "magic_enum": {
+    "build_options": ["magic_enum:test=false"],
+    "skip_tests": true
+  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",
