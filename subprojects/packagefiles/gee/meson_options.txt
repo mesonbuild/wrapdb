@@ -1,0 +1,2 @@
+option('internal-asserts', type : 'boolean', value : true, description : 'Use internal asserts')
+option('consistency-check', type : 'boolean', value : false, description : 'Do some (very) expensive consistency checks: It might affect the asymptotic performance')
