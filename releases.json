@@ -2063,6 +2063,18 @@
       "1.5.1-1"
     ]
   },
+  "pango": {
+    "dependency_names": [
+      "pango",
+      "pangoft2",
+      "pangoxft",
+      "pangowin32",
+      "pangocairo"
+    ],
+    "versions": [
+      "1.50.14-1"
+    ]
+  },
   "pcg": {
     "versions": [
       "0.98.1-2",

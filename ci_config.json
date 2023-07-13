@@ -429,18 +429,6 @@
       "--timeout-multiplier=2"
     ]
   },
-  "pixman": {
-    "_comment": "Some tests takes more than 2min to complete.",
-    "test_options": [
-      "--timeout-multiplier=3"
-    ]
-  },
-  "pkgconf": {
-    "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
-    "build_options": [
-      "pkgconf:tests=false"
-    ]
-  },
   "orcus": {
     "_comment": "- depends on Boost, which is not available on WrapDB",
     "build_on": {
@@ -453,6 +441,26 @@
       "libmdds-dev",
       "libboost-filesystem-dev",
       "libboost-iostreams-dev"
+    ]
+  },
+  "pango": {
+    "skip_dependency_check": [
+      "pangoft2",
+      "pangoxft",
+      "pangowin32",
+      "pangocairo"
+    ]
+  },
+  "pixman": {
+    "_comment": "Some tests takes more than 2min to complete.",
+    "test_options": [
+      "--timeout-multiplier=3"
+    ]
+  },
+  "pkgconf": {
+    "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
+    "build_options": [
+      "pkgconf:tests=false"
     ]
   },
   "qarchive": {
