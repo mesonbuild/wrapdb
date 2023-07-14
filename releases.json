@@ -2247,7 +2247,11 @@
     ]
   },
   "rapidjson": {
+    "dependency_names": [
+      "rapidjson"
+    ],
     "versions": [
+      "1.1.0-2",
       "1.1.0-1"
     ]
   },
