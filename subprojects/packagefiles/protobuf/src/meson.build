@@ -4,6 +4,7 @@ protoc = executable(
   protoc_src,
   include_directories: incdir,
   link_with: libprotoc,
+  dependencies: dependency('threads'),
   install: true,
 )
 
