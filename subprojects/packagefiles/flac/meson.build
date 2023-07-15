@@ -1,7 +1,7 @@
 project(
   'flac',
   'c',
-  version: '1.4.2',
+  version: '1.4.3',
   meson_version: '>=0.54.1',
 )
 
@@ -20,8 +20,10 @@ ogg_dep = dependency('ogg')
 m_dep = cc.find_library('m', required: false)
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency('iconv', required: false)
+elif cc.links('#include <iconv.h>\nint main(){iconv_open("", "");}')
+  iconv_dep = declare_dependency()
 else
-  iconv_dep = dependency('', required: false)
+  iconv_dep = cc.find_library('iconv', required: false)
 endif
 
 cdata = configuration_data()
