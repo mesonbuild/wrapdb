@@ -5,6 +5,7 @@ glib_minimal_version = '2.36'
 glib_dep = dependency('glib-2.0', version: '>='+glib_minimal_version)
 gobject_dep = dependency('gobject-2.0', version: '>='+glib_minimal_version)
 gio_dep = dependency('gio-2.0', version: '>='+glib_minimal_version)
+gio_dep_vala = meson.get_compiler('vala').find_library('gio-2.0')
 m_dep = meson.get_compiler('c').find_library('m', required : false)
 
 add_project_arguments([

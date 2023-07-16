@@ -79,7 +79,7 @@ gee_files = files(
 gee_name = 'gee-'+api_version
 gee_gir = 'Gee-'+api_version+'.gir'
 gee_typelib = 'Gee-'+api_version+'.typelib'
-gee_deps = [glib_dep, gobject_dep, gio_dep]
+gee_deps = [glib_dep, gobject_dep, gio_dep, gio_dep_vala]
 gee_c_args = []
 if host_machine.system() == 'windows'
     gee_c_args += meson.get_compiler('c').get_supported_arguments([
