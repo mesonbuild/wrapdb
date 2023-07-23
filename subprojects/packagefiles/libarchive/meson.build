@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.6.2',
+  version: '3.7.0',
   meson_version: '>=0.54.1',
 )
 
@@ -16,11 +16,11 @@ cdata.set('SAFE_TO_DEFINE_EXTENSIONS', 1)
 cc = meson.get_compiler('c')
 add_project_arguments(cc.get_supported_arguments('-Wformat', '-Wformat-security'), language: 'c')
 add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
-if host_machine.system() == 'windows' and get_option('default_library') == 'static'
-  add_project_arguments('-DLIBARCHIVE_STATIC', language: 'c')
-endif
-
 if host_machine.system() == 'windows'
+  if get_option('default_library') == 'static'
+    add_project_arguments('-DLIBARCHIVE_STATIC', language: 'c')
+  endif
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
   cdata.set('_WIN32_WINNT', '0x0A00', description: 'Windows Server 2003 APIs')
   cdata.set('NTDDI_VERSION', '0x0A000000', description: 'Windows Server 2003 APIs')
   cdata.set('WINVER', '0x0A00', description: 'Windows Server 2003 APIs')
@@ -88,22 +88,8 @@ foreach m, h : minmax
   endif
 endforeach
 
-#these are hidden behind a macro. Define it.
-if host_machine.system() == 'windows'
-  add_project_arguments('-D_POSIX_THREAD_SAFE_FUNCTIONS', language: 'c')
-endif
-
 mingw_funcs = {
-  'ctime_r': 'time.h',
-  'gmtime_r': 'time.h',
-  'localtime_r': 'time.h',
 }
-
-foreach f, h : mingw_funcs
-  if cc.has_header_symbol(h, f, args: '-D_POSIX_THREAD_SAFE_FUNCTIONS')
-    cdata.set('HAVE_@0@'.format(f.to_upper()), 1)
-  endif
-endforeach
 
 if cc.has_header_symbol('langinfo.h', 'D_MD_ORDER')
   cdata.set('HAVE_D_MD_ORDER', 1)
@@ -441,6 +427,7 @@ functions = {
   'chflags': [],
   'chown': [],
   'chroot': [],
+  'ctime_r': [],
   'cygwin_conv_path': [],
   'dirfd': [],
   'fchdir': [],
@@ -470,6 +457,7 @@ functions = {
   'getpid': [],
   'getvfsbyname': [],
   'getxattr': [],
+  'gmtime_r': [],
   'lchflags': [],
   'lchmod': [],
   'lchown': [],
@@ -479,6 +467,7 @@ functions = {
   'listxattr': [],
   'llistxattr': [],
   'locale_charset': iconv_dep,
+  'localtime_r': [],
   'lsetxattr': [],
   'lstat': [],
   'lutimes': [],
