@@ -32,14 +32,14 @@ if platform_is_unixlike_or_apple
         )
     endif
 
-    if cdata.get('HAVE_INPUT_EVENTS', 0) == 1
+    if cdata.get('SDL_INPUT_LINUXEV', 0) == 1
         c_sources += files(
             'linux/SDL_evdev.c',
             'linux/SDL_evdev_kbd.c',
         )
     endif
 
-    if cdata.get('HAVE_INPUT_KBIO', 0) == 1
+    if cdata.get('SDL_INPUT_FBSDKBIO', 0) == 1
         c_sources += files(
             'freebsd/SDL_evdev_kbd_freebsd.c',
         )
