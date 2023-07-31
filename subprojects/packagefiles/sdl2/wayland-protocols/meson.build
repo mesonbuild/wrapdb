@@ -1,5 +1,6 @@
 
 protocols = [
+    'fractional-scale-v1',
     'idle-inhibit-unstable-v1',
     'keyboard-shortcuts-inhibit-unstable-v1',
     'pointer-constraints-unstable-v1',

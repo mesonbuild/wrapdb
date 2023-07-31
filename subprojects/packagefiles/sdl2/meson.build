@@ -1,5 +1,5 @@
 project('sdl2', 'c',
-    version : '2.26.5',
+    version : '2.28.1',
     license : 'zlib',
     meson_version : '>=0.60',
     default_options : ['c_std=none'],
@@ -278,6 +278,15 @@ else
     wayland_scanner = find_program('wayland-scanner', required : opt_video_wayland)
 endif
 
+# SDL currently always loads libudev dynamically,
+# it'll just try a hardcoded name if prefer_dlopen is disabled.
+# So don't try to link against it.
+libudev_dep = dependency('libudev', required : false).partial_dependency(
+    compile_args : true, includes : true, sources : true
+)
+
+cdata.set10('HAVE_LIBUDEV_H', libudev_dep.found())
+
 dlopen_table = [
     { 'dep_var' : 'alsa_dep',             'lib' : 'asound',         'conf_var' : 'SDL_AUDIO_DRIVER_ALSA_DYNAMIC'              },
     { 'dep_var' : 'jack_dep',             'lib' : 'jack',           'conf_var' : 'SDL_AUDIO_DRIVER_JACK_DYNAMIC'              },
@@ -295,6 +304,7 @@ dlopen_table = [
     { 'dep_var' : 'xi_dep',               'lib' : 'Xi',             'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2'       },
     { 'dep_var' : 'xkbcommon_dep',        'lib' : 'xkbcommon',      'conf_var' : 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_XKBCOMMON' },
     { 'dep_var' : 'xrandr_dep',           'lib' : 'Xrandr',         'conf_var' : 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR'        },
+    { 'dep_var' : 'libudev_dep',          'lib' : 'udev',           'conf_var' : 'SDL_UDEV_DYNAMIC'                           },
 ]
 
 if get_option('prefer_dlopen')
@@ -372,6 +382,7 @@ core_deps = [
     cc.find_library('dl', required : false),
     dbus_dep,
     ibus_dep,
+    libudev_dep,
 ]
 
 if not opt_system_iconv.disabled()
@@ -490,7 +501,6 @@ check_headers = [
     'immintrin.h',
     'inttypes.h',
     'libsamplerate.h',
-    'libudev.h',
     'libunwind.h',
     'limits.h',
     'malloc.h',
@@ -558,6 +568,18 @@ endif
 if cc.has_header_symbol('pthread.h', 'PTHREAD_MUTEX_RECURSIVE_NP', prefix : sane_std)
     cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX_NP', 1)
 endif
+
+cdata.set('SDL_HAVE_LIBDECOR_GET_MIN_MAX',
+    wayland_libdecor_dep.found() and
+    cc.has_header_symbol(
+        'libdecor.h', 'libdecor_frame_get_max_content_size',
+        prefix : sane_std, dependencies : core_deps + wayland_libdecor_dep
+    ) and
+    cc.has_header_symbol(
+        'libdecor.h', 'libdecor_frame_get_min_content_size',
+        prefix : sane_std, dependencies : core_deps + wayland_libdecor_dep
+    )
+)
 
 check_functions = [
     ['_Exit', 'stdlib.h'],
@@ -738,29 +760,41 @@ cdata.set10('HAVE_GCC_SYNC_LOCK_TEST_AND_SET',
     )
 )
 
-cdata.set10('HAVE_INPUT_EVENTS',
+cdata.set10('SDL_INPUT_LINUXEV',
     cc.compiles('#include <linux/input.h> #ifndef EVIOCGNAME #error EVIOCGNAME() ioctl not available #endif \ int main(int argc, char** argv) {}',
         name : 'input events test'
     )
 )
 
-if cdata.get('HAVE_INPUT_EVENTS', 0) == 1
-    cdata.set('SDL_INPUT_LINUXEV', 1)
-endif
+cdata.set10('SDL_INPUT_LINUXKD',
+    platform_is_linux and cc.compiles(
+        '#include <linux/kd.h> #include <linux/keyboard.h> int main(int argc, char **argv) { struct kbentry kbe; kbe.kb_table = KG_CTRL; ioctl(0, KDGKBENT, &kbe); }',
+        name : 'linuxkd test'
+    )
+)
 
-if platform_is_linux
-    cdata.set10('HAVE_INPUT_KD',
-        cc.compiles('#include <linux/kd.h> #include <linux/keyboard.h> int main(int argc, char **argv) { struct kbentry kbe; kbe.kb_table = KG_CTRL; ioctl(0, KDGKBENT, &kbe); }',
-            name : 'input keyboard test'
-        )
+cdata.set10('SDL_INPUT_FBSDKBIO',
+    platform_is_freebsd and cc.compiles(
+        '#include <sys/kbio.h> #include <sys/ioctl.h> int main(int argc, char **argv) { accentmap_t accTable; ioctl(0, KDENABIO, 1); }',
+        name : 'kbio test'
     )
-elif platform_is_freebsd
-    cdata.set10('HAVE_INPUT_KBIO',
-        cc.compiles('#include <sys/kbio.h> #include <sys/ioctl.h> int main(int argc, char **argv) { accentmap_t accTable; ioctl(0, KDENABIO, 1); }',
-            name : 'kbio test'
-        )
+)
+
+cdata.set10('SDL_INPUT_WSCONS',
+    (platform_is_freebsd or platform_is_openbsd) and cc.compiles('''
+        #include <sys/time.h>
+        #include <dev/wscons/wsconsio.h>
+        #include <dev/wscons/wsksymdef.h>
+        #include <dev/wscons/wsksymvar.h>
+        #include <sys/ioctl.h>
+        int main(int argc, char **argv) {
+            struct wskbd_map_data data;
+            ioctl(0, WSKBDIO_GETMAP, &data);
+            return 0;
+        }''',
+        name : 'wscons test'
     )
-endif
+)
 
 if cdata.get('HAVE_FCITX', 0) == 1 or cdata.get('HAVE_IBUS_IBUS_H', 0) == 1
     cdata.set('SDL_USE_IME', 1)
