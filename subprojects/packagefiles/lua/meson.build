@@ -17,7 +17,7 @@ add_project_arguments(cc.get_supported_arguments('-Wno-string-plus-int', '-Wno-s
 is_posix = host_machine.system() not in ['windows', 'emscripten', 'android']
 if is_posix
   add_project_arguments('-DLUA_USE_POSIX', language: 'c')
-elif get_option('default_library') != 'static'
+elif get_option('default_library') != 'static' and host_machine.system() == 'windows'
   add_project_arguments('-DLUA_BUILD_AS_DLL', language: 'c')
 endif
 
