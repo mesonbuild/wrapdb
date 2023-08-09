@@ -172,6 +172,7 @@ class TestReleases(unittest.TestCase):
                         self.assertEqual(subproject['version'], version)
 
     def test_releases(self):
+        has_new_releases = False
         for name, info in self.releases.items():
             with self.subTest(name=name):
                 # We do extra checks in the case a new release is being made. This
@@ -247,6 +248,7 @@ class TestReleases(unittest.TestCase):
                             self.check_source_url(name, wrap_section, ver)
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
+                            has_new_releases = True
                             self.check_new_release(name, deps=deps, progs=progs)
                             with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                 self.assertNotIn(name, self.skip)
@@ -254,6 +256,13 @@ class TestReleases(unittest.TestCase):
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
+
+        with self.subTest(step='releases.json updated'):
+            if not has_new_releases:
+                last_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], text=True, encoding='utf-8').strip()
+                changed_files = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD', last_tag], text=True, encoding='utf-8').splitlines()
+                if any(f.startswith('subprojects') for f in changed_files):
+                    self.fail('Subprojects files changed but no new release added into releases.json')
 
     @unittest.skipUnless('TEST_BUILD_ALL' in os.environ, 'Run manually only')
     def test_build_all(self):
