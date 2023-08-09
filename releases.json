@@ -726,6 +726,14 @@
       "1.14.1-1"
     ]
   },
+  "gdk-pixbuf": {
+    "dependency_names": [
+      "gdk-pixbuf-2.0"
+    ],
+    "versions": [
+      "2.42.9-1"
+    ]
+  },
   "gee": {
     "dependency_names": [
       "gee-0.8"
