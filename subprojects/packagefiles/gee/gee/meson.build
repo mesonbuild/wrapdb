@@ -106,3 +106,4 @@ gee_dep = declare_dependency(
     dependencies: gee_deps,
     include_directories: include_directories('.')
 )
+meson.override_dependency('gee-0.8', gee_dep)
