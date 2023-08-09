@@ -154,6 +154,20 @@
       "windows": false
     }
   },
+  "gdk-pixbuf": {
+    "_comment": [
+      "- Disable man because it requires rst2man",
+      "- Disable fatal warnings because of CMake Toolchain: Failed to determine CMake compilers state",
+      "- Disable fatal warnings because of https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/merge_requests/156",
+      "- Disable tests because one is broken: https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/issues/215",
+      "- Disable tests because they fail on macOS"
+    ],
+    "build_options": [
+      "gdk-pixbuf:man=false"
+    ],
+    "fatal_warnings": false,
+    "skip_tests": true
+  },
   "gee": {
     "_comment": "- needs valac, not easy to install on Windows",
     "build_on": {
