@@ -1,7 +1,7 @@
 project(
   'libxml2',
   'c',
-  version: '2.11.4',
+  version: '2.11.5',
   meson_version: '>=0.54.1',
   license: 'MIT',
 )
