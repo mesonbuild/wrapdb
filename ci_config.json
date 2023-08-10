@@ -395,7 +395,8 @@
     ],
     "_comment": "- libressl doesn't work on windows",
     "build_on": {
-      "windows": false
+      "windows": false,
+      "msys2": false
     }
   },
   "openh264": {
