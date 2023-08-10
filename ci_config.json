@@ -154,6 +154,21 @@
       "windows": false
     }
   },
+  "gee": {
+    "_comment": "- needs valac, not easy to install on Windows",
+    "build_on": {
+      "windows": false
+    },
+    "brew_packages": [
+      "vala"
+    ],
+    "debian_packages": [
+      "valac"
+    ],
+    "msys_packages": [
+      "vala"
+    ]
+  },
   "giflib": {
     "_comment": "Unnecessary <unistd.h> include in gif_hash.h breaks the build",
     "build_on": {

@@ -726,6 +726,14 @@
       "1.14.1-1"
     ]
   },
+  "gee": {
+    "dependency_names": [
+      "gee-0.8"
+    ],
+    "versions": [
+      "0.20.6-1"
+    ]
+  },
   "giflib": {
     "dependency_names": [
       "giflib"
