@@ -197,6 +197,7 @@
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     },
     "_comment": "- Upstream has no idea how to use feature options",
