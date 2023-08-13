@@ -381,6 +381,9 @@
       "libboost-system-dev",
       "libboost-test-dev"
     ],
+    "msys_packages": [
+      "boost"
+    ],
     "build_options": [
       "msgpackc-cxx:tests=true"
     ]
