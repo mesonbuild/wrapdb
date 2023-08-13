@@ -103,12 +103,14 @@
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     }
   },
   "gdbm": {
     "_comment": "- Requires POSIX platform.",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
@@ -271,6 +273,7 @@
     "_comment": "- depends on libdrm",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     },
     "debian_packages": [
@@ -290,6 +293,7 @@
     "_comment": "Linux only",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     }
   },
@@ -316,42 +320,49 @@
   "libxcursor": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxext": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxinerama": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxrandr": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxrender": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxv": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
   "libxxf86vm": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
@@ -460,6 +471,9 @@
     "brew_packages": [
       "boost"
     ],
+    "msys_packages": [
+      "boost"
+    ],
     "debian_packages": [
       "libmdds-dev",
       "libboost-filesystem-dev",
@@ -470,6 +484,9 @@
     "build_on": {
       "windows": false
     },
+    "msys_packages": [
+      "qt5-base"
+    ],
     "debian_packages": [
       "qtbase5-dev"
     ],
@@ -541,6 +558,7 @@
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     },
     "build_options": [
@@ -551,6 +569,7 @@
     "_comment": "- relies on wayland-scanner which uses Linux-specific APIs",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     },
     "debian_packages": [
