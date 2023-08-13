@@ -1,7 +1,7 @@
 project(
   'QuaZip',
   ['c', 'cpp'],
-  version: '1.3',
+  version: '1.4',
   license: 'LGPL-2.1 with static linking exception'
 )
 

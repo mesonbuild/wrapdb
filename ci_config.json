@@ -482,6 +482,9 @@
     "brew_packages": [
       "qt"
     ],
+    "msys_packages": [
+      "qt5-base"
+    ],
     "debian_packages": [
       "qtbase5-dev"
     ]
