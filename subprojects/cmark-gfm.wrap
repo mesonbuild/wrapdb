@@ -1,8 +1,8 @@
 [wrap-file]
-directory = cmark-gfm-0.29.0.gfm.10
-source_url = https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.10.tar.gz
-source_filename = cmark-gfm-0.29.0.gfm.10.tar.gz
-source_hash = 0656ca84ec677b87841f8088184c4b62777de3069bacefa18e621dc18c5d7864
+directory = cmark-gfm-0.29.0.gfm.13
+source_url = https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.13.tar.gz
+source_filename = cmark-gfm-0.29.0.gfm.13.tar.gz
+source_hash = 5abc61798ebd9de5660bc076443c07abad2b8d15dbc11094a3a79644b8ad243a
 patch_directory = cmark-gfm
 
 [provide]
