@@ -467,7 +467,9 @@
     ]
   },
   "magic_enum": {
-    "build_options": ["magic_enum:test=false"],
+    "build_options": [
+      "magic_enum:test=false"
+    ],
     "skip_tests": true
   },
   "mpdecimal": {
