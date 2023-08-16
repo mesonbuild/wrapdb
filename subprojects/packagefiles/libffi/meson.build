@@ -1,13 +1,14 @@
 project('libffi', 'c', version : '3.4.4',
-        meson_version : '>= 0.64.0',
-        default_options : ['buildtype=debugoptimized',
+        meson_version : '>= 0.56.0',
+        default_options : ['debug=true',
+                           'optimization=3',
                            'warning_level=1'])
 
 fs = import('fs')
 
 libtool_version = run_command('meson-scripts/extract-libtool-version.py',
   meson.current_source_dir() / 'libtool-version',
-  check: true).stdout().split(':')
+  check: true).stdout().strip().split(':')
 current = libtool_version[0].to_int()
 revision = libtool_version[1].to_int()
 age = libtool_version[2].to_int()
@@ -20,6 +21,7 @@ host_cpu_family = host_machine.cpu_family()
 host_system = host_machine.system()
 
 cc = meson.get_compiler('c')
+is_msvc = cc.get_id() == 'msvc'
 is_msvc_like = cc.get_argument_syntax() == 'msvc'
 is_gnu_like = cc.get_argument_syntax() == 'gcc'
 
@@ -82,52 +84,57 @@ have_long_double_variant = false
 if host_cpu_family == 'aarch64' and host_system in ['cygwin', 'windows']
   target = 'ARM_WIN64'
   targetdir = 'aarch64'
-  if is_msvc_like
+  if is_msvc
     asm_sources = ['win64_armasm.S']
   endif
 elif host_cpu_family == 'aarch64'
   target = 'AARCH64'
-elif host_cpu_family.startswith('alpha')
+elif host_cpu_family == 'alpha'
   target = 'ALPHA'
   asm_sources = ['osf.S']
   # Support 128-bit long double, changeable via command-line switch.
   have_long_double = 'defined(__LONG_DOUBLE_128__)'
-elif host_cpu_family.startswith('arc')
+elif host_cpu_family == 'arc'
   target = 'ARC'
   asm_sources = ['arcompact.S']
 elif host_cpu_family == 'arm' and host_system in ['cygwin', 'windows']
   target = 'ARM_WIN32'
   targetdir = 'arm'
-  if is_msvc_like
+  if is_msvc
     asm_sources = ['sysv_msvc_arm32.S']
   endif
 elif host_cpu_family == 'arm'
   target = 'ARM'
-elif host_cpu_family.startswith('avr32')
+elif host_cpu_family == 'avr'
   target = 'AVR32'
-elif host_cpu_family.startswith('bfin')
+elif host_cpu_family == 'bfin'
+  # FIXME: bfin family is missing in Meson
   target = 'BFIN'
 elif host_cpu_family == 'cris'
+  # FIXME: cris family is missing in Meson
   target = 'LIBFFI_CRIS'
   targetdir = 'cris'
 elif host_cpu_family == 'csky'
   target = 'CSKY'
 elif host_cpu_family == 'frv'
+  # FIXME: frv family is missing in Meson
   target = 'FRV'
   asm_sources = ['eabi.S']
-elif (host_cpu_family.startswith('hppa') and host_system in ['linux', 'openbsd']) or \
-     (host_cpu_family.startswith('parisc') and host_system == 'linux')
+elif (host_cpu_family in ['hppa', 'hppa64'] and host_system in ['linux', 'openbsd']) or \
+     (host_cpu_family == 'parisc' and host_system == 'linux')
+  # FIXME: hppa family is missing in Meson
   target = 'PA_LINUX'
   targetdir = 'pa'
   asm_sources = ['linux.S']
-elif host_cpu_family.startswith('hppa') and not '64' in host_cpu_family and host_system in ['hpux']
+elif host_cpu_family == 'hppa' and host_system in ['hpux']
+  # FIXME: hppa family is missing in Meson
   target = 'PA_HPUX'
   targetdir = 'pa'
   asm_sources = ['hpux32.S']
 elif host_cpu_family == 'x86' and host_system in ['freebsd', 'openbsd']
   target = 'X86_FREEBSD'
   targetdir = 'x86'
-  if is_msvc_like
+  if is_msvc
     asm_sources = ['sysv_intel.S']
   endif
 elif (host_cpu_family == 'x86' and host_system in ['cygwin', 'windows', 'os2', 'interix']) or \
@@ -135,14 +142,14 @@ elif (host_cpu_family == 'x86' and host_system in ['cygwin', 'windows', 'os2', '
   targetdir = 'x86'
   if size_t == 4
     target = 'X86_WIN32'
-    if is_msvc_like
+    if is_msvc
       asm_sources = ['sysv_intel.S']
       masm_args += '/safeseh'
     endif
   else
     target = 'X86_WIN64'
     c_sources = ['ffiw64.c']
-    if is_msvc_like
+    if is_msvc
       asm_sources = ['win64_intel.S']
     else
       asm_sources = ['win64.S']
@@ -152,7 +159,7 @@ elif host_cpu_family in ['x86', 'x86_64'] and host_system in ['darwin', 'ios']
   targetdir = 'x86'
   if size_t == 4
     target = 'X86_DARWIN'
-    if is_msvc_like
+    if is_msvc
       asm_sources = ['sysv_intel.S']
     endif
   else
@@ -169,7 +176,7 @@ elif host_cpu_family in ['x86', 'x86_64']
       asm_sources = ['unix64.S', 'win64.S']
     else
       target = 'X86'
-      if is_msvc_like
+      if is_msvc
         asm_sources = ['sysv_intel.S']
       endif
     endif
@@ -178,10 +185,11 @@ elif host_cpu_family in ['x86', 'x86_64']
     c_sources = ['ffi64.c', 'ffiw64.c']
     asm_sources = ['unix64.S', 'win64.S']
   endif
-elif host_cpu_family.startswith('ia64')
+elif host_cpu_family == 'ia64'
   target = 'IA64'
   asm_sources = ['unix.S']
 elif host_cpu_family == 'kvx'
+  # FIXME: kvx family is missing in Meson
   target = 'KVX'
 elif host_cpu_family == 'loongarch64'
   target = 'LOONGARCH64'
@@ -190,76 +198,84 @@ elif host_cpu_family.startswith('m32r')
 elif host_cpu_family == 'm68k'
   target = 'M68K'
 elif host_cpu_family == 'm88k'
+  # FIXME: m88k family is missing in Meson
   target = 'M88K'
   asm_sources = ['obsd.S']
-elif host_cpu_family.startswith('microblaze')
+elif host_cpu_family == 'microblaze'
   target = 'MICROBLAZE'
 elif host_cpu_family == 'moxie'
+  # This CPU family is used in CI cross compilation
   target = 'MOXIE'
   asm_sources = ['eabi.S']
 elif host_cpu_family == 'metag'
+  # FIXME: metag family is missing in Meson
   target = 'METAG'
-elif host_cpu_family.startswith('mips') and \
+elif host_cpu_family in ['mips', 'mips64'] and \
      (host_system.startswith('irix5.') or host_system.startswith('irix6.') or host_system.startswith('rtems'))
   target = 'MIPS'
   asm_sources = ['o32.S', 'n32.S']
-elif host_cpu_family.startswith('mips') and host_system in ['linux', 'openbsd', 'freebsd']
+elif host_cpu_family in ['mips', 'mips64'] and host_system in ['linux', 'openbsd', 'freebsd']
   target = 'MIPS'
   asm_sources = ['o32.S', 'n32.S']
   # Support 128-bit long double for NewABI.
   have_long_double = 'defined(__mips64)'
-elif host_cpu_family.startswith('nios2') and host_system == 'linux'
+elif host_cpu_family == 'nios2' and host_system == 'linux'
+  # FIXME: nios2 family is missing in Meson
   target = 'NIOS2'
-elif host_cpu_family.startswith('or1k')
+elif host_cpu_family == 'or1k'
+  # FIXME: or1k family is missing in Meson
   target = 'OR1K'
-elif (host_cpu_family.startswith('powerpc') and \
+elif (host_cpu_family in ['ppc', 'ppc64'] and \
       host_system in ['linux', 'sysv', 'amigaos', 'eabi', 'beos', 'rtems']) or \
-     (host_cpu_family in ['powerpc64', 'powerpc64le'] and host_system == 'freebsd')
+     (host_cpu_family == 'ppc64' and host_system == 'freebsd')
   target = 'POWERPC'
   c_sources = ['ffi.c', 'ffi_sysv.c', 'ffi_linux64.c']
   asm_sources = ['sysv.S', 'ppc_closure.S', 'linux64.S', 'linux64_closure.S']
   have_long_double_variant = true
-elif host_cpu_family.startswith('powerpc') and host_system == 'darwin'
+elif host_cpu_family in ['ppc', 'ppc64'] and host_system == 'darwin'
   target = 'POWERPC_DARWIN'
   targetdir = 'powerpc'
   c_sources = ['ffi_darwin.c']
   asm_sources = ['darwin.S', 'darwin_closure.S']
-elif host_cpu_family in ['powerpc', 'rs6000'] and host_system in ['darwin', 'aix']
+elif host_cpu_family in ['ppc', 'rs6000'] and host_system in ['darwin', 'aix']
   target = 'POWERPC_AIX'
   targetdir = 'powerpc'
   c_sources = ['ffi_darwin.c']
   asm_sources = ['aix.S aix_closure.S']
-elif host_cpu_family == 'powerpc' and host_system in ['freebsd', 'openbsd', 'netbsd']
+elif host_cpu_family == 'ppc' and host_system in ['freebsd', 'openbsd', 'netbsd']
   target = 'POWERPC_FREEBSD'
   targetdir = 'powerpc'
   c_sources = ['ffi.c', 'ffi_sysv.c']
   asm_sources = ['sysv.S', ' pc_closure.S']
-  have_long_double_variant = true
-elif host_cpu_family == 'powerpcspe' and host_system == 'freebsd'
-  target = 'POWERPC_FREEBSD'
-  targetdir = 'powerpc'
-  c_sources = ['ffi.c', 'ffi_sysv.c']
-  asm_sources = ['sysv.S', ' pc_closure.S']
-  add_project_arguments('-D__NO_FPRS__', language: 'c')
-elif host_cpu_family.startswith('riscv')
+  if cc.get_define('__SPE__') != ''
+    add_project_arguments('-D__NO_FPRS__', language: 'c')
+  else
+    have_long_double_variant = true
+  endif
+elif host_cpu_family in ['riscv32', 'riscv64']
   target = 'RISCV'
-elif host_cpu_family.startswith('s390')
+elif host_cpu_family in ['s390', 's390x']
   target = 'S390'
 elif host_cpu_family == 'sh64' or host_cpu_family.startswith('sh5')
+  # FIXME: Meson only has sh4 family
   target = 'SH64'
 elif host_cpu_family.startswith('sh')
+  # FIXME: Meson only has sh4 family
   target = 'SH'
-elif host_cpu_family.startswith('sparc')
+elif host_cpu_family in ['sparc', 'sparc64']
   target = 'SPARC'
   c_sources = ['ffi.c', 'ffi64.c']
   asm_sources = ['v8.S', 'v9.S']
-elif host_cpu_family.startswith('tile')
+elif host_cpu_family == 'tile'
+  # FIXME: tile family is missing in Meson
   target = 'TILE'
   asm_sources = ['tile.S']
 elif host_cpu_family == 'vax'
+  # FIXME: vax family is missing in Meson
   target = 'VAX'
   asm_sources = ['elfbsd.S']
-elif host_cpu_family.startswith('xtensa')
+elif host_cpu_family == 'xtensa'
+  # FIXME: xtensa family is missing in Meson
   target = 'XTENSA'
 else
   error('Unsupported pair: system "@0@", cpu family "@1@"'.format(host_system, host_cpu_family))
@@ -421,7 +437,11 @@ if get_option('doc')
 endif
 
 if get_option('tests')
-  subdir('testsuite')
+  if meson.version().version_compare('>=0.58.0')
+    subdir('testsuite')
+  else
+    error('Meson >= 0.58 is required for unit tests')
+  endif
 endif
 
 install_man([

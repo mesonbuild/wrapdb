@@ -250,6 +250,12 @@
       "libpciaccess-dev"
     ]
   },
+  "libffi": {
+    "_comment": "libffi has too many unit tests and it exceed command line limit to rebuild test targets",
+    "test_options": [
+      "--no-rebuild"
+    ]
+  },
   "libffmpegthumbnailer": {
     "brew_packages": [
       "ffmpeg@4"

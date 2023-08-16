@@ -57,10 +57,6 @@ tests = {
     'struct_by_value_4.c',
     'struct_by_value_big.c',
     'struct_by_value_small.c',
-    # FIXME: Those files are missing from 3.4.4 release tarball.
-    # https://github.com/libffi/libffi/issues/748
-    #'struct_return_2H.c',
-    #'struct_return_8H.c',
     'uninitialized.c',
     'va_1.c',
     'va_2.c',
@@ -207,13 +203,17 @@ tests = {
 }
 
 feature_check_code = '''
-#include <ffi.h>"
+#include <ffi.h>
 @0@
 /* OK */
 #else
 #error Failed @0@
 #endif
 '''
+
+# FIXME: Compiler checks only add -I for source dir and ffi.h is in builddir
+# https://github.com/mesonbuild/meson/pull/12157
+feature_check_cargs = ['-I' + meson.project_build_root() / 'include']
 
 feature_check = {
   'closures': '#if FFI_CLOSURES',
@@ -239,14 +239,16 @@ endif
 # We generate a full set of tests for each ABI
 tests_abis = [['']]
 if cc.get_id() == 'gcc'
-  if cc.compiles(feature_check_code.format('#ifdef __i386__'))
+  if cc.compiles(feature_check_code.format('#ifdef __i386__'),
+       include_directories: ffiinc, args: feature_check_cargs)
     tests_abis += [
       ['-DABI_NUM=FFI_STDCALL', '-DABI_ATTR=__STDCALL__'],
       ['-DABI_NUM=FFI_THISCALL', '-DABI_ATTR=__THISCALL__'],
       ['-DABI_NUM=FFI_FASTCALL', '-DABI_ATTR=__FASTCALL__'],
     ]
   elif host_cpu_family == 'x86_64' and \
-       cc.compiles(feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'))
+       cc.compiles(feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'),
+         include_directories: ffiinc, args: feature_check_cargs)
     tests_abis += [
       ['-DABI_NUM=FFI_GNUW64', '-DABI_ATTR=__MSABI__'],
     ]
@@ -257,7 +259,7 @@ foreach suite, sources : tests
   # Skip this set of tests if the feature is not supported
   if suite in feature_check
     code = feature_check_code.format(feature_check[suite])
-    if not cc.compiles(code, include_directories: ffiinc)
+    if not cc.compiles(code, include_directories: ffiinc, args: feature_check_cargs)
       continue
     endif
   endif
@@ -282,7 +284,7 @@ foreach suite, sources : tests
     elif suite == 'closure'
       suite_c_args += ['-wd4005', '-wd4244', '-wd4305', '-wd4477', '-wd4312', '-wd4311', '-EHsc']
     endif
-  elif cc.get_id() == 'gcc'
+  elif is_gnu_like
     if suite == 'bhaible'
       suite_c_args += ['-Wno-unused-variable', '-Wno-unused-parameter', '-Wno-unused-but-set-variable',
                        '-Wno-uninitialized']
@@ -310,7 +312,7 @@ foreach suite, sources : tests
       endforeach
     elif suite == 'bhaible' and base_name == 'test-callback'
       code = feature_check_code.format('#if FFI_CLOSURES')
-      if not cc.compiles(code, include_directories: ffiinc)
+      if not cc.compiles(code, include_directories: ffiinc, args: feature_check_cargs)
         continue
       endif
       foreach i : range(1, 81)
@@ -338,7 +340,8 @@ foreach suite, sources : tests
             dependencies: ffi_dep,
             c_args: [common_c_args, suite_c_args, matrix_c_args],
             cpp_args: [common_c_args, suite_c_args, matrix_c_args],
-            override_options: ['optimization=plain'],
+            # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
+            #override_options: ['optimization=plain'],
           )
           test(test_name, exe, suite: suite)
         endforeach
