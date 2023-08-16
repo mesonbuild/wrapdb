@@ -1,7 +1,7 @@
 project(
     'tabulate',
     'cpp',
-    version : '1.4',
+    version : '1.5',
     license : 'MIT'
 )
 
@@ -26,6 +26,7 @@ install_headers([
     'include/tabulate/optional_lite.hpp',
     'include/tabulate/printer.hpp',
     'include/tabulate/row.hpp',
+    'include/tabulate/string_view_lite.hpp',
     'include/tabulate/table.hpp',
     'include/tabulate/table_internal.hpp',
     'include/tabulate/termcolor.hpp',
