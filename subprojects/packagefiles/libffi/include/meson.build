@@ -9,4 +9,4 @@ configure_file(input : 'ffi.h.in',
   configuration : ffi_h_conf,
   install_dir : get_option('includedir'))
 
-install_headers(f'../src/@targetdir@/ffitarget.h')
+install_headers('../src' / targetdir / 'ffitarget.h')
