@@ -1,0 +1,9 @@
+[wrap-file]
+directory = leptonica-1.83.1
+source_url = https://github.com/DanBloomberg/leptonica/releases/download/1.83.1/leptonica-1.83.1.tar.gz
+source_filename = leptonica-1.83.1.tar.gz
+source_hash = 8f18615e0743af7df7f50985c730dfcf0c93548073d1f56621e4156a8b54d3dd
+patch_directory = leptonica
+
+[provide]
+dependency_names = lept

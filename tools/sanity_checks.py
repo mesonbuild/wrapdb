@@ -112,7 +112,10 @@ PER_PROJECT_PERMITTED_FILES = {
         'test-cc-uses-zarch.py',
         'test-unwind-section.py',
         'extract-libtool-version.py',
-    ]
+    ],
+    'leptonica': [
+        '_skipped_test.c',
+    ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
