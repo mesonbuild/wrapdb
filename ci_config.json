@@ -198,6 +198,26 @@
       "libxrandr-dev"
     ]
   },
+  "leptonica": {
+    "debian_packages": [
+      "gnuplot",
+      "libgif-dev",
+      "libwebp-dev"
+    ],
+    "msys_packages": [
+      "giflib",
+      "gnuplot",
+      "libjpeg-turbo",
+      "libpng",
+      "libtiff",
+      "libwebp",
+      "openjpeg2"
+    ],
+    "_comment": "Some tests takes more than 30s to complete.",
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {

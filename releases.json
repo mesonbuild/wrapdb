@@ -1134,6 +1134,14 @@
       "2.12-1"
     ]
   },
+  "leptonica": {
+    "dependency_names": [
+      "lept"
+    ],
+    "versions": [
+      "1.83.1-1"
+    ]
+  },
   "libarchive": {
     "dependency_names": [
       "libarchive"
