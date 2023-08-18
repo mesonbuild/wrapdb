@@ -1,7 +1,7 @@
 project(
   'zlib',
   'c',
-  version: '1.2.13',
+  version: '1.3',
   license: 'zlib',
   meson_version: '>=0.49.0',
 )
