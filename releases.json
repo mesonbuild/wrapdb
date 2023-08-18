@@ -2808,6 +2808,14 @@
       "1.2.142-1"
     ]
   },
+  "vulkan-memory-allocator": {
+    "versions": [
+      "3.0.1-1"
+    ],
+    "dependency_names": [
+      "vulkan-memory-allocator"
+    ]
+  },
   "vulkan-validationlayers": {
     "versions": [
       "1.2.158-2",
