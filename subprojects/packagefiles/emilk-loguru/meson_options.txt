@@ -2,20 +2,14 @@ option(
   'loguru_debug_logging',
   type: 'boolean',
   value: true,
-  description: '''
-    Enables debug versions of logging statments (DLOG_F etc). Defaults to the
-    opposite of NDEBUG.
-  ''',
+  description: 'Enables debug versions of logging statments (DLOG_F etc).',
 )
 
 option(
   'loguru_debug_checks',
   type: 'boolean',
   value: true,
-  description: '''
-    Enables debug versions of checks (DCHECK_F etc). Defaults to the opposite
-    of NDEBUG.
-  ''',
+  description: 'Enables debug versions of checks (DCHECK_F etc).',
 )
 
 option(
@@ -23,10 +17,9 @@ option(
   type: 'integer',
   min: 1,
   value: 196,
-  description: '''
-    Maximum length of text that can be printed by a LOG_SCOPE. This should be
-    long enough to get most things, but short enough not to clutter the stack.
-  ''',
+  description: '''Maximum length of text that can be printed by a LOG_SCOPE.
+This should be long enough to get most things, but short enough not to
+clutter the stack.''',
 )
 
 option(
@@ -47,48 +40,36 @@ option(
   'loguru_with_streams',
   type: 'boolean',
   value: false,
-  description: '''
-    Add support for the _S versions for all LOG and CHECK functions:
-
-      LOG_S(INFO) << "My vec3: " << x.cross(y);
-      CHECK_EQ_S(a, b) << "I expected a and b to be the same!";
-
-    This is off by default to keep down compilation times.
-  ''',
+  description: '''Add support for the _S versions for all LOG and CHECK
+functions. This is off by default to keep down compilation times.''',
 )
 
 option(
   'loguru_replace_glog',
   type: 'boolean',
   value: false,
-  description: '''
-    Make loguru mimic glog as close as possible, including #defining LOG,
-    CHECK, VLOG_IS_ON etc. Great if you plan to migrate from glog to loguru and
-    don't want to add _S suffixes to all your logging functions (see
-    loguru_with_streams). loguru_replace_glog implies loguru_with_streams.
-  ''',
+  description: '''Make loguru mimic glog as close as possible, including
+#defining LOG, CHECK, VLOG_IS_ON etc. Great if you plan to migrate from glog to
+#loguru and don't want to add _S suffixes to all your logging functions (see
+#loguru_with_streams). loguru_replace_glog implies loguru_with_streams.''',
 )
 
 option(
   'loguru_use_fmtlib',
   type: 'feature',
-  description: '''
-    Use fmtlib formatting. See https://github.com/fmtlib/fmt. This will make
-    loguru.hpp depend on <fmt/format.h>.
-  ''',
+  description: '''Use fmtlib formatting. See https://github.com/fmtlib/fmt.This
+will make loguru.hpp depend on <fmt/format.h>.''',
 )
 
 option(
   'loguru_with_fileabs',
   type: 'boolean',
   value: false,
-  description: '''
-    When loguru_with_fileabs is turned on, a check of file change will be
-    performed on every call to file_log. If the file is moved, or inode
-    changes, file is reopened using the same FileMode as is done by add_file.
-    Such a scheme is useful if you have a daemon program that moves the log
-    file every 24 hours and expects a new file to be created.
-  ''',
+  description: '''When loguru_with_fileabs is turned on, a check of file change
+will be performed on every call to file_log. If the file is moved, or inode
+changes, file is reopened using the same FileMode as is done by add_file. Such
+a scheme is useful if you have a daemon program that moves the log file every
+24 hours and expects a new file to be created.''',
 )
 
 option(
@@ -101,11 +82,8 @@ option(
   'loguru_rtti',
   type: 'boolean',
   value: true,
-  description: '''
-    Set to false if your platform does not support runtime type information
-    (-fno-rtti).
-  ''',
-)
+  description: '''Set to false if your platform does not support runtime type
+information (-fno-rtti).''',)
 
 option(
   'loguru_filename_width',
