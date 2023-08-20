@@ -1,2 +1,4 @@
-option('force_inline', type: 'boolean', value: true)
-option('simd', type: 'feature', value: 'auto')
+option('force_inline', type: 'boolean')
+option('jpeg-turbo', type: 'feature')
+option('simd', type: 'feature')
+option('tests', type: 'feature')

@@ -1,7 +1,7 @@
 project('libjpeg-turbo', 'c',
   version : '3.0.0',
   license : 'bsd-like',
-  meson_version : '>= 0.55.0')
+  meson_version : '>= 0.59.0')
 
 pkg = import('pkgconfig')
 python = find_program('python3')
@@ -178,7 +178,7 @@ jpeg = library('jpeg', sources,
   install: true,
 )
 
-pkg.generate(jpeg, name: 'libjpeg')
+pkg.generate(jpeg, description: 'A SIMD-accelerated JPEG codec that provides the libjpeg API', name: 'libjpeg')
 
 jpeg_dep = declare_dependency(
   include_directories: incdir,
@@ -186,3 +186,98 @@ jpeg_dep = declare_dependency(
 )
 
 meson.override_dependency('libjpeg', jpeg_dep)
+
+if get_option('jpeg-turbo').allowed()
+
+  install_headers('turbojpeg.h')
+
+  turbojpeg12 = static_library(
+    'turbojpeg12',
+    ['rdppm.c', 'wrppm.c'],
+    c_args: ['-DBITS_IN_JSAMPLE=12', '-DPPM_SUPPORTED'],
+  )
+
+  turbojpeg16 = static_library(
+    'turbojpeg16',
+    ['rdppm.c', 'wrppm.c'],
+    c_args: ['-DBITS_IN_JSAMPLE=16', '-DPPM_SUPPORTED'],
+  )
+
+  turbojpeg = library(
+    'turbojpeg',
+    sources + [
+      'turbojpeg.c',
+      'transupp.c',
+      'jdatadst-tj.c',
+      'jdatasrc-tj.c',
+      'rdbmp.c',
+      'rdppm.c',
+      'wrbmp.c',
+      'wrppm.c',
+    ],
+    c_args: ['-DBMP_SUPPORTED', '-DPPM_SUPPORTED'],
+    install: true,
+    link_with: [jpeg12, jpeg16, simd, turbojpeg12, turbojpeg16],
+    soversion: '0.3.0',
+  )
+
+  pkg.generate(
+    turbojpeg,
+    description: 'A SIMD-accelerated JPEG codec that provides the TurboJPEG API',
+    name: 'libturbojpeg',
+  )
+
+  turbojpeg_dep = declare_dependency(
+    include_directories: incdir,
+    link_with: turbojpeg,
+  )
+
+  meson.override_dependency('libturbojpeg', turbojpeg_dep)
+
+endif
+
+if get_option(
+  'tests',
+).require(
+  get_option('jpeg-turbo').allowed(),
+  error_message: 'jpeg-turbo feature needed',
+).allowed()
+
+  tjunittest = executable(
+    'tjunittest',
+    [
+      'tjunittest.c',
+      'tjutil.c',
+      'md5/md5.c',
+      'md5/md5hl.c',
+    ],
+    dependencies: turbojpeg_dep,
+  )
+
+  foreach _test, _args : {
+    'tjunittest'                 : '',
+    'tjunittest-alloc'           : '-alloc',
+    'tjunittest-yuv'             : '-yuv',
+    'tjunittest-yuv-alloc'       : '-yuv -alloc',
+    'tjunittest-yuv-nopad'       : '-yuv -noyuvpad',
+    'tjunittest-lossless'        : '-lossless',
+    'tjunittest-lossless-alloc'  : '-lossless -alloc',
+    'tjunittest-bmp'             : '-bmp',
+    'tjunittest12'               : '-precision 12',
+    'tjunittest12-alloc'         : '-precision 12 -alloc',
+    'tjunittest12-lossless'      : '-precision 12 -lossless',
+    'tjunittest12-lossless-alloc': '-precision 12 -lossless -alloc',
+    'tjunittest12-bmp'           : '-precision 12 -bmp',
+    'tjunittest16-lossless'      : '-precision 16',
+    'tjunittest16-lossless-alloc': '-precision 16 -alloc',
+    'tjunittest16-bmp'           : '-precision 16 -bmp',
+  }
+    test(
+      _test,
+      tjunittest,
+      args: _args.split(),
+      timeout: 60,
+    )
+  endforeach
+
+endif
