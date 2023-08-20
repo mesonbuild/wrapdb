@@ -27,12 +27,27 @@ foreach _feat, _lib : {
   dependencies += [_dep]
 endforeach
 
-dependencies += cc.find_library(
-  'gif',
-  has_headers: 'gif_lib.h',
-  required: get_option('libgif'),
-)
-has_libgif = dependencies[-1].found()
+has_libgif = get_option('libgif').allowed()
+if has_libgif
+  gif_dep = dependency(
+    'giflib',
+    required: false,
+  )
+  if not gif_dep.found()
+    gif_dep = cc.find_library(
+      'gif',
+      has_headers: 'gif_lib.h',
+      required: false,
+    )
+  endif
+  has_libgif = get_option(
+    'libgif',
+  ).require(
+    gif_dep.found(),
+    error_message: 'giflib not found',
+  ).allowed()
+  dependencies += gif_dep
+endif
 if has_libgif
   cdata.set('HAVE_LIBGIF', 1)
 endif
