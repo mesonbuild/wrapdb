@@ -1,10 +1,11 @@
 project(
   'spdlog',
   'cpp',
-  version: '1.11.0',
+  # TODO: if you bump this, check the FIXME in `tests/meson.build`
+  version: '1.12.0',
   license: 'MIT',
   default_options: ['cpp_std=c++14'],
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.56.0',
 )
 
 inc = include_directories('include')

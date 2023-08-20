@@ -11,7 +11,8 @@ test_src = files(
   'test_file_logging.cpp',
   'test_fmt_helper.cpp',
   'test_macros.cpp',
-  'test_misc.cpp',
+  # FIXME: broken in 1.12.0 (see https://github.com/gabime/spdlog/pull/2827).
+  # 'test_misc.cpp',
   'test_mpmc_q.cpp',
   'test_pattern_formatter.cpp',
   'test_registry.cpp',
@@ -21,4 +22,18 @@ test_src = files(
   'utils.cpp',
 )
 
-test('tests', executable('tests_exe', test_src, dependencies: spdlog_dep))
+spdlog_test_dep = [spdlog_dep]
+
+catch2_dep = dependency(
+    'catch2',
+    version: '>=3.0.0',
+    allow_fallback: false,
+    required: false,
+)
+if catch2_dep.found()
+    spdlog_test_dep += catch2_dep
+else
+    spdlog_test_dep += dependency('catch2-with-main', version: '>=3.0.0')
+endif
+
+test('tests', executable('tests_exe', test_src, dependencies: spdlog_test_dep))
