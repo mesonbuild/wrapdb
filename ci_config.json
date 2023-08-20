@@ -114,6 +114,15 @@
       "windows": false
     }
   },
+  "giflib": {
+    "_comment": "Unnecessary <unistd.h> include in gif_hash.h breaks the build",
+    "build_on": {
+      "windows": false
+    },
+    "msys_packages": [
+      "diffutils"
+    ]
+  },
   "glbinding": {
     "debian_packages": [
       "libxi-dev",

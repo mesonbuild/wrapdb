@@ -1,0 +1,9 @@
+[wrap-file]
+directory = giflib-5.2.1
+source_url = https://downloads.sourceforge.net/project/giflib/giflib-5.2.1.tar.gz
+source_filename = giflib-5.2.1.tar.gz
+source_hash = 31da5562f44c5f15d63340a09a4fd62b48c45620cd302f77a6d9acf0077879bd
+patch_directory = giflib
+
+[provide]
+dependency_names = giflib

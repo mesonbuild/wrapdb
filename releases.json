@@ -708,6 +708,14 @@
       "1.14.1-1"
     ]
   },
+  "giflib": {
+    "dependency_names": [
+      "giflib"
+    ],
+    "versions": [
+      "5.2.1-1"
+    ]
+  },
   "glbinding": {
     "dependency_names": [
       "glbinding",
