@@ -6,4 +6,4 @@ source_hash = c77c65fcce3d33417b2e90432e7a0eb05f59a7fff884022a9d931775d583bfaa
 patch_directory = libjpeg-turbo
 
 [provide]
-dependency_names = libjpeg
+dependency_names = libjpeg, libturbojpeg
