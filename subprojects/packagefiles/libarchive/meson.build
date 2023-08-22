@@ -20,6 +20,9 @@ if host_machine.system() == 'windows'
   if get_option('default_library') == 'static'
     add_project_arguments('-DLIBARCHIVE_STATIC', language: 'c')
   endif
+  if cc.sizeof('void*') == 4
+    add_project_arguments('-D__MINGW_USE_VC2005_COMPAT', language: 'c')
+  endif
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
   cdata.set('_WIN32_WINNT', '0x0A00', description: 'Windows Server 2003 APIs')
   cdata.set('NTDDI_VERSION', '0x0A000000', description: 'Windows Server 2003 APIs')
@@ -106,6 +109,12 @@ endif
 if cc.has_header_symbol('errno.h', 'EILSEQ')
   cdata.set('HAVE_EILSEQ', 1)
 endif
+
+foreach w : ['_mkgmtime', 'ctime_s', 'gmtime_s', 'localtime_s']
+  if cc.has_header_symbol('time.h', w)
+    cdata.set('HAVE_@0@'.format(w.to_upper()), 1)
+  endif
+endforeach
 
 mem = [
   'st_birthtime',
@@ -518,12 +527,8 @@ functions = {
   'wmemcmp': [],
   'wmemcpy': [],
   'wmemmove': [],
-  '_ctime64_s': [],
   '_fseeki64': [],
   '_get_timezone': [],
-  '_gmtime64_s': [],
-  '_localtime64_s': [],
-  '_mkgmtime64': [],
 }
 
 foreach f, d : functions
