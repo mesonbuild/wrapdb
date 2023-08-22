@@ -361,6 +361,7 @@ if get_option(
         args: ['-c', '"$1" generate && "$1" compare', '--', _exe],
         is_parallel: false,
         suite: 'reg',
+        timeout: 60,
         workdir: meson.current_source_dir(),
       )
     endif
