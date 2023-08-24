@@ -145,6 +145,11 @@ if not b2_dep.found()
   )
 endif
 
+libinc = []
+if host == 'android'
+  libinc += '../contrib/android/include'
+endif
+
 configure_file(
   input: '../build/cmake/config.h.in',
   output: 'config.h',
@@ -155,6 +160,7 @@ configure_file(
 libarchive = library(
   'libarchive',
   sources,
+  include_directories: libinc,
   name_prefix: '',
   soversion: host != 'windows' ? '19' : '',
   gnu_symbol_visibility: 'hidden',
