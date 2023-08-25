@@ -160,7 +160,7 @@ simd_variants = [
     'id'                 : 'neon',
     'emscripten_on_args' : ['-msimd128', '-mfpu=neon'],
     'emscripten_off_args': [],
-    'gcc_on_args'        : ['-mfpu=neon'],
+    'gcc_on_args'        : host_machine.cpu_family() == 'aarch64' ? []: ['-mfpu=neon'],
     'gcc_off_args'       : [],
   },
   {
