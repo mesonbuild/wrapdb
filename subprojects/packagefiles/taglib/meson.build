@@ -3,7 +3,7 @@ project(
   'cpp',
   license: 'LGPL-2.1-or-later OR MPL-1.1',
   version: '1.13',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.54.1',
   default_options: 'warning_level=0',
 )
 
@@ -193,7 +193,7 @@ taglib_includes = include_directories(
   'taglib/xm',
 )
 
-utfcpp_dep = dependency('utfcpp')
+utfcpp_dep = dependency('utf8cpp')
 
 taglib = library(
   'tag',
