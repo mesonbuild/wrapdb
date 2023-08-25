@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libunibreak-5.1
+source_url = https://github.com/adah1972/libunibreak/releases/download/libunibreak_5_1/libunibreak-5.1.tar.gz
+source_filename = libunibreak-5.1.tar.gz
+source_hash = dd1a92d4c5646aa0e457ff41d89812ec5243863be6c20bbcb5ee380f3dd78377
+patch_directory = libunibreak
+
+[provide]
+dependency_names = libunibreak
