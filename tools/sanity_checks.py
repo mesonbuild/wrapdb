@@ -60,6 +60,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'liblbfgs': [
         'liblbfgs.def'
     ],
+    'libunibreak': [
+        'unibreak.def'
+    ],
     'm4': [
         'm4_test_runner.py',
     ],

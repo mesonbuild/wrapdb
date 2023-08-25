@@ -1495,6 +1495,14 @@
       "1.17-1"
     ]
   },
+  "libunibreak": {
+    "dependency_names": [
+      "libunibreak"
+    ],
+    "versions": [
+      "5.1-1"
+    ]
+  },
   "libupnp": {
     "dependency_names": [
       "libupnp"
