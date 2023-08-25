@@ -74,6 +74,7 @@ zlib = library(
   link_args: link_args,
   vs_module_defs: 'win32/zlib.def',
   install: true,
+  version: meson.project_version(),
 )
 
 depinc = include_directories('.')
