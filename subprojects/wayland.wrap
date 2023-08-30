@@ -1,8 +1,8 @@
 [wrap-file]
-directory = wayland-1.20.0
-source_url = https://wayland.freedesktop.org/releases/wayland-1.20.0.tar.xz
-source_filename = wayland-1.20.0.tar.xz
-source_hash = b8a034154c7059772e0fdbd27dbfcda6c732df29cae56a82274f6ec5d7cd8725
+directory = wayland-1.22.0
+source_url = https://gitlab.freedesktop.org/wayland/wayland/-/releases/1.22.0/downloads/wayland-1.22.0.tar.xz
+source_filename = wayland-1.22.0.tar.xz
+source_hash = 1540af1ea698a471c2d8e9d288332c7e0fd360c8f1d12936ebb7e7cbc2425842
 
 [provide]
 wayland-cursor = wayland_cursor_dep
