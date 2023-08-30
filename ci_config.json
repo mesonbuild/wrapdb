@@ -604,6 +604,12 @@
     "debian_packages": [
       "libwayland-bin",
       "libwayland-dev"
+    ],
+    "build_options": [
+      "wayland:documentation=false",
+      "wayland:libraries=false",
+      "wayland:tests=false",
+      "wayland:dtd_validation=false"
     ]
   }
 }
