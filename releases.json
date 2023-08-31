@@ -892,11 +892,13 @@
   "harfbuzz": {
     "dependency_names": [
       "harfbuzz",
+      "harfbuzz-cairo",
+      "harfbuzz-gobject",
       "harfbuzz-icu",
-      "harfbuzz-subset",
-      "harfbuzz-gobject"
+      "harfbuzz-subset"
     ],
     "versions": [
+      "8.1.1-1",
       "5.2.0-1",
       "4.4.1-1"
     ]

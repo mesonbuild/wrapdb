@@ -169,6 +169,9 @@
       "harfbuzz:gobject=enabled",
       "harfbuzz:freetype=enabled",
       "harfbuzz:icu=enabled"
+    ],
+    "skip_dependency_check": [
+      "harfbuzz-cairo"
     ]
   },
   "hinnant-date": {
