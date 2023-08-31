@@ -275,7 +275,7 @@ if target == 'X86_WIN32' and cc.get_id() == 'clang'
   }
 endif
 
-skips = {]
+skips = {}
 if target == 'X86_WIN64' and cc.get_id() == 'clang-cl'
   skips += {
     # Hangs indefinitely…
@@ -365,7 +365,7 @@ foreach suite, sources : tests
             exe_name += ''.join(matrix_c_args).underscorify()
           endif
           test_id = ' / '.join(suite, test_name)
-          if skips.get(test_id, false) then
+          if skips.get(test_id, false)
             continue
           endif
           exe = executable(exe_name, src,
