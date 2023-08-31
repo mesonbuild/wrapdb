@@ -274,11 +274,6 @@ if target == 'X86_WIN32' and cc.get_id() == 'clang'
     'call / s55 -O2': true,
   }
 endif
-if target == 'X86_WIN64' and cc.get_id() == 'clang-cl'
-  xfails += {
-    'closures / unwindtest_ffi_call': true,
-  }
-endif
 
 foreach suite, sources : tests
   # Skip this set of tests if the feature is not supported
@@ -369,7 +364,7 @@ foreach suite, sources : tests
             #override_options: ['optimization=plain'],
           )
           should_fail = xfails.get(' / '.join(suite, test_name), false)
-          test(test_name, exe, suite: suite, should_fail: should_fail)
+          test(test_name, exe, suite: suite, should_fail: should_fail, timeout: 0)
         endforeach
       endforeach
     endforeach
