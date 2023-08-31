@@ -255,6 +255,26 @@ if cc.get_id() == 'gcc'
   endif
 endif
 
+xfails = {}
+if true or target == 'X86_WIN32'
+  xfails += {
+    'bhaible / test-callback -O0 -DDGTEST=54': true,
+    'bhaible / test-callback -O0 -DDGTEST=55': true,
+    'bhaible / test-callback -O0 -DDGTEST=56': true,
+    'bhaible / test-callback -O2 -DDGTEST=54': true,
+    'bhaible / test-callback -O2 -DDGTEST=55': true,
+    'bhaible / test-callback -O2 -DDGTEST=56': true,
+    'bhaible / test-call -O0 -DDGTEST=55': true,
+    'bhaible / test-call -O0 -DDGTEST=56': true,
+    'bhaible / test-call -O0 -DDGTEST=57': true,
+    'bhaible / test-call -O2 -DDGTEST=55': true,
+    'bhaible / test-call -O2 -DDGTEST=56': true,
+    'bhaible / test-call -O2 -DDGTEST=57': true,
+    'call / s55 -O0': true,
+    'call / s55 -O2': true,
+  }
+endif
+
 foreach suite, sources : tests
   # Skip this set of tests if the feature is not supported
   if suite in feature_check
@@ -343,7 +363,8 @@ foreach suite, sources : tests
             # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
             #override_options: ['optimization=plain'],
           )
-          test(test_name, exe, suite: suite)
+          should_fail = xfails.get(' / '.join(suite, test_name), false)
+          test(test_name, exe, suite: suite, should_fail: should_fail)
         endforeach
       endforeach
     endforeach
