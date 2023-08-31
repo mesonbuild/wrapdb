@@ -275,6 +275,14 @@ if target == 'X86_WIN32' and cc.get_id() == 'clang'
   }
 endif
 
+skips = {]
+if target == 'X86_WIN64' and cc.get_id() == 'clang-cl'
+  skips += {
+    # Hangs indefinitely…
+    'closures / unwindtest_ffi_call': true,
+  }
+endif
+
 foreach suite, sources : tests
   # Skip this set of tests if the feature is not supported
   if suite in feature_check
@@ -356,6 +364,10 @@ foreach suite, sources : tests
             test_name += ' ' + ' '.join(matrix_c_args)
             exe_name += ''.join(matrix_c_args).underscorify()
           endif
+          test_id = ' / '.join(suite, test_name)
+          if skips.get(test_id, false) then
+            continue
+          endif
           exe = executable(exe_name, src,
             dependencies: ffi_dep,
             c_args: [common_c_args, suite_c_args, matrix_c_args],
@@ -363,8 +375,7 @@ foreach suite, sources : tests
             # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
             #override_options: ['optimization=plain'],
           )
-          should_fail = xfails.get(' / '.join(suite, test_name), false)
-          test(test_name, exe, suite: suite, should_fail: should_fail, timeout: 0)
+          test(test_name, exe, suite: suite, should_fail: xfails.get(test_id, false))
         endforeach
       endforeach
     endforeach
