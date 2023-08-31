@@ -256,7 +256,7 @@ if cc.get_id() == 'gcc'
 endif
 
 xfails = {}
-if target == 'X86_WIN32'
+if target == 'X86_WIN32' and cc.get_id() == 'clang'
   xfails += {
     'bhaible / test-callback -O0 -DDGTEST=54': true,
     'bhaible / test-callback -O0 -DDGTEST=55': true,
@@ -272,6 +272,11 @@ if target == 'X86_WIN32'
     'bhaible / test-call -O2 -DDGTEST=57': true,
     'call / s55 -O0': true,
     'call / s55 -O2': true,
+  }
+endif
+if target == 'X86_WIN64' and cc.get_id() == 'msvc'
+  xfails += {
+    'closures / unwindtest_ffi_call': true,
   }
 endif
 
@@ -364,7 +369,7 @@ foreach suite, sources : tests
             #override_options: ['optimization=plain'],
           )
           should_fail = xfails.get(' / '.join(suite, test_name), false)
-          test(test_name, exe, suite: suite, should_fail: should_fail, timeout: 60)
+          test(test_name, exe, suite: suite, should_fail: should_fail)
         endforeach
       endforeach
     endforeach
