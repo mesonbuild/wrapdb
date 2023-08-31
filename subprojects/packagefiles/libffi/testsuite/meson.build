@@ -274,7 +274,7 @@ if target == 'X86_WIN32' and cc.get_id() == 'clang'
     'call / s55 -O2': true,
   }
 endif
-if target == 'X86_WIN64' and cc.get_id() == 'msvc'
+if target == 'X86_WIN64' and cc.get_id() == 'clang-cl'
   xfails += {
     'closures / unwindtest_ffi_call': true,
   }
