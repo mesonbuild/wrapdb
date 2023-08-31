@@ -33,7 +33,11 @@ elif host_machine.system() == 'darwin'
 elif cpp.get_argument_syntax() == 'gcc'
   icudata_asm_output = '@0@.S'.format(U_ICUDATA_NAME)
   if host_machine.system() == 'windows'
-    icudata_command += ['-a', 'gcc-mingw64']
+    if host_machine.cpu_family() == 'x86'
+      icudata_command += ['-a', 'gcc-cygwin']
+    else
+      icudata_command += ['-a', 'gcc-mingw64']
+    endif
   else
     icudata_command += ['-a', 'gcc']
   endif
