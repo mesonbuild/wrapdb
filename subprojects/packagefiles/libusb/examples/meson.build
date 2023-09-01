@@ -19,7 +19,7 @@ endif
 
 executable('fxload',
   fxload_sources,
-  include_directories: [ incdirs, '../msvc/getopt' ],
+  include_directories: [ incdirs, include_directories('../msvc/getopt') ],
   link_with: libusb,
   c_args: cc.get_argument_syntax() == 'msvc' ? '-DHAVE_STRING_H' : '',
 )
