@@ -1,3 +1,7 @@
+if not get_option('tests')
+  subdir_done()
+endif
+
 stress = executable('stress',
   'stress.c',
   'testlib.c',

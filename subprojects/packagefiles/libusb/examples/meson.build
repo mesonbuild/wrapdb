@@ -1,3 +1,7 @@
+if not get_option('examples')
+  subdir_done()
+endif
+
 executable('dpfp',
   'dpfp.c',
   include_directories: incdirs,
