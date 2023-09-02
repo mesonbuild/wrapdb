@@ -411,6 +411,17 @@
       "windows": false
     }
   },
+  "libevdev": {
+    "alpine_packages": [
+      "bash"
+    ],
+    "build_options": [
+      "libevdev:documentation=disabled"
+    ],
+    "_comment": "targets '>=0.50.0' but uses cmakedefine without exactly two tokens ('>=0.54.1').",
+    "fatal_warnings": false,
+    "linux_only": true
+  },
   "libjpeg-turbo": {
     "brew_packages": [
       "nasm"

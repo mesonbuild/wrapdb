@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libevdev-libevdev-1.13.1
+source_url = https://gitlab.freedesktop.org/libevdev/libevdev/-/archive/libevdev-1.13.1/libevdev-libevdev-1.13.1.tar.gz
+source_filename = libevdev-1.13.1.tar.gz
+source_hash = 438a9060dca43a305f75a590624412d1f858a908d4807433c67c58770f676a47
+
+[provide]
+libevdev = dep_libevdev
