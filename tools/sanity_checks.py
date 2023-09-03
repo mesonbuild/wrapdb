@@ -32,6 +32,10 @@ PER_PROJECT_PERMITTED_FILES = {
     'box2d': [
         'doctest.h'
     ],
+    'curl': [
+        'extract.mk',
+        'rewrite.mk',
+    ],
     'glbinding': [
         'pch.h',
         'glbinding_api.h',

@@ -73,6 +73,50 @@
       "windows": false
     }
   },
+  "curl": {
+    "_comment": [
+      "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
+      "don't install stunnel: it breaks the testsuite (certificates issues)",
+      "even with libpsl installed, the dependency is not detected…",
+      "ditto with openldap (“unknown version” at dependency check)"
+    ],
+    "brew_packages": [
+      "gnutls",
+      "krb5",
+      "libidn2",
+      "libpsl",
+      "nghttp2",
+      "openldap",
+      "rtmpdump"
+    ],
+    "debian_packages": [
+      "gnutls-bin",
+      "krb5-multidev",
+      "libgsasl-dev",
+      "libidn2-dev",
+      "libldap-dev",
+      "libnghttp2-dev",
+      "libpsl-dev",
+      "librtmp-dev",
+      "libssh2-1-dev",
+      "nghttp2-proxy",
+      "python3-impacket",
+      "samba",
+      "stunnel4",
+      "winbind"
+    ],
+    "msys_packages": [
+      "gss",
+      "libpsl",
+      "libssh2",
+      "nghttp2",
+      "rtmpdump"
+    ],
+    "build_options": [
+      "curl:ca_bundle=",
+      "curl:ca_path="
+    ]
+  },
   "dlfcn-win32": {
     "_comment": "- Requires Windows",
     "build_on": {
