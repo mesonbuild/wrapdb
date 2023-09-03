@@ -394,6 +394,14 @@
       "1.3.0-1"
     ]
   },
+  "curl": {
+    "dependency_names": [
+      "libcurl"
+    ],
+    "versions": [
+      "8.0.1-1"
+    ]
+  },
   "cxxopts": {
     "dependency_names": [
       "cxxopts"
