@@ -1,0 +1,9 @@
+[wrap-file]
+directory = sparsehash-c11-2.11.1
+source_url = https://github.com/sparsehash/sparsehash-c11/archive/refs/tags/v2.11.1.tar.gz
+source_filename = sparsehash-c11-2.11.1.tar.gz
+source_hash = d4a43cad1e27646ff0ef3a8ce3e18540dbcb1fdec6cc1d1cb9b5095a9ca2a755
+patch_directory = sparsehash-c11
+
+[provide]
+sparsehash-c11 = sparsehash_c11_dep
