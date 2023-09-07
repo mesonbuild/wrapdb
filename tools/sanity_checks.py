@@ -348,7 +348,7 @@ class TestReleases(unittest.TestCase):
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
-                subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
+                subprocess.check_call(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'] + debian_packages)
             else:
                 s = ', '.join(debian_packages)
                 print(f'The following packages could be required: {s}')
