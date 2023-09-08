@@ -581,6 +581,11 @@
       "windows": false
     }
   },
+  "snitch": {
+    "build_options": [
+      "cpp_std=c++20"
+    ]
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
