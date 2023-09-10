@@ -292,8 +292,9 @@
     "build_options": [
       "liblastfm:tests=enabled"
     ],
-    "_comment": "libcurl is not available with MSVC CI",
+    "_comment": "broken",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
