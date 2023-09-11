@@ -76,7 +76,11 @@ if host_machine.system() == 'windows'
   sass_sources += [windows.compile_resources(winres_path)]
 endif
 
-dl_dep = cpp.find_library('dl', required : false)
+if meson.version().version_compare('>= 0.62')
+  dl_dep = dependency('dl', required : false)
+else
+  dl_dep = cc.find_library('dl', required : false)
+endif
 
 libsass = shared_library(
   'sass',
