@@ -86,6 +86,9 @@ if host_machine.system() == 'windows'
         '/Za', # Stop stdlib.h from #defining min/max macros.
     ])
 endif
+gee_c_args += meson.get_compiler('c').get_supported_arguments([
+    '-Wno-incompatible-function-pointer-types', # In clang 16+, this is an error by default.
+])
 
 gee_lib = library(
     gee_name,
