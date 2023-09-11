@@ -146,6 +146,7 @@
   "glib": {
     "_comment": "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
     "build_options": [
+      "glib:warning_level=0",
       "glib:tests=false"
     ],
     "skip_dependency_check": [
