@@ -14,9 +14,9 @@ if target_machine.system() == 'windows'
 endif
 
 asio_dep = declare_dependency(
-    include_directories : include_directories('include'),
+    include_directories : include_directories('asio/include'),
     dependencies: asio_deps,
 )
 
-install_headers('include/asio.hpp')
-install_subdir('include/asio', install_dir: get_option('includedir'))
+install_headers('asio/include/asio.hpp')
+install_subdir('asio/include/asio', install_dir: get_option('includedir'))
