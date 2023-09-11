@@ -1,4 +1,11 @@
-project('libgee', 'c', 'vala', version: '0.20.6')
+project(
+  'libgee',
+  'c',
+  'vala',
+  version: '0.20.6',
+  default_options: 'warning_level=0',
+)
+
 api_version = '0.8'
 
 glib_minimal_version = '2.36'
