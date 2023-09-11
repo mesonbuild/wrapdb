@@ -1437,6 +1437,14 @@
       "1.6.17-2"
     ]
   },
+  "libsass": {
+    "dependency_names": [
+      "libsass"
+    ],
+    "versions": [
+      "3.6.4-1"
+    ]
+  },
   "libsndfile": {
     "dependency_names": [
       "sndfile"
