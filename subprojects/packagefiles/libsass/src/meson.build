@@ -82,12 +82,17 @@ else
   dl_dep = cc.find_library('dl', required : false)
 endif
 
-libsass = shared_library(
+lib_args = []
+if get_option('default_library') != 'static'
+  lib_args += ['-DADD_EXPORTS']
+endif
+
+libsass = library(
   'sass',
    sass_sources,
    dependencies: [dl_dep],
-   c_args: ['-DADD_EXPORTS'],
-   cpp_args: ['-DADD_EXPORTS'],
+   c_args: lib_args,
+   cpp_args: lib_args,
    include_directories: inc,
    install: true)
 
