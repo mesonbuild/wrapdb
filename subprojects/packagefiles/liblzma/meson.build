@@ -2,7 +2,7 @@
 project(
   'liblzma',
   'c',
-  version: '5.2.11',
+  version: '5.2.12',
   license: 'pd/lgpl2/gpl2/gpl3',
   meson_version: '>=0.49.0',
 )
