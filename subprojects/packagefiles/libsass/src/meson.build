@@ -98,6 +98,7 @@ libsass = library(
    c_args: lib_args,
    cpp_args: lib_args,
    include_directories: inc,
+   soversion: '1',
    install: true)
 
 libsass_dep = declare_dependency(
