@@ -87,7 +87,7 @@ else
 endif
 
 lib_args = []
-if get_option('default_library') != 'static'
+if host_machine.system() == 'windows' and get_option('default_library') != 'static'
   lib_args += ['-DADD_EXPORTS']
 endif
 
