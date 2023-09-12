@@ -11,11 +11,6 @@ add_project_arguments(
   '-DLIBSASS_VERSION="@0@"'.format(meson.project_version()),
   language: ['cpp'])
 
-cpp = meson.get_compiler('cpp')
-add_project_arguments(
-  cpp.get_supported_arguments('-Wno-non-virtual-dtor'),
-  language: ['cpp'])
-
 inc = include_directories('include')
 winres_path = files(join_paths('res', 'resource.rc'))
 
