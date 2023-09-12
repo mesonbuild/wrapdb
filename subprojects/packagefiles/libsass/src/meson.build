@@ -104,17 +104,10 @@ libsass_dep = declare_dependency(
   link_with: libsass,
   include_directories: [inc])
 
-conf_data = configuration_data()
-conf_data.set('prefix', get_option('prefix'))
-conf_data.set('exec_prefix', '${prefix}')
-conf_data.set('libdir', join_paths('${exec_prefix}', get_option('libdir')))
-conf_data.set('includedir', join_paths('${prefix}', get_option('includedir')))
-conf_data.set('VERSION', meson.project_version())
-
-pkg_install_dir = join_paths(get_option('libdir'), 'pkgconfig')
-
-configure_file(
-  input: 'support/libsass.pc.in',
-  output: 'libsass.pc',
-  configuration: conf_data,
-  install_dir: pkg_install_dir)
+pkg = import('pkgconfig')
+pkg.generate(
+  libsass,
+  name: 'libsass',
+  description: 'A C implementation of a Sass compiler',
+  url: 'https://github.com/sass/libsass',
+)
