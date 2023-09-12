@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.1',
+  version: '3.7.2',
   meson_version: '>=0.54.1',
 )
 
@@ -164,7 +164,7 @@ types = {
   'off_t': 'int64_t',
   'pid_t': 'int',
   'size_t': 'unsigned long',
-  'ssize_t': 'long',
+  'ssize_t': 'ptrdiff_t',
   'uid_t': 'short',
 }
 
@@ -187,7 +187,6 @@ endif
 
 if dl_dep.found()
   cdata.set('HAVE_DLFCN_H', 1)
-  deps += dl_dep
 endif
 
 attr_dep = dependency('libattr', disabler: true, required: get_option('xattr'))
