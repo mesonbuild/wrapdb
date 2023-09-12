@@ -76,10 +76,14 @@ if host_machine.system() == 'windows'
   sass_sources += [windows.compile_resources(winres_path)]
 endif
 
-if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required : false)
+if host_machine.system() != 'windows'
+  if meson.version().version_compare('>= 0.62')
+    dl_dep = dependency('dl')
+  else
+    dl_dep = cc.find_library('dl', required : false)
+  endif
 else
-  dl_dep = cc.find_library('dl', required : false)
+  dl_dep = declare_dependency()
 endif
 
 lib_args = []
