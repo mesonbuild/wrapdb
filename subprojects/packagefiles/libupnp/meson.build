@@ -2,7 +2,7 @@ project(
   'pupnp',
   'c',
   license: 'BSD-3-Clause',
-  version: '1.14.17',
+  version: '1.14.18',
   meson_version: '>=0.54.1',
 )
 
