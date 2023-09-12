@@ -83,7 +83,7 @@ if host_machine.system() != 'windows'
     dl_dep = cc.find_library('dl', required : false)
   endif
 else
-  dl_dep = declare_dependency()
+  dl_dep = dependency('', required: false)
 endif
 
 lib_args = []
