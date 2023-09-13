@@ -1,0 +1,23 @@
+/* config.h.  Generated from config.h.meson by meson.  */
+
+/* Define to 1 if you have the <getopt.h> header
+ * with a compatible `getopt_long` function. */
+#mesondefine HAVE_GETOPT_H
+
+/* Define to 1 if you have the <libintl.h> header file. */
+#mesondefine HAVE_LIBINTL_H
+
+/* Define if libpng is available (-lpng) */
+#mesondefine HAVE_LIBPNG
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#mesondefine HAVE_STRING_H
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#mesondefine WORDS_BIGENDIAN
+
+/* vim: set ft=c: */

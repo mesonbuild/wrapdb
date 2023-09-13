@@ -41,6 +41,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_features.h',
         'glbinding-aux_export.h'
     ],
+    'jbig2dec': [
+        'jbig2dec.def',
+    ],
     'jbigkit': [
         'jbig.def',
         'jbig85.def'
