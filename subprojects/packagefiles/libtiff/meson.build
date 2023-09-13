@@ -4,6 +4,15 @@ project(
   version: files('VERSION'),
   meson_version: '>=0.57.0',
 )
+# calculate library version from configure.ac values
+libtiff_current = 6
+libtiff_revision = 1
+libtiff_age = 0
+library_version = '@0@.@1@.@2@'.format(
+    libtiff_current - libtiff_age,
+    libtiff_age,
+    libtiff_revision
+)
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m', required: false)
