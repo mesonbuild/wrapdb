@@ -226,6 +226,12 @@
       "gio-unix-2.0"
     ]
   },
+  "gumbo-parser": {
+    "build_options": [
+      "gumbo-parser:examples=enabled",
+      "gumbo-parser:tests=enabled"
+    ]
+  },
   "harfbuzz": {
     "_comment": [
       "- Currently builds with no warnings other than an incorrect warning() function",

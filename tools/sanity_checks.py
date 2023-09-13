@@ -45,6 +45,10 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_features.h',
         'glbinding-aux_export.h'
     ],
+    'gumbo-parser': [
+        'gumbo.def',
+        'tokenizer.cc',
+    ],
     'jbig2dec': [
         'jbig2dec.def',
     ],
