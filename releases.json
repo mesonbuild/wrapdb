@@ -1075,6 +1075,14 @@
       "2.11-1"
     ]
   },
+  "jbig2dec": {
+    "versions": [
+      "0.20-1"
+    ],
+    "dependency_names": [
+      "jbig2dec"
+    ]
+  },
   "jbigkit": {
     "versions": [
       "2.1-2",

@@ -184,6 +184,11 @@
       "htslib:tests=true"
     ]
   },
+  "jbig2dec": {
+    "msys_packages": [
+      "libpng"
+    ]
+  },
   "json-glib": {
     "_comment": "gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
     "debian_packages": [
