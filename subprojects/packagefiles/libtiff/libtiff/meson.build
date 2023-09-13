@@ -65,11 +65,12 @@ if host_machine.system() == 'windows'
 endif
 
 tiff4_lib = library(
-  'tiff4',
+  'tiff',
   sources,
   install: true,
   dependencies: [m_dep, jbig_dep, jpeg_dep, lerc_dep, lzma_dep, webp_dep, zlib_dep, zstd_dep],
   vs_module_defs: 'libtiff.def',
+  version: library_version,
 )
 
 install_headers(
