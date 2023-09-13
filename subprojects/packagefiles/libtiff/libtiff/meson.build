@@ -12,6 +12,13 @@ configure_file(
   configuration: cdata,
 )
 
+tiffvers_h = configure_file(
+  input: 'tiffvers.h.cmake.in',
+  output: 'tiffvers.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
+
 sources = files(
   'tif_aux.c',
   'tif_close.c',
@@ -76,6 +83,6 @@ tiff4_lib = library(
 install_headers(
   'tiff.h',
   'tiffio.h',
-  'tiffvers.h',
   tiffconf_h,
+  tiffvers_h,
 )
