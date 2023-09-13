@@ -6,7 +6,7 @@ project(
 )
 # calculate library version from configure.ac values
 libtiff_current = 6
-libtiff_revision = 1
+libtiff_revision = 2
 libtiff_age = 0
 library_version = '@0@.@1@.@2@'.format(
     libtiff_current - libtiff_age,
@@ -75,12 +75,16 @@ cdata.set('HAVE_JBG_NEWLEN', jbig_dep.found())
 cdata.set10('HAVE_DECL_OPTARG', cc.has_header_symbol('unistd.h', 'optarg'))
 cdata.set10('HAVE_GETOPT', cc.has_header_symbol('getopt.h', 'getopt'))
 
-cdata.set('PACKAGE_BUGREPORT', 'tiff@lists.maptools.org')
+cdata.set('PACKAGE_BUGREPORT', 'tiff@lists.osgeo.org')
 cdata.set('PACKAGE_NAME', 'LibTIFF Software')
-cdata.set('PACKAGE_STRING', '@0@ @1@'.format(cdata.get('PACKAGE_NAME'), meson.project_version()))
 cdata.set('PACKAGE_TARNAME', meson.project_name())
 cdata.set('PACKAGE_URL', 'https://gitlab.com/libtiff/libtiff')
-cdata.set('PACKAGE_VERSION', meson.project_version())
+
+cdata.set('LIBTIFF_VERSION', meson.project_version())
+cdata.set('LIBTIFF_MAJOR_VERSION', meson.project_version().split('.')[0])
+cdata.set('LIBTIFF_MINOR_VERSION', meson.project_version().split('.')[1])
+cdata.set('LIBTIFF_MICRO_VERSION', meson.project_version().split('.')[2])
+cdata.set('LIBTIFF_RELEASE_DATE', import('fs').read('RELEASE-DATE').strip())
 
 cdata.set('CCITT_SUPPORT', true)
 cdata.set('PACKBITS_SUPPORT', true)
