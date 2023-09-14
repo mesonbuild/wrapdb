@@ -187,6 +187,7 @@ openjp2_lib = library(
   c_args: openjp2_c_args,
   install: true,
   dependencies: open_jp2_deps,
+  soversion: '7',
   version: meson.project_version(),
 )
 
