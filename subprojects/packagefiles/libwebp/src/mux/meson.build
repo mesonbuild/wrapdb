@@ -9,7 +9,7 @@ webpmux_lib = library(
   dependencies: [build_libwebpmux, common_deps, webp_dep],
   gnu_symbol_visibility: 'hidden',
   install: true,
-  version: '3.0.12',
+  version: '3.0.13',
 )
 
 webpmux_dep = declare_dependency(

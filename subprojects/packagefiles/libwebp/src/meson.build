@@ -11,7 +11,7 @@ webp_lib = library(
     webputilsdec_lib,
     webputilsenc_lib,
   ],
-  version: '7.1.7',
+  version: '7.1.8',
 )
 
 webp_dep = declare_dependency(
@@ -38,7 +38,7 @@ webpdecoder_lib = library(
     webpdspdec_lib,
     webputilsdec_lib,
   ],
-  version: '3.1.7',
+  version: '3.1.8',
 )
 
 webpdecoder_dep = declare_dependency(
