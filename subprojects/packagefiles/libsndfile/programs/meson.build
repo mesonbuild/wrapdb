@@ -2,7 +2,7 @@ if not get_option('programs')
   subdir_done()
 endif
 
-alsa_dep = dependency('alsa', required: cdata.get('HAVE_ALSA_ASOUNDLIB_H') == 1)
+alsa_dep = dependency('alsa', required: cdata.get('HAVE_ALSA_ASOUNDLIB_H', 0) == 1)
 if alsa_dep.found()
   executable('sndfile-play',
     'sndfile-play.c',
