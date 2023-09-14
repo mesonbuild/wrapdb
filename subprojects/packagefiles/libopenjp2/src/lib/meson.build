@@ -10,7 +10,7 @@ endif
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(
   openjp2_lib,
-  name: 'libopenjp2',
+  filebase: 'libopenjp2',
   description: 'JPEG2000 library (Part 1 and 2)',
   version: meson.project_version(),
   libraries: openjp2_lib,
