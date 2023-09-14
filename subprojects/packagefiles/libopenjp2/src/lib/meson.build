@@ -14,6 +14,7 @@ pkgconfig.generate(
   description: 'JPEG2000 library (Part 1 and 2)',
   version: meson.project_version(),
   libraries: openjp2_lib,
+  subdirs: openjpeg_version_subdir,
 )
 if get_option('build_jpip')
   pkgconfig.generate(

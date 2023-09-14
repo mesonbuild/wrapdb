@@ -20,6 +20,10 @@ openjpeg_version_major = openjpeg_version_parts[0]
 openjpeg_version_minor = openjpeg_version_parts[1]
 openjpeg_version_build = openjpeg_version_parts[2]
 
+openjpeg_version_subdir = 'openjpeg-@0@.@1@'.format(
+  openjpeg_version_major,
+  openjpeg_version_minor,
+)
 
 m_dep = cc.find_library('m', required: false)
 thread_dep = dependency('threads')
