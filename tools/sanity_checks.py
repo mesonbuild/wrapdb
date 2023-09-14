@@ -72,6 +72,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'mpdecimal': [
         'gettests.py',
     ],
+    'mujs': [
+        'mujs.def',
+    ],
     'netstring-c': [
         'netstring-c.def',
     ],
