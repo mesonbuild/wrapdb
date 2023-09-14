@@ -2,7 +2,7 @@ project(
   'libsndfile',
   'c',
   license: 'LGPL-2.1-or-later',
-  version: '1.2.0',
+  version: '1.2.2',
   meson_version: '>=0.54.1',
 )
 
@@ -104,7 +104,9 @@ funcs = [
   'getpagesize',
   'gettimeofday',
   'gmtime',
+  'gmtime_r',
   'localtime',
+  'localtime_r',
   'lrint',
   'lrintf',
   'lround',
@@ -137,15 +139,15 @@ cdata.set('SIZEOF_VOIDP_CODE', '#define VOIDP_CODE')
 sizes += {'double': '', 'float': '', 'int': '', 'loff_t': '', 'off64_t': '', 'short': '', 'size_t': ''}
 
 foreach f : funcs
-  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
-endforeach
-
-foreach f : ['gmtime_r', 'localtime_r']
-  cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_header_symbol('time.h', f, args: '-D_POSIX_C_SOURCE'))
+  if cc.has_function(f)
+    cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
 endforeach
 
 foreach h : headers
-  cdata.set10('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+  if cc.has_header(h)
+    cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
+  endif
 endforeach
 
 foreach s, h : sizes
