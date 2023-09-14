@@ -139,6 +139,20 @@
   "fontconfig": {
     "fatal_warnings": false
   },
+  "freeglut": {
+    "brew_packages": [
+      "libx11",
+      "libxi",
+      "libxrandr",
+      "libxxf86vm",
+      "mesa"
+    ],
+    "debian_packages": [
+      "libgl-dev",
+      "libglu1-mesa-dev",
+      "libxi-dev"
+    ]
+  },
   "fuse": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
