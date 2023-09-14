@@ -655,6 +655,15 @@
       "2.14.2-1"
     ]
   },
+  "freeglut": {
+    "dependency_names": [
+      "freeglut",
+      "glut"
+    ],
+    "versions": [
+      "3.4.0-1"
+    ]
+  },
   "freetype2": {
     "dependency_names": [
       "freetype2",
