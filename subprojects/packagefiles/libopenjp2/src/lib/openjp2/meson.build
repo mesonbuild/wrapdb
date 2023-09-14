@@ -197,7 +197,10 @@ libopenjp2_dep = declare_dependency(
 )
 
 install_headers(
-  openjp2_headers,
+  [
+    'openjpeg.h',
+    'opj_stdint.h',
+  ],
   subdir: openjpeg_version_subdir,
 )
 
