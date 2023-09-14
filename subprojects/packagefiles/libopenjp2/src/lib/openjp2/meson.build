@@ -118,7 +118,7 @@ configure_file(
   output: 'opj_config.h',
   configuration: opj_config,
   format: 'cmake@',
-  install_dir: get_option('includedir'),
+  install_dir: get_option('includedir') / openjpeg_version_subdir,
 )
 configure_file(
   input: 'opj_config_private.h.cmake.in',
@@ -196,7 +196,10 @@ libopenjp2_dep = declare_dependency(
   compile_args: opj_static_args,
 )
 
-install_headers(openjp2_headers)
+install_headers(
+  openjp2_headers,
+  subdir: openjpeg_version_subdir,
+)
 
 if get_option('build_unit_tests')
   bench_dwt_exe = executable('bench_dwt', 'bench_dwt.c', dependencies: [libopenjp2_dep, m_dep, thread_dep])
