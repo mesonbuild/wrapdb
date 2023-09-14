@@ -1,5 +1,5 @@
 project('json-c', 'c',
-  version: '0.16',
+  version: '0.17',
   license: 'MIT',
   meson_version: '>=0.49',
   default_options: ['c_std=gnu99'],
@@ -8,17 +8,16 @@ project('json-c', 'c',
 cc = meson.get_compiler('c')
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-DWIN32=_WIN32', language: 'c')
+else
+  add_project_arguments('-D_GNU_SOURCE', language: 'c')
 endif
 
 if get_option('default_library') != 'static'
   add_project_arguments('-DJSON_C_DLL', language: 'c')
 endif
 
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
-if cc.has_argument('-Wno-unused')
-  add_project_arguments('-Wno-unused', language: 'c')
-endif
+add_project_arguments(cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
 
 threads = dependency('threads', required: false)
 math = cc.find_library('m', required: false)
@@ -28,7 +27,7 @@ inc = include_directories('config')
 
 json_config = configuration_data()
 if conf.has('HAVE_INTTYPES_H')
-  json_config.set10('JSON_C_HAVE_INTTYPES_H', true)
+  json_config.set('JSON_C_HAVE_INTTYPES_H', 1)
 endif
 json_config_h = configure_file(
   configuration: json_config,
@@ -37,6 +36,7 @@ json_config_h = configure_file(
 
 jconf = configuration_data()
 jconf.set('JSON_H_JSON_POINTER', '#include "json_pointer.h"')
+jconf.set('JSON_H_JSON_PATCH', '#include "json_patch.h"')
 
 json_h = configure_file(
   input: 'json.h.cmakein',
@@ -60,7 +60,7 @@ public_headers = [
   'printbuf.h',
 ]
 
-sources = [
+sources = files(
   'arraylist.c',
   'debug.c',
   'json_c_version.c',
@@ -74,9 +74,11 @@ sources = [
   'printbuf.c',
   'random_seed.c',
   'strerror_override.c',
-]
+)
 
-libjson_c = library(meson.project_name(), json_config_h, json_h, config_h, sources,
+libjson_c = library(
+  'json-c',
+  sources,
   include_directories: inc,
   install: true,
 )
@@ -88,8 +90,7 @@ json_c_dep = declare_dependency(
   sources: json_config_h,
 )
 
-header_subdir = 'json-c'
-install_headers(public_headers, subdir: header_subdir)
+install_headers(public_headers, subdir: 'json-c')
 
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(libjson_c,
@@ -97,5 +98,5 @@ pkgconfig.generate(libjson_c,
   version: meson.project_version(),
   filebase: meson.project_name(),
   name: meson.project_name(),
-  subdirs: header_subdir,
+  subdirs: 'json-c',
 )
