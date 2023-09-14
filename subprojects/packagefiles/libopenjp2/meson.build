@@ -15,10 +15,10 @@ host_cpu = host_machine.cpu_family()
 
 fs = import('fs')
 
-openjpeg_version_major = '2'
-openjpeg_version_minor = '3'
-openjpeg_version_build = '1'
-openjpeg_package_version = '@0@.@1@.@2@'.format(openjpeg_version_major, openjpeg_version_minor, openjpeg_version_build)
+openjpeg_version_parts = meson.project_version().split('.')
+openjpeg_version_major = openjpeg_version_parts[0]
+openjpeg_version_minor = openjpeg_version_parts[1]
+openjpeg_version_build = openjpeg_version_parts[2]
 
 
 m_dep = cc.find_library('m', required: false)

@@ -99,7 +99,7 @@ opj_private_config.set('OPJ_HAVE__ALIGNED_MALLOC', cc.has_function('_aligned_mal
 opj_private_config.set('OPJ_HAVE_FSEEKO', cc.has_function('fseeko').to_string('ON', 'OFF'))
 opj_private_config.set('OPJ_HAVE_MEMALIGN', cc.has_function('memalign', prefix: '#include <malloc.h>'))
 opj_private_config.set('OPJ_HAVE_POSIX_MEMALIGN', cc.has_function('posix_memalign', prefix: '#include <stdlib.h>'))
-opj_private_config.set('PACKAGE_VERSION', openjpeg_package_version)
+opj_private_config.set('PACKAGE_VERSION', meson.project_version())
 
 #-----------------------------------------------------------------------------
 # opj_config.h generation (1/2)
