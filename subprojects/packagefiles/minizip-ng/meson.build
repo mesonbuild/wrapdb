@@ -1,7 +1,7 @@
 project(
   'minizip-ng',
   'c',
-  version: '4.0.0',
+  version: '4.0.1',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
@@ -144,7 +144,7 @@ minizip_ng = library(
   sources,
   c_args: margs,
   version: meson.project_version(),
-  soversion: host_machine.system() == 'windows' ? '' : '3',
+  soversion: host_machine.system() == 'windows' ? '' : '1',
   vs_module_defs: 'mz.def',
   dependencies: [
     bcrypt_dep,
