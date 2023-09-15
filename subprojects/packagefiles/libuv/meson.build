@@ -1,7 +1,7 @@
 project(
   'libuv',
   'c',
-  version: '1.44.2',
+  version: '1.46.0',
   license: 'libuv',
   default_options : [ 'c_std=gnu99' ],
   meson_version: '>=0.49.0',
@@ -102,10 +102,11 @@ libuv_src = [
   'src/random.c',
   'src/strscpy.c',
   'src/strtok.c',
+  'src/thread-common.c',
   'src/threadpool.c',
   'src/timer.c',
-  'src/uv-data-getter-setters.c',
   'src/uv-common.c',
+  'src/uv-data-getter-setters.c',
   'src/version.c',
 ]
 
@@ -115,7 +116,7 @@ if win32
     '-DWIN32_LEAN_AND_MEAN',
     '-D_WIN32_WINNT=0x0602',
   ]
-  libuv_libs += ['psapi', 'user32', 'advapi32', 'iphlpapi', 'userenv', 'ws2_32']
+  libuv_libs += ['psapi', 'user32', 'advapi32', 'iphlpapi', 'userenv', 'ws2_32', 'dbghelp', 'ole32', 'uuid']
   libuv_src += [
     'src/win/async.c',
     'src/win/core.c',
@@ -207,15 +208,11 @@ if android
   libuv_cargs += '-D_GNU_SOURCE'
   libuv_libs += 'dl'
   libuv_src += [
-    'src/unix/linux-core.c',
-    'src/unix/linux-inotify.c',
-    'src/unix/linux-syscalls.c',
+    'src/unix/linux.c',
     'src/unix/procfs-exepath.c',
-    'src/unix/pthread-fixes.c',
     'src/unix/random-getentropy.c',
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
-    'src/unix/epoll.c',
   ]
 endif
 
@@ -286,13 +283,10 @@ if linux
   ]
   libuv_libs += ['dl', 'rt']
   libuv_src += [
-    'src/unix/linux-core.c',
-    'src/unix/linux-inotify.c',
-    'src/unix/linux-syscalls.c',
+    'src/unix/linux.c',
     'src/unix/procfs-exepath.c',
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
-    'src/unix/epoll.c',
   ]
   libuv_headers += [
     'include/uv/linux.h',
@@ -585,12 +579,14 @@ if libuv_build_tests
     'test/test-tcp-unexpected-read.c',
     'test/test-tcp-write-after-connect.c',
     'test/test-tcp-write-fail.c',
+    'test/test-tcp-write-in-a-row.c',
     'test/test-tcp-write-queue-order.c',
     'test/test-tcp-write-to-half-open-connection.c',
     'test/test-tcp-writealot.c',
     'test/test-test-macros.c',
     'test/test-thread-equal.c',
     'test/test-thread.c',
+    'test/test-thread-affinity.c',
     'test/test-threadpool-cancel.c',
     'test/test-threadpool.c',
     'test/test-timer-again.c',
@@ -615,6 +611,7 @@ if libuv_build_tests
     'test/test-udp-multicast-ttl.c',
     'test/test-udp-open.c',
     'test/test-udp-options.c',
+    'test/test-udp-recv-in-a-row.c',
     'test/test-udp-send-and-recv.c',
     'test/test-udp-send-hang-loop.c',
     'test/test-udp-send-immediate.c',
@@ -625,7 +622,7 @@ if libuv_build_tests
     'test/test-walk-handles.c',
     'test/test-watcher-cross-stop.c',
   ]
-  libuv_test_cargs = cc.get_supported_arguments('-Wno-int-conversion')
+  libuv_test_cargs = cc.get_supported_arguments('-Wno-int-conversion', '-D_GNU_SOURCE')
   if cc_msvc
     if get_option('default_library') == 'both'
       error('default_library=both is not supported with MSVC')
