@@ -169,7 +169,7 @@ types = {
 }
 
 foreach t, v : types
-  if not cc.has_type(t, prefix: '#include <sys/types.h>')
+  if not cc.has_type(t, prefix: '#include <sys/types.h>', args: '-D_GNU_SOURCE')
     cdata.set(t, v)
   endif
 endforeach
