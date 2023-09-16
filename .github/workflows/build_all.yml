@@ -98,6 +98,7 @@ jobs:
           path-type: strict
           msystem: ${{matrix.platform}}
           install: >-
+            bison
             dos2unix
             git
           pacboy: >-
