@@ -458,6 +458,9 @@
     "choco_packages": [
       "nasm"
     ],
+    "msys_packages": [
+      "nasm"
+    ],
     "_comment": "Disable tests because they are too slow to run on our CI",
     "build_options": [
       "openh264:tests=disabled"
