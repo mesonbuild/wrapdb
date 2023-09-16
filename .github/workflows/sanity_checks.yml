@@ -79,6 +79,7 @@ jobs:
           path-type: strict
           msystem: ${{matrix.platform}}
           install: >-
+            dos2unix
             git
           pacboy: >-
             cc:p
