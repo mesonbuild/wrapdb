@@ -1,6 +1,9 @@
-project('liborcus', 'cpp',
+project(
+  'liborcus',
+  'cpp',
   version: '0.17.2',
-  default_options: 'cpp_std=c++17')
+  default_options: 'cpp_std=c++17',
+)
 
 varr = meson.project_version().split('.')
 version_major = varr[0]
@@ -14,6 +17,8 @@ boost_ios_dep = dependency('boost', modules: ['iostreams'])
 thread_dep = dependency('threads')
 mdds_dep = dependency('mdds-2.0')
 zlib_dep = dependency('zlib')
+
+add_project_arguments('-D_LIBCPP_ENABLE_CXX17_REMOVED_FEATURES', language: 'cpp')
 
 subdir('src')
 
