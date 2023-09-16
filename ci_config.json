@@ -470,6 +470,7 @@
     "_comment": "- The NodeJS generator requires Linux",
     "build_on": {
       "darwin": false,
+      "msys2": false,
       "windows": false
     },
     "debian_packages": [
