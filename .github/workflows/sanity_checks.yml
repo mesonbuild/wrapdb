@@ -85,7 +85,6 @@ jobs:
 
       - uses: msys2/setup-msys2@v2
         with:
-          path-type: strict
           msystem: ${{matrix.platform}}
           install: >-
             dos2unix
