@@ -3,6 +3,7 @@ sources = ['bitwise.c', 'framing.c']
 libogg = library('ogg',
   sources,
   include_directories : incdir,
+  name_prefix: host_machine.system() == 'windows' ? '' : [],
   vs_module_defs: '../win32/ogg.def',
   version: lib_version,
   soversion: host_machine.system() == 'windows' ? '' : lib_soversion,
