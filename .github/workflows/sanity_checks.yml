@@ -92,7 +92,6 @@ jobs:
           pacboy: >-
             cc:p
             cmake:p
-            curl:p
             ninja:p
             pkgconf:p
             python-certifi:p
