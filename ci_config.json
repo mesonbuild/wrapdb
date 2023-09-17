@@ -393,15 +393,6 @@
       "libpciaccess-dev"
     ]
   },
-  "libnpupnp": {
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ],
-    "_comment": "broken (see https://github.com/mesonbuild/wrapdb/pull/1149#issuecomment-1712678549)",
-    "build_on": {
-      "windows": false
-    }
-  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {
