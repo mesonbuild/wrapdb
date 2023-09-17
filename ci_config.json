@@ -64,11 +64,6 @@
       "windows": false
     }
   },
-  "cpr": {
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ]
-  },
   "curl": {
     "_comment": [
       "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
@@ -367,12 +362,6 @@
     }
   },
   "liblastfm": {
-    "brew_packages": [
-      "curl"
-    ],
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ],
     "build_options": [
       "liblastfm:tests=enabled"
     ],
@@ -392,15 +381,6 @@
     "debian_packages": [
       "libpciaccess-dev"
     ]
-  },
-  "libnpupnp": {
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ],
-    "_comment": "broken (see https://github.com/mesonbuild/wrapdb/pull/1149#issuecomment-1712678549)",
-    "build_on": {
-      "windows": false
-    }
   },
   "libtirpc": {
     "_comment": "Linux only",

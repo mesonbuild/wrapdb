@@ -342,7 +342,7 @@ foreach _type, _prefix : {
   'short'      : check_prefix['stdinc'],
   'long'       : check_prefix['stdinc'],
   'long double': check_prefix['stdinc'],
-  '__int64'    : check_prefix['stdinc'],
+  'ptrdiff'    : check_prefix['stdinc'],
   'off_t'      : check_prefix['stdinc'],
   'size_t'     : check_prefix['stdinc'],
   'ssize_t'    : check_prefix['stdinc'],
@@ -366,7 +366,7 @@ if cdata.get('SIZEOF_SIZE_T') <= 0
 endif
 
 if cdata.get('SIZEOF_SSIZE_T') <= 0
-  foreach _type : ['long', '__int64']
+  foreach _type : ['long', 'ptrdiff_t']
     _size = cdata.get('SIZEOF_' + _type.to_upper())
     if _size == cdata.get('SIZEOF_SIZE_T')
       cdata.set('ssize_t', _type)
