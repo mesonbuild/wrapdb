@@ -64,11 +64,6 @@
       "windows": false
     }
   },
-  "cpr": {
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ]
-  },
   "curl": {
     "_comment": [
       "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
