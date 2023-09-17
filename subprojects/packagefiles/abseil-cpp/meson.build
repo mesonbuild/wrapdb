@@ -1,50 +1,30 @@
-project('abseil-cpp', 'cpp',
-  version : '20230125.1',
-  license : 'Apache-2.0',
-  default_options : [
+project(
+  'abseil-cpp',
+  'cpp',
+  version: '20230802.0',
+  license: 'Apache-2.0',
+  default_options: [
     'cpp_std=c++14',
-  ])
+  ],
+)
 
 cpp = meson.get_compiler('cpp')
 
-cpp_flags = [
-  '-Wno-sign-compare'
-]
-
-flags = cpp.get_supported_arguments(cpp_flags)
-
-if cpp.get_argument_syntax() == 'msvc'
-  flags += ['/DNOMINMAX'] # Don't define min and max macros (windows.h)
-endif
-
-if cpp.get_id() == 'clang'
-  flags += ['-Wno-gcc-compat']
-endif
+flags = cpp.get_supported_arguments('/DNOMINMAX', '-Wno-sign-compare', '-Wno-gcc-compat')
+add_project_arguments(flags, language: 'cpp')
 
 hw_cpp_flags = []
 if host_machine.cpu_family() == 'x86_64'
-  hw_cpp_flags += [ '-maes', '-msse4.1' ]
+  hw_cpp_flags += ['-maes', '-msse4.1']
 elif host_machine.cpu_family() == 'aarch64' and cpp.sizeof('void*') == 8
-  hw_cpp_flags += [ '-march=armv8-a+crypto' ]
+  hw_cpp_flags += ['-march=armv8-a+crypto']
 elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
-  hw_cpp_flags += [ '-mfpu=neon' ]
+  hw_cpp_flags += ['-mfpu=neon']
 endif
 hw_flags = cpp.get_supported_arguments(hw_cpp_flags)
 
-add_project_arguments(flags, language: 'cpp')
-
 libatomic = dependency('', required: false)
-if cpp.get_id() == 'msvc'
-    # VS does not not need args for atomic ops.
-elif not cpp.links('''#include <stdint.h>
-                      int main() {
-                        struct {
-                          uint64_t *v;
-                        } x;
-                        return (int)__atomic_load_n(x.v, __ATOMIC_ACQUIRE) &
-                               (int)__atomic_add_fetch(x.v, (uint64_t)1, __ATOMIC_ACQ_REL);
-                      }''',
-                name : 'GCC atomic builtins')
+if cpp.get_argument_syntax() != 'msvc' and not cpp.links('int main(){__sync_synchronize();}', name: 'atomic builtins')
   libatomic = cpp.find_library('atomic')
 endif
 
@@ -118,10 +98,10 @@ absl_base_headers = files(
   'absl/base/policy_checks.h',
   'absl/base/port.h',
   'absl/base/thread_annotations.h',
-  # Dependent headers of absl_base
+  'absl/memory/memory.h',
   'absl/meta/type_traits.h',
   'absl/utility/utility.h',
-  'absl/memory/memory.h',
+  # Dependent headers of absl_base
 )
 
 absl_container_sources = files(
@@ -275,6 +255,7 @@ absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
   'absl/hash/internal/low_level_hash.cc',
+  'absl/hash/internal/print_hash_of.cc',
 )
 absl_hash_headers = files(
   'absl/hash/hash.h',
@@ -305,7 +286,6 @@ absl_log_headers = files(
   'absl/log/absl_check.h',
   'absl/log/absl_log.h',
   'absl/log/check.h',
-  'absl/log/check_test_impl.h',
   'absl/log/die_if_null.h',
   'absl/log/flags.h',
   'absl/log/globals.h',
@@ -331,7 +311,6 @@ absl_log_headers = files(
   'absl/log/internal/test_matchers.h',
   'absl/log/internal/voidify.h',
   'absl/log/log.h',
-  'absl/log/log_basic_test_impl.h',
   'absl/log/log_entry.h',
   'absl/log/log_sink.h',
   'absl/log/log_sink_registry.h',
@@ -366,6 +345,7 @@ absl_random_sources = files(
   'absl/random/discrete_distribution.cc',
   'absl/random/gaussian_distribution.cc',
   'absl/random/internal/chi_square.cc',
+  'absl/random/internal/gaussian_distribution_gentables.cc',
   'absl/random/internal/pool_urbg.cc',
   'absl/random/internal/randen.cc',
   'absl/random/internal/randen_detect.cc',
@@ -546,9 +526,15 @@ absl_synchronization_sources = files(
   'absl/synchronization/barrier.cc',
   'absl/synchronization/blocking_counter.cc',
   'absl/synchronization/internal/create_thread_identity.cc',
+  'absl/synchronization/internal/futex_waiter.cc',
   'absl/synchronization/internal/graphcycles.cc',
+  'absl/synchronization/internal/kernel_timeout.cc',
   'absl/synchronization/internal/per_thread_sem.cc',
-  'absl/synchronization/internal/waiter.cc',
+  'absl/synchronization/internal/pthread_waiter.cc',
+  'absl/synchronization/internal/sem_waiter.cc',
+  'absl/synchronization/internal/stdcpp_waiter.cc',
+  'absl/synchronization/internal/waiter_base.cc',
+  'absl/synchronization/internal/win32_waiter.cc',
   'absl/synchronization/mutex.cc',
   'absl/synchronization/notification.cc',
 )
@@ -709,7 +695,7 @@ absl_time_lib = static_library(
     absl_strings_lib,
   ],
   # macOS only, upstream: https://github.com/abseil/abseil-cpp/pull/280
-  dependencies : [dependency('CoreFoundation', required : false)],
+  dependencies: dependency('appleframeworks', modules: 'CoreFoundation', required: host_machine.system() == 'darwin'),
 )
 
 absl_types_lib = static_library(
