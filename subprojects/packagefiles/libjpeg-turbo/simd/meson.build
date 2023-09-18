@@ -33,11 +33,12 @@ simd_src_i386 = [
   'i386/jquant-sse.asm', 'i386/jsimdcpu.asm',
 ]
 
+simd_opt = get_option('simd')
 have_simd = false
 simd = []
 
 if host_cpu in ['x86', 'x86_64']
-  have_simd = add_languages('nasm', required: get_option('simd'), native: false)
+  have_simd = add_languages('nasm', required: simd_opt, native: false)
   if have_simd
     add_project_arguments('-DPIC', language: 'nasm')
     x64 = host_cpu == 'x86_64'
