@@ -2492,6 +2492,14 @@
       "4.1.0-1"
     ]
   },
+  "sassc": {
+    "program_names": [
+      "sassc"
+    ],
+    "versions": [
+      "3.6.2-1"
+    ]
+  },
   "sdl2": {
     "dependency_names": [
       "sdl2",

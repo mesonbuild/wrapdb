@@ -1,0 +1,9 @@
+[wrap-file]
+directory = sassc-3.6.2
+source_url = https://github.com/sass/sassc/archive/refs/tags/3.6.2.tar.gz
+source_filename = sassc-3.6.2.tar.gz
+source_hash = 608dc9002b45a91d11ed59e352469ecc05e4f58fc1259fc9a9f5b8f0f8348a03
+patch_directory = sassc
+
+[provide]
+program_names = sassc
