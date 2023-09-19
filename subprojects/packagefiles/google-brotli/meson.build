@@ -23,7 +23,7 @@ project(
   'c',
   license: 'MIT',
   version: '1.1.0',
-  meson_version: '>= 0.50',
+  meson_version: '>= 0.49',
 )
 
 cc = meson.get_compiler('c')
@@ -70,6 +70,7 @@ common_src = files(
 libbrotli_common = library(
   'brotli_common',
   common_src,
+  gnu_symbol_visibility: 'hidden',
   c_args: [c_args, bcs],
   include_directories: inc,
   version: meson.project_version(),
@@ -86,6 +87,7 @@ dec_src = files(
 libbrotli_decoder = library(
   'brotli_decoder',
   dec_src,
+  gnu_symbol_visibility: 'hidden',
   c_args: [c_args, bds],
   include_directories: inc,
   link_with: libbrotli_common,
@@ -121,6 +123,7 @@ libbrotli_encoder = library(
   'brotli_encoder',
   enc_src,
   c_args: [c_args, bes],
+  gnu_symbol_visibility: 'hidden',
   include_directories: inc,
   link_with: libbrotli_common,
   dependencies: dep_m,
@@ -141,4 +144,10 @@ brotli_encoder_dep = declare_dependency(
 brotli_decoder_dep = declare_dependency(
   link_with: [libbrotli_common, libbrotli_decoder],
   include_directories: inc,
+)
+
+executable(
+  'brotli',
+  'c/tools/brotli.c',
+  dependencies: [brotli_decoder_dep, brotli_encoder_dep],
 )
