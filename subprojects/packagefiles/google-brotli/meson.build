@@ -22,7 +22,7 @@ project(
   'google-brotli',
   'c',
   license : 'MIT',
-  version : '1.0.9',
+  version : '1.1.0',
   meson_version : '>= 0.50',
 )
 
@@ -64,6 +64,7 @@ libbrotli_common = library(
   'c/common/context.c',
   'c/common/dictionary.c',
   'c/common/platform.c',
+  'c/common/shared_dictionary.c',
   'c/common/transform.c',
   c_args : [c_args, bcs],
   include_directories : inc,
@@ -96,6 +97,7 @@ libbrotli_encoder = library(
     'c/enc/brotli_bit_stream.c',
     'c/enc/cluster.c',
     'c/enc/command.c',
+    'c/enc/compound_dictionary.c',
     'c/enc/compress_fragment.c',
     'c/enc/compress_fragment_two_pass.c',
     'c/enc/dictionary_hash.c',
