@@ -128,7 +128,11 @@ endif
 m_dep = cc.find_library('m', required: false)
 glib_dep = dependency('glib-2.0', static: get_option('try-static-deps'))
 gthread_dep = dependency('gthread-2.0', static: get_option('try-static-deps'))
-openmp_dep = dependency('openmp', required: get_option('openmp'), version: '>=4.0')
+if cc.get_argument_syntax() != 'msvc'
+  openmp_dep = dependency('openmp', required: get_option('openmp'), version: '>=4.0')
+else
+  openmp_dep = dependency('', required: false)
+endif
 
 ext_deps = [m_dep, glib_dep, gthread_dep, openmp_dep]
 
@@ -147,10 +151,6 @@ endif
 
 if openmp_dep.found()
   conf.set('HAVE_OPENMP', 1)
-  if cc.get_id() == 'clang-cl'
-    lib_args += '-openmp:llvm'
-    lib_args += '-openmp:experimental'
-  endif
 endif
 summary(
   'OpenMP 4.0',
@@ -176,7 +176,6 @@ configure_file(
   configuration: conf,
 )
 
-
 # fluidsynth lib
 
 subdir('include')
@@ -191,6 +190,7 @@ fluidsynth_lib = library(
   fluidsynth_sources,
   gen_tables,
   dependencies: ext_deps,
+  gnu_symbol_visibility: 'hidden',
   include_directories: lib_includes,
   c_args: lib_args,
   cpp_args: lib_args,
