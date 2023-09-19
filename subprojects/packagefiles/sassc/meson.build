@@ -31,9 +31,9 @@ if host_machine.system() == 'windows'
   win_res = windows.compile_resources(
     'res/libsass.rc',
     depend_files: ['res/libsass.ico'])
-  sassc_sources += [win_res]
-  incs += [include_directories(join_paths('win', 'posix'))]
-  sassc_sources += [join_paths('win', 'posix', 'getopt.c')]
+  sassc_sources += win_res
+  incs += include_directories('win/posix')
+  sassc_sources += 'win/posix/getopt.c'
 endif
 
 sassc = executable(
