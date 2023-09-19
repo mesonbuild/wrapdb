@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.0.1',
+  version: '8.3.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -57,18 +57,24 @@ ENABLED_OPT  = get_option('_enabled')
 # (not dependent on checks)
 
 foreach _opt : [
+  'aws',
+  'basic-auth',
+  'bearer-auth',
+  'bindlocal',
   'cookies',
-  'crypto-auth',
   'dict',
+  'digest-auth',
   'doh',
   'file',
   'ftp',
   'getoptions',
   'gopher',
   'imap',
+  'kerberos-auth',
   'libcurl-option',
   'mime',
   'mqtt',
+  'negotiate-auth',
   'netrc',
   'parsedate',
   'pop3',
@@ -94,14 +100,7 @@ endforeach
 if host_machine.system() == 'windows'
   # For `BCryptGenRandom()`.
   sys_deps += cc.find_library('bcrypt', required: false)
-  winmm_dep = cc.find_library('winmm', required: false)
-  if winmm_dep.found() and cc.has_function('getch', dependencies: winmm_dep)
-    sys_deps += winmm_dep
-  endif
-  ws2_32_dep = cc.find_library('ws2_32', required: false)
-  if ws2_32_dep.found() and cc.has_function('getch', dependencies: ws2_32_dep)
-    sys_deps += ws2_32_dep
-  endif
+  sys_deps += cc.find_library('ws2_32')
 endif
 
 # For `clock_gettime`.
@@ -250,6 +249,9 @@ _headerlist = {
   'termio.h': [],
   'termios.h': [],
   'time.h': [
+    'CLOCK_MONOTONIC',
+    'CLOCK_MONOTONIC_RAW',
+    'clock_gettime',
     'gmtime_r',
     'strftime',
   ],
@@ -338,16 +340,17 @@ endforeach
 cdata.set('HAVE_LONGLONG', cc.has_type('long long'))
 
 foreach _type, _prefix : {
-  'int'        : check_prefix['stdinc'],
-  'short'      : check_prefix['stdinc'],
-  'long'       : check_prefix['stdinc'],
-  'long double': check_prefix['stdinc'],
-  '__int64'    : check_prefix['stdinc'],
-  'off_t'      : check_prefix['stdinc'],
-  'size_t'     : check_prefix['stdinc'],
-  'ssize_t'    : check_prefix['stdinc'],
-  'time_t'     : check_prefix['stdinc'],
-  'curl_off_t' : '#include"curl/system.h"',
+  'int'          : check_prefix['stdinc'],
+  'short'        : check_prefix['stdinc'],
+  'long'         : check_prefix['stdinc'],
+  'long double'  : check_prefix['stdinc'],
+  '__int64'      : check_prefix['stdinc'],
+  'off_t'        : check_prefix['stdinc'],
+  'size_t'       : check_prefix['stdinc'],
+  'ssize_t'      : check_prefix['stdinc'],
+  'time_t'       : check_prefix['stdinc'],
+  'curl_off_t'   : '#include"curl/system.h"',
+  'curl_socket_t': '#include"curl/curl.h"',
 }
   cdata.set(
     'SIZEOF_' + _type.underscorify().to_upper(),
@@ -498,6 +501,17 @@ cdata.set('HAVE_BROTLI', brotli_opt.allowed())
 
 # }}}
 
+# Form API. {{{
+
+form_api_opt = get_option(
+  'form-api',
+).require(
+  mime_opt.allowed(),
+  error_message: 'feature mime is disabled',
+)
+
+# }}}
+
 # IPv6. {{{
 
 ipv6_opt = get_option('ipv6').require(
@@ -635,10 +649,10 @@ _partial_dep = lib_deps[-1].partial_dependency(
 _required = openssl_opt.disabled() ? openssl_opt : false
 
 cdata.set(
-  'HAVE_RAND_EGD',
+  'HAVE_AWSLC',
   cc.has_header_symbol(
-    'openssl/rand.h',
-    'RAND_egd',
+    'openssl/base.h',
+    'OPENSSL_IS_AWSLC',
     dependencies: _partial_dep,
     required: _required,
   ),
@@ -863,9 +877,6 @@ cdata.set('HAVE_LDAP_SSL', ldaps_opt.allowed())
 ntlm_opt = get_option(
   'ntlm',
 ).require(
-  crypto_auth_opt.allowed(),
-  error_message: 'feature crypto-auth is disabled',
-).require(
   use_win32_crypto or ssl_backends.length() > 0,
   error_message: MISSING_LIBS_ERROR,
 )
@@ -1025,7 +1036,6 @@ foreach _spec : [
   ['HAVE_ATOMIC'],
   ['HAVE_BOOL_T'],
   ['HAVE_BUILTIN_AVAILABLE'],
-  ['HAVE_CLOCK_GETTIME_MONOTONIC'],
   ['HAVE_FCNTL_O_NONBLOCK', _has_fcntl],
   ['HAVE_FSETXATTR_5', _has_fsetxattr],
   ['HAVE_FSETXATTR_6', _has_fsetxattr],
@@ -1103,6 +1113,19 @@ threadsafe_opt = (
   ? ENABLED_OPT : DISABLED_OPT
 )
 
+_have_clock_gettime = (
+  cdata.get('HAVE_CLOCK_GETTIME')
+  and cc.has_function('clock_gettime', dependencies: sys_deps)
+)
+cdata.set(
+  'HAVE_CLOCK_GETTIME_MONOTONIC',
+  _have_clock_gettime and cdata.get('HAVE_CLOCK_MONOTONIC'),
+)
+cdata.set(
+  'HAVE_CLOCK_GETTIME_MONOTONIC_RAW',
+  _have_clock_gettime and cdata.get('HAVE_CLOCK_MONOTONIC_RAW'),
+)
+
 cdata.set(
   'HAVE_GETADDRINFO_THREADSAFE',
   host_machine.system() == 'windows'
@@ -1148,6 +1171,11 @@ cdata.set(
     dependencies: sys_deps,
     name: 'HAVE_RECV test',
   ),
+)
+
+cdata.set(
+  'HAVE_SETMODE',
+  cdata.get('HAVE_SETMODE') and cc.has_function('setmode'),
 )
 
 cdata.set(
@@ -1523,26 +1551,38 @@ endforeach
 # Features. {{{
 
 kerberos_opt = (
-  crypto_auth_opt.allowed()
+  kerberos_auth_opt.allowed()
   and (gss_api_opt.allowed() or sspi_opt.allowed())
   ? ENABLED_OPT : DISABLED_OPT
 )
-spnego_opt = kerberos_opt
+
+spnego_opt = (
+  negotiate_auth_opt.allowed()
+  and (gss_api_opt.allowed() or sspi_opt.allowed())
+  ? ENABLED_OPT : DISABLED_OPT
+)
 
 # `CURL_DISABLE_ALTSVC` is used instead of `CURL_DISABLE_ALT_SVC`…
 altsvc_opt = alt_svc_opt
 
 foreach _feat : [
   'altsvc',
+  'aws',
+  'basic-auth',
+  'bearer-auth',
+  'bindlocal',
   'cookies',
-  'crypto-auth',
+  'digest-auth',
   'doh',
+  'form-api',
   'getoptions',
   'headers-api',
   'hsts',
   'http-auth',
+  'kerberos-auth',
   'libcurl-option',
   'mime',
+  'negotiate-auth',
   'netrc',
   'ntlm',
   'openssl-auto-load-config',

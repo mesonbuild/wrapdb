@@ -16,10 +16,11 @@ option('ca_fallback', type: 'boolean', value: false)
 
 # Features. {{{
 
+option('bindlocal'      , type: 'feature', value: 'enabled')
 option('brotli'         , type: 'feature')
 option('cookies'        , type: 'feature', value: 'enabled')
-option('crypto-auth'    , type: 'feature', value: 'enabled')
 option('doh'            , type: 'feature', value: 'enabled')
+option('form-api'       , type: 'feature', value: 'enabled')
 option('getoptions'     , type: 'feature', value: 'enabled')
 option('gsasl'          , type: 'feature')
 option('http2'          , type: 'feature')
@@ -43,6 +44,14 @@ option('zstd'           , type: 'feature')
 option('asynchdns', type: 'feature')
 # Resolver, by order of preference (first available one is enabled).
 option('asynchdns-resolver', type: 'array', value: ['pthread', 'win32'], choices: ['pthread', 'win32', 'ares'])
+
+# Authentication.
+option('aws'           , type: 'feature', value: 'enabled')
+option('basic-auth'    , type: 'feature', value: 'enabled')
+option('bearer-auth'   , type: 'feature', value: 'enabled')
+option('digest-auth'   , type: 'feature', value: 'enabled')
+option('kerberos-auth' , type: 'feature', value: 'enabled')
+option('negotiate-auth', type: 'feature', value: 'enabled')
 
 # GSS API.
 option('gss-api', type: 'feature')

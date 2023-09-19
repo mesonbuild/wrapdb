@@ -1,5 +1,6 @@
 # To update this list: `make -f meson/rewrite.mk curl_exe_src`.
 curl_src = files(
+  '../lib/base64.c',
   '../lib/curl_multibyte.c',
   '../lib/dynbuf.c',
   '../lib/nonblock.c',
@@ -46,6 +47,7 @@ curl_src = files(
   'tool_writeout.c',
   'tool_writeout_json.c',
   'tool_xattr.c',
+  'var.c',
 )
 
 curl_exe = executable(
