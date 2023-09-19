@@ -18,20 +18,35 @@
 /* disable alt-svc */
 #mesondefine CURL_DISABLE_ALTSVC
 
+/* to disable AWS sig support */
+#mesondefine CURL_DISABLE_AWS
+
+/* to disable basic authentication */
+#mesondefine CURL_DISABLE_BASIC_AUTH
+
+/* to disable bearer authentication */
+#mesondefine CURL_DISABLE_BEARER_AUTH
+
+/* disable local binding support */
+#mesondefine CURL_DISABLE_BINDLOCAL
+
 /* to disable cookies support */
 #mesondefine CURL_DISABLE_COOKIES
 
-/* to disable cryptographic authentication */
-#mesondefine CURL_DISABLE_CRYPTO_AUTH
-
 /* to disable DICT */
 #mesondefine CURL_DISABLE_DICT
+
+/* to disable digest authentication */
+#mesondefine CURL_DISABLE_DIGEST_AUTH
 
 /* disable DoH */
 #mesondefine CURL_DISABLE_DOH
 
 /* to disable FILE */
 #mesondefine CURL_DISABLE_FILE
+
+/* disable form API */
+#mesondefine CURL_DISABLE_FORM_API
 
 /* to disable FTP */
 #mesondefine CURL_DISABLE_FTP
@@ -57,6 +72,9 @@
 /* to disable IMAP */
 #mesondefine CURL_DISABLE_IMAP
 
+/* to disable kerberos authentication */
+#mesondefine CURL_DISABLE_KERBEROS_AUTH
+
 /* to disable LDAP */
 #mesondefine CURL_DISABLE_LDAP
 
@@ -71,6 +89,9 @@
 
 /* to disable MQTT */
 #mesondefine CURL_DISABLE_MQTT
+
+/* to disable negotiate authentication */
+#mesondefine CURL_DISABLE_NEGOTIATE_AUTH
 
 /* disable netrc parsing */
 #mesondefine CURL_DISABLE_NETRC
@@ -126,9 +147,6 @@
 /* enable debug build options */
 #mesondefine DEBUGBUILD
 
-/* your Entropy Gathering Daemon socket pathname */
-#mesondefine EGD_SOCKET
-
 /* Define if you want to enable IPv6 support */
 #mesondefine ENABLE_IPV6
 
@@ -153,6 +171,9 @@
 /* Define to 1 if you have _Atomic support. */
 #mesondefine HAVE_ATOMIC
 
+/* Define to 1 if using AWS-LC. */
+#mesondefine HAVE_AWSLC
+
 /* Define to 1 if you have the basename function. */
 #mesondefine HAVE_BASENAME
 
@@ -170,6 +191,10 @@
 
 /* Define to 1 if you have the clock_gettime function and monotonic timer. */
 #mesondefine HAVE_CLOCK_GETTIME_MONOTONIC
+
+/* Define to 1 if you have the clock_gettime function and raw monotonic timer.
+   */
+#mesondefine HAVE_CLOCK_GETTIME_MONOTONIC_RAW
 
 /* Define to 1 if you have the closesocket function. */
 #mesondefine HAVE_CLOSESOCKET
@@ -396,9 +421,6 @@
 /* Define to 1 if you have the `pipe' function. */
 #mesondefine HAVE_PIPE
 
-/* if you have the PK11_CreateManagedGenericObject function */
-#mesondefine HAVE_PK11_CREATEMANAGEDGENERICOBJECT
-
 /* If you have a fine poll */
 #mesondefine HAVE_POLL_FINE
 
@@ -422,9 +444,6 @@
 
 /* Define to 1 if you have the <quiche.h> header file. */
 #mesondefine HAVE_QUICHE_H
-
-/* Define to 1 if you have the `RAND_egd' function. */
-#mesondefine HAVE_RAND_EGD
 
 /* Define to 1 if you have the recv function. */
 #mesondefine HAVE_RECV
@@ -666,6 +685,9 @@
 /* Size of curl_off_t in number of bytes */
 #mesondefine SIZEOF_CURL_OFF_T
 
+/* Size of curl_socket_t in number of bytes */
+#mesondefine SIZEOF_CURL_SOCKET_T
+
 /* Size of int in number of bytes */
 #mesondefine SIZEOF_INT
 
@@ -736,15 +758,6 @@
 
 /* if ngtcp2 is in use */
 #mesondefine USE_NGTCP2
-
-/* if ngtcp2_crypto_gnutls is in use */
-#mesondefine USE_NGTCP2_CRYPTO_GNUTLS
-
-/* if ngtcp2_crypto_openssl is in use */
-#mesondefine USE_NGTCP2_CRYPTO_OPENSSL
-
-/* if NSS is enabled */
-#mesondefine USE_NSS
 
 /* Use OpenLDAP-specific code */
 #mesondefine USE_OPENLDAP
