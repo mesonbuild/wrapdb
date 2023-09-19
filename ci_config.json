@@ -27,7 +27,6 @@
     "graphite2",
     "libgpiod",
     "mocklibc",
-    "rtaudio",
     "tinyxml2"
   ],
   "c-flags": {
