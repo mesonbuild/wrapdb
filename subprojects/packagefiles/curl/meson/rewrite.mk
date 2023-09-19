@@ -2,7 +2,7 @@
 
 define rewrite_rule
 $(eval include $2)
-$(eval old := $(shell meson rewrite target $1 info 2>&1 | jq -r '.target[].sources | join(" ")'))
+$(eval old := $(shell meson rewrite target $1 info 2>&1 | grep -v '^Unable to evaluate subdir' | jq -r '.target[].sources | join(" ")'))
 $(eval new := $3)
 meson rewrite target $1 add $(filter-out $(old),$(new))
 meson rewrite target $1 rm $(filter-out $(new),$(old))
