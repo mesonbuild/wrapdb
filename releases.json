@@ -1077,6 +1077,14 @@
       "1.83-1"
     ]
   },
+  "implot": {
+    "dependency_names": [
+      "implot"
+    ],
+    "versions": [
+      "0.16-1"
+    ]
+  },
   "indicators": {
     "dependency_names": [
       "indicators"
