@@ -1,6 +1,0 @@
-[wrap-file]
-directory = Catch2-2.2.2
-source_url = https://github.com/catchorg/Catch2/archive/v2.2.2.tar.gz
-source_filename = Catch2-2.2.2.tar.gz
-source_hash = e93aacf012579093fe6b4e686ff0488975cabee1e6b4e4f27a0acd898e8f09fd
-patch_directory = catch
