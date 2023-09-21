@@ -677,6 +677,18 @@
       "windows": false
     }
   },
+  "sqlitecpp": {
+    "_comment": "required to not use the default sqlite3 in MacOS to avoid compilation errors/tests failures, also add pkgconfig path to find sqlite3(keg-only)",
+    "build_options": [
+      "sqlitecpp:SQLITECPP_BUILD_TESTS=true",
+      "sqlitecpp:SQLITECPP_BUILD_EXAMPLES=true",
+      "pkg_config_path=/usr/local/opt/sqlite/lib/pkgconfig"
+    ],
+    "brew_packages": [
+      "sqlite"
+    ]
+
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
