@@ -361,8 +361,9 @@
     "build_options": [
       "pkg_config_path=/usr/local/opt/ffmpeg@4/lib/pkgconfig"
     ],
-    "_comment": "ffmpeg is not available with MSVC CI",
+    "_comment": "Broken with Windows because of a header issue",
     "build_on": {
+      "msys2": false,
       "windows": false
     }
   },
