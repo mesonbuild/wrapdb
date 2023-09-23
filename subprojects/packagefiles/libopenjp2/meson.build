@@ -26,7 +26,7 @@ openjpeg_version_subdir = 'openjpeg-@0@.@1@'.format(
 )
 
 m_dep = cc.find_library('m', required: false)
-thread_dep = dependency('threads')
+pthread_dep = dependency('threads', required: false)
 rt_dep = cc.find_library('rt', required: false)
 
 wxwidgets_dep = dependency('wxWidgets', required: get_option('build_viewer'))

@@ -156,24 +156,19 @@ endif
 #################################################################################
 # threading configuration
 #################################################################################
-cmake_thread_prefer_pthread = 'TRUE'
 if not get_option('opj_use_thread')
   message('Use stub thread implementation')
   openjp2_c_args += '-DMUTEX_stub'
-endif
-
-if get_option('opj_use_thread') and host_system == 'windows'
-  # add_definitions('-DMUTEX_win32')
+  thread_dep = dependency('', required: false)
+elif host_system == 'windows'
   message('Use win32 thread implementation')
   openjp2_c_args += '-DMUTEX_win32'
-endif
-
-if get_option('opj_use_thread') and thread_dep.found()
+  thread_dep = dependency('', required: false)
+elif pthread_dep.found()
   message('Use pthread implementation')
   openjp2_c_args += '-DMUTEX_pthread'
-endif
-
-if get_option('opj_use_thread') and not thread_dep.found()
+  thread_dep = pthread_dep
+else
   error('FATAL_ERROR: No thread library found and thread/mutex support is required by "opj_use_thread" option')
 endif
 
