@@ -112,9 +112,15 @@ if iconv_lib.found()
   deps += iconv_lib
 endif
 
-thread_dep = dependency('threads', disabler: true, required: false)
-if thread_dep.found()
-  deps += thread_dep
+if host_machine.system() == 'windows'
+  pthread_dep = disabler()
+  with_threads = true
+else
+  pthread_dep = dependency('threads', disabler: true, required: false)
+  with_threads = pthread_dep.found()
+  if with_threads
+    deps += pthread_dep
+  endif
 endif
 
 lzma_dep = dependency('liblzma', required: false)
@@ -168,7 +174,7 @@ checked_headers = {
   'netdb.h': [],
   'netinet/in.h': [],
   'poll.h': [],
-  'pthread.h': thread_dep,
+  'pthread.h': pthread_dep,
   'resolv.h': [],
   'stdint.h': [],
   'sys/mman.h': [],
@@ -235,7 +241,7 @@ foreach f : ['printf', 'sprintf', 'fprintf', 'snprintf', 'vfprintf', 'vsprintf',
 endforeach
 withcdata.set10('WITH_TRIO', need_trio)
 
-withcdata.set10('WITH_THREADS', thread_dep.found())
+withcdata.set10('WITH_THREADS', with_threads)
 withcdata.set10('WITH_THREAD_ALLOC', false)
 withcdata.set10('WITH_TREE', true)
 withcdata.set10('WITH_OUTPUT', true)
@@ -340,7 +346,7 @@ if host_machine.system() == 'windows'
   subdir('win32')
 endif
 
-cargs = thread_dep.found() ? ['-D_REENTRANT'] : []
+cargs = with_threads ? ['-D_REENTRANT'] : []
 cargs += get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : []
 
 incdir = include_directories('include')
