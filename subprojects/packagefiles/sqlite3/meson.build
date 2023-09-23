@@ -17,15 +17,17 @@ libm = cc.find_library('m', required: false)
 sources = files('shell.c', 'sqlite3.c')
 if host_machine.system() == 'windows'
   sqlite_args = get_option('default_library') != 'static' ? '-DSQLITE_API=__declspec(dllexport)' : []
+  libthreads = dependency('', required: false)
 else
   sqlite_args = '-DSQLITE_API=__attribute__((visibility("default")))'
+  libthreads = dependency('threads')
 endif
 
 libsqlite3 = library(
   'sqlite3',
   sources,
   c_args: sqlite_args,
-  dependencies: [libdl, libm, dependency('threads')],
+  dependencies: [libdl, libm, libthreads],
   install: true,
   gnu_symbol_visibility: 'hidden',
   # ABI compatibility with autotools/libtool
