@@ -1,8 +1,8 @@
 [wrap-file]
-directory = gumbo-parser-a0f9059087c690e700cf42df4cfa58a63c1dae95
-source_url = https://github.com/google/gumbo-parser/archive/v0.10.1-10-ga0f9059.tar.gz
-source_filename = gumbo-parser-0.10.1-10-ga0f9059.tar.gz
-source_hash = 3f6a9e6d73014b3b94fce6a661e7a29a601ea3787610fa9a59d21d11700bb99d
+directory = gumbo-parser
+source_url = https://codeberg.org/grisha/gumbo-parser/archive/0.12.1.tar.gz
+source_filename = gumbo-parser-0.12.1.tar.gz
+source_hash = c0bb5354e46539680724d638dbea07296b797229a7e965b13305c930ddc10d82
 patch_directory = gumbo-parser
 
 [provide]
