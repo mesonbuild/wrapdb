@@ -648,6 +648,21 @@
       "pkgconf:tests=false"
     ]
   },
+  "pv": {
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    },
+    "alpine_packages": [
+      "musl-libintl"
+    ],
+    "debian_packages": [
+      "valgrind"
+    ],
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "orcus": {
     "_comment": "- depends on Boost, which is not available on WrapDB",
     "build_on": {

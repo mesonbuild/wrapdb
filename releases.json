@@ -2508,6 +2508,11 @@
       "1.11.4-1"
     ]
   },
+  "pv": {
+    "versions": [
+      "1.8.5-1"
+    ]
+  },
   "pybind11": {
     "dependency_names": [
       "pybind11"
