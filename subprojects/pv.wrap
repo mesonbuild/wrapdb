@@ -1,0 +1,9 @@
+[wrap-file]
+directory = pv-1.8.5
+source_url = https://codeberg.org/a-j-wood/pv/releases/download/v1.8.5/pv-1.8.5.tar.gz
+source_hash = d22948d06be06a5be37336318de540a2215be10ab0163f8cd23a20149647b780
+source_filename = pv-1.8.5.tar.gz
+patch_directory = pv
+
+[provide]
+program_names =

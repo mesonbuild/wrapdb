@@ -1,0 +1,111 @@
+/* config.h.  Generated from config.meson.h by meson.  */
+
+/* Debugging support enabled */
+#mesondefine ENABLE_DEBUGGING
+
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#mesondefine ENABLE_NLS
+
+/* Define to 1 if you have the `basename' function. */
+#mesondefine HAVE_BASENAME
+
+/* Define to 1 if you have the `fdatasync' function. */
+#mesondefine HAVE_FDATASYNC
+
+/* Define to 1 if you have the `fpathconf' function. */
+#mesondefine HAVE_FPATHCONF
+
+/* Define to 1 if you have the <getopt.h> header file. */
+#mesondefine HAVE_GETOPT_H
+
+/* Define to 1 if you have the `getopt_long' function. */
+#mesondefine HAVE_GETOPT_LONG
+
+/* IPC support enabled */
+#mesondefine HAVE_IPC
+
+/* Define to 1 if you have the <libgen.h> header file. */
+#mesondefine HAVE_LIBGEN_H
+
+/* Define to 1 if you have the <libintl.h> header file. */
+#mesondefine HAVE_LIBINTL_H
+
+/* Define to 1 if you have the <locale.h> header file. */
+#mesondefine HAVE_LOCALE_H
+
+/* Define to 1 if you have the `memcpy' function. */
+#mesondefine HAVE_MEMCPY
+
+/* Define to 1 if you have the `memrchr' function. */
+#mesondefine HAVE_MEMRCHR
+
+/* Define to 1 if you have the `nanosleep' function. */
+#mesondefine HAVE_NANOSLEEP
+
+/* Define to 1 if you have the `posix_fadvise' function. */
+#mesondefine HAVE_POSIX_FADVISE
+
+/* Define to 1 if you have the `posix_memalign' function. */
+#mesondefine HAVE_POSIX_MEMALIGN
+
+/* Define to 1 if you have the `splice' function. */
+#mesondefine HAVE_SPLICE
+
+/* Define to 1 if stdbool.h conforms to C99. */
+#mesondefine HAVE_STDBOOL_H
+
+/* Define to 1 if you have the `strlcat' function. */
+#mesondefine HAVE_STRLCAT
+
+/* Define to 1 if you have the `strtoul' function. */
+#mesondefine HAVE_STRTOUL
+
+/* Define to 1 if `st_blksize' is a member of `struct stat'. */
+#mesondefine HAVE_STRUCT_STAT_ST_BLKSIZE
+
+/* Define to 1 if you have the `sysconf' function. */
+#mesondefine HAVE_SYSCONF
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#mesondefine HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#mesondefine HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <termios.h> header file. */
+#mesondefine HAVE_TERMIOS_H
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#mesondefine HAVE_VSNPRINTF
+
+/* Define to 1 if you have the <wchar.h> header file. */
+#mesondefine HAVE_WCHAR_H
+
+/* Define to 1 if you have the <wctype.h> header file. */
+#mesondefine HAVE_WCTYPE_H
+
+/* Define to 1 if the system has the type `_Bool'. */
+#mesondefine HAVE__BOOL
+
+/* Locales directory. */
+#mesondefine LOCALEDIR
+
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
+
+#include "config-aux.h"
+
+/* vim: set ft=c: */
