@@ -20,7 +20,7 @@ gumbo_lib = library(
     : []
   ),
   install: true,
-  version: '1.0.0',
+  version: '2.0.0',
   vs_module_defs: 'gumbo.def',
 )
 

@@ -1,7 +1,7 @@
 project(
   'gumbo',
   'c',
-  version: '0.10.1',
+  version: '0.12.1',
   default_options: 'c_std=c99',
 )
 
