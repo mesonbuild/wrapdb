@@ -1264,6 +1264,14 @@
       "6.5.1-1"
     ]
   },
+  "libdicom": {
+    "dependency_names": [
+      "libdicom"
+    ],
+    "versions": [
+      "1.0.1-1"
+    ]
+  },
   "libdrm": {
     "dependency_names": [
       "libdrm",
