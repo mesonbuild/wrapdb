@@ -1,9 +1,9 @@
 [wrap-file]
-directory = cairo-1.17.8
+directory = cairo-1.18.0
 
-source_url = https://gitlab.freedesktop.org/cairo/cairo/-/archive/1.17.8/cairo-1.17.8.tar.bz2
-source_filename = cairo-1.17.8.tar.bz2
-source_hash = ead4724423eb969f98b456fe1e3ee1e1741fe1c8dfb1a41ca12afa81a6c1665f
+source_url = https://www.cairographics.org/releases/cairo-1.18.0.tar.xz
+source_filename = cairo-1.18.0.tar.xz
+source_hash = 243a0736b978a33dee29f9cca7521733b78a65b5418206fef7bd1c3d4cf10b64
 
 [provide]
 dependency_names = cairo, cairo-gobject
