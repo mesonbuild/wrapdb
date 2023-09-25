@@ -3,7 +3,7 @@ project(
   'c',
   license: 'LGPL-2.1-or-later',
   version: '0.15.2',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.54.1',
 )
 
 #need for time_r functions
