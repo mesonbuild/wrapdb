@@ -25,7 +25,7 @@ import tempfile
 import platform
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows, is_msys
+from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -359,6 +359,7 @@ class TestReleases(unittest.TestCase):
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])
         msys_packages = ci.get('msys_packages', [])
+        alpine_packages = ci.get('alpine_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -387,6 +388,12 @@ class TestReleases(unittest.TestCase):
                 subprocess.check_call(['sh', '-lc', '$@', 'bash', 'pacboy', '--noconfirm', 'sync'] + [p + ':p' for p in msys_packages])
             else:
                 s = ', '.join(msys_packages)
+                print(f'The following packages could be required: {s}')
+        elif alpine_packages and is_alpinelike():
+            if is_ci():
+                subprocess.check_call(['sudo', 'apk', 'add'] + alpine_packages)
+            else:
+                s = ', '.join(alpine_packages)
                 print(f'The following packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)

@@ -49,6 +49,9 @@
     ]
   },
   "cppzmq": {
+    "alpine_packages": [
+      "zeromq-dev"
+    ],
     "debian_packages": [
       "libzmq3-dev"
     ],
@@ -115,6 +118,10 @@
     }
   },
   "epoxy": {
+    "alpine_packages": [
+      "libx11-dev",
+      "mesa-dev"
+    ],
     "debian_packages": [
       "libgl-dev",
       "libegl-dev"
@@ -134,6 +141,12 @@
     "fatal_warnings": false
   },
   "freeglut": {
+    "alpine_packages": [
+      "glu-dev",
+      "libxi-dev",
+      "libxkbcommon-dev",
+      "mesa-dev"
+    ],
     "brew_packages": [
       "libx11",
       "libxi",
@@ -176,6 +189,9 @@
     "build_options": [
       "gdk-pixbuf:man=false"
     ],
+    "alpine_packages": [
+      "shared-mime-info"
+    ],
     "fatal_warnings": false,
     "skip_tests": true
   },
@@ -184,6 +200,9 @@
     "build_on": {
       "windows": false
     },
+    "alpine_packages": [
+      "vala"
+    ],
     "brew_packages": [
       "vala"
     ],
@@ -204,6 +223,10 @@
     ]
   },
   "glbinding": {
+    "alpine_packages": [
+      "libxi-dev",
+      "libxkbcommon-dev"
+    ],
     "debian_packages": [
       "libxi-dev",
       "libxkbcommon-dev"
@@ -218,6 +241,10 @@
     ]
   },
   "glfw": {
+    "alpine_packages": [
+      "libxi-dev",
+      "libxkbcommon-dev"
+    ],
     "debian_packages": [
       "libxi-dev",
       "libxkbcommon-dev"
@@ -294,6 +321,9 @@
     ]
   },
   "imgui-sfml": {
+    "alpine_packages": [
+      "libudev-zero"
+    ],
     "debian_packages": [
       "libgl-dev",
       "libopenal-dev",
@@ -515,6 +545,9 @@
     "build_on": {
       "windows": false
     },
+    "alpine_packages": [
+      "boost-dev"
+    ],
     "brew_packages": [
       "boost"
     ],
@@ -536,6 +569,9 @@
     ]
   },
   "openh264": {
+    "alpine_packages": [
+      "nasm"
+    ],
     "brew_packages": [
       "nasm"
     ],
@@ -601,6 +637,9 @@
     "build_on": {
       "windows": false
     },
+    "alpine_packages": [
+      "boost-dev"
+    ],
     "brew_packages": [
       "boost"
     ],
@@ -617,6 +656,9 @@
     "build_on": {
       "windows": false
     },
+    "alpine_packages": [
+      "qt5-qtbase-dev"
+    ],
     "msys_packages": [
       "qt5-base"
     ],
@@ -632,6 +674,9 @@
     "build_on": {
       "windows": false
     },
+    "alpine_packages": [
+      "qt5-qtbase-dev"
+    ],
     "brew_packages": [
       "qt"
     ],
@@ -669,6 +714,9 @@
     ]
   },
   "sfml": {
+    "debian_packages": [
+      "libudev-zero-dev"
+    ],
     "debian_packages": [
       "libgl-dev",
       "libopenal-dev",
@@ -717,6 +765,9 @@
       "msys2": false,
       "windows": false
     },
+    "alpine_packages": [
+      "wayland-dev"
+    ],
     "debian_packages": [
       "libwayland-bin",
       "libwayland-dev"
