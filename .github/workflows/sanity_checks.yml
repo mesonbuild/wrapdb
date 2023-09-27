@@ -24,6 +24,25 @@ jobs:
         run: |
           ./tools/sanity_checks.py
 
+  Alpine:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine
+    steps:
+      - name: Install packages
+        run: |
+          apk add cmake g++ gcc git linux-headers pkgconf py3-pip samurai sudo
+          python -m pip install --pre meson
+          git config --global --add safe.directory '*'
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py
+
   VisualStudio:
     runs-on: windows-latest
     steps:
