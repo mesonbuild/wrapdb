@@ -11,9 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - name: Install packages
         run: |
@@ -29,9 +28,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       # https://github.com/actions/runner-images/issues/5459#issuecomment-1532856844
       - name: Remove bad Strawberry Perl patch binary in search path
@@ -50,9 +48,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       # https://github.com/actions/runner-images/issues/5459#issuecomment-1532856844
       - name: Remove bad Strawberry Perl patch binary in search path
@@ -79,9 +76,8 @@ jobs:
         platform: ['UCRT64', 'CLANG32', 'CLANG64']
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - uses: msys2/setup-msys2@v2
         with:
@@ -113,9 +109,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - run: brew update
       # github actions overwrites brew's python. Force it to reassert itself, by running in a separate step.

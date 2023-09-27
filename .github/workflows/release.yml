@@ -15,9 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Upload release assets
         run: |
-          git fetch --unshallow --tags
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
   # Ideally we should trigger Meson's CI to update the website, but unfortunately
   # it requires a Personal Access Token. Instead clone meson and do it ourself.

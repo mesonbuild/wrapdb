@@ -19,9 +19,8 @@ jobs:
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - name: Install packages
         run: |
@@ -41,9 +40,8 @@ jobs:
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - name: Install packages
         run: |
@@ -64,9 +62,8 @@ jobs:
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - name: Install packages
         run: |
@@ -89,9 +86,8 @@ jobs:
         platform: ['UCRT64', 'CLANG32', 'CLANG64']
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - uses: msys2/setup-msys2@v2
         with:
@@ -127,9 +123,8 @@ jobs:
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v3
-
-      - name: Fetch tags and unshallow
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - run: brew update
       # github actions overwrites brew's python. Force it to reassert itself, by running in a separate step.
