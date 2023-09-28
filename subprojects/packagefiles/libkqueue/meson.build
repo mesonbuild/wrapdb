@@ -3,7 +3,7 @@ project(
   'c',
   version: '2.6.2',
   license: 'BSD',
-  meson_version: '>=0.46.0',
+  meson_version: '>=0.54.1',
   default_options: ['c_std=c11'],
 )
 
@@ -70,7 +70,7 @@ if target_machine.system() == 'windows'
 
   kqueue_args += ['-D_USRDLL', '-D_WINDLL', '-D_CRT_SECURE_NO_WARNINGS', '-DWIN32_LEAN_AND_MEAN']
 
-  kqueue_deps += cc.find_library('ws2_32')
+  kqueue_deps = cc.find_library('ws2_32')
 elif target_machine.system() == 'linux'
   kqueue_sources += files(
     'src/linux/platform.c',
@@ -128,6 +128,7 @@ libkqueue = library(
   kqueue_sources,
   include_directories: kqueue_inc,
   c_args: kqueue_args,
+  gnu_symbol_visibility: 'hidden',
   dependencies: kqueue_deps,
 )
 
