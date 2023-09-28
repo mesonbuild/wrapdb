@@ -1,8 +1,8 @@
 project(
   'openal-soft',
   'cpp',
-  version: '1.23.0',
-  meson_version: '>=0.54.1',
+  version: '1.23.1',
+  meson_version: '>=0.58',
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
@@ -73,6 +73,7 @@ core_sources = files(
   'core/context.cpp',
   'core/converter.cpp',
   'core/cpu_caps.cpp',
+  'core/cubic_tables.cpp',
   'core/devformat.cpp',
   'core/device.cpp',
   'core/effectslot.cpp',
