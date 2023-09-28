@@ -1,7 +1,7 @@
 project(
   'sfml',
   'cpp',
-  version: '2.5.1',
+  version: '2.6.0',
   default_options: [
     'cpp_std=c++17',
     'wrap_mode=forcefallback',
@@ -10,13 +10,6 @@ project(
 )
 
 cpp = meson.get_compiler('cpp')
-
-#this still uses auto_ptr...
-if cpp.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_HAS_AUTO_PTR_ETC=1', language: 'cpp')
-else
-  add_project_arguments('-D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR', language: 'cpp')
-endif
 
 openal_dep = dependency('openal')
 thread_dep = dependency('threads')
@@ -31,6 +24,9 @@ vorbisenc_dep = dependency('vorbisenc')
 vorbisfile_dep = dependency('vorbisfile')
 
 stb_inc = include_directories('extlibs/headers/stb_image')
+glad_inc = include_directories('extlibs/headers/glad/include')
+vulkan_inc = include_directories('extlibs/headers/vulkan')
+mp3_inc = include_directories('extlibs/headers/minimp3')
 pub_inc = include_directories('include')
 priv_inc = include_directories('src')
 

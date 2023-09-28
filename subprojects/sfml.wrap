@@ -1,10 +1,9 @@
 [wrap-file]
-directory = SFML-2.5.1
-source_url = https://github.com/SFML/SFML/archive/refs/tags/2.5.1.tar.gz
-source_filename = 2.5.1.tar.gz
-source_hash = 438c91a917cc8aa19e82c6f59f8714da353c488584a007d401efac8368e1c785
+directory = SFML-2.6.0
+source_url = https://github.com/SFML/SFML/archive/refs/tags/2.6.0.tar.gz
+source_filename = 2.6.0.tar.gz
+source_hash = 0c3f84898ea1db07dc46fa92e85038d8c449e3c8653fe09997383173de96bc06
 patch_directory = sfml
 
 [provide]
 sfml = sfml_dep
-

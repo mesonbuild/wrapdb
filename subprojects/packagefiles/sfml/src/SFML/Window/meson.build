@@ -13,6 +13,7 @@ window_sources = files(
   'Touch.cpp',
   'VideoMode.cpp',
   'Window.cpp',
+  'WindowBase.cpp',
   'WindowImpl.cpp',
 )
 
@@ -24,8 +25,8 @@ if host_machine.system() == 'windows'
     'Win32/JoystickImpl.cpp',
     'Win32/SensorImpl.cpp',
     'Win32/VideoModeImpl.cpp',
+    'Win32/VulkanImplWin32.cpp',
     'Win32/WglContext.cpp',
-    'Win32/WglExtensions.cpp',
     'Win32/WindowImplWin32.cpp',
   )
   window_deps = []
@@ -35,14 +36,17 @@ elif host_machine.system() == 'linux'
     'Unix/CursorImpl.cpp',
     'Unix/Display.cpp',
     'Unix/GlxContext.cpp',
-    'Unix/GlxExtensions.cpp',
     'Unix/InputImpl.cpp',
     'Unix/JoystickImpl.cpp',
+    'Unix/KeyboardImpl.cpp',
+    'Unix/KeySymToKeyMapping.cpp',
+    'Unix/KeySymToUnicodeMapping.cpp',
     'Unix/SensorImpl.cpp',
     'Unix/VideoModeImpl.cpp',
+    'Unix/VulkanImplX11.cpp',
     'Unix/WindowImplX11.cpp',
   )
-  window_deps = [dependency('xrandr'), dependency('x11'), dependency('libudev')]
+  window_deps = [dependency('xcursor'), dependency('xrandr'), dependency('x11'), dependency('libudev')]
 elif host_machine.system() == 'darwin'
   add_languages('objc')
   add_languages('objcpp')
@@ -82,6 +86,6 @@ window_lib = library(
   window_sources,
   cpp_args: [get_option('default_library') != 'static' ? '-DSFML_WINDOW_EXPORTS' : '-DSFML_STATIC', '-DUNICODE'],
   link_with: system_lib,
-  include_directories: [pub_inc, priv_inc],
+  include_directories: [glad_inc, pub_inc, priv_inc, vulkan_inc],
   dependencies: [gl_dep, winmm_dep, window_deps],
 )
