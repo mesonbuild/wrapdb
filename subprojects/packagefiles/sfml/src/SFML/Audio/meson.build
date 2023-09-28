@@ -11,6 +11,7 @@ audio_sources = files(
   'SoundBufferRecorder.cpp',
   'SoundFileFactory.cpp',
   'SoundFileReaderFlac.cpp',
+  'SoundFileReaderMp3.cpp',
   'SoundFileReaderOgg.cpp',
   'SoundFileReaderWav.cpp',
   'SoundFileWriterFlac.cpp',
@@ -19,7 +20,6 @@ audio_sources = files(
   'SoundRecorder.cpp',
   'SoundSource.cpp',
   'SoundStream.cpp',
-
 )
 
 audio_lib = library(
@@ -27,6 +27,6 @@ audio_lib = library(
   audio_sources,
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_AUDIO_EXPORTS' : '-DSFML_STATIC',
   link_with: system_lib,
-  include_directories: [pub_inc, priv_inc],
+  include_directories: [pub_inc, priv_inc, mp3_inc],
   dependencies: [openal_dep, flac_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, ogg_dep],
 )

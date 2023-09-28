@@ -1,1 +1,1 @@
-configure_file(input: 'sansation.ttf', output: 'sansation.ttf', copy: true)
+configure_file(input: 'tuffy.ttf', output: 'tuffy.ttf', copy: true)

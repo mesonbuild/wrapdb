@@ -20,9 +20,6 @@ graphics_sources = files(
   'View.cpp',
 )
 
-# GLES not supported yet, so add always.
-graphics_sources += files('GLLoader.cpp')
-
 graphics_sources += files(
   'CircleShape.cpp',
   'ConvexShape.cpp',
@@ -44,7 +41,7 @@ graphics_lib = library(
   'sfml-graphics',
   graphics_sources,
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_GRAPHICS_EXPORTS' : '-DSFML_STATIC',
-  include_directories: [pub_inc, priv_inc, stb_inc],
+  include_directories: [glad_inc, pub_inc, priv_inc, stb_inc],
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
 )
