@@ -1,9 +1,9 @@
-project('fmt', 'cpp', version: '9.1.0', license: 'BSD', default_options: ['cpp_std=c++14'])
+project('fmt', 'cpp', version: '10.1.1', license: 'BSD', default_options: ['cpp_std=c++14'])
 
 fmt_private_cpp_args = []
 fmt_interface_cpp_args = []
 if get_option('default_library') == 'shared'
-  fmt_private_cpp_args += ['-DFMT_EXPORT']
+  fmt_private_cpp_args += ['-DFMT_LIB_EXPORT']
   fmt_interface_cpp_args += ['-DFMT_SHARED']
 endif
 
