@@ -22,9 +22,7 @@ cpr_lib = library(
 cpr_dep = declare_dependency(
   include_directories: includes,
   link_with: cpr_lib,
+  dependencies: [curl_dep, thread_dep],
 )
 
-gtest_dep = dependency('gtest', required: get_option('tests'))
-if gtest_dep.found()
-  subdir('test')
-endif
+subdir('test')

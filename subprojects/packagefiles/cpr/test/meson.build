@@ -1,3 +1,8 @@
+gtest_dep = dependency('gtest', required: get_option('tests'))
+if not gtest_dep.found()
+  subdir_done()
+endif
+
 #most of these cannot be built because upstream downloads extra stuff
 tests = [
 #  'alternating',
