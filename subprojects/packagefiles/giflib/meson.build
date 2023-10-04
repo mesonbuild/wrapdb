@@ -302,7 +302,7 @@ if enable_tests
     args: [
       '-xc',
       ' && '.join(
-        'head --bytes="$1" <"$2" | "$3" | "$4" -d >"$5"',
+        'head -c "$1" <"$2" | "$3" | "$4" -d >"$5"',
         'diff --strip-trailing-cr --unified "$6" "$5"',
       ),
       '--',
