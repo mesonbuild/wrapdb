@@ -152,6 +152,14 @@
       "7.6.8-1"
     ]
   },
+  "blueprint-compiler": {
+    "program_names": [
+      "blueprint-compiler"
+    ],
+    "versions": [
+      "0.10.0-1"
+    ]
+  },
   "box2d": {
     "dependency_names": [
       "box2d"
