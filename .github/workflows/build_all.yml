@@ -74,6 +74,28 @@ jobs:
         run: |
           python tools/sanity_checks.py
 
+  UWP:
+    if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
+    runs-on: windows-latest
+    env:
+      TEST_BUILD_ALL: 1
+      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install packages
+        run: |
+          python -m pip install git+https://github.com/mesonbuild/meson
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          uwp: true
+      - name: Sanity Checks
+        run: |
+          python tools/sanity_checks.py
+
   MSYS2:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
