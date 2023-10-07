@@ -227,6 +227,14 @@ if platform_is_unixlike
     xrandr_dep = dependency('xrandr', required : opt_video_x11)
     xfixes_dep = dependency('xfixes', required : opt_video_x11)
     xcursor_dep = dependency('xcursor', required : opt_video_x11)
+    if not xext_dep.found() or not xi_dep.found() or not xrandr_dep.found() or not xfixes_dep.found() or not xcursor_dep.found()
+      x11_dep = fake_dep
+      xext_dep = fake_dep
+      xi_dep = fake_dep
+      xrandr_dep = fake_dep
+      xfixes_dep = fake_dep
+      xcursor_dep = fake_dep
+    endif
 else
     x11_dep = fake_dep
     xext_dep = fake_dep
