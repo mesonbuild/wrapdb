@@ -12,7 +12,12 @@ deps = [dependency('threads')]
 if host_machine.system() == 'windows'
   deps += cc.find_library('ws2_32')
   deps += cc.find_library('iphlpapi')
-  add_project_arguments('-D_CRT_RAND_S', language: 'c')
+  add_project_arguments(
+    '-D_CRT_RAND_S',
+    '-D_WIN32_WINNT=0x0600',
+    cc.get_supported_arguments('-Wno-incompatible-function-pointer-types'),
+    language: 'c',
+  )
 endif
 
 nng_src = files(
@@ -84,7 +89,7 @@ nng_src = files(
   #'src/transport/zerotier/zthash.c',
 )
 
-include_dirs = ['include', 'src']
+include_dirs = [include_directories('include', 'src')]
 
 if target_machine.system() == 'windows'
   nng_src += files(
@@ -107,7 +112,7 @@ if target_machine.system() == 'windows'
     'src/platform/windows/win_udp.c',
   )
 
-  include_dirs += 'src/platform/windows/'
+  include_dirs += include_directories('src/platform/windows')
   add_project_arguments('-DNNG_PLATFORM_WINDOWS', language: 'c')
 else
   nng_src += files(
@@ -132,7 +137,7 @@ else
 
   )
 
-  include_dirs += 'src/platform/posix'
+  include_dirs += include_directories('src/platform/posix')
   add_project_arguments('-DNNG_PLATFORM_POSIX', language: 'c')
 endif
 
