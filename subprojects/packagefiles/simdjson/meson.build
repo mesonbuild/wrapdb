@@ -20,6 +20,7 @@ simdjson_lib = library(
   include_directories: simdjson_inc,
   cpp_args: simdjson_args_private,
   install: true,
+  gnu_symbol_visibility: 'hidden'
 )
 
 install_headers('singleheader/simdjson.h')
