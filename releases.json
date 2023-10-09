@@ -2079,6 +2079,14 @@
       "0.0.0-1"
     ]
   },
+  "nghttp2": {
+    "dependency_names": [
+      "libnghttp2"
+    ],
+    "versions": [
+      "1.56.0-1"
+    ]
+  },
   "nlohmann_json": {
     "dependency_names": [
       "nlohmann_json"
