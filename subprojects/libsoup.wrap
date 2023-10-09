@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libsoup-3.4.3
+source_url = https://download.gnome.org/sources/libsoup/3.4/libsoup-3.4.3.tar.xz
+source_filename = libsoup-3.4.3.tar.xz
+source_hash = b7f1bbaeeb43f5812daba3ee258a72e1b4b14c2fd91f4a1a75d4eea10dcf288f
+
+[provide]
+dependency_names = libsoup-3.0
