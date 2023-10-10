@@ -884,6 +884,11 @@
       "2.66.7-1"
     ]
   },
+  "glib-networking": {
+    "versions": [
+      "2.78.0-1"
+    ]
+  },
   "glm": {
     "dependency_names": [
       "glm"
