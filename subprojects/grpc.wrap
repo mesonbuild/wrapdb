@@ -8,4 +8,4 @@ patch_directory = grpc
 [provide]
 grpc = grpc_dep
 grpc++ = grpcpp_dep
-; program_names = grpc_cpp_plugin
+program_names = grpc_cpp_plugin, grpc_python_plugin, grpc_ruby_plugin, grpc_php_plugin, grpc_node_plugin

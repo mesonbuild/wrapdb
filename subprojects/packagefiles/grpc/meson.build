@@ -63,7 +63,10 @@ libaddress_sorting = library('address_sorting',
 	install: true,
 	dependencies: [
 ])
-address_sorting_dep = declare_dependency(link_with: libaddress_sorting)
+address_sorting_dep = declare_dependency(
+	link_with: libaddress_sorting,
+	include_directories: common_include_dirs,
+)
 
 libupb_collections_lib = library('upb_collections_lib',
 	sources: files(
@@ -82,7 +85,10 @@ libupb_collections_lib = library('upb_collections_lib',
 	install: true,
 	dependencies: [
 ])
-upb_collections_lib_dep = declare_dependency(link_with: libupb_collections_lib)
+upb_collections_lib_dep = declare_dependency(
+	link_with: libupb_collections_lib,
+	include_directories: common_include_dirs,
+)
 
 libutf8_range_lib = library('utf8_range_lib',
 	sources: files(
@@ -93,7 +99,10 @@ libutf8_range_lib = library('utf8_range_lib',
 	install: true,
 	dependencies: [
 ])
-utf8_range_lib_dep = declare_dependency(link_with: libutf8_range_lib)
+utf8_range_lib_dep = declare_dependency(
+	link_with: libutf8_range_lib,
+	include_directories: common_include_dirs,
+)
 
 libgpr = library('gpr',
 	sources: files(
@@ -146,22 +155,25 @@ libgpr = library('gpr',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		absl_variant_dep,
+		absl_any_invocable_dep,
+		absl_base_dep,
+		absl_cord_dep,
+		absl_core_headers_dep,
+		absl_flags_dep,
+		absl_flags_marshalling_dep,
+		absl_memory_dep,
+		absl_optional_dep,
+		absl_random_random_dep,
+		absl_status_dep,
+		absl_str_format_dep,
+		absl_strings_dep,
 		absl_synchronization_dep,
 		absl_time_dep,
-		absl_optional_dep,
-		absl_any_invocable_dep,
-		absl_flags_marshalling_dep,
-		absl_random_random_dep,
-		absl_base_dep,
-		absl_status_dep,
-		absl_cord_dep,
-		absl_str_format_dep,
-		absl_flags_dep,
-		absl_strings_dep,
-		absl_memory_dep,
-		absl_core_headers_dep])
-gpr_dep = declare_dependency(link_with: libgpr)
+		absl_variant_dep])
+gpr_dep = declare_dependency(
+	link_with: libgpr,
+	include_directories: common_include_dirs,
+)
 
 libgrpc_plugin_support = library('grpc_plugin_support',
 	sources: files(
@@ -178,7 +190,14 @@ libgrpc_plugin_support = library('grpc_plugin_support',
 	dependencies: [
 		protobuf_dep,
 		protoc_dep])
-grpc_plugin_support_dep = declare_dependency(link_with: libgrpc_plugin_support)
+grpc_plugin_support_dep = declare_dependency(
+	link_with: libgrpc_plugin_support,
+	include_directories: common_include_dirs,
+	compile_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
+	dependencies: [
+		protobuf_dep,
+		protoc_dep],
+)
 
 libupb = library('upb',
 	sources: files(
@@ -206,7 +225,10 @@ libupb = library('upb',
 	install: true,
 	dependencies: [
 		utf8_range_lib_dep])
-upb_dep = declare_dependency(link_with: libupb)
+upb_dep = declare_dependency(
+	link_with: libupb,
+	include_directories: common_include_dirs,
+)
 
 libgrpc_authorization_provider = library('grpc_authorization_provider',
 	sources: files(
@@ -477,24 +499,27 @@ libgrpc_authorization_provider = library('grpc_authorization_provider',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		zlib_dep,
-		absl_hash_dep,
-		libcares_dep,
-		absl_random_internal_randen_dep,
-		absl_type_traits_dep,
-		absl_random_seed_sequences_dep,
-		absl_flat_hash_map_dep,
-		absl_span_dep,
-		re2_dep,
-		absl_flat_hash_set_dep,
-		absl_utility_dep,
-		absl_statusor_dep,
-		absl_inlined_vector_dep,
-		absl_function_ref_dep,
-		gpr_dep,
 		absl_cleanup_dep,
-		upb_dep])
-grpc_authorization_provider_dep = declare_dependency(link_with: libgrpc_authorization_provider)
+		absl_flat_hash_map_dep,
+		absl_flat_hash_set_dep,
+		absl_function_ref_dep,
+		absl_hash_dep,
+		absl_inlined_vector_dep,
+		absl_random_internal_randen_dep,
+		absl_random_seed_sequences_dep,
+		absl_span_dep,
+		absl_statusor_dep,
+		absl_type_traits_dep,
+		absl_utility_dep,
+		gpr_dep,
+		libcares_dep,
+		re2_dep,
+		upb_dep,
+		zlib_dep])
+grpc_authorization_provider_dep = declare_dependency(
+	link_with: libgrpc_authorization_provider,
+	include_directories: common_include_dirs,
+)
 
 libupb_json_lib = library('upb_json_lib',
 	sources: files(
@@ -526,9 +551,12 @@ libupb_json_lib = library('upb_json_lib',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		upb_dep,
-		upb_collections_lib_dep])
-upb_json_lib_dep = declare_dependency(link_with: libupb_json_lib)
+		upb_collections_lib_dep,
+		upb_dep])
+upb_json_lib_dep = declare_dependency(
+	link_with: libupb_json_lib,
+	include_directories: common_include_dirs,
+)
 
 libupb_textformat_lib = library('upb_textformat_lib',
 	sources: files(
@@ -559,9 +587,12 @@ libupb_textformat_lib = library('upb_textformat_lib',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		upb_dep,
-		upb_collections_lib_dep])
-upb_textformat_lib_dep = declare_dependency(link_with: libupb_textformat_lib)
+		upb_collections_lib_dep,
+		upb_dep])
+upb_textformat_lib_dep = declare_dependency(
+	link_with: libupb_textformat_lib,
+	include_directories: common_include_dirs,
+)
 
 libgrpc = library('grpc',
 	sources: files(
@@ -1343,32 +1374,35 @@ libgrpc = library('grpc',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		absl_hash_dep,
-		libcrypto_dep,
-		absl_random_bit_gen_ref_dep,
-		libssl_dep,
-		upb_json_lib_dep,
-		gpr_dep,
-		upb_textformat_lib_dep,
-		zlib_dep,
-		absl_random_distributions_dep,
 		absl_algorithm_container_dep,
 		absl_bind_front_dep,
+		absl_cleanup_dep,
+		absl_flat_hash_map_dep,
+		absl_flat_hash_set_dep,
+		absl_function_ref_dep,
+		absl_hash_dep,
+		absl_inlined_vector_dep,
+		absl_random_bit_gen_ref_dep,
+		absl_random_distributions_dep,
 		absl_random_seed_sequences_dep,
 		absl_span_dep,
 		absl_statusor_dep,
-		absl_function_ref_dep,
-		address_sorting_dep,
 		absl_type_traits_dep,
-		upb_dep,
-		libcares_dep,
-		absl_flat_hash_map_dep,
-		re2_dep,
-		absl_flat_hash_set_dep,
 		absl_utility_dep,
-		absl_inlined_vector_dep,
-		absl_cleanup_dep])
-grpc_dep = declare_dependency(link_with: libgrpc)
+		address_sorting_dep,
+		gpr_dep,
+		libcares_dep,
+		libcrypto_dep,
+		libssl_dep,
+		re2_dep,
+		upb_dep,
+		upb_json_lib_dep,
+		upb_textformat_lib_dep,
+		zlib_dep])
+grpc_dep = declare_dependency(
+	link_with: libgrpc,
+	include_directories: common_include_dirs,
+)
 
 libgrpcpp = library('grpc++',
 	sources: files(
@@ -1440,17 +1474,20 @@ libgrpcpp = library('grpc++',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		absl_hash_dep,
-		grpc_dep,
-		absl_synchronization_dep,
-		protobuf_dep,
 		absl_flat_hash_map_dep,
+		absl_hash_dep,
+		absl_status_dep,
 		absl_statusor_dep,
 		absl_str_format_dep,
-		absl_status_dep,
+		absl_synchronization_dep,
 		gpr_dep,
+		grpc_dep,
+		protobuf_dep,
 		upb_dep])
-grpcpp_dep = declare_dependency(link_with: libgrpcpp)
+grpcpp_dep = declare_dependency(
+	link_with: libgrpcpp,
+	include_directories: common_include_dirs,
+)
 
 libgrpcpp_alts = library('grpc++_alts',
 	sources: files(
@@ -1459,63 +1496,66 @@ libgrpcpp_alts = library('grpc++_alts',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		gpr_dep,
 		grpc_authorization_provider_dep,
-		upb_dep,
 		grpcpp_dep,
-		gpr_dep])
-grpcpp_alts_dep = declare_dependency(link_with: libgrpcpp_alts)
+		upb_dep])
+grpcpp_alts_dep = declare_dependency(
+	link_with: libgrpcpp_alts,
+	include_directories: common_include_dirs,
+)
 
 grpc_cpp_plugin = executable('grpc_cpp_plugin',
 	sources: files(
 		'src/compiler/cpp_plugin.cc'),
-	cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		grpc_plugin_support_dep,
 		protobuf_dep,
-		protoc_dep,
-		grpc_plugin_support_dep])
+		protoc_dep])
+meson.override_find_program('grpc_cpp_plugin', grpc_cpp_plugin)
 
 grpc_node_plugin = executable('grpc_node_plugin',
 	sources: files(
 		'src/compiler/node_plugin.cc'),
-	cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		grpc_plugin_support_dep,
 		protobuf_dep,
-		protoc_dep,
-		grpc_plugin_support_dep])
+		protoc_dep])
+meson.override_find_program('grpc_node_plugin', grpc_node_plugin)
 
 grpc_php_plugin = executable('grpc_php_plugin',
 	sources: files(
 		'src/compiler/php_plugin.cc'),
-	cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		grpc_plugin_support_dep,
 		protobuf_dep,
-		protoc_dep,
-		grpc_plugin_support_dep])
+		protoc_dep])
+meson.override_find_program('grpc_php_plugin', grpc_php_plugin)
 
 grpc_python_plugin = executable('grpc_python_plugin',
 	sources: files(
 		'src/compiler/python_plugin.cc'),
-	cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		grpc_plugin_support_dep,
 		protobuf_dep,
-		protoc_dep,
-		grpc_plugin_support_dep])
+		protoc_dep])
+meson.override_find_program('grpc_python_plugin', grpc_python_plugin)
 
 grpc_ruby_plugin = executable('grpc_ruby_plugin',
 	sources: files(
 		'src/compiler/ruby_plugin.cc'),
-	cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		grpc_plugin_support_dep,
 		protobuf_dep,
-		protoc_dep,
-		grpc_plugin_support_dep])
+		protoc_dep])
+meson.override_find_program('grpc_ruby_plugin', grpc_ruby_plugin)
