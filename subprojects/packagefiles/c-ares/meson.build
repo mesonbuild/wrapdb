@@ -148,3 +148,25 @@ cares_dep = declare_dependency(
 	include_directories: cares_include_dirs,
 	link_with: libcares)
 meson.override_dependency('c-ares', cares_dep)
+
+cares_tools_include_dirs = include_directories('src/tools')
+
+adig = executable('adig',
+	sources: files('src/tools/adig.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
+	include_directories: cares_tools_include_dirs,
+	c_args: cares_args[target_machine.system()],
+	dependencies: cares_dep,
+	build_by_default: false)
+if get_option('c-ares_export_adig')
+	meson.override_find_program('adig', adig)
+endif
+
+ahost = executable('ahost',
+	sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
+	include_directories: cares_tools_include_dirs,
+	c_args: cares_args[target_machine.system()],
+	dependencies: cares_dep,
+	build_by_default: false)
+if get_option('c-ares_export_ahost')
+	meson.override_find_program('ahost')
+endif

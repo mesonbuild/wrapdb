@@ -1,0 +1,2 @@
+option('c-ares_export_adig', type : 'boolean', value : false, description : 'Overrid find_program(adig)')
+option('c-ares_export_ahost', type : 'boolean', value : false, description : 'Overrid find_program(ahost)')
