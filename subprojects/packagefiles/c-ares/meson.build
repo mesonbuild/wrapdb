@@ -1,6 +1,7 @@
 
-project('c-ares', 'c', version: '1.20.1')
-soversion = '1.20'
+project('c-ares', 'c', version: '1.20.1', license: 'MIT')
+libtool_version = '2.7.1'
+libtool_soversion = '2'
 
 cares_sources = files(
 	'src/lib/ares__addrinfo2hostent.c',
@@ -165,8 +166,8 @@ libcares = library('c-ares',
 	include_directories: cares_include_dirs,
 	c_args: cares_args[target_machine.system()],
 	install: true,
-	version: meson.project_version(),
-	soversion: soversion)
+	version: libtool_version,
+	soversion: libtool_soversion)
 
 cares_dep = declare_dependency(
 	include_directories: cares_include_dirs,
