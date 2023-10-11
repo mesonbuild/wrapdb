@@ -1,0 +1,9 @@
+[wrap-file]
+directory = imgui-1.89.9-docking
+source_url = https://github.com/ocornut/imgui/archive/refs/tags/v1.89.9-docking.tar.gz
+source_filename = imgui-docking-1.89.9.tar.gz
+source_hash = 2481489ce9091239b3cab8a330d0409ffdd9ee607ad1f3fe3a0b0b751c27a8eb
+patch_directory = imgui
+
+[provide]
+imgui_docking = imgui_dep
