@@ -161,7 +161,7 @@ ares_build_h = configure_file(
 	configuration: cares_config[target_machine.system()],
 	format: 'cmake@')
 
-libcares = library('c-ares',
+libcares = library('cares',
 	sources: [cares_sources, cares_headers, ares_build_h],
 	include_directories: cares_include_dirs,
 	c_args: cares_args[target_machine.system()],
@@ -172,7 +172,7 @@ libcares = library('c-ares',
 cares_dep = declare_dependency(
 	include_directories: cares_include_dirs,
 	link_with: libcares)
-meson.override_dependency('c-ares', cares_dep)
+meson.override_dependency('libcares', cares_dep)
 
 cares_tools_include_dirs = include_directories('src/tools')
 
