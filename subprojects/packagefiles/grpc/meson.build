@@ -1,4 +1,4 @@
-project('gRPC', ['c', 'cpp'], version: '1.59.1', default_options: ['cpp_std=c++17'])
+project('gRPC', ['c', 'cpp'], version: '1.59.1', default_options: ['cpp_std=c++17'], license: 'Apache-2.0')
 
 version_array = meson.project_version().split('.')
 grpc_soversion = '.'.join([version_array[0], version_array[1]])
