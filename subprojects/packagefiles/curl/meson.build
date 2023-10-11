@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.3.0',
+  version: '8.4.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -132,7 +132,6 @@ _headerlist = {
     'inet_ntop',
     'inet_pton',
   ],
-  'arpa/tftp.h': [],
   'bsd/unistd.h': [
     'setmode',
   ],
@@ -192,6 +191,8 @@ _headerlist = {
   'stddef.h': [],
   'stdint.h': [],
   'stdio.h': [
+    '_fseeki64',
+    'fseeko',
     'snprintf',
   ],
   'stdlib.h': [
@@ -236,7 +237,6 @@ _headerlist = {
     'utimes',
   ],
   'sys/types.h': [],
-  'sys/uio.h': [],
   'sys/un.h': [],
   'sys/utime.h': [],
   'sys/utsname.h': [

@@ -165,9 +165,6 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #mesondefine HAVE_ARPA_INET_H
 
-/* Define to 1 if you have the <arpa/tftp.h> header file. */
-#mesondefine HAVE_ARPA_TFTP_H
-
 /* Define to 1 if you have _Atomic support. */
 #mesondefine HAVE_ATOMIC
 
@@ -225,6 +222,9 @@
 
 /* Define to 1 if you have the freeaddrinfo function. */
 #mesondefine HAVE_FREEADDRINFO
+
+/* Define to 1 if you have the `fseeko' function. */
+#mesondefine HAVE_FSEEKO
 
 /* Define to 1 if you have the fsetxattr function. */
 #mesondefine HAVE_FSETXATTR
@@ -350,17 +350,8 @@
 /* Define to 1 if you have the <io.h> header file. */
 #mesondefine HAVE_IO_H
 
-/* Define to 1 if you have the lber.h header file. */
-#mesondefine HAVE_LBER_H
-
 /* Use LDAPS implementation */
 #mesondefine HAVE_LDAP_SSL
-
-/* Define to 1 if you have the ldap_ssl.h header file. */
-#mesondefine HAVE_LDAP_SSL_H
-
-/* Define to 1 if you have the `ldap_url_parse' function. */
-#mesondefine HAVE_LDAP_URL_PARSE
 
 /* Define to 1 if you have the <libgen.h> header file. */
 #mesondefine HAVE_LIBGEN_H
@@ -490,9 +481,6 @@
 /* Define to 1 if you have the signal function. */
 #mesondefine HAVE_SIGNAL
 
-/* Define to 1 if you have the <signal.h> header file. */
-#mesondefine HAVE_SIGNAL_H
-
 /* Define to 1 if you have the sigsetjmp function or macro. */
 #mesondefine HAVE_SIGSETJMP
 
@@ -598,9 +586,6 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #mesondefine HAVE_SYS_TYPES_H
 
-/* Define to 1 if you have the <sys/uio.h> header file. */
-#mesondefine HAVE_SYS_UIO_H
-
 /* Define to 1 if you have the <sys/un.h> header file. */
 #mesondefine HAVE_SYS_UN_H
 
@@ -663,6 +648,9 @@
 
 /* if libzstd is in use */
 #mesondefine HAVE_ZSTD
+
+/* Define to 1 if you have the `_fseeki64' function. */
+#mesondefine HAVE__FSEEKI64
 
 /* Define to 1 if _REENTRANT preprocessor symbol must be defined. */
 #mesondefine NEED_REENTRANT
