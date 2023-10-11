@@ -182,7 +182,7 @@ adig = executable('adig',
 	c_args: cares_args[target_machine.system()],
 	dependencies: cares_dep,
 	build_by_default: false)
-if get_option('c-ares_export_adig')
+if get_option('export_adig')
 	meson.override_find_program('adig', adig)
 endif
 
@@ -192,6 +192,6 @@ ahost = executable('ahost',
 	c_args: cares_args[target_machine.system()],
 	dependencies: cares_dep,
 	build_by_default: false)
-if get_option('c-ares_export_ahost')
+if get_option('export_ahost')
 	meson.override_find_program('ahost')
 endif
