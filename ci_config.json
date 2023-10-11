@@ -275,6 +275,25 @@
     "has_provides": false,
     "fatal_warnings": false
   },
+  "grpc": {
+    "_comment": [
+      "- wrapdb version of abseil-cpp is not yet suitable for building grpc",
+      "- c-ares wrap has not landed yet",
+      "- Windows: WIP"
+    ],
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    },
+    "debian_packages": [
+      "libabsl-dev",
+      "libc-ares-dev"
+    ],
+    "brew_packages": [
+      "abseil-cpp",
+      "c-ares"
+    ],
+  },
   "gumbo-parser": {
     "build_options": [
       "gumbo-parser:examples=enabled",

@@ -970,6 +970,22 @@
       "1.3.14-1"
     ]
   },
+  "grpc": {
+    "dependency_names": [
+      "grpc",
+      "grpc++"
+    ],
+    "program_names": [
+      "grpc_cpp_plugin",
+      "grpc_node_plugin",
+      "grpc_php_plugin",
+      "grpc_python_plugin",
+      "grpc_ruby_plugin"
+    ],
+    "versions": [
+      "1.59.1-1"
+    ]
+  },
   "gtest": {
     "dependency_names": [
       "gtest",
