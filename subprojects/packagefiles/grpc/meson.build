@@ -33,6 +33,7 @@ absl_time_dep = dependency('absl_time')
 absl_type_traits_dep = dependency('absl_type_traits')
 absl_utility_dep = dependency('absl_utility')
 absl_variant_dep = dependency('absl_variant')
+appleframeworks_dep = target_machine.system() == 'darwin' ? [dependency('appleframeworks', modules: ['CoreFoundation'])] : []
 libcares_dep = dependency('libcares')
 libcrypto_dep = dependency('libcrypto')
 libssl_dep = dependency('libssl')
@@ -46,6 +47,7 @@ common_include_dirs = include_directories(
 	'third_party/address_sorting/include',
 	'third_party/upb',
 	'third_party/utf8_range',
+	'third_party/xxhash',
 	'src/core/ext/upb-generated',
 	'src/core/ext/upbdefs-generated')
 
@@ -183,6 +185,7 @@ libgrpc_plugin_support = library('grpc_plugin_support',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		absl_status_dep,
 		protobuf_dep,
 		protoc_dep])
 grpc_plugin_support_dep = declare_dependency(
@@ -190,6 +193,7 @@ grpc_plugin_support_dep = declare_dependency(
 	include_directories: common_include_dirs,
 	compile_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	dependencies: [
+		absl_status_dep,
 		protobuf_dep,
 		protoc_dep],
 )
@@ -506,6 +510,7 @@ libgrpc_authorization_provider = library('grpc_authorization_provider',
 		absl_statusor_dep,
 		absl_type_traits_dep,
 		absl_utility_dep,
+		appleframeworks_dep,
 		gpr_dep,
 		libcares_dep,
 		re2_dep,
@@ -1382,9 +1387,11 @@ libgrpc = library('grpc',
 		absl_random_seed_sequences_dep,
 		absl_span_dep,
 		absl_statusor_dep,
+		absl_strings_dep,
 		absl_type_traits_dep,
 		absl_utility_dep,
 		address_sorting_dep,
+		appleframeworks_dep,
 		gpr_dep,
 		libcares_dep,
 		libcrypto_dep,
@@ -1491,6 +1498,7 @@ libgrpcpp_alts = library('grpc++_alts',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
+		absl_strings_dep,
 		gpr_dep,
 		grpc_authorization_provider_dep,
 		grpcpp_dep,
@@ -1506,9 +1514,7 @@ grpc_cpp_plugin = executable('grpc_cpp_plugin',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		grpc_plugin_support_dep,
-		protobuf_dep,
-		protoc_dep])
+		grpc_plugin_support_dep])
 meson.override_find_program('grpc_cpp_plugin', grpc_cpp_plugin)
 
 grpc_node_plugin = executable('grpc_node_plugin',
@@ -1517,9 +1523,7 @@ grpc_node_plugin = executable('grpc_node_plugin',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		grpc_plugin_support_dep,
-		protobuf_dep,
-		protoc_dep])
+		grpc_plugin_support_dep])
 meson.override_find_program('grpc_node_plugin', grpc_node_plugin)
 
 grpc_php_plugin = executable('grpc_php_plugin',
@@ -1528,9 +1532,7 @@ grpc_php_plugin = executable('grpc_php_plugin',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		grpc_plugin_support_dep,
-		protobuf_dep,
-		protoc_dep])
+		grpc_plugin_support_dep])
 meson.override_find_program('grpc_php_plugin', grpc_php_plugin)
 
 grpc_python_plugin = executable('grpc_python_plugin',
@@ -1539,9 +1541,7 @@ grpc_python_plugin = executable('grpc_python_plugin',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		grpc_plugin_support_dep,
-		protobuf_dep,
-		protoc_dep])
+		grpc_plugin_support_dep])
 meson.override_find_program('grpc_python_plugin', grpc_python_plugin)
 
 grpc_ruby_plugin = executable('grpc_ruby_plugin',
@@ -1550,7 +1550,5 @@ grpc_ruby_plugin = executable('grpc_ruby_plugin',
 	include_directories: common_include_dirs,
 	install: true,
 	dependencies: [
-		grpc_plugin_support_dep,
-		protobuf_dep,
-		protoc_dep])
+		grpc_plugin_support_dep])
 meson.override_find_program('grpc_ruby_plugin', grpc_ruby_plugin)
