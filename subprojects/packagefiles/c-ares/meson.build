@@ -91,7 +91,8 @@ cares_headers = files(
 	'src/lib/ares_setup.h',
 	'src/lib/setup_once.h')
 
-cares_include_dirs = include_directories('src/lib')
+cares_include_dirs = include_directories('include', 'src/lib')
+
 
 cares_args = {
 'linux': [
