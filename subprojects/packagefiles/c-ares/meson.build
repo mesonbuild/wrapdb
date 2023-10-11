@@ -136,6 +136,7 @@ cares_args = {
 	'-DHAVE_FCNTL_O_NONBLOCK',
 ],
 }
+cares_args += {'darwin': cares_args['linux']}
 
 libcares = library('c-ares',
 	sources: [cares_sources, cares_headers],
