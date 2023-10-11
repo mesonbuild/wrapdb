@@ -98,7 +98,6 @@ cares_args = {
 'linux': [
 	'-DHAVE_ERRNO_H',
 	'-DHAVE_SYS_TYPES_H',
-	'-DNEED_MALLOC_H',
 	'-DNEED_MEMORY_H',
 	'-DHAVE_SYS_STAT_H',
 	'-DHAVE_SYS_TIME_H',
