@@ -138,8 +138,30 @@ cares_args = {
 }
 cares_args += {'darwin': cares_args['linux']}
 
+cares_config = {
+'linux': {
+	'CARES_HAVE_SYS_TYPES_H': true,
+	'CARES_HAVE_SYS_RANDOM_H': true,
+	'CARES_HAVE_SYS_SOCKET_H': true,
+	'CARES_HAVE_WINDOWS_H': false,
+	'CARES_HAVE_WS2TCPIP_H': false,
+	'CARES_HAVE_WINSOCK2_H': false,
+	'CARES_HAVE_ARPA_NAMESER_H': true,
+	'CARES_HAVE_ARPA_NAMESER_COMPAT_H': true,
+	'CARES_TYPEOF_ARES_SOCKLEN_T' : 'socklen_t',
+	'CARES_TYPEOF_ARES_SSIZE_T': 'ssize_t',
+},
+}
+cares_config += {'darwin': cares_config['linux']}
+
+ares_build_h = configure_file(
+	input: 'include/ares_build.h.cmake',
+	output: 'ares_build.h',
+	configuration: cares_config[target_machine.system()],
+	format: 'cmake@')
+
 libcares = library('c-ares',
-	sources: [cares_sources, cares_headers],
+	sources: [cares_sources, cares_headers, ares_build_h],
 	include_directories: cares_include_dirs,
 	c_args: cares_args[target_machine.system()],
 	install: true,
