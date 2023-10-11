@@ -1,5 +1,8 @@
 project('gRPC', ['c', 'cpp'], version: '1.59.1', default_options: ['cpp_std=c++17'])
 
+version_array = meson.project_version().split('.')
+grpc_soversion = '.'.join([version_array[0], version_array[1]])
+core_soversion = '36'
 
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
 absl_any_invocable_dep = dependency('absl_any_invocable')
@@ -58,6 +61,8 @@ libaddress_sorting = library('address_sorting',
 		'third_party/address_sorting/address_sorting_windows.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 ])
 address_sorting_dep = declare_dependency(
@@ -80,6 +85,8 @@ libupb_collections_lib = library('upb_collections_lib',
 		'third_party/upb/upb/mini_table/message.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 ])
 upb_collections_lib_dep = declare_dependency(
@@ -94,6 +101,8 @@ libutf8_range_lib = library('utf8_range_lib',
 		'third_party/utf8_range/range2-sse.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 ])
 utf8_range_lib_dep = declare_dependency(
@@ -151,6 +160,8 @@ libgpr = library('gpr',
 		'src/core/lib/gprpp/windows/thd.cc'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 		absl_any_invocable_dep,
 		absl_base_dep,
@@ -184,6 +195,8 @@ libgrpc_plugin_support = library('grpc_plugin_support',
 	c_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: grpc_soversion,
 	dependencies: [
 		absl_status_dep,
 		protobuf_dep,
@@ -222,6 +235,8 @@ libupb = library('upb',
 		'third_party/upb/upb/wire/reader.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 		utf8_range_lib_dep])
 upb_dep = declare_dependency(
@@ -497,6 +512,8 @@ libgrpc_authorization_provider = library('grpc_authorization_provider',
 		'third_party/upb/upb/mini_descriptor/link.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: grpc_soversion,
 	dependencies: [
 		absl_cleanup_dep,
 		absl_flat_hash_map_dep,
@@ -550,6 +567,8 @@ libupb_json_lib = library('upb_json_lib',
 		'third_party/upb/upb/reflection/service_def.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 		upb_collections_lib_dep,
 		upb_dep])
@@ -586,6 +605,8 @@ libupb_textformat_lib = library('upb_textformat_lib',
 		'third_party/upb/upb/text/encode.c'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: core_soversion,
 	dependencies: [
 		upb_collections_lib_dep,
 		upb_dep])
@@ -1373,6 +1394,8 @@ libgrpc = library('grpc',
 		'src/core/tsi/transport_security_grpc.cc'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: grpc_soversion,
 	dependencies: [
 		absl_algorithm_container_dep,
 		absl_bind_front_dep,
@@ -1475,6 +1498,8 @@ libgrpcpp = library('grpc++',
 		'src/cpp/util/time_cc.cc'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: grpc_soversion,
 	dependencies: [
 		absl_flat_hash_map_dep,
 		absl_hash_dep,
@@ -1497,6 +1522,8 @@ libgrpcpp_alts = library('grpc++_alts',
 		'src/cpp/common/alts_util.cc'),
 	include_directories: common_include_dirs,
 	install: true,
+	version: meson.project_version(),
+	soversion: grpc_soversion,
 	dependencies: [
 		absl_strings_dep,
 		gpr_dep,
