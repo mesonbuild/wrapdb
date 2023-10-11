@@ -97,13 +97,22 @@ cares_include_dirs = include_directories('include', 'src/lib')
 
 cares_args = {
 'linux': [
+	'-DHAVE_ARPA_INET_H',
 	'-DHAVE_ERRNO_H',
-	'-DHAVE_SYS_TYPES_H',
-	'-DNEED_MEMORY_H',
-	'-DHAVE_SYS_STAT_H',
-	'-DHAVE_SYS_TIME_H',
+	'-DHAVE_LIMITS_H',
+	'-DHAVE_NETDB_H',
+	'-DHAVE_NETINET_IN_H',
+	'-DHAVE_NETINET_TCP_H',
+	'-DHAVE_STDINT_H',
+	'-DHAVE_STRINGS_H',
+	'-DHAVE_SYS_IOCTL_H',
 	'-DHAVE_SYS_RANDOM_H',
 	'-DHAVE_SYS_SOCKET_H',
+	'-DHAVE_SYS_STAT_H',
+	'-DHAVE_SYS_TIME_H',
+	'-DHAVE_SYS_TYPES_H',
+	'-DHAVE_SYS_UIO_H',
+
 	'-DTIME_WITH_SYS_TIME',
 	'-DHAVE_STRUCT_TIMEVAL',
 	'-DHAVE_RECV',
@@ -122,33 +131,27 @@ cares_args = {
 	'-DHAVE_RECVFROM',
 	'-DHAVE_WRITEV',
 	'-DHAVE_STRUCT_SOCKADDR_IN6',
-	'-DHAVE_ARPA_INET_H',
-	'-DHAVE_NETDB_H',
 	'-DHAVE_AF_INET6',
 	'-DHAVE_PF_INET6',
 	'-DHAVE_STRUCT_ADDRINFO',
-	'-DHAVE_STDINT_H',
-	'-DHAVE_LIMITS_H',
-	'-DHAVE_SYS_UIO_H',
-	'-DHAVE_NETINET_IN_H',
-	'-DHAVE_NETINET_TCP_H',
-	'-DHAVE_STRINGS_H',
-	'-DHAVE_SYS_IOCTL_H',
 	'-DHAVE_FCNTL_O_NONBLOCK',
 ],
 }
 cares_args += {'darwin': cares_args['linux']}
 
+cc = meson.get_compiler('c')
 cares_config = {
+'common': {
+	'CARES_HAVE_SYS_TYPES_H': cc.has_header('sys/types.h'),
+	'CARES_HAVE_SYS_RANDOM_H': cc.has_header('sys/random.h'),
+	'CARES_HAVE_SYS_SOCKET_H': cc.has_header('sys/socket.h'),
+	'CARES_HAVE_WINDOWS_H': cc.has_header('windows.h'),
+	'CARES_HAVE_WS2TCPIP_H': cc.has_header('ws2tcpip.h'),
+	'CARES_HAVE_WINSOCK2_H': cc.has_header('winsock2.h'),
+	'CARES_HAVE_ARPA_NAMESER_H': cc.has_header('arpa/nameser.h'),
+	'CARES_HAVE_ARPA_NAMESER_COMPAT_H': cc.has_header('arpa/nameser_compat.h'),
+},
 'linux': {
-	'CARES_HAVE_SYS_TYPES_H': true,
-	'CARES_HAVE_SYS_RANDOM_H': true,
-	'CARES_HAVE_SYS_SOCKET_H': true,
-	'CARES_HAVE_WINDOWS_H': false,
-	'CARES_HAVE_WS2TCPIP_H': false,
-	'CARES_HAVE_WINSOCK2_H': false,
-	'CARES_HAVE_ARPA_NAMESER_H': true,
-	'CARES_HAVE_ARPA_NAMESER_COMPAT_H': true,
 	'CARES_TYPEOF_ARES_SOCKLEN_T' : 'socklen_t',
 	'CARES_TYPEOF_ARES_SSIZE_T': 'ssize_t',
 },
@@ -158,7 +161,7 @@ cares_config += {'darwin': cares_config['linux']}
 ares_build_h = configure_file(
 	input: 'include/ares_build.h.cmake',
 	output: 'ares_build.h',
-	configuration: cares_config[target_machine.system()],
+	configuration: cares_config['common'] + cares_config[target_machine.system()],
 	format: 'cmake@')
 
 libcares = library('cares',
