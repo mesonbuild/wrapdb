@@ -29,6 +29,13 @@
     "mocklibc",
     "tinyxml2"
   ],
+  "c-ares": {
+    "_comment": "Windows configuration is WIP",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
   "c-flags": {
     "build_options": [
       "c-flags:tests=true"

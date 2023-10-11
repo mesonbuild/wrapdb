@@ -184,6 +184,14 @@
       "3.3.0-1"
     ]
   },
+  "c-ares": {
+    "dependency_names": [
+      "libcares"
+    ],
+    "versions": [
+      "1.20.1-1"
+    ]
+  },
   "c-flags": {
     "dependency_names": [
       "c-flags"
