@@ -87,7 +87,6 @@ functions = [
   'fork',
   'getsockname',
   'gettimeofday',
-  'gmtime_r',
   'lseek64',
   'memmem',
   'nanosleep',
@@ -115,45 +114,42 @@ foreach f : functions
   endif
 endforeach
 
-sizes = [
-  'size_t',
-  'unsigned int',
-  'unsigned long long',
-]
-
-foreach s : sizes
+foreach s : ['size_t', 'unsigned int', 'unsigned long long']
   cdata.set('SIZEOF_@0@'.format(s.underscorify().to_upper()), cc.sizeof(s))
 endforeach
-cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('time_t'))
-cdata.set('SIZEOF_UINT64_T', 8)
+
+cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('time_t', prefix: '#include <time.h>'))
+cdata.set('SIZEOF_UINT64_T', cc.sizeof('uint64_t', prefix: '#include <stdint.h>'))
 
 cdata.set('HAVE_PIPE2_FUNC', cc.has_function('pipe2'))
 cdata.set('MHD_HAVE___BUILTIN_BSWAP32', cc.has_function('__builtin_bswap32'))
 cdata.set('MHD_HAVE___BUILTIN_BSWAP64', cc.has_function('__builtin_bswap64'))
 
-if cdata.get('HAVE_TSEARCH', 0) == 1
+if host_machine.system() == 'windows'
+  cdata.set('HAVE_W32_GMTIME_S', cc.has_header_symbol('time.h', 'gmtime_s'))
+else
+  cdata.set('HAVE_GMTIME_R', cc.has_function('gmtime_r'))
+endif
+
+if cdata.has('HAVE_TSEARCH')
   cdata.set('HAVE_SEARCH_H', 1)
 endif
 
-if cdata.get('HAVE_GMTIME_R', 0) == 0
-  cdata.set('HAVE_W32_GMTIME_S', cc.has_header_symbol('time.h', 'gmtime_s'))
-endif
-
-if cdata.get('HAVE_GETSOCKNAME', 0) == 1
+if cdata.has('HAVE_GETSOCKNAME')
   cdata.set('MHD_USE_GETSOCKNAME', 1)
 endif
 
-if cdata.get('HAVE_EPOLL_CREATE1', 0) == 1
+if cdata.has('HAVE_EPOLL_CREATE1')
   cdata.set('EPOLL_SUPPORT', 1)
 endif
 
 cdata.set(host_machine.system().to_upper(), 1)
 cdata.set_quoted('MHD_PLUGIN_INSTALL_PREFIX', get_option('prefix') / get_option('libdir') / 'libmicrohttpd')
 
-if cdata.get('HAVE_SYS_EVENTFD_H', 0) == 1
-  cdata.set('_MHD_ITC_EVENTFD', 1)
-elif host_machine.system() == 'windows'
+if host_machine.system() == 'windows'
   cdata.set('_MHD_ITC_SOCKETPAIR', 1)
+elif cdata.has('HAVE_SYS_EVENTFD_H')
+  cdata.set('_MHD_ITC_EVENTFD', 1)
 else
   cdata.set('_MHD_ITC_PIPE', 1)
 endif
@@ -169,12 +165,13 @@ if dl_dep.found()
   cdata.set('HAVE_DLFCN_H', 1)
 endif
 
-threads_dep = dependency('threads', required: false)
-if threads_dep.found()
-  if host_machine.system() != 'windows'
+threads_dep = dependency('', required: false)
+if host_machine.system() == 'windows'
+  cdata.set('MHD_USE_W32_THREADS', 1)
+else
+  threads_dep = dependency('threads', required: false)
+  if threads_dep.found()
     cdata.set('MHD_USE_POSIX_THREADS', 1)
-  else
-    cdata.set('MHD_USE_W32_THREADS', 1)
   endif
 endif
 
@@ -191,11 +188,8 @@ endif
 gnutls_dep = dependency('gnutls', required: get_option('gnutls'))
 if gnutls_dep.found()
   cdata.set('HAVE_GNUTLS_GNUTLS_H', 1)
-  cdata.set('UPGRADE_SUPPORT', 1)
-endif
-
-if gnutls_dep.found()
   cdata.set('HTTPS_SUPPORT', 1)
+  cdata.set('UPGRADE_SUPPORT', 1)
 endif
 
 if cc.has_function_attribute('always_inline')
@@ -247,15 +241,15 @@ sources = files(
 )
 
 if gnutls_dep.found()
-  sources += 'src/microhttpd/connection_https.c'
+  sources += files('src/microhttpd/connection_https.c')
 endif
 
-if threads_dep.found()
-  sources += 'src/microhttpd/mhd_threads.c'
+if not cdata.has('HAVE_SEARCH_H')
+  sources += files('src/microhttpd/tsearch.c')
 endif
 
-if not cdata.has('HAVE_TSEARCH')
-  sources += 'src/microhttpd/tsearch.c'
+if host_machine.system() == 'windows' or threads_dep.found()
+  sources += files('src/microhttpd/mhd_threads.c')
 endif
 
 libmicrohttpd = library(
