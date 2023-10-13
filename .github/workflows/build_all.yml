@@ -39,6 +39,9 @@ jobs:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -61,6 +64,9 @@ jobs:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -85,6 +91,9 @@ jobs:
       matrix:
         platform: ['UCRT64', 'CLANG32', 'CLANG64']
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

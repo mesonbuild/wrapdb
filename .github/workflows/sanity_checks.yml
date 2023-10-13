@@ -27,6 +27,9 @@ jobs:
   VisualStudio:
     runs-on: windows-latest
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -47,6 +50,9 @@ jobs:
   VisualStudio-clang-cl:
     runs-on: windows-latest
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -75,6 +81,9 @@ jobs:
       matrix:
         platform: ['UCRT64', 'CLANG32', 'CLANG64']
     steps:
+      - name: Enable case sensitivity
+        run: |
+          fsutil file setCaseSensitiveInfo .
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
