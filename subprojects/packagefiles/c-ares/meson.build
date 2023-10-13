@@ -135,6 +135,11 @@ cares_args = {
   '-DHAVE_PF_INET6',
   '-DHAVE_STRUCT_ADDRINFO',
   '-DHAVE_FCNTL_O_NONBLOCK',
+
+  '-DCARES_BUILDING_LIBRARY',
+],
+'windows': [
+  '-DCARES_BUILDING_LIBRARY',
 ],
 }
 cares_args += {'darwin': cares_args['linux']}
@@ -150,18 +155,19 @@ cares_config = {
   'CARES_HAVE_WINSOCK2_H': cc.has_header('winsock2.h'),
   'CARES_HAVE_ARPA_NAMESER_H': cc.has_header('arpa/nameser.h'),
   'CARES_HAVE_ARPA_NAMESER_COMPAT_H': cc.has_header('arpa/nameser_compat.h'),
-},
-'linux': {
-  'CARES_TYPEOF_ARES_SOCKLEN_T' : 'socklen_t',
   'CARES_TYPEOF_ARES_SSIZE_T': 'ssize_t',
+  'CARES_TYPEOF_ARES_SOCKLEN_T': 'socklen_t',
+},
+'windows': {
+  'CARES_TYPEOF_ARES_SSIZE_T': '__int64',
+  'CARES_TYPEOF_ARES_SOCKLEN_T': 'int',
 },
 }
-cares_config += {'darwin': cares_config['linux']}
 
 ares_build_h = configure_file(
   input: 'include/ares_build.h.cmake',
   output: 'ares_build.h',
-  configuration: cares_config['common'] + cares_config[target_machine.system()],
+  configuration: cares_config['common'] + cares_config.get(target_machine.system(), {}),
   format: 'cmake@')
 
 libcares = library('cares',
