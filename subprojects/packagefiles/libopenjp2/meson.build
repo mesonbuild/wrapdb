@@ -63,8 +63,8 @@ endif
 
 #-----------------------------------------------------------------------------
 # Build Library
-curl_dep = dependency('libcurl', version: '>= 7.55.0', required: get_option('build_jpip_server'))
-fcgi_dep = dependency('fcgi', required: get_option('build_jpip_server'))
+curl_dep = dependency('libcurl', version: '>= 7.55.0', required: get_option('build_jpip_server') ? true : disabler())
+fcgi_dep = dependency('fcgi', required: get_option('build_jpip_server') ? true : disabler())
 
 subdir('src/lib')
 
