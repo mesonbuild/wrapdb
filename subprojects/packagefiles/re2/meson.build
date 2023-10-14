@@ -1,15 +1,18 @@
-project('re2', 'cpp',
-        version : '20230301',
-        license : 'BSD-3-Clause',
-        default_options : [
-          'cpp_std=c++14',
-        ])
+project(
+  're2',
+  'cpp',
+  version: '20230301',
+  license: 'BSD-3-Clause',
+  default_options: [
+    'cpp_std=c++14',
+  ],
+)
 
 threads_dep = dependency('threads')
 
 cpp = meson.get_compiler('cpp')
 
-if cpp.get_id() == 'msvc'
+if cpp.get_argument_syntax() == 'msvc'
   cpp_args = [
     '/wd4100',
     '/wd4201',
@@ -36,10 +39,8 @@ if host_machine.system() == 'windows'
   add_project_arguments(cpp_args, language: 'cpp')
 endif
 
-includes = include_directories('.')
-
-sym_path_gnu = join_paths(meson.current_source_dir(), 'libre2.symbols')
-sym_path_darwin = join_paths(meson.current_source_dir(), 'libre2.symbols.darwin')
+sym_path_gnu = meson.current_source_dir() / 'libre2.symbols'
+sym_path_darwin = meson.current_source_dir() / 'libre2.symbols.darwin'
 ldflag_gnu = '-Wl,--version-script=' + sym_path_gnu
 ldflag_darwin = '-Wl,-exported_symbols_list,' + sym_path_darwin
 if cpp.links('', name: '-Wl,--version-script', args: ['-shared', ldflag_gnu])
@@ -83,17 +84,18 @@ re2_sources = files(
 libre2_static = static_library(
   '_re2',
   re2_sources,
-  include_directories : includes,
-  dependencies : threads_dep,
-  install : false)
+  dependencies: threads_dep,
+  install: false,
+)
 
 libre2 = library(
   're2',
-  link_whole : libre2_static,
-  link_args : link_args,
-  link_depends : link_depends,
-  soversion : '9',
-  dependencies : threads_dep)
+  link_whole: libre2_static,
+  link_args: link_args,
+  link_depends: link_depends,
+  soversion: '9',
+  dependencies: threads_dep,
+)
 
 headers = files(
   're2/filtered_re2.h',
@@ -102,11 +104,16 @@ headers = files(
   're2/stringpiece.h',
 )
 
-install_headers(headers, subdir : 're2')
+install_headers(
+  headers,
+  subdir: 're2',
+)
 
+includes = include_directories('.')
 re2_dep = declare_dependency(
-  link_with : libre2,
-  include_directories : includes)
+  link_with: libre2,
+  include_directories: includes,
+)
 
 re2testing_sources = files(
   're2/testing/backtrack.cc',
@@ -124,8 +131,8 @@ re2testing_sources = files(
 libtest_static = static_library(
   '_re2_testing',
   re2testing_sources,
-  include_directories : includes,
-  install : false)
+  install: false,
+)
 
 tests = [
   'charclass_test',
@@ -148,9 +155,9 @@ foreach test : tests
   t = executable(
     test,
     're2/testing/@0@.cc'.format(test),
-    include_directories : includes,
-    link_with : [libre2_static, libtest_static],
-    dependencies : threads_dep)
+    link_with: [libre2_static, libtest_static],
+    dependencies: threads_dep,
+  )
 
   test(test, t)
 endforeach
@@ -169,10 +176,10 @@ if get_option('bigtests')
     t = executable(
       test,
       're2/testing/@0@.cc'.format(test),
-      include_directories : includes,
-      link_with : [libre2_static, libtest_static],
-      dependencies : threads_dep)
+      link_with: [libre2_static, libtest_static],
+      dependencies: threads_dep,
+    )
 
-    test(test, t, timeout : 1800)
+    test(test, t, timeout: 1800)
   endforeach
 endif
