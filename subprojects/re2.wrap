@@ -1,10 +1,9 @@
 [wrap-file]
-directory = re2-2022-04-01
-source_url = https://github.com/google/re2/archive/2022-04-01.tar.gz
-source_filename = re2-2022-04-01.tar.gz
-source_hash = 1ae8ccfdb1066a731bba6ee0881baad5efd2cd661acd9569b689f2586e1a50e9
+directory = re2-2023-03-01
+source_url = https://github.com/google/re2/archive/2023-03-01.tar.gz
+source_filename = re2-2023-03-01.tar.gz
+source_hash = 7a9a4824958586980926a300b4717202485c4b4115ac031822e29aa4ef207e48
 patch_directory = re2
 
 [provide]
 re2 = re2_dep
-
