@@ -1,5 +1,5 @@
 project('re2', 'cpp',
-        version : '20220401',
+        version : '20230301',
         license : 'BSD-3-Clause',
         default_options : [
           'cpp_std=c++14',
@@ -17,13 +17,12 @@ if cpp.get_id() == 'msvc'
     '/wd4457',
     '/wd4702',
     '/wd4815',
-    '/utf-8',
   ]
   cpp_args = cpp.get_supported_arguments(cpp_args)
   add_project_arguments(cpp_args, language: 'cpp')
 endif
 
-if target_machine.system() == 'windows'
+if host_machine.system() == 'windows'
   cpp_args = [
     '-DUNICODE',
     '-D_UNICODE',
@@ -31,6 +30,8 @@ if target_machine.system() == 'windows'
     '-DNOMINMAX',
     '-D_CRT_SECURE_NO_WARNINGS',
     '-D_SCL_SECURE_NO_WARNINGS',
+    '-DWINVER=0x0600',
+    '-D_WIN32_WINNT=0x0600',
   ]
   add_project_arguments(cpp_args, language: 'cpp')
 endif
@@ -53,6 +54,7 @@ else
 endif
 
 re2_sources = files(
+  're2/bitmap256.cc',
   're2/bitstate.cc',
   're2/compile.cc',
   're2/dfa.cc',
