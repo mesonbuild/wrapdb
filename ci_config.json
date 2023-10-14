@@ -532,12 +532,6 @@
       "nowide:tests=true"
     ]
   },
-  "oatpp-openssl": {
-    "build_on": {
-      "darwin": false
-    },
-    "_comment": "openssl wrap fails on darwin (known) and the native openssl doesn't get detected (by default) so it can't be built atm"
-  },
   "openh264": {
     "brew_packages": [
       "nasm"
