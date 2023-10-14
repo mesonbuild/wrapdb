@@ -30,10 +30,9 @@
     "tinyxml2"
   ],
   "c-ares": {
-    "_comment": "Windows configuration is WIP",
-    "build_on": {
-      "msys2": false,
-      "windows": false
+    "build_options": {
+      "c-ares:export_adig": true,
+      "c-ares:export_ahost": true
     }
   },
   "c-flags": {
