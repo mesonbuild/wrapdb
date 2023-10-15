@@ -29,12 +29,6 @@
     "mocklibc",
     "tinyxml2"
   ],
-  "c-ares": {
-    "build_options": {
-      "c-ares:export_adig": true,
-      "c-ares:export_ahost": true
-    }
-  },
   "c-flags": {
     "build_options": [
       "c-flags:tests=true"
