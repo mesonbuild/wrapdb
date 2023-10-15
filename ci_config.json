@@ -293,12 +293,6 @@
     "has_provides": false,
     "fatal_warnings": false
   },
-  "grpc": {
-    "_comment": "- wrapdb openssl broken on alpine",
-    "alpine_packages": [
-      "openssl-dev"
-    ]
-  },
   "gumbo-parser": {
     "build_options": [
       "gumbo-parser:examples=enabled",
@@ -474,11 +468,6 @@
       "libpciaccess-dev"
     ]
   },
-  "libssh2": {
-    "alpine_packages": [
-      "openssl-dev"
-    ]
-  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {
@@ -627,6 +616,14 @@
       "msys2": false,
       "windows": false
     },
+    "alpine_packages": [
+      "bash",
+      "make",
+      "nasm",
+      "patch",
+      "perl",
+      "perl-text-template"
+    ],
     "debian_packages": [
       "libtext-template-perl",
       "nasm"

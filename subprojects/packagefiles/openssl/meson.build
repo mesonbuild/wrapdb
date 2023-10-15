@@ -18,7 +18,9 @@ if not fs.exists('generated-config')
     error('Generator only works on Linux, other platforms are not supported')
   endif
 
+  bash = find_program('bash')
   run_command(
+    bash,
     'generator.sh',
     check: true,
     env: ['OPENSSL_VERSION=' + meson.project_version()],
