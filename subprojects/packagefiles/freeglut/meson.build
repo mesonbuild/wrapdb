@@ -107,6 +107,7 @@ if host_system == 'windows'
 
   freeglut_deps += cc.find_library('winmm')
   freeglut_deps += cc.find_library('gdi32')
+  x11_dep = dependency('', required: false)
 
 else # not windows
 
@@ -142,7 +143,6 @@ else # not windows
     add_project_arguments('-DFREEGLUT_WAYLAND', language: 'c')
     freeglut_deps += dependency('wayland-client, wayland-cursor')
     freeglut_deps += dependency('wayland-egl, egl')
-    freeglut_deps += dependency('xkbcommon')
 
   else
     freeglut_sources += files(
@@ -170,15 +170,22 @@ else # not windows
       'src/x11/fg_window_x11_glx.h',
     )
 
-    freeglut_deps += dependency('x11')
+    if host_machine.system() == 'linux'
+      freeglut_deps += dependency('glu')
+    endif
+    x11_dep = dependency('x11')
+    freeglut_deps += x11_dep
+    freeglut_deps += dependency('xext')
+    freeglut_deps += dependency('xi')
+    freeglut_deps += dependency('xkbcommon')
 
-    foreach d : [['xrandr', 'XRANDR'],
-                 ['xxf86vm', 'XF86VMODE'],
-                 ['xi', 'XINPUT2']]
-      _dep = dependency(d[0], required: false)
+    foreach d, s : {'xrandr': 'XRANDR',
+                    'xxf86vm': 'XF86VMODE',
+                    'xi': 'XINPUT2'}
+      _dep = dependency(d, required: false)
       if _dep.found()
         freeglut_deps += _dep
-        add_project_arguments('-DHAVE_X11_EXTENSIONS_@0@_H'.format(d[1]),
+        add_project_arguments('-DHAVE_X11_EXTENSIONS_@0@_H'.format(s),
                               language: 'c')
       endif
     endforeach
@@ -202,7 +209,7 @@ if cc.has_function('gettimeofday')
   add_project_arguments('-DHAVE_GETTIMEOFDAY', language: 'c')
 endif
 
-if cc.has_function('XParseGeometry', dependencies: freeglut_deps,
+if cc.has_function('XParseGeometry', dependencies: x11_dep,
                    prefix: '#include <X11/Xlib.h>')
   add_project_arguments('-DHAVE_XPARSEGEOMETRY', language: 'c')
 else
