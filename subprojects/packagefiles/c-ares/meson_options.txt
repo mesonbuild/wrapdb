@@ -1,2 +1,2 @@
-option('export_adig', type : 'boolean', value : false, description : 'Overrid find_program(adig)')
-option('export_ahost', type : 'boolean', value : false, description : 'Overrid find_program(ahost)')
+option('export_adig', type : 'boolean', value : false, description : 'Override find_program(adig)')
+option('export_ahost', type : 'boolean', value : false, description : 'Override find_program(ahost)')

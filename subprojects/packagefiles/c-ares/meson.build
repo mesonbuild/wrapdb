@@ -94,7 +94,6 @@ cares_headers = files(
 
 cares_include_dirs = include_directories('include', 'src/lib')
 
-
 cares_args = {
 'linux': [
   '-DHAVE_ARPA_INET_H',
