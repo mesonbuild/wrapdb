@@ -173,7 +173,7 @@ if enable_tests
       '-xc',
       ' && '.join(
         '"$1" -d <"$2" >"$3"',
-        'diff --strip-trailing-cr --unified "$4" "$3"',
+        'diff -u "$4" "$3"',
       ),
       '--',
       gifbuild,
@@ -191,7 +191,7 @@ if enable_tests
       ' && '.join(
         '"$1" <"$2" | "$1" -d >"$3"',
         '"$1" <"$3" | "$1" -d >"$4"',
-        'diff --strip-trailing-cr --unified "$3" "$4"',
+        'diff -u "$3" "$4"',
       ),
       '--',
       gifbuild,
@@ -210,7 +210,7 @@ if enable_tests
         '"$1" -d <"$2" >"$3"',
         '"$1" <"$3" >"$4"',
         '"$1" -d <"$4" >"$5"',
-        'diff --strip-trailing-cr --unified "$3" "$5"',
+        'diff -u "$3" "$5"',
       ),
       '--',
       gifbuild,
@@ -237,7 +237,7 @@ if enable_tests
           '-xc',
           ' && '.join(
             '"$1" <"$2" >"$3"',
-            'diff --strip-trailing-cr --unified "$4" "$3"',
+            'diff -u "$4" "$3"',
           ),
           '--',
           _prog,
@@ -284,7 +284,7 @@ if enable_tests
       '-xc',
       ' && '.join(
         '"$1" -t foobar | "$2" -d >"$3"',
-        'diff --strip-trailing-cr --unified "$4" "$3"',
+        'diff -u "$4" "$3"',
       ),
       '--',
       gifecho,
@@ -303,7 +303,7 @@ if enable_tests
       '-xc',
       ' && '.join(
         'head -c "$1" <"$2" | "$3" | "$4" -d >"$5"',
-        'diff --strip-trailing-cr --unified "$6" "$5"',
+        'diff -u "$6" "$5"',
       ),
       '--',
       (fs.size('pic/treescap.gif') - 20).to_string(),
