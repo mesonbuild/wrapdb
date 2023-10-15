@@ -46,10 +46,10 @@ elif host_machine.system() == 'linux'
     'Unix/VulkanImplX11.cpp',
     'Unix/WindowImplX11.cpp',
   )
-  window_deps = [dependency('xcursor'), dependency('xrandr'), dependency('x11'), dependency('libudev')]
+  window_deps = [dependency('xcursor'), dependency('xrandr'), dependency('x11'), dependency('libudev', 'libudev-zero')]
 elif host_machine.system() == 'darwin'
-  add_languages('objc')
-  add_languages('objcpp')
+  add_languages('objc', native: false)
+  add_languages('objcpp', native: false)
   window_sources += files(
     'OSX/AutoreleasePoolWrapper.mm',
     'OSX/ClipboardImpl.mm',
