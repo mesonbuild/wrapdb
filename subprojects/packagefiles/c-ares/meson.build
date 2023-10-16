@@ -3,6 +3,16 @@ project('c-ares', 'c', version: '1.20.1', license: 'MIT')
 libtool_version = '2.7.1'
 libtool_soversion = '2'
 
+cc = meson.get_compiler('c')
+winsock_deps = target_machine.system() == 'windows' ? [
+  cc.find_library('wininet'),
+  cc.find_library('ws2_32'),
+] : []
+
+cares_dependencies = [
+  winsock_deps,
+]
+
 cares_sources = files(
   'src/lib/ares__addrinfo2hostent.c',
   'src/lib/ares__addrinfo_localhost.c',
@@ -143,7 +153,6 @@ cares_args = {
 }
 cares_args += {'darwin': cares_args['linux']}
 
-cc = meson.get_compiler('c')
 cares_config = {
 'common': {
   'CARES_HAVE_SYS_TYPES_H': cc.has_header('sys/types.h'),
@@ -173,6 +182,7 @@ libcares = library('cares',
   sources: [cares_sources, cares_headers, ares_build_h],
   include_directories: cares_include_dirs,
   c_args: cares_args[target_machine.system()],
+  dependencies: cares_dependencies,
   install: true,
   version: libtool_version,
   soversion: libtool_soversion)
