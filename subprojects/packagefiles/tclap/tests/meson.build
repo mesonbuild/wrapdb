@@ -6,7 +6,7 @@ if not meson.can_run_host_binaries()
 endif
 
 
-if not find_program('/bin/sh', required : false).found()
+if not find_program('/bin/bash', required : false).found()
   subdir_done() # Required command interpreter missing.
 endif
 
