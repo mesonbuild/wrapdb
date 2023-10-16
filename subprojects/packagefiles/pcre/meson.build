@@ -119,6 +119,9 @@ configure_file(input : 'pcre.h.in',
   output : 'pcre.h',
   configuration : versiondata)
 
+if libedit_dep.found()
+  add_project_arguments('-DHAVE_EDITLINE_READLINE_H', language: 'c')
+endif
 
 pcre8_sources = [
   'pcre_byte_order.c',
