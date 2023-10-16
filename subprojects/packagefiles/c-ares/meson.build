@@ -5,6 +5,7 @@ libtool_soversion = '2'
 
 cc = meson.get_compiler('c')
 winsock_deps = target_machine.system() == 'windows' ? [
+  cc.find_library('iphlpapi'),
   cc.find_library('wininet'),
   cc.find_library('ws2_32'),
 ] : []
