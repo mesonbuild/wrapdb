@@ -1,4 +1,9 @@
-project('libusb', 'c', version: '1.0.26', meson_version: '>=0.49.0')
+project(
+  'libusb',
+  'c',
+  version: '1.0.26',
+  meson_version: '>=0.60.0',
+)
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -6,8 +11,17 @@ cc = meson.get_compiler('c')
 pconf = import('pkgconfig')
 
 thread_dep = dependency('threads')
-udev_dep = dependency('', required : false)
+udev_dep = dependency('', required: false)
 macos_dep = dependency('', required: false)
+
+if host_machine.system() == 'windows'
+  add_project_arguments(
+    '-D_WIN32_WINNT=0x0600',
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cc.get_supported_arguments('-Wno-deprecated-declarations'),
+    language: 'c',
+  )
+endif
 
 cdata = configuration_data()
 cdata.set('HAVE_SYSLOG', cc.has_function('syslog'))
@@ -31,17 +45,17 @@ cdata.set('HAVE_SYS_TIME_H', cc.has_header('sys/time.h'))
 
 cdata.set('HAVE_STRUCT_TIMESPEC', cc.has_header_symbol('time.h', 'struct timespec'))
 
-if cc.get_id() == 'msvc'
-  cdata.set('PRINTF_FORMAT(a, b)', '')
-else
+if cc.has_function_attribute('format')
   cdata.set('PRINTF_FORMAT(a, b)', '__attribute__ ((__format__ (__printf__, a, b)))')
+else
+  cdata.set('PRINTF_FORMAT(a, b)', '')
 endif
 
 cdata.set('ENABLE_LOGGING', get_option('logging'))
 cdata.set('ENABLE_DEBUG_LOGGING', get_option('debug-logging'))
 cdata.set('USE_SYSTEM_LOGGING_FACILITY', get_option('system-log'))
 
-incdirs = include_directories(['.', 'libusb', 'libusb/os'])
+incdirs = include_directories('.', 'libusb', 'libusb/os')
 install_headers('libusb/libusb.h', subdir: 'libusb-1.0')
 
 sources = files(
@@ -51,7 +65,7 @@ sources = files(
   'libusb/io.c',
   'libusb/strerror.c',
   'libusb/sync.c',
- )
+)
 
 if host_machine.system() == 'windows'
   cdata.set('PLATFORM_WINDOWS', true)
@@ -65,7 +79,7 @@ endif
 
 if host_machine.system() == 'linux'
   sources += 'libusb/os/linux_usbfs.c'
-  udev_dep = dependency('libudev', required: get_option('udev'))
+  udev_dep = dependency('libudev', 'libudev-zero', required: get_option('udev'))
   if udev_dep.found()
     cdata.set('HAVE_LIBUDEV', true)
     sources += 'libusb/os/linux_udev.c'
@@ -73,7 +87,7 @@ if host_machine.system() == 'linux'
     sources += 'libusb/os/linux_netlink.c'
   endif
 elif host_machine.system() == 'haiku'
-  sources += files('libusb/os/haiku_usb_backend.cpp', 'libusb/os/haiku_pollfs.cpp', 'libusb/os/haiku_usb_raw.cpp')
+  sources += files('libusb/os/haiku_pollfs.cpp', 'libusb/os/haiku_usb_backend.cpp', 'libusb/os/haiku_usb_raw.cpp')
 elif host_machine.system() == 'windows'
   sources += files('libusb/os/windows_common.c', 'libusb/os/windows_usbdk.c', 'libusb/os/windows_winusb.c')
 elif host_machine.system() in ['darwin', 'netbsd', 'openbsd', 'sunos']
@@ -83,17 +97,18 @@ else
 endif
 
 if host_machine.system() == 'darwin'
-  macos_dep = dependency('appleframeworks', modules : [ 'CoreFoundation', 'IOKit', 'Security' ])
+  macos_dep = dependency('appleframeworks', modules: ['CoreFoundation', 'IOKit', 'Security'])
 endif
 
-cfile = configure_file(
+configure_file(
   output: 'config.h',
   configuration: cdata,
 )
 
-libusb = library('libusb-1.0',
+libusb = library(
+  'libusb-1.0',
   sources,
-  dependencies: [ thread_dep, macos_dep, udev_dep ],
+  dependencies: [thread_dep, macos_dep, udev_dep],
   include_directories: incdirs,
   version: '0.3.0',
   soversion: host_machine.system() == 'windows' ? '' : '0',
@@ -111,7 +126,7 @@ pconf.generate(
 )
 
 libusb_dep = declare_dependency(
-  include_directories : incdirs,
+  include_directories: incdirs,
   link_with: libusb,
 )
 

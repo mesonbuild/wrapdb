@@ -2,58 +2,28 @@ if not get_option('examples')
   subdir_done()
 endif
 
-executable('dpfp',
-  'dpfp.c',
-  include_directories: incdirs,
-  link_with: libusb,
-)
+foreach e : ['dpfp', 'hotplugtest', 'listdevs', 'sam3u_benchmark', 'testlibusb', 'xusb']
+  executable(e, '@0@.c'.format(e), dependencies: libusb_dep)
+endforeach
 
-executable('dpfp_threaded',
+executable(
+  'dpfp_threaded',
   'dpfp.c',
-  include_directories: incdirs,
-  link_with: libusb,
   c_args: '-DDPFP_THREADED',
-  dependencies: thread_dep,
+  dependencies: [libusb_dep, thread_dep],
 )
 
-fxload_sources = files('fxload.c', 'ezusb.c',)
+fxload_sources = files('ezusb.c', 'fxload.c')
+getopt_inc = []
 if cc.get_argument_syntax() == 'msvc'
+  getopt_inc = include_directories('../msvc/getopt')
   fxload_sources += files('../msvc/getopt/getopt.c', '../msvc/getopt/getopt1.c')
 endif
 
-executable('fxload',
+executable(
+  'fxload',
   fxload_sources,
-  include_directories: [ incdirs, include_directories('../msvc/getopt') ],
-  link_with: libusb,
-  c_args: cc.get_argument_syntax() == 'msvc' ? '-DHAVE_STRING_H' : '',
-)
-
-executable('hotplugtest',
-  'hotplugtest.c',
-  include_directories: incdirs,
-  link_with: libusb,
-)
-
-executable('listdevs',
-  'listdevs.c',
-  include_directories: incdirs,
-  link_with: libusb,
-)
-
-executable('sam3u_benchmark',
-  'sam3u_benchmark.c',
-  include_directories: incdirs,
-  link_with: libusb,
-)
-
-executable('testlibusb',
-  'testlibusb.c',
-  include_directories: incdirs,
-  link_with: libusb,
-)
-
-executable('xusb',
-  'xusb.c',
-  include_directories: incdirs,
-  link_with: libusb,
+  dependencies: libusb_dep,
+  include_directories: getopt_inc,
+  c_args: cc.get_argument_syntax() == 'msvc' ? '-DHAVE_STRING_H' : [],
 )
