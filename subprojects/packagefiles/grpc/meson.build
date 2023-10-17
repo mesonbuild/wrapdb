@@ -9,6 +9,7 @@ grpc_soversion = '.'.join([version_array[0], version_array[1]])
 core_soversion = '36'
 
 is_static_lib = get_option('default_library') == 'static'
+cpp = meson.get_compiler('cpp')
 
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
 absl_any_invocable_dep = dependency('absl_any_invocable')
