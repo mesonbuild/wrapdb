@@ -1,8 +1,14 @@
-project('gRPC', ['c', 'cpp'], version: '1.59.1', default_options: ['cpp_std=c++17'], license: 'Apache-2.0')
+project('gRPC', ['c', 'cpp'], version: '1.59.1', license: 'Apache-2.0',
+  default_options: [
+    'cpp_std=c++17',
+    'default_library=static', # the only officially supported config for windows, as of gRPC 1.59.1
+])
 
 version_array = meson.project_version().split('.')
 grpc_soversion = '.'.join([version_array[0], version_array[1]])
 core_soversion = '36'
+
+is_static_lib = get_option('default_library') == 'static'
 
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
 absl_any_invocable_dep = dependency('absl_any_invocable')
@@ -11,6 +17,7 @@ absl_bind_front_dep = dependency('absl_bind_front')
 absl_cleanup_dep = dependency('absl_cleanup')
 absl_cord_dep = dependency('absl_cord')
 absl_core_headers_dep = dependency('absl_core_headers')
+absl_crc_dep = dependency('absl_crc')
 absl_flags_dep = dependency('absl_flags')
 absl_flags_marshalling_dep = dependency('absl_flags_marshalling')
 absl_flags_parse_dep = dependency('absl_flags_parse')
@@ -36,13 +43,21 @@ absl_time_dep = dependency('absl_time')
 absl_type_traits_dep = dependency('absl_type_traits')
 absl_utility_dep = dependency('absl_utility')
 absl_variant_dep = dependency('absl_variant')
-appleframeworks_dep = target_machine.system() == 'darwin' ? [dependency('appleframeworks', modules: ['CoreFoundation'])] : []
+appleframeworks_dep = target_machine.system() == 'darwin' ? [
+  dependency('appleframeworks',
+    modules: ['CoreFoundation'])
+] : []
 libcares_dep = dependency('libcares')
 libcrypto_dep = dependency('libcrypto')
 libssl_dep = dependency('libssl')
 protobuf_dep = dependency('protobuf')
 protoc_dep = dependency('protoc')
 re2_dep = dependency('re2')
+winsock_dep = target_machine.system() == 'windows' ? [
+  cpp.find_library('iphlpapi'),
+  cpp.find_library('wininet'),
+  cpp.find_library('ws2_32'),
+] : []
 zlib_dep = dependency('zlib')
 
 common_include_dirs = include_directories(
@@ -53,22 +68,6 @@ common_include_dirs = include_directories(
   'third_party/xxhash',
   'src/core/ext/upb-generated',
   'src/core/ext/upbdefs-generated')
-
-libaddress_sorting = library('address_sorting',
-  sources: files(
-    'third_party/address_sorting/address_sorting.c',
-    'third_party/address_sorting/address_sorting_posix.c',
-    'third_party/address_sorting/address_sorting_windows.c'),
-  include_directories: common_include_dirs,
-  install: true,
-  version: meson.project_version(),
-  soversion: core_soversion,
-  dependencies: [
-])
-address_sorting_dep = declare_dependency(
-  link_with: libaddress_sorting,
-  include_directories: common_include_dirs,
-)
 
 libupb_collections_lib = library('upb_collections_lib',
   sources: files(
@@ -107,6 +106,22 @@ libutf8_range_lib = library('utf8_range_lib',
 ])
 utf8_range_lib_dep = declare_dependency(
   link_with: libutf8_range_lib,
+  include_directories: common_include_dirs,
+)
+
+libaddress_sorting = library('address_sorting',
+  sources: files(
+    'third_party/address_sorting/address_sorting.c',
+    'third_party/address_sorting/address_sorting_posix.c',
+    'third_party/address_sorting/address_sorting_windows.c'),
+  include_directories: common_include_dirs,
+  install: true,
+  version: meson.project_version(),
+  soversion: core_soversion,
+  dependencies: [
+    winsock_dep])
+address_sorting_dep = declare_dependency(
+  link_with: libaddress_sorting,
   include_directories: common_include_dirs,
 )
 
@@ -158,6 +173,8 @@ libgpr = library('gpr',
     'src/core/lib/gprpp/windows/env.cc',
     'src/core/lib/gprpp/windows/stat.cc',
     'src/core/lib/gprpp/windows/thd.cc'),
+  cpp_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : []],
+  c_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -167,8 +184,10 @@ libgpr = library('gpr',
     absl_base_dep,
     absl_cord_dep,
     absl_core_headers_dep,
+    absl_crc_dep,
     absl_flags_dep,
     absl_flags_marshalling_dep,
+    absl_flags_parse_dep,
     absl_memory_dep,
     absl_optional_dep,
     absl_random_random_dep,
@@ -1392,6 +1411,8 @@ libgrpc = library('grpc',
     'src/core/tsi/ssl_transport_security_utils.cc',
     'src/core/tsi/transport_security.cc',
     'src/core/tsi/transport_security_grpc.cc'),
+  cpp_args: [is_static_lib ? ['-DGRPC_DLL_EXPORTS'] : []],
+  c_args: [is_static_lib ? ['-DGRPC_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -1496,6 +1517,8 @@ libgrpcpp = library('grpc++',
     'src/cpp/util/status.cc',
     'src/cpp/util/string_ref.cc',
     'src/cpp/util/time_cc.cc'),
+  cpp_args: [is_static_lib ? ['-DGRPCXX_DLL_EXPORTS'] : []],
+  c_args: [is_static_lib ? ['-DGRPCXX_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
