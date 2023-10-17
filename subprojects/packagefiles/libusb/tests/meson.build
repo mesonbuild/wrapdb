@@ -7,6 +7,7 @@ stress = executable(
   'stress.c',
   'testlib.c',
   dependencies: libusb_dep,
+  include_directories: config_inc,
 )
 
 test('libusb_test', stress, timeout: 90)
@@ -17,6 +18,7 @@ if umockdev_dep.found()
     'umockdev',
     'umockdev.c',
     dependencies: libusb_dep,
+    include_directories: config_inc,
   )
 
   test('umockdev_test', utest, timeout: 60)
