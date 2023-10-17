@@ -90,7 +90,7 @@
       "absl_time_zone",
       "absl_type_traits",
       "absl_utility",
-      "absl_variant",
+      "absl_variant"
     ],
     "versions": [
       "20230125.1-5",
