@@ -55,7 +55,7 @@ cdata.set('ENABLE_LOGGING', get_option('logging'))
 cdata.set('ENABLE_DEBUG_LOGGING', get_option('debug-logging'))
 cdata.set('USE_SYSTEM_LOGGING_FACILITY', get_option('system-log'))
 
-incdirs = include_directories('.', 'libusb', 'libusb/os')
+incdirs = include_directories('libusb', 'libusb/os')
 install_headers('libusb/libusb.h', subdir: 'libusb-1.0')
 
 sources = files(
@@ -104,6 +104,8 @@ configure_file(
   output: 'config.h',
   configuration: cdata,
 )
+
+config_inc = include_directories('.')
 
 libusb = library(
   'libusb-1.0',
