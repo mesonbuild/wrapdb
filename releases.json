@@ -1550,6 +1550,14 @@
       "1.6.17-2"
     ]
   },
+  "libpsl": {
+    "dependency_names": [
+      "libpsl"
+    ],
+    "versions": [
+      "0.21.2-1"
+    ]
+  },
   "libsass": {
     "dependency_names": [
       "libsass"
