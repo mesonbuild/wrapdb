@@ -219,7 +219,7 @@ class TestReleases(unittest.TestCase):
                     self.assertIn('source_hash', wrap_section)
 
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
-                if extra_checks:
+                if extra_checks and self.ci_config.get(name, {}).get('has_provides', True):
                     with self.subTest(step='provide'):
                         self.assertIn('provide', config.sections())
                         self.assertTrue(config.items('provide'))
