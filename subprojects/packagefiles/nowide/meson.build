@@ -1,7 +1,7 @@
 project(
     'nowide',
     'cpp',
-    version: '11.2.0',
+    version: '11.3.0',
     license: 'BSL-1.0',
     default_options : ['cpp_std=c++14'],
     meson_version : '>=0.53.0',

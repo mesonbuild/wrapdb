@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("test_binary")
@@ -12,6 +13,7 @@ completed_process = subprocess.run(
     [test_binary, "passthrough"],
     input=message,
     capture_output=True,
+    check=False,
     encoding='utf-8'
 )
 
@@ -19,11 +21,11 @@ result = completed_process.returncode
 stdout_lines = set(completed_process.stdout.split("\n"))
 
 if completed_process.returncode != 0:
-    print(f"Command {test_binary} failed ({result}) with {stdout}")
-    exit(1)
+    print(f"Command {test_binary} failed ({result}) with {sys.stdout}")
+    sys.exit(1)
 
 if message not in stdout_lines:
     print(f"Command {test_binary} did not output {message!r} but {completed_process.stdout!r}")
-    exit(1)
+    sys.exit(1)
 
 print("Test OK")
