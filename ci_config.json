@@ -277,7 +277,6 @@
   },
   "grpc": {
     "_comment": [
-      "- abseil-cpp wrap changes has not landed yet",
       "- c-ares wrap has not landed yet",
       "- choco lack dependent packages in repos, so msvc enablement will wait for other wraps being merged"
     ],
@@ -285,15 +284,12 @@
       "windows": false
     },
     "debian_packages": [
-      "libabsl-dev",
       "libc-ares-dev"
     ],
     "brew_packages": [
-      "abseil-cpp",
       "c-ares"
     ],
     "msys_packages": [
-      "abseil-cpp",
       "c-ares"
     ]
   },
