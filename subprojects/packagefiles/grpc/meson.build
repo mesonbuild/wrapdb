@@ -174,8 +174,8 @@ libgpr = library('gpr',
     'src/core/lib/gprpp/windows/env.cc',
     'src/core/lib/gprpp/windows/stat.cc',
     'src/core/lib/gprpp/windows/thd.cc'),
-  cpp_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : []],
-  c_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : []],
+  cpp_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
+  c_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -1449,6 +1449,8 @@ libgrpc = library('grpc',
 grpc_dep = declare_dependency(
   link_with: libgrpc,
   include_directories: common_include_dirs,
+  dependencies: [
+    gpr_dep],
 )
 
 libgrpcpp = library('grpc++',
@@ -1538,6 +1540,8 @@ libgrpcpp = library('grpc++',
 grpcpp_dep = declare_dependency(
   link_with: libgrpcpp,
   include_directories: common_include_dirs,
+  dependencies: [
+    grpc_dep],
 )
 
 libgrpcpp_alts = library('grpc++_alts',
