@@ -110,9 +110,6 @@ cares_args_map = {
 'common': [
   '-DCARES_BUILDING_LIBRARY',
 
-  # should be universally available
-  '-DHAVE_STRNCASECMP',
-
   cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
   cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
   cc.has_header('limits.h') ? '-DHAVE_LIMITS_H' : [],
@@ -141,6 +138,8 @@ cares_args_map = {
 
   cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
   cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
+
+  cc.compiles('#include <string.h>\nint main() {return (int)strncasecmp("a", "A", 1);}', name: 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
 ],
 'linux': [
   '-DHAVE_RECV',
