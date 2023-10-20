@@ -103,6 +103,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'openal-soft': [
         'hexify.py'
     ],
+    'protobuf': [
+        'symlink.py'
+    ],
     'sdl2': [
         'find-dylib-name.py'
     ],
