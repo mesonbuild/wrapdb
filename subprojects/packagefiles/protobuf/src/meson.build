@@ -1,10 +1,19 @@
+
+python = find_program('python3')
+proto_includes_link = custom_target('proto_includes_link',
+  input: files('symlink.py'),
+  output: 'include', # directory adjacent to protoc binary
+  command: [python, '@INPUT@', meson.current_source_dir(), '@OUTPUT@'],
+)
+proto_includes_link_dep = declare_dependency(sources: proto_includes_link)
+
 protoc_src = ['google/protobuf/compiler/main.cc']
 protoc = executable(
   'protoc',
   protoc_src,
   include_directories: incdir,
   link_with: libprotoc,
-  dependencies: dependency('threads'),
+  dependencies: [dependency('threads'), proto_includes_link_dep],
   install: true,
 )
 
@@ -14,7 +23,7 @@ if meson.is_cross_build()
     [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
     native: true,
     include_directories: incdir,
-    dependencies: dependency('threads', native: true),
+    dependencies: [dependency('threads', native: true), proto_includes_link_dep],
   )
 else
   protoc_native = protoc
