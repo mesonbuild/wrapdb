@@ -105,26 +105,41 @@ cares_headers = files(
 
 cares_include_dirs = include_directories('include', 'src/lib')
 
-cares_args = {
-'linux': [
-  '-DHAVE_ARPA_INET_H',
-  '-DHAVE_ERRNO_H',
-  '-DHAVE_LIMITS_H',
-  '-DHAVE_NETDB_H',
-  '-DHAVE_NETINET_IN_H',
-  '-DHAVE_NETINET_TCP_H',
-  '-DHAVE_STDINT_H',
-  '-DHAVE_STRINGS_H',
-  '-DHAVE_SYS_IOCTL_H',
-  '-DHAVE_SYS_RANDOM_H',
-  '-DHAVE_SYS_SOCKET_H',
-  '-DHAVE_SYS_STAT_H',
-  '-DHAVE_SYS_TIME_H',
-  '-DHAVE_SYS_TYPES_H',
-  '-DHAVE_SYS_UIO_H',
+cc = meson.get_compiler('c')
+cares_args_map = {
+'common': [
+  '-DCARES_BUILDING_LIBRARY',
 
-  '-DTIME_WITH_SYS_TIME',
-  '-DHAVE_STRUCT_TIMEVAL',
+  cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
+  cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
+  cc.has_header('limits.h') ? '-DHAVE_LIMITS_H' : [],
+  cc.has_header('netdb.h') ? '-DHAVE_NETDB_H' : [],
+  cc.has_header('netinet/in.h') ? '-DHAVE_NETINET_IN_H' : [],
+  cc.has_header('netinet/tcp.h') ? '-DHAVE_NETINET_TCP_H' : [],
+  cc.has_header('stdint.h') ? '-DHAVE_STDINT_H' : [],
+  cc.has_header('strings.h') ? '-DHAVE_STRINGS_H' : [],
+  cc.has_header('sys/ioctl.h') ? '-DHAVE_SYS_IOCTL_H' : [],
+  cc.has_header('sys/random.h') ? '-DHAVE_SYS_RANDOM_H' : [],
+  cc.has_header('sys/socket.h') ? '-DHAVE_SYS_SOCKET_H' : [],
+  cc.has_header('sys/stat.h') ? '-DHAVE_SYS_STAT_H' : [],
+  cc.has_header('sys/time.h') ? '-DHAVE_SYS_TIME_H' : [],
+  (cc.has_header('sys/time.h') and cc.has_header('time.h')) ? '-DTIME_WITH_SYS_TIME' : [],
+  cc.has_header('sys/types.h') ? '-DHAVE_SYS_TYPES_H' : [],
+  cc.has_header('sys/uio.h') ? '-DHAVE_SYS_UIO_H' : [],
+
+  cc.has_type('struct timeval', prefix: '#include <sys/time.h>') ? '-DHAVE_STRUCT_TIMEVAL' : [],
+  cc.has_type('struct sockaddr_in6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_STRUCT_SOCKADDR_IN6' : [],
+  cc.has_type('struct addrinfo', prefix: '#include <sys/types.h>\n#include <sys/socket.h>\n#include <netdb.h>') ? '-DHAVE_STRUCT_ADDRINFO' : [],
+
+  ## Wants meson 1.3.0
+  # cc.has_define('AF_INET6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_AF_INET6' : [],
+  # cc.has_define('PF_INET6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_PF_INET6' : [],
+  # cc.has_define('O_NONBLOCK', prefix: '#include <fcntl.h>') ? '-DHAVE_FCNTL_O_NONBLOCK' : [],
+
+  cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
+  cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
+],
+'linux': [
   '-DHAVE_RECV',
     '-DRECV_TYPE_ARG1=int',
     '-DRECV_TYPE_ARG2=void*',
@@ -138,21 +153,14 @@ cares_args = {
     '-DSEND_TYPE_ARG3=size_t',
     '-DSEND_TYPE_ARG4=int',
     '-DSEND_TYPE_RETV=ssize_t',
-  '-DHAVE_RECVFROM',
-  '-DHAVE_WRITEV',
-  '-DHAVE_STRUCT_SOCKADDR_IN6',
   '-DHAVE_AF_INET6',
   '-DHAVE_PF_INET6',
-  '-DHAVE_STRUCT_ADDRINFO',
   '-DHAVE_FCNTL_O_NONBLOCK',
-
-  '-DCARES_BUILDING_LIBRARY',
-],
-'windows': [
-  '-DCARES_BUILDING_LIBRARY',
 ],
 }
-cares_args += {'darwin': cares_args['linux']}
+cares_args_map += {'darwin': cares_args_map['linux']}
+
+cares_args = [cares_args_map['common'], cares_args_map.get(target_machine.system(), [])]
 
 cares_config = {
 'common': {
@@ -182,7 +190,7 @@ ares_build_h = configure_file(
 libcares = library('cares',
   sources: [cares_sources, cares_headers, ares_build_h],
   include_directories: cares_include_dirs,
-  c_args: cares_args[target_machine.system()],
+  c_args: cares_args,
   dependencies: cares_dependencies,
   install: true,
   version: libtool_version,
@@ -198,7 +206,7 @@ cares_tools_include_dirs = include_directories('src/tools')
 adig = executable('adig',
   sources: files('src/tools/adig.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
   include_directories: cares_tools_include_dirs,
-  c_args: cares_args[target_machine.system()],
+  c_args: cares_args,
   dependencies: cares_dep,
   build_by_default: false)
 if get_option('export_adig')
@@ -208,7 +216,7 @@ endif
 ahost = executable('ahost',
   sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
   include_directories: cares_tools_include_dirs,
-  c_args: cares_args[target_machine.system()],
+  c_args: cares_args,
   dependencies: cares_dep,
   build_by_default: false)
 if get_option('export_ahost')
