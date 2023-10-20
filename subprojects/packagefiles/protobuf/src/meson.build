@@ -34,7 +34,7 @@ meson.override_find_program('protoc', protoc_native)
 protoc_gen = generator(
   protoc_native,
   output: ['@BASENAME@.pb.cc', '@BASENAME@.pb.h'],
-  arguments: ['@EXTRA_ARGS@', '--proto_path=' + meson.current_source_dir(), '--cpp_out=@BUILD_DIR@', '@INPUT@'],
+  arguments: ['@EXTRA_ARGS@', '--cpp_out=@BUILD_DIR@', '@INPUT@'],
 )
 
 install_headers(
