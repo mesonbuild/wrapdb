@@ -973,7 +973,9 @@
   "grpc": {
     "dependency_names": [
       "grpc",
-      "grpc++"
+      "grpc_unsecure",
+      "grpc++",
+      "grpc++_unsecure"
     ],
     "program_names": [
       "grpc_cpp_plugin",
