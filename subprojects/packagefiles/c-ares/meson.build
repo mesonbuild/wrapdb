@@ -140,6 +140,7 @@ cares_args_map = {
   cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
 
   cc.compiles('#include <string.h>\nint main() {return (int)strncasecmp("a", "A", 1);}', name: 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
+  cc.compiles('#include <string.h>\nint main() {return (int)strcasecmp("a", "A");}', name: 'strcasecmp') ? '-DHAVE_STRCASECMP' : [],
 ],
 'linux': [
   '-DHAVE_RECV',
