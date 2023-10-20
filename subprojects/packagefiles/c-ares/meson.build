@@ -110,6 +110,9 @@ cares_args_map = {
 'common': [
   '-DCARES_BUILDING_LIBRARY',
 
+  # should be universally available
+  '-DHAVE_STRNCASECMP',
+
   cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
   cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
   cc.has_header('limits.h') ? '-DHAVE_LIMITS_H' : [],
