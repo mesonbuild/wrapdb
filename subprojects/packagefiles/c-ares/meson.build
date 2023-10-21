@@ -139,8 +139,11 @@ cares_args_map = {
   cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
   cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
 
-  cc.compiles('#include <string.h>\nint main() {return (int)strncasecmp("a", "A", 1);}', name: 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
-  cc.compiles('#include <string.h>\nint main() {return (int)strcasecmp("a", "A");}', name: 'strcasecmp') ? '-DHAVE_STRCASECMP' : [],
+  cc.links('#include <string.h>\nint main() {return (int)strncasecmp("a", "A", 1);}', name: 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
+  cc.links('#include <string.h>\nint main() {return (int)strcasecmp("a", "A");}', name: 'strcasecmp') ? '-DHAVE_STRCASECMP' : [],
+  cc.links('#include <string.h>\nint main() {return (int)strcmpi("a", "A");}', name: 'strcmpi') ? '-DHAVE_STRCMPI' : [],
+  cc.links('#include <string.h>\nint main() {return (int)strncmpi("a", "A", 1);}', name: 'strncmpi') ? '-DHAVE_STRNCMPI' : [],
+  cc.links('#include <string.h>\nint main() {return (int)strnicmp("a", "A", 1);}', name: 'strnicmp') ? '-DHAVE_STRNICMP' : [],
 ],
 'linux': [
   '-DHAVE_RECV',
