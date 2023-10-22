@@ -10,8 +10,11 @@ c_flags = []
 if is_posix
   c_flags += '-D_XOPEN_SOURCE=700'
 endif
-if host_machine.system() == 'darwin'
+if sys_os == 'darwin'
   c_flags += '-D_DARWIN_C_SOURCE'
+endif
+if sys_os == 'windows' and sys_cc.get_argument_syntax() == 'gcc'
+  c_flags += '-D_USE_MATH_DEFINES'
 endif
 
 #@ Example executables
