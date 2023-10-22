@@ -178,7 +178,7 @@ cares_config = {
   'CARES_TYPEOF_ARES_SOCKLEN_T': 'socklen_t',
 },
 'windows': {
-  'CARES_TYPEOF_ARES_SSIZE_T': '__int64',
+  'CARES_TYPEOF_ARES_SSIZE_T': 'intptr_t',
   'CARES_TYPEOF_ARES_SOCKLEN_T': 'int',
 },
 }
