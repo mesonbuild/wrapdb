@@ -131,10 +131,9 @@ cares_args_map = {
   cc.has_type('struct sockaddr_in6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_STRUCT_SOCKADDR_IN6' : [],
   cc.has_type('struct addrinfo', prefix: '#include <sys/types.h>\n#include <sys/socket.h>\n#include <netdb.h>') ? '-DHAVE_STRUCT_ADDRINFO' : [],
 
-  ## Wants meson 1.3.0
-  # cc.has_define('AF_INET6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_AF_INET6' : [],
-  # cc.has_define('PF_INET6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_PF_INET6' : [],
-  # cc.has_define('O_NONBLOCK', prefix: '#include <fcntl.h>') ? '-DHAVE_FCNTL_O_NONBLOCK' : [],
+  cc.has_header_symbol('sys/socket.h', 'AF_INET6', prefix: '#include <netinet/in.h>') ? '-DHAVE_AF_INET6' : [],
+  cc.has_header_symbol('sys/socket.h', 'PF_INET6', prefix: '#include <netinet/in.h>') ? '-DHAVE_PF_INET6' : [],
+  cc.has_header_symbol('fcntl.h', 'O_NONBLOCK') ? '-DHAVE_FCNTL_O_NONBLOCK' : [],
 
   cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
   cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
@@ -159,9 +158,6 @@ cares_args_map = {
     '-DSEND_TYPE_ARG3=size_t',
     '-DSEND_TYPE_ARG4=int',
     '-DSEND_TYPE_RETV=ssize_t',
-  '-DHAVE_AF_INET6',
-  '-DHAVE_PF_INET6',
-  '-DHAVE_FCNTL_O_NONBLOCK',
 ],
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
