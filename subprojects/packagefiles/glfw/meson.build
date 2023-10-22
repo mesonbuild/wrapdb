@@ -178,7 +178,6 @@ elif opt_display == 'win32'
     'src/win32_time.c',
     'src/win32_window.c',
   )
-  add_project_arguments('-D_USE_MATH_DEFINES', language: 'c')
 elif opt_display == 'cocoa'
   add_languages('objc')
   s_display = files(
