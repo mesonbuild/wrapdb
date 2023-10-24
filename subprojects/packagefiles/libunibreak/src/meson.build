@@ -60,7 +60,7 @@ if get_option('tests').require(curl.found()).allowed()
         curl,
         '--continue-at', '-',
         '--output', '@OUTPUT@',
-        'http://www.unicode.org/Public/UNIDATA/auxiliary/' + _data,
+        'https://www.unicode.org/Public/15.0.0/ucd/auxiliary/' + _data,
       ],
       console: true,
       output: _data,
