@@ -134,15 +134,14 @@ cares_args_map = {
   cc.has_header_symbol('sys/socket.h', 'AF_INET6', prefix: '#include <netinet/in.h>') ? '-DHAVE_AF_INET6' : [],
   cc.has_header_symbol('sys/socket.h', 'PF_INET6', prefix: '#include <netinet/in.h>') ? '-DHAVE_PF_INET6' : [],
   cc.has_header_symbol('fcntl.h', 'O_NONBLOCK') ? '-DHAVE_FCNTL_O_NONBLOCK' : [],
+  cc.has_header_symbol('string.h', 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
+  cc.has_header_symbol('string.h', 'strcasecmp') ? '-DHAVE_STRCASECMP' : [],
+  cc.has_header_symbol('string.h', 'strcmpi') ? '-DHAVE_STRCMPI' : [],
+  cc.has_header_symbol('string.h', 'strncmpi') ? '-DHAVE_STRNCMPI' : [],
+  cc.has_header_symbol('string.h', 'strnicmp') ? '-DHAVE_STRNICMP' : [],
 
   cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
   cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
-
-  cc.links('#include <string.h>\nint main() {return (int)strncasecmp("a", "A", 1);}', name: 'strncasecmp') ? '-DHAVE_STRNCASECMP' : [],
-  cc.links('#include <string.h>\nint main() {return (int)strcasecmp("a", "A");}', name: 'strcasecmp') ? '-DHAVE_STRCASECMP' : [],
-  cc.links('#include <string.h>\nint main() {return (int)strcmpi("a", "A");}', name: 'strcmpi') ? '-DHAVE_STRCMPI' : [],
-  cc.links('#include <string.h>\nint main() {return (int)strncmpi("a", "A", 1);}', name: 'strncmpi') ? '-DHAVE_STRNCMPI' : [],
-  cc.links('#include <string.h>\nint main() {return (int)strnicmp("a", "A", 1);}', name: 'strnicmp') ? '-DHAVE_STRNICMP' : [],
 ],
 'linux': [
   '-DHAVE_RECV',
