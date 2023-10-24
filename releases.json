@@ -450,6 +450,14 @@
       "2.2.0-1"
     ]
   },
+  "directxmath": {
+    "dependency_names": [
+      "directxmath"
+    ],
+    "versions": [
+      "3.1.8-1"
+    ]
+  },
   "dlfcn-win32": {
     "dependency_names": [
       "dl"

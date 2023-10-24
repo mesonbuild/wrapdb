@@ -325,6 +325,9 @@ class TestReleases(unittest.TestCase):
         elif name == 'netstring-c':
             # There is no specific version for netstring-c
             return True
+        elif name == 'directxmath':
+            # DirectXMath source url contains only tag name without version
+            return True
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,
