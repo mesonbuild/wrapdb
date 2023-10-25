@@ -17,6 +17,7 @@ add_project_arguments('-DUTF8PROC_EXPORTS', language: 'c')
 
 utf8proc_lib = library('utf8proc',
   'utf8proc.c',
+  gnu_symbol_visibility: 'hidden',
   install: true,
   version: '3.0.0',
 )
