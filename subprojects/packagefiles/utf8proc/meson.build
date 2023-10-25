@@ -1,7 +1,7 @@
 project('utf8proc', 'c',
-    version : '2.8.0',
+    version : '2.9.0',
     license: 'MIT',
-    default_options: ['c_std=c99']
+    default_options: 'c_std=c99',
 )
 
 if get_option('default_library') == 'static'
