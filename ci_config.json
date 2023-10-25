@@ -452,6 +452,11 @@
       "windows": false
     }
   },
+  "libunibreak": {
+    "alpine_packages": [
+      "curl"
+    ]
+  },
   "libupnp": {
     "_comment": "Requires some special pthread library",
     "build_on": {
