@@ -747,6 +747,11 @@
       "tinyfsm:build_examples=true"
     ]
   },
+  "utf8proc": {
+    "alpine_packages": [
+      "curl"
+    ]
+  },
   "wayland": {
     "_comment": "- relies on Linux-specific APIs",
     "build_on": {
