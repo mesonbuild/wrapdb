@@ -2865,6 +2865,17 @@
       "3.3.1-1"
     ]
   },
+  "sqlpp11": {
+    "dependency_names": [
+      "sqlpp11"
+    ],
+    "program_names": [
+      "ddl2cpp"
+    ],
+    "versions": [
+      "0.64-1"
+    ]
+  },
   "stduuid": {
     "dependency_names": [
       "stduuid"

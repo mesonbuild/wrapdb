@@ -735,6 +735,38 @@
       "windows": false
     }
   },
+  "sqlpp11": {
+    "_comment": "hard to set up PostgreSQL via choco",
+    "build_on": {
+      "windows": false
+    },
+    "build_options": [
+      "sqlpp11:mariadb_connector=true",
+      "sqlpp11:postgresql_connector=true",
+      "sqlpp11:sqlite3_connector=true",
+      "pkg_config_path=/usr/local/opt/libpq/lib/pkgconfig:/opt/homebrew/opt/libpq/lib/pkgconfig"
+    ],
+    "alpine_packages": [
+      "libpq-dev",
+      "mariadb-connector-c-dev"
+    ],
+    "debian_packages": [
+      "libmariadb-dev",
+      "libpq-dev"
+    ],
+    "brew_packages": [
+      "mariadb-connector-c",
+      "libpq"
+    ],
+    "msys_packages": [
+      "libmariadbclient",
+      "postgresql"
+    ],
+    "choco_packages": [
+      "mariadb",
+      "postgresql"
+    ]
+  },
   "sqlitecpp": {
     "_comment": "required to not use the default sqlite3 in MacOS to avoid compilation errors/tests failures, also add pkgconfig path to find sqlite3(keg-only)",
     "build_options": [
