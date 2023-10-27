@@ -1,0 +1,10 @@
+[wrap-file]
+directory = sqlpp11-0.64
+source_url = https://github.com/rbock/sqlpp11/archive/refs/tags/0.64.tar.gz
+source_filename = sqlpp11-0.64.tar.gz
+source_hash = 72e6d37c716cc45b38c3cf4541604f16224aaa3b511d1f1d0be0c49176c3be86
+patch_directory = sqlpp11
+
+[provide]
+sqlpp11 = sqlpp11_dep
+program_names = ddl2cpp
