@@ -276,21 +276,9 @@
     "fatal_warnings": false
   },
   "grpc": {
-    "_comment": [
-      "- c-ares wrap has not landed yet",
-      "- choco lack dependent packages in repos, so msvc enablement will wait for other wraps being merged"
-    ],
-    "build_on": {
-      "windows": false
-    },
-    "debian_packages": [
-      "libc-ares-dev"
-    ],
-    "brew_packages": [
-      "c-ares"
-    ],
-    "msys_packages": [
-      "c-ares"
+    "_comment": "- wrapdb openssl broken on alpine",
+    "alpine_packages": [
+      "openssl-dev"
     ]
   },
   "gumbo-parser": {
