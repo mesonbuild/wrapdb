@@ -196,6 +196,7 @@ curl_lib = library(
 pkg.generate(
   curl_lib,
   description: 'Library to transfer files with ftp, http, etc.',
+  extra_cflags: public_args,
   name: 'libcurl',
   unescaped_variables: (
     # NOTE: variables with empty values are not allowed…
@@ -213,6 +214,7 @@ pkg.generate(
 )
 
 curl_dep = declare_dependency(
+  compile_args: public_args,
   include_directories: CURL_PUBLIC_INC,
   link_with: curl_lib,
   sources: config_h,
