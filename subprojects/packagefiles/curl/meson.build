@@ -15,6 +15,7 @@ cdata = configuration_data()
 
 sys_deps = []
 lib_deps = []
+public_args = []
 
 # Constants. {{{
 
@@ -1436,6 +1437,10 @@ else
   cdata.set('CURL_EXTERN_SYMBOL', '')
   curl_symbols_hiding_flags      = []
   curl_symbols_hiding_visibility = 'default'
+endif
+
+if get_option('default_library') == 'static'
+  public_args += '-DCURL_STATICLIB'
 endif
 
 # Turn off Visual Studio CRT deprecation warnings.
