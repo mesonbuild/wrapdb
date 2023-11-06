@@ -25,7 +25,7 @@ import tempfile
 import platform
 
 from pathlib import Path
-from utils import Version, is_ci, is_debianlike, is_linux, is_macos, is_windows, is_msys
+from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -102,6 +102,9 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
     'openal-soft': [
         'hexify.py'
+    ],
+    'protobuf': [
+        'symlink.py'
     ],
     'sdl2': [
         'find-dylib-name.py'
@@ -219,7 +222,7 @@ class TestReleases(unittest.TestCase):
                     self.assertIn('source_hash', wrap_section)
 
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
-                if extra_checks:
+                if extra_checks and self.ci_config.get(name, {}).get('has_provides', True):
                     with self.subTest(step='provide'):
                         self.assertIn('provide', config.sections())
                         self.assertTrue(config.items('provide'))
@@ -325,6 +328,9 @@ class TestReleases(unittest.TestCase):
         elif name == 'netstring-c':
             # There is no specific version for netstring-c
             return True
+        elif name == 'directxmath':
+            # DirectXMath source url contains only tag name without version
+            return True
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,
@@ -359,6 +365,7 @@ class TestReleases(unittest.TestCase):
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])
         msys_packages = ci.get('msys_packages', [])
+        alpine_packages = ci.get('alpine_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -388,6 +395,12 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(msys_packages)
                 print(f'The following packages could be required: {s}')
+        elif alpine_packages and is_alpinelike():
+            if is_ci():
+                subprocess.check_call(['sudo', 'apk', 'add'] + alpine_packages)
+            else:
+                s = ', '.join(alpine_packages)
+                print(f'The following packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
         if res.returncode == 0:
@@ -414,6 +427,9 @@ class TestReleases(unittest.TestCase):
                         return
                 elif 'ERROR: Could not execute Vala compiler: valac' in error:
                     print('cannot verify in wrapdb due to missing dependency')
+                    return
+                elif 'ERROR: failed to unpack archive with error: ' in error:
+                    print('cannot verify in wrapdb because the archive cannot be unpacked')
                     return
             raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
         subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)

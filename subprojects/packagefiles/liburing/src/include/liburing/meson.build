@@ -7,6 +7,8 @@ endif
 
 if has__kernel_timespec
     __kernel_timespec_compat = '''#include <linux/time_types.h>
+
+#define UAPI_LINUX_IO_URING_H_SKIP_LINUX_TIME_TYPES_H 1
 '''
 else
     __kernel_timespec_compat = '''#include <stdint.h>
@@ -15,6 +17,8 @@ struct __kernel_timespec {
   int64_t    tv_sec;
   long long  tv_nsec;
 };
+
+#define UAPI_LINUX_IO_URING_H_SKIP_LINUX_TIME_TYPES_H 1
 '''
 endif
 
@@ -45,6 +49,14 @@ endif
 configure_file(input: 'compat.h.meson',
                output: 'compat.h',
                configuration: conf_data,
+               install: true,
+               install_dir: get_option('includedir') / 'liburing')
+
+configure_file(output: 'io_uring_version.h',
+               configuration: configuration_data({
+                 'IO_URING_VERSION_MAJOR': major_version,
+                 'IO_URING_VERSION_MINOR': minor_version,
+               }),
                install: true,
                install_dir: get_option('includedir') / 'liburing')
 

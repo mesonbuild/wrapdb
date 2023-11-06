@@ -6,7 +6,7 @@ project(
     'cpp_std=c++17',
     'wrap_mode=forcefallback',
   ],
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.60.0',
 )
 
 cpp = meson.get_compiler('cpp')

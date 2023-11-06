@@ -1,9 +1,9 @@
 conf = configuration_data()
 if get_option('rdrand')
-  conf.set10('ENABLE_RDRAND', true)
+  conf.set('ENABLE_RDRAND', 1)
 endif
 if threads.found()
-  conf.set10('ENABLE_THREADING', true)
+  conf.set('ENABLE_THREADING', 1)
 endif
 
 check_headers = [
@@ -31,39 +31,32 @@ check_headers = [
 
 foreach header : check_headers
   if cc.has_header(header)
-    conf.set10('HAVE_' + header.underscorify().to_upper(), true)
+    conf.set('HAVE_@0@'.format(header.underscorify().to_upper()), 1)
   endif
 endforeach
 
-stdc = ['stdlib.h', 'stdarg.h', 'string.h', 'float.h']
 have_stdc = true
-foreach header : stdc
-  if not conf.has('HAVE_' + header.underscorify().to_upper())
+foreach header : ['stdlib.h', 'stdarg.h', 'string.h', 'float.h']
+  if not conf.has('HAVE_@0@'.format(header.underscorify().to_upper()))
     have_stdc = false
   endif
 endforeach
 conf.set10('STDC_HEADERS', have_stdc)
 
-float_symbols = ['_isnan', '_finite']
-math_symbols = ['INFINITY', 'isinf', 'isnan', 'nan']
-
-foreach symbol : float_symbols
+foreach symbol : ['_isnan', '_finite']
   if cc.has_header_symbol('float.h', symbol)
-    conf.set10('HAVE_DECL_' + symbol.to_upper(), true)
+    conf.set('HAVE_DECL_@0@'.format(symbol.to_upper()), 1)
   endif
 endforeach
 
-foreach symbol : math_symbols
+foreach symbol : ['INFINITY', 'isinf', 'isnan', 'nan']
   if cc.has_header_symbol('math.h', symbol)
-    conf.set10('HAVE_DECL_' + symbol.to_upper(), true)
+    conf.set('HAVE_DECL_@0@'.format(symbol.to_upper()), 1)
   endif
 endforeach
 
 check_function = [
-  'snprintf',
   'vasprintf',
-  'vsnprintf',
-  'vprintf',
   'realloc',
   'setlocale',
   'uselocale',
@@ -71,26 +64,26 @@ check_function = [
   'strdup',
   'strerror',
   'vsyslog',
+  'open',
+  'strtoll',
 ]
 
-if cc.get_argument_syntax() == 'msvc'
-  if cc.has_function('strtoll')
-    conf.set10('HAVE_STRTOLL', true)
-    conf.set('json_c_strtoll', 'strtoll')
-  elif cc.has_function('_strtoi64')
-    conf.set10('HAVE_STRTOLL', true)
-    conf.set('json_c_strtoll', '_strtoi64')
-  endif
-else
-  check_function += ['open', 'strncasecmp']
+if conf.has('HAVE_STRINGS_H')
+  check_function += 'strncasecmp'
 endif
 
 foreach function : check_function
   if cc.has_function(function)
-    conf.set10('HAVE_' + function.to_upper(), true)
+    conf.set('HAVE_@0@'.format(function.to_upper()), 1)
   endif
 endforeach
 conf.set10('HAVE_DOPRNT', cc.has_function('_doprnt'))
+
+foreach f : ['snprintf', 'vsnprintf', 'vprintf']
+  if cc.has_header_symbol('stdio.h', f)
+    conf.set('HAVE_@0@'.format(f.to_upper()), 1)
+  endif
+endforeach
 
 size = cc.sizeof('size_t', prefix: '#include <stddef.h>')
 conf.set('SIZEOF_SIZE_T', size)
@@ -102,18 +95,17 @@ else
 endif
 conf.set('SIZEOF_SSIZE_T', size)
 
-check_types = ['int', 'int64_t', 'long', 'long long']
-foreach type : check_types
+foreach type : ['int', 'int64_t', 'long', 'long long']
   size = cc.sizeof(type, prefix: '#include <stdint.h>')
-  conf.set('SIZEOF_' + type.underscorify().to_upper(), size)
+  conf.set('SIZEOF_@0@'.format(type.underscorify().to_upper()), size)
 endforeach
 
-if cc.links('int main() { int i, x = 0; i = __sync_add_and_fetch(&x,1); return x; }', name : 'atomic builtins')
-  conf.set10('HAVE_ATOMIC_BUILTINS', true)
+if cc.links('int main(){__sync_synchronize();}', name : 'atomic builtins')
+  conf.set('HAVE_ATOMIC_BUILTINS', 1)
 endif
 
-if cc.compiles('__thread int x = 0; int main() { return 0; }', name : '__thread')
-  conf.set10('HAVE___THREAD', true)
+if cc.compiles('static __thread int x = 0;', name : '__thread')
+  conf.set('HAVE___THREAD', 1)
 endif
 
 if conf.has('HAVE___THREAD')
@@ -128,4 +120,3 @@ config_h = configure_file(
   configuration: conf,
   output: 'config.h',
 )
-

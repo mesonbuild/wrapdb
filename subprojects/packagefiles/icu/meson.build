@@ -20,9 +20,11 @@ if host_machine.system() == 'windows'
   add_project_arguments('-DU_PLATFORM_USES_ONLY_WIN32_API', language: 'cpp')
   add_project_arguments('-DWIN32', '-DWIN64', '-D_MBCS', language: 'cpp')
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
+  add_project_arguments('-DWINVER=0x0601', '-D_WIN32_WINNT=0x0601' , language: 'cpp')
   add_project_arguments('-DU_PLATFORM_USES_ONLY_WIN32_API', language: 'c')
   add_project_arguments('-DWIN32', '-DWIN64', '-D_MBCS', language: 'c')
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
+  add_project_arguments('-DWINVER=0x0601', '-D_WIN32_WINNT=0x0601' , language: 'c')
 endif
 
 # per icudefs.mk.in:

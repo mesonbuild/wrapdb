@@ -38,6 +38,11 @@ if cc.get_argument_syntax() == 'msvc'
   )
 endif
 
+if host_machine.system() == 'windows'
+  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'c')
+  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'cpp')
+endif
+
 hdr = files(
   'src-cpp/rdkafkacpp.h',
   'src/rdkafka.h',

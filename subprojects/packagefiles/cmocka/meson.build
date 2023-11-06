@@ -30,133 +30,147 @@ inc_include = include_directories('include')
 #####################
 
 cc_dict = {
-    'compiler': meson.get_compiler('c'),
-    'machine': host_machine,
-    'native': false,
+  'compiler': meson.get_compiler('c'),
+  'machine': host_machine,
+  'native': false,
 }
 
 cc_native_dict = {
-    'compiler': meson.get_compiler('c', native: true),
-    'machine': build_machine,
-    'native': true,
+  'compiler': meson.get_compiler('c', native: true),
+  'machine': build_machine,
+  'native': true,
 }
 
-configurations = [cc_dict, cc_native_dict]
+entry = cc_dict
+compiler = entry.get('compiler')
+is_native = entry.get('native')
+machine = entry.get('machine')
 
-foreach entry : configurations
-  compiler = entry.get('compiler')
-  is_native = entry.get('native')
-  machine = entry.get('machine')
+config = configuration_data()
 
-  config = configuration_data()
-
-  if compiler.get_argument_syntax() == 'gcc'
+if compiler.get_argument_syntax() == 'gcc'
+  add_project_arguments(
+    # I've explicitly skipped the duplicated -W versions when they also test
+    # for the -Werror version
+    compiler.get_supported_arguments(
+      '-Wshadow',
+      '-Wmissing-prototypes',
+      '-Wcast-align',
+      '-Werror=address',
+      '-Werror=strict-prototypes',
+      '-Werror=write-strings',
+      '-Werror=implicit-function-declaration',
+      '-Werror=pointer-arith',
+      '-Werror=declaration-after-statement',
+      '-Werror=return-type',
+      '-Werror=uninitialized',
+      '-Wimplicit-fallthrough',
+      '-Werror=strict-overflow',
+      '-Wstrict-overflow=2',
+      '-Wno-format-zero-length',
+      '-Wformat',
+      '-Werror=format-security',
+      '-Wno-gnu-zero-variadic-macro-arguments',
+      '-D_GNU_SOURCE',
+    ),
+    language: 'c',
+    native: is_native,
+  )
+  # We can't test the build type, so we can' add -D_FORTIFY_SOURCE=2 here
+  if machine.system() == 'darwin'
     add_project_arguments(
-      # I've explicitly skipped the duplicated -W versions when they also test
-      # for the -Werror version
-      compiler.get_supported_arguments(
-        '-Wshadow',
-        '-Wmissing-prototypes',
-        '-Wcast-align',
-        '-Werror=address',
-        '-Werror=strict-prototypes',
-        '-Werror=write-strings',
-        '-Werror=implicit-function-declaration',
-        '-Werror=pointer-arith',
-        '-Werror=declaration-after-statement',
-        '-Werror=return-type',
-        '-Werror=uninitialized',
-        '-Wimplicit-fallthrough',
-        '-Werror=strict-overflow',
-        '-Wstrict-overflow=2',
-        '-Wno-format-zero-length',
-        '-Wformat',
-        '-Werror=format-security',
-        '-Wno-gnu-zero-variadic-macro-arguments',
-        '-fno-common',
-        '-D_GNU_SOURCE',
-      ),
+      compiler.get_supported_arguments('-Wno-deprecated-declarations'),
       language: 'c',
-      native: is_native
-    )
-    # We can't test the build type, so we can' add -D_FORTIFY_SOURCE=2 here
-    if machine.system() == 'darwin'
-      add_project_arguments(compiler.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c', native: is_native)
-    endif
-  else
-    add_project_arguments(
-      '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1',
-      '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1',
-      '/D_CRT_NONSTDC_NO_WARNINGS=1',
-      '/D_CRT_SECURE_NO_WARNINGS=1',
-      language: 'c',
-      native: is_native
+      native: is_native,
     )
   endif
-
-  # TODO: solaris extensions
-
-  foreach h : ['assert.h', 'dlfcn.h', 'inttypes.h', 'io.h', 'malloc.h', 'memory.h',
-               'setjmp.h', 'signal.h', 'stdarg.h', 'stddef.h', 'stdint.h',
-               'stdio.h', 'stdlib.h', 'string.h', 'strings.h', 'sys/stat.h',
-               'sys/types.h', 'time.h', 'unistd.h']
-    if compiler.check_header(h)
-      config.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
-    endif
-  endforeach
-
-  if config.get('HAVE_TIME_H', 0) == 1
-    if compiler.has_member('struct timespec', 'tv_sec', prefix: '#include <time.h>')
-      config.set('HAVE_STRUCT_TIMESPEC', 1)
-    endif
-  endif
-
-  foreach f : ['calloc', 'exit', 'fprintf', 'free', 'longjmp', 'siglongjmp',
-               'malloc', 'memcpy', 'memset', 'printf', 'setjmp', 'signal',
-               'strsignal', 'strcmp', 'clock_gettime']
-    if compiler.has_function(f)
-      config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
-    endif
-  endforeach
-
-  if machine.system() == 'windows'
-  foreach f : ['_vsnprintf_s', '_vsnprtinf', '_snprintf_s', '_snprintf']
-    if compiler.has_function(f)
-      config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
-    endif
-  endforeach
-  foreach f : ['snprintf', 'vsnprintf']
-    if compiler.has_header_symbol('stdio.h', f)
-      config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
-    endif
-  endforeach
 else
-  foreach f : ['snprintf', 'vsnprintf']
-    if compiler.has_function(f)
-      config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
-    endif
-  endforeach
+  add_project_arguments(
+    '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1',
+    '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1',
+    '/D_CRT_NONSTDC_NO_WARNINGS=1',
+    '/D_CRT_SECURE_NO_WARNINGS=1',
+    language: 'c',
+    native: is_native,
+  )
 endif
 
-  if compiler.get_argument_syntax() == 'msvc'
-    config.set('HAVE_MSVC_THREAD_LOCAL_STORAGE', compiler.compiles('__declspec(thread) int tls;'))
-  else
-    config.set10('HAVE_GCC_THREAD_LOCAL_STORAGE', compiler.compiles('__thread int tls;'))
-  endif
+# TODO: solaris extensions
 
-  if (config.get('HAVE_TIME_H', 0) == 1 and
-      config.get('HAVE_STRUCT_TIMESPEC', 0) == 1 and
-      config.get('HAVE_CLOCK_GETTIME', 0) == 1)
-    if compiler.has_header_symbol('time.h', 'CLOCK_REALTIME')
-      config.set('HAVE_CLOCK_REALTIME', 1)
-    endif
-  endif
-
-  config.set('WORDS_SIZEOF_VOID_P', compiler.sizeof('void *'))
-  if machine.endian() == 'big'
-    config.set('WORDS_BIGENDIAN', 1)
+foreach h : [
+  'assert.h',
+  'dlfcn.h',
+  'inttypes.h',
+  'io.h',
+  'malloc.h',
+  'memory.h',
+  'setjmp.h',
+  'signal.h',
+  'stdarg.h',
+  'stddef.h',
+  'stdint.h',
+  'stdio.h',
+  'stdlib.h',
+  'string.h',
+  'strings.h',
+  'sys/stat.h',
+  'sys/types.h',
+  'time.h',
+  'unistd.h',
+]
+  if compiler.check_header(h)
+    config.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
   endif
 endforeach
+
+if compiler.has_member('struct timespec', 'tv_sec', prefix: '#include <time.h>')
+  config.set('HAVE_STRUCT_TIMESPEC', 1)
+endif
+
+foreach f : [
+  'calloc',
+  'clock_gettime',
+  'exit',
+  'free',
+  'longjmp',
+  'malloc',
+  'memcpy',
+  'memset',
+  'setjmp',
+  'siglongjmp',
+  'signal',
+  'strsignal',
+  'strcmp',
+]
+  if compiler.has_function(f)
+    config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+foreach f : ['fprintf', 'printf', 'snprintf', 'vsnprintf']
+  if compiler.has_header_symbol('stdio.h', f)
+    config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+threads_dep = []
+if not config.has('HAVE_CLOCK_GETTIME')
+  if compiler.has_function('clock_gettime', dependencies: dependency('threads'))
+    config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+    threads_dep = dependency('threads')
+  endif
+endif
+
+if compiler.get_argument_syntax() == 'msvc'
+  config.set('HAVE_MSVC_THREAD_LOCAL_STORAGE', compiler.compiles('__declspec(thread) int tls;'))
+else
+  config.set10('HAVE_GCC_THREAD_LOCAL_STORAGE', compiler.compiles('__thread int tls;'))
+endif
+
+config.set('WORDS_SIZEOF_VOID_P', compiler.sizeof('void*'))
+if machine.endian() == 'big'
+  config.set('WORDS_BIGENDIAN', 1)
+endif
 
 cfile = configure_file(
   input: 'config.h.cmake',
@@ -177,6 +191,7 @@ libcmocka = library(
   vs_module_defs: 'src/cmocka.def',
   soversion: host_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version: lib_version,
+  dependencies: threads_dep,
   install: true,
 )
 
@@ -188,6 +203,7 @@ libcmocka_native = library(
   vs_module_defs: 'src/cmocka.def',
   soversion: build_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version: lib_version,
+  dependencies: threads_dep,
   install: false, # Cannot install native targets in cross builds
   native: true,
   build_by_default: false,

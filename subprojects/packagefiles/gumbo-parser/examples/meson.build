@@ -19,5 +19,6 @@ foreach _src : [
     _src.split('.')[0],
     _src,
     dependencies: gumbo_dep,
+    c_args: '-D_POSIX_C_SOURCE=200112L',
   )
 endforeach

@@ -15,6 +15,7 @@ if host_machine.system() == 'windows'
   if get_option('default_library') != 'static'
     add_project_arguments('-DMZ_EXPORTS', language: 'c')
   endif
+  add_project_arguments('-D_WIN32_WINNT=0x600', language: 'c')
 endif
 
 margs = []

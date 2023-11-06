@@ -26,6 +26,8 @@ if cc.get_argument_syntax() == 'msvc'
   compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
 endif
 
+add_project_arguments('-D_LARGEFILE64_SOURCE', language: 'c')
+
 src = files(
   'adler32.c',
   'crc32.c',

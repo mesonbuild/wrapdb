@@ -1,0 +1,9 @@
+[wrap-file]
+directory = c-ares-1.20.1
+source_url = https://github.com/c-ares/c-ares/releases/download/cares-1_20_1/c-ares-1.20.1.tar.gz
+source_filename = c-ares-1.20.1.tar.gz
+source_hash = de24a314844cb157909730828560628704f4f896d167dd7da0fa2fb93ea18b10
+patch_directory = c-ares
+
+[provide]
+libcares = cares_dep

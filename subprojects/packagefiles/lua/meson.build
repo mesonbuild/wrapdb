@@ -40,13 +40,11 @@ lua_exe_deps = []
 lua_exe_args = []
 
 readline_dep = dependency('readline', required: get_option('line_editing'))
-if not readline_dep.found()
-  readline_dep = dependency('libedit', required: get_option('line_editing'))
-endif
-
 if readline_dep.found()
   lua_exe_deps += readline_dep
   lua_exe_args += '-DLUA_USE_READLINE'
+else
+  readline_dep = dependency('libedit', required: get_option('line_editing'))
 endif
 
 # Targets.

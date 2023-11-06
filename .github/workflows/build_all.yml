@@ -32,6 +32,29 @@ jobs:
         run: |
           ./tools/sanity_checks.py
 
+  Alpine:
+    if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
+    runs-on: ubuntu-latest
+    container:
+      image: alpine
+      env:
+        TEST_BUILD_ALL: 1
+        TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
+    steps:
+      - name: Install packages
+        run: |
+          apk add cmake g++ gcc git linux-headers pkgconf py3-pip samurai sudo
+          python -m pip install git+https://github.com/mesonbuild/meson
+          git config --global --add safe.directory '*'
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sanity Checks
+        run: |
+          ./tools/sanity_checks.py
+
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest

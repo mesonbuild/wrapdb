@@ -1,4 +1,4 @@
-project('libXext', 'c', version: '1.3.4', default_options: ['warning_level=3'])
+project('libXext', 'c', version: '1.3.5', default_options: ['warning_level=3'])
 
 incdirs = include_directories('.', 'include')
 
@@ -9,7 +9,6 @@ xext = library('Xext',
   'src/MITMisc.c',
   'src/XAppgroup.c',
   'src/XLbx.c',
-  'src/globals.c',
   'src/XEVI.c',
   'src/XMultibuf.c',
   'src/XSecurity.c',
@@ -21,6 +20,8 @@ xext = library('Xext',
   'src/Xdbe.c',
   'src/Xge.c',
   'src/extutil.c',
+  'src/globals.c',
+  'src/reallocarray.c',
   dependencies: x11_dep,
   include_directories: incdirs,
   install: true,
