@@ -2,7 +2,7 @@ project(
   'sqlite3',
   'c',
   license: 'pd',
-  version: '3.43.2',
+  version: '3.44.0',
   meson_version: '>=0.48.0',
 )
 
