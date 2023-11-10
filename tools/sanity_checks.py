@@ -46,15 +46,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_export.h'
     ],
     'gumbo-parser': [
-        'gumbo.def',
         'tokenizer.cc',
-    ],
-    'jbig2dec': [
-        'jbig2dec.def',
-    ],
-    'jbigkit': [
-        'jbig.def',
-        'jbig85.def'
     ],
     'icu': [
         'export_module.py'
@@ -65,29 +57,11 @@ PER_PROJECT_PERMITTED_FILES = {
     'libexif': [
         'def.py',
     ],
-    'lmdb': [
-        'lmdb.def',
-    ],
-    'liblbfgs': [
-        'liblbfgs.def'
-    ],
-    'libunibreak': [
-        'unibreak.def'
-    ],
     'm4': [
         'm4_test_runner.py',
     ],
-    'minizip-ng': [
-        'mz.def',
-    ],
     'mpdecimal': [
         'gettests.py',
-    ],
-    'mujs': [
-        'mujs.def',
-    ],
-    'netstring-c': [
-        'netstring-c.def',
     ],
     'nowide': [
         'test_iostream_interactive.py',
@@ -119,12 +93,6 @@ PER_PROJECT_PERMITTED_FILES = {
         'doxyfile-patcher.py',
         'arm2gnu-wrapper.py',
         'generate_windows_rc.py',
-        'theora.def'
-    ],
-    'vorbis': [
-        'vorbis.def',
-        'vorbisenc.def',
-        'vorbisfile.def'
     ],
     'libffi': [
         'test-cc-supports-hidden-visibility.py',
@@ -448,7 +416,7 @@ class TestReleases(unittest.TestCase):
     def is_permitted_file(self, subproject: str, filename: str):
         if filename in PERMITTED_FILES:
             return True
-        if filename.endswith('.h.meson'):
+        if filename.endswith('.h.meson') or filename.endswith('.def'):
             return True
         if subproject in PER_PROJECT_PERMITTED_FILES and filename in PER_PROJECT_PERMITTED_FILES[subproject]:
             return True
