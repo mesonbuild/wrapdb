@@ -18,15 +18,20 @@ sources = files(
     'nghttp2_pq.c',
     'nghttp2_priority_spec.c',
     'nghttp2_queue.c',
+    'nghttp2_ratelim.c',
     'nghttp2_rcbuf.c',
     'nghttp2_session.c',
     'nghttp2_stream.c',
     'nghttp2_submit.c',
+    'nghttp2_time.c',
     'nghttp2_version.c',
     'sfparse.c',
 )
 public_c_args = []
-c_args = ['-DBUILDING_NGHTTP2']
+c_args = [
+    '-DBUILDING_NGHTTP2',
+    '-DHAVE_CONFIG_H',
+]
 if host_machine.system() == 'windows' and get_option('default_library') == 'static'
     c_args += ['-DNGHTTP2_STATICLIB']
 endif
@@ -44,8 +49,8 @@ include_directories = include_directories('includes')
 libnghttp2 = library(
     'nghttp2',
     sources,
-    c_args: c_args + public_c_args,
-    include_directories: include_directories,
+    c_args: c_args,
+    include_directories: [include_directories, include_directories('..')],
     install: true,
     gnu_symbol_visibility: 'hidden',
     version: meson.project_version(),
