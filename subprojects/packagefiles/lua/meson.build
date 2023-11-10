@@ -86,6 +86,7 @@ lua_lib = library(
   version: meson.project_version(),
   soversion: lua_versions[0] + '.' + lua_versions[1],
   implicit_include_directories: false,
+  install: true,
 )
 
 inc = include_directories('src')
