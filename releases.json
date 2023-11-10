@@ -2529,6 +2529,14 @@
       "2.0.2-1"
     ]
   },
+  "qrencode": {
+    "dependency_names": [
+      "libqrencode"
+    ],
+    "versions": [
+      "4.1.1-1"
+    ]
+  },
   "quazip": {
     "dependency_names": [
       "quazip"
