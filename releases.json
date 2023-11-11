@@ -1613,6 +1613,14 @@
       "3.6.4-1"
     ]
   },
+  "libsignal-protocol-c": {
+    "dependency_names": [
+      "libsignal-protocol-c"
+    ],
+    "versions": [
+      "2.3.3-1"
+    ]
+  },
   "libsndfile": {
     "dependency_names": [
       "sndfile"
