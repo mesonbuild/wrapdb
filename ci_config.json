@@ -612,6 +612,13 @@
       "msys2": false,
       "windows": false
     },
+    "alpine_packages": [
+      "bash",
+      "make",
+      "nasm",
+      "patch",
+      "perl"
+    ],
     "debian_packages": [
       "libtext-template-perl",
       "nasm"
