@@ -1,8 +1,8 @@
 [wrap-file]
-directory = openssl-3.0.8
-source_url = https://www.openssl.org/source/openssl-3.0.8.tar.gz
-source_filename = openssl-3.0.8.tar.gz
-source_hash = 6c13d2bf38fdf31eac3ce2a347073673f5d63263398f1f69d0df4a41253e4b3e
+directory = openssl-3.0.12
+source_url = https://www.openssl.org/source/openssl-3.0.12.tar.gz
+source_filename = openssl-3.0.12.tar.gz
+source_hash = f93c9e8edde5e9166119de31755fc87b4aa34863662f67ddfcba14d0b6b69b61
 patch_directory = openssl
 
 [provide]
