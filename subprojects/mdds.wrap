@@ -1,9 +1,9 @@
 [wrap-file]
-directory = mdds-2.0.1
-source_url = https://gitlab.com/mdds/mdds/-/archive/2.0.1/mdds-2.0.1.tar.gz
-source_filename = mdds-2.0.1.tar.gz
-source_hash = 4a71007ad606510fcf10c1f48e4bcff8a9ea43f40fcb99015b76681131e331c1
+directory = mdds-2.1.1
+source_url = https://gitlab.com/mdds/mdds/-/archive/2.1.1/mdds-2.1.1.tar.gz
+source_filename = mdds-2.1.1.tar.gz
+source_hash = 4b9b4ef83826562a57d55089141c8d59789fae829fd6402cbb95d480c0737b7d
 patch_directory = mdds
 
 [provide]
-mdds-2.0 = mdds_dep
+mdds-2.1 = mdds_dep
