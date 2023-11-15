@@ -1,5 +1,5 @@
 project('liborcus', 'cpp',
-  version: '0.17.2',
+  version: '0.19.2',
   default_options: 'cpp_std=c++17')
 
 varr = meson.project_version().split('.')
@@ -12,7 +12,7 @@ boost_fs_dep = dependency('boost', modules: ['filesystem'])
 boost_ios_dep = dependency('boost', modules: ['iostreams'])
 
 thread_dep = dependency('threads')
-mdds_dep = dependency('mdds-2.0')
+mdds_dep = dependency('mdds-2.1')
 zlib_dep = dependency('zlib')
 
 subdir('src')

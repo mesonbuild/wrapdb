@@ -663,7 +663,6 @@
       "boost"
     ],
     "debian_packages": [
-      "libmdds-dev",
       "libboost-filesystem-dev",
       "libboost-iostreams-dev"
     ]

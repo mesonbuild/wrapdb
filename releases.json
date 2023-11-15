@@ -2342,9 +2342,10 @@
   },
   "orcus": {
     "dependency_names": [
-      "liborcus-0.17"
+      "liborcus-0.19"
     ],
     "versions": [
+      "0.19.2-1",
       "0.17.2-3",
       "0.17.2-2",
       "0.17.2-1"
