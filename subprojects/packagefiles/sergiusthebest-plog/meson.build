@@ -1,5 +1,5 @@
 project('plog', 'cpp',
-  version : '1.1.4',
+  version : '1.1.10',
   license: 'MIT')
 
 inc = include_directories('include')
