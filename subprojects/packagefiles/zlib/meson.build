@@ -12,15 +12,7 @@ link_args = cc.get_supported_link_arguments(
   '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir()),
 )
 
-compile_args = cc.get_supported_arguments(
-  '/wd4131', # 'function' : uses old-style declarator
-  '/wd4244', # 'conversion' conversion from 'type1' to 'type2', possible loss of data
-  '/wd4245', # 'conversion' : conversion from 'type1' to 'type2', signed/unsigned mismatch
-  '/wd4267', # 'var' : conversion from 'size_t' to 'type', possible loss of data
-  '/wd4127', # conditional expression is constant
-  '-Wno-implicit-fallthrough',
-  '-Wno-implicit-function-declaration',
-)
+compile_args = []
 
 if cc.get_argument_syntax() == 'msvc'
   compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
