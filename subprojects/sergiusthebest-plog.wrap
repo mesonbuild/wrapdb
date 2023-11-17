@@ -1,7 +1,7 @@
 [wrap-file]
-directory = plog-1.1.4
-source_url = https://github.com/SergiusTheBest/plog/archive/1.1.4.tar.gz
-source_filename = 1.1.4.tar.gz
-source_hash = 4a97f9709bef26b0d8886fe7b58962da7f5cbfc4d7c8c19bcefaacf973065e3f
+directory = plog-1.1.10
+source_url = https://github.com/SergiusTheBest/plog/archive/1.1.10.tar.gz
+source_filename = 1.1.10.tar.gz
+source_hash = 55a090fc2b46ab44d0dde562a91fe5fc15445a3caedfaedda89fe3925da4705a
 patch_directory = sergiusthebest-plog
 
