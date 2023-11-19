@@ -126,6 +126,7 @@ cares_args_map = {
   ],
   'common': [
     '-DCARES_BUILDING_LIBRARY',
+    is_static ? '-DCARES_STATICLIB' : [],
 
     cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
     cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
@@ -210,7 +211,7 @@ libcares = library(
   'cares',
   sources: [cares_sources, cares_headers, ares_build_h],
   include_directories: cares_include_dirs,
-  c_args: cares_compile_args,
+  c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY'],
   link_args: cares_link_args,
   dependencies: cares_dependencies,
   install: true,
@@ -283,6 +284,7 @@ if get_option('tests')
 
   cares_test = executable('arestest',
     sources: test_sources,
+    cpp_args: cares_compile_args, # tests use internal stuff that is not required by regular clients
     dependencies: [
       cares_dep,
       dependency('gtest'),
