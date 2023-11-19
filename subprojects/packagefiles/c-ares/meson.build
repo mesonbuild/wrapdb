@@ -134,6 +134,7 @@ cares_args_map = {
     cc.has_header('netdb.h') ? '-DHAVE_NETDB_H' : [],
     cc.has_header('netinet/in.h') ? '-DHAVE_NETINET_IN_H' : [],
     cc.has_header('netinet/tcp.h') ? '-DHAVE_NETINET_TCP_H' : [],
+    cc.has_header('stdbool.h') ? '-DHAVE_STDBOOL_H' : [],
     cc.has_header('stdint.h') ? '-DHAVE_STDINT_H' : [],
     cc.has_header('strings.h') ? '-DHAVE_STRINGS_H' : [],
     cc.has_header('sys/ioctl.h') ? '-DHAVE_SYS_IOCTL_H' : [],
@@ -145,6 +146,7 @@ cares_args_map = {
     cc.has_header('sys/types.h') ? '-DHAVE_SYS_TYPES_H' : [],
     cc.has_header('sys/uio.h') ? '-DHAVE_SYS_UIO_H' : [],
 
+    cc.has_type('bool', prefix: '#include <stdbool.h>') ? '-DHAVE_BOOL_T' : [],
     cc.has_type('struct timeval', prefix: '#include <sys/time.h>') ? '-DHAVE_STRUCT_TIMEVAL' : [],
     cc.has_type('struct sockaddr_in6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_STRUCT_SOCKADDR_IN6' : [],
     cc.has_type('struct addrinfo', prefix: '#include <sys/types.h>\n#include <sys/socket.h>\n#include <netdb.h>') ? '-DHAVE_STRUCT_ADDRINFO' : [],
