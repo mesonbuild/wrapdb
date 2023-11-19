@@ -4,6 +4,7 @@ libtool_version = '2.7.1'
 libtool_soversion = '2'
 
 is_static = (get_option('default_library') == 'static')
+is_windows = (host_machine.system() == 'windows')
 
 cc = meson.get_compiler('c')
 winsock_deps = (
@@ -177,6 +178,29 @@ cares_args_map = {
     '-DSEND_TYPE_ARG3=size_t',
     '-DSEND_TYPE_ARG4=int',
     '-DSEND_TYPE_RETV=ssize_t',
+  ],
+  'windows': [
+  ],
+  'linker-msvc': [
+    '/export:ares__bitncmp',
+    '/export:ares__cat_domain',
+    '/export:ares__get_hostent',
+    '/export:ares__is_onion_domain',
+    '/export:ares__read_line',
+    '/export:ares__readaddrinfo',
+    '/export:ares__strsplit',
+    '/export:ares__strsplit_free',
+    '/export:ares_free',
+    '/export:ares_inet_net_pton',
+    '/export:ares_malloc',
+    '/export:ares_malloc_data',
+    '/export:ares_strdup',
+    '/export:aresx_sltosi',
+    '/export:aresx_sztosi',
+    '/export:aresx_sztoui',
+  ],
+  'linker-gcc': [
+    (is_windows and get_option('tests')) ? '--export-all-symbols' : [],
   ],
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
