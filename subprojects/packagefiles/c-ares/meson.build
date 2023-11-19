@@ -181,7 +181,8 @@ cares_args_map = {
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
 
-cares_args = [cares_args_map['common'], cares_args_map.get(host_machine.system(), [])]
+cares_compile_args = [cares_args_map['common'], cares_args_map.get(host_machine.system(), [])]
+cares_link_args = cares_args_map.get('linker-' + cc.get_argument_syntax(), [])
 
 cares_config = {
   'common': {
