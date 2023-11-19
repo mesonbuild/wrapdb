@@ -31,7 +31,8 @@
   ],
   "c-ares": {
     "build_options": [
-      "c-ares:tests=true"
+      "c-ares:tests=true",
+      "c-ares:tools=true"
     ],
     "__comment": "Some tests are failing, but we only care for it not causing any linking problems",
     "skip_tests": true

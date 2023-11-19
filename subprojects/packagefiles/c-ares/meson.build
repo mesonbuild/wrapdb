@@ -263,7 +263,7 @@ adig = executable(
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
   dependencies: cares_dep,
-  build_by_default: false,
+  build_by_default: get_option('tools'),
 )
 if get_option('export_adig')
   meson.override_find_program('adig', adig)
@@ -275,7 +275,7 @@ ahost = executable(
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
   dependencies: cares_dep,
-  build_by_default: false,
+  build_by_default: get_option('tools'),
 )
 if get_option('export_ahost')
   meson.override_find_program('ahost')
