@@ -1,6 +1,9 @@
-project('c-ares', 'c', version: '1.22.1', license: 'MIT')
+project('c-ares', 'c', version: '1.22.1', license: 'MIT', default_options: 'cpp_std=c++17')
+
 libtool_version = '2.7.1'
 libtool_soversion = '2'
+
+is_static = (get_option('default_library') == 'static')
 
 cc = meson.get_compiler('c')
 winsock_deps = (
@@ -118,6 +121,9 @@ cares_include_dirs = include_directories('include', 'src/lib')
 
 cc = meson.get_compiler('c')
 cares_args_map = {
+  'public': [
+    is_static ? '-DCARES_STATICLIB' : [],
+  ],
   'common': [
     '-DCARES_BUILDING_LIBRARY',
 
@@ -204,7 +210,8 @@ libcares = library(
   'cares',
   sources: [cares_sources, cares_headers, ares_build_h],
   include_directories: cares_include_dirs,
-  c_args: cares_args,
+  c_args: cares_compile_args,
+  link_args: cares_link_args,
   dependencies: cares_dependencies,
   install: true,
   version: libtool_version,
@@ -214,6 +221,7 @@ libcares = library(
 cares_dep = declare_dependency(
   include_directories: cares_include_dirs,
   link_with: libcares,
+  compile_args: cares_args_map['public'],
 )
 meson.override_dependency('libcares', cares_dep)
 
@@ -223,7 +231,7 @@ adig = executable(
   'adig',
   sources: files('src/tools/adig.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
   include_directories: cares_tools_include_dirs,
-  c_args: cares_args,
+  c_args: cares_compile_args,
   dependencies: cares_dep,
   build_by_default: false,
 )
@@ -235,10 +243,50 @@ ahost = executable(
   'ahost',
   sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c'),
   include_directories: cares_tools_include_dirs,
-  c_args: cares_args,
+  c_args: cares_compile_args,
   dependencies: cares_dep,
   build_by_default: false,
 )
 if get_option('export_ahost')
   meson.override_find_program('ahost')
+endif
+
+test_sources = files(
+  'test/ares-test-init.cc',
+  'test/ares-test.cc',
+  'test/ares-test-ns.cc',
+  'test/ares-test-parse.cc',
+  'test/ares-test-parse-a.cc',
+  'test/ares-test-parse-aaaa.cc',
+  'test/ares-test-parse-caa.cc',
+  'test/ares-test-parse-mx.cc',
+  'test/ares-test-parse-naptr.cc',
+  'test/ares-test-parse-ns.cc',
+  'test/ares-test-parse-ptr.cc',
+  'test/ares-test-parse-soa.cc',
+  'test/ares-test-parse-soa-any.cc',
+  'test/ares-test-parse-srv.cc',
+  'test/ares-test-parse-txt.cc',
+  'test/ares-test-parse-uri.cc',
+  'test/ares-test-misc.cc',
+  'test/ares-test-live.cc',
+  'test/ares-test-main.cc',
+  'test/ares-test-mock.cc',
+  'test/ares-test-mock-ai.cc',
+  'test/ares-test-internal.cc',
+  'test/dns-proto.cc',
+  'test/dns-proto-test.cc',
+)
+
+if get_option('tests')
+  add_languages('cpp')
+
+  cares_test = executable('arestest',
+    sources: test_sources,
+    dependencies: [
+      cares_dep,
+      dependency('gtest'),
+      dependency('gmock')])
+
+  test('c-ares-tests', cares_test)
 endif
