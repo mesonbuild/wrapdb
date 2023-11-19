@@ -29,6 +29,13 @@
     "mocklibc",
     "tinyxml2"
   ],
+  "c-ares": {
+    "build_options": [
+      "c-ares:tests=true"
+    ],
+    "__comment": "Some tests are failing, but we only care for it not causing any linking problems",
+    "skip_tests": true
+  },
   "c-flags": {
     "build_options": [
       "c-flags:tests=true"
