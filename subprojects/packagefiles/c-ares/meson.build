@@ -147,7 +147,7 @@ cares_args_map = {
     cc.has_header('sys/types.h') ? '-DHAVE_SYS_TYPES_H' : [],
     cc.has_header('sys/uio.h') ? '-DHAVE_SYS_UIO_H' : [],
 
-    cc.has_type('bool', prefix: '#include <stdbool.h>') ? '-DHAVE_BOOL_T' : [],
+    (cc.has_type('bool', prefix: '#include <stdbool.h>') and not is_windows) ? '-DHAVE_BOOL_T' : [], # on windows will cause redefinition warnings
     cc.has_type('struct timeval', prefix: '#include <sys/time.h>') ? '-DHAVE_STRUCT_TIMEVAL' : [],
     cc.has_type('struct sockaddr_in6', prefix: '#include <sys/socket.h>\n#include <netinet/in.h>') ? '-DHAVE_STRUCT_SOCKADDR_IN6' : [],
     cc.has_type('struct addrinfo', prefix: '#include <sys/types.h>\n#include <sys/socket.h>\n#include <netdb.h>') ? '-DHAVE_STRUCT_ADDRINFO' : [],
