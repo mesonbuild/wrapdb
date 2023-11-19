@@ -181,6 +181,7 @@ cares_args_map = {
   ],
   'windows': [
   ],
+  # export internal symbols that are only really wanted for unit-tests
   'linker-msvc': [
     '/export:ares__bitncmp',
     '/export:ares__cat_domain',
@@ -200,7 +201,7 @@ cares_args_map = {
     '/export:aresx_sztoui',
   ],
   'linker-gcc': [
-    (is_windows and get_option('tests')) ? '--export-all-symbols' : [],
+    (is_windows and get_option('tests')) ? '-Wl,--export-all-symbols' : [],
   ],
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
