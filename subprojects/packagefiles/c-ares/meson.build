@@ -195,6 +195,7 @@ cares_args_map = {
     '/export:ares_inet_net_pton',
     '/export:ares_malloc',
     '/export:ares_malloc_data',
+    '/export:ares_strcasecmp',
     '/export:ares_strdup',
     '/export:aresx_sltosi',
     '/export:aresx_sztosi',
