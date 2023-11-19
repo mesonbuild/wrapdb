@@ -289,6 +289,7 @@ if get_option('tests')
     cpp_args: cares_compile_args, # tests use internal stuff that is not required by regular clients
     dependencies: [
       cares_dep,
+      cares_dependencies,
       dependency('gtest'),
       dependency('gmock')])
 
