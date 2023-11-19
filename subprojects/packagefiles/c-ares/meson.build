@@ -262,7 +262,7 @@ adig = executable(
   sources: files('src/tools/adig.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
-  dependencies: cares_dep,
+  dependencies: [cares_dep, winsock_deps],
   build_by_default: get_option('tools'),
 )
 if get_option('export_adig')
@@ -274,7 +274,7 @@ ahost = executable(
   sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c'),
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
-  dependencies: cares_dep,
+  dependencies: [cares_dep, winsock_deps],
   build_by_default: get_option('tools'),
 )
 if get_option('export_ahost')
