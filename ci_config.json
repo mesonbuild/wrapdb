@@ -557,10 +557,6 @@
     ]
   },
   "msgpackc-cxx": {
-    "_comment": "- depends on Boost, which is not available on WrapDB",
-    "build_on": {
-      "windows": false
-    },
     "alpine_packages": [
       "boost-dev"
     ],
@@ -574,9 +570,6 @@
     ],
     "msys_packages": [
       "boost"
-    ],
-    "build_options": [
-      "msgpackc-cxx:tests=true"
     ]
   },
   "nowide": {

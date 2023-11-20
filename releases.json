@@ -2068,9 +2068,10 @@
   },
   "msgpackc-cxx": {
     "dependency_names": [
-      "msgpackc-cxx"
+      "msgpack-cxx"
     ],
     "versions": [
+      "6.1.0-2",
       "6.1.0-1",
       "5.0.0-1"
     ]
