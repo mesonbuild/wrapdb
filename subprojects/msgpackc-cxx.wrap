@@ -6,4 +6,4 @@ source_hash = 23ede7e93c8efee343ad8c6514c28f3708207e5106af3b3e4969b3a9ed7039e7
 patch_directory = msgpackc-cxx
 
 [provide]
-msgpackc-cxx = msgpackc_cxx_dep
+msgpack-cxx = msgpack_cxx_dep
