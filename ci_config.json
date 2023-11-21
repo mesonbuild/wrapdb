@@ -729,8 +729,9 @@
     ]
   },
   "sfml": {
-    "debian_packages": [
-      "libudev-zero-dev"
+    "alpine_packages": [
+      "libudev-zero-dev",
+      "mesa-dev"
     ],
     "debian_packages": [
       "libgl-dev",
