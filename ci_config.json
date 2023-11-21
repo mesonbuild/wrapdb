@@ -450,6 +450,11 @@
       "libpciaccess-dev"
     ]
   },
+  "libssh2": {
+    "alpine_packages": [
+      "openssl-dev"
+    ]
+  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {

@@ -1,9 +1,9 @@
 project(
   'libssh2',
   'c',
-  version: '1.10.0',
+  version: '1.11.0',
   license: 'BSD-3',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.54.1',
 )
 
 cc = meson.get_compiler('c')
@@ -25,6 +25,7 @@ libssh2_sources = files(
   'src/channel.c',
   'src/comp.c',
   'src/crypt.c',
+  'src/crypto.c',
   'src/global.c',
   'src/hostkey.c',
   'src/keepalive.c',
@@ -40,6 +41,7 @@ libssh2_sources = files(
   'src/sftp.c',
   'src/transport.c',
   'src/userauth.c',
+  'src/userauth_kbd_packet.c',
   'src/version.c',
 )
 
@@ -47,8 +49,7 @@ libssh2_deps = []
 
 if host_machine.system() == 'windows'
   win = import('windows')
-  libssh2_sources += win.compile_resources('win32/libssh2.rc')
-  add_project_arguments('-DLIBSSH2_WIN32', language: 'c')
+  libssh2_sources += win.compile_resources('src/libssh2.rc', include_directories: meson.current_source_dir() / 'include')
 elif host_machine.system() == 'darwin'
   add_project_arguments('-DLIBSSH2_DARWIN', language: 'c')
 endif
@@ -57,21 +58,6 @@ crypto = get_option('crypto_backend')
 if crypto == 'auto'
   if host_machine.system() == 'windows'
     crypto = 'wincng'
-  else
-    crypto = 'openssl'
-  endif
-endif
-
-if crypto == 'openssl'
-  if meson.version().version_compare('>= 0.62.0')
-    openssl_dep = dependency('openssl', version: '>= 1.0.0', required: get_option('crypto_backend') == 'openssl')
-  else
-    openssl_dep = cc.find_library('libcrypto', required: get_option('crypto_backend') == 'openssl')
-  endif
-  if openssl_dep.found()
-    libssh2_sources += 'src/openssl.c'
-    libssh2_deps += openssl_dep
-    add_project_arguments('-DLIBSSH2_OPENSSL', language: 'c')
   else
     crypto = 'gcrypt'
   endif
@@ -97,8 +83,19 @@ if crypto == 'mbedtls'
     libssh2_deps += [libmbedtls, libmbedx509, libmbedcrypto]
     add_project_arguments('-DLIBSSH2_MBEDTLS', language: 'c')
   else
-    error('No crypto backends available')
+    crypto = 'openssl'
   endif
+endif
+
+if crypto == 'openssl'
+  if meson.version().version_compare('>= 0.62.0')
+    openssl_dep = dependency('openssl', version: '>= 1.0.0')
+  else
+    openssl_dep = cc.find_library('libcrypto')
+  endif
+  libssh2_sources += 'src/openssl.c'
+  libssh2_deps += openssl_dep
+  add_project_arguments('-DLIBSSH2_OPENSSL', language: 'c')
 endif
 
 if crypto == 'wincng'
@@ -118,6 +115,7 @@ check_headers = [
   'stdlib.h',
   'sys/select.h',
   'sys/uio.h',
+  'sys/param.h',
   'sys/socket.h',
   'netinet/in.h',
   'arpa/inet.h',
@@ -152,6 +150,7 @@ endforeach
 libssh2_config.set('HAVE_LONGLONG', 1)
 libssh2_config.set('LIBSSH2DEBUG', get_option('buildtype') == 'debug')
 
+add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 libssh2_config_h = configure_file(
   input: 'src/libssh2_config_cmake.h.in',
   output: 'libssh2_config.h',
