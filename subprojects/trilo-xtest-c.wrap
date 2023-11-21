@@ -1,0 +1,11 @@
+# --------------------------------
+# Trilobite Coder Project
+# --------------------------------
+[wrap-git]
+url = https://github.com/trilobite-stdlib/trilo-xtest-c
+directory = trilo-xtest-c-0.4.2
+revision = 0.4.2
+depth = 1
+
+[provide]
+trilo-xtest-c = trilo_xtest_c_dep 
