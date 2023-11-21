@@ -2943,6 +2943,14 @@
       "1.2.3-1"
     ]
   },
+  "trilo-xcore-c": {
+    "dependency_names": [
+      "trilo_xcore_c_dep"
+    ],
+    "versions": [
+      "0.2.0"
+    ]
+  },
   "tabulate": {
     "dependency_names": [
       "tabulate"
