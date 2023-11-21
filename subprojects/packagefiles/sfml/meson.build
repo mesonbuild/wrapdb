@@ -1,12 +1,12 @@
 project(
   'sfml',
   'cpp',
-  version: '2.6.0',
+  version: '2.6.1',
   default_options: [
     'cpp_std=c++17',
     'wrap_mode=forcefallback',
   ],
-  meson_version: '>=0.60.0',
+  meson_version: '>=0.49.0',
 )
 
 cpp = meson.get_compiler('cpp')
