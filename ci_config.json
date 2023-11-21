@@ -430,12 +430,6 @@
     }
   },
   "liblastfm": {
-    "brew_packages": [
-      "curl"
-    ],
-    "debian_packages": [
-      "libcurl4-gnutls-dev"
-    ],
     "build_options": [
       "liblastfm:tests=enabled"
     ],
@@ -464,11 +458,6 @@
       "windows": false
     }
   },
-  "libunibreak": {
-    "alpine_packages": [
-      "curl"
-    ]
-  },
   "libupnp": {
     "_comment": "Requires some special pthread library",
     "build_on": {
@@ -485,6 +474,9 @@
   },
   "libusb": {
     "_comment": "non udev backend fails at running in a container.",
+    "alpine_packages": [
+      "libudev-zero-dev"
+    ],
     "debian_packages": [
       "libudev-dev"
     ]
@@ -794,11 +786,6 @@
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
-    ]
-  },
-  "utf8proc": {
-    "alpine_packages": [
-      "curl"
     ]
   },
   "wayland": {
