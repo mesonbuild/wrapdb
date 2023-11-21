@@ -333,7 +333,8 @@
   },
   "imgui-sfml": {
     "alpine_packages": [
-      "libudev-zero"
+      "libudev-zero-dev",
+      "mesa-dev"
     ],
     "debian_packages": [
       "libgl-dev",
