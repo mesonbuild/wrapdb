@@ -2953,6 +2953,14 @@
       "1.4-1"
     ]
   },
+  "trilo-xdata-c": {
+    "dependency_names": [
+      "trilo_xdata_c_dep"
+    ],
+    "versions": [
+      "0.2.0"
+    ]
+  },
   "taglib": {
     "dependency_names": [
       "taglib"
