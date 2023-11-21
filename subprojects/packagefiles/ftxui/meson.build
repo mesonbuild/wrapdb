@@ -1,7 +1,9 @@
-project('ftxui', 'cpp',
-    version: '4.0.0',
-    meson_version: '>=0.49.0',
-    default_options: ['cpp_std=c++17'],
+project(
+  'ftxui',
+  'cpp',
+  version: '5.0.0',
+  meson_version: '>=0.49.0',
+  default_options: ['cpp_std=c++17'],
 )
 
 cpp = meson.get_compiler('cpp')
@@ -26,7 +28,7 @@ screen_lib = static_library(
   'src/ftxui/screen/screen.cpp',
   'src/ftxui/screen/string.cpp',
   'src/ftxui/screen/terminal.cpp',
-  include_directories: depinc,
+  include_directories: [depinc, srcinc],
   dependencies: thread_dep,
 )
 
@@ -58,7 +60,9 @@ dom_lib = static_library(
   'src/ftxui/dom/graph.cpp',
   'src/ftxui/dom/gridbox.cpp',
   'src/ftxui/dom/hbox.cpp',
+  'src/ftxui/dom/hyperlink.cpp',
   'src/ftxui/dom/inverted.cpp',
+  'src/ftxui/dom/linear_gradient.cpp',
   'src/ftxui/dom/node.cpp',
   'src/ftxui/dom/node_decorator.cpp',
   'src/ftxui/dom/paragraph.cpp',

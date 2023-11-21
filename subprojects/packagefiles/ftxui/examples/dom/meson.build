@@ -1,12 +1,13 @@
 doms = [
   'border',
+  'border_colored',
   'border_style',
+  'canvas',
   'color_gallery',
   'color_info_palette256',
   'color_truecolor_HSV',
   'color_truecolor_RGB',
   'dbox',
-  'canvas',
   'gauge',
   'gauge_direction',
   'graph',
@@ -24,6 +25,7 @@ doms = [
   'style_color',
   'style_dim',
   'style_gallery',
+  'style_hyperlink',
   'style_inverted',
   'style_strikethrough',
   'style_underlined',
@@ -31,7 +33,6 @@ doms = [
   'table',
   'vbox_hbox',
   'vflow',
-  'window',
 ]
 
 foreach d : doms
