@@ -1,0 +1,11 @@
+# --------------------------------
+# Trilobite Coder Project
+# --------------------------------
+[wrap-git]
+url = https://github.com/trilobite-stdlib/trilo-xdata-c
+directory = trilo-xdata-c-0.2.0
+revision = 0.2.0
+depth = 1
+
+[provide]
+trilo-xdata-c = trilo_xdata_c_dep 
