@@ -3,6 +3,9 @@ set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+python3 generate_def.py --fixup-crypto < util/libcrypto.num > crypto.def
+python3 generate_def.py < util/libssl.num > ssl.def
+
 # Node.js version should bundle OpenSSL of matching version to one specified in wrap file
 node_version=v19.7.0
 openssl_version="$OPENSSL_VERSION"

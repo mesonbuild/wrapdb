@@ -341,6 +341,7 @@ libcrypto_lib = library(
   sources: libcrypto_sources,
   include_directories: include_directories,
   c_args: c_args,
+  vs_module_defs: 'crypto.def',
   install: true,
 )
 
@@ -356,6 +357,7 @@ libssl_lib = library(
   sources: libssl_sources,
   include_directories: include_directories,
   c_args: c_args,
+  vs_module_defs: 'ssl.def',
   install: true,
 )
 

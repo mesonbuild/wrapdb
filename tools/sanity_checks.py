@@ -70,6 +70,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'bn_conf.h',
         'dso_conf.h',
         'buildinf.h',
+        'generate_def.py',
         'generate_gypi.pl.patch',
         'meson.build.tmpl',
         'README.md',
