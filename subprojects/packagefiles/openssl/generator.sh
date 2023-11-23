@@ -3,9 +3,6 @@ set -e
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-python3 generate_def.py --fixup-crypto < util/libcrypto.num > crypto.def
-python3 generate_def.py < util/libssl.num > ssl.def
-
 # Node.js version should bundle OpenSSL of matching version to one specified in wrap file
 node_version=v19.7.0
 openssl_version="$OPENSSL_VERSION"
@@ -29,6 +26,9 @@ cp ../../../meson.build.tmpl config/
 # Swap bundled OpenSSL in Node.js with upstream
 rm -rf openssl
 git clone --depth 1 --branch "openssl-$openssl_version" https://github.com/openssl/openssl.git
+
+python3 ../../../generate_def.py --fixup-crypto < openssl/util/libcrypto.num > ../../../crypto.def
+python3 ../../../generate_def.py < openssl/util/libssl.num > ../../../ssl.def
 
 rm -rf config/archs
 LANG=C make -C config
