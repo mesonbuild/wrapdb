@@ -255,7 +255,6 @@ absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
   'absl/hash/internal/low_level_hash.cc',
-  'absl/hash/internal/print_hash_of.cc',
 )
 absl_hash_headers = files(
   'absl/hash/hash.h',
