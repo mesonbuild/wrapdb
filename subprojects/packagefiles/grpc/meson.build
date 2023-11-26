@@ -8,7 +8,9 @@ version_array = meson.project_version().split('.')
 grpc_soversion = '.'.join([version_array[0], version_array[1]])
 core_soversion = '36'
 
-is_static_lib = get_option('default_library') == 'static'
+is_static = get_option('default_library') == 'static'
+is_darwin = host_machine.system() == 'darwin'
+is_windows = host_machine.system() == 'windows'
 cpp = meson.get_compiler('cpp')
 
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
@@ -44,7 +46,7 @@ absl_time_dep = dependency('absl_time')
 absl_type_traits_dep = dependency('absl_type_traits')
 absl_utility_dep = dependency('absl_utility')
 absl_variant_dep = dependency('absl_variant')
-appleframeworks_dep = target_machine.system() == 'darwin' ? [
+appleframeworks_dep = is_darwin ? [
   dependency('appleframeworks',
     modules: ['CoreFoundation'])
 ] : []
@@ -54,7 +56,7 @@ libssl_dep = dependency('libssl')
 protobuf_dep = dependency('protobuf')
 protoc_dep = dependency('protoc')
 re2_dep = dependency('re2')
-winsock_dep = target_machine.system() == 'windows' ? [
+winsock_dep = is_windows ? [
   cpp.find_library('iphlpapi'),
   cpp.find_library('wininet'),
   cpp.find_library('ws2_32'),
@@ -174,8 +176,8 @@ libgpr = library('gpr',
     'src/core/lib/gprpp/windows/env.cc',
     'src/core/lib/gprpp/windows/stat.cc',
     'src/core/lib/gprpp/windows/thd.cc'),
-  cpp_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
-  c_args: [is_static_lib ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
+  cpp_args: [is_static ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
+  c_args: [is_static ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -1832,8 +1834,8 @@ libgrpc = library('grpc',
     'src/core/tsi/ssl_transport_security_utils.cc',
     'src/core/tsi/transport_security.cc',
     'src/core/tsi/transport_security_grpc.cc'),
-  cpp_args: [is_static_lib ? ['-DGRPC_DLL_EXPORTS'] : []],
-  c_args: [is_static_lib ? ['-DGRPC_DLL_EXPORTS'] : []],
+  cpp_args: [is_static ? ['-DGRPC_DLL_EXPORTS'] : []],
+  c_args: [is_static ? ['-DGRPC_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -1997,8 +1999,8 @@ libgrpcpp = library('grpc++',
     'src/cpp/util/status.cc',
     'src/cpp/util/string_ref.cc',
     'src/cpp/util/time_cc.cc'),
-  cpp_args: [is_static_lib ? ['-DGRPCXX_DLL_EXPORTS'] : []],
-  c_args: [is_static_lib ? ['-DGRPCXX_DLL_EXPORTS'] : []],
+  cpp_args: [is_static ? ['-DGRPCXX_DLL_EXPORTS'] : []],
+  c_args: [is_static ? ['-DGRPCXX_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
