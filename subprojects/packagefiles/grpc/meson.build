@@ -980,7 +980,8 @@ grpc_unsecure_dep = declare_dependency(
   link_with: libgrpc_unsecure,
   include_directories: common_include_dirs,
   dependencies: [
-    gpr_dep],
+    gpr_dep,
+    libcares_dep],
 )
 
 libupb_json_lib = library('upb_json_lib',
@@ -1875,7 +1876,8 @@ grpc_dep = declare_dependency(
   link_with: libgrpc,
   include_directories: common_include_dirs,
   dependencies: [
-    gpr_dep],
+    gpr_dep,
+    libcares_dep],
 )
 
 libgrpcpp_unsecure = library('grpc++_unsecure',
