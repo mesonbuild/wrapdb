@@ -20,7 +20,7 @@ absl_bind_front_dep = dependency('absl_bind_front')
 absl_cleanup_dep = dependency('absl_cleanup')
 absl_cord_dep = dependency('absl_cord')
 absl_core_headers_dep = dependency('absl_core_headers')
-absl_crc_dep = dependency('absl_crc')
+absl_crc32c_dep = dependency('absl_crc32c')
 absl_flags_dep = dependency('absl_flags')
 absl_flags_marshalling_dep = dependency('absl_flags_marshalling')
 absl_flags_parse_dep = dependency('absl_flags_parse')
@@ -187,7 +187,7 @@ libgpr = library('gpr',
     absl_base_dep,
     absl_cord_dep,
     absl_core_headers_dep,
-    absl_crc_dep,
+    absl_crc32c_dep,
     absl_flags_dep,
     absl_flags_marshalling_dep,
     absl_flags_parse_dep,
