@@ -54,7 +54,10 @@ libcares_dep = dependency('libcares')
 libcrypto_dep = dependency('libcrypto')
 libssl_dep = dependency('libssl')
 protobuf_dep = dependency('protobuf')
-protoc_dep = dependency('protoc')
+protoc_dep = dependency('protoc', required: false)
+if not protoc_dep.found()
+  protoc_dep = cpp.find_library('protoc') # pkgconfig version does not provide protoc.pc
+endif
 re2_dep = dependency('re2')
 winsock_dep = is_windows ? [
   cpp.find_library('iphlpapi'),
