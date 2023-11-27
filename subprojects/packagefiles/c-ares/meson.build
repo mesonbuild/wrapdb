@@ -8,7 +8,7 @@ is_windows = (host_machine.system() == 'windows')
 
 cc = meson.get_compiler('c')
 winsock_deps = (
-  host_machine.system() == 'windows' ? [
+  is_windows ? [
     cc.find_library('iphlpapi'),
     cc.find_library('wininet'),
     cc.find_library('ws2_32'),
