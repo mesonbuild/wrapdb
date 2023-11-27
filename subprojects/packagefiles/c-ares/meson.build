@@ -179,36 +179,10 @@ cares_args_map = {
     '-DSEND_TYPE_ARG4=int',
     '-DSEND_TYPE_RETV=ssize_t',
   ],
-  'windows': [
-  ],
-  # export internal symbols that are only really wanted for unit-tests
-  'linker-msvc': [
-    '/export:ares__bitncmp',
-    '/export:ares__cat_domain',
-    '/export:ares__get_hostent',
-    '/export:ares__is_onion_domain',
-    '/export:ares__read_line',
-    '/export:ares__readaddrinfo',
-    '/export:ares__strsplit',
-    '/export:ares__strsplit_free',
-    '/export:ares_free',
-    '/export:ares_inet_net_pton',
-    '/export:ares_malloc',
-    '/export:ares_malloc_data',
-    '/export:ares_strcasecmp',
-    '/export:ares_strdup',
-    '/export:aresx_sltosi',
-    '/export:aresx_sztosi',
-    '/export:aresx_sztoui',
-  ],
-  'linker-gcc': [
-    (is_windows and get_option('tests')) ? '-Wl,--export-all-symbols' : [],
-  ],
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
 
 cares_compile_args = [cares_args_map['common'], cares_args_map.get(host_machine.system(), [])]
-cares_link_args = cares_args_map.get('linker-' + cc.get_argument_syntax(), [])
 
 cares_config = {
   'common': {
@@ -236,13 +210,15 @@ ares_build_h = configure_file(
   format: 'cmake@',
 )
 
+libcares_kwargs = {
+  'sources': [cares_sources, cares_headers, ares_build_h],
+  'include_directories': cares_include_dirs,
+  'dependencies': cares_dependencies,
+}
+
 libcares = library(
   'cares',
-  sources: [cares_sources, cares_headers, ares_build_h],
-  include_directories: cares_include_dirs,
-  c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY'],
-  link_args: cares_link_args,
-  dependencies: cares_dependencies,
+  c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', is_static ? '-DCARES_STATICLIB' : []],
   install: true,
   version: libtool_version,
   soversion: libtool_soversion,
@@ -274,7 +250,7 @@ ahost = executable(
   sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c'),
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
-  dependencies: [cares_dep, winsock_deps],
+  dependencies: cares_dep,
   build_by_default: get_option('tools'),
 )
 if get_option('export_ahost')
@@ -309,8 +285,20 @@ test_sources = files(
 )
 
 if get_option('tests')
-  add_languages('cpp')
+  if not is_static
+    libcares_static = static_library('cares',
+    c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', '-DCARES_STATICLIB'],
+    kwargs: libcares_kwargs)
 
+    cares_static_dep = declare_dependency(
+      include_directories: cares_include_dirs,
+      link_with: libcares_static,
+      compile_args: ['-DCARES_STATICLIB'])
+  else
+    cares_static_dep = cares_dep
+  endif
+
+  add_languages('cpp')
   cares_test = executable('arestest',
     sources: test_sources,
     cpp_args: cares_compile_args, # tests use internal stuff that is not required by regular clients
