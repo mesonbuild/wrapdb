@@ -640,12 +640,23 @@ absl_profiling_lib = static_library(
   include_directories: absl_include_dir,
 )
 
+absl_crc_lib = static_library(
+  'absl_crc',
+  absl_crc_sources,
+  include_directories: absl_include_dir,
+  link_with: [
+    absl_base_lib,
+  ],
+  dependencies: libatomic,
+)
+
 absl_strings_lib = static_library(
   'absl_strings',
   absl_strings_sources,
   include_directories: absl_include_dir,
   link_with: [
     absl_base_lib,
+    absl_crc_lib,
     absl_numeric_lib,
     absl_profiling_lib,
   ],
@@ -658,16 +669,6 @@ absl_debugging_lib = static_library(
   link_with: [
     absl_base_lib,
     absl_strings_lib,
-  ],
-  dependencies: libatomic,
-)
-
-absl_crc_lib = static_library(
-  'absl_crc',
-  absl_crc_sources,
-  include_directories: absl_include_dir,
-  link_with: [
-    absl_base_lib,
   ],
   dependencies: libatomic,
 )
