@@ -222,6 +222,7 @@ libcares = library(
   install: true,
   version: libtool_version,
   soversion: libtool_soversion,
+  kwargs: libcares_kwargs,
 )
 
 cares_dep = declare_dependency(
@@ -287,13 +288,15 @@ test_sources = files(
 if get_option('tests')
   if not is_static
     libcares_static = static_library('cares',
-    c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', '-DCARES_STATICLIB'],
-    kwargs: libcares_kwargs)
+      c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', '-DCARES_STATICLIB'],
+      kwargs: libcares_kwargs,
+    )
 
     cares_static_dep = declare_dependency(
       include_directories: cares_include_dirs,
       link_with: libcares_static,
-      compile_args: ['-DCARES_STATICLIB'])
+      compile_args: ['-DCARES_STATICLIB'],
+    )
   else
     cares_static_dep = cares_dep
   endif
@@ -306,7 +309,9 @@ if get_option('tests')
       cares_dep,
       cares_dependencies,
       dependency('gtest'),
-      dependency('gmock')])
+      dependency('gmock'),
+    ],
+  )
 
   test('c-ares-tests', cares_test)
 endif
