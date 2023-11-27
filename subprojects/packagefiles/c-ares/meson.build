@@ -160,6 +160,7 @@ cares_args_map = {
     cc.has_header_symbol('string.h', 'strcmpi') ? '-DHAVE_STRCMPI' : [],
     cc.has_header_symbol('string.h', 'strncmpi') ? '-DHAVE_STRNCMPI' : [],
     cc.has_header_symbol('string.h', 'strnicmp') ? '-DHAVE_STRNICMP' : [],
+    cc.has_header_symbol('string.h', 'strdup') ? '-DHAVE_STRDUP' : [],
 
     cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
     cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
