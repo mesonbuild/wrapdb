@@ -304,9 +304,9 @@ if get_option('tests')
   add_languages('cpp')
   cares_test = executable('arestest',
     sources: test_sources,
-    cpp_args: cares_compile_args, # tests use internal stuff that is not required by regular clients
+    cpp_args: cares_compile_args,
     dependencies: [
-      cares_dep,
+      cares_static_dep,
       cares_dependencies,
       dependency('gtest'),
       dependency('gmock'),
