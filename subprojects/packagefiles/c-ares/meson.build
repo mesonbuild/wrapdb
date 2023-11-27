@@ -1,5 +1,7 @@
 project('c-ares', 'c', version: '1.22.1', license: 'MIT', default_options: 'cpp_std=c++17')
 
+# don't forget to update mee too
+# see: https://github.com/c-ares/c-ares/blob/f1bf69c2d71a7e426ee967847173200a3ef1705a/CMakeLists.txt#L33
 libtool_version = '2.8.1'
 libtool_soversion = '2'
 
