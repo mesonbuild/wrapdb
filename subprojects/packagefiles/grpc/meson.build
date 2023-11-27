@@ -1,3 +1,7 @@
+# WARNING: this file is auto-generated! Your changes here will likely be discarded
+# raise an issue on GH is you have suggestions
+# todo: merge-in generator script
+
 project('gRPC', ['c', 'cpp'], version: '1.59.1', license: 'Apache-2.0',
   default_options: [
     'cpp_std=c++17',
