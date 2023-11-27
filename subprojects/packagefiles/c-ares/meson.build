@@ -126,9 +126,6 @@ cares_args_map = {
     is_static ? '-DCARES_STATICLIB' : [],
   ],
   'common': [
-    '-DCARES_BUILDING_LIBRARY',
-    is_static ? '-DCARES_STATICLIB' : [],
-
     cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
     cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
     cc.has_header('limits.h') ? '-DHAVE_LIMITS_H' : [],
@@ -233,6 +230,23 @@ cares_dep = declare_dependency(
 )
 meson.override_dependency('libcares', cares_dep)
 
+if not is_static
+  libcares_static = static_library(
+    'cares',
+    c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', '-DCARES_STATICLIB'],
+    build_by_default: false,
+    kwargs: libcares_kwargs,
+  )
+
+  cares_static_dep = declare_dependency(
+    include_directories: cares_include_dirs,
+    link_with: libcares_static,
+    compile_args: ['-DCARES_STATICLIB'],
+  )
+else
+  cares_static_dep = cares_dep
+endif
+
 cares_tools_include_dirs = include_directories('src/tools')
 
 adig = executable(
@@ -240,7 +254,7 @@ adig = executable(
   sources: files('src/tools/adig.c', 'src/tools/ares_getopt.c', 'src/tools/ares_getopt.h'),
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
-  dependencies: [cares_dep, winsock_deps],
+  dependencies: [cares_static_dep, winsock_deps],
   build_by_default: get_option('tools'),
 )
 if get_option('export_adig')
@@ -252,7 +266,7 @@ ahost = executable(
   sources: files('src/tools/ahost.c', 'src/tools/ares_getopt.c'),
   include_directories: cares_tools_include_dirs,
   c_args: cares_compile_args,
-  dependencies: cares_dep,
+  dependencies: [cares_static_dep, winsock_deps],
   build_by_default: get_option('tools'),
 )
 if get_option('export_ahost')
@@ -287,21 +301,6 @@ test_sources = files(
 )
 
 if get_option('tests')
-  if not is_static
-    libcares_static = static_library('cares',
-      c_args: [cares_compile_args, '-DCARES_BUILDING_LIBRARY', '-DCARES_STATICLIB'],
-      kwargs: libcares_kwargs,
-    )
-
-    cares_static_dep = declare_dependency(
-      include_directories: cares_include_dirs,
-      link_with: libcares_static,
-      compile_args: ['-DCARES_STATICLIB'],
-    )
-  else
-    cares_static_dep = cares_dep
-  endif
-
   add_languages('cpp')
   cares_test = executable('arestest',
     sources: test_sources,
