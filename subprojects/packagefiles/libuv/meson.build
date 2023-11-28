@@ -1,7 +1,7 @@
 project(
   'libuv',
   'c',
-  version: '1.46.0',
+  version: '1.47.0',
   license: 'libuv',
   default_options: ['c_std=gnu99'],
   meson_version: '>=0.49.0',
@@ -134,6 +134,7 @@ if win32
     'dbghelp',
     'ole32',
     'uuid',
+    'shell32',
   ]
   libuv_src += files(
     'src/win/async.c',
