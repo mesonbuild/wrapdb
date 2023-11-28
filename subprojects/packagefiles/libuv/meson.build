@@ -3,7 +3,7 @@ project(
   'c',
   version: '1.47.0',
   license: 'libuv',
-  default_options: ['c_std=gnu99'],
+  default_options: ['c_std=gnu99,c99'],
   meson_version: '>=0.49.0',
 )
 
