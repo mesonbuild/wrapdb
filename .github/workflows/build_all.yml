@@ -51,9 +51,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Create non privileged user
+        run: |
+          adduser wrapdb --disabled-password
+          chown -R wrapdb:wrapdb .
+
       - name: Sanity Checks
         run: |
-          ./tools/sanity_checks.py
+          su -c - wrapdb ./tools/sanity_checks.py
 
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
