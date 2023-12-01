@@ -51,6 +51,11 @@
       "cexception:werror=false"
     ]
   },
+  "cglm": {
+    "build_options": [
+      "cglm:build_tests=true"
+    ]
+  },
   "cli11": {
     "build_options": [
       "cpp_std=c++14"
