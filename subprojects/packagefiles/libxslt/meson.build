@@ -2,7 +2,7 @@ project(
   'libxslt',
   'c',
   license: 'MIT',
-  version: '1.1.38',
+  version: '1.1.39',
   meson_version: '>=0.54.1',
 )
 
