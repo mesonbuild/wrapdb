@@ -1,3 +1,8 @@
+#Windows does not have random
+if not cc.has_function('random')
+  subdir_done()
+endif
+
 conf = configuration_data()
 
 if cc.has_header('pthread.h')

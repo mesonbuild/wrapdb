@@ -1,3 +1,8 @@
+#Windows does not have random
+if not cc.has_function('random')
+  subdir_done()
+endif
+
 runtest = executable(
   'runtest',
   ['runtest.c', 'test.c'],
