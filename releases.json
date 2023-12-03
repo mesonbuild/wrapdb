@@ -525,6 +525,11 @@
       "3.3.4-1"
     ]
   },
+  "embed": {
+    "versions": [
+      "0.0.1-1"
+    ]
+  },
   "emilk-loguru": {
     "dependency_names": [
       "loguru"

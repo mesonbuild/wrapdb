@@ -1,0 +1,5 @@
+[wrap-file]
+directory = embed-0.0.1
+source_url = https://github.com/juniorrantila/embed/archive/refs/tags/v0.0.1.tar.gz
+source_filename = embed-0.0.1.tar.gz
+source_hash = 1fb093920ba0f7e1d1a73cc9dde0c0240f4cfd86ec3af65e7b83eb4a755dbbd9
