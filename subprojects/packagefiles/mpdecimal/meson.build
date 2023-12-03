@@ -168,12 +168,12 @@ machine = get_option('machine')
 
 if machine == 'auto'
   if host_machine.system() == 'windows'
-    if host_machine.cpu_family() == 'x86'
+    if have_uint128_t
+        machine = 'uint128'
+    elif host_machine.cpu_family() == 'x86'
       machine = 'ppro'
     elif host_machine.cpu_family() == 'x86_64'
       machine = 'x64'
-    else
-      error('machine probing on Windows only supports x86/x64')
     endif
   else
     if cc.sizeof('size_t') == 8
@@ -219,9 +219,7 @@ if machine == 'x64'
 elif machine == 'uint128'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
   add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language: 'c')
-  if host_machine.system() == 'windows'
-    error('machine "uint128" not supported on Windows')
-  else
+  if host_machine.system() != 'windows'
     add_project_arguments('-m64', language: ['c', 'cpp'])
     add_project_link_arguments('-m64', language: ['c', 'cpp'])
   endif
