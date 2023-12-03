@@ -1,0 +1,13 @@
+[wrap-file]
+directory = grpc-1.59.1
+source_url = https://github.com/grpc/grpc/archive/refs/tags/v1.59.1.tar.gz
+source_filename = grpc-1.59.1.tar.gz
+source_hash = 916f88a34f06b56432611aaa8c55befee96d0a7b7d7457733b9deeacbc016f99
+patch_directory = grpc
+
+[provide]
+grpc = grpc_dep
+grpc_unsecure = grpc_unsecure_dep
+grpc++ = grpcpp_dep
+grpc++_unsecure = grpcpp_unsecure_dep
+program_names = grpc_cpp_plugin, grpc_python_plugin, grpc_ruby_plugin, grpc_php_plugin, grpc_node_plugin

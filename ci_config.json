@@ -283,6 +283,12 @@
     "has_provides": false,
     "fatal_warnings": false
   },
+  "grpc": {
+    "_comment": "- wrapdb openssl broken on alpine",
+    "alpine_packages": [
+      "openssl-dev"
+    ]
+  },
   "gumbo-parser": {
     "build_options": [
       "gumbo-parser:examples=enabled",
