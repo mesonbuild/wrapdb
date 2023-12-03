@@ -1,4 +1,10 @@
-project('liblangtag', 'c', license: 'LGPL-3.0-or-later', version: '0.6.4')
+project(
+  'liblangtag',
+  'c',
+  license: 'LGPL-3.0-or-later',
+  version: '0.6.7',
+  meson_version: '>=0.49.0',
+)
 
 cc = meson.get_compiler('c')
 
@@ -103,7 +109,8 @@ liblangtag_lib = build_target(
   dependencies: [xml_dep, threads_dep, dl_dep],
 )
 
+depinc = include_directories('.')
 liblangtag_dep = declare_dependency(
-  include_directories: '.',
+  include_directories: depinc,
   link_with: liblangtag_lib,
 )
