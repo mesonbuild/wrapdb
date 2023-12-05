@@ -35,7 +35,7 @@ has__kernel_rwf_t = cc.has_type('__kernel_rwf_t', prefix: '#include <linux/fs.h>
 has__kernel_timespec = cc.has_members('struct __kernel_timespec',
                                       'tv_sec',
                                       'tv_nsec',
-                                      prefix: '#include <linux/time.h>')
+                                      prefix: '#include <linux/time_types.h>')
 
 code = '''#include <sys/types.h>
 #include <fcntl.h>
