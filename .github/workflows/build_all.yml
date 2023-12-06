@@ -54,6 +54,7 @@ jobs:
       - name: Create non privileged user
         run: |
           adduser wrapdb --disabled-password
+          echo 'wrapdb ALL=(ALL:ALL) NOPASSWD: ALL' >/etc/sudoers.d/wrapdb
           chown -R wrapdb:wrapdb .
 
       - name: Sanity Checks
