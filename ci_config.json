@@ -81,6 +81,11 @@
       "even with libpsl installed, the dependency is not detected…",
       "ditto with openldap (“unknown version” at dependency check)"
     ],
+    "alpine_packages": [
+      "bash",
+      "perl",
+      "make"
+    ],
     "brew_packages": [
       "gnutls",
       "krb5",
