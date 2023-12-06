@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.4.0',
+  version: '8.5.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -143,7 +143,6 @@ _headerlist = {
     'fnmatch',
   ],
   'ifaddrs.h': [],
-  'inttypes.h': [],
   'io.h': [],
   'krb.h': [],
   'libgen.h': [
@@ -230,9 +229,7 @@ _headerlist = {
     'socketpair',
   ],
   'sys/sockio.h': [],
-  'sys/stat.h': [
-    'fchmod',
-  ],
+  'sys/stat.h': [],
   'sys/time.h': [
     'gettimeofday',
     'utimes',
@@ -379,6 +376,8 @@ if cdata.get('SIZEOF_SSIZE_T') <= 0
     endif
   endforeach
 endif
+
+cdata.set('HAVE_DECL_FSEEKO', cdata.get('HAVE_FSEEKO'))
 
 cdata.set(
   'HAVE_GETIFADDRS',
@@ -1018,7 +1017,7 @@ cdata.set('HAVE_LIBZ', libz_opt.allowed())
 # ZSTD. {{{
 
 zstd_opt = get_option('zstd')
-lib_deps += dependency('libzstd', required: zstd_opt)
+lib_deps += dependency('libzstd', required: zstd_opt, version: '>=1.0.0')
 zstd_opt = zstd_opt.require(lib_deps[-1].found())
 cdata.set('HAVE_ZSTD', zstd_opt.allowed())
 
@@ -1063,8 +1062,6 @@ foreach _spec : [
   ['HAVE_O_NONBLOCK'],
   ['HAVE_POSIX_STRERROR_R'],
   ['HAVE_SETSOCKOPT_SO_NONBLOCK'],
-  ['HAVE_VARIADIC_MACROS_C99'],
-  ['HAVE_VARIADIC_MACROS_GCC'],
   ['STDC_HEADERS'],
 ]
   _test = _spec[0]

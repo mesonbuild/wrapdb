@@ -205,9 +205,6 @@
 /* "Set if getpwuid_r() declaration is missing" */
 #mesondefine HAVE_DECL_GETPWUID_R_MISSING
 
-/* Define to 1 if you have the `fchmod' function. */
-#mesondefine HAVE_FCHMOD
-
 /* Define to 1 if you have the fcntl function. */
 #mesondefine HAVE_FCNTL
 
@@ -225,6 +222,9 @@
 
 /* Define to 1 if you have the `fseeko' function. */
 #mesondefine HAVE_FSEEKO
+
+/* Define to 1 if you have the fseeko declaration. */
+#mesondefine HAVE_DECL_FSEEKO
 
 /* Define to 1 if you have the fsetxattr function. */
 #mesondefine HAVE_FSETXATTR
@@ -324,9 +324,6 @@
 
 /* Define to 1 if you have a IPv6 capable working inet_pton function. */
 #mesondefine HAVE_INET_PTON
-
-/* Define to 1 if you have the <inttypes.h> header file. */
-#mesondefine HAVE_INTTYPES_H
 
 /* Define to 1 if you have the ioctlsocket function. */
 #mesondefine HAVE_IOCTLSOCKET
@@ -505,9 +502,6 @@
 /* Define to 1 if you have the <stdbool.h> header file. */
 #mesondefine HAVE_STDBOOL_H
 
-/* Define to 1 if you have the <stdint.h> header file. */
-#mesondefine HAVE_STDINT_H
-
 /* Define to 1 if you have the <stdio.h> header file. */
 #mesondefine HAVE_STDIO_H
 
@@ -615,12 +609,6 @@
 
 /* Define to 1 if you have the <utime.h> header file. */
 #mesondefine HAVE_UTIME_H
-
-/* Define to 1 if compiler supports C99 variadic macro style. */
-#mesondefine HAVE_VARIADIC_MACROS_C99
-
-/* Define to 1 if compiler supports old gcc variadic macro style. */
-#mesondefine HAVE_VARIADIC_MACROS_GCC
 
 /* Define to 1 if you have the windows.h header file. */
 #mesondefine HAVE_WINDOWS_H

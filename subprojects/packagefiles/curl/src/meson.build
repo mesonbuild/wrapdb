@@ -28,6 +28,7 @@ curl_src = files(
   'tool_getpass.c',
   'tool_help.c',
   'tool_helpers.c',
+  'tool_ipfs.c',
   'tool_libinfo.c',
   'tool_listhelp.c',
   'tool_main.c',

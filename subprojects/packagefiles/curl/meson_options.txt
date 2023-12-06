@@ -74,7 +74,7 @@ option('ldap-provider', type: 'array', choices: ['win32', 'openldap'])
 
 # NTLM.
 option('ntlm'        , type: 'feature')
-option('ntlm-wb'     , type: 'feature')
+option('ntlm-wb'     , type: 'feature', value: 'disabled')
 option('ntlm-wb-file', type: 'string', value: 'ntlm_auth')
 
 # SSH support.

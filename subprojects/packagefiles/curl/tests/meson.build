@@ -51,6 +51,10 @@ endif
 _disabled_tests = []
 # Do not run flaky tests.
 _disabled_tests += '!flaky'
+if not fs.exists('errorcodes.pl')
+  # Missing in source distribution.
+  _disabled_tests += '!1477'
+endif
 if not fs.exists('../docs/curl.1')
   # Not available in git checkout (and we don't build it).
   _disabled_tests += '!1139'
