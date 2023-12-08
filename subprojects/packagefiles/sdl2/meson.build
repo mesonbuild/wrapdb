@@ -1177,7 +1177,7 @@ sdl2 = library('sdl2',
     c_args : core_args,
     link_args : core_ldflags,
     dependencies : deps,
-    override_options : ['c_std=none'],
+    override_options : ['c_std=none', 'unity=off'],
     install : do_install,
     gnu_symbol_visibility: 'hidden',
 )
@@ -1207,7 +1207,7 @@ sdl2_test = static_library('sdl2_test',
     c_args : core_args,
     link_args : core_ldflags,
     dependencies : [sdl2_dep, test_deps],
-    override_options : ['c_std=none'],
+    override_options : ['c_std=none', 'unity=off'],
     build_by_default : false,
 )
 
