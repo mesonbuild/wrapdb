@@ -1207,7 +1207,7 @@ sdl2_test = static_library('sdl2_test',
     c_args : core_args,
     link_args : core_ldflags,
     dependencies : [sdl2_dep, test_deps],
-    override_options : ['c_std=none', 'unity=off'],
+    override_options : ['c_std=none'],
     build_by_default : false,
 )
 
