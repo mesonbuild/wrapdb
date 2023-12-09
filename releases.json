@@ -3286,6 +3286,14 @@
       "0.8.1-1"
     ]
   },
+  "tree-sitter": {
+    "dependency_names": [
+      "tree-sitter"
+    ],
+    "versions": [
+      "0.22.5-1"
+    ]
+  },
   "trompeloeil": {
     "versions": [
       "39-1",
