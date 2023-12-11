@@ -1,10 +1,10 @@
 [wrap-file]
-directory = glib-2.78.2
+directory = glib-2.78.3
 
-source_url = https://download.gnome.org/sources/glib/2.78/glib-2.78.2.tar.xz
-source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/glib/2.78/glib-2.78.2.tar.xz
-source_filename = glib-2.78.2.tar.xz
-source_hash = 4409eb63f7711a45e70c3b5ff5b42214ef2df056c254228bef4e45f4b6b74b12
+source_url = https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz
+source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/glib/2.78/glib-2.78.3.tar.xz
+source_filename = glib-2.78.3.tar.xz
+source_hash = 609801dd373796e515972bf95fc0b2daa44545481ee2f465c4f204d224b2bc21
 
 [provide]
 dependency_names = gthread-2.0, gobject-2.0, gmodule-no-export-2.0, gmodule-export-2.0, gmodule-2.0, glib-2.0, gio-2.0, gio-windows-2.0, gio-unix-2.0
