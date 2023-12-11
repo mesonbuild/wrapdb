@@ -45,6 +45,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_features.h',
         'glbinding-aux_export.h'
     ],
+    'grpc': [
+        'compile-proto.py'
+    ],
     'gumbo-parser': [
         'tokenizer.cc',
     ],
