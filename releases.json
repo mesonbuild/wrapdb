@@ -1009,7 +1009,9 @@
       "grpc",
       "grpc_unsecure",
       "grpc++",
-      "grpc++_unsecure"
+      "grpc++_unsecure",
+      "grpc++_channelz",
+      "grpc++_reflection"
     ],
     "program_names": [
       "grpc_cpp_plugin",
