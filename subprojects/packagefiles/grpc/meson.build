@@ -2222,6 +2222,7 @@ libgrpcpp_reflection = library(
   version: meson.project_version(),
   soversion: grpc_soversion,
   dependencies: [
+    absl_synchronization_dep,
     grpcpp_dep,
     protobuf_dep,
   ],
