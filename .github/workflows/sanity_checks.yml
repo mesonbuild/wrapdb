@@ -27,7 +27,7 @@ jobs:
   Alpine:
     runs-on: ubuntu-latest
     container:
-      image: alpine
+      image: alpine:3.18
     steps:
       - name: Install packages
         run: |
