@@ -15,10 +15,16 @@ thread_dep = dependency('threads')
 spdlog_dependencies = [thread_dep]
 spdlog_compile_args = []
 
-fmt_dep = dependency('fmt', version: '>=8.1', required: get_option('external_fmt'))
-if fmt_dep.found()
-  spdlog_dependencies += fmt_dep
-  spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
+if get_option('external_fmt').enabled()
+  fmt_dep = dependency('fmt', version: '>=8.1', required: true)
+  if fmt_dep.found()
+    spdlog_dependencies += fmt_dep
+    spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
+  endif
+endif
+
+if get_option('std_format').enabled()
+  spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
 endif
 
 if get_option('compile_library')
