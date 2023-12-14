@@ -1,0 +1,9 @@
+[wrap-file]
+directory = whisper.cpp-1.5.2
+source_url = https://github.com/ggerganov/whisper.cpp/archive/refs/tags/v1.5.2.tar.gz
+source_filename = 1.5.2.tar.gz
+source_hash = be9c4d5d4b5f28f02e36f28e602b7d2dcfd734dd1c834ddae91ae8db601e951f
+patch_directory = whisper_cpp
+
+[provide]
+whisper_cpp = whisper_cpp_dep
