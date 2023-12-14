@@ -24,7 +24,7 @@ if get_option('external_fmt').enabled()
 endif
 
 if get_option('std_format').enabled()
-  if meson.get_compiler('cpp').has_header('format', required: true)
+  if meson.get_compiler('cpp').has_header_symbol('format', '__cpp_lib_format', required: true)
     spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
   endif
 endif
