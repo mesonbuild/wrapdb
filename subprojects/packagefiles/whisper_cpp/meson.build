@@ -6,7 +6,7 @@ if build_machine.system() == 'linux'
     add_project_arguments('-D_GNU_SOURCE', language: 'c')
 endif
 
-math = cc.find_library('m', required: true)
+math = cc.find_library('m', required: false)
 threads = dependency('threads')
 
 if not get_option('no_avx')
