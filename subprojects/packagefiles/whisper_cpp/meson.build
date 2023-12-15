@@ -2,27 +2,38 @@ project('whisper.cpp', ['cpp', 'c'], version: '1.5.2')
 
 cc = meson.get_compiler('c')
 
-if build_machine.system() == 'linux'
-    add_project_arguments('-D_GNU_SOURCE', language: 'c')
-endif
-
 math = cc.find_library('m', required: false)
 threads = dependency('threads')
 
-if not get_option('no_avx')
-    add_project_arguments('-mavx', language: 'c')
-endif
+if build_machine.system() == 'linux'
+    add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
-if not get_option('no_avx2')
-    add_project_arguments('-mavx2', language: 'c')
-endif
+    if not get_option('no_avx')
+        add_project_arguments('-mavx', language: 'c')
+    endif
 
-if not get_option('no_fma')
-    add_project_arguments('-mfma', language: 'c')
-endif
+    if not get_option('no_avx2')
+        add_project_arguments('-mavx2', language: 'c')
+    endif
 
-if not get_option('no_f16C')
-    add_project_arguments('-mf16c', language: 'c')
+    if not get_option('no_fma')
+        add_project_arguments('-mfma', language: 'c')
+    endif
+
+    if not get_option('no_f16C')
+        add_project_arguments('-mf16c', language: 'c')
+    endif
+elif build_machine.system() == 'windows'
+    add_project_arguments('/utf-8', language: 'c')
+
+    if not get_option('no_avx')
+        add_project_arguments('/arch:AVX', language: 'c')
+    endif
+
+    if not get_option('no_avx2')
+        add_project_arguments('/arch:AVX2', language: 'c')
+    endif
+
 endif
 
 ggml_lib = library(
