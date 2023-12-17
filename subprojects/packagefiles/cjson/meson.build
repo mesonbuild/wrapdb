@@ -7,11 +7,16 @@ dllimport_args = []
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
-  if get_option('buildtype') != 'static'
-    add_project_arguments('-DCJSON_EXPORT_SYMBOLS', language : 'c')
-    dllimport_args = ['-DCJSON_IMPORT_SYMBOLS']
-  endif
 endif
+
+if get_option('default_library') == 'static'
+  add_project_arguments('-DCJSON_HIDE_SYMBOLS', language : 'c')
+  dllimport_args = ['-DCJSON_HIDE_SYMBOLS']
+else
+  add_project_arguments('-DCJSON_EXPORT_SYMBOLS', language : 'c')
+  dllimport_args = ['-DCJSON_IMPORT_SYMBOLS']
+endif
+
 add_project_arguments('-DCJSON_API_VISIBILITY', language: 'c')
 
 if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
