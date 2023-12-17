@@ -35,6 +35,7 @@
       "absl_crc32c",
       "absl_debugging_internal",
       "absl_demangle_internal",
+      "absl_die_if_null",
       "absl_examine_stack",
       "absl_exponential_biased",
       "absl_failure_signal_handler",
@@ -57,6 +58,8 @@
       "absl_inlined_vector",
       "absl_int128",
       "absl_leak_check",
+      "absl_log_internal_check_op",
+      "absl_log_internal_message",
       "absl_log_severity",
       "absl_low_level_hash",
       "absl_memory",
@@ -94,6 +97,7 @@
       "absl_variant"
     ],
     "versions": [
+      "20230802.0-4",
       "20230802.0-3",
       "20230802.0-2",
       "20230802.0-1",
