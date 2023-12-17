@@ -95,6 +95,7 @@ absl_statusor = absl_status_dep
 absl_str_format = absl_strings_dep
 absl_str_format_internal = absl_strings_dep
 absl_strerror = absl_base_dep
+absl_string_view = absl_strings_dep
 absl_strings_internal = absl_strings_dep
 absl_symbolize = absl_debugging_dep
 absl_throw_delegate = absl_base_dep

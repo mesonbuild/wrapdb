@@ -12,6 +12,8 @@ if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'cpp')
 endif
 
+absl_string_view_dep = dependency('absl_string_view')
+
 deps = [
   dependency('absl_base'),
   dependency('absl_cord'),
@@ -27,6 +29,7 @@ deps = [
   dependency('absl_str_format'),
   dependency('absl_strings'),
   dependency('absl_synchronization'),
+  absl_string_view_dep,
   dependency('threads'),
 ]
 
@@ -42,6 +45,7 @@ libutf8_range = static_library(
     'third_party/utf8_range/utf8_validity.cc',
   ),
   c_args: ['-march=native'],
+  dependencies: absl_string_view_dep,
 )
 utf8_range_dep = declare_dependency(
   include_directories: include_directories('third_party/utf8_range'),
