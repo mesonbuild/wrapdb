@@ -11,7 +11,7 @@ endif
 
 if get_option('default_library') == 'static'
   add_project_arguments('-DCJSON_HIDE_SYMBOLS', language : 'c')
-  dllimport_args = ['-DCJSON_HIDE_SYMBOLS ']
+  dllimport_args = ['-DCJSON_HIDE_SYMBOLS']
 else
   add_project_arguments('-DCJSON_EXPORT_SYMBOLS', language : 'c')
   dllimport_args = ['-DCJSON_IMPORT_SYMBOLS']
