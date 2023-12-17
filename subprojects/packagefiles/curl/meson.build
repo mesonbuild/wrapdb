@@ -1438,6 +1438,7 @@ endif
 
 if get_option('default_library') == 'static'
   public_args += '-DCURL_STATICLIB'
+  add_project_arguments('-DCURL_STATICLIB', language : 'c')
 endif
 
 # Turn off Visual Studio CRT deprecation warnings.
