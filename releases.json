@@ -89,6 +89,7 @@
       "absl_str_format",
       "absl_str_format_internal",
       "absl_strerror",
+      "absl_string_view",
       "absl_strings_internal",
       "absl_symbolize",
       "absl_throw_delegate",
