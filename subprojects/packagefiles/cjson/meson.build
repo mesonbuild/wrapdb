@@ -6,7 +6,7 @@ project('cjson', 'c',
 dllimport_args = []
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
 endif
 
 if get_option('default_library') == 'static'
