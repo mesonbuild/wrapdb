@@ -58,6 +58,7 @@
       "absl_inlined_vector",
       "absl_int128",
       "absl_leak_check",
+      "absl_log_initialize",
       "absl_log_internal_check_op",
       "absl_log_internal_message",
       "absl_log_severity",
