@@ -12,7 +12,9 @@ if cc.get_argument_syntax() == 'msvc'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'cpp')
 endif
 
-absl_string_view_dep = dependency('absl_string_view')
+#   Hey Dev! If you have unresolved `abseil` symbols while linking, when using wrapdb version of the `abseil-cpp`,
+# Make sure to build `abseil` using `cpp_std` >= `c++17`
+absl_string_view_dep = dependency('absl_string_view', default_options: ['cpp_std=c++17'])
 
 deps = [
   dependency('absl_base'),
