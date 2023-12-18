@@ -1,9 +1,9 @@
-option('no_avx', type: 'boolean', value: false, description: 'Disable AVX')
-option('no_avx2', type: 'boolean', value: false, description: 'Disable AVX2')
-option('no_fma', type: 'boolean', value: false, description: 'Disable FMA')
-option('no_f16C', type: 'boolean', value: false, description: 'Disable F16c')
+option('avx', type: 'feature', value: 'disabled', description: 'Enable AVX')
+option('avx2', type: 'feature', value: 'disabled', description: 'Enable AVX2')
+option('fma', type: 'feature', value: 'disabled', description: 'Enable FMA')
+option('f16C', type: 'feature', value: 'disabled', description: 'Enable F16c')
 option(
-    'build_examples',
+    'examples',
     type: 'boolean',
     value: false,
     description: 'Build examples',

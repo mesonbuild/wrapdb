@@ -5,32 +5,32 @@ cc = meson.get_compiler('c')
 math = cc.find_library('m', required: false)
 threads = dependency('threads')
 
-if build_machine.system() == 'linux'
+if cc.get_argument_syntax() == 'gcc'
     add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
-    if not get_option('no_avx')
+    if get_option('avx')
         add_project_arguments('-mavx', language: 'c')
     endif
 
-    if not get_option('no_avx2')
+    if get_option('avx2')
         add_project_arguments('-mavx2', language: 'c')
     endif
 
-    if not get_option('no_fma')
+    if get_option('fma')
         add_project_arguments('-mfma', language: 'c')
     endif
 
-    if not get_option('no_f16C')
+    if get_option('f16C')
         add_project_arguments('-mf16c', language: 'c')
     endif
-elif build_machine.system() == 'windows'
+elif cc.get_argument_syntax() == 'msvc'
     add_project_arguments('/utf-8', language: 'c')
 
-    if not get_option('no_avx')
+    if get_option('avx')
         add_project_arguments('/arch:AVX', language: 'c')
     endif
 
-    if not get_option('no_avx2')
+    if get_option('avx2')
         add_project_arguments('/arch:AVX2', language: 'c')
     endif
 
