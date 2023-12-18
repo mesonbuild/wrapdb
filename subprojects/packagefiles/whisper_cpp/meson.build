@@ -8,29 +8,29 @@ threads = dependency('threads')
 if cc.get_argument_syntax() == 'gcc'
     add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
-    if get_option('avx')
+    if get_option('avx').enabled()
         add_project_arguments('-mavx', language: 'c')
     endif
 
-    if get_option('avx2')
+    if get_option('avx2').enabled()
         add_project_arguments('-mavx2', language: 'c')
     endif
 
-    if get_option('fma')
+    if get_option('fma').enabled()
         add_project_arguments('-mfma', language: 'c')
     endif
 
-    if get_option('f16C')
+    if get_option('f16C').enabled()
         add_project_arguments('-mf16c', language: 'c')
     endif
 elif cc.get_argument_syntax() == 'msvc'
     add_project_arguments('/utf-8', language: 'c')
 
-    if get_option('avx')
+    if get_option('avx').enabled()
         add_project_arguments('/arch:AVX', language: 'c')
     endif
 
-    if get_option('avx2')
+    if get_option('avx2').enabled()
         add_project_arguments('/arch:AVX2', language: 'c')
     endif
 
@@ -61,6 +61,6 @@ whisper_cpp_dep = declare_dependency(
     link_with: whisper_lib,
 )
 
-if get_option('build_examples')
+if get_option('examples')
     subdir('examples')
 endif
