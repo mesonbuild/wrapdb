@@ -16,6 +16,7 @@ cdata = configuration_data()
 sys_deps = []
 lib_deps = []
 public_args = []
+curl_lib_c_args = []
 
 # Constants. {{{
 
@@ -1437,8 +1438,8 @@ else
 endif
 
 if get_option('default_library') == 'static'
+  curl_lib_c_args += '-DCURL_STATICLIB'
   public_args += '-DCURL_STATICLIB'
-  add_project_arguments('-DCURL_STATICLIB', language : 'c')
 endif
 
 # Turn off Visual Studio CRT deprecation warnings.
