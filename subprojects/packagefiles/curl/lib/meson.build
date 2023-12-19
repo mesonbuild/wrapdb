@@ -185,7 +185,7 @@ curl_lib = library(
   c_args: [
     '-DBUILDING_LIBCURL',
     curl_symbols_hiding_flags,
-    curl_lib_c_args,
+    public_args,
   ],
   dependencies: [lib_deps, sys_deps],
   gnu_symbol_visibility: curl_symbols_hiding_visibility,
