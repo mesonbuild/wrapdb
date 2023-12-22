@@ -1558,6 +1558,14 @@
       "0.9.76-1"
     ]
   },
+  "libmpdclient": {
+    "dependency_names": [
+      "libmpdclient"
+    ],
+    "versions": [
+      "2.22-1"
+    ]
+  },
   "libnpupnp": {
     "dependency_names": [
       "libnpupnp"

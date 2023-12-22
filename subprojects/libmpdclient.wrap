@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libmpdclient-2.22
+
+source_url = https://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.22.tar.xz
+source_filename = libmpdclient-2.22.tar.xz
+source_hash = eac15b82b5ba5ed0648af580221eb74657394f7fe768e966d9e9ebb27435429f
+
+[provide]
+libmpdclient = libmpdclient_dep

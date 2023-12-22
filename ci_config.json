@@ -469,6 +469,25 @@
       "libpciaccess-dev"
     ]
   },
+  "libmpdclient": {
+    "_comment": "unit tests broken on Windows",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    },
+    "alpine_packages": [
+      "check"
+    ],
+    "debian_packages": [
+      "check"
+    ],
+    "brew_packages": [
+      "check"
+    ],
+    "build_options": [
+      "libmpdclient:test=true"
+    ]
+  },
   "libssh2": {
     "alpine_packages": [
       "openssl-dev"
