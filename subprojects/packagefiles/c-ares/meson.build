@@ -1,8 +1,8 @@
-project('c-ares', 'c', version: '1.22.1', license: 'MIT', default_options: 'cpp_std=c++17')
+project('c-ares', 'c', version: '1.24.0', license: 'MIT', default_options: 'cpp_std=c++17')
 
 # don't forget to update mee too
 # see: https://github.com/c-ares/c-ares/blob/f1bf69c2d71a7e426ee967847173200a3ef1705a/CMakeLists.txt#L33
-libtool_version = '2.8.1'
+libtool_version = '2.10.0'
 libtool_soversion = '2'
 
 is_static = (get_option('default_library') == 'static')
@@ -31,12 +31,14 @@ cares_sources = files(
   'src/lib/ares__htable_asvp.c',
   'src/lib/ares__htable_strvp.c',
   'src/lib/ares__htable_szvp.c',
+  'src/lib/ares__iface_ips.c',
   'src/lib/ares__llist.c',
   'src/lib/ares__parse_into_addrinfo.c',
   'src/lib/ares__read_line.c',
   'src/lib/ares__slist.c',
   'src/lib/ares__socket.c',
   'src/lib/ares__sortaddrinfo.c',
+  'src/lib/ares__threads.c',
   'src/lib/ares__timeval.c',
   'src/lib/ares_android.c',
   'src/lib/ares_cancel.c',
@@ -78,6 +80,7 @@ cares_sources = files(
   'src/lib/ares_parse_uri_reply.c',
   'src/lib/ares_platform.c',
   'src/lib/ares_process.c',
+  'src/lib/ares_qcache.c',
   'src/lib/ares_query.c',
   'src/lib/ares_rand.c',
   'src/lib/ares_search.c',
@@ -91,33 +94,19 @@ cares_sources = files(
   'src/lib/ares_timeout.c',
   'src/lib/ares_update_servers.c',
   'src/lib/ares_version.c',
-  'src/lib/bitncmp.c',
   'src/lib/inet_net_pton.c',
   'src/lib/inet_ntop.c',
   'src/lib/windows_port.c',
 )
 
 cares_headers = files(
-  'src/lib/ares__buf.h',
-  'src/lib/ares__htable.h',
-  'src/lib/ares__htable_asvp.h',
-  'src/lib/ares__htable_strvp.h',
-  'src/lib/ares__htable_szvp.h',
-  'src/lib/ares__llist.h',
-  'src/lib/ares__slist.h',
-  'src/lib/ares_android.h',
-  'src/lib/ares_data.h',
-  'src/lib/ares_getenv.h',
-  'src/lib/ares_inet_net_pton.h',
-  'src/lib/ares_iphlpapi.h',
-  'src/lib/ares_ipv6.h',
-  'src/lib/ares_platform.h',
-  'src/lib/ares_private.h',
-  'src/lib/ares_setup.h',
-  'src/lib/ares_strcasecmp.h',
-  'src/lib/ares_strsplit.h',
-  'src/lib/bitncmp.h',
-  'src/lib/setup_once.h',
+  'include/ares_rules.h',
+  'include/ares_nameser.h',
+  'include/ares.h',
+  'include/ares_version.h',
+  'include/ares_build.h',
+  'include/ares_dns_record.h',
+  'include/ares_dns.h',
 )
 
 cares_include_dirs = include_directories('include', 'src/lib')
@@ -131,6 +120,7 @@ cares_args_map = {
     cc.has_header('arpa/inet.h') ? '-DHAVE_ARPA_INET_H' : [],
     cc.has_header('errno.h') ? '-DHAVE_ERRNO_H' : [],
     cc.has_header('limits.h') ? '-DHAVE_LIMITS_H' : [],
+    cc.has_header('net/if.h') ? '-DHAVE_NET_IF_H' : [],
     cc.has_header('netdb.h') ? '-DHAVE_NETDB_H' : [],
     cc.has_header('netinet/in.h') ? '-DHAVE_NETINET_IN_H' : [],
     cc.has_header('netinet/tcp.h') ? '-DHAVE_NETINET_TCP_H' : [],
@@ -145,6 +135,7 @@ cares_args_map = {
     (cc.has_header('sys/time.h') and cc.has_header('time.h')) ? '-DTIME_WITH_SYS_TIME' : [],
     cc.has_header('sys/types.h') ? '-DHAVE_SYS_TYPES_H' : [],
     cc.has_header('sys/uio.h') ? '-DHAVE_SYS_UIO_H' : [],
+    cc.has_header('ifaddrs.h') ? '-DHAVE_IFADDRS_H' : [],
 
     (cc.has_type('bool', prefix: '#include <stdbool.h>') and not is_windows) ? '-DHAVE_BOOL_T' : [], # on windows will cause redefinition warnings
     cc.has_type('struct timeval', prefix: '#include <sys/time.h>') ? '-DHAVE_STRUCT_TIMEVAL' : [],
@@ -163,6 +154,7 @@ cares_args_map = {
 
     cc.has_function('recvfrom', prefix: '#include <sys/types.h>\n#include <sys/socket.h>') ? '-DHAVE_RECVFROM' : [],
     cc.has_function('writev', prefix: '#include <sys/uio.h>') ? '-DHAVE_WRITEV' : [],
+    cc.has_function('getifaddrs', prefix: '#include <ifaddrs.h>') ? '-DHAVE_GETIFADDRS' : [],
   ],
   'linux': [
     '-DHAVE_RECV',
@@ -178,6 +170,12 @@ cares_args_map = {
     '-DSEND_TYPE_ARG3=size_t',
     '-DSEND_TYPE_ARG4=int',
     '-DSEND_TYPE_RETV=ssize_t',
+    '-DRECVFROM_TYPE_RETV=ssize_t',
+    '-DRECVFROM_TYPE_ARG3=size_t',
+  ],
+  'windows': [
+    '-DRECVFROM_TYPE_RETV=int',
+    '-DRECVFROM_TYPE_ARG3=int',
   ],
 }
 cares_args_map += {'darwin': cares_args_map['linux']}
