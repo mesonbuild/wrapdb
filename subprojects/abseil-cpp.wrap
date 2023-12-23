@@ -6,7 +6,7 @@ source_hash = 59d2976af9d6ecf001a81a35749a6e551a335b949d34918cfade07737b9d93c5
 patch_directory = abseil-cpp
 # remove when https://github.com/abseil/abseil-cpp/issues/1510 is fixed
 # credits: https://github.com/conan-io/conan-center-index/pull/21012
-diff_files = abseil-cpp-20230802.0/20230802.1-0001-fix-mingw.patch
+diff_files = abseil-cpp/20230802.1-0001-fix-mingw.patch
 
 [provide]
 absl_base = absl_base_dep
