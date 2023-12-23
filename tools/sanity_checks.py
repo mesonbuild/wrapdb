@@ -29,6 +29,9 @@ from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_mac
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
+    'abseil-cpp': [
+        '20230802.1-0001-fix-mingw.patch',
+    ],
     'box2d': [
         'doctest.h'
     ],
