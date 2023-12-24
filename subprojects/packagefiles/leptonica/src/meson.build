@@ -109,6 +109,8 @@ lept_lib = library(
     'parseprotos.c',
     'partify.c',
     'partition.c',
+    'pdfapp.c',
+    'pdfappstub.c',
     'pdfio1.c',
     'pdfio1stub.c',
     'pdfio2.c',

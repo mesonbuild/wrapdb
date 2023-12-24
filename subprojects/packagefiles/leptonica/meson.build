@@ -1,7 +1,7 @@
 project(
   'leptonica',
   'c',
-  version: '1.83.1',
+  version: '1.84.0',
   meson_version: '>=0.59.0',
 )
 
