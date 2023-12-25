@@ -2415,9 +2415,14 @@
   },
   "pango": {
     "dependency_names": [
-      "pango"
+      "pango",
+      "pangoft2",
+      "pangoxft",
+      "pangowin32",
+      "pangocairo"
     ],
     "versions": [
+      "1.51.0-2",
       "1.51.0-1"
     ]
   },

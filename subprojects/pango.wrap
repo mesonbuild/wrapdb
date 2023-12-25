@@ -5,4 +5,4 @@ source_filename = pango-1.51.0.tar.xz
 source_hash = 74efc109ae6f903bbe6af77eaa2ac6094b8ee245a2e23f132a7a8f0862d1a9f5
 
 [provide]
-dependency_names = pango
+dependency_names = pango, pangoft2, pangoxft, pangowin32, pangocairo

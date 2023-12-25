@@ -640,10 +640,17 @@
   },
   "pango": {
     "_comment": [
+      "- skip dependency checks for optionally provided dependencies",
       "- harfbuzz triggers warnings",
       "- Known test failure: https://gitlab.gnome.org/GNOME/pango/-/issues/682"
     ],
     "fatal_warnings": false,
+    "skip_dependency_check": [
+      "pangoft2",
+      "pangoxft",
+      "pangowin32",
+      "pangocairo"
+    ],
     "skip_tests": true
   },
   "pixman": {
