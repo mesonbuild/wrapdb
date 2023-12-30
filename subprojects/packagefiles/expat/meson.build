@@ -117,16 +117,6 @@ endif
 
 incdir = include_directories('lib')
 
-def = configuration_data()
-def.set('_EXPAT_COMMENT_ATTR_INFO', ';')
-def.set('_EXPAT_COMMENT_DTD', get_option('xml_dtd') ? ' ' : ';')
-
-expat_def = configure_file(
-  input: 'lib/libexpat.def.cmake',
-  output: 'libexpat.def',
-  configuration: def,
-)
-
 libexpat = library(
   'expat',
   'lib/xmlparse.c',
@@ -138,7 +128,6 @@ libexpat = library(
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
   gnu_symbol_visibility: 'hidden',
-  vs_module_defs: expat_def,
 )
 
 expat_dep = declare_dependency(
