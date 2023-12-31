@@ -163,7 +163,6 @@ elif opt_display == 'wayland'
     'src/wl_monitor.c',
     'src/wl_window.c',
     'src/xkb_unicode.c',
-    s_wayland,
     'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
   )
 elif opt_display == 'win32'
@@ -197,6 +196,9 @@ elif opt_display == 'cocoa'
   endif
 endif
 srcfiles = [s_common, s_display]
+if opt_display == 'wayland'
+  srcfiles += s_wayland
+endif
 incdirs = include_directories('include', 'src')
 #@ Flags
 add_project_arguments('-D_GLFW_USE_CONFIG_H', language: 'c')
