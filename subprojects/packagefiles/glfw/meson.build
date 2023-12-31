@@ -178,7 +178,7 @@ elif opt_display == 'win32'
     'src/win32_window.c',
   )
 elif opt_display == 'cocoa'
-  add_languages('objc')
+  add_languages('objc', native: false)
   s_display = files(
     'src/cocoa_init.m',
     'src/cocoa_joystick.m',
