@@ -6,7 +6,7 @@ project(
   version: '3.3.9',
   license: 'Zlib',
   default_options: ['b_ndebug=if-release', 'c_std=c99', 'warning_level=0'],
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.58.0',
 )
 #@ Project variables
 sys_os = host_machine.system()
