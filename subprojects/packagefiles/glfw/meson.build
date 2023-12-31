@@ -3,10 +3,10 @@
 project(
   'glfw',
   'c',
-  version: '3.3.8',
+  version: '3.3.9',
   license: 'Zlib',
   default_options: ['b_ndebug=if-release', 'c_std=c99', 'warning_level=0'],
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.58.0',
 )
 #@ Project variables
 sys_os = host_machine.system()
@@ -163,7 +163,6 @@ elif opt_display == 'wayland'
     'src/wl_monitor.c',
     'src/wl_window.c',
     'src/xkb_unicode.c',
-    s_wayland,
     'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
   )
 elif opt_display == 'win32'
@@ -179,7 +178,7 @@ elif opt_display == 'win32'
     'src/win32_window.c',
   )
 elif opt_display == 'cocoa'
-  add_languages('objc')
+  add_languages('objc', native: false)
   s_display = files(
     'src/cocoa_init.m',
     'src/cocoa_joystick.m',
@@ -197,6 +196,9 @@ elif opt_display == 'cocoa'
   endif
 endif
 srcfiles = [s_common, s_display]
+if opt_display == 'wayland'
+  srcfiles += s_wayland
+endif
 incdirs = include_directories('include', 'src')
 #@ Flags
 add_project_arguments('-D_GLFW_USE_CONFIG_H', language: 'c')
