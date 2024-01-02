@@ -1,8 +1,8 @@
 [wrap-file]
-directory = fmt-10.1.1
-source_url = https://github.com/fmtlib/fmt/archive/10.1.1.tar.gz
-source_filename = fmt-10.1.1.tar.gz
-source_hash = 78b8c0a72b1c35e4443a7e308df52498252d1cefc2b08c9a97bc9ee6cfe61f8b
+directory = fmt-10.2.0
+source_url = https://github.com/fmtlib/fmt/archive/10.2.0.tar.gz
+source_filename = fmt-10.2.0.tar.gz
+source_hash = 3ca91733a7313a8ad41c0885929415f8ec0a2a31d4dc7e27e9331412f4ca26ac
 patch_directory = fmt
 
 [provide]
