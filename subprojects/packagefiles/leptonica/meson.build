@@ -1,7 +1,7 @@
 project(
   'leptonica',
   'c',
-  version: '1.84.0',
+  version: '1.84.1',
   meson_version: '>=0.59.0',
 )
 
@@ -11,15 +11,15 @@ dependencies = [cc.find_library('m', required: false)]
 
 cdata = configuration_data()
 
-foreach _feat, _lib : {
-  'libjp2k': 'libopenjp2',
-  'libjpeg': 'libjpeg',
-  'libpng' : 'libpng',
-  'libtiff': 'libtiff-4',
-  'libwebp': 'libwebp',
-  'libz'   : 'zlib',
+foreach _feat, _spec : {
+  'libjp2k': ['libopenjp2', '>=2.1.0'],
+  'libjpeg': ['libjpeg'],
+  'libpng' : ['libpng'],
+  'libtiff': ['libtiff-4'],
+  'libwebp': ['libwebp'],
+  'libz'   : ['zlib'],
 }
-  _dep = dependency(_lib, required: get_option(_feat))
+  _dep = dependency(_spec[0], required: get_option(_feat), version: _spec.get(1, []))
   set_variable('has_' + _feat.underscorify(), _dep.found())
   if _dep.found()
     cdata.set('HAVE_' + _feat.underscorify().to_upper(), 1)
