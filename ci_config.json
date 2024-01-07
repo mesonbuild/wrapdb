@@ -293,6 +293,12 @@
     "has_provides": false,
     "fatal_warnings": false
   },
+  "glu": {
+    "_comment": "- glvnd is default and only available with Linux",
+    "build_options": [
+      "glu:gl_provider=gl"
+    ]
+  },
   "grpc": {
     "_comment": "- wrapdb openssl broken on alpine",
     "alpine_packages": [
