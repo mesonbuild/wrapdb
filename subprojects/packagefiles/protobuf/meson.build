@@ -1,7 +1,7 @@
 project(
   'protobuf',
   ['cpp', 'c'],
-  version: '25.1',
+  version: '25.2',
   license: 'protobuf',
   default_options: 'warning_level=0',
   meson_version: '>=0.63.0',
