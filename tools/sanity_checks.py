@@ -82,7 +82,8 @@ PER_PROJECT_PERMITTED_FILES = {
         'hexify.py'
     ],
     'protobuf': [
-        'symlink.py'
+        'symlink.py',
+        'protobuf-25.1-0004-Workaround-false-positive-warning-in-MSVC.patch',
     ],
     'sdl2': [
         'find-dylib-name.py'
