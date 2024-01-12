@@ -33,6 +33,7 @@ deps = [
   dependency('absl_synchronization'),
   absl_string_view_dep,
   dependency('threads'),
+  cc.find_library('dbghelp', required: host_machine.system() == 'windows'),
 ]
 
 incdir = include_directories('src')
