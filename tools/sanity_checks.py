@@ -84,6 +84,7 @@ PER_PROJECT_PERMITTED_FILES = {
     'protobuf': [
         'symlink.py',
         'protobuf-25.1-0004-Workaround-false-positive-warning-in-MSVC.patch',
+        'protobuf-25.2-0002-msvc-shared-export-mergefrom-string.patch',
     ],
     'sdl2': [
         'find-dylib-name.py'
