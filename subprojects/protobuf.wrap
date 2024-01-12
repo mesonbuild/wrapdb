@@ -4,6 +4,7 @@ source_url = https://github.com/protocolbuffers/protobuf/releases/download/v25.2
 source_filename = protobuf-25.2.tar.gz
 source_hash = 8ff511a64fc46ee792d3fe49a5a1bcad6f7dc50dfbba5a28b0e5b979c17f9871
 patch_directory = protobuf
+diff_files = protobuf/protobuf-25.1-0004-Workaround-false-positive-warning-in-MSVC.patch
 
 [provide]
 protobuf = protobuf_dep
