@@ -39,7 +39,7 @@ deps = [
 incdir = include_directories('src')
 
 libutf8_range = static_library(
-  'protobuf-lite',
+  'utf8-range',
   files(
     'third_party/utf8_range/naive.c',
     'third_party/utf8_range/range-neon.c',
