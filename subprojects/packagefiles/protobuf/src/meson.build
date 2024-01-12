@@ -14,8 +14,12 @@ protoc = executable(
   'protoc',
   protoc_src,
   include_directories: incdir,
-  link_with: libprotoc,
-  dependencies: [dependency('threads'), absl_log_initialize_dep, proto_includes_link_dep],
+  dependencies: [
+    dependency('threads'),
+    absl_log_initialize_dep,
+    proto_includes_link_dep,
+    protoc_dep,
+  ],
   install: true,
 )
 
@@ -25,7 +29,11 @@ if meson.is_cross_build()
     [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
     native: true,
     include_directories: incdir,
-    dependencies: [dependency('threads', native: true), proto_includes_link_dep],
+    dependencies: [
+      dependency('threads', native: true),
+      proto_includes_link_dep,
+      # protoc_dep_native,
+    ],
   )
 else
   protoc_native = protoc
