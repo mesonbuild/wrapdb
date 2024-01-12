@@ -198,10 +198,9 @@ if host_machine.system() == 'windows'
 endif
 libprotobuf = library(
   'protobuf',
-  libprotobuf_lite_src,
   libprotobuf_src,
   cpp_args: api,
-  dependencies: deps,
+  dependencies: [deps, protobuf_lite_dep],
   version: meson.project_version(),
   soversion: 25,
   install: true,
