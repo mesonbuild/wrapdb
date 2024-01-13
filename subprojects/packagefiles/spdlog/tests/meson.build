@@ -1,3 +1,8 @@
+# skip tests if disabled
+if get_option('tests').disabled()
+  subdir_done()
+endif
+
 test_src = files(
   'main.cpp',
   'test_async.cpp',
@@ -11,8 +16,7 @@ test_src = files(
   'test_file_logging.cpp',
   'test_fmt_helper.cpp',
   'test_macros.cpp',
-  # FIXME: broken in 1.12.0 (see https://github.com/gabime/spdlog/pull/2827).
-  # 'test_misc.cpp',
+  'test_misc.cpp',
   'test_mpmc_q.cpp',
   'test_pattern_formatter.cpp',
   'test_registry.cpp',
@@ -25,15 +29,26 @@ test_src = files(
 spdlog_test_dep = [spdlog_dep]
 
 catch2_dep = dependency(
-    'catch2',
-    version: '>=3.0.0',
-    allow_fallback: false,
-    required: false,
+  'catch2',
+  version: '>=3.0.0',
+  allow_fallback: false,
+  required: false,
 )
-if catch2_dep.found()
-    spdlog_test_dep += catch2_dep
-else
-    spdlog_test_dep += dependency('catch2-with-main', version: '>=3.0.0')
+if not catch2_dep.found()
+  catch2_dep = dependency(
+    'catch2-with-main',
+    version: '>=3.0.0',
+    required: false,
+  )
 endif
 
-test('tests', executable('tests_exe', test_src, dependencies: spdlog_test_dep))
+if not catch2_dep.found()
+  if get_option('tests').enabled()
+    error('Catch2 is required for tests')
+  else
+    message('Skipping tests since Catch2 was not found')
+  endif
+  subdir_done()
+endif
+
+test('tests', executable('tests_exe', test_src, dependencies: catch2_dep))
