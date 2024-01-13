@@ -1,8 +1,7 @@
 project(
   'spdlog',
   'cpp',
-  # TODO: if you bump this, check the FIXME in `tests/meson.build`
-  version: '1.12.0',
+  version: '1.13.0',
   license: 'MIT',
   default_options: ['cpp_std=c++14'],
   meson_version: '>=0.56.0',
@@ -51,6 +50,4 @@ else
   )
 endif
 
-if get_option('tests')
-  subdir('tests')
-endif
+subdir('tests')
