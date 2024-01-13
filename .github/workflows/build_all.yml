@@ -35,31 +35,25 @@ jobs:
   Alpine:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ubuntu-latest
-    container:
-      image: alpine:3.18
-      env:
-        TEST_BUILD_ALL: 1
-        TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
-      - name: Install packages
-        run: |
-          apk add cmake g++ gcc git linux-headers pkgconf py3-pip samurai sudo
-          python -m pip install git+https://github.com/mesonbuild/meson
-          git config --global --add safe.directory '*'
+      - uses: jirutka/setup-alpine@v1
+        with:
+          branch: v3.18
+          packages: >
+            build-base cmake git linux-headers pkgconf py3-pip samurai sudo
 
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Create non privileged user
-        run: |
-          adduser wrapdb --disabled-password
-          echo 'wrapdb ALL=(ALL:ALL) NOPASSWD: ALL' >/etc/sudoers.d/wrapdb
-          chown -R wrapdb:wrapdb .
-
       - name: Sanity Checks
+        env:
+          TEST_BUILD_ALL: 1
+          TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
         run: |
-          su -c - wrapdb ./tools/sanity_checks.py
+          python -m pip install --pre meson
+          ./tools/sanity_checks.py
+        shell: alpine.sh {0}
 
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
