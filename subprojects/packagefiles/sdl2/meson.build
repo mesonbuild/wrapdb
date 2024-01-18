@@ -246,7 +246,12 @@ else
 endif
 
 threads_dep = dependency('threads', required : opt_threads)
-libusb_dep = dependency('libusb-1.0', required : opt_hidapi)
+
+if platform_is_apple
+    libusb_dep = fake_dep
+else
+    libusb_dep = dependency('libusb-1.0', required : opt_hidapi)
+endif
 
 if platform_is_unixlike
     dbus_dep = dependency('dbus-1', required : false).partial_dependency(
