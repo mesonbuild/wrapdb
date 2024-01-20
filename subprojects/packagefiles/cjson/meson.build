@@ -1,12 +1,15 @@
-project('cjson', 'c',
-        version: '1.7.16',
-        meson_version: '>=0.50.0',
-        license: 'MIT')
+project(
+  'cjson',
+  'c',
+  version: '1.7.17',
+  meson_version: '>=0.50.0',
+  license: 'MIT',
+)
 
 dllimport_args = []
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments(cc.get_supported_arguments('/D_CRT_SECURE_NO_WARNINGS', '-Wno-deprecated-declarations'), language: 'c')
 endif
 
 if get_option('default_library') == 'static'
@@ -19,7 +22,7 @@ endif
 
 add_project_arguments('-DCJSON_API_VISIBILITY', language: 'c')
 
-if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
+if cc.has_function_attribute('weak')
   add_project_arguments('-DUNITY_WEAK_ATTRIBUTE=__attribute__((weak))', language: 'c')
 endif
 
