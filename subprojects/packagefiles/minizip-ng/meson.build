@@ -1,7 +1,7 @@
 project(
   'minizip-ng',
   'c',
-  version: '4.0.1',
+  version: '4.0.4',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
@@ -9,9 +9,7 @@ project(
 
 cc = meson.get_compiler('c')
 if host_machine.system() == 'windows'
-  if cc.get_argument_syntax() == 'msvc'
-    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
-  endif
+  add_project_arguments(cc.get_supported_arguments('/D_CRT_SECURE_NO_WARNINGS', '-Wno-deprecated-declarations'), language: 'c')
   if get_option('default_library') != 'static'
     add_project_arguments('-DMZ_EXPORTS', language: 'c')
   endif
