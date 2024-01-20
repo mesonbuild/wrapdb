@@ -1,8 +1,8 @@
 [wrap-file]
-directory = cJSON-1.7.16
-source_url = https://github.com/DaveGamble/cJSON/archive/refs/tags/v1.7.16.tar.gz
-source_filename = v1.7.16.tar.gz
-source_hash = 451131a92c55efc5457276807fc0c4c2c2707c9ee96ef90c47d68852d5384c6c
+directory = cJSON-1.7.17
+source_url = https://github.com/DaveGamble/cJSON/archive/refs/tags/v1.7.17.tar.gz
+source_filename = v1.7.17.tar.gz
+source_hash = c91d1eeb7175c50d49f6ba2a25e69b46bd05cffb798382c19bfb202e467ec51c
 patch_directory = cjson
 
 [provide]
