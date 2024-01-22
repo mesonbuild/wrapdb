@@ -5,10 +5,17 @@ project(
   license: 'protobuf',
   default_options: [
     'warning_level=0',
+    #   I was unable to get libprotoc linking as shared library on MINGW, for whatever reason
+    # abseil-cpp symbols are sticking out of libprotobuf and are reported as multiple definitions
+    #   Linux, Mac and MSVC should work perfectly fine as shared libs
+    # If you have time and inspiration, please fix.
+    'default_library=static',
     'cpp_std=c++17',
   ],
   meson_version: '>=0.63.0',
 )
+
+is_shared = (get_option('default_library') != 'static')
 
 cc = meson.get_compiler('cpp')
 if cc.get_argument_syntax() == 'msvc'
@@ -86,17 +93,11 @@ libprotobuf_lite_src = files(
   'src/google/protobuf/stubs/common.cc',
   'src/google/protobuf/wire_format_lite.cc',
 )
-api = []
-if host_machine.system() == 'windows'
-  api += '-DLIBPROTOBUF_EXPORTS'
-  if get_option('default_library') != 'static'
-    api += '-DPROTOBUF_USE_DLLS'
-  endif
-endif
+api = is_shared ? ['-DPROTOBUF_USE_DLLS'] : []
 libprotobuf_lite = library(
   'protobuf-lite',
   libprotobuf_lite_src,
-  cpp_args: api,
+  cpp_args: ['-DLIBPROTOBUF_EXPORTS', api],
   dependencies: deps,
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
@@ -104,10 +105,7 @@ libprotobuf_lite = library(
   install: true,
   include_directories: incdir,
 )
-imp = []
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  imp += '-DPROTOBUF_USE_DLLS'
-endif
+imp = is_shared ? ['-DPROTOBUF_USE_DLLS'] : []
 protobuf_lite_dep = declare_dependency(
   compile_args: imp,
   link_with: libprotobuf_lite,
@@ -193,17 +191,10 @@ libprotobuf_src = files(
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wire_format_lite.cc',
 )
-api = []
-if host_machine.system() == 'windows'
-  api += '-DLIBPROTOBUF_EXPORTS'
-  if get_option('default_library') != 'static'
-    api += '-DPROTOBUF_USE_DLLS'
-  endif
-endif
 libprotobuf = library(
   'protobuf',
-  libprotobuf_src,
-  cpp_args: api,
+  sources: libprotobuf_src,
+  cpp_args: ['-DLIBPROTOBUF_EXPORTS', api],
   dependencies: [deps],
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
@@ -211,10 +202,6 @@ libprotobuf = library(
   install: true,
   include_directories: incdir,
 )
-imp = []
-if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  imp += '-DPROTOBUF_USE_DLLS'
-endif
 protobuf_dep = declare_dependency(
   compile_args: imp,
   link_with: libprotobuf,
@@ -334,25 +321,17 @@ libprotoc_src = files(
   'src/google/protobuf/compiler/subprocess.cc',
   'src/google/protobuf/compiler/zip_writer.cc',
 )
-api = []
-if host_machine.system() == 'windows'
-  api += '-DLIBPROTOC_EXPORTS'
-  if get_option('default_library') != 'static'
-    api += '-DPROTOBUF_USE_DLLS'
-  endif
-endif
 libprotoc = library(
   'protoc',
-  libprotoc_src,
-  libprotobuf_src,
-  cpp_args: api,
-  dependencies: [protobuf_dep.partial_dependency(includes: true), deps],
-  gnu_symbol_visibility: 'hidden',
+  sources: libprotoc_src,
+  cpp_args: ['-DLIBPROTOC_EXPORTS', api],
+  dependencies: [protobuf_dep, deps],
   version: meson.project_version(),
   soversion: 25,
   install: true,
 )
 protoc_dep = declare_dependency(
+  compile_args: imp,
   dependencies: protobuf_dep,
   link_with: libprotoc,
 )

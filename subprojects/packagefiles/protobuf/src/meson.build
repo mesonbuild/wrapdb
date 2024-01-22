@@ -12,7 +12,7 @@ absl_log_initialize_dep = dependency('absl_log_initialize')
 protoc_src = ['google/protobuf/compiler/main.cc']
 protoc = executable(
   'protoc',
-  protoc_src,
+  sources: protoc_src,
   include_directories: incdir,
   dependencies: [
     dependency('threads'),
@@ -26,7 +26,7 @@ protoc = executable(
 if meson.is_cross_build()
   protoc_native = executable(
     'protoc-native',
-    [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
+    sources: [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
     native: true,
     include_directories: incdir,
     dependencies: [
