@@ -50,7 +50,7 @@ incdir = include_directories('src')
 
 libutf8_range = static_library(
   'utf8-range',
-  files(
+  sources: files(
     'third_party/utf8_range/naive.c',
     'third_party/utf8_range/range-neon.c',
     'third_party/utf8_range/range-sse.c',
