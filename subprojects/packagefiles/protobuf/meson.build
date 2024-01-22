@@ -48,15 +48,16 @@ deps = [
 
 incdir = include_directories('src')
 
+libutf8_range_src = files(
+  'third_party/utf8_range/naive.c',
+  'third_party/utf8_range/range-neon.c',
+  'third_party/utf8_range/range-sse.c',
+  'third_party/utf8_range/range-avx2.c',
+  'third_party/utf8_range/utf8_validity.cc',
+)
 libutf8_range = static_library(
   'utf8-range',
-  sources: files(
-    'third_party/utf8_range/naive.c',
-    'third_party/utf8_range/range-neon.c',
-    'third_party/utf8_range/range-sse.c',
-    'third_party/utf8_range/range-avx2.c',
-    'third_party/utf8_range/utf8_validity.cc',
-  ),
+  sources: libutf8_range_src,
   c_args: ['-march=native'],
   dependencies: absl_string_view_dep,
 )
