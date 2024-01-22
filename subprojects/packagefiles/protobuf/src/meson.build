@@ -24,15 +24,42 @@ protoc = executable(
 )
 
 if meson.is_cross_build()
+  # one huge monolithyc blow, will be splitten up eventually for native grpc plug-ins
+  cc_native = meson.get_compiler('cpp', native: true)
   protoc_native = executable(
     'protoc-native',
-    sources: [libprotobuf_lite_src, libprotobuf_src, libprotoc_src, protoc_src],
+    sources: [
+      libutf8_range_src,
+      libprotobuf_lite_src,
+      libprotobuf_src,
+      libprotoc_src,
+      protoc_src
+    ],
+    c_args: ['-march=native'],
     native: true,
-    include_directories: incdir,
+    include_directories: [
+      incdir,
+      include_directories('../third_party/utf8_range'),
+    ],
     dependencies: [
+      dependency('absl_base', native: true, default_options: ['cpp_std=c++17']),
+      dependency('absl_cord', native: true),
+      dependency('absl_die_if_null', native: true),
+      dependency('absl_hash', native: true),
+      dependency('absl_log', native: true),
+      dependency('absl_log_internal_check_op', native: true),
+      dependency('absl_log_internal_message', native: true),
+      dependency('absl_numeric', native: true),
+      dependency('absl_raw_hash_set', native: true),
+      dependency('absl_status', native: true),
+      dependency('absl_statusor', native: true),
+      dependency('absl_str_format', native: true),
+      dependency('absl_strings', native: true),
+      dependency('absl_synchronization', native: true),
+      dependency('absl_string_view', native: true),
       dependency('threads', native: true),
+      cc_native.find_library('dbghelp', required: build_machine.system() == 'windows'),
       proto_includes_link_dep,
-      deps,
     ],
   )
 else
