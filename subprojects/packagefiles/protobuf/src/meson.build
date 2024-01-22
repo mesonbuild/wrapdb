@@ -32,7 +32,7 @@ if meson.is_cross_build()
     dependencies: [
       dependency('threads', native: true),
       proto_includes_link_dep,
-      # protoc_dep_native,
+      deps,
     ],
   )
 else
