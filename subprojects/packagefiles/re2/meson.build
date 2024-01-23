@@ -93,7 +93,7 @@ libre2 = library(
   link_whole: libre2_static,
   link_args: link_args,
   link_depends: link_depends,
-  install: true,
+  install: (cpp.get_id() != 'msvc'), # does not generate .lib file, cmake version exports all symbols, can't do that here
   soversion: '9',
   dependencies: threads_dep,
 )
