@@ -670,6 +670,12 @@
       "pkgconf:tests=false"
     ]
   },
+  "protobuf": {
+    "_comment": "Disabling mingw builds until abseil-cpp/issues/1510 is fixed",
+    "build_on": {
+      "msys2": false
+    }
+  },
   "pv": {
     "build_on": {
       "msys2": false,
