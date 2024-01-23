@@ -93,6 +93,7 @@ libre2 = library(
   link_whole: libre2_static,
   link_args: link_args,
   link_depends: link_depends,
+  install: true,
   soversion: '9',
   dependencies: threads_dep,
 )
