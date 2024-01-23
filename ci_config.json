@@ -662,7 +662,7 @@
     "_comment": "Getting patched version elsewhere until abseil-cpp/issues/1510 is fixed, because cannot patch wrapdb version",
     "msys_packages": [
       "abseil-cpp"
-    ],
+    ]
   },
   "pv": {
     "build_on": {
