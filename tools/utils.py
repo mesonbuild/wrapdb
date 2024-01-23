@@ -23,8 +23,15 @@ class Version:
     def __init__(self, s: str) -> None:
         self._s = s
 
-        # split into numeric, alphabetic and non-alphanumeric sequences
-        sequences1 = re.finditer(r'(\d+|[a-zA-Z]+|[^a-zA-Z\d]+)', s)
+        # split off revision and store it separately
+        match = re.match('(.+)-([0-9]+)$', s)
+        if not match:
+            raise ValueError(f'Missing/invalid revision: {s}')
+        v = match[1]
+        self._r = int(match[2])
+
+        # split version into numeric, alphabetic and non-alphanumeric sequences
+        sequences1 = re.finditer(r'(\d+|[a-zA-Z]+|[^a-zA-Z\d]+)', v)
 
         # non-alphanumeric separators are discarded
         sequences2 = [m for m in sequences1 if not re.match(r'[^a-zA-Z\d]+', m.group(1))]
@@ -35,7 +42,7 @@ class Version:
         self._v = sequences3
 
     def __str__(self) -> str:
-        return '{} (V={})'.format(self._s, str(self._v))
+        return f'{self._s} (V={str(self._v)}, R={self._r})'
 
     def __repr__(self) -> str:
         return f'<Version: {self._s}>'
@@ -62,12 +69,12 @@ class Version:
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Version):
-            return self._v == other._v
+            return self._v == other._v and self._r == other._r
         return NotImplemented
 
     def __ne__(self, other: object) -> bool:
         if isinstance(other, Version):
-            return self._v != other._v
+            return self._v != other._v or self._r != other._r
         return NotImplemented
 
     def __cmp(self, other: 'Version', comparator: T.Callable[[T.Any, T.Any], bool]) -> bool:
@@ -82,9 +89,12 @@ class Version:
             if ours != theirs:
                 return comparator(ours, theirs)
 
-        # if equal length, all components have matched, so equal
-        # otherwise, the version with a suffix remaining is greater
-        return comparator(len(self._v), len(other._v))
+        # if one version has a suffix remaining, that version is greater
+        if len(self._v) != len(other._v):
+            return comparator(len(self._v), len(other._v))
+
+        # versions are equal, so compare revisions
+        return comparator(self._r, other._r)
 
 def is_ci() -> bool:
     return 'CI' in os.environ
