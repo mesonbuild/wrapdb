@@ -15,11 +15,17 @@ project(
   meson_version: '>=0.63.0',
 )
 
-is_shared = (get_option('default_library') != 'static')
-
 cc = meson.get_compiler('cpp')
-if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'cpp')
+
+is_shared = (get_option('default_library') != 'static')
+is_msvc = (cc.get_argument_syntax() == 'msvc')
+
+if is_msvc
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    '-permissive',
+    cc.get_supported_arguments(['-Wno-deprecated-declarations']),
+    language: 'cpp')
 endif
 
 #   Hey Dev! If you have unresolved `abseil` symbols while linking, when using wrapdb version of the `abseil-cpp`,
@@ -192,10 +198,12 @@ libprotobuf_src = files(
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wire_format_lite.cc',
 )
+libprotobuf_linker_args = is_msvc ? ['/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z'] : []
 libprotobuf = library(
   'protobuf',
   sources: libprotobuf_src,
   cpp_args: ['-DLIBPROTOBUF_EXPORTS', api],
+  link_args: libprotobuf_linker_args,
   dependencies: [deps],
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
