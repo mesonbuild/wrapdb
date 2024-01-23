@@ -29,9 +29,6 @@ from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_mac
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
-    'abseil-cpp': [
-        '20230802.1-0001-fix-mingw.patch',
-    ],
     'box2d': [
         'doctest.h'
     ],
@@ -83,8 +80,6 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
     'protobuf': [
         'symlink.py',
-        'protobuf-25.1-0004-Workaround-false-positive-warning-in-MSVC.patch',
-        'protobuf-25.2-0002-msvc-shared-export-mergefrom-string.patch',
     ],
     'sdl2': [
         'find-dylib-name.py'

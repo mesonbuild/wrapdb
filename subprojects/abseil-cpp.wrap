@@ -4,9 +4,6 @@ source_url = https://github.com/abseil/abseil-cpp/archive/20230802.1.tar.gz
 source_filename = abseil-cpp-20230802.1.tar.gz
 source_hash = 987ce98f02eefbaf930d6e38ab16aa05737234d7afbab2d5c4ea7adbe50c28ed
 patch_directory = abseil-cpp
-# remove when https://github.com/abseil/abseil-cpp/issues/1510 is fixed
-# credits: https://github.com/conan-io/conan-center-index/pull/21012
-diff_files = abseil-cpp/20230802.1-0001-fix-mingw.patch
 
 [provide]
 absl_base = absl_base_dep
