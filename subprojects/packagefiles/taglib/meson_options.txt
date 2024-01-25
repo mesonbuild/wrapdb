@@ -1,3 +1,7 @@
 option('zlib', type: 'feature',
   description: 'Build with zlib support',
 )
+
+option('tests', type: 'feature',
+  description: 'Build tests',
+)
