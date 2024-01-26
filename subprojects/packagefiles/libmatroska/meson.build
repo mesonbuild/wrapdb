@@ -90,7 +90,7 @@ if host_machine.system() == 'windows' and get_option('default_library') != 'stat
 endif
 
 libmatroska_dep = declare_dependency(
-  compile_args: '-DMATROSKA_DLL_API=@0@'.format(dllapi),
+  compile_args: dllapi,
   include_directories: libmatroska_incdir,
   dependencies: libebml,
   link_with: libmatroska,
