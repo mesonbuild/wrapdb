@@ -2,7 +2,7 @@ project(
   'libebml',
   'cpp',
   license: 'LGPL-2.1-or-later',
-  version: '1.4.4',
+  version: '1.4.5',
   meson_version: '>=0.50.0',
 )
 
@@ -54,11 +54,6 @@ install_headers(
   'ebml/StdIOCallback.h',
   ebml_conf,
   subdir: 'ebml',
-)
-
-install_headers(
-  'ebml/c/libebml_t.h',
-  subdir: 'ebml/c/',
 )
 
 cpp_files = files(
@@ -114,4 +109,7 @@ libebml_dep = declare_dependency(
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libebml, description: 'Library for parsing EBML data structures')
+pkg.generate(
+  libebml,
+  description: 'Library for parsing EBML data structures',
+)
