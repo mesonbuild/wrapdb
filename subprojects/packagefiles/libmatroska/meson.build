@@ -15,7 +15,7 @@ endif
 matroska_api = configuration_data()
 matroska_export = configure_file(output: 'matroska_export.h', configuration: matroska_api)
 
-libebml = dependency('libebml', version: '1.4.4')
+libebml = dependency('libebml', version: '>=1.4.4')
 
 install_headers(
   'matroska/FileKax.h',
