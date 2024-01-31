@@ -147,6 +147,14 @@
       "2.2-1"
     ]
   },
+  "argtable3": {
+    "dependency_names": [
+      "argtable3"
+    ],
+    "versions": [
+      "3.2.2-1"
+    ]
+  },
   "argu-parser": {
     "dependency_names": [
       "argu-parser"
