@@ -1,0 +1,9 @@
+[wrap-file]
+directory = argtable3-3.2.2.f25c624
+source_url = https://github.com/argtable/argtable3/archive/refs/tags/v3.2.2.f25c624.tar.gz
+source_filename = v3.2.2.f25c624.tar.gz
+source_hash = a5c66d819fa0be0435f37ed2fb3f23e371091722ff74219de97b65f6b9914e51
+patch_directory = argtable3
+
+[provide]
+argtable3 = argtable3_dep
