@@ -1,5 +1,5 @@
 project('libjpeg-turbo', 'c',
-  version : '3.0.1',
+  version : '3.0.2',
   license : 'bsd-like',
   meson_version : '>= 0.64.0')
 
@@ -108,6 +108,13 @@ else
   cdata.set('THREAD_LOCAL', '__thread')
 endif
 
+cdata.set(
+  'HIDDEN',
+  cc.has_function_attribute('visibility:hidden')
+  ? '__attribute__((visibility("hidden")))'
+  : '',
+)
+
 if get_option('force_inline')
   if cc.get_id() == 'msvc'
     cdata.set('INLINE', '__forceinline')
@@ -160,7 +167,13 @@ sources = [
   'jcphuff.c', 'jctrans.c', 'jdapimin.c', 'jdatadst.c', 'jdatasrc.c',
   'jdhuff.c', 'jdicc.c', 'jdinput.c', 'jdlhuff.c', 'jdmarker.c',
   'jdmaster.c', 'jdphuff.c', 'jdtrans.c', 'jerror.c', 'jfdctflt.c',
-  'jmemmgr.c', 'jmemnobs.c', 'jaricom.c', 'jcarith.c', 'jdarith.c',
+  'jmemmgr.c', 'jmemnobs.c', 'jpeg_nbits.c',
+  # TODO: `with_arith_dec` / `with_arith_enc` only.
+  'jaricom.c',
+  # TODO: `with_arith_enc` only
+  'jcarith.c',
+  # TODO: `with_arith_dec` only
+  'jdarith.c',
 ]
 
 jpeg12 = static_library('jpeg12', jpeg12_sources,
