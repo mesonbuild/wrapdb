@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.5.0',
+  version: '8.6.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -708,6 +708,7 @@ else
 endif
 
 multissl_opt = ssl_backends.length() > 1 ? ENABLED_OPT : DISABLED_OPT
+cdata.set('CURL_WITH_MULTI_SSL', multissl_opt.allowed())
 
 # }}}
 
@@ -812,12 +813,19 @@ http2_opt = http2_opt.require(lib_deps[-1].found())
 cdata.set('USE_NGHTTP2', http2_opt.allowed())
 
 # HTTP3.
-http3_opt = DISABLED_OPT
+http3_opt = DISABLED_OPT.require(
+  multissl_opt.disabled(),
+  error_message: 'MultiSSL and HTTP/3 supports are exclusive',
+)
 
 # HTTPS proxy.
 https_proxy_opt = ssl_opt.allowed() ? proxy_opt : DISABLED_OPT
 
 # }}}
+
+# IPFS / IPNS.
+ipfs_opt = http_opt
+ipns_opt = http_opt
 
 # LDAP. {{{
 
@@ -1644,6 +1652,8 @@ foreach _section, _optlist : {
     ['HTTPS'],
     ['IMAP'],
     ['IMAPS'],
+    ['IPFS'],
+    ['IPNS'],
     ['LDAP', ldap_provider != '' ? ldap_provider : false],
     ['LDAPS'],
     ['MQTT'],
@@ -1713,8 +1723,6 @@ endforeach
 # }}}
 
 # Other. {{{
-
-cdata.set('CURL_WITH_MULTI_SSL', enabled_ssl_backends.length() > 1)
 
 if fs.exists('/dev/urandom')
   cdata.set_quoted('RANDOM_FILE', '/dev/urandom')

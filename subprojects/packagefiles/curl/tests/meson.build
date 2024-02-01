@@ -51,13 +51,13 @@ endif
 _disabled_tests = []
 # Do not run flaky tests.
 _disabled_tests += '!flaky'
+# We don't build the doc.
+_disabled_tests += '!1177'
+# We don't build man pages either.
+_disabled_tests += ['!1139', '!1140', '!1173']
 if not fs.exists('errorcodes.pl')
-  # Missing in source distribution.
+  # Missing in git checkout.
   _disabled_tests += '!1477'
-endif
-if not fs.exists('../docs/curl.1')
-  # Not available in git checkout (and we don't build it).
-  _disabled_tests += '!1139'
 endif
 if host_machine.system() == 'darwin'
   # Some preprocessor issue prevent those 2
