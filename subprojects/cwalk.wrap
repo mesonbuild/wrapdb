@@ -1,0 +1,8 @@
+[wrap-file]
+directory = cwalk-1.2.8
+source_url = https://github.com/likle/cwalk/archive/refs/tags/v1.2.8.tar.gz
+source_filename = v1.2.8.tar.gz
+source_hash = 48b99bd46f0b9ce027ca882b003e44a5db0369dec6fd9898fd5420aa282d780f
+
+[provide]
+cwalk = cwalk_dep
