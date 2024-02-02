@@ -505,6 +505,14 @@
       "8.0.1-1"
     ]
   },
+  "cwalk": {
+    "dependency_names": [
+      "cwalk"
+    ],
+    "versions": [
+      "1.2.9-1"
+    ]
+  },
   "cxxopts": {
     "dependency_names": [
       "cxxopts"
