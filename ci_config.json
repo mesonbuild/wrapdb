@@ -529,6 +529,12 @@
       "windows": false
     }
   },
+  "libxmlpp": {
+    "_comment": "For some strange reason, the wrong subproject gets used.",
+    "alpine_packages": [
+      "libxml2-dev"
+    ]
+  },
   "libxrandr": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {

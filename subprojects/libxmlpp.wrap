@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libxml++-5.0.3
-source_url = https://download.gnome.org/sources/libxml++/5.0/libxml++-5.0.3.tar.xz
-source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/libxml++/5.0/libxml++-5.0.3.tar.xz
-source_filename = libxml++-5.0.3.tar.xz
-source_hash = 13074f59e3288a378cafe9e6847df17f764c23fa29bc94f3305b8bf81efb2cf7
+directory = libxml++-5.2.0
+source_url = https://download.gnome.org/sources/libxml++/5.2/libxml++-5.2.0.tar.xz
+source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/libxml++/5.2/libxml++-5.2.0.tar.xz
+source_filename = libxml++-5.2.0.tar.xz
+source_hash = e41b8eae55210511585ae638615f00db7f982c0edea94699865f582daf03b44f
 
 [provide]
 libxml++ = xmlxx_dep
