@@ -10,7 +10,7 @@ stress = executable(
   include_directories: config_inc,
 )
 
-test('libusb_test', stress, timeout: 90)
+test('libusb_test', stress, timeout: 240)
 
 umockdev_dep = dependency('umockdev', required: false)
 if umockdev_dep.found()

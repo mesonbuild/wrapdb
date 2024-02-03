@@ -2,7 +2,7 @@ project(
   'libusb',
   'c',
   version: '1.0.27',
-  meson_version: '>=0.60.0',
+  meson_version: '>=0.49.0',
 )
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
@@ -30,25 +30,37 @@ if not cdata.get('HAVE_SYSLOG') and get_option('system-log')
   error('system logging requires syslog to be present')
 endif
 
-cdata.set('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime') and host_machine.system() != 'windows')
-cdata.set('HAVE_EVENTFD', cc.has_function('eventfd'))
+functions = {
+  'clock_gettime': [],
+  'eventfd': [],
+  'pipe2': [],
+  'pthread_condattr_setclock': thread_dep,
+  'pthread_setname_np': thread_dep,
+  'pthread_threadid_np': thread_dep,
+}
+
+foreach f, d : functions
+  cdata.set('HAVE_@0@'.format(f.to_upper()), cc.has_function(f, dependencies: d))
+endforeach
+
+foreach h : ['asm/types.h', 'string.h', 'sys/time.h']
+  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+endforeach
+
 cdata.set('HAVE_TIMERFD', cc.has_function('timerfd_create'))
-cdata.set('HAVE_PIPE2', cc.has_function('pipe2'))
-cdata.set('HAVE_PTHREAD_CONDATTR_SETCLOCK', cc.has_function('pthread_condattr_setclock', dependencies: thread_dep))
-cdata.set('HAVE_PTHREAD_SETNAME_NP', cc.has_function('pthread_setname_np', dependencies: thread_dep))
-cdata.set('HAVE_PTHREAD_THREADID_NP', cc.has_function('pthread_threadid_np', dependencies: thread_dep))
-
-cdata.set('HAVE_ASM_TYPES_H', cc.has_header('asm/types.h'))
-cdata.set('HAVE_NFDS_T', cc.has_header('nfds.h'))
-cdata.set('HAVE_STRING_H', cc.has_header('string.h'))
-cdata.set('HAVE_SYS_TIME_H', cc.has_header('sys/time.h'))
-
+cdata.set('HAVE_NFDS_T', cc.has_header_symbol('poll.h', 'nfds_t'))
 cdata.set('HAVE_STRUCT_TIMESPEC', cc.has_header_symbol('time.h', 'struct timespec'))
 
 if cc.has_function_attribute('format')
   cdata.set('PRINTF_FORMAT(a, b)', '__attribute__ ((__format__ (__printf__, a, b)))')
 else
   cdata.set('PRINTF_FORMAT(a, b)', '')
+endif
+
+if cc.has_function_attribute('visibility:default')
+  cdata.set('DEFAULT_VISIBILITY', '__attribute__ ((visibility ("default")))')
+else
+  cdata.set('DEFAULT_VISIBILITY', '')
 endif
 
 cdata.set('ENABLE_LOGGING', get_option('logging'))
@@ -69,17 +81,15 @@ sources = files(
 
 if host_machine.system() == 'windows'
   cdata.set('PLATFORM_WINDOWS', true)
-  cdata.set('DEFAULT_VISIBILITY', '')
   sources += files('libusb/os/events_windows.c', 'libusb/os/threads_windows.c')
 else
   cdata.set('PLATFORM_POSIX', true)
-  cdata.set('DEFAULT_VISIBILITY', '__attribute__ ((visibility ("default")))')
   sources += files('libusb/os/events_posix.c', 'libusb/os/threads_posix.c')
 endif
 
 if host_machine.system() == 'linux'
   sources += 'libusb/os/linux_usbfs.c'
-  udev_dep = dependency('libudev', 'libudev-zero', required: get_option('udev'))
+  udev_dep = dependency('libudev', required: get_option('udev'))
   if udev_dep.found()
     cdata.set('HAVE_LIBUDEV', true)
     sources += 'libusb/os/linux_udev.c'
