@@ -1,7 +1,7 @@
 project(
   'libusb',
   'c',
-  version: '1.0.26',
+  version: '1.0.27',
   meson_version: '>=0.60.0',
 )
 
