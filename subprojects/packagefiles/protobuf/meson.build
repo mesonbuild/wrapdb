@@ -19,6 +19,7 @@ cc = meson.get_compiler('cpp')
 
 is_shared = (get_option('default_library') != 'static')
 is_msvc = (cc.get_argument_syntax() == 'msvc')
+should_install = get_option('install')
 
 if is_msvc
   add_project_arguments(
@@ -109,7 +110,7 @@ libprotobuf_lite = library(
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
   soversion: 25,
-  install: true,
+  install: should_install,
   include_directories: incdir,
 )
 imp = is_shared ? ['-DPROTOBUF_USE_DLLS'] : []
@@ -208,13 +209,14 @@ libprotobuf = library(
   gnu_symbol_visibility: 'hidden',
   version: meson.project_version(),
   soversion: 25,
-  install: true,
+  install: should_install,
   include_directories: incdir,
 )
 protobuf_dep = declare_dependency(
   compile_args: imp,
   link_with: libprotobuf,
   include_directories: incdir,
+  dependencies: deps,
 )
 
 libprotoc_src = files(
@@ -337,7 +339,7 @@ libprotoc = library(
   dependencies: [protobuf_dep, deps],
   version: meson.project_version(),
   soversion: 25,
-  install: true,
+  install: should_install,
 )
 protoc_dep = declare_dependency(
   compile_args: imp,
@@ -345,9 +347,11 @@ protoc_dep = declare_dependency(
   link_with: libprotoc,
 )
 
-pkg = import('pkgconfig')
-pkg.generate(libprotobuf_lite, description: 'Google\'s Data Interchange Format')
-pkg.generate(libprotobuf, description: 'Google\'s Data Interchange Format')
-pkg.generate(libprotoc)
+if should_install
+  pkg = import('pkgconfig')
+  pkg.generate(libprotobuf_lite, description: 'Google\'s Data Interchange Format')
+  pkg.generate(libprotobuf, description: 'Google\'s Data Interchange Format')
+  pkg.generate(libprotoc)
+endif
 
 subdir('src')
