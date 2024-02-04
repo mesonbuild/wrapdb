@@ -1,10 +1,10 @@
-project('glm',
-    'cpp',
-    version: '0.9.9.8',
-    license: 'MIT'
+project(
+  'glm',
+  'cpp',
+  version: '1.0.0',
+  license: 'MIT'
 )
 
 glm_dep = declare_dependency(
-    include_directories: include_directories('.')
+  include_directories: include_directories('.')
 )
-
