@@ -1,8 +1,8 @@
 project(
   'libwebsockets',
   'c',
-  version: '4.3.2',
-  meson_version: '>=0.49.0',
+  version: '4.3.3',
+  meson_version: '>=0.54.1',
 )
 
 cdata = configuration_data()
