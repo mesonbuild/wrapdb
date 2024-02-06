@@ -1,6 +1,6 @@
 project('frozen',
   'cpp',
-  version : '1.0.1',
+  version : '1.1.1',
   license : 'Apache-2.0',
 )
 
@@ -20,8 +20,10 @@ install_headers(
   'include/frozen/bits/basic_types.h',
   'include/frozen/bits/constexpr_assert.h',
   'include/frozen/bits/defines.h',
+  'include/frozen/bits/elsa_std.h',
   'include/frozen/bits/elsa.h',
   'include/frozen/bits/exceptions.h',
+  'include/frozen/bits/hash_string.h',
   'include/frozen/bits/pmh.h',
   'include/frozen/bits/version.h',
   subdir : 'frozen/bits',
