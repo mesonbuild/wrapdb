@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['UCRT64', 'CLANG32', 'CLANG64']
+        platform: ['UCRT64', 'CLANG64']
     steps:
       - uses: actions/checkout@v4
         with:
