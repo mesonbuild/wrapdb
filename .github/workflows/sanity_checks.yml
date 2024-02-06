@@ -93,7 +93,6 @@ jobs:
 
   MSYS2:
     runs-on: windows-latest
-    name: MSYS2-${{matrix.platform}}
     strategy:
       fail-fast: false
       matrix:
