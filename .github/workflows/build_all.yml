@@ -58,6 +58,9 @@ jobs:
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: ['x64', 'x86']
     env:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
@@ -71,6 +74,8 @@ jobs:
           python -m pip install git+https://github.com/mesonbuild/meson
 
       - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{matrix.platform}}
       - name: Sanity Checks
         run: |
           python tools/sanity_checks.py
