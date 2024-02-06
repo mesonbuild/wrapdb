@@ -300,6 +300,10 @@ class TestReleases(unittest.TestCase):
         elif name == 'directxmath':
             # DirectXMath source url contains only tag name without version
             return True
+        elif name == 'x-plane-sdk':
+            segs = version.split('.')
+            self.assertEqual(len(segs), 3)
+            version = segs[0] + segs[1] + segs[2]
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,

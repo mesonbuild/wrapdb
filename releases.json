@@ -3398,6 +3398,16 @@
       "0.3.0-1"
     ]
   },
+  "x-plane-sdk": {
+    "dependency_names": [
+      "xplm",
+      "xpwidgets",
+      "xpcpp"
+    ],
+    "versions": [
+      "4.0.1-1"
+    ]
+  },
   "xtensor": {
     "dependency_names": [
       "xtensor"

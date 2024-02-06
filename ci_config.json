@@ -892,5 +892,10 @@
       "wayland:tests=false",
       "wayland:dtd_validation=false"
     ]
+  },
+  "x-plane-sdk": {
+    "build_options": [
+      "x-plane-sdk:cpp=enabled"
+    ]
   }
 }
