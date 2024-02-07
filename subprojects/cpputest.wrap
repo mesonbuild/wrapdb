@@ -7,3 +7,4 @@ patch_directory = cpputest
 
 [provide]
 cpputest = cpputest_dep
+cpputest_ext = cpputest_ext_dep

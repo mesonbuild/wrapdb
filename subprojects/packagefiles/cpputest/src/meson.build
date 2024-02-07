@@ -1,7 +1,6 @@
-if get_option('extinctions')
-    cpputest_ext_src = []
-    subdir('CppUTestExt')
-endif
-
-cpputest_src = []
+subdir('Platforms')
 subdir('CppUTest')
+
+if get_option('provide_extensions')
+  subdir('CppUTestExt')
+endif
