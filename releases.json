@@ -422,7 +422,8 @@
   },
   "cpputest": {
     "dependency_names": [
-      "cpputest"
+      "cpputest",
+      "cpputest_ext"
     ],
     "versions": [
       "4.0-3",

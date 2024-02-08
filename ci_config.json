@@ -63,8 +63,8 @@
   },
   "cpputest": {
       "build_options": [
-        "provide_extensions=true",
-        "cpputest_platform=Custom"
+        "cpputest:provide_extensions=true",
+        "cpputest:cpputest_platform=Custom"
       ]
   },
   "cppzmq": {
