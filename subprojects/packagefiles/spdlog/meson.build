@@ -16,6 +16,7 @@ spdlog_compile_args = []
 
 if meson.get_compiler('cpp').has_header_symbol('format', '__cpp_lib_format', required: get_option('std_format'))
   spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
+  fmt_dep = depemndency('', required: false)
 else
   fmt_dep = dependency('fmt', version: '>=8.1', required: get_option('external_fmt'))
   if fmt_dep.found()
