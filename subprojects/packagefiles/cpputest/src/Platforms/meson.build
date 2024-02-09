@@ -3,7 +3,7 @@ cpputest_platform = get_option('cpputest_platform')
 if cpputest_platform != 'none'
   if cpputest_platform == 'autodetect'
     compiler_id = meson.get_compiler('cpp').get_id()
-    if compiler_id == 'clang' or compiler_id == 'gcc'
+    if compiler_id == 'gcc' or compiler_id == 'clang' or compiler_id == 'clang-cl'
       cpputest_platform = 'Gcc'
     elif compiler_id == 'msvc'
       cpputest_platform = 'VisualCpp'
