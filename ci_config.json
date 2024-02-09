@@ -63,8 +63,7 @@
   },
   "cpputest": {
     "build_options": [
-      "cpputest:cpputest_platform=Gcc",
-      "cpputest:provide_extensions=true",
+      "cpputest:enable_cpputest_extensions=true",
       "cpputest:default_library=static"
     ],
     "_comment": [

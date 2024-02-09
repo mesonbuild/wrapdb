@@ -8,7 +8,7 @@ subdir('src')
 
 cpputest_libs = [cpputest_lib]
 
-if get_option('provide_extensions')
+if get_option('enable_cpputest_extensions')
   cpputest_libs += cpputest_ext_lib
 endif
 
