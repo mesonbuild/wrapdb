@@ -1896,6 +1896,14 @@
       "1.1.4-1"
     ]
   },
+  "libxkbcommon": {
+    "dependency_names": [
+      "xkbcommon"
+    ],
+    "versions": [
+      "1.5.0-1"
+    ]
+  },
   "libxml2": {
     "dependency_names": [
       "libxml-2.0"
