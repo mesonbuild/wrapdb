@@ -1710,6 +1710,14 @@
       "1.1.0-1"
     ]
   },
+  "libsoup": {
+    "dependency_names": [
+      "libsoup-3.0"
+    ],
+    "versions": [
+      "3.4.4-1"
+    ]
+  },
   "libsrtp2": {
     "dependency_names": [
       "libsrtp2"

@@ -477,6 +477,10 @@
       "libpciaccess-dev"
     ]
   },
+  "libsoup": {
+    "fatal_warnings": false,
+    "skip_tests": true
+  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {
