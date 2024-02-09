@@ -65,15 +65,7 @@
     "build_options": [
       "cpputest:enable_cpputest_extensions=true",
       "cpputest:default_library=static"
-    ],
-    "_comment": [
-      "CppUTest must be provided with platform-specific implementation of some core functions, ",
-      "and it seems like it's not possible to change this flag depending on CI runner here, ",
-      "so for the sake of CI this should only be run on platforms with GCC (and compatible) toolchains."
-    ],
-    "build_on": {
-      "windows": false
-    }
+    ]
   },
   "cppzmq": {
     "alpine_packages": [
