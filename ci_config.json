@@ -61,6 +61,12 @@
       "cpp_std=c++14"
     ]
   },
+  "cpputest": {
+    "build_options": [
+      "cpputest:enable_cpputest_extensions=true",
+      "cpputest:default_library=static"
+    ]
+  },
   "cppzmq": {
     "alpine_packages": [
       "zeromq-dev"

@@ -1,18 +1,18 @@
-  project('cpputest', 'cpp',
-    version : '4.0',
-    license : 'BSD-3')
+project('cpputest', 'cpp',
+  license: 'BSD-3',
+  version: '4.0',
+)
 
-cpputest_dirs = include_directories('include')
+cpputest_includes = include_directories('include')
 subdir('src')
 
-cpputest_dep = declare_dependency(
-    link_with : cpputest_lib,
-    version : meson.project_version(),
-    include_directories : cpputest_dirs)
+cpputest_libs = [cpputest_lib]
 
-if get_option('extinctions')
-    cpputest_dep = declare_dependency(
-        link_with : cpputest_ext_lib,
-        version : meson.project_version(),
-        include_directories : cpputest_dirs)
+if get_option('enable_cpputest_extensions')
+  cpputest_libs += cpputest_ext_lib
 endif
+
+cpputest_dep = declare_dependency(
+    link_with : cpputest_libs,
+    version : meson.project_version(),
+    include_directories : cpputest_includes)
