@@ -31,6 +31,12 @@ option(
   description : 'If true make parameter entity parsing functionality available',
 )
 option(
+  'xml_ge',
+  type : 'boolean',
+  value : true,
+  description : 'If true make general entity parsing functionality available',
+)
+option(
   'xml_ns',
   type : 'boolean',
   value : true,
