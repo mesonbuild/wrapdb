@@ -477,6 +477,13 @@
       "libpciaccess-dev"
     ]
   },
+  "libpsl": {
+    "_comment": "with build all, it selects icu as a dependency which breaks the tests.",
+    "alpine_packages": [
+      "libidn2-dev",
+      "libunistring-dev"
+    ]
+  },
   "libtirpc": {
     "_comment": "Linux only",
     "build_on": {
