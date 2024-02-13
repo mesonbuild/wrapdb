@@ -32,9 +32,19 @@ foreach o : options
 endforeach
 
 dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
-execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
 loguru_deps_internal += dl_dep
-compile_opts += '-DLOGURU_STACKTRACES=@0@'.format((dl_dep.found() and execinfo).to_int())
+execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
+if execinfo
+  # execinfo needs -lexecinfo on FreeBSD and others
+  libexecinfo_dep = cxx.find_library('execinfo', required: false)
+  if libexecinfo_dep.found()
+    loguru_deps_internal += libexecinfo_dep
+  endif
+
+  compile_opts += '-DLOGURU_STACKTRACES=@0@'.format(dl_dep.found().to_int())
+else
+  compile_opts += '-DLOGURU_STACKTRACES=0'
+endif
 
 fmt_dep = dependency('fmt', required: get_option('loguru_use_fmtlib'))
 loguru_deps_internal += fmt_dep
