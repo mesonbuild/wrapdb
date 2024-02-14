@@ -2011,6 +2011,14 @@
       "0.2.5-1"
     ]
   },
+  "littlefs": {
+    "dependency_names": [
+      "littlefs"
+    ],
+    "versions": [
+      "2.9.0-1"
+    ]
+  },
   "lmdb": {
     "dependency_names": [
       "lmdb"
