@@ -3,7 +3,7 @@ project(
   'c',
   license: 'BSD-3',
   meson_version: '>=0.49.0',
-  version: '10.42',
+  version: '10.43',
 )
 
 pcre2_8_lib_version = '0.11.0'
@@ -51,6 +51,7 @@ cdata.set('PCRE2GREP_BUFSIZE', '20480')
 cdata.set('PCRE2GREP_MAX_BUFSIZE', '1048576')
 cdata.set('MAX_NAME_SIZE', '32')
 cdata.set('MAX_NAME_COUNT', '10000')
+cdata.set('MAX_VARLOOKBEHIND', '255')
 
 jit_deps = []
 if not get_option('jit').disabled() and platform_is_unixlike
@@ -70,6 +71,7 @@ endif
 
 sources = files(
   'src/pcre2_auto_possess.c',
+  'src/pcre2_chkdint.c',
   'src/pcre2_compile.c',
   'src/pcre2_config.c',
   'src/pcre2_context.c',
