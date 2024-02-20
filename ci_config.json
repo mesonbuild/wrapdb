@@ -685,8 +685,9 @@
   },
   "pkgconf": {
     "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
+    "fatal_warnings": false,
     "build_options": [
-      "pkgconf:tests=false"
+      "pkgconf:tests=disabled"
     ]
   },
   "protobuf": {
