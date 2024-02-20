@@ -13,6 +13,18 @@ cpp = meson.get_compiler('cpp')
 flags = cpp.get_supported_arguments('/DNOMINMAX', '-Wno-sign-compare', '-Wno-gcc-compat')
 add_project_arguments(flags, language: 'cpp')
 
+cpp_args=[]
+link_args=[]
+
+if get_option('enable_fuzzer')
+  cpp_args += [
+    '-fsanitize=address,fuzzer',
+  ]
+  link_args += [
+    '-fsanitize=address,fuzzer',
+  ]
+endif
+
 hw_cpp_flags = []
 if host_machine.cpu_family() == 'x86_64'
   hw_cpp_flags += ['-maes', '-msse4.1']
@@ -618,6 +630,8 @@ absl_base_lib = static_library(
   'absl_base',
   absl_base_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   dependencies: [dependency('threads'), libatomic],
 )
 
@@ -625,24 +639,32 @@ absl_hash_lib = static_library(
   'absl_hash',
   absl_hash_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
 )
 
 absl_numeric_lib = static_library(
   'absl_numeric',
   absl_numeric_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
 )
 
 absl_profiling_lib = static_library(
   'absl_profiling',
   absl_profiling_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
 )
 
 absl_crc_lib = static_library(
   'absl_crc',
   absl_crc_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
   ],
@@ -653,6 +675,8 @@ absl_strings_lib = static_library(
   'absl_strings',
   absl_strings_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_crc_lib,
@@ -665,6 +689,8 @@ absl_debugging_lib = static_library(
   'absl_debugging',
   absl_debugging_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_strings_lib,
@@ -676,7 +702,8 @@ absl_random_lib = static_library(
   'absl_random',
   absl_random_sources,
   include_directories: absl_include_dir,
-  cpp_args: hw_flags,
+  cpp_args: cpp_args + hw_flags,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_strings_lib,
@@ -688,6 +715,8 @@ absl_time_lib = static_library(
   'absl_time',
   absl_time_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_numeric_lib,
@@ -701,12 +730,16 @@ absl_types_lib = static_library(
   'absl_types',
   absl_types_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
 )
 
 absl_synchronization_lib = static_library(
   'absl_synchronization',
   absl_synchronization_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_debugging_lib,
@@ -718,6 +751,8 @@ absl_container_lib = static_library(
   'absl_container',
   absl_container_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_debugging_lib,
@@ -731,6 +766,8 @@ absl_flags_lib = static_library(
   'absl_flags',
   absl_flags_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_container_lib,
@@ -745,6 +782,8 @@ absl_status_lib = static_library(
   'absl_status',
   absl_status_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_strings_lib,
@@ -755,6 +794,8 @@ absl_log_lib = static_library(
   'absl_log',
   absl_log_sources,
   include_directories: absl_include_dir,
+  cpp_args: cpp_args,
+  link_args: link_args,
   link_with: [
     absl_base_lib,
     absl_strings_lib,
