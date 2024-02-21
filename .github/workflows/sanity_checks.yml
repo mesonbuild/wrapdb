@@ -33,12 +33,13 @@ jobs:
 
       - uses: jirutka/setup-alpine@v1
         with:
-          branch: v3.18
           packages: >
             build-base cmake git linux-headers pkgconf py3-pip samurai sudo
 
       - name: Sanity Checks
         run: |
+          # Work around PEP 668 nonsense…
+          sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
           python -m pip install --pre meson
           ./tools/sanity_checks.py
         shell: alpine.sh {0}
