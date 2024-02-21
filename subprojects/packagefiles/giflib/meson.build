@@ -1,12 +1,13 @@
 project(
   'giflib',
   'c',
-  version: '5.2.1',
+  version: '5.2.2',
   default_options: 'c_std=gnu99',
   meson_version: '>=0.59.0',
 )
 
 cc = meson.get_compiler('c')
+cc_is_msvc = cc.get_id() in ['clang-cl', 'msvc']
 fs = import('fs')
 
 enable_progs = get_option('progs').allowed()
@@ -35,18 +36,13 @@ foreach _hdr : [
   cc.has_header(_hdr, required: true)
 endforeach
 
-if host_machine.system() == 'windows'
-  # An unconditional include of <unistd.h> in `gif_hash.h` breaks the build on MSVC.
-  if not cc.has_header('unistd.h')
-    error('building on Windows without <unistd.h> is unsupported')
-  endif
-  # No `strtok_r` when building with MSVC, use `strtok_s` instead.
-  if (
-    not cc.has_header_symbol('string.h', 'strtok_r')
-    and cc.has_header_symbol('string.h', 'strtok_s')
-  )
-    add_project_arguments('-Dstrtok_r=strtok_s', language: 'c')
-  endif
+# No `strtok_r` when building with MSVC, use `strtok_s` instead.
+if (
+  host_machine.system() == 'windows'
+  and not cc.has_header_symbol('string.h', 'strtok_r')
+  and cc.has_header_symbol('string.h', 'strtok_s')
+)
+  add_project_arguments('-Dstrtok_r=strtok_s', language: 'c')
 endif
 
 gif_lib = library(
@@ -63,6 +59,7 @@ gif_lib = library(
   ],
   install: true,
   version: '7.2.0',
+  vs_module_defs: 'giflib.def',
 )
 
 gif_dep = declare_dependency(
@@ -87,21 +84,24 @@ if enable_progs or enable_tests
     ],
   )
 
+  # NOTE: `gifcolor` & `gifecho` are not built on Windows
+  # when using Visual Studio because of an issue exporting
+  # `GifAsciiTable8x8` (required) in the def file.
   _programs = [
-    # name        build?        install?
-    ['gif2rgb'  , true        , enable_progs],
-    ['gifbg'    , enable_progs, false       ],
-    ['gifbuild' , true        , enable_progs],
-    ['gifclrmp' , true        , enable_progs],
-    ['gifcolor' , enable_progs, false       ],
-    ['gifecho'  , true        , false       ],
-    ['giffilter', true        , false       ],
-    ['giffix'   , true        , enable_progs],
-    ['gifhisto' , enable_progs, false       ],
-    ['gifinto'  , true        , false       ],
-    ['gifsponge', true        , false       ],
-    ['giftext'  , true        , enable_progs],
-    ['gifwedge' , true        , false       ],
+    # name        build?                           install?
+    ['gif2rgb'  , true                           , enable_progs],
+    ['gifbg'    , enable_progs                   , false       ],
+    ['gifbuild' , true                           , enable_progs],
+    ['gifclrmp' , true                           , enable_progs],
+    ['gifcolor' , enable_progs and not cc_is_msvc, false       ],
+    ['gifecho'  , not cc_is_msvc                 , false       ],
+    ['giffilter', true                           , false       ],
+    ['giffix'   , true                           , enable_progs],
+    ['gifhisto' , enable_progs                   , false       ],
+    ['gifinto'  , true                           , false       ],
+    ['gifsponge', true                           , false       ],
+    ['giftext'  , true                           , enable_progs],
+    ['gifwedge' , true                           , false       ],
   ]
 
   if cc.has_header('getopt.h')
@@ -173,7 +173,7 @@ if enable_tests
       '-xc',
       ' && '.join(
         '"$1" -d <"$2" >"$3"',
-        'diff -u "$4" "$3"',
+        'diff --strip-trailing-cr --unified "$4" "$3"',
       ),
       '--',
       gifbuild,
@@ -191,7 +191,7 @@ if enable_tests
       ' && '.join(
         '"$1" <"$2" | "$1" -d >"$3"',
         '"$1" <"$3" | "$1" -d >"$4"',
-        'diff -u "$3" "$4"',
+        'diff --strip-trailing-cr --unified "$3" "$4"',
       ),
       '--',
       gifbuild,
@@ -210,7 +210,7 @@ if enable_tests
         '"$1" -d <"$2" >"$3"',
         '"$1" <"$3" >"$4"',
         '"$1" -d <"$4" >"$5"',
-        'diff -u "$3" "$5"',
+        'diff --strip-trailing-cr --unified "$3" "$5"',
       ),
       '--',
       gifbuild,
@@ -237,7 +237,7 @@ if enable_tests
           '-xc',
           ' && '.join(
             '"$1" <"$2" >"$3"',
-            'diff -u "$4" "$3"',
+            'diff --strip-trailing-cr --unified "$4" "$3"',
           ),
           '--',
           _prog,
@@ -277,23 +277,25 @@ if enable_tests
   endforeach
 
   # Test gifecho.
-  test(
-    'regress',
-    sh,
-    args: [
-      '-xc',
-      ' && '.join(
-        '"$1" -t foobar | "$2" -d >"$3"',
-        'diff -u "$4" "$3"',
-      ),
-      '--',
-      gifecho,
-      gifbuild,
-      'gifecho-foobar.ico',
-      files('tests/foobar.ico'),
-    ],
-    suite: 'gifecho',
-  )
+  if not cc_is_msvc
+    test(
+      'regress',
+      sh,
+      args: [
+        '-xc',
+        ' && '.join(
+          '"$1" -t foobar | "$2" -d >"$3"',
+          'diff --strip-trailing-cr --unified "$4" "$3"',
+        ),
+        '--',
+        gifecho,
+        gifbuild,
+        'gifecho-foobar.ico',
+        files('tests/foobar.ico'),
+      ],
+      suite: 'gifecho',
+    )
+  endif
 
   # Test giffix.
   test(
@@ -303,7 +305,7 @@ if enable_tests
       '-xc',
       ' && '.join(
         'head -c "$1" <"$2" | "$3" | "$4" -d >"$5"',
-        'diff -u "$6" "$5"',
+        'diff --strip-trailing-cr --unified "$6" "$5"',
       ),
       '--',
       (fs.size('pic/treescap.gif') - 20).to_string(),
