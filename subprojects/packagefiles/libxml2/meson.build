@@ -356,6 +356,7 @@ xml2lib = library(
   c_args: cargs,
   include_directories: incdir,
   dependencies: deps,
+  version: meson.project_version(),
   install: true,
 )
 
