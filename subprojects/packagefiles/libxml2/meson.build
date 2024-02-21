@@ -137,13 +137,13 @@ if zlib_dep.found()
 endif
 
 readline_lib = cc.find_library('readline', required: false)
-if readline_lib.found()
+if cc.has_header('readline/readline.h', dependencies: readline_lib)
   cdata.set('HAVE_LIBREADLINE', 1)
   deps += readline_lib
 endif
 
 history_lib = cc.find_library('history', required: false)
-if history_lib.found()
+if cc.has_header('readline/history.h', dependencies: history_lib)
   cdata.set('HAVE_LIBHISTORY', 1)
   deps += history_lib
 endif
