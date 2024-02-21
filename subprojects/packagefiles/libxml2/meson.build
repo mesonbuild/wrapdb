@@ -349,14 +349,25 @@ endif
 cargs = with_threads ? ['-D_REENTRANT'] : []
 cargs += get_option('default_library') == 'static' ? '-DLIBXML_STATIC' : []
 
+link_args = cc.get_supported_link_arguments(
+  [
+    # lld 16 defaults to --no-undefined-version but the version script
+    # can contain symbols disabled by configuration options.
+    '-Wl,--undefined-version',
+    '-Wl,--version-script=@0@'.format(meson.current_source_dir() / 'libxml2.syms')
+  ]
+)
+
 incdir = include_directories('include')
 xml2lib = library(
   'xml2',
   sources,
   c_args: cargs,
+  link_args: link_args,
   include_directories: incdir,
   dependencies: deps,
   version: meson.project_version(),
+  gnu_symbol_visibility: 'default',
   install: true,
 )
 
