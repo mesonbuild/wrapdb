@@ -4,9 +4,24 @@ else
   extra_args = ['-DFLAC__NO_DLL']
 endif
 
+avx2_args = []
+
 if cc.get_argument_syntax() == 'msvc' and cdata.get('WITH_AVX')
-  extra_args += '/arch:AVX2'
+  avx2_args += '/arch:AVX2'
 endif
+
+flac_avx2_lib = static_library(
+  'flac_avx2',
+  files(
+    'fixed_intrin_avx2.c',
+    'lpc_intrin_avx2.c',
+    'lpc_intrin_fma.c',
+    'stream_encoder_intrin_avx2.c',
+  ),
+  include_directories: [main_inc, 'include'],
+  c_args: [avx2_args, extra_args],
+  install: false,
+)
 
 flac_lib = library(
   'FLAC',
@@ -19,12 +34,9 @@ flac_lib = library(
   'fixed_intrin_sse2.c',
   'fixed_intrin_ssse3.c',
   'fixed_intrin_sse42.c',
-  'fixed_intrin_avx2.c',
   'float.c',
   'format.c',
   'lpc.c',
-  'lpc_intrin_avx2.c',
-  'lpc_intrin_fma.c',
   'lpc_intrin_neon.c',
   'lpc_intrin_sse2.c',
   'lpc_intrin_sse41.c',
@@ -36,7 +48,6 @@ flac_lib = library(
   'stream_encoder.c',
   'stream_encoder_intrin_sse2.c',
   'stream_encoder_intrin_ssse3.c',
-  'stream_encoder_intrin_avx2.c',
   'stream_encoder_framing.c',
   'window.c',
   'ogg_decoder_aspect.c',
@@ -45,6 +56,7 @@ flac_lib = library(
   'ogg_mapping.c',
   win32_utf8,
   include_directories: [main_inc, 'include'],
+  link_whole: flac_avx2_lib,
   c_args: extra_args,
   version: '8.3.0',
   soversion: '8',
