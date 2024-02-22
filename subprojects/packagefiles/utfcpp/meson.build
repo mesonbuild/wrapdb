@@ -1,7 +1,7 @@
 project(
   'utfcpp',
   'cpp',
-  version: '3.2.4',
+  version: '4.0.5',
   license: 'MIT',
   meson_version: '>=0.49.0',
 )
@@ -9,10 +9,4 @@ project(
 depinc = include_directories('source')
 utfcpp_dep = declare_dependency(
   include_directories: depinc,
-)
-
-executable(
-  'docsample',
-  'samples/docsample.cpp',
-  dependencies: utfcpp_dep,
 )
