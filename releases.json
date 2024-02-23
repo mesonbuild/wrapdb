@@ -493,6 +493,14 @@
       "2.2.0-1"
     ]
   },
+  "debug_assert": {
+    "dependency_names": [
+      "debug_assert"
+    ],
+    "versions": [
+      "1.3.3-1"
+    ]
+  },
   "directxmath": {
     "dependency_names": [
       "directxmath"
