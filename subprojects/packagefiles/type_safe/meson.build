@@ -52,6 +52,7 @@ endif
 type_safe_dep = declare_dependency(
     compile_args: comp_args,
     dependencies: [da_dep],
+    include_directories: include_directories('include'),
 )
 
 meson.override_dependency('type_safe', type_safe_dep)
