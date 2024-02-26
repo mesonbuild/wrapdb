@@ -1,8 +1,8 @@
 [wrap-file]
-directory = tinyxml2-9.0.0
-source_url = https://github.com/leethomason/tinyxml2/archive/9.0.0.tar.gz
-source_filename = 9.0.0.tar.gz
-source_hash = cc2f1417c308b1f6acc54f88eb70771a0bf65f76282ce5c40e54cfe52952702c
+directory = tinyxml2-10.0.0
+source_url = https://github.com/leethomason/tinyxml2/archive/10.0.0.tar.gz
+source_filename = 10.0.0.tar.gz
+source_hash = 3bdf15128ba16686e69bce256cc468e76c7b94ff2c7f391cc5ec09e40bff3839
 
 [provide]
 tinyxml2 = dep_tinyxml2
