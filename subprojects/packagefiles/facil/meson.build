@@ -17,7 +17,11 @@ m_dep = cc.find_library('m', required: false)
 thread_dep = dependency('threads')
 ws_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
 
-add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'c')
+if host_machine.system() == 'windows'
+  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'c')
+elif host_machine.system() == 'linux'
+  add_project_arguments('-D_LARGEFILE64_SOURCE', language: 'c')
+endif
 
 facil_src = files(
   'lib/facil/cli/fio_cli.c',
