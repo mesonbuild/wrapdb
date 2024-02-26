@@ -419,6 +419,9 @@
     ]
   },
   "libffmpegthumbnailer": {
+    "alpine_packages": [
+      "ffmpeg4-dev"
+    ],
     "brew_packages": [
       "ffmpeg@4"
     ],
