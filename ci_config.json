@@ -193,7 +193,10 @@
       "darwin": false,
       "msys2": false,
       "windows": false
-    }
+    },
+    "alpine_packages": [
+      "libudev-zero-dev"
+    ]
   },
   "gdbm": {
     "_comment": "- Requires POSIX platform.",
