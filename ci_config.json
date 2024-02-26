@@ -26,8 +26,7 @@
     "google-woff2",
     "graphite2",
     "libgpiod",
-    "mocklibc",
-    "tinyxml2"
+    "mocklibc"
   ],
   "c-ares": {
     "build_options": [
