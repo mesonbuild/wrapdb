@@ -1,0 +1,37 @@
+
+option(
+    'build_examples',
+    type: 'boolean',
+    value: false,
+    description: 'whether or not examples should be built',
+)
+option(
+    'build_benchmarks',
+    type: 'boolean',
+    value: false,
+    description: 'whether or not benchmarks should be built',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'whether or not tests should be built',
+)
+option(
+    'user_config_header',
+    type: 'string',
+    value: '',
+    description: 'set the name of the user config header',
+)
+option(
+    'use_cpp17',
+    type: 'feature',
+    value: 'auto',
+    description: 'use c++17 standard instead of c++20',
+)
+option(
+    'install',
+    type: 'boolean',
+    value: false,
+    description: 'Create installation target',
+)
