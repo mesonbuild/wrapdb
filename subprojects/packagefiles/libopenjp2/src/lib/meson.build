@@ -15,6 +15,7 @@ pkgconfig.generate(
   version: meson.project_version(),
   libraries: openjp2_lib,
   subdirs: openjpeg_version_subdir,
+  extra_cflags: opj_static_args,
 )
 if get_option('build_jpip')
   pkgconfig.generate(
@@ -23,5 +24,6 @@ if get_option('build_jpip')
     description: 'JPEG2000 Interactivity tools, APIs and protocols (Part 9)',
     version: meson.project_version(),
     libraries: openjpip_lib,
+    extra_cflags: opj_static_args,
   )
 endif

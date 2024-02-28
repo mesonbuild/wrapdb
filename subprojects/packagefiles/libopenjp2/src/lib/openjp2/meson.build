@@ -42,7 +42,6 @@ openjp2_headers = files(
   'opj_includes.h',
   'opj_intmath.h',
   'opj_malloc.h',
-  'opj_stdint.h',
   'pi.h',
   'sparse_array.h',
   't1.h',
@@ -62,7 +61,6 @@ opj_config = configuration_data()
 opj_config.set('OPENJPEG_VERSION_MAJOR', openjpeg_version_major)
 opj_config.set('OPENJPEG_VERSION_MINOR', openjpeg_version_minor)
 opj_config.set('OPENJPEG_VERSION_BUILD', openjpeg_version_build)
-opj_config.set('OPJ_HAVE_STDINT_H', cc.has_header('stdint.h'))
 
 opj_private_config = configuration_data()
 check_headers = [
@@ -91,7 +89,7 @@ foreach h : check_headers
   opj_private_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
-foreach h : ['inttypes.h', 'malloc.h', 'stdint.h']
+foreach h : ['malloc.h']
   opj_private_config.set('OPJ_HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
@@ -137,7 +135,6 @@ openjp2_c_args = [
   '-fomit-frame-pointer',
   '-ffinite-math-only',
   '-Wall',
-  '-std=c99',
 ]
 
 if get_option('opj_disable_tpsot_fix')
@@ -195,7 +192,6 @@ libopenjp2_dep = declare_dependency(
 install_headers(
   [
     'openjpeg.h',
-    'opj_stdint.h',
   ],
   subdir: openjpeg_version_subdir,
 )
