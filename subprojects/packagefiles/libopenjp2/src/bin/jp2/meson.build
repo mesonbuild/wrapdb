@@ -27,13 +27,3 @@ foreach exe : ['opj_decompress', 'opj_compress', 'opj_dump']
     install: true,
   )
 endforeach
-
-#if get_option('opj_use_dsymutil')
-# add_custom_command('TARGET', exe, 'POST_BUILD', 'COMMAND', 'dsymutil', '$<TARGET_FILE:${exe}>', 'COMMENT', 'dsymutil $<TARGET_FILE:${exe}>', 'DEPENDS', exe)
-#endif
-
-#if get_option('build_doc')
-# Install man pages
-# install('FILES', openjpeg_source_dir, '/doc/man/man1/opj_compress.1', openjpeg_source_dir, '/doc/man/man1/opj_decompress.1', openjpeg_source_dir, '/doc/man/man1/opj_dump.1', 'DESTINATION', openjpeg_install_man_dir, '/man1')
-#
-#endif
