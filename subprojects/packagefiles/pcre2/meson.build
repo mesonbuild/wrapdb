@@ -137,6 +137,8 @@ foreach f : check_funs
 endforeach
 
 cdata.set10('SUPPORT_PCRE2_8', true)
+cdata.set10('SUPPORT_PCRE2_16', true)
+cdata.set10('SUPPORT_PCRE2_32', true)
 cdata.set10('SUPPORT_UNICODE', true)
 
 if get_option('default_library') == 'static'
