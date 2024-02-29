@@ -6,10 +6,10 @@ project(
   version: '10.43',
 )
 
-pcre2_8_lib_version = '0.11.0'
-pcre2_16_lib_version = '0.11.0'
-pcre2_32_lib_version = '0.11.0'
-pcre2_posix_lib_version = '3.0.2'
+pcre2_8_lib_version = '0.12.0'
+pcre2_16_lib_version = '0.12.0'
+pcre2_32_lib_version = '0.12.0'
+pcre2_posix_lib_version = '3.0.5'
 
 c_compiler = meson.get_compiler('c')
 
