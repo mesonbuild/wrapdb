@@ -122,6 +122,7 @@ foreach h : check_headers
 endforeach
 
 check_funs = [
+  '__builtin_mul_overflow',
   'bcopy',
   'memfd_create',
   'memmove',
@@ -132,7 +133,7 @@ check_funs = [
 
 foreach f : check_funs
   if c_compiler.has_function(f)
-    cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
+    cdata.set10('HAVE_@0@'.format(f.to_upper().strip('_')), true)
   endif
 endforeach
 
