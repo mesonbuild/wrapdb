@@ -109,7 +109,6 @@ opj_private_config.set('PACKAGE_VERSION', meson.project_version())
 
 # Enable Large file support
 opj_config.set('OPJ_HAVE_LARGEFILES', 1)
-# opj_test_large_files('OPJ_HAVE_LARGEFILES')
 
 configure_file(
   input: 'opj_config.h.cmake.in',
@@ -140,11 +139,6 @@ openjp2_c_args = [
 if get_option('opj_disable_tpsot_fix')
   openjp2_c_args += '-DOPJ_DISABLE_TPSOT_FIX'
 endif
-
-#if get_option('build_doc')
-# install man page of the library
-# install(['FILES', openjpeg_source_dir, '/doc/man/man3/libopenjp2.3', 'DESTINATION', openjpeg_install_man_dir, '/man3'])
-#endif
 
 if get_option('build_luts_generator')
   t1_generate_luts_exe = executable('t1_generate_luts', 't1_generate_luts.c', dependencies: m_dep)
