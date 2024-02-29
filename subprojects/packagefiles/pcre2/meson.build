@@ -141,8 +141,10 @@ cdata.set10('SUPPORT_UNICODE', true)
 
 if get_option('default_library') == 'static'
   static_defs = ['-DPCRE2_STATIC']
+  pcre2_posix_defs = []
 else
   static_defs = []
+  pcre2_posix_defs = ['-DPCRE2POSIX_SHARED']
 endif
 
 pcre2_h = configure_file(
@@ -185,7 +187,7 @@ pcre2_posix_lib = library(
   'pcre2-posix',
   'src/pcre2posix.c',
   dependencies: libpcre2_8,
-  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8', pcre2_posix_defs],
   version: pcre2_posix_lib_version,
   install: true,
   gnu_symbol_visibility: 'hidden',
@@ -194,7 +196,7 @@ pcre2_posix_lib = library(
 libpcre2_posix = declare_dependency(
   link_with: pcre2_posix_lib,
   include_directories: includes,
-  compile_args: static_defs,
+  compile_args: [static_defs, pcre2_posix_defs],
 )
 
 pcre2_16_lib = library(
