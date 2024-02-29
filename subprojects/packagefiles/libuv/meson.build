@@ -1,7 +1,7 @@
 project(
   'libuv',
   'c',
-  version: '1.47.0',
+  version: '1.48.0',
   license: 'libuv',
   default_options: ['c_std=gnu99,c99'],
   meson_version: '>=0.49.0',
@@ -123,6 +123,7 @@ if win32
   libuv_cargs += [
     '-DWIN32_LEAN_AND_MEAN',
     '-D_WIN32_WINNT=0x0602',
+    '_CRT_DECLARE_NONSTDC_NAMES=0'
   ]
   libuv_libs += [
     'psapi',
@@ -619,6 +620,7 @@ if libuv_build_tests
     'test/test-thread-affinity.c',
     'test/test-thread-equal.c',
     'test/test-thread.c',
+    'test/test-thread-priority.c',
     'test/test-threadpool-cancel.c',
     'test/test-threadpool.c',
     'test/test-timer-again.c',
