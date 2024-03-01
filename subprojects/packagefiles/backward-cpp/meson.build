@@ -10,7 +10,7 @@ dwarf = dependency('libdwarf', required: false)
 deps = [bfd, dw, dwarf, unwind]
 
 if bfd.found()
-    add_project_arguments('-DBACKWARDS_HAS_BFD=1', language: 'cpp')
+    add_project_arguments('-DBACKWARD_HAS_BFD=1', language: 'cpp')
     if meson.version().version_compare('>= 0.62')
         deps += dependency('dl')
     else
@@ -23,7 +23,7 @@ if dw.found()
 endif
 
 if dwarf.found()
-    add_project_arguments('-DBACKWARDS_HAS_DWARF=1', language: 'cpp')
+    add_project_arguments('-DBACKWARD_HAS_DWARF=1', language: 'cpp')
 endif
 
 install_headers('backward.hpp', subdir : 'backward')
