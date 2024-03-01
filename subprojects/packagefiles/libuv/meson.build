@@ -70,6 +70,10 @@ if libuv_asan and cc.get_argument_syntax() == 'gcc'
   libuv_cargs += '-D__ASAN__=1'
 endif
 
+if cc_msvc
+  libuv_cargs += '/we4013'
+endif
+
 # compiler flags
 if cc_msvc
   cc_msvc_cargs_all = [
