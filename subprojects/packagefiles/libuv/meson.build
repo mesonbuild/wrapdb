@@ -127,7 +127,7 @@ if win32
   libuv_cargs += [
     '-DWIN32_LEAN_AND_MEAN',
     '-D_WIN32_WINNT=0x0602',
-    '_CRT_DECLARE_NONSTDC_NAMES=0'
+    '-D_CRT_DECLARE_NONSTDC_NAMES=0'
   ]
   libuv_libs += [
     'psapi',
