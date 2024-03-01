@@ -4,6 +4,7 @@ project(
   version: '2.11.6',
   meson_version: '>=0.54.1',
   license: 'MIT',
+  default_options: 'c_std=c99',
 )
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
@@ -232,15 +233,7 @@ withcdata.set('LIBXML_VERSION_NUMBER', version_number)
 withcdata.set('LIBXML_VERSION_STRING', '@0@'.format(version_number))
 withcdata.set('LIBXML_VERSION_EXTRA', '')
 
-need_trio = false
-foreach f : ['printf', 'sprintf', 'fprintf', 'snprintf', 'vfprintf', 'vsprintf', 'vsnprintf', 'sscanf']
-  if not cc.has_function(f, prefix: '#include <stdio.h>')
-    need_trio = true
-    break
-  endif
-endforeach
-withcdata.set10('WITH_TRIO', need_trio)
-
+withcdata.set10('WITH_TRIO', false)
 withcdata.set10('WITH_THREADS', with_threads)
 withcdata.set10('WITH_THREAD_ALLOC', false)
 withcdata.set10('WITH_TREE', true)
@@ -337,10 +330,6 @@ sources = files(
   'xpointer.c',
   'xzlib.c',
 )
-
-if need_trio
-  sources += files('trio.c', 'trionan.c', 'triostr.c')
-endif
 
 if host_machine.system() == 'windows'
   subdir('win32')
