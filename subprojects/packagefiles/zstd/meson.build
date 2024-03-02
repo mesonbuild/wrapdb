@@ -23,7 +23,7 @@ project('zstd',
     # so this isn't safe
     #'werror=true'
   ],
-  version: '1.5.4',
+  version: '1.5.5',
   meson_version: '>=0.50.0')
 
 cc = meson.get_compiler('c')
@@ -130,7 +130,7 @@ endif
 
 subdir('build/meson/lib')
 
-if bin_programs
+if bin_programs or bin_tests
   subdir('build/meson/programs')
 endif
 
