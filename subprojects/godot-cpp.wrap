@@ -1,0 +1,10 @@
+[wrap-file]
+directory = godot-cpp-godot-4.2-stable
+source_url = https://github.com/godotengine/godot-cpp/archive/refs/tags/godot-4.2-stable.tar.gz
+source_filename = godot-4.2-stable.tar.gz
+source_hash = a11d619cc148318e7500c18f239e5b89de7051b36e23359692f8e0cfe3fc3494
+patch_directory=godot-cpp
+
+
+[provide]
+godot_cpp = godot_cpp_dep
