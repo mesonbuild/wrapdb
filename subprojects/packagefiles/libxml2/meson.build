@@ -10,6 +10,9 @@ project(
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 cc = meson.get_compiler('c')
+# avoid false positive warnings about NULL fmt argument to __xmlSimpleError(),
+# as upstream does
+add_project_arguments(cc.get_supported_arguments('-Wno-format-extra-args'), language: 'c')
 if host_machine.system() == 'windows'
   if cc.get_argument_syntax() != 'gcc'
     add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
