@@ -1,37 +1,32 @@
 project(
   'libxml2',
   'c',
-  version: '2.11.6',
+  version: '2.12.5',
   meson_version: '>=0.54.1',
   license: 'MIT',
+  default_options: 'c_std=c99',
 )
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 cc = meson.get_compiler('c')
+# avoid false positive warnings about NULL fmt argument to __xmlSimpleError(),
+# as upstream does
+add_project_arguments(cc.get_supported_arguments('-Wno-format-extra-args'), language: 'c')
 if host_machine.system() == 'windows'
-  if cc.get_argument_syntax() == 'gcc'
-    #hack to get rand_r working on windows
-    add_project_arguments('-D_POSIX_THREAD_SAFE_FUNCTIONS', language: 'c')
-  else
+  if cc.get_argument_syntax() != 'gcc'
     add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
   endif
 endif
 
 cdata = configuration_data()
 
-cdata.set('PACKAGE', meson.project_name())
-cdata.set('PACKAGE_NAME', meson.project_name())
-cdata.set('PACKAGE_TARNAME', meson.project_name())
-cdata.set('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(), meson.project_version()))
-cdata.set('PACKAGE_URL', 'https://gitlab.gnome.org/GNOME/libxml2')
-cdata.set('PACKAGE_BUGREPORT', 'xml@gnome.org')
-cdata.set('PACKAGE_VERSION', meson.project_version())
 cdata.set('VERSION', meson.project_version())
 
 if cc.has_function_attribute('destructor')
   cdata.set('ATTRIBUTE_DESTRUCTOR', '__attribute__((destructor))')
 endif
+cdata.set10('HAVE_ATTRIBUTE_DESTRUCTOR', cdata.has('ATTRIBUTE_DESTRUCTOR'))
 
 if cc.has_header_symbol('sys/socket.h', 'AF_INET6') or cc.has_header_symbol('winsock2.h', 'AF_INET6')
   cdata.set('SUPPORT_IP6', 1)
@@ -53,8 +48,12 @@ else
   cdata.set('GETHOSTBYNAME_ARG_CAST', '(char *)')
 endif
 
-if cc.has_header_symbol('stdlib.h', 'rand_r', args: '-D_POSIX_THREAD_SAFE_FUNCTIONS')
-  cdata.set('HAVE_RAND_R', 1)
+if cc.compiles('_Thread_local int v;')
+  cdata.set('XML_THREAD_LOCAL', '_Thread_local')
+elif cc.compiles('__thread int v;')
+  cdata.set('XML_THREAD_LOCAL', '__thread')
+elif cc.compiles('__declspec(thread) int v;')
+  cdata.set('XML_THREAD_LOCAL', '__declspec(thread)')
 endif
 
 if cc.has_header_symbol('stdarg.h', 'va_copy')
@@ -121,6 +120,9 @@ else
   if with_threads
     deps += pthread_dep
   endif
+endif
+if with_threads and not cdata.has('XML_THREAD_LOCAL')
+  warning('Your C compiler appears to not support thread-local storage. Future versions of libxml2 will require this feature for multi-threading.')
 endif
 
 lzma_dep = dependency('liblzma', required: false)
@@ -195,12 +197,10 @@ endforeach
 
 checked_funcs = {
   'ftime': [],
-  'getaddrinfo': ws2_dep,
   'gettimeofday': [],
   'isascii': [],
   'mmap': [],
   'munmap': [],
-  'putenv': [],
   'stat': [],
 }
 
@@ -209,8 +209,6 @@ foreach f, d : checked_funcs
     cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
   endif
 endforeach
-
-cdata.set('LT_OBJDIR', '.libs/')
 
 configure_file(
   input: 'config.h.cmake.in',
@@ -232,15 +230,7 @@ withcdata.set('LIBXML_VERSION_NUMBER', version_number)
 withcdata.set('LIBXML_VERSION_STRING', '@0@'.format(version_number))
 withcdata.set('LIBXML_VERSION_EXTRA', '')
 
-need_trio = false
-foreach f : ['printf', 'sprintf', 'fprintf', 'snprintf', 'vfprintf', 'vsprintf', 'vsnprintf', 'sscanf']
-  if not cc.has_function(f, prefix: '#include <stdio.h>')
-    need_trio = true
-    break
-  endif
-endforeach
-withcdata.set10('WITH_TRIO', need_trio)
-
+withcdata.set10('WITH_TRIO', false)
 withcdata.set10('WITH_THREADS', with_threads)
 withcdata.set10('WITH_THREAD_ALLOC', false)
 withcdata.set10('WITH_TREE', true)
@@ -337,10 +327,6 @@ sources = files(
   'xpointer.c',
   'xzlib.c',
 )
-
-if need_trio
-  sources += files('trio.c', 'trionan.c', 'triostr.c')
-endif
 
 if host_machine.system() == 'windows'
   subdir('win32')
