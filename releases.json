@@ -970,6 +970,14 @@
       "0.9.9.8-1"
     ]
   },
+  "godot-cpp" : {
+    "dependency_names" : [
+      "godot_cpp"
+    ],
+    "versions" : [
+      "4.2-1"
+    ]
+  },
   "google-benchmark": {
     "dependency_names": [
       "benchmark"

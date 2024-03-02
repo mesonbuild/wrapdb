@@ -27,7 +27,7 @@ import platform
 from pathlib import Path
 from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
 
-PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'LICENSE.build']
+PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
     'box2d': [
         'doctest.h'
@@ -45,6 +45,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_features.h',
         'glbinding-aux_export.h'
     ],
+    'godot-cpp' : [
+         'meson-bindings-generator.py',
+     ],
     'gumbo-parser': [
         'tokenizer.cc',
     ],
