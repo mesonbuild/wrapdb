@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.42', license: 'libpng',
+  version: '1.6.43', license: 'libpng',
   meson_version: '>=0.50.0',
 )
 
@@ -9,9 +9,6 @@ png_versions = meson.project_version().split('.')
 png_major_version = png_versions[0]
 png_minor_version = png_versions[1]
 png_micro_version = png_versions[2]
-if meson.project_version() == '1.6.42'
-  png_micro_version = '41'
-endif
 png_libname = 'png@0@@1@'.format(png_major_version, png_minor_version)
 png_libversion = '@0@@1@.@2@.0'.format(png_major_version, png_minor_version, png_micro_version)
 
