@@ -409,6 +409,9 @@
       "libdrm:radeon=enabled",
       "libdrm:tegra=enabled"
     ],
+    "alpine_packages": [
+      "libpciaccess-dev"
+    ],
     "debian_packages": [
       "libpciaccess-dev"
     ]
