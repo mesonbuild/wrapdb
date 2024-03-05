@@ -680,6 +680,14 @@
     ],
     "skip_tests": true
   },
+  "pciaccess": {
+    "_comment": "Does not support Windows or macOS, but can be built on Cygwin with some effort",
+    "build_on": {
+      "darwin": false,
+      "msys2": false,
+      "windows": false
+    }
+  },
   "pixman": {
     "_comment": "Some tests takes more than 2min to complete.",
     "test_options": [
