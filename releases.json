@@ -2510,6 +2510,14 @@
       "0.98.1-1"
     ]
   },
+  "pciaccess": {
+    "dependency_names": [
+      "pciaccess"
+    ],
+    "versions": [
+      "0.18-1"
+    ]
+  },
   "pcre": {
     "dependency_names": [
       "libpcre"
@@ -3494,3 +3502,4 @@
     ]
   }
 }
+
