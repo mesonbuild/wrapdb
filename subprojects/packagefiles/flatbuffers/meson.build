@@ -1,4 +1,4 @@
-project('flatbuffers', 'cpp', version: '23.3.3', license: 'Apache-2.0', meson_version: '>=0.49.0')
+project('flatbuffers', 'cpp', version: '24.3.6', license: 'Apache-2.0', meson_version: '>=0.49.0')
 
 cpp = meson.get_compiler('cpp')
 
@@ -23,6 +23,8 @@ headers = files(
   'include/flatbuffers/code_generators.h',
   'include/flatbuffers/default_allocator.h',
   'include/flatbuffers/detached_buffer.h',
+  'include/flatbuffers/file_manager.h',
+  'include/flatbuffers/flatbuffer_builder.h',
   'include/flatbuffers/flatbuffers.h',
   'include/flatbuffers/flatc.h',
   'include/flatbuffers/flex_flat_util.h',
@@ -130,6 +132,9 @@ flatc_sources = files(
   'src/bfbs_gen_lua.cpp',
   'src/bfbs_gen_nim.cpp',
   'src/binary_annotator.cpp',
+  'src/file_binary_writer.cpp',
+  'src/file_name_saving_file_manager.cpp',
+  'src/file_writer.cpp',
   'src/flatc_main.cpp',
   'src/idl_gen_cpp.cpp',
   'src/idl_gen_csharp.cpp',
@@ -140,6 +145,7 @@ flatc_sources = files(
   'src/idl_gen_java.cpp',
   'src/idl_gen_json_schema.cpp',
   'src/idl_gen_kotlin.cpp',
+  'src/idl_gen_kotlin_kmp.cpp',
   'src/idl_gen_lobster.cpp',
   'src/idl_gen_lua.cpp',
   'src/idl_gen_php.cpp',
