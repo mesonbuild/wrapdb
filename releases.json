@@ -1031,7 +1031,9 @@
       "grpc",
       "grpc_unsecure",
       "grpc++",
-      "grpc++_unsecure"
+      "grpc++_unsecure",
+      "grpc++_channelz",
+      "grpc++_reflection"
     ],
     "program_names": [
       "grpc_cpp_plugin",
@@ -1041,6 +1043,7 @@
       "grpc_ruby_plugin"
     ],
     "versions": [
+      "1.59.1-2",
       "1.59.1-1"
     ]
   },

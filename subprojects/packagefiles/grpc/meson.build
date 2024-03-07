@@ -1,5 +1,6 @@
+
 # WARNING: this file is auto-generated! Your changes here will likely be discarded
-# raise an issue on GH is you have suggestions
+# raise an issue on GH if you have suggestions
 # todo: merge-in generator script
 
 project('gRPC', ['c', 'cpp'], version: '1.59.1', license: 'Apache-2.0',
@@ -16,6 +17,7 @@ is_static = get_option('default_library') == 'static'
 is_darwin = host_machine.system() == 'darwin'
 is_windows = host_machine.system() == 'windows'
 cpp = meson.get_compiler('cpp')
+python = find_program('python3')
 
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
 absl_any_invocable_dep = dependency('absl_any_invocable')
@@ -70,6 +72,9 @@ winsock_dep = is_windows ? [
 ] : []
 zlib_dep = dependency('zlib')
 
+protoc = find_program('protoc')
+is_protoc_internal = protoc_dep.type_name() == 'internal'
+
 common_include_dirs = include_directories(
   'include',
   'third_party/address_sorting/include',
@@ -79,8 +84,9 @@ common_include_dirs = include_directories(
   'src/core/ext/upb-generated',
   'src/core/ext/upbdefs-generated')
 
-libupb_collections_lib = library('upb_collections_lib',
-  sources: files(
+libupb_collections_lib = library(
+  'upb_collections_lib',
+  sources: [files(
     'third_party/upb/upb/base/status.c',
     'third_party/upb/upb/collections/array.c',
     'third_party/upb/upb/collections/map.c',
@@ -92,51 +98,57 @@ libupb_collections_lib = library('upb_collections_lib',
     'third_party/upb/upb/mini_table/extension_registry.c',
     'third_party/upb/upb/mini_table/internal/message.c',
     'third_party/upb/upb/mini_table/message.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
-  dependencies: [
-])
+)
 upb_collections_lib_dep = declare_dependency(
   link_with: libupb_collections_lib,
   include_directories: common_include_dirs,
 )
 
-libutf8_range_lib = library('utf8_range_lib',
-  sources: files(
+libutf8_range_lib = library(
+  'utf8_range_lib',
+  sources: [files(
     'third_party/utf8_range/naive.c',
     'third_party/utf8_range/range2-neon.c',
     'third_party/utf8_range/range2-sse.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
-  dependencies: [
-])
+)
 utf8_range_lib_dep = declare_dependency(
   link_with: libutf8_range_lib,
   include_directories: common_include_dirs,
 )
 
-libaddress_sorting = library('address_sorting',
-  sources: files(
+libaddress_sorting = library(
+  'address_sorting',
+  sources: [files(
     'third_party/address_sorting/address_sorting.c',
     'third_party/address_sorting/address_sorting_posix.c',
     'third_party/address_sorting/address_sorting_windows.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
   dependencies: [
-    winsock_dep])
+    winsock_dep,
+  ],
+)
 address_sorting_dep = declare_dependency(
   link_with: libaddress_sorting,
   include_directories: common_include_dirs,
 )
 
-libgpr = library('gpr',
-  sources: files(
+libgpr = library(
+  'gpr',
+  sources: [files(
     'src/core/lib/config/config_vars.cc',
     'src/core/lib/config/config_vars_non_generated.cc',
     'src/core/lib/config/load_config.cc',
@@ -183,6 +195,7 @@ libgpr = library('gpr',
     'src/core/lib/gprpp/windows/env.cc',
     'src/core/lib/gprpp/windows/stat.cc',
     'src/core/lib/gprpp/windows/thd.cc'),
+  ],
   cpp_args: [is_static ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
   c_args: [is_static ? ['-DGPR_DLL_EXPORTS'] : [], '-DSTRSAFE_NO_DEPRECATE'],
   include_directories: common_include_dirs,
@@ -206,20 +219,24 @@ libgpr = library('gpr',
     absl_strings_dep,
     absl_synchronization_dep,
     absl_time_dep,
-    absl_variant_dep])
+    absl_variant_dep,
+  ],
+)
 gpr_dep = declare_dependency(
   link_with: libgpr,
   include_directories: common_include_dirs,
 )
 
-libgrpc_plugin_support = library('grpc_plugin_support',
-  sources: files(
+libgrpc_plugin_support = library(
+  'grpc_plugin_support',
+  sources: [files(
     'src/compiler/cpp_generator.cc',
     'src/compiler/node_generator.cc',
     'src/compiler/php_generator.cc',
     'src/compiler/proto_parser_helper.cc',
     'src/compiler/python_generator.cc',
     'src/compiler/ruby_generator.cc'),
+  ],
   cpp_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
   c_args: ['-DGRPC_CUSTOM_CSHARP_GETCLASSNAME'],
   include_directories: common_include_dirs,
@@ -229,7 +246,9 @@ libgrpc_plugin_support = library('grpc_plugin_support',
   dependencies: [
     absl_status_dep,
     protobuf_dep,
-    protoc_dep])
+    protoc_dep,
+  ],
+)
 grpc_plugin_support_dep = declare_dependency(
   link_with: libgrpc_plugin_support,
   include_directories: common_include_dirs,
@@ -237,11 +256,13 @@ grpc_plugin_support_dep = declare_dependency(
   dependencies: [
     absl_status_dep,
     protobuf_dep,
-    protoc_dep],
+    protoc_dep,
+  ],
 )
 
-libupb = library('upb',
-  sources: files(
+libupb = library(
+  'upb',
+  sources: [files(
     'third_party/upb/upb/base/status.c',
     'third_party/upb/upb/collections/array.c',
     'third_party/upb/upb/collections/map.c',
@@ -262,19 +283,23 @@ libupb = library('upb',
     'third_party/upb/upb/wire/encode.c',
     'third_party/upb/upb/wire/eps_copy_input_stream.c',
     'third_party/upb/upb/wire/reader.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
   dependencies: [
-    utf8_range_lib_dep])
+    utf8_range_lib_dep,
+  ],
+)
 upb_dep = declare_dependency(
   link_with: libupb,
   include_directories: common_include_dirs,
 )
 
-libgrpc_authorization_provider = library('grpc_authorization_provider',
-  sources: files(
+libgrpc_authorization_provider = library(
+  'grpc_authorization_provider',
+  sources: [files(
     'src/core/ext/upb-generated/google/protobuf/any.upb.c',
     'src/core/ext/upb-generated/google/protobuf/descriptor.upb.c',
     'src/core/ext/upb-generated/google/rpc/status.upb.c',
@@ -539,6 +564,7 @@ libgrpc_authorization_provider = library('grpc_authorization_provider',
     'third_party/upb/upb/mini_descriptor/decode.c',
     'third_party/upb/upb/mini_descriptor/internal/base92.c',
     'third_party/upb/upb/mini_descriptor/link.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -561,14 +587,82 @@ libgrpc_authorization_provider = library('grpc_authorization_provider',
     libcares_dep,
     re2_dep,
     upb_dep,
-    zlib_dep])
+    zlib_dep,
+  ],
+)
 grpc_authorization_provider_dep = declare_dependency(
   link_with: libgrpc_authorization_provider,
   include_directories: common_include_dirs,
 )
 
-libgrpc_unsecure = library('grpc_unsecure',
+grpc_cpp_plugin = executable(
+  'grpc_cpp_plugin',
   sources: files(
+    'src/compiler/cpp_plugin.cc'
+  ),
+  include_directories: common_include_dirs,
+  install: true,
+  dependencies: [
+    grpc_plugin_support_dep,
+  ],
+)
+meson.override_find_program('grpc_cpp_plugin', grpc_cpp_plugin)
+
+grpc_node_plugin = executable(
+  'grpc_node_plugin',
+  sources: files(
+    'src/compiler/node_plugin.cc'
+  ),
+  include_directories: common_include_dirs,
+  install: true,
+  dependencies: [
+    grpc_plugin_support_dep,
+  ],
+)
+meson.override_find_program('grpc_node_plugin', grpc_node_plugin)
+
+grpc_php_plugin = executable(
+  'grpc_php_plugin',
+  sources: files(
+    'src/compiler/php_plugin.cc'
+  ),
+  include_directories: common_include_dirs,
+  install: true,
+  dependencies: [
+    grpc_plugin_support_dep,
+  ],
+)
+meson.override_find_program('grpc_php_plugin', grpc_php_plugin)
+
+grpc_python_plugin = executable(
+  'grpc_python_plugin',
+  sources: files(
+    'src/compiler/python_plugin.cc'
+  ),
+  include_directories: common_include_dirs,
+  install: true,
+  dependencies: [
+    grpc_plugin_support_dep,
+  ],
+)
+meson.override_find_program('grpc_python_plugin', grpc_python_plugin)
+
+grpc_ruby_plugin = executable(
+  'grpc_ruby_plugin',
+  sources: files(
+    'src/compiler/ruby_plugin.cc'
+  ),
+  include_directories: common_include_dirs,
+  install: true,
+  dependencies: [
+    grpc_plugin_support_dep,
+  ],
+)
+meson.override_find_program('grpc_ruby_plugin', grpc_ruby_plugin)
+
+libgrpc_unsecure = library(
+  'grpc_unsecure',
+  sources: [files(
     'src/core/ext/filters/backend_metrics/backend_metric_filter.cc',
     'src/core/ext/filters/census/grpc_context.cc',
     'src/core/ext/filters/channel_idle/channel_idle_filter.cc',
@@ -953,6 +1047,7 @@ libgrpc_unsecure = library('grpc_unsecure',
     'third_party/upb/upb/mini_descriptor/decode.c',
     'third_party/upb/upb/mini_descriptor/internal/base92.c',
     'third_party/upb/upb/mini_descriptor/link.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -979,17 +1074,21 @@ libgrpc_unsecure = library('grpc_unsecure',
     libcares_dep,
     upb_collections_lib_dep,
     upb_dep,
-    zlib_dep])
+    zlib_dep,
+  ],
+)
 grpc_unsecure_dep = declare_dependency(
   link_with: libgrpc_unsecure,
   include_directories: common_include_dirs,
   dependencies: [
     gpr_dep,
-    libcares_dep],
+    libcares_dep,
+  ],
 )
 
-libupb_json_lib = library('upb_json_lib',
-  sources: files(
+libupb_json_lib = library(
+  'upb_json_lib',
+  sources: [files(
     'src/core/ext/upb-generated/google/protobuf/descriptor.upb.c',
     'third_party/upb/upb/json/decode.c',
     'third_party/upb/upb/json/encode.c',
@@ -1015,20 +1114,24 @@ libupb_json_lib = library('upb_json_lib',
     'third_party/upb/upb/reflection/method_def.c',
     'third_party/upb/upb/reflection/oneof_def.c',
     'third_party/upb/upb/reflection/service_def.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
   dependencies: [
     upb_collections_lib_dep,
-    upb_dep])
+    upb_dep,
+  ],
+)
 upb_json_lib_dep = declare_dependency(
   link_with: libupb_json_lib,
   include_directories: common_include_dirs,
 )
 
-libupb_textformat_lib = library('upb_textformat_lib',
-  sources: files(
+libupb_textformat_lib = library(
+  'upb_textformat_lib',
+  sources: [files(
     'src/core/ext/upb-generated/google/protobuf/descriptor.upb.c',
     'third_party/upb/upb/message/accessors.c',
     'third_party/upb/upb/mini_descriptor/build_enum.c',
@@ -1053,20 +1156,24 @@ libupb_textformat_lib = library('upb_textformat_lib',
     'third_party/upb/upb/reflection/oneof_def.c',
     'third_party/upb/upb/reflection/service_def.c',
     'third_party/upb/upb/text/encode.c'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
   soversion: core_soversion,
   dependencies: [
     upb_collections_lib_dep,
-    upb_dep])
+    upb_dep,
+  ],
+)
 upb_textformat_lib_dep = declare_dependency(
   link_with: libupb_textformat_lib,
   include_directories: common_include_dirs,
 )
 
-libgrpc = library('grpc',
-  sources: files(
+libgrpc = library(
+  'grpc',
+  sources: [files(
     'src/core/ext/filters/backend_metrics/backend_metric_filter.cc',
     'src/core/ext/filters/census/grpc_context.cc',
     'src/core/ext/filters/channel_idle/channel_idle_filter.cc',
@@ -1842,6 +1949,7 @@ libgrpc = library('grpc',
     'src/core/tsi/ssl_transport_security_utils.cc',
     'src/core/tsi/transport_security.cc',
     'src/core/tsi/transport_security_grpc.cc'),
+  ],
   cpp_args: [is_static ? ['-DGRPC_DLL_EXPORTS'] : []],
   c_args: [is_static ? ['-DGRPC_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
@@ -1875,17 +1983,21 @@ libgrpc = library('grpc',
     upb_dep,
     upb_json_lib_dep,
     upb_textformat_lib_dep,
-    zlib_dep])
+    zlib_dep,
+  ],
+)
 grpc_dep = declare_dependency(
   link_with: libgrpc,
   include_directories: common_include_dirs,
   dependencies: [
     gpr_dep,
-    libcares_dep],
+    libcares_dep,
+  ],
 )
 
-libgrpcpp_unsecure = library('grpc++_unsecure',
-  sources: files(
+libgrpcpp_unsecure = library(
+  'grpc++_unsecure',
+  sources: [files(
     'src/cpp/client/channel_cc.cc',
     'src/cpp/client/client_callback.cc',
     'src/cpp/client/client_context.cc',
@@ -1923,6 +2035,7 @@ libgrpcpp_unsecure = library('grpc++_unsecure',
     'src/cpp/util/status.cc',
     'src/cpp/util/string_ref.cc',
     'src/cpp/util/time_cc.cc'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -1933,16 +2046,20 @@ libgrpcpp_unsecure = library('grpc++_unsecure',
     gpr_dep,
     grpc_unsecure_dep,
     protobuf_dep,
-    upb_dep])
+    upb_dep,
+  ],
+)
 grpcpp_unsecure_dep = declare_dependency(
   link_with: libgrpcpp_unsecure,
   include_directories: common_include_dirs,
   dependencies: [
-    grpc_unsecure_dep],
+    grpc_unsecure_dep,
+  ],
 )
 
-libgrpcpp = library('grpc++',
-  sources: files(
+libgrpcpp = library(
+  'grpc++',
+  sources: [files(
     'src/core/ext/transport/binder/client/binder_connector.cc',
     'src/core/ext/transport/binder/client/channel_create.cc',
     'src/core/ext/transport/binder/client/channel_create_impl.cc',
@@ -2008,6 +2125,7 @@ libgrpcpp = library('grpc++',
     'src/cpp/util/status.cc',
     'src/cpp/util/string_ref.cc',
     'src/cpp/util/time_cc.cc'),
+  ],
   cpp_args: [is_static ? ['-DGRPCXX_DLL_EXPORTS'] : []],
   c_args: [is_static ? ['-DGRPCXX_DLL_EXPORTS'] : []],
   include_directories: common_include_dirs,
@@ -2024,18 +2142,23 @@ libgrpcpp = library('grpc++',
     gpr_dep,
     grpc_dep,
     protobuf_dep,
-    upb_dep])
+    upb_dep,
+  ],
+)
 grpcpp_dep = declare_dependency(
   link_with: libgrpcpp,
   include_directories: common_include_dirs,
   dependencies: [
-    grpc_dep],
+    grpc_dep,
+  ],
 )
 
-libgrpcpp_alts = library('grpc++_alts',
-  sources: files(
+libgrpcpp_alts = library(
+  'grpc++_alts',
+  sources: [files(
     'src/cpp/common/alts_context.cc',
     'src/cpp/common/alts_util.cc'),
+  ],
   include_directories: common_include_dirs,
   install: true,
   version: meson.project_version(),
@@ -2045,53 +2168,66 @@ libgrpcpp_alts = library('grpc++_alts',
     gpr_dep,
     grpc_authorization_provider_dep,
     grpcpp_dep,
-    upb_dep])
+    upb_dep,
+  ],
+)
 grpcpp_alts_dep = declare_dependency(
   link_with: libgrpcpp_alts,
   include_directories: common_include_dirs,
 )
 
-grpc_cpp_plugin = executable('grpc_cpp_plugin',
-  sources: files(
-    'src/compiler/cpp_plugin.cc'),
+grpcpp_channelz_proto_sources = custom_target('grpcpp_channelz_proto_sources',
+  input: ['src/proto/grpc/channelz/channelz.proto'],
+  output: ['channelz.pb.h', 'channelz.pb.cc', 'channelz.grpc.pb.h', 'channelz.grpc.pb.cc'],
+  command: ['compile-proto.py', '-c', protoc.full_path(), '-p', grpc_cpp_plugin.full_path(), '-s', '@CURRENT_SOURCE_DIR@', '-o', '@OUTDIR@', '@INPUT@'],
+  depends: [grpc_cpp_plugin, is_protoc_internal ? protoc : []],
+)
+libgrpcpp_channelz = library(
+  'grpcpp_channelz',
+  sources: [files(
+    'src/cpp/server/channelz/channelz_service.cc',
+    'src/cpp/server/channelz/channelz_service_plugin.cc'),
+    grpcpp_channelz_proto_sources,
+  ],
   include_directories: common_include_dirs,
   install: true,
+  version: meson.project_version(),
+  soversion: grpc_soversion,
   dependencies: [
-    grpc_plugin_support_dep])
-meson.override_find_program('grpc_cpp_plugin', grpc_cpp_plugin)
+    absl_synchronization_dep,
+    grpcpp_dep,
+    protobuf_dep,
+  ],
+)
+grpcpp_channelz_dep = declare_dependency(
+  link_with: libgrpcpp_channelz,
+  include_directories: common_include_dirs,
+)
 
-grpc_node_plugin = executable('grpc_node_plugin',
-  sources: files(
-    'src/compiler/node_plugin.cc'),
+grpcpp_reflection_proto_sources = custom_target('grpcpp_reflection_proto_sources',
+  input: ['src/proto/grpc/reflection/v1alpha/reflection.proto'],
+  output: ['reflection.pb.h', 'reflection.pb.cc', 'reflection.grpc.pb.h', 'reflection.grpc.pb.cc'],
+  command: ['compile-proto.py', '-c', protoc.full_path(), '-p', grpc_cpp_plugin.full_path(), '-s', '@CURRENT_SOURCE_DIR@', '-o', '@OUTDIR@', '@INPUT@'],
+  depends: [grpc_cpp_plugin, is_protoc_internal ? protoc : []],
+)
+libgrpcpp_reflection = library(
+  'grpc++_reflection',
+  sources: [files(
+    'src/cpp/ext/proto_server_reflection.cc',
+    'src/cpp/ext/proto_server_reflection_plugin.cc'),
+    grpcpp_reflection_proto_sources,
+  ],
   include_directories: common_include_dirs,
   install: true,
+  version: meson.project_version(),
+  soversion: grpc_soversion,
   dependencies: [
-    grpc_plugin_support_dep])
-meson.override_find_program('grpc_node_plugin', grpc_node_plugin)
-
-grpc_php_plugin = executable('grpc_php_plugin',
-  sources: files(
-    'src/compiler/php_plugin.cc'),
+    absl_synchronization_dep,
+    grpcpp_dep,
+    protobuf_dep,
+  ],
+)
+grpcpp_reflection_dep = declare_dependency(
+  link_with: libgrpcpp_reflection,
   include_directories: common_include_dirs,
-  install: true,
-  dependencies: [
-    grpc_plugin_support_dep])
-meson.override_find_program('grpc_php_plugin', grpc_php_plugin)
-
-grpc_python_plugin = executable('grpc_python_plugin',
-  sources: files(
-    'src/compiler/python_plugin.cc'),
-  include_directories: common_include_dirs,
-  install: true,
-  dependencies: [
-    grpc_plugin_support_dep])
-meson.override_find_program('grpc_python_plugin', grpc_python_plugin)
-
-grpc_ruby_plugin = executable('grpc_ruby_plugin',
-  sources: files(
-    'src/compiler/ruby_plugin.cc'),
-  include_directories: common_include_dirs,
-  install: true,
-  dependencies: [
-    grpc_plugin_support_dep])
-meson.override_find_program('grpc_ruby_plugin', grpc_ruby_plugin)
+)
