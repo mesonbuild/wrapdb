@@ -4,6 +4,7 @@ init_graphemebreak
 init_linebreak
 init_wordbreak
 is_line_breakable
+lb_get_char_class
 lb_init_break_context
 lb_process_next_char
 lb_prop_bmp

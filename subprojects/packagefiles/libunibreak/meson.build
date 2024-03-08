@@ -1,7 +1,7 @@
 project(
   'libunibreak',
   'c',
-  version: '5.1',
+  version: '6.1',
   meson_version: '>=0.59.0',
 )
 
