@@ -1,6 +1,7 @@
 unibreak_lib = library(
   'unibreak',
   [
+    'eastasianwidthdef.c',
     'emojidef.c',
     'graphemebreak.c',
     'linebreak.c',
@@ -11,7 +12,7 @@ unibreak_lib = library(
     'wordbreak.c',
   ],
   install: true,
-  version: '5.0.1',
+  version: '6.0.1',
   vs_module_defs: 'unibreak.def',
 )
 
@@ -39,9 +40,7 @@ install_headers(
 
 # Tests. {{{
 
-curl = find_program('curl', required: get_option('tests'))
-
-if get_option('tests').require(curl.found()).allowed()
+if get_option('tests').allowed()
 
   tests_exe = executable(
     'tests',
@@ -54,23 +53,11 @@ if get_option('tests').require(curl.found()).allowed()
     'word'    : 'WordBreakTest.txt',
     'grapheme': 'GraphemeBreakTest.txt',
   }
-    _data = custom_target(
-      _data,
-      command: [
-        curl,
-        '--continue-at', '-',
-        '--output', '@OUTPUT@',
-        'https://www.unicode.org/Public/15.0.0/ucd/auxiliary/' + _data,
-      ],
-      console: true,
-      output: _data,
-    )
     test(
       _test,
       tests_exe,
       args: _test,
-      depends: _data,
-      workdir: meson.current_build_dir(),
+      workdir: meson.current_source_dir(),
     )
   endforeach
 
