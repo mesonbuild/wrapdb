@@ -1,0 +1,8 @@
+option('fast_build', type : 'boolean', value : false, description : 'Fast build: only build static lib and exe and quick test.')
+#option('debugsol', type : 'boolean', value : false, description : 'check the debug solution')
+option('highsint64', type : 'boolean', value : false, description : 'Use 64 bit integers indexing')
+#option('ci', type : 'boolean', value : true, description : 'CI extended tests')
+#option('highs_coverage', type : 'boolean', value : false, description : 'Activate the code coverage compilation')
+#option('exp', type : 'boolean', value : false, description : 'Experimental mode: run unit tests with doctest.')
+option('ipx', type : 'boolean', value : true, description : 'Use interior point solver')
+#option('julia', type : 'boolean', value : false, description : 'Build library and executable for Julia')
