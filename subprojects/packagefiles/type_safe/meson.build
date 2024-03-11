@@ -46,7 +46,7 @@ comp_args = [
 
 cxx = meson.get_compiler('cpp')
 if cxx.get_id() == 'msvc'
-    comp_args += '/Wd4800'
+    comp_args += '/wd4800'
 endif
 
 type_safe_dep = declare_dependency(
