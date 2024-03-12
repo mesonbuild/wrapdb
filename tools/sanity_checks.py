@@ -108,6 +108,10 @@ PER_PROJECT_PERMITTED_FILES = {
     'libuv': [
         'link_file_in_build_dir.py',
     ],
+    'vo-aacenc': [
+        'makedef.py',
+        'stddef.h.in',
+    ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
