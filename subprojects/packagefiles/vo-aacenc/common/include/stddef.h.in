@@ -1,0 +1,7 @@
+#ifndef PATCH_CLANG_CL_H
+#define PATCH_CLANG_CL_H
+#include <stddef.h>
+#if defined(_MSC_VER) && defined(__clang__)
+#include <stdint.h>
+#endif
+#endif // PATCH_CLANG_CL_H
