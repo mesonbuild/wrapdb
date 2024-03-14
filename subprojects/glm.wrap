@@ -1,8 +1,8 @@
 [wrap-file]
-directory = glm-1.0.0
-source_url = https://github.com/g-truc/glm/archive/refs/tags/1.0.0.tar.gz
-source_filename = glm-1.0.0.tar.gz
-source_hash = e51f6c89ff33b7cfb19daafb215f293d106cd900f8d681b9b1295312ccadbd23
+directory = glm-1.0.1
+source_url = https://github.com/g-truc/glm/archive/refs/tags/1.0.1.tar.gz
+source_filename = glm-1.0.1.tar.gz
+source_hash = 9f3174561fd26904b23f0db5e560971cbf9b3cbda0b280f04d5c379d03bf234c
 patch_directory = glm
 
 [provide]
