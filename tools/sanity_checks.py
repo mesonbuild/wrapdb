@@ -84,6 +84,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'sdl2': [
         'find-dylib-name.py'
     ],
+    'soundtouch': [
+        'afxres.h'
+    ],
     'taglib': [
         'checked.h'
     ],
