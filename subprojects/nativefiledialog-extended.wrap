@@ -1,0 +1,10 @@
+[wrap-file]
+directory = nativefiledialog-extended-1.1.1
+source_url = https://github.com/btzy/nativefiledialog-extended/archive/refs/tags/v1.1.1.tar.gz
+source_filename = nativefiledialog-extended-1.1.1.tar.gz
+source_hash = 8cce60cb9c046a6fb86a86e7f71d95017dd3353e1596180a6c60f5592f7cc0cb
+patch_directory = nativefiledialog-extended
+
+[provide]
+nativefiledialog-extended = nfde_dep
+

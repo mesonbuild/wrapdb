@@ -2240,6 +2240,14 @@
       "mujs"
     ]
   },
+  "nativefiledialog-extended": {
+    "dependency_names": [
+      "nativefiledialog-extended"
+    ],
+    "versions": [
+      "1.1.1-1"
+    ]
+  },
   "netstring-c": {
     "dependency_names": [
       "netstring-c"

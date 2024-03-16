@@ -608,6 +608,14 @@
       "boost"
     ]
   },
+  "nativefiledialog-extended": {
+    "alpine_packages": [
+      "gtk+3.0-dev"
+    ],
+    "debian_packages": [
+      "libgtk-3-dev"
+    ]
+  },
   "nowide": {
     "build_options": [
       "nowide:tests=true"
