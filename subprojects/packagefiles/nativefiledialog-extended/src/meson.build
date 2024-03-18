@@ -3,6 +3,11 @@ inc_dirs = include_directories('include')
 
 src_files = files('include/nfd.h', 'include/nfd.hpp')
 
+install_subdir(
+    'include',
+    install_dir: get_option('includedir'),
+)
+
 deps = []
 compile_args = []
 
@@ -77,6 +82,7 @@ elif host_machine.system() == 'linux'
         else
             deps += dependency('dbus-1', required: true)
             src_files += files('nfd_portal.cpp')
+            compile_args += '-DNFD_PORTAL'
         endif
 
     elif use_xdg_portal_feature.disabled()
@@ -85,20 +91,26 @@ elif host_machine.system() == 'linux'
     else
         deps += dependency('dbus-1', required: true)
         src_files += files('nfd_portal.cpp')
+        compile_args += '-DNFD_PORTAL'
     endif
-
-
 
 
     if get_option('append_extension_linux')
         compile_args += '-DNFD_APPEND_EXTENSION'
     endif
 
-
 else
     error('not supported platform')
 endif
 
+
+private_compile_args = []
+public_compile_args = []
+
+if get_option('default_library') == 'shared'
+    private_compile_args += '-DNFD_EXPORT'
+    public_compile_args += '-DNFD_SHARED'
+endif
 
 
 nfde_lib = library(
@@ -106,13 +118,13 @@ nfde_lib = library(
     src_files,
     include_directories: inc_dirs,
     dependencies: deps,
-    cpp_args: compile_args,
+    cpp_args: compile_args + private_compile_args,
+    install: true,
 )
-
 
 nfde_dep = declare_dependency(
     include_directories: inc_dirs,
     version: meson.project_version(),
     link_with: nfde_lib,
-    compile_args: compile_args,
+    compile_args: compile_args + public_compile_args,
 )
