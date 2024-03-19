@@ -16,9 +16,9 @@ soundtouch_sources = files(
 )
 
 # This library requires WINDOWS_EXPORT_ALL_SYMBOLS to export all the relevant
-# classes. That's beyond mindbending to do for C++, see how it's done:
+# classes under MSVC. That's beyond mindbending to do for C++, see how it's done:
 # https://github.com/Kitware/CMake/blob/master/Source/bindexplib.cxx#L237
-if system in ['windows', 'cygwin']
+if cpp.get_linker_id() in ['link', 'lld-link'] # MSVC relies on __declspec
     soundtouch_lib = static_library(
         'SoundTouch',
         soundtouch_sources,
@@ -26,7 +26,7 @@ if system in ['windows', 'cygwin']
         include_directories: soundtouch_includes,
         install: true
     )
-else
+else # GCC and Clang etc. do not
     soundtouch_lib = library(
         'SoundTouch',
         soundtouch_sources,
