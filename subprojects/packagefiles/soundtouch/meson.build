@@ -13,7 +13,7 @@ project(
         'cpp_eh=default',
         'pkgconfig.relocatable=true',
     ],
-    meson_version: '>= 0.52',
+    meson_version: '>= 0.53',
 )
 
 cpp = meson.get_compiler('cpp')
