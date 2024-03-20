@@ -23,6 +23,7 @@ if cpp.get_linker_id() in ['link', 'lld-link'] # MSVC relies on __declspec
         'SoundTouch',
         soundtouch_sources,
         cpp_args: soundtouch_args,
+        dependencies: deps,
         include_directories: soundtouch_includes,
         install: true
     )
@@ -31,6 +32,7 @@ else # GCC and Clang etc. do not
         'SoundTouch',
         soundtouch_sources,
         cpp_args: soundtouch_args,
+        dependencies: deps,
         include_directories: soundtouch_includes,
         version: meson.project_version(),
         # DO NOT CHANGE THIS, SEE ABOVE!

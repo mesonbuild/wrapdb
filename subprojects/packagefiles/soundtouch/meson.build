@@ -20,7 +20,7 @@ cpp = meson.get_compiler('cpp')
 system = host_machine.system()
 cpu = host_machine.cpu()
 
-openmp = dependency('openmp', language: 'cpp', required: get_option('openmp'))
+openmp = dependency('openmp', required: get_option('openmp'))
 m = cpp.find_library('m', required: false)
 
 soundtouch_args = []
