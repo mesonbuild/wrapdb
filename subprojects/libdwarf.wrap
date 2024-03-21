@@ -1,0 +1,10 @@
+[wrap-file]
+directory = libdwarf-0.9.1
+source_url = https://www.prevanders.net/libdwarf-0.9.1.tar.xz
+source_filename = libdwarf-0.9.1.tar.xz
+source_hash = 877e81b189edbb075e3e086f6593457d8353d4df09b02e69f3c0c8aa19b51bf4
+patch_directory = libdwarf
+
+[provide]
+dependency_names = libdwarf, libdwarfp
+program_names = dwarfdump, dwarfgen
