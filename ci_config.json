@@ -321,6 +321,9 @@
       "harfbuzz:freetype=enabled",
       "harfbuzz:icu=enabled"
     ],
+    "msys_packages": [
+      "python-packaging"
+    ],
     "skip_dependency_check": [
       "harfbuzz-cairo"
     ]
