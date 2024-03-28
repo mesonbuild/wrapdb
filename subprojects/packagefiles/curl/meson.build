@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.6.0',
+  version: '8.7.1',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -597,33 +597,6 @@ ssl_backends += schannel_opt.allowed() ? 'schannel' : []
 
 # }}}
 
-# Secure transport (macOS). {{{
-
-secure_transport_opt = get_option(
-  'secure-transport',
-).disable_auto_if(
-  ssl_backends.length() > 0,
-).require(
-  ssl_opt.allowed(),
-  error_message: SSL_DISABLED_ERROR,
-).require(
-  host_machine.system() == 'darwin',
-  error_message: MACOS_ONLY_ERROR,
-)
-
-lib_deps += dependency(
-  'appleframeworks',
-  modules: 'Security',
-  required: secure_transport_opt,
-)
-secure_transport_opt.require(lib_deps[-1].found())
-
-cdata.set('USE_SECTRANSP', secure_transport_opt.allowed())
-
-ssl_backends += secure_transport_opt.allowed() ? 'secure-transport' : []
-
-# }}}
-
 # OpenSSL. {{{
 
 openssl_opt = get_option(
@@ -681,6 +654,37 @@ cdata.set(
     required: _required,
   ),
 )
+
+# }}}
+
+# Secure transport (macOS). {{{
+
+secure_transport_opt = get_option(
+  'secure-transport',
+).disable_auto_if(
+  ssl_backends.length() > 0,
+).require(
+  ssl_opt.allowed(),
+  error_message: SSL_DISABLED_ERROR,
+).require(
+  host_machine.system() == 'darwin',
+  error_message: MACOS_ONLY_ERROR,
+)
+
+lib_deps += dependency(
+  'appleframeworks',
+  modules: 'Security',
+  required: secure_transport_opt,
+)
+secure_transport_opt.require(lib_deps[-1].found())
+
+cdata.set('USE_SECTRANSP', secure_transport_opt.allowed())
+
+ssl_backends += secure_transport_opt.allowed() ? 'secure-transport' : []
+
+if secure_transport_opt.allowed()
+  warning('TLS library does not support TLS 1.3: secure-transport')
+endif
 
 # }}}
 
@@ -1010,6 +1014,24 @@ idn_opt = idn_opt.require(
   idn_provider != '',
   error_message: 'no supported provider',
 )
+
+# }}}
+
+# Web sockets. {{{
+
+ws_opt = get_option(
+  'websockets',
+).require(
+  http_opt.allowed(),
+  error_message: HTTP_DISABLED_ERROR,
+).require(
+  cdata.get('SIZEOF_CURL_OFF_T') > 4,
+  error_message: 'curl_off_t is too small to enable WebSockets support',
+)
+
+cdata.set('USE_WEBSOCKETS', ws_opt.allowed())
+
+wss_opt = ws_opt.allowed() and ssl_opt.allowed() ? ws_opt : DISABLED_OPT
 
 # }}}
 
@@ -1669,6 +1691,8 @@ foreach _section, _optlist : {
     ['SMTPS'],
     ['TELNET'],
     ['TFTP'],
+    ['WS'],
+    ['WSS'],
   ],
   'ssl_backends': [
     ['OpenSSL'],
