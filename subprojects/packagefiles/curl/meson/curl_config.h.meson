@@ -168,17 +168,11 @@
 /* Define to 1 if you have _Atomic support. */
 #mesondefine HAVE_ATOMIC
 
-/* Define to 1 if using AWS-LC. */
-#mesondefine HAVE_AWSLC
-
 /* Define to 1 if you have the basename function. */
 #mesondefine HAVE_BASENAME
 
 /* Define to 1 if bool is an available type. */
 #mesondefine HAVE_BOOL_T
-
-/* Define to 1 if using BoringSSL. */
-#mesondefine HAVE_BORINGSSL
 
 /* if BROTLI is in use */
 #mesondefine HAVE_BROTLI
@@ -202,6 +196,9 @@
 /* Define to 1 if you have the <crypto.h> header file. */
 #mesondefine HAVE_CRYPTO_H
 
+/* Define to 1 if you have the fseeko declaration. */
+#mesondefine HAVE_DECL_FSEEKO
+
 /* "Set if getpwuid_r() declaration is missing" */
 #mesondefine HAVE_DECL_GETPWUID_R_MISSING
 
@@ -222,9 +219,6 @@
 
 /* Define to 1 if you have the `fseeko' function. */
 #mesondefine HAVE_FSEEKO
-
-/* Define to 1 if you have the fseeko declaration. */
-#mesondefine HAVE_DECL_FSEEKO
 
 /* Define to 1 if you have the fsetxattr function. */
 #mesondefine HAVE_FSETXATTR
@@ -728,6 +722,9 @@
 
 /* if OpenSSL is in use */
 #mesondefine USE_OPENSSL
+
+/* if openssl QUIC is in use */
+#mesondefine USE_OPENSSL_QUIC
 
 /* if quiche is in use */
 #mesondefine USE_QUICHE
