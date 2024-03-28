@@ -1013,6 +1013,24 @@ idn_opt = idn_opt.require(
 
 # }}}
 
+# Web sockets. {{{
+
+ws_opt = get_option(
+  'websockets',
+).require(
+  http_opt.allowed(),
+  error_message: HTTP_DISABLED_ERROR,
+).require(
+  cdata.get('SIZEOF_CURL_OFF_T') > 4,
+  error_message: 'curl_off_t is too small to enable WebSockets support',
+)
+
+cdata.set('USE_WEBSOCKETS', ws_opt.allowed())
+
+wss_opt = ws_opt.allowed() and ssl_opt.allowed() ? ws_opt : DISABLED_OPT
+
+# }}}
+
 # ZLIB. {{{
 
 libz_opt = get_option('libz')
@@ -1669,6 +1687,8 @@ foreach _section, _optlist : {
     ['SMTPS'],
     ['TELNET'],
     ['TFTP'],
+    ['WS'],
+    ['WSS'],
   ],
   'ssl_backends': [
     ['OpenSSL'],
