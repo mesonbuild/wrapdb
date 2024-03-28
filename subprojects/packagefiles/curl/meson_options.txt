@@ -38,6 +38,7 @@ option('socketpair'     , type: 'feature', value: 'enabled')
 option('sspi'           , type: 'feature')
 option('unixsockets'    , type: 'feature')
 option('verbose-strings', type: 'feature', value: 'enabled')
+option('websockets'     , type: 'feature', value: 'disabled')
 option('zstd'           , type: 'feature')
 
 # Asynchronous DNS.
