@@ -2,7 +2,7 @@ project(
   'rdkafka',
   'c',
   'cpp',
-  version: '2.1.0',
+  version: '2.3.0',
   default_options: ['cpp_std=c++17', 'c_std=c11', 'warning_level=0'],
   meson_version: '>=0.57.0',
 )
@@ -53,6 +53,7 @@ srcc = files(
   'src/crc32c.c',
   'src/rdaddr.c',
   'src/rdavl.c',
+  'src/rdbase64.c',
   'src/rdbuf.c',
   'src/rdcrc32.c',
   'src/rdfnv1a.c',
@@ -166,7 +167,7 @@ conf.set10('WITH_LZ4_EXT', lz4.found())
 conf.set10('HAVE_REGEX', cc.has_function('regcomp', dependencies: regex))
 conf.set10('HAVE_STRNDUP', host_machine.system() != 'windows' and cc.has_function('strndup'))
 conf.set10('HAVE_RAND_R', cc.has_header_symbol('stdlib.h', 'rand_r', args: '-D_POSIX_THREAD_SAFE_FUNCTIONS'))
-conf.set10('WITH_C11THREADS', cc.has_function('thrd_create', dependencies: threads))
+conf.set10('WITH_C11THREADS', cc.has_function('thrd_create', dependencies: threads) and host_machine.system() != 'windows')
 conf.set('CMAKE_SHARED_LIBRARY_SUFFIX', host_machine.system() == 'windows' ? '.dll' : '.so')
 
 built_with = 'meson ' + cc.get_id() + ' ' + cpp.get_id()
@@ -253,7 +254,7 @@ rdkafka = library(
   dependencies: rdkafka_deps,
 )
 
-depinc = include_directories('include-workaround-meson/librdkafka')
+depinc = include_directories('include-workaround-meson')
 rdkafka_dep = declare_dependency(
   link_with: rdkafka,
   include_directories: depinc,
