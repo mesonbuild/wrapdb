@@ -1,4 +1,4 @@
-project('directxmath', 'cpp', version: '3.1.8')
+project('directxmath', 'cpp', version: '3.1.9')
 
 incdirs = include_directories('Inc')
 
