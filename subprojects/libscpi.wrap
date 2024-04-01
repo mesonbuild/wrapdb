@@ -1,0 +1,10 @@
+[wrap-file]
+directory = scpi-parser-2.3
+source_url = https://github.com/j123b567/scpi-parser/archive/v2.3.tar.gz
+source_filename = scpi-parser-2.3.tar.gz
+source_hash = 53ecbc9737e5e88377e39e6776b134804e1aceff6d27eb05147133152eff9e7f
+
+patch_directory = libscpi
+
+[provide]
+libscpi = libscpi_dep
