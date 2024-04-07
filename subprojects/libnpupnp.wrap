@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libnpupnp-6.0.5
-source_url = https://www.lesbonscomptes.com/upmpdcli/downloads/libnpupnp-6.0.5.tar.gz
-source_filename = libnpupnp-6.0.5.tar.gz
-source_hash = 1abb7d51e2b1a62aba01516adbdbf3be59bd32aa87575337785f9337c6f7fadb
+directory = libnpupnp-6.1.2
+source_url = https://www.lesbonscomptes.com/upmpdcli/downloads/libnpupnp-6.1.2.tar.gz
+source_filename = libnpupnp-6.1.2.tar.gz
+source_hash = d83cadc997a5367030820de6c4a49130b38fe605bf3d0d2c939d7d1c06aa3226
 
 [provide]
 libnpupnp = libnpupnp_dep
