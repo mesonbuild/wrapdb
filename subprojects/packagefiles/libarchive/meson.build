@@ -261,6 +261,9 @@ if openssl_dep.found()
       cdata.set('ARCHIVE_CRYPTO_@0@_OPENSSL'.format(f.to_upper()), 1)
     endif
   endforeach
+  if cc.has_header_symbol('openssl/evp.h', 'PKCS5_PBKDF2_HMAC_SHA1')
+    cdata.set('HAVE_PKCS5_PBKDF2_HMAC_SHA1', 1)
+  endif
 endif
 
 # just dependencies
