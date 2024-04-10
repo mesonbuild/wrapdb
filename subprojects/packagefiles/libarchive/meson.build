@@ -110,6 +110,10 @@ if cc.has_header_symbol('errno.h', 'EILSEQ')
   cdata.set('HAVE_EILSEQ', 1)
 endif
 
+if cc.has_header_symbol('ext2fs/ext2_fs.h', 'EXT2_IOC_GETFLAGS')
+  cdata.set('HAVE_WORKING_EXT2_IOC_GETFLAGS', 1)
+endif
+
 foreach w : ['_mkgmtime', 'ctime_s', 'gmtime_s', 'localtime_s']
   if cc.has_header_symbol('time.h', w)
     cdata.set('HAVE_@0@'.format(w.to_upper()), 1)
