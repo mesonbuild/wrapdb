@@ -244,6 +244,9 @@ lzma_dep = dependency('liblzma', disabler: true, required: get_option('lzma'))
 if lzma_dep.found()
   cdata.set('HAVE_LIBLZMA', 1)
   deps += lzma_dep
+  if lzma_dep.version().version_compare('>=5.2.0')
+    cdata.set('HAVE_LZMA_STREAM_ENCODER_MT', 1)
+  endif
 endif
 
 lzo2_dep = dependency('lzo2', required: get_option('lzo2'))
