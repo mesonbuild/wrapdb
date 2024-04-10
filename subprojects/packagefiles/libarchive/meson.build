@@ -278,21 +278,27 @@ endif
 
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency('iconv', disabler: true, required: get_option('iconv'))
+elif get_option('iconv').enabled()
+  error('Feature iconv cannot be enabled')
 else
   iconv_dep = dependency('', required: false)
 endif
-iconv_const_test = '''
+if iconv_dep.found()
+  cdata.set('HAVE_ICONV', 1)
+  cdata.set(
+    'ICONV_CONST',
+    cc.compiles(
+      '''
     #include <iconv.h>
     size_t iconv(iconv_t, const char**, size_t*, char**, size_t*);
     int main(){}
-    '''
-
-if iconv_dep.found()
-  cdata.set('HAVE_ICONV', 1)
-  cdata.set('ICONV_CONST', cc.compiles(iconv_const_test, dependencies: iconv_dep) ? 'const' : '')
+    ''',
+      dependencies: iconv_dep,
+    ) ? 'const' : '',
+  )
   deps += iconv_dep
 else
-  cdata.set('ICONV_CONST', cc.compiles(iconv_const_test) ? 'const' : '')
+  cdata.set('ICONV_CONST', '')
 endif
 
 rx_support = false
