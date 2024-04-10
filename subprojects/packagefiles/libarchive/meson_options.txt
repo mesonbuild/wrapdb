@@ -5,7 +5,7 @@ option('progs', type: 'array', choices: ['all', 'bsdtar', 'bsdcat', 'bsdcpio'], 
 option('zlib', type: 'feature', description: 'Build support for gzip')
 option('bz2lib', type: 'feature', description: 'Build support for bzip2')
 option('libb2', type: 'feature', description: 'Build support for BLAKE2')
-option('iconv', type: 'feature', description: 'Try to link against iconv')
+option('iconv', type: 'feature', description: 'Build with iconv support')
 option('lz4', type: 'feature', description: 'Build support for lz4')
 option('zstd', type: 'feature', description: 'Build support for zstd')
 option('lzma', type: 'feature', description: 'Build support for xz')
