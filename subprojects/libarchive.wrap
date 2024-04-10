@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libarchive-3.7.2
-source_url = https://github.com/libarchive/libarchive/releases/download/v3.7.2/libarchive-3.7.2.tar.xz
-source_filename = libarchive-3.7.2.tar.xz
-source_hash = 04357661e6717b6941682cde02ad741ae4819c67a260593dfb2431861b251acb
+directory = libarchive-3.7.3
+source_url = https://github.com/libarchive/libarchive/releases/download/v3.7.3/libarchive-3.7.3.tar.xz
+source_filename = libarchive-3.7.3.tar.xz
+source_hash = 63e7a7174638fc7d6b79b4c8b0ad954e0f4f45abe7239c1ecb200232aa9a43d2
 patch_directory = libarchive
 
 [provide]
