@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.2',
+  version: '3.7.3',
   meson_version: '>=0.54.1',
 )
 
@@ -239,8 +239,8 @@ if zstd_dep.found()
   cdata.set('HAVE_LIBZSTD', 1)
   cdata.set('HAVE_ZSTD_H', 1)
   deps += zstd_dep
-  if zstd_dep.version().version_compare('>=0.7.5')
-    cdata.set('HAVE_LIBZSTD_COMPRESSOR', 1)
+  if zstd_dep.version().version_compare('>=0.8.1')
+    cdata.set('HAVE_ZSTD_compressStream', 1)
   endif
 endif
 
@@ -314,40 +314,53 @@ endif
 rx_support = false
 rx_dep = dependency('', required: false)
 if not get_option('regex').disabled()
-  # If `regex` is support is enabled, check for
-  # - glibc support first
-  # - `libregex` second
-  # - `libpcreposix` last
-  if cc.has_function('regcomp', prefix: '#include <regex.h>')
-    rx_dep = declare_dependency()
-    cdata.set('HAVE_REGEX_H', 1)
-    rx_support = 'glibc'
-  endif
-  if not rx_dep.found()
-    regex_dep = cc.find_library('regex', disabler: true, required: false)
-    if cc.has_function('regcomp', dependencies: regex_dep, prefix: '#include <regex.h>')
-      rx_dep = regex_dep
-      cdata.set('HAVE_REGEX_H', 1)
-      rx_support = 'libregex'
-    endif
-  endif
-  if not rx_dep.found()
-    pcre_dep = dependency('libpcreposix', disabler: true, required: false)
-    # Note: on macOS, Apple provides a system pcre with pkg-config but without headers…
-    if cc.has_header(
-      'pcreposix.h',
-      dependencies: pcre_dep.partial_dependency(
-        compile_args: true,
-        includes: true,
-      ),
+  foreach rx_support : get_option('regex_provider')
+    if (
+      rx_support == 'libc'
+      and cc.has_function('regcomp', prefix: '#include <regex.h>')
     )
-      rx_dep = pcre_dep
-      cdata.set('HAVE_PCREPOSIX_H', 1)
-      rx_support = 'libpcreposix'
+      rx_dep = declare_dependency()
+      cdata.set('HAVE_REGEX_H', 1)
+      break
+    elif rx_support == 'libregex'
+      regex_dep = cc.find_library('regex', disabler: true, required: false)
+      if cc.has_function(
+        'regcomp',
+        dependencies: regex_dep,
+        prefix: '#include <regex.h>',
+      )
+        rx_dep = regex_dep
+        cdata.set('HAVE_REGEX_H', 1)
+        break
+      endif
+    elif rx_support == 'libpcreposix'
+      pcre_dep = dependency('libpcreposix', disabler: true, required: false)
+      # Note: on macOS, Apple provides a system pcre with pkg-config but without headers…
+      if cc.has_header(
+        'pcreposix.h',
+        dependencies: pcre_dep.partial_dependency(
+          compile_args: true,
+          includes: true,
+        ),
+      )
+        rx_dep = pcre_dep
+        cdata.set('HAVE_PCREPOSIX_H', 1)
+        break
+      endif
+    elif rx_support == 'libpcre2posix'
+      pcre2_dep = dependency('libpcre2-posix', disabler: true, required: false)
+      if pcre2_dep.found()
+        cdata.set('HAVE_PCRE2POSIX_H', 1)
+        rx_dep = pcre2_dep
+        break
+      endif
     endif
-  endif
-  if not rx_dep.found() and get_option('regex').enabled()
-    error('Feature regex cannot be enabled')
+  endforeach
+  if not rx_dep.found()
+    if get_option('regex').enabled()
+      error('Feature regex cannot be enabled')
+    endif
+    rx_support = false
   endif
 endif
 deps += rx_dep
