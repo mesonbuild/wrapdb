@@ -1,0 +1,10 @@
+[wrap-file]
+directory = cpp-semver-0.3.3
+source_url = https://github.com/z4kn4fein/cpp-semver/archive/refs/tags/v0.3.3.tar.gz
+source_filename = cpp-semver-0.3.3.tar.gz
+source_hash = 05d59da347b5b5b4f34670d32704a54219657c9856a7af6645f06064006c6c68
+patch_directory = cpp-semver
+
+[provide]
+cpp-semver = cpp_semver_dep
+

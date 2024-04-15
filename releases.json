@@ -426,6 +426,14 @@
       "0.8.9-1"
     ]
   },
+  "cpp-semver": {
+    "dependency_names": [
+      "cpp-semver"
+    ],
+    "versions": [
+      "0.3.3-1"
+    ]
+  },
   "cpputest": {
     "dependency_names": [
       "cpputest"
