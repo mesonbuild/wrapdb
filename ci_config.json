@@ -208,16 +208,21 @@
   "gdk-pixbuf": {
     "_comment": [
       "- Disable man because it requires rst2man",
+      "- Enable miscellaneous built-in loaders",
       "- Disable fatal warnings because of CMake Toolchain: Failed to determine CMake compilers state",
       "- Disable fatal warnings because of https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/merge_requests/156",
       "- Disable tests because one is broken: https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/issues/215",
       "- Disable tests because they fail on macOS"
     ],
     "build_options": [
-      "gdk-pixbuf:man=false"
+      "gdk-pixbuf:man=false",
+      "gdk-pixbuf:others=enabled"
     ],
     "alpine_packages": [
       "shared-mime-info"
+    ],
+    "msys_packages": [
+      "python-packaging"
     ],
     "fatal_warnings": false,
     "skip_tests": true
