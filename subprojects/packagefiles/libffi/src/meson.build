@@ -44,7 +44,7 @@ if get_option('ffi-build-versioned')
   libffi_map_in = meson.project_source_root() / 'libffi.map.in'
   arg_prefix = '-Wl,--version-script='
   if cc.has_multi_link_arguments(['-shared', arg_prefix + libffi_map_in])
-    if meson.version().version_compare('>=0.64.0')
+    if meson.version().version_compare('>=1.3.2')
       ffi_map_file = cc.preprocess(libffi_map_in,
         output: '@BASENAME@',
         include_directories: ffiinc,
