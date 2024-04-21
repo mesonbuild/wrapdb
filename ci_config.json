@@ -283,6 +283,9 @@
     "alpine_packages": [
       "gettext-tiny-dev"
     ],
+    "python_packages": [
+      "packaging"
+    ],
     "build_options": [
       "glib:tests=false"
     ],
@@ -321,8 +324,8 @@
       "harfbuzz:freetype=enabled",
       "harfbuzz:icu=enabled"
     ],
-    "msys_packages": [
-      "python-packaging"
+    "python_packages": [
+      "packaging"
     ],
     "skip_dependency_check": [
       "harfbuzz-cairo"

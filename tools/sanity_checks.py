@@ -23,6 +23,7 @@ import typing as T
 import os
 import tempfile
 import platform
+import sys
 
 from pathlib import Path
 from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
@@ -352,6 +353,7 @@ class TestReleases(unittest.TestCase):
         choco_packages = ci.get('choco_packages', [])
         msys_packages = ci.get('msys_packages', [])
         alpine_packages = ci.get('alpine_packages', [])
+        python_packages = ci.get('python_packages', [])
         meson_env = os.environ.copy()
         if debian_packages and is_debianlike():
             if is_ci():
@@ -387,6 +389,13 @@ class TestReleases(unittest.TestCase):
             else:
                 s = ', '.join(alpine_packages)
                 print(f'The following packages could be required: {s}')
+        # install Python packages on every platform
+        if python_packages:
+            if is_ci():
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + python_packages)
+            else:
+                s = ', '.join(python_packages)
+                print(f'The following Python packages could be required: {s}')
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
         if res.returncode == 0:
