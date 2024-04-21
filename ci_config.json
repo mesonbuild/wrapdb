@@ -286,6 +286,9 @@
     "build_options": [
       "glib:tests=false"
     ],
+    "msys_packages": [
+      "python-packaging"
+    ],
     "skip_dependency_check": [
       "gio-windows-2.0",
       "gio-unix-2.0"
