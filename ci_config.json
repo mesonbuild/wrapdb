@@ -82,7 +82,11 @@
     "_comment": "- libzmq not yet available as wrap",
     "build_on": {
       "windows": false
-    }
+    },
+    "build_options": [
+      "cppzmq:tests=disabled",
+      "cppzmq:examples=true"
+    ]
   },
   "curl": {
     "_comment": [
