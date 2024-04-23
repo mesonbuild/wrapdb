@@ -1,6 +1,6 @@
 project(
   'msgpack-cxx', 'cpp',
-  version: '6.1.0',
+  version: '6.1.1',
   meson_version: '>=0.47.0',
 )
 
