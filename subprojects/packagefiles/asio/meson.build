@@ -1,6 +1,6 @@
 project('asio',
     'cpp',
-    version : '1.28.1',
+    version : '1.30.2',
     license : 'BSL-1.0',
 )
 
