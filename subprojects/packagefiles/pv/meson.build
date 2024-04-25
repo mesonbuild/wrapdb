@@ -1,7 +1,7 @@
 project(
   'pv',
   'c',
-  version: '1.8.5',
+  version: '1.8.9',
   meson_version: '>=0.59.0',
 )
 
@@ -36,7 +36,7 @@ foreach _spec : [
   ['sys/param.h'],
   ['sys/select.h', 'select'],
   ['sys/shm.h', 'shmget'],
-  ['sys/time.h'],
+  ['sys/time.h', 'setitimer'],
   ['termios.h'],
   ['time.h', 'clock_gettime nanosleep'],
   ['unistd.h', 'alarm dup2 fdatasync fpathconf getcwd getopt sysconf'],

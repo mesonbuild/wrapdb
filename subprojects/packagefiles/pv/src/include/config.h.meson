@@ -49,6 +49,9 @@
 /* Define to 1 if you have the `posix_memalign' function. */
 #mesondefine HAVE_POSIX_MEMALIGN
 
+/* Define to 1 if you have the `setitimer' function. */
+#mesondefine HAVE_SETITIMER
+
 /* Define to 1 if you have the `splice' function. */
 #mesondefine HAVE_SPLICE
 
