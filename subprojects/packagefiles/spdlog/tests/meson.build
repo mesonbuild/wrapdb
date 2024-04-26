@@ -7,10 +7,14 @@ test_src = files(
   'main.cpp',
   'test_async.cpp',
   'test_backtrace.cpp',
+  'test_bin_to_hex.cpp',
   'test_cfg.cpp',
+  'test_circular_q.cpp',
   'test_create_dir.cpp',
+  'test_custom_callbacks.cpp',
   'test_daily_logger.cpp',
   'test_dup_filter.cpp',
+  'test_errors.cpp',
   'test_eventlog.cpp',
   'test_file_helper.cpp',
   'test_file_logging.cpp',
@@ -29,18 +33,11 @@ test_src = files(
 spdlog_test_dep = [spdlog_dep]
 
 catch2_dep = dependency(
-  'catch2',
+  'catch2-with-main',
   version: '>=3.0.0',
   allow_fallback: false,
   required: false,
 )
-if not catch2_dep.found()
-  catch2_dep = dependency(
-    'catch2-with-main',
-    version: '>=3.0.0',
-    required: false,
-  )
-endif
 
 if not catch2_dep.found()
   if get_option('tests').enabled()
@@ -51,4 +48,4 @@ if not catch2_dep.found()
   subdir_done()
 endif
 
-test('tests', executable('tests_exe', test_src, dependencies: catch2_dep))
+test('tests', executable('tests_exe', test_src, dependencies: [catch2_dep, spdlog_dep]))
