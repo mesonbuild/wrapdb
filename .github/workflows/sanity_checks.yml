@@ -132,6 +132,7 @@ jobs:
   MacOS:
     runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-12' }}
     strategy:
+      fail-fast: false
       matrix:
         platform: ['arm64', 'x86_64']
     steps:
