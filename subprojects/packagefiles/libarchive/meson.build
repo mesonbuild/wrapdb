@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.3',
+  version: '3.7.4',
   meson_version: '>=0.54.1',
 )
 
@@ -112,6 +112,10 @@ endif
 
 if cc.has_header_symbol('ext2fs/ext2_fs.h', 'EXT2_IOC_GETFLAGS')
   cdata.set('HAVE_WORKING_EXT2_IOC_GETFLAGS', 1)
+endif
+
+if cc.has_header_symbol('unistd.h', 'sysconf')
+  cdata.set('HAVE_SYSCONF', 1)
 endif
 
 foreach w : ['_mkgmtime', 'ctime_s', 'gmtime_s', 'localtime_s']
