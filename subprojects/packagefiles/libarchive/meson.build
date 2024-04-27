@@ -259,10 +259,10 @@ if lzo2_dep.found()
   deps += lzo2_dep
 endif
 
-openssl_dep = dependency('openssl', required: get_option('openssl'))
-if openssl_dep.found()
+crypto_dep = dependency('libcrypto', required: get_option('openssl'))
+if crypto_dep.found()
   cdata.set('HAVE_LIBCRYPTO', 1)
-  deps += openssl_dep
+  deps += crypto_dep
   foreach f : ['md5', 'rmd160', 'sha1', 'sha256', 'sha384', 'sha512']
     if not cc.has_header_symbol('openssl/ssl.h', 'OPENSSL_NO_@0@'.format(f.to_upper()))
       cdata.set('ARCHIVE_CRYPTO_@0@_OPENSSL'.format(f.to_upper()), 1)
