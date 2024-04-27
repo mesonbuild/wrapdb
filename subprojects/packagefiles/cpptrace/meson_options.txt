@@ -1,0 +1,51 @@
+option(
+    'include-system',
+    type: 'boolean',
+    value: true,
+    description: 'Mark project includes as -isystem',
+)
+option(
+    'unwind',
+    type: 'combo',
+    value: 'auto',
+    choices: [
+        'auto',
+        'unwind',
+        'libunwind',
+        'execinfo',
+        'winapi',
+        'dbghelp',
+        'nothing',
+    ],
+    description: 'Provider for stack unwinding',
+)
+option(
+    'get-symbols',
+    type: 'combo',
+    value: 'auto',
+    choices: [
+        'auto',
+        'libbacktrace',
+        'libdl',
+        'addr2line',
+        'libdwarf',
+        'dbghelp',
+        'libdwarf+dbghelp',
+        'nothing',
+    ],
+    description: 'Provider for symbols',
+)
+option(
+    'demangle',
+    type: 'combo',
+    value: 'auto',
+    choices: ['auto', 'cxxabi', 'winapi', 'nothing'],
+    description: 'Symbol name demangler',
+)
+option(
+    'hard-max-frames',
+    type: 'integer',
+    value: 200,
+    min: 1,
+    description: 'Hard limit on unwinding depth',
+)

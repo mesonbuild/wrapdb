@@ -428,6 +428,14 @@
       "0.8.9-1"
     ]
   },
+  "cpptrace": {
+    "dependency_names": [
+      "cpptrace"
+    ],
+    "versions": [
+      "0.5.1-1"
+    ]
+  },
   "cpputest": {
     "dependency_names": [
       "cpputest"
