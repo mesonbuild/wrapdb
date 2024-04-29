@@ -1,5 +1,5 @@
 project('liburing', ['c','cpp'],
-        version: '2.4',
+        version: '2.5',
         license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
         meson_version: '>=0.57.0',
         default_options: ['default_library=both',
