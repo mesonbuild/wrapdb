@@ -1,4 +1,4 @@
-project('tree-sitter', 'c')
+project('tree-sitter', 'c', version: '0.22.5')
 
 src = files(
     'lib/src/alloc.c',
@@ -33,7 +33,7 @@ pkg_mod = import('pkgconfig')
 
 pkg_mod.generate(
     tree_sitter,
-    name: 'libsqsh',
+    name: 'tree-sitter',
     description: 'An incremental parsing system for programming tools',
     libraries: tree_sitter,
     version: meson.project_version(),
