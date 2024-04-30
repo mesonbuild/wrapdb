@@ -117,5 +117,6 @@ pkg.generate(
     soundtouch_lib,
     name: 'SoundTouch',
     description: 'SoundTouch is an open-source audio processing library for changing the Tempo, Pitch and Playback Rates of audio streams or files',
-    filebase: 'soundtouch'
+    filebase: 'soundtouch',
+    subdirs: 'soundtouch'
 )
