@@ -9,6 +9,7 @@ c_sources += files(
     'SDL_hidapi_shield.c',
     'SDL_hidapi_stadia.c',
     'SDL_hidapi_steam.c',
+    'SDL_hidapi_steamdeck.c',
     'SDL_hidapi_switch.c',
     'SDL_hidapi_wii.c',
     'SDL_hidapi_xbox360.c',
