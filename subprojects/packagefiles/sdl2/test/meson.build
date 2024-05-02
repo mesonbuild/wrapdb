@@ -7,7 +7,7 @@ tests = [
     { 'name': 'testresample',       'sources': ['testresample.c']},
     { 'name': 'testaudioinfo',      'sources': ['testaudioinfo.c']},
 
-    { 'name': 'testautomation',     'sources': ['testautomation_audio.c', 'testautomation.c', 'testautomation_clipboard.c', 'testautomation_events.c', 'testautomation_guid.c', 'testautomation_hints.c', 'testautomation_joystick.c', 'testautomation_keyboard.c', 'testautomation_main.c', 'testautomation_math.c', 'testautomation_mouse.c', 'testautomation_pixels.c', 'testautomation_platform.c', 'testautomation_rect.c', 'testautomation_render.c', 'testautomation_rwops.c', 'testautomation_sdltest.c', 'testautomation_stdlib.c', 'testautomation_surface.c', 'testautomation_syswm.c', 'testautomation_timer.c', 'testautomation_video.c' ]},
+    { 'name': 'testautomation',     'sources': ['testautomation_audio.c', 'testautomation.c', 'testautomation_clipboard.c', 'testautomation_events.c', 'testautomation_guid.c', 'testautomation_hints.c', 'testautomation_joystick.c', 'testautomation_keyboard.c', 'testautomation_log.c', 'testautomation_main.c', 'testautomation_math.c', 'testautomation_mouse.c', 'testautomation_pixels.c', 'testautomation_platform.c', 'testautomation_rect.c', 'testautomation_render.c', 'testautomation_rwops.c', 'testautomation_sdltest.c', 'testautomation_stdlib.c', 'testautomation_subsystems.c', 'testautomation_surface.c', 'testautomation_syswm.c', 'testautomation_timer.c', 'testautomation_video.c' ]},
 
     { 'name': 'testmultiaudio',     'sources': ['testmultiaudio.c', 'testutils.c']},
     { 'name': 'testaudiohotplug',   'sources': ['testaudiohotplug.c', 'testutils.c']},

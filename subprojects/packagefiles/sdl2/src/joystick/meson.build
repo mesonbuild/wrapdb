@@ -1,6 +1,7 @@
 c_sources += files(
     'SDL_gamecontroller.c',
     'SDL_joystick.c',
+    'SDL_steam_virtual_gamepad.c',
     'controller_type.c'
 )
 
