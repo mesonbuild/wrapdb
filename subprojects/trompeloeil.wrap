@@ -4,3 +4,6 @@ source_url = https://github.com/rollbear/trompeloeil/archive/v47.tar.gz
 source_filename = trompeloeil-47.tar.gz
 source_hash = 4a1d79260c1e49e065efe0817c8b9646098ba27eed1802b0c3ba7d959e4e5e84
 patch_directory = trompeloeil
+
+[provide]
+trompeloeil = trompeloeil_dep
