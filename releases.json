@@ -3299,6 +3299,9 @@
     ]
   },
   "trompeloeil": {
+    "dependency_names": [
+      "trompeloeil"
+    ],
     "versions": [
       "47-1",
       "39-1",
