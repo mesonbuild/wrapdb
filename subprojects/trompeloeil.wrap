@@ -1,6 +1,6 @@
 [wrap-file]
-directory = trompeloeil-39
-source_url = https://github.com/rollbear/trompeloeil/archive/v39.tar.gz
-source_filename = trompeloeil-39.tar.gz
-source_hash = 10506e48abd605740bc9ed43e34059f5068bc80af14476bd129a3ed3b54d522f
+directory = trompeloeil-47
+source_url = https://github.com/rollbear/trompeloeil/archive/v47.tar.gz
+source_filename = trompeloeil-47.tar.gz
+source_hash = 4a1d79260c1e49e065efe0817c8b9646098ba27eed1802b0c3ba7d959e4e5e84
 patch_directory = trompeloeil
