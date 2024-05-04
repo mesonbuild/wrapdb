@@ -1,7 +1,7 @@
 project(
   'spdlog',
   'cpp',
-  version: '1.14.0',
+  version: '1.14.1',
   license: 'MIT',
   meson_version: '>=0.56.0',
 )
