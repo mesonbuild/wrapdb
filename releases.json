@@ -2130,6 +2130,17 @@
       "5.3.0-2"
     ]
   },
+  "luajit": {
+    "dependency_names": [
+      "luajit"
+    ],
+    "program_names": [
+      "luajit"
+    ],
+    "versions": [
+      "2.1.1713773202-1"
+    ]
+  },
   "ludocode-mpack": {
     "dependency_names": [
       "ludocode-mpack"

@@ -114,6 +114,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'libuv': [
         'link_file_in_build_dir.py',
     ],
+    'luajit': [
+        'unwind_check.sh',
+    ],
     'vo-aacenc': [
         'makedef.py',
         'stddef.h.in',
@@ -314,6 +317,9 @@ class TestReleases(unittest.TestCase):
             return True
         elif name == 'directxmath':
             # DirectXMath source url contains only tag name without version
+            return True
+        elif name == 'luajit':
+            # LuaJIT source URL does not contain the version number.
             return True
         elif name == 'x-plane-sdk':
             segs = version.split('.')
