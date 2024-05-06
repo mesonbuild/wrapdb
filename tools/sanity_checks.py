@@ -176,6 +176,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'makedef.py',
         'stddef.h.in',
     },
+    'volk': {
+        'time.h',
+    },
     'zlib-ng': {
         'get-version.py',
         'process-zconf.py',

@@ -1,0 +1,10 @@
+option(
+    'orc',
+    type: 'feature',
+    description: 'Build kernels using the ORC compiler',
+)
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build the QA tests (requires fmt)',
+)
