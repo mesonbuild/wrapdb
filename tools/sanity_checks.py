@@ -202,6 +202,8 @@ class TestReleases(unittest.TestCase):
                     self.check_has_no_path_separators(wrap_section['source_filename'])
                     self.assertIn('source_url', wrap_section)
                     self.assertIn('source_hash', wrap_section)
+                    self.assertEqual('meson', wrap_section.get('method', 'meson').strip(),
+                                     'WrapDB only accepts wraps that use the "meson" method for compiling.')
 
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks and self.ci_config.get(name, {}).get('has_provides', True):
