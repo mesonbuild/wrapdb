@@ -36,6 +36,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'extract.mk',
         'rewrite.mk',
     ],
+    'fftw3': [
+        'CMakeLists.txt',
+    ],
     'glbinding': [
         'pch.h',
         'glbinding_api.h',
