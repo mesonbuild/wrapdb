@@ -1101,6 +1101,17 @@
       "11.1.5.1-0"
     ]
   },
+  "fftw3": {
+    "dependency_names": [
+      "fftw3",
+      "fftw3f",
+      "fftw3l",
+      "fftw3q"
+    ],
+    "versions": [
+      "3.3.10-1"
+    ]
+  },
   "flac": {
     "dependency_names": [
       "flac"
