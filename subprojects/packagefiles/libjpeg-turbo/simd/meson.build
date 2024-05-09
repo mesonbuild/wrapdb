@@ -42,6 +42,17 @@ if host_cpu in ['x86', 'x86_64']
   if have_simd
     add_project_arguments('-DPIC', language: 'nasm')
     x64 = host_cpu == 'x86_64'
+    # simulate upstream's "is ELF" check by excluding non-ELF OSes
+    if x64 and host_machine.system() not in ['cygwin', 'darwin', 'windows']
+      if cc.compiles('''
+        #if (__CET__ & 3) == 0
+        #error \"CET not enabled\"
+        #endif
+        int main(void) { return 0; }
+      ''')
+        add_project_arguments('-D__CET__', language: 'nasm')
+      endif
+    endif
     dir = x64 ? 'x86_64' : 'i386'
     simd_src = x64 ? simd_src_x86_64 : simd_src_i386
     simd = static_library('simd', dir / 'jsimd.c',
