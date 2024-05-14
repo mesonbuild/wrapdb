@@ -2,7 +2,7 @@ project(
   'pupnp',
   'c',
   license: 'BSD-3-Clause',
-  version: '1.14.18',
+  version: '1.14.19',
   meson_version: '>=0.54.1',
 )
 
@@ -111,19 +111,20 @@ uconf.set('IXML_HAVE_SCRIPTSUPPORT', true)
 uconf.set('UPNP_VERSION_MAJOR', ver[0])
 uconf.set('UPNP_VERSION_MINOR', ver[1])
 uconf.set('UPNP_VERSION_PATCH', ver[2])
-uconf.set('UPNP_ENABLE_BLOCKING_TCP_CONNECTIONS', get_option('blocking_tcp_connectionsr'))
-uconf.set10('UPNP_HAVE_CLIENT', get_option('client'))
-uconf.set10('UPNP_HAVE_DEVICE', get_option('device'))
-uconf.set10('UPNP_HAVE_GENA', get_option('gena'))
-uconf.set10('UPNP_HAVE_TOOLS', get_option('tools'))
-uconf.set('UPNP_ENABLE_IPV6', get_option('ipv6'))
-uconf.set('UPNP_HAVE_OPTSSDP', get_option('optssdp'))
-uconf.set('UPNP_ENABLE_OPEN_SSL', get_option('open_ssl'))
-uconf.set10('UPNP_HAVE_SOAP', get_option('soap'))
-uconf.set10('UPNP_HAVE_SSDP', get_option('ssdp'))
-uconf.set('UPNP_ENABLE_UNSPECIFIED_SERVER', get_option('unspecified_server'))
-uconf.set10('UPNP_HAVE_WEBSERVER', get_option('webserver'))
-uconf.set('UPNP_MINISERVER_REUSEADDR', get_option('reuseaddr'))
+
+foreach h : ['client', 'device', 'gena', 'tools', 'optssdp', 'soap', 'ssdp', 'webserver']
+  if get_option(h)
+    uconf.set('UPNP_HAVE_@0@'.format(h.to_upper()), 1)
+  endif
+endforeach
+
+foreach e : ['blocking_tcp_connectionsr', 'ipv6', 'open_ssl', 'unspecified_server']
+  if get_option(e)
+    uconf.set('UPNP_ENABLE_@0@'.format(e.to_upper()), 1)
+  endif
+endforeach
+
+uconf.set10('UPNP_MINISERVER_REUSEADDR', get_option('reuseaddr'))
 
 aconf = configuration_data()
 aconf.merge_from(uconf)
@@ -147,7 +148,6 @@ elif host_machine.system() == 'sunos'
   deps += cc.find_library('socket')
 endif
 deps += dependency('libcrypto', required: get_option('open_ssl'))
-deps += dependency('libssl', required: get_option('open_ssl'))
 threads_dep = dependency('threads')
 
 libupnp = library(
