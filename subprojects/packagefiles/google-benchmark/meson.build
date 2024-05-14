@@ -1,7 +1,7 @@
 project(
   'benchmark',
   'cpp',
-  version: '1.7.1',
+  version: '1.8.3',
   default_options: ['cpp_std=c++14'],
   license: 'Apache-2.0',
 )
@@ -13,6 +13,7 @@ benchmark_sources = files(
   'src/benchmark_name.cc',
   'src/benchmark_register.cc',
   'src/benchmark_runner.cc',
+  'src/check.cc',
   'src/colorprint.cc',
   'src/commandlineflags.cc',
   'src/complexity.cc',
@@ -22,7 +23,6 @@ benchmark_sources = files(
   'src/json_reporter.cc',
   'src/perf_counters.cc',
   'src/reporter.cc',
-  'src/sleep.cc',
   'src/statistics.cc',
   'src/string_util.cc',
   'src/sysinfo.cc',
@@ -79,7 +79,9 @@ lib_benchmark_main = library(
 google_benchmark_main_dep = declare_dependency(
   compile_args: dargs,
   link_with: lib_benchmark_main,
-  include_directories: inc,
+  dependencies: google_benchmark_dep,
 )
 
-subdir('test')
+if not get_option('tests').disabled()
+  subdir('test')
+endif
