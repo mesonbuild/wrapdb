@@ -55,7 +55,11 @@ endforeach
 
 cdata.set('JSON_INT_T', 'int64_t')
 cdata.set('JSON_STRTOINT', 'strtoll')
-cdata.set_quoted('JSON_INTEGER_FORMAT', 'PRId64')
+if cc.sizeof('long') == 4
+cdata.set_quoted('JSON_INTEGER_FORMAT', 'lld')
+else
+cdata.set_quoted('JSON_INTEGER_FORMAT', 'ld')
+endif
 
 # FIXME: These variables set features to be explicitly disabled. The tests for
 # these are missing from the check_functions block above and are also prefixed
