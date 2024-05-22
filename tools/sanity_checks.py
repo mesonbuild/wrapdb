@@ -374,7 +374,7 @@ class TestReleases(unittest.TestCase):
         if debian_packages and is_debianlike():
             install_packages(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
         elif brew_packages and is_macos():
-            install_packages(['brew', 'install'], brew_packages)
+            install_packages(['brew', 'install', '--quiet'], brew_packages)
         elif choco_packages and is_windows():
             install_packages(['choco', 'install', '-y'], choco_packages)
             if is_ci() and 'nasm' in choco_packages:
