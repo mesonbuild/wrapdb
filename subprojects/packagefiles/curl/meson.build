@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.7.1',
+  version: '8.8.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -135,6 +135,9 @@ _headerlist = {
   ],
   'bsd/unistd.h': [
     'setmode',
+  ],
+  'dirent.h': [
+    'opendir',
   ],
   'fcntl.h': [
     'fcntl',
@@ -526,7 +529,7 @@ ipv6_opt = get_option('ipv6').require(
   ),
   error_message: 'struct sockaddr_in6 not available',
 )
-cdata.set('ENABLE_IPV6', ipv6_opt.allowed())
+cdata.set('USE_IPV6', ipv6_opt.allowed())
 
 # }}}
 
@@ -895,29 +898,6 @@ ntlm_opt = get_option(
   error_message: MISSING_LIBS_ERROR,
 )
 
-ntlm_wb_opt = get_option(
-  'ntlm-wb',
-).disable_auto_if(
-  host_machine.system() == 'windows',
-).require(
-  ntlm_opt.allowed(),
-  error_message: 'feature ntml is disabled',
-).require(
-  http_opt.allowed(),
-  error_message: HTTP_DISABLED_ERROR,
-)
-
-ntlm_wb_file = find_program(get_option('ntlm-wb-file'), required: ntlm_wb_opt)
-ntlm_wb_opt = ntlm_wb_opt.require(ntlm_wb_file.found())
-
-if ntlm_wb_opt.allowed()
-  cdata.set('NTLM_WB_ENABLED', true)
-  cdata.set_quoted('NTLM_WB_FILE', ntlm_wb_file.full_path())
-else
-  cdata.set('NTLM_WB_ENABLED', false)
-  cdata.set('NTLM_WB_FILE', false)
-endif
-
 # }}}
 
 # Public Suffix List. {{{
@@ -1088,6 +1068,7 @@ foreach _spec : [
   ['HAVE_IOCTLSOCKET'],
   ['HAVE_IOCTLSOCKET_CAMEL'],
   ['HAVE_IOCTLSOCKET_CAMEL_FIONBIO'],
+  ['HAVE_IOCTLSOCKET_FIONBIO'],
   ['HAVE_IOCTL_FIONBIO'],
   ['HAVE_IOCTL_SIOCGIFADDR'],
   ['HAVE_O_NONBLOCK'],
@@ -1108,33 +1089,6 @@ foreach _spec : [
     ),
   )
 endforeach
-
-# FIXME: go back to the version provided
-# by `CMake/CurlTests.c` once it's fixed.
-cdata.set(
-  'HAVE_IOCTLSOCKET_FIONBIO',
-  cc.links(
-    '''
-    #ifdef _WIN32
-    #  ifndef WIN32_LEAN_AND_MEAN
-    #    define WIN32_LEAN_AND_MEAN
-    #  endif
-    #  include <winsock2.h>
-    #endif
-    int main(void)
-    {
-      unsigned long flags = 0;
-      if(0 != ioctlsocket(0, FIONBIO, &flags))
-        return 1;
-      ;
-      return 0;
-    }
-    ''',
-    args: [check_args],
-    dependencies: sys_deps,
-    name: 'HAVE_IOCTLSOCKET_FIONBIO test',
-  ),
-)
 
 _source_epilogue = '#undef inline'
 
@@ -1681,7 +1635,6 @@ foreach _section, _optlist : {
     ['LibZ'],
     ['MultiSSL'],
     ['NTLM'],
-    ['NTLM_WB'],
     ['PSL'],
     ['SPNEGO'],
     ['SSL'],
@@ -1787,8 +1740,8 @@ cdata.set('CURLDEBUG', get_option('curldebug'))
 
 # Generate `curl-config`. {{{
 
-cdata.set_quoted('CURLVERSION', CURL_VERSION)
-cdata.set_quoted('VERSIONNUM', CURL_VERSION_NUM.replace('0x', ''))
+cdata.set('CURLVERSION', CURL_VERSION)
+cdata.set('VERSIONNUM', CURL_VERSION_NUM.replace('0x', ''))
 
 _link_args = get_option('c_link_args')
 cdata.set('CC', ' '.join(cc.cmd_array()))
