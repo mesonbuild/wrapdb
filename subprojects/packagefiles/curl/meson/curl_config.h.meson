@@ -147,9 +147,6 @@
 /* enable debug build options */
 #mesondefine DEBUGBUILD
 
-/* Define if you want to enable IPv6 support */
-#mesondefine ENABLE_IPV6
-
 /* Define to the type of arg 2 for gethostname. */
 #mesondefine GETHOSTNAME_TYPE_ARG2
 
@@ -201,6 +198,9 @@
 
 /* "Set if getpwuid_r() declaration is missing" */
 #mesondefine HAVE_DECL_GETPWUID_R_MISSING
+
+/* Define to 1 if you have the <dirent.h> header file. */
+#mesondefine HAVE_DIRENT_H
 
 /* Define to 1 if you have the fcntl function. */
 #mesondefine HAVE_FCNTL
@@ -392,6 +392,9 @@
 /* if you have an old MIT Kerberos version, lacking GSS_C_NT_HOSTBASED_SERVICE
    */
 #mesondefine HAVE_OLD_GSSMIT
+
+/* Define to 1 if you have the `opendir' function. */
+#mesondefine HAVE_OPENDIR
 
 /* if you have the functions SSL_CTX_set_srp_username and
    SSL_CTX_set_srp_password */
@@ -631,12 +634,6 @@
 /* Define to 1 if _THREAD_SAFE preprocessor symbol must be defined. */
 #mesondefine NEED_THREAD_SAFE
 
-/* Define to enable NTLM delegation to winbind's ntlm_auth helper. */
-#mesondefine NTLM_WB_ENABLED
-
-/* Define absolute filename for winbind's ntlm_auth helper. */
-#mesondefine NTLM_WB_FILE
-
 /* cpu-machine-OS */
 #mesondefine OS
 
@@ -689,6 +686,9 @@
 
 /* if hyper is in use */
 #mesondefine USE_HYPER
+
+/* Define if you want to enable IPv6 support */
+#mesondefine USE_IPV6
 
 /* PSL support enabled */
 #mesondefine USE_LIBPSL

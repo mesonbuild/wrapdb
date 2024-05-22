@@ -122,8 +122,7 @@
       "nghttp2-proxy",
       "python3-impacket",
       "samba",
-      "stunnel4",
-      "winbind"
+      "stunnel4"
     ],
     "msys_packages": [
       "gss",
