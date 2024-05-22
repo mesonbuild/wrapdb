@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for Fossil Jellyfish AI C
+# website: https://fossillogic.com/
+# ======================
+[wrap-file]
+directory = fscl-xfish-c-2.4.0
+source_url = https://github.com/fossil-lib/fscl-xfish-c/archive/refs/tags/v2.4.0.tar.gz
+source_filename = fscl-xfish-c-2.4.0.tar.gz
+source_hash = 12d4f91e10bb81874cc21f354d399489521cce50e419aed5a5f584e7
+
+[provide]
+fscl-xfish-c = fscl_xfish_c_dep

@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for Fossil XTest C
+# website: https://fossillogic.com/
+# ======================
+[wrap-file]
+directory = fscl-xtest-c-2.4.0
+source_url = https://github.com/fossil-lib/fscl-xtest-c/archive/refs/tags/v2.4.0.tar.gz
+source_filename = fscl-xtest-c-2.4.0.tar.gz
+source_hash = ed045068759b88386f1ce99896c9b104d8faa2b6a6eb9e939f6a31e8
+
+[provide]
+fscl-xtest-c = fscl_xtest_c_dep

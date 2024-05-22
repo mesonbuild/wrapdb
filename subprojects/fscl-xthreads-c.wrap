@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for Fossil Threads C
+# website: https://fossillogic.com/
+# ======================
+[wrap-file]
+directory = fscl-xthreads-c-1.0.0
+source_url = https://github.com/fossil-lib/fscl-xthreads-c/archive/refs/tags/v1.0.0.tar.gz
+source_filename = fscl-xthreads-c-1.0.0.tar.gz
+source_hash = 536912701175fb126398bc2bd39f3155261cb920a8fd47052fec1067
+
+[provide]
+fscl-xthreads-c = fscl_xthreads_c_dep

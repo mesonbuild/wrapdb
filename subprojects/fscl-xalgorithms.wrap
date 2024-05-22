@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for Fossil Algorithms C
+# website: https://fossillogic.com/
+# ======================
+[wrap-file]
+directory = fscl-xalgorithms-c-2.4.0
+source_url = https://github.com/fossil-lib/fscl-xalgorithms-c/archive/refs/tags/v2.4.0.tar.gz
+source_filename = fscl-xalgorithms-c-2.4.0.tar.gz
+source_hash = ba483977487be65d9d60f9b263f9945d11b4f4842c083c4544beabf2
+
+[provide]
+fscl-xalgorithms-c = fscl_xalgorithms_c_dep
