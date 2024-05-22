@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from contextlib import contextmanager
 import operator
 import re
 import os
+import sys
 import typing as T
 import platform
 
@@ -95,6 +97,16 @@ class Version:
 
         # versions are equal, so compare revisions
         return comparator(self._r, other._r)
+
+@contextmanager
+def ci_group(title):
+    if is_ci() or sys.stdout.isatty():
+        title = f'\33[34m{title}\33[0m'
+    print(f'::group::{title}')
+    try:
+        yield
+    finally:
+        print('::endgroup::')
 
 def is_ci() -> bool:
     return 'CI' in os.environ
