@@ -3021,7 +3021,13 @@
   },
   "sfml": {
     "dependency_names": [
-      "sfml"
+      "sfml",
+      "sfml-all",
+      "sfml-graphics",
+      "sfml-system",
+      "sfml-audio",
+      "sfml-network",
+      "sfml-window"
     ],
     "versions": [
       "2.6.1-1",
