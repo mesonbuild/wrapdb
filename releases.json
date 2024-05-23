@@ -833,38 +833,6 @@
       "1.0.1-1"
     ]
   },
-  "fscl-xcore-c": {
-    "dependency_names": [
-      "fscl-xcore-c"
-    ],
-    "versions": [
-      "2.4.1-1"
-    ]
-  },
-  "fscl-xtool-c": {
-    "dependency_names": [
-      "fscl-xtool-c"
-    ],
-    "versions": [
-      "2.4.0-1"
-    ]
-  },
-  "fscl-xthreads-c": {
-    "dependency_names": [
-      "fscl-xthreads-c"
-    ],
-    "versions": [
-      "1.0.0-1"
-    ]
-  },
-  "fscl-xstring-c": {
-    "dependency_names": [
-      "fscl-xstring-c"
-    ],
-    "versions": [
-      "2.4.0-1"
-    ]
-  },
   "fscl-xalgorithms-c": {
     "dependency_names": [
       "fscl-xalgorithms-c"
@@ -873,20 +841,12 @@
       "2.4.0-1"
     ]
   },
-  "fscl-xstructures-c": {
+  "fscl-xcore-c": {
     "dependency_names": [
-      "fscl-xstructures-c"
+      "fscl-xcore-c"
     ],
     "versions": [
-      "2.4.0-1"
-    ]
-  },
-  "fscl-xtofu-c": {
-    "dependency_names": [
-      "fscl-xtofu-c"
-    ],
-    "versions": [
-      "2.4.0-1"
+      "2.4.1-1"
     ]
   },
   "fscl-xfish-c": {
@@ -905,9 +865,49 @@
       "2.4.0-1"
     ]
   },
+  "fscl-xstring-c": {
+    "dependency_names": [
+      "fscl-xstring-c"
+    ],
+    "versions": [
+      "2.4.0-1"
+    ]
+  },
+  "fscl-xstructures-c": {
+    "dependency_names": [
+      "fscl-xstructures-c"
+    ],
+    "versions": [
+      "2.4.0-1"
+    ]
+  },
   "fscl-xtest-c": {
     "dependency_names": [
       "fscl-xtest-c"
+    ],
+    "versions": [
+      "2.4.0-1"
+    ]
+  },
+  "fscl-xthreads-c": {
+    "dependency_names": [
+      "fscl-xthreads-c"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
+  "fscl-xtofu-c": {
+    "dependency_names": [
+      "fscl-xtofu-c"
+    ],
+    "versions": [
+      "2.4.0-1"
+    ]
+  },
+  "fscl-xtool-c": {
+    "dependency_names": [
+      "fscl-xtool-c"
     ],
     "versions": [
       "2.4.0-1"
