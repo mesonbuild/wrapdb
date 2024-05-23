@@ -192,8 +192,8 @@
   },
   "fscl-xalgorithms-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
     ],
     "build_on": {
       "windows": false
@@ -201,8 +201,8 @@
   },
   "fscl-xcore-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
     ],
     "build_on": {
       "windows": false
@@ -210,8 +210,8 @@
   },
   "fscl-xfish-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
     ],
     "build_on": {
       "windows": false
@@ -219,8 +219,8 @@
   },
   "fscl-xmock-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
     ],
     "build_on": {
       "windows": false
@@ -228,38 +228,53 @@
   },
   "fscl-xstring-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
     ],
     "build_on": {
       "windows": false
     }
   },
   "fscl-xstructures-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "fatal_warnings": true,
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtest-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "fatal_warnings": true,
     "build_on": {
       "windows": false
     }
   },
   "fscl-xthreads-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "fatal_warnings": true,
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtofu-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "fatal_warnings": true,
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtool-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "fatal_warnings": true,
     "build_on": {
       "windows": false
