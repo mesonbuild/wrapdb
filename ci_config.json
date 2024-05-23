@@ -237,45 +237,30 @@
   },
   "fscl-xstructures-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
-    ],
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtest-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
-    ],
     "build_on": {
       "windows": false
     }
   },
   "fscl-xthreads-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
-    ],
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtofu-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
-    ],
     "build_on": {
       "windows": false
     }
   },
   "fscl-xtool-c": {
     "fatal_warnings": true,
-    "test_options": [
-      "--test-args='--mode devops'"
-    ],
     "build_on": {
       "windows": false
     }
