@@ -7,3 +7,9 @@ patch_directory = sfml
 
 [provide]
 sfml = sfml_dep
+sfml-all = sfml_dep
+sfml-graphics = sfml_dep
+sfml-window = sfml_dep
+sfml-system = sfml_dep
+sfml-audio = sfml_dep
+sfml-network = sfml_dep
