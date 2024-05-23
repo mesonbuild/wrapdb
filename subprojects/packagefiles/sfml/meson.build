@@ -13,7 +13,6 @@ cpp = meson.get_compiler('cpp')
 
 graphics_opt = get_option('graphics')
 audio_opt = get_option('audio')
-system_opt = get_option('system')
 window_opt = get_option('window')
 network_opt = get_option('network')
 

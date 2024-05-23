@@ -47,12 +47,14 @@ graphics_lib = library(
   include_directories: [glad_inc, pub_inc, priv_inc, stb_inc],
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
+  install: true
 )
 
 sfml_graphics_dep = declare_dependency(
   include_directories: pub_inc,
   link_with: graphics_lib,
   compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+  dependencies: [sfml_window_dep, sfml_system_dep]
 )
 
 meson.override_dependency('sfml-graphics', sfml_graphics_dep)

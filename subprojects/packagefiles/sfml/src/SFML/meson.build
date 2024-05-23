@@ -1,10 +1,7 @@
 subdir('Main')
+subdir('System')
 
-if system_opt.allowed()
-  subdir('System')
-endif
-
-if window_opt.allowed()
+if window_opt.allowed() or graphics_opt.allowed()
   subdir('Window')
 endif
 

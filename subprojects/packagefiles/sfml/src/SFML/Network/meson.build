@@ -18,6 +18,7 @@ network_lib = library(
   include_directories: [pub_inc, priv_inc],
   link_with: system_lib,
   dependencies: w32_dep,
+  install: true
 )
 
 sfml_network_dep = declare_dependency(
