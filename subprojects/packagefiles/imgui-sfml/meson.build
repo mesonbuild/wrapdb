@@ -7,7 +7,7 @@ project(
 )
 
 imgui_dep = dependency('imgui')
-sfml_dep = dependency('sfml')
+sfml_dep = dependency('sfml-all')
 opengl_dep = dependency('gl')
 
 # We do not look up sfml here because there are many different
