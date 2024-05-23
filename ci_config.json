@@ -193,6 +193,9 @@
   "fscl-xalgorithms-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xalgorithms-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -200,6 +203,9 @@
   "fscl-xcore-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xcore-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -207,6 +213,9 @@
   "fscl-xfish-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xfish-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -214,6 +223,9 @@
   "fscl-xmock-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xmock-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -221,6 +233,9 @@
   "fscl-xstring-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xstring-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -228,6 +243,9 @@
   "fscl-xstructures-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -235,6 +253,9 @@
   "fscl-xtest-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xtest-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -242,6 +263,9 @@
   "fscl-xthreads-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xthreads-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -249,6 +273,9 @@
   "fscl-xtofu-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xtofu-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
@@ -256,6 +283,9 @@
   "fscl-xtool-c": {
     "fatal_warnings": true,
     "skip_tests": true,
+    "build_options": [
+      "fscl-xtool-c:with_test=enabled"
+    ],
     "build_on": {
       "windows": false
     }
