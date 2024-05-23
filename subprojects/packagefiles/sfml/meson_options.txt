@@ -1,5 +1,5 @@
 option('examples', type : 'boolean', value : false)
 option('graphics', type: 'feature')
 option('window', type: 'feature')
-option('audio', type: 'feature', value: 'disabled')
+option('audio', type: 'feature')
 option('network', type: 'feature')

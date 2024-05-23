@@ -53,22 +53,12 @@ summary(
 
 subdir('src/SFML')
 
-message(audio_opt.allowed())
-message(graphics_opt.allowed())
-message(network_opt.allowed())
-message(window_opt.allowed())
 if (
   (
   audio_opt.allowed()
   and graphics_opt.allowed()
   and network_opt.allowed()
   and window_opt.allowed()
-  ) or 
-  (
-  audio_opt.disabled()
-  and graphics_opt.disabled()
-  and network_opt.disabled()
-  and window_opt.disabled()
   ) 
 )
   sfml_all_dep = declare_dependency(
