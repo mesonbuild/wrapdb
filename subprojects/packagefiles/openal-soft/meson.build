@@ -7,16 +7,14 @@ project(
 )
 
 
-openal_all_dependencies = [ ]
-
 cpp = meson.get_compiler('cpp')
 
+atomic_dep = dependency('', required: false)
 # Some systems may need libatomic for atomic functions to work
 if cpp.compiles('''#include <atomic>
 std::atomic<int> foo{0};
 int main() { return foo.fetch_add(2); }''')
   atomic_dep = cpp.find_library('atomic', required: true)
-  openal_all_dependencies += atomic_dep
 endif
 
 dl_dep = cpp.find_library('dl', required: false)
@@ -34,24 +32,6 @@ rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
 sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 sndio_dep = dependency('sndio', required: get_option('sndio'))
 solaris_dep = dependency('audioio', required: get_option('solaris'))
-
-
-openal_all_dependencies += dl_dep
-openal_all_dependencies += thread_dep
-openal_all_dependencies += alsa_dep
-openal_all_dependencies += apple_dep
-openal_all_dependencies += jack_dep
-openal_all_dependencies += mm_dep
-openal_all_dependencies += opensl_dep
-openal_all_dependencies += oss_dep
-openal_all_dependencies += pipewire_dep
-openal_all_dependencies += portaudio_dep
-openal_all_dependencies += pulseaudio_dep
-openal_all_dependencies += rtkit_dep
-openal_all_dependencies += sdl2_dep
-openal_all_dependencies += sndio_dep
-openal_all_dependencies += solaris_dep
-openal_all_dependencies += openal_all_dependencies
 
 if host_machine.system() == 'windows'
   add_project_arguments('-DNOMINMAX', language: 'cpp')
@@ -312,7 +292,22 @@ openal_lib = library(
   cpp_args: openal_args,
   dependencies: [
     common_dep,
-    openal_all_dependencies
+    dl_dep,
+    atomic_dep,
+    thread_dep,
+    alsa_dep,
+    apple_dep,
+    jack_dep,
+    mm_dep,
+    opensl_dep,
+    oss_dep,
+    pipewire_dep,
+    portaudio_dep,
+    pulseaudio_dep,
+    rtkit_dep,
+    sdl2_dep,
+    sndio_dep,
+    solaris_dep,
   ],
   include_directories: openal_inc,
   gnu_symbol_visibility: 'hidden',
