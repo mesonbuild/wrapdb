@@ -6,7 +6,6 @@ project(
   default_options: ['cpp_std=c++14', 'c_std=c11'],
 )
 
-
 cpp = meson.get_compiler('cpp')
 
 atomic_dep = dependency('', required: false)
