@@ -22,13 +22,6 @@ audio_sources = files(
   'SoundStream.cpp',
 )
 
-openal_dep = dependency('openal')
-flac_dep = dependency('flac')
-vorbis_dep = dependency('vorbis')
-vorbisenc_dep = dependency('vorbisenc')
-vorbisfile_dep = dependency('vorbisfile')
-ogg_dep = dependency('ogg')
-
 audio_lib = library(
   'sfml-audio',
   audio_sources,
@@ -36,7 +29,6 @@ audio_lib = library(
   link_with: system_lib,
   include_directories: [pub_inc, priv_inc, mp3_inc],
   dependencies: [openal_dep, flac_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, ogg_dep],
-  install: true
 )
 
 sfml_audio_dep = declare_dependency(

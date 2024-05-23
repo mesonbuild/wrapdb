@@ -3022,7 +3022,6 @@
   },
   "sfml": {
     "dependency_names": [
-      "sfml",
       "sfml-all",
       "sfml-graphics",
       "sfml-system",
