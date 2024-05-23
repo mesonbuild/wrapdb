@@ -8,6 +8,7 @@ project(
 
 cpp = meson.get_compiler('cpp')
 dl_dep = cpp.find_library('dl', required: false)
+atomic_dep = cpp.find_library('atomic', required: true)
 thread_dep = dependency('threads')
 alsa_dep = dependency('alsa', required: get_option('alsa'))
 apple_dep = dependency('appleframeworks', modules: ['AudioToolbox', 'CoreAudio', 'CoreFoundation'], required: host_machine.system() == 'darwin')
@@ -282,6 +283,7 @@ openal_lib = library(
   cpp_args: openal_args,
   dependencies: [
     common_dep,
+    atomic_dep,
     dl_dep,
     thread_dep,
     alsa_dep,
