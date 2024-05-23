@@ -37,6 +37,9 @@ graphics_sources += files(
   'RenderTextureImplFBO.cpp',
 )
 
+gl_dep = dependency('gl')
+freetype_dep = dependency('freetype2')
+
 graphics_lib = library(
   'sfml-graphics',
   graphics_sources,
@@ -45,3 +48,11 @@ graphics_lib = library(
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
 )
+
+sfml_graphics_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: graphics_lib,
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+)
+
+meson.override_dependency('sfml-graphics', sfml_graphics_dep)

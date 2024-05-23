@@ -6,10 +6,4 @@ source_hash = 82535db9e57105d4f3a8aedabd138631defaedc593cab589c924b7d7a11ffb9d
 patch_directory = sfml
 
 [provide]
-sfml = sfml_dep
-sfml-all = sfml_dep
-sfml-graphics = sfml_dep
-sfml-window = sfml_dep
-sfml-system = sfml_dep
-sfml-audio = sfml_dep
-sfml-network = sfml_dep
+dependency_names = sfml, sfml-all, sfml-graphics, sfml-windows, sfml-system, sfml-audio, sfml-network
