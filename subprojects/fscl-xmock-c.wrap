@@ -6,7 +6,7 @@
 directory = fscl-xmock-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xmock-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xmock-c-2.4.0.tar.gz
-source_hash = ed045068759b88386f1ce99896c9b104d8faa2b6a6eb9e939f6a31e8
+source_hash = 9996b4c926896a21c8500776d971076ec32ac0bcde988d5ceebb25e655d9efa2
 
 [provide]
 fscl-xmock-c = fscl_xmock_c_dep

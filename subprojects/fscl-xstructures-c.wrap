@@ -6,7 +6,7 @@
 directory = fscl-xstructures-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xstructures-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xstructures-c-2.4.0.tar.gz
-source_hash = dcb4ec052d3a1188331699578710787d1888fa10d651f9d1d25e118c
+source_hash = 64e9fbe68235794bd6b01810340c2ef8b5438387550f8ebb075422c58fe5f75c
 
 [provide]
 fscl-xstructures-c = fscl_xstructures_c_dep

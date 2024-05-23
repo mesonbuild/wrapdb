@@ -6,7 +6,7 @@
 directory = fscl-xtest-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xtest-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xtest-c-2.4.0.tar.gz
-source_hash = ed045068759b88386f1ce99896c9b104d8faa2b6a6eb9e939f6a31e8
+source_hash = 5b006994edef722b23105369f22bbb76106a70a3b4d85f8b6227f2464be46360
 
 [provide]
 fscl-xtest-c = fscl_xtest_c_dep

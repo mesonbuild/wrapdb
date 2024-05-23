@@ -6,7 +6,7 @@
 directory = fscl-xtool-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xtool-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xtool-c-2.4.0.tar.gz
-source_hash = 5db62f055a7f999eaf79867bf3f753ec68a649edf78ee545902cc4cc
+source_hash = c5612f4ac5ef325e175b67f956181f1c4eefa6525374e91c29b306f1d1a3c14a
 
 [provide]
 fscl-xtool-c = fscl_xtool_c_dep

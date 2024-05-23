@@ -6,7 +6,7 @@
 directory = fscl-xtofu-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xtofu-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xtofu-c-2.4.0.tar.gz
-source_hash = 4d9c433a7dbf8cd13a63d193122d02feb32ede9d02c07c69f1a2177a
+source_hash = 8d1ed99af6668a164d560fef1aca3ae004253f4140f5c2c667cc635d6ade00d2
 
 [provide]
 fscl-xtofu-c = fscl_xtofu_c_dep

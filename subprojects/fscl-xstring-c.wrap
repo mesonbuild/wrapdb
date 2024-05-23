@@ -6,7 +6,7 @@
 directory = fscl-xstring-c-2.4.0
 source_url = https://github.com/fossil-lib/fscl-xstring-c/archive/refs/tags/v2.4.0.tar.gz
 source_filename = fscl-xstring-c-2.4.0.tar.gz
-source_hash = 323f736948b97b4025efef45b00f3a49aa6e576d1e5dbd5d49feb50d
+source_hash = 01182d8284896fb80c5555c38416441e7cfc697f82c26e6be12530690b7a768c
 
 [provide]
 fscl-xstring-c = fscl_xstring_c_dep
