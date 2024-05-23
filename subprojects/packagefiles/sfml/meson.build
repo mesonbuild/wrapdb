@@ -20,13 +20,6 @@ gl_dep = dependency('gl')
 winmm_dep = cpp.find_library('winmm', required: host_machine.system() == 'windows')
 w32_dep = cpp.find_library('ws2_32', required: host_machine.system() == 'windows')
 
-openal_dep = dependency('openal', required: true)
-flac_dep = dependency('flac', required: audio_opt)
-vorbis_dep = dependency('vorbis', required: audio_opt)
-vorbisenc_dep = dependency('vorbisenc', required: audio_opt)
-vorbisfile_dep = dependency('vorbisfile', required: audio_opt)
-ogg_dep = dependency('ogg', required: audio_opt)
-
 foreach audio_dep : [
     'flac',
     'ogg',
@@ -60,11 +53,23 @@ summary(
 
 subdir('src/SFML')
 
+message(audio_opt.allowed())
+message(graphics_opt.allowed())
+message(network_opt.allowed())
+message(window_opt.allowed())
 if (
+  (
   audio_opt.allowed()
   and graphics_opt.allowed()
   and network_opt.allowed()
   and window_opt.allowed()
+  ) or 
+  (
+  audio_opt.disabled()
+  and graphics_opt.disabled()
+  and network_opt.disabled()
+  and window_opt.disabled()
+  ) 
 )
   sfml_all_dep = declare_dependency(
     include_directories: pub_inc,
