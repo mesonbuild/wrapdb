@@ -375,6 +375,13 @@ class TestReleases(unittest.TestCase):
             install_packages(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
         elif brew_packages and is_macos():
             install_packages(['brew', 'install', '--quiet'], brew_packages)
+            if is_ci():
+                # Ensure binaries from keg-only formulas are available (e.g. bison).
+                out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
+                for prefix in out.decode().split('\n'):
+                    bindir = Path(prefix) / 'bin'
+                    if bindir.exists():
+                        meson_env['PATH'] = str(bindir) + ':' + meson_env['PATH']
         elif choco_packages and is_windows():
             install_packages(['choco', 'install', '-y'], choco_packages)
             if is_ci() and 'nasm' in choco_packages:
