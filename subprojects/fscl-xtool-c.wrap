@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xtool-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xtool-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xtool-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xtool-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xtool-c-2.4.2.tar.gz
+source_hash = 89f8c150ac25d24cb6aecddbb9282a10a5f70ff5a6b106a8fd19518f47ef5b9c
+
+[provide]
+fscl-xtool-c = fscl_xtool_c_dep

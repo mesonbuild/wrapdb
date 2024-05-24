@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xtest-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xtest-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xtest-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xtest-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xtest-c-2.4.2.tar.gz
+source_hash = 4dab939606f85df20d9fb42b780f75f05e675a92650b8a5f729b68124d4e699e
+
+[provide]
+fscl-xtest-c = fscl_xtest_c_dep

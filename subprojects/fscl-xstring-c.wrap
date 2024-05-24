@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xstring-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xstring-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xstring-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xstring-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xstring-c-2.4.2.tar.gz
+source_hash = e0132dc6c28ed383ef5228e307ffa722026c2630bb696545702dab3decc36964
+
+[provide]
+fscl-xstring-c = fscl_xstring_c_dep

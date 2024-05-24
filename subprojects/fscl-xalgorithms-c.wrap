@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xalgorithms-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xalgorithms-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xalgorithms-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xalgorithms-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xalgorithms-c-2.4.2.tar.gz
+source_hash = f68388ba1d2d6dbc5d85357cc4e3e34ede2364d160fce6e415f9a26be3cddcff
+
+[provide]
+fscl-xalgorithms-c = fscl_xalgorithms_c_dep

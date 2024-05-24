@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xstructures-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xstructures-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xstructures-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xstructures-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xstructures-c-2.4.2.tar.gz
+source_hash = af8bd27d0f9417813f4cce034bb714d58e1eb6e53377c07664ab8958ee5c4995
+
+[provide]
+fscl-xstructures-c = fscl_xstructures_c_dep

@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xcore-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xcore-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xcore-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xcore-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xcore-c-2.4.2.tar.gz
+source_hash = e46b18e35cc2775edb4fd2ce982886f16f7756e9f9b109f7aa5e0b1ac1a170fd
+
+[provide]
+fscl-xcore-c = fscl_xcore_c_dep

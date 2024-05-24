@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xtofu-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xtofu-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xtofu-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xtofu-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xtofu-c-2.4.2.tar.gz
+source_hash = abf15393b453b26ddbe1d5900b3fc326638769f9ed25f51474ef577de50753dc
+
+[provide]
+fscl-xtofu-c = fscl_xtofu_c_dep

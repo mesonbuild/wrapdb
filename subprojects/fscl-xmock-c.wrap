@@ -1,0 +1,12 @@
+# ======================
+# WrapDB package definition for fscl-xmock-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xmock-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xmock-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xmock-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xmock-c-2.4.2.tar.gz
+source_hash = 97a0c9a04426226f24292ea732425b9bd0e385c686810feed2cdb05b2f163b04
+
+[provide]
+fscl-xmock-c = fscl_xmock_c_dep

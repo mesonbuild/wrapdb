@@ -1,0 +1,13 @@
+# ======================
+# WrapDB package definition for fscl-xthreads-c-2.4.2
+# url: https://github.com/fossil-lib/fscl-xthreads-c/archive/refs/tags/v2.4.2.tar.gz
+# ======================
+[wrap-file]
+directory = fscl-xthreads-c-2.4.2
+source_url = https://github.com/fossil-lib/fscl-xthreads-c/archive/refs/tags/v2.4.2.tar.gz
+source_filename = fscl-xthreads-c-2.4.2.tar.gz
+source_hash = 642006c2d266cf4fc8ee3b13c66dd4818a1753c7e29f5af36bf37f4dd3b00146
+
+[provide]
+fscl-xthreads-c = fscl_xthreads_c_dep
+
