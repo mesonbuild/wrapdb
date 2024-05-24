@@ -197,6 +197,56 @@
       "windows": false
     }
   },
+  "fscl-xalgorithms-c": {
+    "build_options": [
+      "fscl-xalgorithms-c:with_test=enabled"
+    ]
+  },
+  "fscl-xcore-c": {
+    "build_options": [
+      "fscl-xcore-c:with_test=enabled"
+    ]
+  },
+  "fscl-xfish-c": {
+    "build_options": [
+      "fscl-xfish-c:with_test=enabled"
+    ]
+  },
+  "fscl-xmock-c": {
+    "build_options": [
+      "fscl-xmock-c:with_test=enabled"
+    ]
+  },
+  "fscl-xstring-c": {
+    "build_options": [
+      "fscl-xstring-c:with_test=enabled"
+    ]
+  },
+  "fscl-xstructures-c": {
+    "build_options": [
+      "fscl-xstructures-c:with_test=enabled"
+    ]
+  },
+  "fscl-xtest-c": {
+    "build_options": [
+      "fscl-xtest-c:with_test=enabled"
+    ]
+  },
+  "fscl-xthreads-c": {
+    "build_options": [
+      "fscl-xthreads-c:with_test=enabled"
+    ]
+  },
+  "fscl-xtofu-c": {
+    "build_options": [
+      "fscl-xtofu-c:with_test=enabled"
+    ]
+  },
+  "fscl-xtool-c": {
+    "build_options": [
+      "fscl-xtool-c:with_test=enabled"
+    ]
+  },
   "gdbm": {
     "_comment": "- Requires POSIX platform.",
     "build_on": {
@@ -884,7 +934,6 @@
     "brew_packages": [
       "sqlite"
     ]
-
   },
   "tinyfsm": {
     "build_options": [

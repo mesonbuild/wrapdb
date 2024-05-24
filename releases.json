@@ -244,8 +244,8 @@
       "c-flags"
     ],
     "versions": [
-        "1.5.8-1",
-        "1.5.4-1"
+      "1.5.8-1",
+      "1.5.4-1"
     ]
   },
   "cairo": {
@@ -830,6 +830,86 @@
     "dependency_names": [
       "frozen"
     ],
+    "fscl-xalgorithms-c": {
+      "dependency_names": [
+        "fscl-xalgorithms-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xcore-c": {
+      "dependency_names": [
+        "fscl-xcore-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xfish-c": {
+      "dependency_names": [
+        "fscl-xfish-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xmock-c": {
+      "dependency_names": [
+        "fscl-xmock-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xstring-c": {
+      "dependency_names": [
+        "fscl-xstring-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xstructures-c": {
+      "dependency_names": [
+        "fscl-xstructures-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xtest-c": {
+      "dependency_names": [
+        "fscl-xtest-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xthreads-c": {
+      "dependency_names": [
+        "fscl-xthreads-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xtofu-c": {
+      "dependency_names": [
+        "fscl-xtofu-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
+    "fscl-xtool-c": {
+      "dependency_names": [
+        "fscl-xtool-c"
+      ],
+      "versions": [
+        "2.4.2-1"
+      ]
+    },
     "versions": [
       "1.1.1-1",
       "1.0.1-2",
@@ -998,11 +1078,11 @@
       "0.9.9.8-1"
     ]
   },
-  "godot-cpp" : {
-    "dependency_names" : [
+  "godot-cpp": {
+    "dependency_names": [
       "godot_cpp"
     ],
-    "versions" : [
+    "versions": [
       "4.2-1"
     ]
   },
@@ -3625,4 +3705,3 @@
     ]
   }
 }
-
