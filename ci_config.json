@@ -199,52 +199,73 @@
   },
   "fscl-xalgorithms-c": {
     "build_options": [
-      "fscl-xalgorithms-c:with_test=enabled"
+      "fscl-xalgorithms-c:with_test=enabled",
+      "fscl-xalgorithm-c:werror=false",
+      "fscl-xalgorithms-c:c_std=c18"
+      
     ]
   },
   "fscl-xcore-c": {
     "build_options": [
-      "fscl-xcore-c:with_test=enabled"
+      "fscl-xcore-c:with_test=enabled",
+      "fscl-xcore-c:werror=false",
+      "fscl-xcore-c:c_std=c18"
     ]
   },
   "fscl-xfish-c": {
     "build_options": [
-      "fscl-xfish-c:with_test=enabled"
+      "fscl-xfish-c:with_test=enabled",
+      "fscl-xfish-c:werror=false",
+      "fscl-xfish-c:c_std=c18"
     ]
   },
   "fscl-xmock-c": {
     "build_options": [
-      "fscl-xmock-c:with_test=enabled"
+      "fscl-xmock-c:with_test=enabled",
+      "fscl-xmock-c:werror=false",
+      "fscl-xmock-c:c_std=c18"
     ]
   },
   "fscl-xstring-c": {
     "build_options": [
-      "fscl-xstring-c:with_test=enabled"
+      "fscl-xstring-c:with_test=enabled",
+      "fscl-xstring-c:werror=false",
+      "fscl-xstring-c:c_std=c18"
     ]
   },
   "fscl-xstructures-c": {
     "build_options": [
-      "fscl-xstructures-c:with_test=enabled"
+      "fscl-xstructures-c:with_test=enabled",
+      "fscl-xstructures-c:werror=false",
+      "fscl-xstructures-c:c_std=c18"
     ]
   },
   "fscl-xtest-c": {
     "build_options": [
-      "fscl-xtest-c:with_test=enabled"
+      "fscl-xtest-c:with_test=enabled",
+      "fscl-xtest-c:werror=false",
+      "fscl-xtest-c:c_std=c18"
     ]
   },
   "fscl-xthreads-c": {
     "build_options": [
-      "fscl-xthreads-c:with_test=enabled"
+      "fscl-xthreads-c:with_test=enabled",
+      "fscl-xthreads-c:werror=false",
+      "fscl-xthreads-c:c_std=c18"
     ]
   },
   "fscl-xtofu-c": {
     "build_options": [
-      "fscl-xtofu-c:with_test=enabled"
+      "fscl-xtofu-c:with_test=enabled",
+      "fscl-xtofu-c:werror=false",
+      "fscl-xtofu-c:c_std=c18"
     ]
   },
   "fscl-xtool-c": {
     "build_options": [
-      "fscl-xtool-c:with_test=enabled"
+      "fscl-xtool-c:with_test=enabled",
+      "fscl-xtool-c:werror=false",
+      "fscl-xtool-c:c_std=c18"
     ]
   },
   "gdbm": {
