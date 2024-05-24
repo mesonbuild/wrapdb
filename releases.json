@@ -829,6 +829,11 @@
   "frozen": {
     "dependency_names": [
       "frozen"
+    ],
+    "versions": [
+      "1.1.1-1",
+      "1.0.1-2",
+      "1.0.1-1"
     ]
   },
   "fscl-xalgorithms-c": {
@@ -909,11 +914,6 @@
     ],
     "versions": [
       "2.4.2-1"
-    ],
-    "versions": [
-      "1.1.1-1",
-      "1.0.1-2",
-      "1.0.1-1"
     ]
   },
   "ftxui": {
