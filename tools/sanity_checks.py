@@ -23,9 +23,11 @@ import typing as T
 import os
 import tempfile
 import platform
+import io
+import sys
 
 from pathlib import Path
-from utils import Version, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
+from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -331,6 +333,7 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
 
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
+        print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
             system = 'msys2'
         else:
@@ -361,52 +364,46 @@ class TestReleases(unittest.TestCase):
         msys_packages = ci.get('msys_packages', [])
         alpine_packages = ci.get('alpine_packages', [])
         meson_env = os.environ.copy()
+        def install_packages(cmd, packages):
+            if is_ci():
+                with ci_group('install packages'):
+                    subprocess.check_call(cmd + packages)
+            else:
+                s = ', '.join(packages)
+                print(f'The following packages could be required: {s}')
         if debian_packages and is_debianlike():
-            if is_ci():
-                subprocess.check_call(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'] + debian_packages)
-            else:
-                s = ', '.join(debian_packages)
-                print(f'The following packages could be required: {s}')
+            install_packages(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
         elif brew_packages and is_macos():
+            install_packages(['brew', 'install', '--quiet'], brew_packages)
             if is_ci():
-                subprocess.check_call(['brew', 'install'] + brew_packages)
-            else:
-                s = ', '.join(brew_packages)
-                print(f'The following packages could be required: {s}')
+                # Ensure binaries from keg-only formulas are available (e.g. bison).
+                out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
+                for prefix in out.decode().split('\n'):
+                    bindir = Path(prefix) / 'bin'
+                    if bindir.exists():
+                        meson_env['PATH'] = str(bindir) + ':' + meson_env['PATH']
         elif choco_packages and is_windows():
-            if is_ci():
-                subprocess.check_call(['choco', 'install', '-y'] + choco_packages)
+            install_packages(['choco', 'install', '-y'], choco_packages)
+            if is_ci() and 'nasm' in choco_packages:
                 # nasm is not added into PATH by default:
                 # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
-                if 'nasm' in choco_packages:
-                    meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
-            else:
-                s = ', '.join(choco_packages)
-                print(f'The following packages could be required: {s}')
+                meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
         elif msys_packages and is_msys():
-            if is_ci():
-                subprocess.check_call(['sh', '-lc', '$@', 'bash', 'pacboy', '--noconfirm', 'sync'] + [p + ':p' for p in msys_packages])
-            else:
-                s = ', '.join(msys_packages)
-                print(f'The following packages could be required: {s}')
+            install_packages(['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
         elif alpine_packages and is_alpinelike():
-            if is_ci():
-                subprocess.check_call(['sudo', 'apk', 'add'] + alpine_packages)
-            else:
-                s = ', '.join(alpine_packages)
-                print(f'The following packages could be required: {s}')
+            install_packages(['sudo', 'apk', 'add'], alpine_packages)
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
+        log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
+        logs = log_file.read_text(encoding='utf-8')
+        if is_ci():
+            with ci_group('==== meson-log.txt ===='):
+                print(logs)
         if res.returncode == 0:
             if not expect_working:
                 raise Exception(f'Wrap {name} successfully configured but was expected to fail')
-        else:
-            log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
-            logs = log_file.read_text(encoding='utf-8')
+        if res.returncode != 0:
             if expect_working:
-                print('::group::==== meson-log.txt ====')
-                print(logs)
-                print('::endgroup::')
                 res.check_returncode()
             else:
                 loglines = logs.splitlines()
@@ -433,9 +430,8 @@ class TestReleases(unittest.TestCase):
                 subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'] + test_options)
             except subprocess.CalledProcessError:
                 log_file = Path(builddir, 'meson-logs', 'testlog.txt')
-                print('::group::==== testlog.txt ====')
-                print(log_file.read_text(encoding='utf-8'))
-                print('::endgroup::')
+                with ci_group('==== testlog.txt ===='):
+                    print(log_file.read_text(encoding='utf-8'))
                 raise
         subprocess.check_call(['meson', 'install', '-C', builddir, '--destdir', 'pkg'])
 
@@ -467,4 +463,8 @@ class TestReleases(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if is_ci():
+        # Avoid jumbled output…
+        sys.stdout = io.TextIOWrapper(open(sys.stdout.fileno(), 'wb', 0), write_through=True)
+        sys.stderr = sys.stdout
+    unittest.main(verbosity=2)
