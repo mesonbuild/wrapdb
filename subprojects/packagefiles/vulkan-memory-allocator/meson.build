@@ -1,4 +1,4 @@
-project('VulkanMemoryAllocator', ['c', 'cpp'], version: '3.0.1')
+project('VulkanMemoryAllocator', ['c', 'cpp'], version: '3.1.0')
 
 vma_allocator_dep = declare_dependency(
     include_directories: 'include',
