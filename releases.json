@@ -2311,6 +2311,14 @@
       "mujs"
     ]
   },
+  "nanoarrow": {
+    "dependency_names": [
+      "nanoarrow"
+    ],
+    "versions": [
+      "0.5.0-1"
+    ]
+  },
   "nativefiledialog-extended": {
     "dependency_names": [
       "nativefiledialog-extended"
