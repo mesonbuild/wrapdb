@@ -52,7 +52,6 @@ png_src = files(
   'pngwutil.c',
 )
 
-
 if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip() != ''
   png_src += files(
     'arm/arm_init.c',
@@ -85,6 +84,12 @@ elif host_machine.cpu_family() in ['x86', 'x86_64']
     'intel/intel_init.c',
   )
   c_args += '-DPNG_INTEL_SSE_OPT=1'
+elif host_machine.cpu_family() in ['ppc64', 'ppc64le', 'powerpc64le'] and host_machine.endian() == 'little'
+  png_src += files(
+    'powerpc/filter_vsx_intrinsics.c',
+    'powerpc/powerpc_init.c',
+  )
+  c_args += '-DPNG_POWERPC_VSX_OPT=2'
 endif
 
 libpng = library(
