@@ -456,7 +456,7 @@ class TestReleases(unittest.TestCase):
                 tabs.append(f)
         if tabs:
             tabs_str = ', '.join([str(f) for f in tabs])
-            self.fail('Tabs in meson files are not allows: ' + tabs_str)
+            self.fail('Tabs in meson files are not allowed: ' + tabs_str)
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
             self.fail('Not permitted files found: ' + not_permitted_str)
