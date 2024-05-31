@@ -2804,6 +2804,14 @@
       "0.7.3-1"
     ]
   },
+  "quill": {
+    "dependency_names": [
+      "quill"
+    ],
+    "versions": [
+      "4.2.0"
+    ]
+  },
   "rang": {
     "dependency_names": [
       "rang"
