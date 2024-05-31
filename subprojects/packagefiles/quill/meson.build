@@ -9,7 +9,7 @@ quill_dep = declare_dependency(include_directories : inc_dirs,
                                dependencies : [dependency('threads')],
                                compile_args : interface_compile_args)
 
-install_subdir('quill/include/quill', install_dir: get_option('includedir') / 'quill', install_tag: 'devel', strip_directory: true)
+install_subdir('quill/include/quill', install_dir: get_option('includedir'), install_tag: 'devel')
 
 pkg_mod = import('pkgconfig')
 pkg_mod.generate(
