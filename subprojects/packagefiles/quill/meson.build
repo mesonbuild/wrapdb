@@ -9,10 +9,12 @@ quill_dep = declare_dependency(include_directories : inc_dirs,
                                dependencies : [dependency('threads')],
                                compile_args : interface_compile_args)
 
+install_subdir('quill/include/quill', install_dir: get_option('includedir') / 'quill', install_tag: 'devel', strip_directory: true)
+
 pkg_mod = import('pkgconfig')
 pkg_mod.generate(
     name : 'quill',
     filebase : 'quill',
     description : 'Asynchronous Low Latency C++ Logging Library',
-    subdirs : 'quill/include'
+    subdirs : 'quill'
 )
