@@ -19,6 +19,5 @@ pkg_mod.generate(
     name : 'quill',
     filebase : 'quill',
     description : 'Asynchronous Low Latency C++ Logging Library',
-    version : '4.2.0',
     subdirs : 'quill/include'
 )
