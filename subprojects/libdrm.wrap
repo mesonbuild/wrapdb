@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libdrm-2.4.115
-source_url = https://dri.freedesktop.org/libdrm/libdrm-2.4.115.tar.xz
-source_filename = libdrm-2.4.115.tar.xz
-source_hash = 554cfbfe0542bddb391b4e3e05bfbbfc3e282b955bd56218d21c0616481f65eb
+directory = libdrm-2.4.121
+source_url = https://dri.freedesktop.org/libdrm/libdrm-2.4.121.tar.xz
+source_filename = libdrm-2.4.121.tar.xz
+source_hash = 909084a505d7638887f590b70791b3bbd9069c710c948f5d1f1ce6d080cdfcab
 
 [provide]
 libdrm = ext_libdrm
