@@ -66,6 +66,16 @@ lib_sources = files(
   'lib_table.c',
 )
 
+vmdef_lua = custom_target(
+  'vmdef.lua',
+  input: lib_sources,
+  output: 'vmdef.lua',
+  command: [buildvm_exe, '-m', 'vmdef', '-o', '@OUTPUT@', '@INPUT@'],
+  install: true,
+  install_dir: jitdir,
+  install_tag: 'runtime',
+)
+
 buildvm_headers = []
 foreach _target : [
   {'mode': 'bcdef', 'output': 'lj_bcdef.h', 'input': lib_sources},
@@ -76,21 +86,12 @@ foreach _target : [
 ]
   buildvm_headers += custom_target(
     _target['output'],
+    depends: vmdef_lua,
     input: _target['input'],
     output: _target['output'],
     command: [buildvm_exe, '-m', _target['mode'], '-o', '@OUTPUT@', '@INPUT@'],
   )
 endforeach
-
-custom_target(
-  'vmdef.lua',
-  input: lib_sources,
-  output: 'vmdef.lua',
-  command: [buildvm_exe, '-m', 'vmdef', '-o', '@OUTPUT@', '@INPUT@'],
-  install: true,
-  install_dir: jitdir,
-  install_tag: 'runtime',
-)
 
 luajit_lib_flags = [
   TARGET_XCFLAGS,
