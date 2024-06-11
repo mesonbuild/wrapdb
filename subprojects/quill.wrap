@@ -1,9 +1,8 @@
 [wrap-file]
-directory = quill-4.2.0
-source_url = https://github.com/odygrd/quill/archive/refs/tags/v4.2.0.tar.gz
-source_filename = quill-4.2.0.tar.gz
-source_hash = 32b0ee16da154afcb162063d4fe1ccdb5aabebca86724afd26b2a7e4c5b78cfa
-patch_directory = quill
+directory = quill-4.4.0
+source_url = https://github.com/odygrd/quill/archive/refs/tags/v4.4.0.tar.gz
+source_filename = quill-4.4.0.tar.gz
+source_hash = be166da93210df53aab34ece1bddd14b08506588186723b504ffeeec651bbf7c
 
 [provide]
 quill = quill_dep
