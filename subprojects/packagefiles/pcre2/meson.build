@@ -3,12 +3,12 @@ project(
   'c',
   license: 'BSD-3',
   meson_version: '>=0.49.0',
-  version: '10.43',
+  version: '10.44',
 )
 
-pcre2_8_lib_version = '0.12.0'
-pcre2_16_lib_version = '0.12.0'
-pcre2_32_lib_version = '0.12.0'
+pcre2_8_lib_version = '0.13.0'
+pcre2_16_lib_version = '0.13.0'
+pcre2_32_lib_version = '0.13.0'
 pcre2_posix_lib_version = '3.0.5'
 
 c_compiler = meson.get_compiler('c')
@@ -37,7 +37,7 @@ varr = meson.project_version().split('.')
 pcredata.set('PCRE2_MAJOR', varr[0])
 pcredata.set('PCRE2_MINOR', varr[1])
 pcredata.set('PCRE2_PRERELEASE', '')
-pcredata.set('PCRE2_DATE', '2022-12-11')
+pcredata.set('PCRE2_DATE', '2024-06-07')
 
 # config.h
 cdata = configuration_data()
@@ -49,7 +49,7 @@ cdata.set('NEWLINE_DEFAULT', '2') # default in config.h.generic
 cdata.set('PARENS_NEST_LIMIT', '250')
 cdata.set('PCRE2GREP_BUFSIZE', '20480')
 cdata.set('PCRE2GREP_MAX_BUFSIZE', '1048576')
-cdata.set('MAX_NAME_SIZE', '32')
+cdata.set('MAX_NAME_SIZE', '128')
 cdata.set('MAX_NAME_COUNT', '10000')
 cdata.set('MAX_VARLOOKBEHIND', '255')
 
