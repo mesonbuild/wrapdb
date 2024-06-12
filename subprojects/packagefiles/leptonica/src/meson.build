@@ -8,7 +8,7 @@ endiannes_h = configure_file(
 )
 
 lept_lib = library(
-  'lept',
+  'leptonica',
   [config_h, endiannes_h] + [
     'adaptmap.c',
     'colorfill.c',
