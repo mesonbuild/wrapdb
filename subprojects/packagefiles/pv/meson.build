@@ -1,7 +1,7 @@
 project(
   'pv',
   'c',
-  version: '1.8.9',
+  version: '1.8.10',
   meson_version: '>=0.59.0',
 )
 
