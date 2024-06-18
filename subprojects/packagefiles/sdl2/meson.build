@@ -964,29 +964,31 @@ elif platform_is_windows
         cc.find_library('shell32')
     ]
 
-    # XInput is loaded dynamically
-    if cdata.get('HAVE_XINPUT_H', 0) == 1 and not get_option('use_joystick_xinput').disabled()
-        sys_joystick += 'xinput'
-        sys_haptic += 'xinput'
-        cdata.set('SDL_JOYSTICK_XINPUT', 1)
-        cdata.set('SDL_HAPTIC_XINPUT', 1)
-    endif
+    if not get_option('use_joystick').disabled()
+        # XInput is loaded dynamically
+        if cdata.get('HAVE_XINPUT_H', 0) == 1 and not get_option('use_joystick_xinput').disabled()
+            sys_joystick += 'xinput'
+            sys_haptic += 'xinput'
+            cdata.set('SDL_JOYSTICK_XINPUT', 1)
+            cdata.set('SDL_HAPTIC_XINPUT', 1)
+        endif
 
-    dinput = cc.find_library('dinput8', required : get_option('use_joystick_dinput'))
+        dinput = cc.find_library('dinput8', required : get_option('use_joystick_dinput'))
 
-    if dinput.found()
-        extra_deps += dinput
-        sys_joystick += 'dinput'
-        sys_haptic += 'dinput'
-    endif
+        if dinput.found()
+            extra_deps += dinput
+            sys_joystick += 'dinput'
+            sys_haptic += 'dinput'
+        endif
 
-    if sys_joystick.contains('xinput') or sys_joystick.contains('dinput')
-        sys_joystick += 'rawinput'
-    endif
+        if sys_joystick.contains('xinput') or sys_joystick.contains('dinput')
+            sys_joystick += 'rawinput'
+        endif
 
-    if sys_joystick.contains('xinput') and cdata.get('HAVE_WINDOWS_GAMING_INPUT_H', 0) == 1
-        if not get_option('use_joystick_wgi').disabled()
-            sys_joystick += 'wgi'
+        if sys_joystick.contains('xinput') and cdata.get('HAVE_WINDOWS_GAMING_INPUT_H', 0) == 1
+            if not get_option('use_joystick_wgi').disabled()
+                sys_joystick += 'wgi'
+            endif
         endif
     endif
 elif platform_is_macos
