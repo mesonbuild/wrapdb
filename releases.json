@@ -2380,6 +2380,14 @@
       "0.5.0-1"
     ]
   },
+  "nanobind": {
+    "dependency_names": [
+      "nanobind"
+    ],
+    "versions": [
+        "2.1.0-1"
+    ]
+  },
   "nativefiledialog-extended": {
     "dependency_names": [
       "nativefiledialog-extended"

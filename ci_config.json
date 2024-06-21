@@ -685,6 +685,18 @@
       "nanoarrow:NANOARROW_BUILD_TESTS=true"
     ]
   },
+    "nanobind": {
+    "_comment": "Python fails on 32-bit MSVC because we don't have 32-bit Python",
+    "alpine_packages": [
+      "python3-dev"
+    ],
+    "msys_packages": [
+      "python"
+    ],
+    "build_options": [
+      "buildtype=release"
+    ]
+  },
   "nativefiledialog-extended": {
     "alpine_packages": [
       "gtk+3.0-dev"
