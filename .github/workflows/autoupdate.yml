@@ -1,0 +1,79 @@
+name: Autoupdate wraps
+
+on:
+  schedule:
+    - cron: "15 0 * * 0"
+    - cron: "15 0 * * 4"
+  workflow_dispatch:
+    inputs:
+      wraps:
+        description: Update only these wraps (space-separated, optional)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: autoupdate
+
+env:
+  # fork to push branches to
+  HEAD_REPO: wrapdb-bot/wrapdb
+
+jobs:
+  check:
+    name: Check for updates
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.check.outputs.matrix }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Check for updates
+        id: check
+        run: tools/versions.py list --github --official --update ${{ inputs.wraps }} >> $GITHUB_OUTPUT
+      - name: Report untracked wraps
+        run: |
+          echo "## Manual update required" >> $GITHUB_STEP_SUMMARY
+          tools/versions.py list --markdown --port --update >> $GITHUB_STEP_SUMMARY
+          echo "## Not configured in [Anitya](https://release-monitoring.org/)" >> $GITHUB_STEP_SUMMARY
+          tools/versions.py list --markdown --untracked >> $GITHUB_STEP_SUMMARY
+      - name: Delete stale branches
+        env:
+          GITHUB_TOKEN: ${{ github.repository != env.HEAD_REPO && secrets.BOT_TOKEN || github.token }}
+        run: |
+          tools/versions.py list --json --official --update | \
+              jq -r "keys | .[]" | \
+              sed "s:^:auto/:" > expected-branches
+          gh auth setup-git
+          # delete unneeded auto branches, which closes any corresponding PRs
+          gh api "/repos/${{ env.HEAD_REPO }}/branches" -q .[].name | \
+              grep "^auto/" | \
+              grep -Fvxf expected-branches | \
+              sed "s/^/:/" | \
+              xargs -r git push "${{ github.server_url }}/${{ env.HEAD_REPO }}"
+
+  update:
+    name: Update
+    needs: check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.check.outputs.matrix) }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Update
+        run: tools/versions.py autoupdate "${{ matrix.wrap }}"
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ github.repository != env.HEAD_REPO && secrets.BOT_TOKEN || github.token }}
+          push-to-fork: ${{ github.repository != env.HEAD_REPO && env.HEAD_REPO || '' }}
+          branch: auto/${{ matrix.wrap }}
+          title: "${{ matrix.wrap }}: update from ${{ matrix.old-version }} to ${{ matrix.new-version }}"
+          body: ""
+          commit-message: "${{ matrix.wrap }}: update from ${{ matrix.old-version }} to ${{ matrix.new-version }}"
+          author: "WrapDB Bot <wrapdb@mesonbuild.com>"
+          committer: "WrapDB Bot <wrapdb@mesonbuild.com>"
