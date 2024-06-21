@@ -1007,7 +1007,13 @@
     ]
   },
   "wayland": {
-    "_comment": "- relies on Linux-specific APIs",
+    "_comment": [
+      "- relies on Linux-specific APIs",
+      "- uses install_data() without install_dir"
+    ],
+    "alpine_packages": [
+      "python3-dev"
+    ],
     "build_on": {
       "darwin": false,
       "msys2": false,
@@ -1015,7 +1021,8 @@
     },
     "build_options": [
       "wayland:documentation=false"
-    ]
+    ],
+    "fatal_warnings": false
   },
   "wayland-protocols": {
     "_comment": "- relies on wayland-scanner which uses Linux-specific APIs",
