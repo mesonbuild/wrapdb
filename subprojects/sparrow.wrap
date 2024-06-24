@@ -1,0 +1,9 @@
+[wrap-file]
+directory = sparrow-0.0.2
+source_url = https://github.com/man-group/sparrow/archive/refs/tags/0.0.2.tar.gz
+source_filename = sparrow-0.0.2.tar.gz
+source_hash = 06f833cb3ada1f25edff912daf66c92d5ec5c8086f93bb085cb658e6f9db18d2
+patch_directory = sparrow
+
+[provide]
+sparrow = sparrow_dep
