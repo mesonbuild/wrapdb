@@ -3105,6 +3105,14 @@
       "2.3.2-1"
     ]
   },
+  "sparrow": {
+    "dependency_names": [
+      "sparrow"
+    ],
+    "versions": [
+      "0.0.2-1"
+    ]
+  },
   "sparsehash-c11": {
     "dependency_names": [
       "sparsehash-c11"
