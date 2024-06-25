@@ -4,13 +4,13 @@
 # Upstream's ABI_VERSION is defined in terms of libtool versioning.
 #
 # From upstream configure.ac:
-# > ABI_VERSION=4.2.2
+# > ABI_VERSION=4.3.2
 #
 # From upstream lib/Makefile.am:
 # > libgpiod_la_LDFLAGS = -version-info $(subst .,:,$(ABI_VERSION))
 #
 # So libtool is invoked with:
-# > -version-info 4:2:2
+# > -version-info 4:3:2
 #
 # Libtool documentation defines the argument for -version-info as[1]:
 # > This flag accepts an argument of the form 'current[:revision[:age]]'
@@ -19,10 +19,10 @@
 # > version=$(($current - $age)).${age}.${revision}
 #
 # Solving for upstream ABI_VERSION:
-# version=2.2.2
+# version=2.2.3
 #
 # [1] https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-abi_version = '2.2.2'
+abi_version = '2.2.3'
 
 gpiod_sources = [ 'core.c', 'ctxless.c', 'helpers.c', 'iter.c', 'misc.c' ]
 gpiod = library('gpiod', gpiod_sources,
