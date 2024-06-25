@@ -8,7 +8,13 @@ project('libgpiod', 'c',
                            'cpp_std=gnu++11' ],
         version: '1.6.3',
         license: 'LGPL-2.1-or-later',
-        meson_version: '>=0.48.0')
+        meson_version: '>=0.56.0')
+
+host_system = host_machine.system()
+if host_system != 'linux'
+    msgfmt = '@0@ is not supported on @1@'
+    error(msgfmt.format(meson.project_name(), host_system))
+endif
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
