@@ -3461,6 +3461,14 @@
       "2.5.2-1"
     ]
   },
+  "utest.h": {
+    "dependency_names": [
+      "utest.h"
+    ],
+    "versions": [
+      "bc61349-1"
+    ]
+  },
   "utf8proc": {
     "dependency_names": [
       "libutf8proc"

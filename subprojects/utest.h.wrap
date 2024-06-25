@@ -1,0 +1,9 @@
+[wrap-file]
+directory = utest.h-bc613490597c03437f2e07bdf3322c3d3c72e4ad
+source_url = https://github.com/sheredom/utest.h/archive/bc613490597c03437f2e07bdf3322c3d3c72e4ad.tar.gz
+source_filename = bc613490597c03437f2e07bdf3322c3d3c72e4ad.tar.gz
+source_hash = c1f90ee8d7e72a5b3c795f63005f139bd7d0b2d8045fbf988f6e43bfee4e942a
+patch_directory = utest.h
+
+[provide]
+utest.h = utest_h_dep
