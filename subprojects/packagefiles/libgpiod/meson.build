@@ -8,7 +8,7 @@ project('libgpiod', 'c',
                            'cpp_std=gnu++11' ],
         version: '1.6.3',
         license: 'LGPL-2.1-or-later',
-        meson_version: '>=0.48.0')
+        meson_version: '>=0.56.0')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
