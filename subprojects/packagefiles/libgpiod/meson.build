@@ -6,7 +6,7 @@ project('libgpiod', 'c',
                            'warning_level=2',
                            'c_std=gnu99',
                            'cpp_std=gnu++11' ],
-        version: '1.6.3',
+        version: '1.6.5',
         license: 'LGPL-2.1-or-later',
         meson_version: '>=0.56.0')
 
