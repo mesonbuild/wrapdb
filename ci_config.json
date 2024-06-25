@@ -14,7 +14,6 @@
   "broken_windows": [
     "arduinocore-avr",
     "google-woff2",
-    "libgpiod",
     "mocklibc",
     "termbox",
     "ludocode-mpack",
@@ -25,7 +24,6 @@
     "arduinocore-avr",
     "google-woff2",
     "graphite2",
-    "libgpiod",
     "mocklibc"
   ],
   "c-ares": {
@@ -459,6 +457,17 @@
     ],
     "_comment": "Broken with Windows because of a header issue",
     "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
+  "libgpiod": {
+    "build_options": [
+      "libgpiod:bindings=cxx"
+    ],
+    "_comment": "libgpiod abstracts gpiochip ioctls on Linux",
+    "build_on": {
+      "darwin": false,
       "msys2": false,
       "windows": false
     }

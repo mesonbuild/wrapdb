@@ -28,7 +28,7 @@ gpiod_sources = [ 'core.c', 'ctxless.c', 'helpers.c', 'iter.c', 'misc.c' ]
 gpiod = library('gpiod', gpiod_sources,
                 include_directories: gpiod_includes,
                 gnu_symbol_visibility: 'hidden',
-                c_args: [ '-include', '../config.h' ],
+                c_args: [ '-include', meson.project_build_root() / 'config.h' ],
                 version: abi_version,
                 install: true)
 

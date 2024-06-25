@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright 2021 IBM Corp.
 
-add_languages('cpp')
+add_languages('cpp', native: false)
 
 # See version commentary in lib/meson.build
 #
