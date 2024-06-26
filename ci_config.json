@@ -284,6 +284,9 @@
     ]
   },
   "cwalk": {
+    "build_options": [
+      "cwalk:default_library=both"
+    ],
     "ignore_upstream_meson": "1.2.9"
   },
   "dlfcn-win32": {
