@@ -353,7 +353,7 @@ class TestReleases(unittest.TestCase):
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options.append('-Ddepnames={}'.format(','.join(deps or [])))
         options.append('-Dprognames={}'.format(','.join(progs or [])))
-        if ci.get('fatal_warnings', True) and self.fatal_warnings:
+        if ci.get('fatal_warnings', expect_working) and self.fatal_warnings:
             options.append('--fatal-meson-warnings')
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
