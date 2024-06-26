@@ -30,10 +30,21 @@ else
   )
 endif
 
+thread_dep = dependency('threads')
+
 system_lib = library(
   'sfml-system',
   system_sources,
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_SYSTEM_EXPORTS' : '-DSFML_STATIC',
   include_directories: [pub_inc, priv_inc],
   dependencies: [thread_dep, winmm_dep],
+  install: true
 )
+
+sfml_system_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: system_lib,
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+)
+
+meson.override_dependency('sfml-system', sfml_system_dep)
