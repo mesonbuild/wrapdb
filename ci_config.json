@@ -338,6 +338,7 @@
       "harfbuzz:icu=enabled"
     ],
     "msys_packages": [
+      "icu",
       "python-packaging"
     ],
     "skip_dependency_check": [
