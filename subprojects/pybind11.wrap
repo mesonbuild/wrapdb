@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pybind11-2.13.0
-source_url = https://github.com/pybind/pybind11/archive/refs/tags/v2.13.0.tar.gz
-source_filename = pybind11-2.13.0.tar.gz
-source_hash = 8ac2bd138ea3c12683d3496361af6bee0f7754f86bf050e6c61e3966de688215
+directory = pybind11-2.13.1
+source_url = https://github.com/pybind/pybind11/archive/refs/tags/v2.13.1.tar.gz
+source_filename = pybind11-2.13.1.tar.gz
+source_hash = 51631e88960a8856f9c497027f55c9f2f9115cafb08c0005439838a05ba17bfc
 patch_directory = pybind11
 
 [provide]
