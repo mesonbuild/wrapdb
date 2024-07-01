@@ -3,7 +3,7 @@ project(
     'oatpp',
     'cpp',
     default_options: ['default_library=static', 'cpp_std=c++11'],
-    version: '1.3.0',
+    version: '1.3.0', # upstream it's called 1.3.0-latest
     license: 'Apache-2.0',
 )
 
