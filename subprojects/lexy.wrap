@@ -1,0 +1,9 @@
+[wrap-file]
+directory = lexy-2022.12.1
+source_url = https://github.com/foonathan/lexy/archive/refs/tags/v2022.12.1.tar.gz
+source_filename = lexy-2022.12.1.tar.gz
+source_hash = 97de4324254ad235296a9161d6332200387981671411a6443aadd2b3265122f9
+patch_directory = lexy
+
+[provide]
+lexy = lexy_dep
