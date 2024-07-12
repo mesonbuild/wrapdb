@@ -228,6 +228,14 @@
       "3.3.0-1"
     ]
   },
+  "bzip2": {
+    "dependency_names": [
+      "bzip2"
+    ],
+    "versions": [
+      "1.0.8-1"
+    ]
+  },
   "c-ares": {
     "dependency_names": [
       "libcares"
