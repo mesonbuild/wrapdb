@@ -1018,6 +1018,14 @@
       "0.9.9.8-1"
     ]
   },
+  "glpk": {
+    "dependency_names": [
+      "glpk"
+    ],
+    "versions": [
+      "5.0-1"
+    ]
+  },
   "godot-cpp": {
     "dependency_names": [
       "godot_cpp"
