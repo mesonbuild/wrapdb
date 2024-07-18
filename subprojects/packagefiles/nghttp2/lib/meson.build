@@ -1,5 +1,6 @@
 subdir('includes')
 sources = files(
+    'nghttp2_alpn.c',
     'nghttp2_buf.c',
     'nghttp2_callbacks.c',
     'nghttp2_debug.c',
@@ -12,7 +13,6 @@ sources = files(
     'nghttp2_http.c',
     'nghttp2_map.c',
     'nghttp2_mem.c',
-    'nghttp2_npn.c',
     'nghttp2_option.c',
     'nghttp2_outbound_item.c',
     'nghttp2_pq.c',

@@ -2,7 +2,7 @@ project(
     'nghttp2',
     'c',
     license: 'mit',
-    version: '1.58.0',
+    version: '1.62.1',
 )
 cc = meson.get_compiler('c')
 
@@ -49,15 +49,15 @@ configuration.set('NOTHREADS', false)
 configuration.set('HAVE_ARPA_INET_H', cc.has_header('arpa/inet.h'))
 configuration.set('HAVE_FCNTL_H', cc.has_header('fcntl.h'))
 configuration.set('HAVE_INTTYPES_H', cc.has_header('inttypes.h'))
+configuration.set('HAVE_LIMITS_H', cc.has_header('limits.h'))
 configuration.set('HAVE_NETDB_H', cc.has_header('netdb.h'))
 configuration.set('HAVE_NETINET_IN_H', cc.has_header('netinet/in.h'))
 configuration.set('HAVE_NETINET_IP_H', cc.has_header('netinet/ip.h'))
 configuration.set('HAVE_PWD_H', cc.has_header('pwd.h'))
 configuration.set('HAVE_SYS_SOCKET_H', cc.has_header('sys/socket.h'))
 configuration.set('HAVE_SYS_TIME_H', cc.has_header('sys/time.h'))
-configuration.set('HAVE_SYSINFOAPI_H', false) # FIXME, fixes build in MSVC due to https://github.com/nghttp2/nghttp2/pull/1997
-configuration.set('HAVE_TIME_H', true) # part of the C standard
 configuration.set('HAVE_UNISTD_H', cc.has_header('unistd.h'))
+configuration.set('HAVE_WINDOWS_H', cc.has_header('windows.h'))
 configuration.set('ENABLE_HTTP3', false)
 configuration.set('HAVE_LIBBPF', false)
 configuration.set('HAVE_BPF_STATS_TYPE', cc.has_header_symbol('linux/bpf.h', 'enum bpf_stats_type'))
