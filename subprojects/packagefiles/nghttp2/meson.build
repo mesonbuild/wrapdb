@@ -38,27 +38,45 @@ configuration.set('HAVE_MRUBY', false)
 configuration.set('HAVE_NEVERBLEED', false)
 configuration.set('SIZEOF_INT_P', cc.sizeof('int *'))
 configuration.set('SIZEOF_TIME_T', cc.sizeof('time_t', prefix: '#include <time.h>'))
-configuration.set('HAVE__EXIT', cc.has_header_symbol('stdlib.h', '_Exit'))
-configuration.set('HAVE_ACCEPT4', cc.has_header_symbol('sys/socket.h', 'accept4'))
-configuration.set('HAVE_CLOCK_GETTIME', cc.has_header_symbol('time.h', 'clock_gettime'))
-configuration.set('HAVE_MKOSTEMP', cc.has_header_symbol('stdlib.h', 'mkostemp'))
+
+functions = [
+  '_Exit',
+  'accept4',
+  'clock_gettime',
+  'mkostemp',
+  'pipe2',
+]
+
+foreach f : functions
+  configuration.set('HAVE_@0@'.format(f.to_upper()), cc.has_function(f))
+endforeach
+
 configuration.set('HAVE_GETTICKCOUNT64', cc.has_header_symbol('sysinfoapi.h', 'GetTickCount64'))
 configuration.set('HAVE_DECL_INITGROUPS', cc.has_header_symbol('grp.h', 'initgroups'))
+configuration.set('HAVE_DECL_CLOCK_MONOTONIC', cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC'))
 configuration.set('DEBUGBUILD', false)
 configuration.set('NOTHREADS', false)
-configuration.set('HAVE_ARPA_INET_H', cc.has_header('arpa/inet.h'))
-configuration.set('HAVE_FCNTL_H', cc.has_header('fcntl.h'))
-configuration.set('HAVE_INTTYPES_H', cc.has_header('inttypes.h'))
-configuration.set('HAVE_LIMITS_H', cc.has_header('limits.h'))
-configuration.set('HAVE_NETDB_H', cc.has_header('netdb.h'))
-configuration.set('HAVE_NETINET_IN_H', cc.has_header('netinet/in.h'))
-configuration.set('HAVE_NETINET_IP_H', cc.has_header('netinet/ip.h'))
-configuration.set('HAVE_PWD_H', cc.has_header('pwd.h'))
-configuration.set('HAVE_SYS_SOCKET_H', cc.has_header('sys/socket.h'))
-configuration.set('HAVE_SYS_TIME_H', cc.has_header('sys/time.h'))
-configuration.set('HAVE_UNISTD_H', cc.has_header('unistd.h'))
-configuration.set('HAVE_WINDOWS_H', cc.has_header('windows.h'))
-configuration.set('ENABLE_HTTP3', false)
+
+headers = [
+  'arpa/inet.h',
+  'fcntl.h',
+  'inttypes.h',
+  'limits.h',
+  'netdb.h',
+  'netinet/in.h',
+  'netinet/ip.h',
+  'pwd.h',
+  'sys/socket.h',
+  'sys/time.h',
+  'syslog.h',
+  'unistd.h',
+  'windows.h',
+]
+
+foreach h : headers
+  configuration.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+endforeach
+
 configuration.set('HAVE_LIBBPF', false)
 configuration.set('HAVE_BPF_STATS_TYPE', cc.has_header_symbol('linux/bpf.h', 'enum bpf_stats_type'))
 configuration.set('HAVE_LIBNGTCP2_CRYPTO_QUICTLS', false)
