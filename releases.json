@@ -3699,6 +3699,14 @@
       "1.2.8-2"
     ]
   },
+  "zpp_bits": {
+    "dependency_names": [
+      "zpp_bits"
+    ],
+    "versions": [
+      "4.4.23-1"
+    ]
+  },
   "zstd": {
     "dependency_names": [
       "libzstd"
