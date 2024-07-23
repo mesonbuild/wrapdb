@@ -1,7 +1,7 @@
 project(
   'htslib',
   'c',
-  version: '1.17',
+  version: '1.20',
   default_options: ['buildtype=release', 'warning_level=0', 'c_std=c99', 'b_ndebug=if-release'],
   license: 'MIT',
   meson_version: '>= 0.50.0',
@@ -70,6 +70,7 @@ htslib_sources = files(
   'regidx.c',
   'region.c',
   'sam.c',
+  'sam_mods.c',
   'synced_bcf_reader.c',
   'tbx.c',
   'textutils.c',
