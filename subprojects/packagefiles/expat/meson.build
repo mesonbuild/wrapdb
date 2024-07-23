@@ -23,7 +23,7 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.6.0',
+  version: '2.6.2',
   meson_version: '>= 0.54.1',
 )
 
