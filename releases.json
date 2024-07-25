@@ -2331,7 +2331,7 @@
       "nanobind"
     ],
     "versions": [
-        "2.0.0-1"
+        "f2438bb73a1673e4ad9d0c84d353a88cf54e55bf-1"
     ]
   },
   "nativefiledialog-extended": {

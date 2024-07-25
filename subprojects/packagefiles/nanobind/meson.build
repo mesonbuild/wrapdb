@@ -1,7 +1,7 @@
 project(
     'nanobind',
     'cpp',
-    version: '2.0.0',
+    version: 'f2438bb73a1673e4ad9d0c84d353a88cf54e55bf',
     meson_version: '>=0.53.0',
     license: 'BSD-3-Clause',
 )
