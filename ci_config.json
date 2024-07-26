@@ -511,6 +511,14 @@
       "libpciaccess-dev"
     ]
   },
+  "libpfm": {
+    "_comment": "Wrap only supports Linux",
+    "build_on": {
+      "windows": false,
+      "msys2": false,
+      "darwin": false
+    }
+  },
   "libpsl": {
     "_comment": "with build all, it selects icu as a dependency which breaks the tests.",
     "alpine_packages": [
