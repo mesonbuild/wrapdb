@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libpfm-4.13.0
+source_url = https://sourceforge.net/projects/perfmon2/files/libpfm4/libpfm-4.13.0.tar.gz/download
+source_filename = libpfm-4.13.0.tar.gz
+source_hash = d18b97764c755528c1051d376e33545d0eb60c6ebf85680436813fa5b04cc3d1
+patch_directory = libpfm
+
+[provide]
+libpfm = libpfm_dep
