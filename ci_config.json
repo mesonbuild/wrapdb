@@ -511,6 +511,16 @@
       "libpciaccess-dev"
     ]
   },
+  "libpfm": {
+    "_comment": "Requires MinGW/MSYS to build on Windows. Only supports ARM on Linux.",
+    "build_on": {
+      "aarch64": false,
+      "arm": false,
+      "linux-aarch64": true,
+      "linux-arm": true,
+      "windows": false
+    }
+  },
   "libpsl": {
     "_comment": "with build all, it selects icu as a dependency which breaks the tests.",
     "alpine_packages": [
