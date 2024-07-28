@@ -7,6 +7,15 @@ project(
 )
 
 cpp = meson.get_compiler('cpp')
+
+atomic_dep = dependency('', required: false)
+# Some systems may need libatomic for atomic functions to work
+if cpp.compiles('''#include <atomic>
+std::atomic<int> foo{0};
+int main() { return foo.fetch_add(2); }''')
+  atomic_dep = cpp.find_library('atomic', required: true)
+endif
+
 dl_dep = cpp.find_library('dl', required: false)
 thread_dep = dependency('threads')
 alsa_dep = dependency('alsa', required: get_option('alsa'))
@@ -283,6 +292,7 @@ openal_lib = library(
   dependencies: [
     common_dep,
     dl_dep,
+    atomic_dep,
     thread_dep,
     alsa_dep,
     apple_dep,
