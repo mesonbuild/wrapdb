@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.8.0',
+  version: '8.9.0',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )
@@ -91,6 +91,9 @@ foreach _opt : [
 ]
   set_variable(_opt.underscorify() + '_opt', get_option(_opt))
 endforeach
+
+debug_opt = get_option('debug') ? ENABLED_OPT : DISABLED_OPT
+trackmemory_opt = get_option('curldebug') ? ENABLED_OPT : DISABLED_OPT
 
 # }}}
 
@@ -214,6 +217,9 @@ _headerlist = {
     'strcasecmp',
   ],
   'stropts.h': [],
+  'sys/eventfd.h': [
+    'eventfd',
+  ],
   'sys/filio.h': [],
   'sys/ioctl.h': [],
   'sys/param.h': [],
@@ -1622,6 +1628,7 @@ foreach _section, _optlist : {
     ['Alt-Svc'],
     ['AsynchDNS', asynchdns_resolver != '' ? asynchdns_resolver : false],
     ['Brotli'],
+    ['Debug'],
     ['GSASL'],
     ['GSS-API', gss_api_provider != '' ? gss_api_provider : false],
     ['HTTP2'],
@@ -1639,6 +1646,7 @@ foreach _section, _optlist : {
     ['SPNEGO'],
     ['SSL'],
     ['SSPI'],
+    ['TrackMemory'],
     ['TLS-SRP'],
     ['ThreadSafe'],
     ['UnixSockets'],
