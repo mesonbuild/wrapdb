@@ -7,3 +7,4 @@ patch_directory = bdwgc
 
 [provide]
 gc = bdwgc_dep
+bdw-gc = bdwgc_dep
