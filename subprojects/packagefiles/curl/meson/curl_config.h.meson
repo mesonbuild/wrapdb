@@ -202,6 +202,9 @@
 /* Define to 1 if you have the <dirent.h> header file. */
 #mesondefine HAVE_DIRENT_H
 
+/* Define to 1 if you have the 'eventfd' function. */
+#mesondefine HAVE_EVENTFD
+
 /* Define to 1 if you have the fcntl function. */
 #mesondefine HAVE_FCNTL
 
@@ -543,6 +546,9 @@
 
 /* Define to 1 if suseconds_t is an available type. */
 #mesondefine HAVE_SUSECONDS_T
+
+/* Define to 1 if you have the <sys/eventfd.h> header file. */
+#mesondefine HAVE_SYS_EVENTFD_H
 
 /* Define to 1 if you have the <sys/filio.h> header file. */
 #mesondefine HAVE_SYS_FILIO_H
