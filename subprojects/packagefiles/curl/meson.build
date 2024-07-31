@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.9.0',
+  version: '8.9.1',
   # Version gated use of `test(…, verbose: true)` needs `0.62.0`.
   meson_version: meson.version().version_compare('>=0.62.0') ? '>=0.62.0' : '>=0.60.0',
 )

@@ -1,9 +1,9 @@
 [wrap-file]
-directory = curl-8.9.0
-source_url = https://github.com/curl/curl/releases/download/curl-8_9_0/curl-8.9.0.tar.xz
-source_fallback_url = https://curl.se/download/curl-8.9.0.tar.xz
-source_filename = curl-8.9.0.tar.xz
-source_hash = ff09b2791ca56d25fd5c3f3a4927dce7c8a9dc4182200c487ca889fba1fdd412
+directory = curl-8.9.1
+source_url = https://github.com/curl/curl/releases/download/curl-8_9_1/curl-8.9.1.tar.xz
+source_fallback_url = https://curl.se/download/curl-8.9.1.tar.xz
+source_filename = curl-8.9.1.tar.xz
+source_hash = f292f6cc051d5bbabf725ef85d432dfeacc8711dd717ea97612ae590643801e5
 patch_directory = curl
 
 [provide]
