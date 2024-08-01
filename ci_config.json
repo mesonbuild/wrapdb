@@ -939,7 +939,6 @@
     "brew_packages": [
       "sqlite"
     ]
-
   },
   "tinyfsm": {
     "build_options": [
@@ -982,5 +981,12 @@
     "build_options": [
       "x-plane-sdk:cpp=enabled"
     ]
+  },
+  "range-v3": {
+    "build-options": [
+      "range-v3:tests=true"
+    ],
+    "fatal_warnings": false,
+    "skip_tests": false
   }
 }
