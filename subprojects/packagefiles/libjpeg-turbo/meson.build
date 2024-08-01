@@ -4,7 +4,7 @@ project('libjpeg-turbo', 'c',
   meson_version : '>= 0.64.0')
 
 pkg = import('pkgconfig')
-python = find_program('python3')
+python = import('python').find_installation()
 
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
