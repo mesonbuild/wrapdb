@@ -86,6 +86,39 @@ platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
 
 # END platform detection logic
 
+# Compute library named & shared object version.
+version_parts = meson.project_version().split('.')
+version_major = version_parts[0].to_int()
+version_minor = version_parts[1].to_int()
+version_patch = version_parts[2].to_int()
+binary_age = version_minor * 100 + version_patch
+if version_minor % 2 == 0
+  # Stable.
+  interface_age = version_patch
+else
+  # Development.
+  interface_age = 0
+endif
+lt_major = 0
+lt_age = binary_age - interface_age
+lt_current = lt_major + lt_age
+lt_revision = interface_age
+lt_release = '2.0'
+lt_version = '.'.join(lt_major.to_string(), lt_age.to_string(), lt_revision.to_string())
+if platform_is_apple
+  libname = 'SDL2-' + lt_release
+  libversion = '0'
+  libsoversion = '0'
+elif platform_is_unixlike and not platform_is_android
+  libname = 'SDL2-' + lt_release
+  libversion = lt_version
+  libsoversion = lt_major
+else
+  libname = 'SDL2'
+  libversion = '.'.join(version_parts)
+  libsoversion = lt_revision
+endif
+
 opt_atomic = get_option('use_atomic')
 opt_audio = get_option('use_audio')
 opt_cpuinfo = get_option('use_cpuinfo')
@@ -1182,7 +1215,7 @@ main_link_with = []
 main_link_whole = []
 main_c_args = ['-Dmain=SDL_main']
 
-sdl2main = static_library('sdl2main',
+sdl2main = static_library('SDL2main',
     main_sources,
     include_directories : core_inc,
     c_args : [core_args, main_c_args],
@@ -1204,7 +1237,7 @@ sdl2main_dep = declare_dependency(
 
 deps = [core_deps, extra_deps]
 
-sdl2 = library('sdl2',
+sdl2 = library(libname,
     all_sources,
     include_directories : core_inc,
     c_args : core_args,
@@ -1213,6 +1246,8 @@ sdl2 = library('sdl2',
     override_options : ['c_std=none'],
     install : do_install,
     gnu_symbol_visibility: 'hidden',
+    soversion: libsoversion,
+    version: libversion,
 )
 
 if platform_is_windows and get_option('with_main')
