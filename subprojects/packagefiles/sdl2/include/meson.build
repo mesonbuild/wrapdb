@@ -1,9 +1,13 @@
+incdir = get_option('includedir') / 'SDL2'
 
 c_sources += configure_file(
     input: 'SDL_config.h.cmake',
     output: 'SDL_config.h',
     format: 'cmake@',
-    configuration: cdata
+    configuration: cdata,
+    install: true,
+    install_dir: incdir,
+    install_tag: 'devel',
 )
 
 headers = [
@@ -88,9 +92,12 @@ headers = [
 ]
 
 foreach header : headers
-    c_sources += configure_file(
-        input : header,
-        output : header,
-        copy : true,
-    )
+  c_sources += configure_file(
+    input: header,
+    output: header,
+    copy: true,
+    install: true,
+    install_dir: incdir,
+    install_tag: 'devel',
+  )
 endforeach

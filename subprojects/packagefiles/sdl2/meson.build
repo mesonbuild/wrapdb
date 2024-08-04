@@ -1310,3 +1310,6 @@ meson.override_dependency('sdl2_test', sdl2_test_dep)
 if get_option('test')
     subdir('test')
 endif
+
+pkg = import('pkgconfig')
+pkg.generate(sdl2, subdirs: 'SDL2')
