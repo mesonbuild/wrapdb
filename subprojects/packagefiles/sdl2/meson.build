@@ -546,52 +546,228 @@ sane_std = '''
 
 cdata.set('SIZEOF_VOIDP', cc.sizeof('void*'))
 
-check_headers = [
-    'alloca.h',
-    'altivec.h',
-    'audioclient.h',
-    'ctype.h',
-    'ddraw.h',
-    'dinput.h',
-    'dsound.h',
-    'dxgi.h',
-    'float.h',
-    'iconv.h',
-    'immintrin.h',
-    'inttypes.h',
-    'libunwind.h',
+foreach _spec : [
+  ['alloca.h'],
+  ['altivec.h'],
+  ['audioclient.h'],
+  ['ctype.h'],
+  ['ddraw.h'],
+  ['dinput.h'],
+  ['dsound.h'],
+  ['dxgi.h'],
+  [
+    'dlfcn.h',
+    {
+      'syms': '''
+        dlopen
+      ''',
+    },
+  ],
+  ['fcntl.h', {
+    'syms': '''
+      O_CLOEXEC
+    ''',
+    },
+  ],
+  ['float.h'],
+  ['iconv.h'],
+  ['immintrin.h'],
+  ['inttypes.h'],
+  ['libunwind.h'],
+  [
     'libusb.h',
-    'libusbhid.h',
-    'limits.h',
-    'linux/input.h',
-    'malloc.h',
+    {
+      'deps': libusb_dep,
+    },
+  ],
+  ['libusbhid.h'],
+  ['limits.h'],
+  ['linux/input.h'],
+  ['malloc.h'],
+  [
     'math.h',
-    'memory.h',
-    'mmdeviceapi.h',
+    {
+      'syms': '''
+         M_PI
+         acos acosf asin asinf atan atan2 atan2f atanf
+         ceil ceilf copysign copysignf cos cosf exp expf
+         fabs fabsf floor floorf fmod fmodf
+         log log10 log10f logf lround lroundf
+         pow powf
+         round roundf
+         scalbn scalbnf sin sinf sqrt sqrtf
+         tan tanf trunc truncf
+       ''',
+    },
+  ],
+  ['memory.h'],
+  ['mmdeviceapi.h'],
+  [
+    'poll.h',
+    {
+      'syms': '''
+        poll
+      ''',
+    },
+  ],
+  [
     'pthread.h',
-    'pthread_np.h',
+    {
+      'syms': '''
+        pthread_set_name_np pthread_setname_np
+      ''',
+    },
+  ],
+  ['pthread_np.h'],
+  [
     'semaphore.h',
-    'sensorsapi.h',
+    {
+      'syms': '''
+        sem_timedwait
+      ''',
+    },
+  ],
+  ['sensorsapi.h'],
+  [
+    'setjmp.h',
+    {
+      'syms': '''
+        setjmp
+      ''',
+    },
+  ],
+  [
     'signal.h',
-    'stdarg.h',
-    'stddef.h',
-    'stdint.h',
-    'stdio.h',
+    {
+      'syms': '''
+        sigaction
+      ''',
+    },
+  ],
+  ['stdarg.h'],
+  ['stddef.h'],
+  ['stdint.h'],
+  ['stdio.h', {
+    'syms': '''
+      fopen64 fseeko fseeko64
+      vsnprintf vsscanf
+    '''
+    },
+  ],
+  [
     'stdlib.h',
+    {
+      'syms': '''
+        _Exit _i64toa _uitoa _ultoa
+        abs alloca atof atoi
+        bsearch
+        getenv
+        itoa
+        malloc
+        putenv
+        qsort
+        setenv strtod strtol strtoll strtoul strtoull
+      ''',
+    },
+  ],
+  [
+    'stlib.h',
+    {
+      'syms': '''
+        _ltoa
+      ''',
+    },
+  ],
+  [
     'string.h',
+    {
+      'syms': '''
+        _stricmp _strlwr _strnicmp _strrev _strupr
+        memcmp memcpy memmove memset
+        strchr strcmp strlcat strlcpy strlen strncmp strrchr strstr strtok_r
+      ''',
+    },
+  ],
+  [
     'strings.h',
+    {
+      'syms': '''
+        bcopy
+        index
+        rindex
+        strcasecmp strncasecmp
+      ''',
+    },
+  ],
+  [
+    'sys/auxv.h',
+    {
+      'syms': '''
+        elf_aux_info
+        getauxval
+      ''',
+    },
+  ],
+  [
     'sys/inotify.h',
-    'sys/types.h',
-    'usb.h',
-    'usbhid.h',
+    {
+      'syms': '''
+        inotify_init inotify_init1
+      ''',
+    },
+  ],
+  [
+    'sys/sysctl.h',
+    {
+      'syms': '''
+        sysctlbyname
+      ''',
+    },
+  ],
+  ['sys/types.h'],
+  [
+    'time.h',
+    {
+      'syms': '''
+        clock_gettime
+        nanosleep
+      ''',
+    },
+  ],
+  [
+    'unistd.h',
+    {
+      'syms': '''
+        getpagesize
+        sysconf
+      ''',
+    },
+  ],
+  ['usb.h'],
+  ['usbhid.h'],
+  [
     'wchar.h',
-    'windows.gaming.input.h',
+    {
+      'syms': '''
+        _wcsdup _wcsicmp _wcsnicmp
+        wcscmp wcsdup wcslen wcsncmp wcsstr
+      ''',
+    },
+  ],
+  ['windows.gaming.input.h'],
 ]
-
-foreach h : check_headers
-    if cc.check_header(h, dependencies : core_deps)
-        cdata.set('HAVE_@0@'.format(h.to_upper().underscorify()), 1)
+  _hdr = _spec[0]
+  _spec = _spec.get(1, {})
+  _deps = _spec.get('deps', [])
+  if not cc.has_header(_hdr, dependencies: _deps)
+    continue
+  endif
+  cdata.set('HAVE_@0@'.format(_hdr.to_upper().underscorify()), 1)
+  foreach _fn : _spec.get('syms', '').split()
+    if cc.has_header_symbol(_hdr, _fn, dependencies: _deps, prefix: sane_std)
+      cdata.set('HAVE_@0@'.format(_fn.underscorify().to_upper()), 1)
     endif
+  endforeach
 endforeach
 
 # xinput.h needs windows.h but does not #include it
@@ -608,19 +784,6 @@ if platform_is_emscripten
     # TODO: properly support building with emscripten's SSE emulation
     cdata.set('SDL_DISABLE_IMMINTRIN_H', 1)
 endif
-
-check_symbols = [
-    ['O_CLOEXEC', 'fcntl.h'],
-    ['M_PI', 'math.h'],
-]
-
-foreach entry : check_symbols
-    symbol = entry[0]
-    header = entry[1]
-    if cc.has_header_symbol(header, symbol, prefix : sane_std, dependencies : core_deps)
-        cdata.set('HAVE_@0@'.format(symbol.underscorify().to_upper()), 1)
-    endif
-endforeach
 
 if cc.has_header_symbol('pthread.h', 'PTHREAD_MUTEX_RECURSIVE', prefix : sane_std)
     cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)
@@ -641,133 +804,6 @@ cdata.set('SDL_HAVE_LIBDECOR_GET_MIN_MAX',
         prefix : sane_std, dependencies : core_deps + wayland_libdecor_dep
     )
 )
-
-check_functions = [
-    ['_Exit', 'stdlib.h'],
-    ['_i64toa', 'stdlib.h'],
-    ['_ltoa', 'stlib.h'],
-    ['_stricmp', 'string.h'],
-    ['_strlwr', 'string.h'],
-    ['_strnicmp', 'string.h'],
-    ['_strrev', 'string.h'],
-    ['_strupr', 'string.h'],
-    ['_uitoa', 'stdlib.h'],
-    ['_ultoa', 'stdlib.h'],
-    ['_wcsdup', 'wchar.h'],
-    ['_wcsicmp', 'wchar.h'],
-    ['_wcsnicmp', 'wchar.h'],
-    ['abs', 'stdlib.h'],
-    ['acos', 'math.h'],
-    ['acosf', 'math.h'],
-    ['alloca', 'stdlib.h'],
-    ['asin', 'math.h'],
-    ['asinf', 'math.h'],
-    ['atan', 'math.h'],
-    ['atan2', 'math.h'],
-    ['atan2f', 'math.h'],
-    ['atanf', 'math.h'],
-    ['atof', 'stdlib.h'],
-    ['atoi', 'stdlib.h'],
-    ['bcopy', 'strings.h'],
-    ['bsearch', 'stdlib.h'],
-    ['ceil', 'math.h'],
-    ['ceilf', 'math.h'],
-    ['clock_gettime', 'time.h'],
-    ['copysign', 'math.h'],
-    ['copysignf', 'math.h'],
-    ['cos', 'math.h'],
-    ['cosf', 'math.h'],
-    ['dlopen', 'dlfcn.h'],
-    ['elf_aux_info', 'sys/auxv.h'],
-    ['exp', 'math.h'],
-    ['expf', 'math.h'],
-    ['fabs', 'math.h'],
-    ['fabsf', 'math.h'],
-    ['floor', 'math.h'],
-    ['floorf', 'math.h'],
-    ['fmod', 'math.h'],
-    ['fmodf', 'math.h'],
-    ['fopen64', 'stdio.h'],
-    ['fseeko', 'stdio.h'],
-    ['fseeko64', 'stdio.h'],
-    ['getauxval', 'sys/auxv.h'],
-    ['getenv', 'stdlib.h'],
-    ['getpagesize', 'unistd.h'],
-    ['index', 'strings.h'],
-    ['inotify_init', 'sys/inotify.h'],
-    ['inotify_init1', 'sys/inotify.h'],
-    ['itoa', 'stdlib.h'],
-    ['log', 'math.h'],
-    ['log10', 'math.h'],
-    ['log10f', 'math.h'],
-    ['logf', 'math.h'],
-    ['lround', 'math.h'],
-    ['lroundf', 'math.h'],
-    ['malloc', 'stdlib.h'],
-    ['memcmp', 'string.h'],
-    ['memcpy', 'string.h'],
-    ['memmove', 'string.h'],
-    ['memset', 'string.h'],
-    ['nanosleep', 'time.h'],
-    ['poll', 'poll.h'],
-    ['pow', 'math.h'],
-    ['powf', 'math.h'],
-    ['pthread_set_name_np', 'pthread.h'],
-    ['pthread_setname_np', 'pthread.h'],
-    ['putenv', 'stdlib.h'],
-    ['qsort', 'stdlib.h'],
-    ['rindex', 'strings.h'],
-    ['round', 'math.h'],
-    ['roundf', 'math.h'],
-    ['scalbn', 'math.h'],
-    ['scalbnf', 'math.h'],
-    ['sem_timedwait', 'semaphore.h'],
-    ['setenv', 'stdlib.h'],
-    ['setjmp', 'setjmp.h'],
-    ['sigaction', 'signal.h'],
-    ['sin', 'math.h'],
-    ['sinf', 'math.h'],
-    ['sqrt', 'math.h'],
-    ['sqrtf', 'math.h'],
-    ['strcasecmp', 'strings.h'],
-    ['strchr', 'string.h'],
-    ['strcmp', 'string.h'],
-    ['strlcat', 'string.h'],
-    ['strlcpy', 'string.h'],
-    ['strlen', 'string.h'],
-    ['strncasecmp', 'strings.h'],
-    ['strncmp', 'string.h'],
-    ['strrchr', 'string.h'],
-    ['strstr', 'string.h'],
-    ['strtod', 'stdlib.h'],
-    ['strtok_r', 'string.h'],
-    ['strtol', 'stdlib.h'],
-    ['strtoll', 'stdlib.h'],
-    ['strtoul', 'stdlib.h'],
-    ['strtoull', 'stdlib.h'],
-    ['sysconf', 'unistd.h'],
-    ['sysctlbyname', 'sys/sysctl.h'],
-    ['tan', 'math.h'],
-    ['tanf', 'math.h'],
-    ['trunc', 'math.h'],
-    ['truncf', 'math.h'],
-    ['vsnprintf', 'stdio.h'],
-    ['vsscanf', 'stdio.h'],
-    ['wcscmp', 'wchar.h'],
-    ['wcsdup', 'wchar.h'],
-    ['wcslen', 'wchar.h'],
-    ['wcsncmp', 'wchar.h'],
-    ['wcsstr', 'wchar.h'],
-]
-
-foreach entry : check_functions
-    func = entry[0]
-    header = entry[1]
-    prefix = sane_std + '#include <@0@>'.format(header)
-    if cc.has_function(func, prefix : prefix, dependencies : core_deps)
-        cdata.set('HAVE_@0@'.format(func.underscorify().to_upper()), 1)
-    endif
-endforeach
 
 check_types = [
     ['XINPUT_GAMEPAD_EX', 'windows.h'],
