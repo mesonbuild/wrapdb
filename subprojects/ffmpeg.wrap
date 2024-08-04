@@ -1,0 +1,16 @@
+[wrap-file]
+directory=ffmpeg-6.0
+source_url=https://www.ffmpeg.org/releases/ffmpeg-6.0.tar.gz
+source_filename=ffmpeg-6.0.tar.gz
+source_hash=f4ccf961403752c93961927715f524576d1f4dd02cd76d8c76aed3bbe6686656
+patch_directory=ffmpeg
+
+[provide]
+avcodec=libavcodec_dep
+avdevice=libavdevice_dep
+avfilter=libavfilter_dep
+avformat=libavformat_dep
+avutil=libavutil_dep
+postproc=libpostproc_dep
+swresample=libswresample_dep
+swscale=libswscale_dep
