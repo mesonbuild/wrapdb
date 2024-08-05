@@ -11,6 +11,12 @@ option(
     description: 'Create installation target for oat++',
 )
 option(
+    'install_config_link_test', # cmake eqivalent to "OATPP_LINK_TEST_LIBRARY"
+    type: 'boolean',
+    value: true,
+    description: 'Link oat++ test library, in the cmake generated config files for the installation',
+)
+option(
     'tests',
     type: 'feature',
     value: 'auto',
