@@ -635,6 +635,14 @@
       "1.3.13-2"
     ]
   },
+  "enlog": {
+    "dependency_names": [
+      "enlog"
+    ],
+    "versions": [
+      "1.2-1"
+    ]
+  },
   "entt": {
     "dependency_names": [
       "entt"

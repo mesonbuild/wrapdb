@@ -141,6 +141,14 @@
       "linux": false
     }
   },
+  "enlog": {
+    "build_options": [
+      "enlog:color=true",
+      "enlog:errno=true",
+      "enlog:json=true",
+      "enlog:locking=uv"
+    ]
+  },
   "epoxy": {
     "alpine_packages": [
       "libx11-dev",
@@ -939,7 +947,6 @@
     "brew_packages": [
       "sqlite"
     ]
-
   },
   "tinyfsm": {
     "build_options": [
