@@ -1,0 +1,9 @@
+[wrap-file]
+directory = nanobind-f2438bb73a1673e4ad9d0c84d353a88cf54e55bf
+source_url = https://github.com/wjakob/nanobind/archive/f2438bb73a1673e4ad9d0c84d353a88cf54e55bf.tar.gz
+source_filename = nanobind-f2438bb73a1673e4ad9d0c84d353a88cf54e55bf.tar.gz
+source_hash = a1134a6b6e2563807dd776e5e21421fde65313e2c1b1595fb457a67317569fe3
+patch_directory = nanobind
+
+[provide]
+nanobind = nanobind_dep
