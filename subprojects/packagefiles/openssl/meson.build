@@ -304,19 +304,16 @@ else
 endif
 
 foreach library: openssl_libraries
-  # MSVC fails with "ERROR: C static library 'ws2_32' not found" when `static` is specified at all
-  if compiler.get_id() == 'msvc'
-    dependencies += [
-      compiler.find_library(library),
-    ]
-  else
-    dependencies += [
-      compiler.find_library(
+  single_dep = compiler.find_library(
         library,
         static: get_option('default_library') == 'static',
-      ),
-    ]
+        required : false,
+      )
+  if not single_dep.found()
+    # MSVC and mingw fail with "ERROR: C ... library 'ws2_32' not found" when `static` is specified at all
+    single_dep = compiler.find_library(library)
   endif
+  dependencies += [ single_dep ]
 endforeach
 
 # We may need to add some defines for static builds
