@@ -184,6 +184,14 @@
     ],
     "fatal_warnings": false
   },
+  "enlog": {
+    "build_options": [
+      "enlog:color=true",
+      "enlog:errno=auto",
+      "enlog:json=true",
+      "enlog:locking=uv"
+    ]
+  },
   "epoxy": {
     "alpine_packages": [
       "libx11-dev",
