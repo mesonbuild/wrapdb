@@ -773,6 +773,12 @@
       "windows": false
     }
   },
+  "pegtl": {
+    "build_options": [
+      "pegtl:tests=enabled",
+      "pegtl:examples=enabled"
+    ]
+  },
   "pixman": {
     "_comment": "Some tests takes more than 2min to complete.",
     "test_options": [

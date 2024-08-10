@@ -1,0 +1,9 @@
+[wrap-file]
+directory = PEGTL-3.2.7
+source_url = https://github.com/taocpp/PEGTL/archive/refs/tags/3.2.7.tar.gz
+source_filename = PEGTL-3.2.7.tar.gz
+source_hash = d6cd113d8bd14e98bcbe7b7f8fc1e1e33448dc359e8cd4cca30e034ec2f0642d
+patch_directory = pegtl
+
+[provide]
+pegtl = pegtl_dep
