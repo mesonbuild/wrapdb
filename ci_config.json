@@ -324,6 +324,13 @@
       "gumbo-parser:tests=enabled"
     ]
   },
+  "google-highway": {
+    "_comment": "Msys2 envs broken; windows test fixed in next release",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
   "harfbuzz": {
     "_comment": [
       "- Currently builds with no warnings other than an incorrect warning() function",
