@@ -1,0 +1,9 @@
+[wrap-file]
+directory = dyninst-13.0.0
+source_url = https://github.com/dyninst/dyninst/archive/refs/tags/v13.0.0.tar.gz
+source_filename = dyninst-13.0.0.tar.gz
+source_hash = 1bc48d26478b677a6c090c25586a447507bd1b4cf88d369bd61820005ce1be39
+patch_directory = dyninst
+
+[provide]
+dyninst = dyninst_dep
