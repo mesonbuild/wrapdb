@@ -339,6 +339,8 @@ class TestReleases(unittest.TestCase):
         print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
             system = 'msys2'
+        elif is_alpinelike():
+            system = 'alpine'
         else:
             system = platform.system().lower()
         ci = self.ci_config.get(name, {})
