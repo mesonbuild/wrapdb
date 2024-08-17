@@ -142,6 +142,39 @@
       "linux": false
     }
   },
+  "dyninst": {
+    "_comment": [
+      "- Linux only, Glibc only",
+      "- Warnings unavoidable, uses .C for C++ source files"
+    ],
+    "build_on": {
+      "alpine": false,
+      "darwin": false,
+      "msys2": false,
+      "windows": false
+    },
+    "alpine_packages": [
+      "binutils-dev",
+      "boost-dev",
+      "elfutils-dev",
+      "onetbb-dev"
+    ],
+    "debian_packages": [
+      "libboost-atomic-dev",
+      "libboost-chrono-dev",
+      "libboost-date-time-dev",
+      "libboost-filesystem-dev",
+      "libboost-system-dev",
+      "libboost-thread-dev",
+      "libboost-timer-dev",
+      "libdebuginfod-dev",
+      "libdw-dev",
+      "libelf-dev",
+      "libiberty-dev",
+      "libtbb-dev"
+    ],
+    "fatal_warnings": false
+  },
   "epoxy": {
     "alpine_packages": [
       "libx11-dev",
