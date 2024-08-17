@@ -137,6 +137,7 @@
   "dlfcn-win32": {
     "_comment": "- Requires Windows",
     "build_on": {
+      "alpine": false,
       "darwin": false,
       "linux": false
     }
