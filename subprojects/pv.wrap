@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pv-1.8.12
-source_url = https://codeberg.org/a-j-wood/pv/releases/download/v1.8.12/pv-1.8.12.tar.gz
-source_hash = 9687f9deedb09d0dc00d80c30691f0c91282c0d5d8fa7d6a2a085c8742c2cd7c
-source_filename = pv-1.8.12.tar.gz
+directory = pv-1.8.13
+source_url = https://codeberg.org/a-j-wood/pv/releases/download/v1.8.13/pv-1.8.13.tar.gz
+source_hash = e2bde058d0d3bfe03e60a6eedef6a179991f5cc698d1bac01b64a86f5a8c17af
+source_filename = pv-1.8.13.tar.gz
 patch_directory = pv
 
 [provide]

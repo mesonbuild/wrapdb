@@ -1,7 +1,7 @@
 project(
   'pv',
   'c',
-  version: '1.8.12',
+  version: '1.8.13',
   meson_version: '>=0.59.0',
 )
 
@@ -33,6 +33,7 @@ foreach _spec : [
   ['sys/file.h'],
   ['sys/ioctl.h'],
   ['sys/ipc.h'],
+  ['sys/sysmacros.h'],
   ['sys/param.h'],
   ['sys/select.h', 'select'],
   ['sys/shm.h', 'shmget'],
