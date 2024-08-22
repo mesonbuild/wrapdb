@@ -37,13 +37,15 @@ endif
 
 backward_dep = declare_dependency(dependencies: deps, link_with: backward)
 
-tests = ['test', 'stacktrace', 'rectrace', 'select_signals']
+if get_option('tests')
+    tests = ['test', 'stacktrace', 'rectrace', 'select_signals']
 
-foreach test : tests
-    test('test_' + test, executable('testexe_' + test, 'test/' + test + '.cpp', 'test/_test_main.cpp', dependencies: backward_dep))
-endforeach
+    foreach test : tests
+        test('test_' + test, executable('testexe_' + test, 'test/' + test + '.cpp', 'test/_test_main.cpp', dependencies: backward_dep))
+    endforeach
 
-tests = ['suicide']
-foreach test : tests
-    test('test_' + test, executable('testexe_' + test, 'test/' + test + '.cpp', 'test/_test_main.cpp'))
-endforeach
+    tests = ['suicide']
+    foreach test : tests
+        test('test_' + test, executable('testexe_' + test, 'test/' + test + '.cpp', 'test/_test_main.cpp'))
+    endforeach
+endif
