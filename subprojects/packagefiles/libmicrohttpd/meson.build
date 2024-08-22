@@ -118,25 +118,13 @@ foreach s : ['size_t', 'unsigned int', 'unsigned long long']
   cdata.set('SIZEOF_@0@'.format(s.underscorify().to_upper()), cc.sizeof(s))
 endforeach
 
-cdata.set(
-  'SIZEOF_STRUCT_TIMEVAL_TV_SEC',
-  cc.sizeof(
-    'test_var.tv_sec',
-    prefix: '''#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif /* HAVE_SYS_TIME_H */
-#ifdef HAVE_TIME_H
-#include <time.h>
-#endif /* HAVE_TIME_H */
-#if HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-#ifdef _WIN32
-#include <winsock.h>
-#endif /* _WIN32 */
-struct timeval test_var;'''
-  )
-)
+if host_machine.system() == 'windows'
+  # `timevale.tv_sec` is `long` on Windows
+  # See https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-timeval
+  cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('long'))
+else
+  cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('time_t', prefix: '#include <time.h>'))
+endif
 cdata.set('SIZEOF_UINT64_T', cc.sizeof('uint64_t', prefix: '#include <stdint.h>'))
 
 cdata.set('HAVE_PIPE2_FUNC', cc.has_function('pipe2'))
