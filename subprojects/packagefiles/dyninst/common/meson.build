@@ -1,7 +1,5 @@
 srcs = files(
     'src/AST.C',
-    # The above file must be listed first to dodge an initialization order bug.
-    # See https://github.com/dyninst/dyninst/issues/1730
     'src/Annotatable.C',
     'src/Buffer.C',
     'src/DOT.C',
@@ -22,7 +20,6 @@ srcs = files(
     'src/lprintf.C',
     'src/pathName.C',
     'src/pfq-rwlock.C',
-    'src/registers/MachRegister.C',
     'src/sha1.C',
     'src/stats.C',
     'src/util.C',
@@ -58,6 +55,9 @@ subdir('h')
 iface_deps = [boost_dep, tbb_dep]
 common_lib = library(
     'common',
+    # This file must be listed first to dodge an initialization order bug.
+    # See https://github.com/dyninst/dyninst/issues/1730
+    'src/registers/MachRegister.C',
     srcs,
     gnu_symbol_visibility: 'inlineshidden',
     override_options: ['b_ndebug=false'],
