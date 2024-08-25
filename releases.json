@@ -3391,6 +3391,14 @@
       "1.1.1-1"
     ]
   },
+  "tinyexpr": {
+    "dependency_names": [
+      "tinyexpr"
+    ],
+    "versions": [
+      "0.0.0-1"
+    ]
+  },
   "tinyfsm": {
     "dependency_names": [
       "tinyfsm"
