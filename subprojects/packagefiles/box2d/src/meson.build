@@ -39,7 +39,7 @@ box2d_sources = files(
 box2d_lib = library(
   'box2d',
   box2d_sources,
-  include_directories: incdir,
+  include_directories: ['.', '../include'],
   cpp_args: box2d_compile_args,
   link_args: ['-lm'],
 )

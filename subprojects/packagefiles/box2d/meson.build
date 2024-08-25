@@ -3,10 +3,10 @@ project(
   'c',
   version: '3.0.1',
   license: 'zlib',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.60.0',
 )
 
-incdir = include_directories('include/box2d')
+incdir = include_directories('include/box2d', 'src')
 box2d_compile_args = []
 if get_option('buildtype') != 'static'
   box2d_compile_args += '-DB2_SHARED'
