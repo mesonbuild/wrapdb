@@ -3,7 +3,7 @@ project(
   'luajit',
   'c',
   license: 'MIT',
-  version: '2.1.1720049189',
+  version: '2.1.1724512491',
   meson_version: '>= 0.61.0',
 )
 
