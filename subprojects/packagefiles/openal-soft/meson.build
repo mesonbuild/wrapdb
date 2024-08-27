@@ -259,9 +259,16 @@ if cdata.get('HAVE_NEON')
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
+if host_machine.system() == 'windows' or cpp.links('int main(){__sync_synchronize();}')
+  atomic_dep = dependency('', required: false)
+else
+  atomic_dep = cpp.find_library('atomic', required: false)
+endif
+
 common_lib = static_library(
   'common',
   common_sources,
+  dependencies: atomic_dep,
 )
 
 common_inc = include_directories('.')
@@ -269,6 +276,7 @@ common_inc = include_directories('.')
 common_dep = declare_dependency(
   link_with: common_lib,
   include_directories: common_inc,
+  dependencies: atomic_dep,
 )
 
 openal_inc = include_directories('common', 'include', 'include/AL')
