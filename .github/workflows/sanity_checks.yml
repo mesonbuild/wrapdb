@@ -26,6 +26,9 @@ jobs:
 
   Alpine:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: ['x86', 'riscv64', 'ppc64le', 'armv7']
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +36,7 @@ jobs:
 
       - uses: jirutka/setup-alpine@v1
         with:
+          arch: ${{matrix.platform}}
           packages: >
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
