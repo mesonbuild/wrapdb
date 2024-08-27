@@ -440,6 +440,7 @@
       "cpp-httplib"
     ],
     "versions": [
+      "0.16.3-1",
       "0.15.3-1",
       "0.13.1-1",
       "0.11.2-1",
@@ -2395,7 +2396,7 @@
       "nanobind"
     ],
     "versions": [
-        "2.1.0-1"
+      "2.1.0-1"
     ]
   },
   "nativefiledialog-extended": {
@@ -2733,7 +2734,7 @@
       "10.23-1"
     ]
   },
-  "pegtl":{
+  "pegtl": {
     "dependency_names": [
       "pegtl"
     ],
