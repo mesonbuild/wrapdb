@@ -338,6 +338,7 @@
       "cglm"
     ],
     "versions": [
+      "0.9.4-1",
       "0.9.2-1"
     ]
   },
@@ -2404,7 +2405,7 @@
       "nanobind"
     ],
     "versions": [
-        "2.1.0-1"
+      "2.1.0-1"
     ]
   },
   "nativefiledialog-extended": {
@@ -2742,7 +2743,7 @@
       "10.23-1"
     ]
   },
-  "pegtl":{
+  "pegtl": {
     "dependency_names": [
       "pegtl"
     ],
