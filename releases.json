@@ -1829,6 +1829,14 @@
       "3.6.4-1"
     ]
   },
+  "libscpi": {
+    "dependency_names": [
+        "libscpi"
+    ],
+    "versions": [
+      "2.3-1"
+    ]
+  },
   "libsignal-protocol-c": {
     "dependency_names": [
       "libsignal-protocol-c"
