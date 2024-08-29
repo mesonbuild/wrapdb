@@ -30,3 +30,11 @@ audio_lib = library(
   include_directories: [pub_inc, priv_inc, mp3_inc],
   dependencies: [openal_dep, flac_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, ogg_dep],
 )
+
+sfml_audio_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: audio_lib,
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+)
+
+meson.override_dependency('sfml-audio', sfml_audio_dep)

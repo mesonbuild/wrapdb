@@ -88,4 +88,13 @@ window_lib = library(
   link_with: system_lib,
   include_directories: [glad_inc, pub_inc, priv_inc, vulkan_inc],
   dependencies: [gl_dep, winmm_dep, window_deps],
+  install:true
 )
+
+sfml_window_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: window_lib,
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+)
+
+meson.override_dependency('sfml-window', sfml_window_dep)

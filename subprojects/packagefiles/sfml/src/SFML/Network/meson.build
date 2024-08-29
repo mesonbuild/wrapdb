@@ -18,4 +18,13 @@ network_lib = library(
   include_directories: [pub_inc, priv_inc],
   link_with: system_lib,
   dependencies: w32_dep,
+  install: true
 )
+
+sfml_network_dep = declare_dependency(
+  include_directories: pub_inc,
+  link_with: network_lib,
+  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+)
+
+meson.override_dependency('sfml-network', sfml_network_dep)
