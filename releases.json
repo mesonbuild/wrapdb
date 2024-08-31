@@ -267,6 +267,14 @@
       "1.17.8-1"
     ]
   },
+  "cairomm": {
+    "dependency_names": [
+      "cairomm-1.16"
+    ],
+    "versions": [
+      "1.18.0-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",
