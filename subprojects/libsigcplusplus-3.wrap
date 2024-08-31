@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libsigc++-3.6.0
+source_url = https://github.com/libsigcplusplus/libsigcplusplus/releases/download/3.6.0/libsigc++-3.6.0.tar.xz
+source_filename = libsigc++-3.6.0.tar.xz
+source_hash = c3d23b37dfd6e39f2e09f091b77b1541fbfa17c4f0b6bf5c89baef7229080e17
+patch_directory = libsigcplusplus-3
+
+[provide]
+dependency_names = sigc++-3.0
