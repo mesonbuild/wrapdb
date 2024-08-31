@@ -1833,6 +1833,14 @@
       "3.6.4-1"
     ]
   },
+  "libsigcplusplus-3": {
+    "dependency_names": [
+      "sigc++-3.0"
+    ],
+    "versions": [
+      "3.6.0-1"
+    ]
+  },
   "libsignal-protocol-c": {
     "dependency_names": [
       "libsignal-protocol-c"
