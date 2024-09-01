@@ -350,12 +350,25 @@
     "fatal_warnings": false
   },
   "glib-networking": {
-    "_comment": "- This wrap only provides plugins for gio, so it doesn't provide any libraries to link to.",
+    "_comment": [
+      "- This wrap only provides plugins for gio, so it doesn't provide any libraries to link to.",
+      "- OpenSSL dependency needs bash, nasm, and Perl",
+      "- glib dependency needs python-packaging"
+    ],
     "build_options": [
       "glib-networking:gnutls=disabled",
       "glib-networking:openssl=enabled",
       "glib-networking:libproxy=disabled",
       "glib-networking:gnome_proxy=disabled"
+    ],
+    "alpine_packages": [
+      "bash",
+      "nasm",
+      "perl",
+      "perl-text-template"
+    ],
+    "msys_packages": [
+      "python-packaging"
     ],
     "has_provides": false,
     "fatal_warnings": false
