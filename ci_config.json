@@ -399,10 +399,21 @@
     ]
   },
   "json-glib": {
-    "_comment": "gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
+    "_comment": [
+      "- gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
+      "- uses c_std=gnu99 on Windows",
+      "- glib dependency needs Python packaging module"
+    ],
+    "alpine_packages": [
+      "gettext"
+    ],
     "debian_packages": [
       "gettext"
-    ]
+    ],
+    "msys_packages": [
+      "python-packaging"
+    ],
+    "fatal_warnings": false
   },
   "imgui": {
     "debian_packages": [
