@@ -541,7 +541,11 @@
       "msys2": false,
       "windows": false
     },
+    "alpine_packages": [
+      "libdrm-dev"
+    ],
     "debian_packages": [
+      "libdrm-dev",
       "libpciaccess-dev"
     ]
   },
