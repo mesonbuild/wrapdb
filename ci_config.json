@@ -40,7 +40,15 @@
     ]
   },
   "cairo": {
-    "_comment": "Some tests fails and they are still run despite -Dtests=disabled",
+    "_comment": [
+      "- Force-enable fontconfig to avoid https://gitlab.freedesktop.org/cairo/cairo/-/issues/862",
+      "- Don't fail on proxy-libintl Meson warning - https://github.com/frida/proxy-libintl/pull/6",
+      "- Some tests fails and they are still run despite -Dtests=disabled"
+    ],
+    "build_options": [
+      "cairo:fontconfig=enabled"
+    ],
+    "fatal_warnings": false,
     "skip_tests": true
   },
   "cexception": {
