@@ -1,9 +1,9 @@
 [wrap-file]
-directory = CLI11-2.4.1
+directory = CLI11-2.4.2
 
-source_url = https://github.com/CLIUtils/CLI11/archive/refs/tags/v2.4.1.tar.gz
-source_filename = CLI11-2.4.1.tar.gz
-source_hash = 73b7ec52261ce8fe980a29df6b4ceb66243bb0b779451dbd3d014cfec9fdbb58
+source_url = https://github.com/CLIUtils/CLI11/archive/refs/tags/v2.4.2.tar.gz
+source_filename = CLI11-2.4.2.tar.gz
+source_hash = f2d893a65c3b1324c50d4e682c0cdc021dd0477ae2c048544f39eed6654b699a
 
 [provide]
 cli11 = CLI11_dep
