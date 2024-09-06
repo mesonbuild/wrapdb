@@ -2935,6 +2935,14 @@
       "0.7.3-1"
     ]
   },
+  "quickjs": {
+    "dependency_names": [
+      "quickjs"
+    ],
+    "versions": [
+      "2024-01-13"
+    ]
+  },
   "quill": {
     "dependency_names": [
       "quill"
