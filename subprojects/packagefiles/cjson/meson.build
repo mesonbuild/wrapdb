@@ -1,7 +1,7 @@
 project(
   'cjson',
   'c',
-  version: '1.7.17',
+  version: '1.7.18',
   meson_version: '>=0.50.0',
   license: 'MIT',
 )
