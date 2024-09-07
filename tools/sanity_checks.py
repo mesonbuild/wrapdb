@@ -368,18 +368,19 @@ class TestReleases(unittest.TestCase):
         choco_packages = ci.get('choco_packages', [])
         msys_packages = ci.get('msys_packages', [])
         alpine_packages = ci.get('alpine_packages', [])
+        python_packages = ci.get('python_packages', [])
         meson_env = os.environ.copy()
-        def install_packages(cmd, packages):
+        def install_packages(kind, cmd, packages):
             if is_ci():
-                with ci_group('install packages'):
+                with ci_group('install {} packages'.format(kind)):
                     subprocess.check_call(cmd + packages)
             else:
                 s = ', '.join(packages)
                 print(f'The following packages could be required: {s}')
         if debian_packages and is_debianlike():
-            install_packages(['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
+            install_packages('Debian', ['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
         elif brew_packages and is_macos():
-            install_packages(['brew', 'install', '--quiet'], brew_packages)
+            install_packages('Homebrew', ['brew', 'install', '--quiet'], brew_packages)
             if is_ci():
                 # Ensure binaries from keg-only formulas are available (e.g. bison).
                 out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
@@ -388,15 +389,17 @@ class TestReleases(unittest.TestCase):
                     if bindir.exists():
                         meson_env['PATH'] = str(bindir) + ':' + meson_env['PATH']
         elif choco_packages and is_windows():
-            install_packages(['choco', 'install', '-y'], choco_packages)
+            install_packages('Chocolatey', ['choco', 'install', '-y'], choco_packages)
             if is_ci() and 'nasm' in choco_packages:
                 # nasm is not added into PATH by default:
                 # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
                 meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
         elif msys_packages and is_msys():
-            install_packages(['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
+            install_packages('MSYS2', ['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
         elif alpine_packages and is_alpinelike():
-            install_packages(['sudo', 'apk', 'add'], alpine_packages)
+            install_packages('Alpine', ['sudo', 'apk', 'add'], alpine_packages)
+        if python_packages:
+            install_packages('Python', [sys.executable, '-m', 'pip', 'install'], python_packages)
 
         res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
         log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
