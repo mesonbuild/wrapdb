@@ -260,8 +260,8 @@
     "alpine_packages": [
       "shared-mime-info"
     ],
-    "msys_packages": [
-      "python-packaging"
+    "python_packages": [
+      "packaging"
     ],
     "fatal_warnings": false,
     "skip_tests": true
@@ -334,14 +334,11 @@
     "alpine_packages": [
       "gettext-tiny-dev"
     ],
-    "brew_packages": [
-      "python-packaging"
-    ],
     "build_options": [
       "glib:tests=false"
     ],
-    "msys_packages": [
-      "python-packaging"
+    "python_packages": [
+      "packaging"
     ],
     "skip_dependency_check": [
       "gio-windows-2.0",
@@ -393,8 +390,10 @@
       "harfbuzz:icu=enabled"
     ],
     "msys_packages": [
-      "icu",
-      "python-packaging"
+      "icu"
+    ],
+    "python_packages": [
+      "packaging"
     ],
     "skip_dependency_check": [
       "harfbuzz-cairo"
