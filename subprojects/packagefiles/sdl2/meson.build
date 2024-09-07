@@ -759,7 +759,7 @@ foreach _spec : [
   _hdr = _spec[0]
   _spec = _spec.get(1, {})
   _deps = _spec.get('deps', [])
-  if not cc.has_header(_hdr, dependencies: _deps)
+  if not cc.check_header(_hdr, dependencies: _deps)
     continue
   endif
   cdata.set('HAVE_@0@'.format(_hdr.to_upper().underscorify()), 1)
