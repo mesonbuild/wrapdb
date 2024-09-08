@@ -662,9 +662,9 @@
     ]
   },
   "libxmlpp": {
-    "_comment": "For some strange reason, the wrong subproject gets used.",
-    "alpine_packages": [
-      "libxml2-dev"
+    "_comment": "Python fails on MSVC because we try to do a debug build against a release Python",
+    "build_options": [
+      "libxml2:python=false"
     ]
   },
   "libxkbcommon": {
