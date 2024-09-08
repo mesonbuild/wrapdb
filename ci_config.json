@@ -967,6 +967,10 @@
       "cpp_std=c++14"
     ]
   },
+  "rubberband": {
+    "_comment": "Project uses newer feature but targets older Meson",
+    "fatal_warnings": false
+  },
   "rtaudio": {
     "debian_packages": [
       "libpulse-dev",
