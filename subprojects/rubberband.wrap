@@ -1,9 +1,9 @@
 [wrap-file]
-directory = rubberband-2.0.2
+directory = rubberband-3.3.0
 
-source_url = https://breakfastquay.com/files/releases/rubberband-2.0.2.tar.bz2
-source_filename = rubberband-2.0.2.tar.bz2
-source_hash = b9eac027e797789ae99611c9eaeaf1c3a44cc804f9c8a0441a0d1d26f3d6bdf9
+source_url = https://breakfastquay.com/files/releases/rubberband-3.3.0.tar.bz2
+source_filename = rubberband-3.3.0.tar.bz2
+source_hash = d9ef89e2b8ef9f85b13ac3c2faec30e20acf2c9f3a9c8c45ce637f2bc95e576c
 
 [provide]
 rubberband = rubberband_dep
