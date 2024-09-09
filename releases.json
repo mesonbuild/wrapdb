@@ -2469,9 +2469,11 @@
   },
   "nlohmann_json": {
     "dependency_names": [
-      "nlohmann_json"
+      "nlohmann_json",
+      "nlohmann_json_multiple_headers"
     ],
     "versions": [
+      "3.11.3-2",
       "3.11.3-1",
       "3.11.2-1",
       "3.10.5-1",
