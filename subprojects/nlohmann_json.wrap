@@ -8,3 +8,4 @@ source_hash = a22461d13119ac5c78f205d3df1db13403e58ce1bb1794edc9313677313f4a9d
 
 [provide]
 nlohmann_json = nlohmann_json_dep
+nlohmann_json_multiple_headers = nlohmann_json_multiple_headers
