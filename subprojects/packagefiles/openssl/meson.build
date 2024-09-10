@@ -126,8 +126,8 @@ if gas_or_nasm
     endif
   elif is_windows
     has_win_asm = add_languages('as', native: false, required: false)
-    if not has_win_asm and meson.version().version_compare('>=0.64') 
-      has_win_asm = add_languages('nasm', native: false, required: false)
+    if not has_win_asm
+      has_win_asm = add_languages(meson.version().version_compare('>=0.64') ? 'nasm' : '', native: false, required: false)
     endif
 
     if has_win_asm
