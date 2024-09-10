@@ -91,15 +91,8 @@ if ipv6_opt.disabled()
   _disabled_tests += '!1614'
 endif
 
-_kwargs = {}
-if meson.version().version_compare('>=0.62.0')
-  _kwargs += {'verbose': true}
-endif
-
-test(
-  'runtests',
-  bash_exe,
-  args: [
+_kwargs = {
+  'args': [
     '-c',
     'exec perl "$@"',
     '--',
@@ -118,10 +111,14 @@ test(
     # '-v',
     _disabled_tests,
   ],
-  depends: [curl_exe, libtest_targets, server_targets, unit_targets],
-  env: _env,
-  is_parallel: false,
-  kwargs: _kwargs,
-  timeout: 0,
-  workdir: _builddir,
-)
+  'depends': [curl_exe, libtest_targets, server_targets, unit_targets],
+  'env': _env,
+  'is_parallel': false,
+  'timeout': 0,
+  'workdir': _builddir,
+}
+if meson.version().version_compare('>=0.62.0')
+  test('runtests', bash_exe, kwargs: _kwargs + {'verbose': true})
+else
+  test('runtests', bash_exe, kwargs: _kwargs)
+endif
