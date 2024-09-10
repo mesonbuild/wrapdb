@@ -125,53 +125,19 @@ if gas_or_nasm
       asm = 'no-asm'
     endif
   elif is_windows
-    if is_x86
-      warning('x86 + windows combo does not support ASM yet, please contribute')
-      asm = 'no-asm'
-      # TODO: Port this for Windows and uncomment
-      # arch_subdir = 'VC-WIN32'
-      # asm = 'asm'
-      #'rules': [
-      #  {
-      #    'rule_name': 'Assemble',
-      #    'extension': 'asm',
-      #    'inputs': [],
-      #    'outputs': [
-      #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-      #    ],
-      #    'action': [
-      #      'nasm.exe',
-      #      '-f win32',
-      #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-      #      '<(RULE_INPUT_PATH)',
-      #    ],
-      #  }
-      #],
-    elif is_x86_64
-      warning('x86_64 + windows combo does not support ASM yet, please contribute')
-      asm = 'no-asm'
-      # TODO: Port this for Windows and uncomment
-      # arch_subdir = 'VC-WIN64A'
-      # asm = 'asm'
-      #'rules': [
-      #  {
-      #    'rule_name': 'Assemble',
-      #    'extension': 'asm',
-      #    'inputs': [],
-      #    'outputs': [
-      #      '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-      #    ],
-      #    'action': [
-      #      'nasm.exe',
-      #      '-f win64',
-      #      '-DNEAR',
-      #      '-Ox',
-      #      '-g',
-      #      '-o', '<(INTERMEDIATE_DIR)/<(RULE_INPUT_ROOT).obj',
-      #      '<(RULE_INPUT_PATH)',
-      #    ],
-      #  }
-      #],
+    has_win_asm = add_languages('as', native: false, required: false)
+    if not has_win_asm and meson.version().version_compare('>=0.64') 
+      has_win_asm = add_languages('nasm', native: false, required: false)
+    endif
+
+    if has_win_asm
+      if is_x86
+        arch_subdir = 'VC-WIN32'
+      elif is_x86_64
+        arch_subdir = 'VC-WIN64A'
+      else
+        asm = 'no-asm'
+      endif
     else
       asm = 'no-asm'
     endif
