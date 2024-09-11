@@ -38,6 +38,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'test.py',
     ],
     'curl': [
+        'buildinfo.txt.meson',
         'extract.mk',
         'rewrite.mk',
     ],

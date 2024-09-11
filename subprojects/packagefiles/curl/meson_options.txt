@@ -5,6 +5,8 @@ option('unittests', type: 'feature')
 
 # Debugging.
 option('curldebug', type: 'boolean', value: false)
+# Debug build only: use libuv for event-based tests.
+option('libuv'    , type: 'feature')
 
 # CA.
 option('ca_bundle'  , type: 'string' , value: 'auto')
@@ -33,6 +35,7 @@ option('parsedate'      , type: 'feature', value: 'enabled')
 option('progress-meter' , type: 'feature', value: 'enabled')
 option('proxy'          , type: 'feature', value: 'enabled')
 option('psl'            , type: 'feature')
+option('sha512_256'     , type: 'feature', value: 'enabled')
 option('shuffle-dns'    , type: 'feature', value: 'enabled')
 option('socketpair'     , type: 'feature', value: 'enabled')
 option('sspi'           , type: 'feature')
@@ -62,7 +65,7 @@ option('gss-api-provider', type: 'array', choices: ['gnu', 'mit', 'heimdal'])
 # IDN.
 option('idn', type: 'feature')
 # Provider, by order of preference (first available one is enabled).
-option('idn-provider', type: 'array', choices: ['winidn', 'libidn2'])
+option('idn-provider', type: 'array', choices: ['appleidn', 'winidn', 'libidn2'])
 
 # HTTP.
 option('alt-svc'    , type: 'feature')
