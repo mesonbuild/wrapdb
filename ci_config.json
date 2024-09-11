@@ -125,6 +125,7 @@
       "libpsl-dev",
       "librtmp-dev",
       "libssh2-1-dev",
+      "libuv1-dev",
       "nghttp2-proxy",
       "python3-impacket",
       "samba",

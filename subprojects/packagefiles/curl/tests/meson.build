@@ -1,3 +1,22 @@
+buildinfo_cfg = {
+  'build_backend'   : meson.backend(),
+  'build_cpu'       : build_machine.cpu(),
+  'build_system'    : build_machine.system(),
+  'compiler_id'     : cc.get_id(),
+  'compiler_version': cc.version(),
+  'host_cpu'        : host_machine.cpu(),
+  'host_system'     : host_machine.system(),
+  'meson_version'   : meson.version(),
+}
+if meson.version().version_compare('>=1.1.0')
+  buildinfo_cfg += {'build_options': meson.build_options()}
+endif
+configure_file(
+  configuration: buildinfo_cfg,
+  input: '../meson/buildinfo.txt.meson',
+  output: 'buildinfo.txt',
+)
+
 libtest_targets = []
 server_targets = []
 unit_targets = []

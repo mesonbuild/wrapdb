@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.9.1',
+  version: '8.10.0',
   meson_version: '>=0.60.0',
 )
 
@@ -81,6 +81,7 @@ foreach _opt : [
   'progress-meter',
   'proxy',
   'rtsp',
+  'sha512_256',
   'shuffle-dns',
   'smtp',
   'socketpair',
@@ -101,9 +102,25 @@ trackmemory_opt = get_option('curldebug') ? ENABLED_OPT : DISABLED_OPT
 # Platform dependencies. {{{
 
 if host_machine.system() == 'windows'
+  # Determine Windows version.
+  _WIN32_WINNT = cc.get_define(
+    '_WIN32_WINNT',
+    prefix: '''
+    #define NOGDI
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+    ''',
+  )
+  _WIN32_WINNT = _WIN32_WINNT != '' ? cc.compute_int(_WIN32_WINNT) : 0
+  if _WIN32_WINNT < 0x501
+    error('only Windows XP or newer is supported')
+  endif
+  host_vista_or_newer = _WIN32_WINNT >= 0x600
   # For `BCryptGenRandom()`.
   sys_deps += cc.find_library('bcrypt', required: false)
   sys_deps += cc.find_library('ws2_32')
+else
+  host_vista_or_newer = false
 endif
 
 # For `clock_gettime`.
@@ -417,19 +434,6 @@ cdata.set(
 # Features & protocols. {{{
 
 # Windows. {{{
-
-host_vista_or_newer = (
-  host_machine.system() == 'windows'
-  and cc.compiles(
-    '''
-    #include <windows.h>
-    #if (WINVER < 0x600) && (_WIN32_WINNT < 0x600)
-    #error
-    #endif
-    ''',
-    name: 'Windows >= Vista',
-  )
-)
 
 use_win32_crypto = (
   host_machine.system() == 'windows'
@@ -809,6 +813,7 @@ foreach _feat : [
   'hsts',
   'http2',
   'http-auth',
+  'rtsp',
 ]
   set_variable(
     _feat.underscorify() + '_opt',
@@ -820,6 +825,12 @@ foreach _feat : [
     ),
   )
 endforeach
+
+# HSTS support needs SSL.
+hsts_opt = hsts_opt.require(
+  ssl_opt.allowed(),
+  error_message: SSL_DISABLED_ERROR,
+)
 
 # HTTP2.
 lib_deps += dependency('libnghttp2', required: http2_opt)
@@ -888,7 +899,7 @@ ldaps_opt = get_option(
   error_message: 'feature ldap is disabled',
 ).require(
   ldap_provider == 'win32' or ssl_opt.allowed(),
-  error_message: 'no ssl support',
+  error_message: 'need win32 LDAP provider or SSL support',
 )
 cdata.set('HAVE_LDAP_SSL', ldaps_opt.allowed())
 
@@ -964,7 +975,34 @@ idn_provider = ''
 
 _required = idn_opt.disabled() ? idn_opt : false
 foreach _provider : get_option('idn-provider')
-  if _provider == 'libidn2'
+  if _provider == 'appleidn'
+    # Apple IDN.
+    _dep = declare_dependency(
+      dependencies: host_machine.system() == 'darwin' ? [
+        cc.find_library(
+          'icucore',
+          disabler: true,
+          has_headers: 'unicode/uidna.h',
+          required: _required,
+        ),
+        cc.find_library(
+          'iconv',
+          disabler: true,
+          has_headers: 'iconv.h',
+          required: _required,
+        ),
+      ] : disabler(),
+    )
+    if cc.has_function(
+      'uidna_openUTS46',
+      dependencies: _dep,
+    )
+      cdata.set('USE_APPLE_IDN', true)
+      idn_provider = 'appleidn'
+      lib_deps += _dep
+      break
+    endif
+  elif _provider == 'libidn2'
     # Library: libdn2.
     _dep = dependency('libidn2', required: _required)
     cdata.set('HAVE_LIBIDN2', _dep.found())
@@ -1272,45 +1310,59 @@ cdata.set(
   ) > 0,
 )
 
-cdata.set(
-  'HAVE_POLL_FINE',
-  meson.can_run_host_binaries()
-  and cc.run(
-    '''
-    #include <stdlib.h>
-    #include <sys/time.h>
-    #ifdef HAVE_SYS_POLL_H
-    #  include <sys/poll.h>
-    #elif  HAVE_POLL_H
-    #  include <poll.h>
-    #endif
-    int main(void)
-    {
-        if (0 != poll(0, 0, 10)) {
-          return 1; /* fail */
-        }
-        else {
-          /* detect the 10.12 poll() breakage */
-          struct timeval before, after;
-          int rc;
-          size_t us;
-          gettimeofday(&before, NULL);
-          rc = poll(NULL, 0, 500);
-          gettimeofday(&after, NULL);
-          us = (after.tv_sec - before.tv_sec) * 1000000 +
-            (after.tv_usec - before.tv_usec);
-          if (us < 400000) {
-            return 1;
+if host_machine.system() != 'darwin'
+  if meson.can_run_host_binaries()
+    cdata.set(
+      'HAVE_POLL_FINE',
+      cc.run(
+        '''
+        #include <stdlib.h>
+        #ifdef HAVE_SYS_POLL_H
+        #  include <sys/poll.h>
+        #elif  HAVE_POLL_H
+        #  include <poll.h>
+        #endif
+        int main(void)
+        {
+          if(0 != poll(0, 0, 10)) {
+            return 1; /* fail */
           }
+          return 0;
         }
-        return 0;
-    }
-    ''',
-    args: check_args,
-    dependencies: sys_deps,
-    name: 'HAVE_POLL_FINE test',
-  ).returncode() == 0,
-)
+        ''',
+        args: check_args,
+        dependencies: sys_deps,
+        name: 'HAVE_POLL_FINE test',
+      ).returncode() == 0,
+    )
+  else
+    cdata.set(
+      'HAVE_POLL_FINE',
+      cc.compiles(
+        '''
+        #include <stdlib.h>
+        #ifdef HAVE_SYS_POLL_H
+        #  include <sys/poll.h>
+        #elif  HAVE_POLL_H
+        #  include <poll.h>
+        #endif
+        int main(void)
+        {
+          #if defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
+            (void)poll(0, 0, 0);
+          #else
+            #error force compilation error
+          #endif
+          return 0;
+        }
+        ''',
+        args: check_args,
+        dependencies: sys_deps,
+        name: 'HAVE_POLL_FINE test',
+      ),
+    )
+  endif
+endif
 
 cdata.set(
   'HAVE_TIME_T_UNSIGNED',
@@ -1608,6 +1660,7 @@ foreach _feat : [
   'parsedate',
   'progress-meter',
   'proxy',
+  'sha512_256',
   'shuffle-dns',
   'socketpair',
   'verbose-strings',
@@ -1624,11 +1677,11 @@ endforeach
 
 foreach _section, _optlist : {
   'features': [
-    ['Alt-Svc'],
+    ['alt-svc'],
     ['AsynchDNS', asynchdns_resolver != '' ? asynchdns_resolver : false],
-    ['Brotli'],
+    ['brotli'],
     ['Debug'],
-    ['GSASL'],
+    ['gsasl'],
     ['GSS-API', gss_api_provider != '' ? gss_api_provider : false],
     ['HTTP2'],
     ['HTTP3'],
@@ -1638,18 +1691,19 @@ foreach _section, _optlist : {
     ['IPv6'],
     ['Kerberos'],
     ['Largefile'],
-    ['LibZ'],
+    ['libz'],
     ['MultiSSL'],
     ['NTLM'],
     ['PSL'],
+    ['SHA512/256'],
     ['SPNEGO'],
     ['SSL'],
     ['SSPI'],
     ['TrackMemory'],
     ['TLS-SRP'],
-    ['ThreadSafe'],
+    ['threadsafe'],
     ['UnixSockets'],
-    ['ZSTD'],
+    ['zstd'],
   ],
   'protocols': [
     ['DICT'],
@@ -1696,10 +1750,13 @@ foreach _section, _optlist : {
     _opt = _name.underscorify().to_lower() + '_opt'
     _enabled = get_variable(_opt).allowed()
     _summary_value = _spec.get(1, _enabled)
-    if _enabled
-      _enabled_list += _name
-    else
-      _disabled_list += _name
+    # Some features are not advertised.
+    if _name not in ['SHA512/256']
+      if _enabled
+        _enabled_list += _name
+      else
+        _disabled_list += _name
+      endif
     endif
     _summary += {_name: _summary_value}
   endforeach
@@ -1736,12 +1793,20 @@ endforeach
 
 # Other. {{{
 
-if fs.exists('/dev/urandom')
-  cdata.set_quoted('RANDOM_FILE', '/dev/urandom')
-endif
-
 cdata.set('DEBUGBUILD', get_option('debug'))
 cdata.set('CURLDEBUG', get_option('curldebug'))
+
+libuv_opt = get_option('libuv').require(
+  get_option('debug'),
+  error_message: 'using libuv without debug support enabled is useless',
+)
+libuv_dep = dependency(
+  'libuv',
+  required: libuv_opt,
+)
+libuv_opt = libuv_opt.require(libuv_dep.found())
+cdata.set('HAVE_UV_H', libuv_opt.allowed())
+cdata.set('USE_LIBUV', libuv_opt.allowed())
 
 # }}}
 
@@ -1757,9 +1822,10 @@ cdata.set(
   _link_args.length() > 0 ? ('\'' + '\' \''.join(_link_args) + '\'') : '',
 )
 cdata.set_quoted(
-  'CPPFLAG_CURL_STATICLIB',
+  'LIBCURL_PC_CFLAGS',
   get_option('default_library') == 'static' ? '-DCURL_STATICLIB' : '',
 )
+cdata.set('LIBCURL_PC_LIBS_PRIVATE', '')
 cdata.set_quoted(
   'ENABLE_SHARED',
   get_option('default_library') in ['both', 'shared'] ? 'yes' : 'no',
@@ -1768,9 +1834,11 @@ cdata.set_quoted(
   'ENABLE_STATIC',
   get_option('default_library') in ['both', 'static'] ? 'yes' : 'no',
 )
-# FIXME
-cdata.set('CONFIGURE_OPTIONS', '')
-cdata.set('LIBCURL_LIBS', '')
+if meson.version().version_compare('>=1.1.0')
+  cdata.set_quoted('CONFIGURE_OPTIONS', meson.build_options())
+else
+  cdata.set('CONFIGURE_OPTIONS', '')
+endif
 
 cdata.set_quoted('prefix', get_option('prefix'))
 cdata.set_quoted('exec_prefix', '${prefix}')
@@ -1788,6 +1856,7 @@ curl_config_script = configure_file(
   output: 'curl-config',
   install: true,
   install_dir: get_option('bindir'),
+  install_mode: 'rwxr-xr-x',
   install_tag: 'devel',
 )
 
@@ -1913,6 +1982,17 @@ summary(
   bool_yn: true,
   section: 'CA',
 )
+
+if get_option('debug')
+  summary(
+    {
+      'Track memory'        : trackmemory_opt.allowed(),
+      'Use libuv for events': libuv_opt.allowed(),
+    },
+    bool_yn: true,
+    section: 'Debugging',
+  )
+endif
 
 summary(
   features_summary,

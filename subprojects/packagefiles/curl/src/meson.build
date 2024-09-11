@@ -56,7 +56,7 @@ curl_src = files(
 curl_exe = executable(
   'curl',
   curl_src,
-  dependencies: curl_ilib_dep,
+  dependencies: [curl_ilib_dep, libuv_dep],
   install: get_option('tool').allowed(),
 )
 
@@ -64,7 +64,7 @@ curltool_lib = static_library(
   'curltool',
   curl_src,
   c_args: ['-DCURL_STATICLIB', '-DUNITTESTS'],
-  dependencies: [build_tests, curl_iflags_dep],
+  dependencies: [build_tests, curl_iflags_dep, libuv_dep],
 )
 
 curltool_dep = declare_dependency(
