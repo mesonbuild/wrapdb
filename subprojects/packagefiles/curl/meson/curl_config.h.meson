@@ -117,6 +117,9 @@
 /* to disable RTSP */
 #mesondefine CURL_DISABLE_RTSP
 
+/* disable SHA-512/256 hash algorithm */
+#mesondefine CURL_DISABLE_SHA512_256
+
 /* disable DNS shuffling */
 #mesondefine CURL_DISABLE_SHUFFLE_DNS
 
@@ -613,6 +616,9 @@
 /* Define to 1 if you have the <utime.h> header file. */
 #mesondefine HAVE_UTIME_H
 
+/* Define to 1 if you have the <uv.h> header file. */
+#mesondefine HAVE_UV_H
+
 /* if you have wolfSSL_DES_ecb_encrypt */
 #mesondefine HAVE_WOLFSSL_DES_ECB_ENCRYPT
 
@@ -675,6 +681,9 @@
 /* if AmiSSL is in use */
 #mesondefine USE_AMISSL
 
+/* if AppleIDN */
+#mesondefine USE_APPLE_IDN
+
 /* Define to enable c-ares support */
 #mesondefine USE_ARES
 
@@ -707,6 +716,9 @@
 
 /* if libSSH2 is in use */
 #mesondefine USE_LIBSSH2
+
+/* if libuv is in use */
+#mesondefine USE_LIBUV
 
 /* if mbedTLS is enabled */
 #mesondefine USE_MBEDTLS
