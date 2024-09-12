@@ -156,13 +156,6 @@ jobs:
         with:
           python-version: '3.12'
 
-      - run: |
-          set -x
-          which python
-          python --version
-          which python3
-          python --version
-
       - name: Install packages
         run: |
           brew install ninja

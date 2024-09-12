@@ -125,6 +125,7 @@
       "libpsl-dev",
       "librtmp-dev",
       "libssh2-1-dev",
+      "libuv1-dev",
       "nghttp2-proxy",
       "python3-impacket",
       "samba",
@@ -654,9 +655,9 @@
     ]
   },
   "libxmlpp": {
-    "_comment": "For some strange reason, the wrong subproject gets used.",
-    "alpine_packages": [
-      "libxml2-dev"
+    "_comment": "Python fails on MSVC because we try to do a debug build against a release Python",
+    "build_options": [
+      "libxml2:python=false"
     ]
   },
   "libxkbcommon": {
@@ -959,6 +960,10 @@
       "cpp_std=c++14"
     ]
   },
+  "rubberband": {
+    "_comment": "Project uses newer feature but targets older Meson",
+    "fatal_warnings": false
+  },
   "rtaudio": {
     "debian_packages": [
       "libpulse-dev",
@@ -987,10 +992,14 @@
     ]
   },
   "slirp": {
-    "_comment": "- relies on lots of POSIX interfaces",
+    "_comment": [
+      "- relies on lots of POSIX interfaces",
+      "- glib and proxy-libintl produce Meson warnings"
+    ],
     "build_on": {
       "windows": false
-    }
+    },
+    "fatal_warnings": false
   },
   "sqlpp11": {
     "_comment": "hard to set up PostgreSQL via choco",
@@ -1043,8 +1052,7 @@
   },
   "wayland": {
     "_comment": [
-      "- relies on Linux-specific APIs",
-      "- uses install_data() without install_dir"
+      "- relies on Linux-specific APIs"
     ],
     "alpine_packages": [
       "python3-dev"
@@ -1056,8 +1064,7 @@
     },
     "build_options": [
       "wayland:documentation=false"
-    ],
-    "fatal_warnings": false
+    ]
   },
   "wayland-protocols": {
     "_comment": "- relies on wayland-scanner which uses Linux-specific APIs",
