@@ -25,7 +25,7 @@ platform_is_unixlike = host_machine.system() in [
   'cygwin'
 ]
 
-platform_supports_sljit = host_machine.system() in [
+platform_supports_sealloc = host_machine.system() in [
   'linux',
   'netbsd'
 ]
@@ -66,7 +66,7 @@ endif
 
 if not get_option('jit_sealloc').disabled()
   if c_compiler.has_function('mkostemp', prefix: '#include <stdlib.h>', args: ['-D_GNU_SOURCE'])
-    if platform_supports_sljit
+    if platform_supports_sealloc
       cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
     elif get_option('jit_sealloc').enabled()
       error('Your configuration is not supported')
