@@ -27,7 +27,6 @@ platform_is_unixlike = host_machine.system() in [
 
 platform_supports_sljit = host_machine.system() in [
   'linux',
-  'android',
   'netbsd'
 ]
 
