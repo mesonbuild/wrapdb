@@ -23,7 +23,7 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.6.2',
+  version: '2.6.3',
   meson_version: '>= 0.54.1',
 )
 
@@ -78,9 +78,6 @@ endif
 if not cc.has_header_symbol('sys/types.h', 'off_t')
   config.set('off_t', 'long')
 endif
-if not cc.has_header_symbol('sys/types.h', 'size_t')
-  config.set('size_t', 'unsigned')
-endif
 
 config.set('HAVE_SYSCALL_GETRANDOM', cc.has_header_symbol('sys/syscall.h', 'SYS_getrandom'))
 
@@ -125,7 +122,7 @@ libexpat = library(
   'lib/xmltok.c',
   include_directories: incdir,
   dependencies: dep_libbsd,
-  version: '1.8.10',
+  version: '1.9.3',
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
   gnu_symbol_visibility: 'hidden',
