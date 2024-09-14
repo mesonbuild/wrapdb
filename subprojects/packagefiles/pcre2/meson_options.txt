@@ -7,7 +7,7 @@ option(
   description: 'Support for Just-in-time compiling'
 )
 option(
-  'jit_sealloc', type: 'feature', value: 'enabled',
+  'jit_sealloc', type: 'feature', value: 'auto',
   description: 'SELinux compatible execmem allocator in JIT (experimental)'
 )
 option(

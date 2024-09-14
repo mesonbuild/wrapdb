@@ -70,6 +70,8 @@ if not get_option('jit_sealloc').disabled()
       cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
     elif get_option('jit_sealloc').enabled()
       error('Your configuration is not supported')
+    else
+      message('jit_sealloc is not supported on this platform')
     endif
   endif
 endif
