@@ -325,6 +325,7 @@ def main() -> None:
 
     autoupdate = subparsers.add_parser(
         'autoupdate',
+        aliases=['au'],
         help='automatically update non-port wraps',
         description='Attempt to automatically update wraps that support Meson upstream.'
     )
@@ -335,6 +336,7 @@ def main() -> None:
 
     list = subparsers.add_parser(
         'list',
+        aliases=['ls'],
         help='list wraps and their versions',
         description='List wraps and their versions.',
     )
