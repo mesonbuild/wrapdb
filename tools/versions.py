@@ -215,6 +215,14 @@ def do_autoupdate(args: Namespace) -> None:
                     print(f'Updating {name}...')
                 update_wrap(name, cur_ver, upstream_ver)
                 releases[name]['versions'].insert(0, f'{upstream_ver}-1')
+            elif name in ports and args.revision:
+                # only allow for ports, since official wraps can't have
+                # downstream changes
+                print(f'Updating {name} revision...')
+                cur_rev = int(releases[name]['versions'][0].split('-')[1])
+                releases[name]['versions'].insert(
+                    0, f'{cur_vers[name]}-{cur_rev + 1}'
+                )
             else:
                 continue
 
@@ -341,6 +349,10 @@ def main() -> None:
     autoupdate.add_argument(
         '-p', '--port', action='store_true',
         help='allow updating wraps with Meson support added in wrapdb'
+    )
+    autoupdate.add_argument(
+        '-r', '--revision', action='store_true',
+        help="update port's revision if version is current"
     )
     autoupdate.set_defaults(func=do_autoupdate)
 
