@@ -206,8 +206,8 @@ def do_autoupdate(args: Namespace) -> None:
     failures = 0
     for name in names:
         cur_ver, upstream_ver = cur_vers[name], upstream_vers[name]
-        if cur_ver != upstream_ver:
-            try:
+        try:
+            if cur_ver != upstream_ver:
                 if name in ports:
                     # manual packagefiles changes will also be needed
                     print(f'Updating {name}.wrap and releases.json...')
@@ -215,13 +215,16 @@ def do_autoupdate(args: Namespace) -> None:
                     print(f'Updating {name}...')
                 update_wrap(name, cur_ver, upstream_ver)
                 releases[name]['versions'].insert(0, f'{upstream_ver}-1')
-                with open('releases.json.new', 'w') as f:
-                    json.dump(releases, f, indent=2, sort_keys=True)
-                    f.write('\n')
-                os.rename('releases.json.new', 'releases.json')
-            except Exception as e:
-                print(e, file=sys.stderr)
-                failures += 1
+            else:
+                continue
+
+            with open('releases.json.new', 'w') as f:
+                json.dump(releases, f, indent=2, sort_keys=True)
+                f.write('\n')
+            os.rename('releases.json.new', 'releases.json')
+        except Exception as e:
+            print(e, file=sys.stderr)
+            failures += 1
     if failures:
         raise Exception(f"Couldn't update {failures} wraps")
 
