@@ -195,13 +195,12 @@ def do_autoupdate(args: Namespace) -> None:
         for name in names:
             if name not in upstream_vers:
                 raise ValueError(f'{name} is not tracked in Anitya; upstream version is unknown')
-            if name in ports:
-                raise ValueError(f'{name} upstream does not use Meson; cannot update automatically')
+            if name in ports and not args.port:
+                raise ValueError(f'{name} upstream does not use Meson; cannot update automatically. Use -p/--port to update everything but the packagefiles.')
     else:
-        names = [
-            name for name in cur_vers
-            if name not in ports and name in upstream_vers
-        ]
+        names = [name for name in cur_vers if name in upstream_vers]
+        if not args.port:
+            names = [name for name in names if name not in ports]
 
     # update
     failures = 0
@@ -209,7 +208,11 @@ def do_autoupdate(args: Namespace) -> None:
         cur_ver, upstream_ver = cur_vers[name], upstream_vers[name]
         if cur_ver != upstream_ver:
             try:
-                print(f'Updating {name}...')
+                if name in ports:
+                    # manual packagefiles changes will also be needed
+                    print(f'Updating {name}.wrap and releases.json...')
+                else:
+                    print(f'Updating {name}...')
                 update_wrap(name, cur_ver, upstream_ver)
                 releases[name]['versions'].insert(0, f'{upstream_ver}-1')
                 with open('releases.json.new', 'w') as f:
@@ -331,6 +334,10 @@ def main() -> None:
     )
     autoupdate.add_argument(
         'names', metavar='name', nargs='*', help='wrap to update'
+    )
+    autoupdate.add_argument(
+        '-p', '--port', action='store_true',
+        help='allow updating wraps with Meson support added in wrapdb'
     )
     autoupdate.set_defaults(func=do_autoupdate)
 
