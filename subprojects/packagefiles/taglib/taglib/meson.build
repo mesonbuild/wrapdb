@@ -264,7 +264,7 @@ taglib = library(
   dependencies: [atomic_dep, utfcpp_dep, zlib_dep],
   cpp_args: '-DHAVE_CONFIG_H',
   install: true,
-  version: '1.18.0',
+  version: '2.0.2',
 )
 
 pkg = import('pkgconfig')
