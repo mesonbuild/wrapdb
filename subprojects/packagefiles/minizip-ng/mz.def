@@ -152,7 +152,6 @@ mz_zip_writer_set_aes
 mz_zip_writer_set_compress_method
 mz_zip_writer_set_compress_level
 mz_zip_writer_set_zip_cd
-mz_zip_writer_set_certificate
 mz_zip_writer_set_overwrite_cb
 mz_zip_writer_set_password_cb
 mz_zip_writer_set_progress_cb
