@@ -1,8 +1,8 @@
 [wrap-file]
-directory = taglib-2.0
-source_url = https://github.com/taglib/taglib/archive/refs/tags/v2.0.tar.gz
-source_filename = taglib-2.0.tar.gz
-source_hash = e36ea877a6370810b97d84cf8f72b1e4ed205149ab3ac8232d44c850f38a2859
+directory = taglib-2.0.2
+source_url = https://github.com/taglib/taglib/archive/refs/tags/v2.0.2.tar.gz
+source_filename = taglib-2.0.2.tar.gz
+source_hash = 0de288d7fe34ba133199fd8512f19cc1100196826eafcb67a33b224ec3a59737
 patch_directory = taglib
 
 [provide]

@@ -2,7 +2,7 @@ project(
   'taglib',
   'cpp',
   license: 'LGPL-2.1-or-later OR MPL-1.1',
-  version: '2.0',
+  version: '2.0.2',
   meson_version: '>=0.55',
   default_options: ['cpp_std=c++17', 'warning_level=1'],
 )
