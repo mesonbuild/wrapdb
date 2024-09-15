@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.43', license: 'libpng',
+  version: '1.6.44', license: 'libpng',
   meson_version: '>=0.50.0',
 )
 
@@ -58,25 +58,6 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip()
     'arm/filter_neon_intrinsics.c',
     'arm/palette_neon_intrinsics.c',
   )
-  if cc.get_id() == 'msvc'
-    cl = find_program('cl')
-    msvc_preprocessed_asm_files = custom_target(
-      'MSVC assembly preprocessing',
-      output: '@BASENAME@.i',
-      input: 'arm/filter_neon.S',
-      command: [cl, '/Fi@OUTPUT@', '/P', '@INPUT@', '-I@OUTDIR@', c_args],
-    )
-    msvc_armasm = find_program('armasm64')
-    png_src += custom_target(
-      'MSVC assembly compilation',
-      output: '@BASENAME@.obj',
-      input: msvc_preprocessed_asm_files,
-      command: [msvc_armasm, '@INPUT@', '/Fo@OUTPUT@', '-I@OUTDIR@'],
-    )
-  else
-    png_src += files('arm/filter_neon.S')
-  endif
-
   c_args += '-DPNG_ARM_NEON_OPT=2'
 elif host_machine.cpu_family() in ['x86', 'x86_64']
   png_src += files(
