@@ -1,0 +1,10 @@
+[wrap-git]
+method = cmake
+; directory = mockcpp-head
+url = https://github.com/sinojelly/mockcpp.git
+revision = head
+depth = 1
+
+[provide]
+; mockcpp = mockcpp_static_dep
+mockcpp = mockcpp_dep
