@@ -1,5 +1,5 @@
 project('libjpeg-turbo', 'c',
-  version : '3.0.3',
+  version : '3.0.4',
   license : 'bsd-like',
   meson_version : '>= 0.64.0')
 
