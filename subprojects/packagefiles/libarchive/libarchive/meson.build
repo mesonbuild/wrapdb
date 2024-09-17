@@ -157,12 +157,19 @@ configure_file(
   format: 'cmake@',
 )
 
+ver_parts = meson.project_version().split('.')
+ver_darwin_compat = (ver_parts[1].to_int() + 14).to_string()
 libarchive = library(
   'libarchive',
   sources,
   include_directories: libinc,
   name_prefix: '',
-  soversion: host != 'windows' ? '19' : '',
+  # match upstream's versioning
+  version: '.'.join(['13', ver_parts[1], ver_parts[2]]),
+  darwin_versions: [
+    ver_darwin_compat,
+    '.'.join([ver_darwin_compat, ver_parts[2]])
+  ],
   gnu_symbol_visibility: 'hidden',
   dependencies: deps,
   install: true,
