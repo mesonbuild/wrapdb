@@ -1,4 +1,4 @@
-project('libffi', 'c', version : '3.4.4',
+project('libffi', 'c', version : '3.4.6',
         meson_version : '>= 0.56.0',
         default_options : ['debug=true',
                            'optimization=3',
@@ -128,9 +128,15 @@ elif (host_cpu_family in ['hppa', 'hppa64'] and host_system in ['linux', 'openbs
   asm_sources = ['linux.S']
 elif host_cpu_family == 'hppa' and host_system in ['hpux']
   # FIXME: hppa family is missing in Meson
-  target = 'PA_HPUX'
   targetdir = 'pa'
-  asm_sources = ['hpux32.S']
+  if size_t == 4
+    target = 'PA_HPUX'
+    asm_sources = ['hpux32.S']
+  else
+    target = 'PA64_HPUX'
+    c_sources = ['ffi64.c']
+    asm_sources = ['hpux64.S']
+  endif
 elif host_cpu_family == 'x86' and host_system in ['freebsd', 'openbsd']
   target = 'X86_FREEBSD'
   targetdir = 'x86'
@@ -226,7 +232,7 @@ elif host_cpu_family == 'or1k'
   # FIXME: or1k family is missing in Meson
   target = 'OR1K'
 elif (host_cpu_family in ['ppc', 'ppc64'] and \
-      host_system in ['linux', 'sysv', 'amigaos', 'eabi', 'beos', 'rtems']) or \
+      host_system in ['linux', 'sysv', 'amigaos', 'eabi', 'beos', 'haiku', 'rtems']) or \
      (host_cpu_family == 'ppc64' and host_system == 'freebsd')
   target = 'POWERPC'
   c_sources = ['ffi.c', 'ffi_sysv.c', 'ffi_linux64.c']
@@ -274,6 +280,8 @@ elif host_cpu_family == 'vax'
   # FIXME: vax family is missing in Meson
   target = 'VAX'
   asm_sources = ['elfbsd.S']
+elif host_cpu_family == 'wasm32'
+  target = 'wasm32' # lowercase
 elif host_cpu_family == 'xtensa'
   # FIXME: xtensa family is missing in Meson
   target = 'XTENSA'

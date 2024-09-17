@@ -19,7 +19,7 @@ args += ['-Werror', '-S', infile, '-o', outfile]
 res = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True, check=True)
 
 with open(outfile, 'r') as f:
-    if re.search('(\.hidden|\.private_extern).*foo', f.read()):
+    if re.search('(\.hidden|\.private_extern).*foo|foo.*,hidden', f.read()):
         sys.exit(0)
 print('.hidden not found in the outputted assembly')
 sys.exit(1)
