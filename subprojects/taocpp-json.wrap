@@ -1,0 +1,9 @@
+[wrap-file]
+directory = json-1.0.0-beta.14
+source_url = https://github.com/taocpp/json/archive/refs/tags/1.0.0-beta.14.tar.gz
+source_filename = taocpp-json-1.0.0-beta.14.tar.gz
+source_hash = f9e44a1d6a70a6d39b9e45df76eac928e69f5318e5a957fd5c0efdf45dacaf5e
+patch_directory = taocpp-json
+
+[provide]
+taocpp-json = taocpp_json_dep
