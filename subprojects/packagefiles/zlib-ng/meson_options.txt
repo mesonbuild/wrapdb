@@ -1,0 +1,158 @@
+option(
+  'gzfileop',
+  description: 'Compile with support for gzFile related functions',
+  type: 'boolean',
+  value: true
+)
+option(
+  'tests',
+  description: 'Compile tests',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'zlib-compat',
+  description: 'Compile with zlib compatible API',
+  type: 'boolean',
+  value: false
+)
+
+# advanced options
+# generic
+option(
+  'unaligned',
+  description: 'Support unaligned reads on platforms that support it',
+  type: 'boolean',
+  value: true
+)
+option(
+  'inflate-strict',
+  description: 'Build with strict inflate distance checking',
+  type: 'boolean',
+  value: false
+)
+option(
+  'inflate-allow-invalid-dist',
+  description: 'Build with zero fill for inflate invalid distances',
+  type: 'boolean',
+  value: false
+)
+# ARM
+option(
+  'armv6',
+  description: 'Build with ARMv6 SIMD',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'acle',
+  description: 'Build with ACLE',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'neon',
+  description: 'Build with NEON intrinsics',
+  type: 'feature',
+  value: 'auto'
+)
+# Power
+option(
+  'altivec',
+  description: 'Build with AltiVec (VMX) intrinsics',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'power8',
+  description: 'Build with POWER8 intrinsics',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'power9',
+  description: 'Build with POWER9 intrinsics',
+  type: 'feature',
+  value: 'auto'
+)
+# RISC-V
+option(
+  'rvv',
+  description: 'Build with RVV intrinsics',
+  type: 'feature',
+  value: 'auto'
+)
+# S390
+option(
+  'crc32-vx',
+  description: 'Build with vectorized CRC32 on IBM Z',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'dfltcc-deflate',
+  description: 'Build with DFLTCC intrinsics for compression on IBM Z (off by default)',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'dfltcc-inflate',
+  description: 'Build with DFLTCC intrinsics for decompression on IBM Z (off by default)',
+  type: 'feature',
+  value: 'auto'
+)
+# x86
+option(
+  'sse2',
+  description: 'Build with SSE2',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'force-sse2',
+  description: 'Assume CPU is SSE2 capable',
+  type: 'boolean',
+  value: false
+)
+option(
+  'ssse3',
+  description: 'Build with SSSE3',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'sse42',
+  description: 'Build with SSE4.2',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'pclmulqdq',
+  description: 'Build with PCLMULQDQ',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'avx2',
+  description: 'Build with AVX2',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'avx512',
+  description: 'Build with AVX512',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'avx512vnni',
+  description: 'Build with AVX512 VNNI extensions',
+  type: 'feature',
+  value: 'auto'
+)
+option(
+  'vpclmulqdq',
+  description: 'Build with VPCLMULQDQ',
+  type: 'feature',
+  value: 'auto'
+)

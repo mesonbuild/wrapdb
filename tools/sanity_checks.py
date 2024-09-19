@@ -127,6 +127,10 @@ PER_PROJECT_PERMITTED_FILES = {
         'makedef.py',
         'stddef.h.in',
     ],
+    'zlib-ng': [
+        'get-version.py',
+        'process-zconf.py',
+    ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
