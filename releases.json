@@ -3834,6 +3834,14 @@
       "1.2.8-2"
     ]
   },
+  "zlib-ng": {
+    "dependency_names": [
+      "zlib-ng"
+    ],
+    "versions": [
+      "2.2.2-1"
+    ]
+  },
   "zpp_bits": {
     "dependency_names": [
       "zpp_bits"
