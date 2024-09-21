@@ -28,8 +28,9 @@ cdata = configuration_data()
 
 cdata.set10('HOST_BIG_ENDIAN', host_machine.endian() == 'big')
 if host_machine.endian() == 'big'
-  # missing cmakedefine in tif_config.h.cmake.in.  this is how upstream
-  # handles it in cmake/ProcessorChecks.cmake
+  # missing cmakedefine in tif_config.h.cmake.in
+  # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
+  # this is how upstream handles it in cmake/ProcessorChecks.cmake
   add_project_arguments('-DWORDS_BIGENDIAN', language : 'c')
 endif
 
@@ -74,6 +75,29 @@ endforeach
 cdata.set('HAVE_JBG_NEWLEN', jbig_dep.found())
 cdata.set10('HAVE_DECL_OPTARG', cc.has_header_symbol('unistd.h', 'optarg'))
 cdata.set10('HAVE_GETOPT', cc.has_header_symbol('getopt.h', 'getopt'))
+
+if jpeg_dep.found()
+  if jpeg_dep.type_name() == 'internal'
+    # libjpeg is coming from a sibling subproject that hasn't been built
+    # yet, so we can't inspect build artifacts.  The best we can do is
+    # assume it's libjpeg-turbo rather than an out-of-tree libjpeg wrap,
+    # and check its version number.
+    have_jpeg12 = jpeg_dep.version().version_compare('>=3')
+    if have_jpeg12
+      message('Found sibling libjpeg-turbo >= 3.0.0; enabling 12-bit JPEG support')
+    endif
+  else
+    have_jpeg12 = cc.has_function(
+      'jpeg12_read_scanlines',
+      dependencies: jpeg_dep
+    )
+  endif
+  if have_jpeg12
+    # missing cmakedefine in tif_config.h.cmake.in
+    # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
+    add_project_arguments('-DHAVE_JPEGTURBO_DUAL_MODE_8_12', language : 'c')
+  endif
+endif
 
 cdata.set('PACKAGE_BUGREPORT', 'tiff@lists.osgeo.org')
 cdata.set('PACKAGE_NAME', 'LibTIFF Software')
