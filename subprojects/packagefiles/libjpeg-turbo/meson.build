@@ -185,7 +185,7 @@ jpeg16 = static_library('jpeg16', jpeg16_sources,
   pic: get_option('default_library') != 'static',
 )
 jpeg = library('jpeg', sources,
-  link_with: [jpeg12, jpeg16, simd],
+  link_whole: [jpeg12, jpeg16, simd],
   soversion: so_version,
   vs_module_defs: vs_defs,
   install: true,
