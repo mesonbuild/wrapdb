@@ -31,6 +31,7 @@ tests = [
   'rewrite_tag',
   'test_append_to_strip',
   'test_directory',
+  'test_IFD_enlargement',
   'test_open_options',
   'test_signed_tags',
   'testtypes',
