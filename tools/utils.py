@@ -128,3 +128,6 @@ def is_msys() -> bool:
 
 def is_macos():
     return any(platform.mac_ver()[0])
+
+def split_version_revision(version: str) -> T.Tuple[str, str]:
+    return version.rsplit('-', 1)

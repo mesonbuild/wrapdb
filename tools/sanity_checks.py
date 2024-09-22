@@ -27,7 +27,7 @@ import io
 import sys
 
 from pathlib import Path
-from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
+from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys, split_version_revision
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -255,7 +255,7 @@ class TestReleases(unittest.TestCase):
                 # a corresponding tag already.
                 for i, v in enumerate(versions):
                     t = f'{name}_{v}'
-                    ver, rev = v.rsplit('-', 1)
+                    ver, rev = split_version_revision(v)
                     with self.subTest(step='valid release name'):
                         self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
                         self.assertTrue(re.fullmatch('[0-9]+', rev))
