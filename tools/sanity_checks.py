@@ -256,7 +256,7 @@ class TestReleases(unittest.TestCase):
                 for i, v in enumerate(versions):
                     t = f'{name}_{v}'
                     ver, rev = split_version_revision(v)
-                    with self.subTest(step='valid release name'):
+                    with self.subTest(step='valid release version'):
                         self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
                         self.assertTrue(re.fullmatch('[0-9]+', rev))
                     if i == 0:
