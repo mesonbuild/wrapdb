@@ -1,7 +1,7 @@
 project(
   'dlfcn-win32',
   'c',
-  version: '1.3.1',
+  version: '1.4.1',
   meson_version: '>=0.49.0',
 )
 
