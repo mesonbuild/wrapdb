@@ -26,6 +26,7 @@ import re
 import sys
 import time
 from typing import TypedDict
+from utils import split_version_revision
 
 import requests
 
@@ -113,7 +114,7 @@ def get_releases() -> dict[str, WrapInfo]:
 def get_wrap_versions() -> dict[str, str]:
     '''Return a dict: wrap_name -> wrapdb_version.'''
     return {
-        name: info['versions'][0].split('-')[0]
+        name: split_version_revision(info['versions'][0])[0]
         for name, info in get_releases().items()
         if name not in DEPRECATED_WRAPS
     }
@@ -219,7 +220,7 @@ def do_autoupdate(args: Namespace) -> None:
                 # only allow for ports, since official wraps can't have
                 # downstream changes
                 print(f'Updating {name} revision...')
-                cur_rev = int(releases[name]['versions'][0].split('-')[1])
+                cur_rev = int(split_version_revision(releases[name]['versions'][0])[1])
                 releases[name]['versions'].insert(
                     0, f'{cur_vers[name]}-{cur_rev + 1}'
                 )
