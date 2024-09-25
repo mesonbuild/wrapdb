@@ -2,7 +2,7 @@ project(
   'gdbm',
   'c',
   version: '1.23',
-  license: 'lgpl',
+  license: 'GPL-3.0-or-later',
   meson_version: '>=0.49.0',
 )
 
