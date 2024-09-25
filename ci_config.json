@@ -16,7 +16,6 @@
     "google-woff2",
     "mocklibc",
     "termbox",
-    "ludocode-mpack",
     "m4",
     "tinyply"
   ],
