@@ -3,7 +3,9 @@ project(
   'c',
   version: '2.2.0',
   license: 'zlib',
-  default_options: ['c_std=gnu99'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+  ],
 )
 
 sdl2_net_src = files(

@@ -3,7 +3,11 @@ project(
   'c',
   version: '1.2.1',
   license: 'BSD-3-Clause',
-  default_options: ['c_std=gnu99', 'default_library=both', 'warning_level=0'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+    'default_library=both',
+    'warning_level=0'
+  ],
 )
 
 # library versioning from speexdsp-1.2.0's configure.ac

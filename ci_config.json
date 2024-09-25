@@ -293,8 +293,6 @@
     ]
   },
   "giflib": {
-    "_comment": "ignore deprecation warning with MSVC: `None of the values ['gnu99'] are supported by the c compiler.`",
-    "fatal_warnings": false,
     "alpine_packages": [
       "diffutils"
     ],
