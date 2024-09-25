@@ -2,7 +2,9 @@ project(
   'giflib',
   'c',
   version: '5.2.2',
-  default_options: 'c_std=gnu99',
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+  ],
   meson_version: '>=0.59.0',
 )
 

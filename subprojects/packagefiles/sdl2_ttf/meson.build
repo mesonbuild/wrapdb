@@ -3,7 +3,9 @@ project(
   'c',
   version: '2.20.1',
   license: 'zlib',
-  default_options: ['c_std=gnu99'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+  ],
 )
 
 cc = meson.get_compiler('c')
