@@ -1,14 +1,16 @@
 project('json-c', 'c',
-  version: '0.17',
+  version: '0.18',
   license: 'MIT',
   meson_version: '>=0.49',
-  default_options: ['c_std=gnu99'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99'
+  ],
 )
 
 cc = meson.get_compiler('c')
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-DWIN32=_WIN32', language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
 else
   add_project_arguments('-D_GNU_SOURCE', language: 'c')
 endif
@@ -81,6 +83,7 @@ libjson_c = library(
   sources,
   include_directories: inc,
   install: true,
+  version: '5.4.0',
 )
 
 json_c_dep = declare_dependency(
