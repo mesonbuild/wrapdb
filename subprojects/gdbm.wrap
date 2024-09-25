@@ -1,8 +1,8 @@
 [wrap-file]
-directory = gdbm-1.23
-source_url = ftp://ftp.gnu.org/gnu/gdbm/gdbm-1.23.tar.gz
-source_filename = gdbm-1.23.tar.gz
-source_hash = 74b1081d21fff13ae4bd7c16e5d6e504a4c26f7cde1dca0d963a484174bbcacd
+directory = gdbm-1.24
+source_url = https://ftp.gnu.org/gnu/gdbm/gdbm-1.24.tar.gz
+source_filename = gdbm-1.24.tar.gz
+source_hash = 695e9827fdf763513f133910bc7e6cfdb9187943a4fec943e57449723d2b8dbf
 patch_directory = gdbm
 
 [provide]
