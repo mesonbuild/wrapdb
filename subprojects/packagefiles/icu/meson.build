@@ -2,9 +2,9 @@ project(
   'icu',
   'c',
   'cpp',
-  version: '73.2',
+  version: '75.1',
   meson_version: '>=0.57.0',
-  default_options: 'cpp_std=c++17',
+  default_options: ['c_std=c11', 'cpp_std=c++17'],
 )
 
 U_ICU_VERSION = meson.project_version()
