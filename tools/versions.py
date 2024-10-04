@@ -146,15 +146,18 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
 
     # update versions
     # rewrite wrap manually to preserve comments and spacing
+    replacements = [
+        (old_ver, new_ver),
+    ]
+    if old_ver.count('.') == 2 and new_ver.count('.') == 2:
+        # some projects use URLs like .../projname/2.60/projname-2.60.3.tar.gz
+        # this substitution must be done last
+        replacements.append(
+            ('.'.join(old_ver.split('.')[:2]), '.'.join(new_ver.split('.')[:2]))
+        )
     for i, line in enumerate(lines):
-        line = line.replace(old_ver, new_ver)
-        if old_ver.count('.') == 2 and new_ver.count('.') == 2:
-            # some projects use URLs like
-            # .../projname/2.60/projname-2.60.3.tar.gz
-            line = line.replace(
-                '.'.join(old_ver.split('.')[:2]),
-                '.'.join(new_ver.split('.')[:2])
-            )
+        for old, new in replacements:
+            line = line.replace(old, new)
         if '=' in line:
             k, v = line.split('=', 1)
             if k.strip() == 'source_url':
