@@ -148,6 +148,8 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
     # rewrite wrap manually to preserve comments and spacing
     replacements = [
         (old_ver, new_ver),
+        (old_ver.replace('.', '-'), new_ver.replace('.', '-')),
+        (old_ver.replace('.', '_'), new_ver.replace('.', '_')),
     ]
     if old_ver.count('.') == 2 and new_ver.count('.') == 2:
         # some projects use URLs like .../projname/2.60/projname-2.60.3.tar.gz
