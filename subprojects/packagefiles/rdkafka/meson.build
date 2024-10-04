@@ -2,7 +2,7 @@ project(
   'rdkafka',
   'c',
   'cpp',
-  version: '2.3.0',
+  version: '2.5.3',
   default_options: ['cpp_std=c++17', 'c_std=c11', 'warning_level=0'],
   meson_version: '>=0.57.0',
 )
@@ -39,8 +39,8 @@ if cc.get_argument_syntax() == 'msvc'
 endif
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'c')
-  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'cpp')
+  add_project_arguments('-D_WIN32_WINNT=0x0600', '-DUNICODE', language: 'c')
+  add_project_arguments('-D_WIN32_WINNT=0x0600', '-DUNICODE', language: 'cpp')
 endif
 
 hdr = files(
@@ -50,6 +50,12 @@ hdr = files(
 subdir('include-workaround-meson/librdkafka')
 
 srcc = files(
+  'src/nanopb/pb_common.c',
+  'src/nanopb/pb_decode.c',
+  'src/nanopb/pb_encode.c',
+  'src/opentelemetry/common.pb.c',
+  'src/opentelemetry/metrics.pb.c',
+  'src/opentelemetry/resource.pb.c',
   'src/crc32c.c',
   'src/rdaddr.c',
   'src/rdavl.c',
@@ -97,6 +103,9 @@ srcc = files(
   'src/rdkafka_sasl_plain.c',
   'src/rdkafka_sticky_assignor.c',
   'src/rdkafka_subscription.c',
+  'src/rdkafka_telemetry.c',
+  'src/rdkafka_telemetry_decode.c',
+  'src/rdkafka_telemetry_encode.c',
   'src/rdkafka_timer.c',
   'src/rdkafka_topic.c',
   'src/rdkafka_transport.c',
@@ -252,6 +261,7 @@ rdkafka = library(
   srcc,
   install: true,
   dependencies: rdkafka_deps,
+  include_directories: include_directories('src'),
 )
 
 depinc = include_directories('include-workaround-meson')
