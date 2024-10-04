@@ -448,6 +448,7 @@
       "concurrentqueue"
     ],
     "versions": [
+      "1.0.4-1",
       "1.0.3-1"
     ]
   },
