@@ -2693,6 +2693,14 @@
       "1.21.0-1"
     ]
   },
+  "openblas": {
+    "dependency_names": [
+      "openblas"
+    ],
+    "versions": [
+      "0.3.28-1"
+    ]
+  },
   "opencl-headers": {
     "dependency_names": [
       "opencl-headers"
