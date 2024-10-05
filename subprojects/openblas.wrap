@@ -1,0 +1,9 @@
+[wrap-file]
+directory = OpenBLAS-0.3.28
+source_url = https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.28/OpenBLAS-0.3.28.tar.gz
+source_filename = OpenBLAS-0.3.28.tar.gz
+source_hash = f1003466ad074e9b0c8d421a204121100b0751c96fc6fcf3d1456bd12f8a00a1
+patch_directory = openblas
+
+[provide]
+openblas = openblas_dep
