@@ -800,6 +800,28 @@
       "nowide:tests=true"
     ]
   },
+  "openblas": {
+    "_comment": "Doesn't work with windows native compilers",
+    "build_on": {
+      "windows": false
+    },
+    "alpine_packages": [
+      "gfortran"
+    ],
+    "brew_packages": [
+      "coreutils",
+      "gfortran"
+    ],
+    "debian_packages": [
+      "libtinfo5",
+      "gfortran"
+    ],
+    "msys_packages": [
+      "base-devel",
+      "mingw-w64-ucrt-x86_64-toolchain",
+      "mingw-w64-ucrt-x86_64-fc"
+    ]
+  },
   "openh264": {
     "alpine_packages": [
       "nasm"
