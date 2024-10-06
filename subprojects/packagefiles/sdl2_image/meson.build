@@ -153,6 +153,7 @@ sdl2_image_lib = library(
   objc_args: full_library_args,
   dependencies: deps,
   gnu_symbol_visibility: 'hidden',
+  install: true
 )
 
 depinc = include_directories('.')
