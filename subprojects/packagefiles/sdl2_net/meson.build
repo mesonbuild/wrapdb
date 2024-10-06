@@ -32,6 +32,7 @@ sdl2_net = library(
   sdl2_net_src,
   dependencies: [sdl2_dep, plat_libs],
   c_args: plat_args,
+  install: true
 )
 
 sdl2_net_dep = declare_dependency(
