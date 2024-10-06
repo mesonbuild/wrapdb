@@ -24,6 +24,7 @@ sdl2_ttf = library(
   'SDL_ttf.c',
   c_args: c_args,
   dependencies: [freetype_dep, m_dep, sdl2_dep],
+  install: true
 )
 
 depinc = include_directories('.')
