@@ -718,6 +718,18 @@
       "lmdb:programs=true"
     ]
   },
+  "lz4": {
+    "_comment": [
+      "- Examples and ossfuzz fail to build on some platforms",
+      "- Programs fail to build on macOS: https://github.com/lz4/lz4/pull/1522",
+      "- Tests fail to build on Alpine if debug level is non-zero: https://github.com/lz4/lz4/pull/1524"
+    ],
+    "build_options": [
+      "lz4:debug-level=0",
+      "lz4:ossfuzz=false",
+      "lz4:tests=true"
+    ]
+  },
   "magic_enum": {
     "build_options": [
       "magic_enum:test=false"
