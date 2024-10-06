@@ -20,6 +20,10 @@ cc = meson.get_compiler('c')
 if host_machine.system() == 'windows'
   plat_args = ['-DWIN32']
   plat_libs = [cc.find_library('ws2_32'), cc.find_library('iphlpapi')]
+
+    if get_option('default_library') != 'static'
+      plat_args += '-DDLL_EXPORT'
+    endif
 else
   plat_args = []
   plat_libs = []
