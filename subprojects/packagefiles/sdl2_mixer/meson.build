@@ -65,6 +65,7 @@ sdl2_mixer_lib = library(
   c_args: feature_args,
   include_directories: incdirs,
   dependencies: [vorbisfile_dep, vorbis_dep, ogg_dep, opus_dep, mpg123_dep, flac_dep, sdl2_dep],
+  install: true
 )
 
 sdl2_mixer_dep = declare_dependency(
