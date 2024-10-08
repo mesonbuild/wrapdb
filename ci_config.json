@@ -769,7 +769,10 @@
       "arrow"
     ],
     "build_options": [
-      "nanoarrow:NANOARROW_BUILD_TESTS=true"
+      "nanoarrow:tests=true",
+      "nanoarrow:ipc=true",
+      "nanoarrow:device=true",
+      "nanoarrow:testing=true"
     ]
   },
     "nanobind": {
