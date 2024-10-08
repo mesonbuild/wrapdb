@@ -2464,6 +2464,7 @@
       "nanoarrow"
     ],
     "versions": [
+      "33d2c8b973d8f8f424e02ac92ddeaace2a92f8dd-1",
       "0.5.0-1"
     ]
   },
