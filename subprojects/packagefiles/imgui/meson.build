@@ -2,7 +2,7 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.91.0',
+  version: '1.91.3',
   meson_version: '>=0.50.0',
 )
 
@@ -57,10 +57,15 @@ if libgl_dep.found()
   dependencies += libgl_dep
   dependencies += cpp.find_library('dl', required: false)
 endif
-sdl2_renderer_dep = dependency('sdl2', version: '>=2.0.17', required: get_option('sdl_renderer'))
+sdl2_renderer_dep = dependency('sdl2', version: '>=2.0.17', required: get_option('sdl2_renderer'))
 if sdl2_renderer_dep.found()
   sources += 'backends/imgui_impl_sdlrenderer2.cpp'
   dependencies += sdl2_renderer_dep
+endif
+sdl3_renderer_dep = dependency('sdl3', version: '>=3.1.3', required: get_option('sdl3_renderer'))
+if sdl3_renderer_dep.found()
+  sources += 'backends/imgui_impl_sdlrenderer3.cpp'
+  dependencies += sdl3_renderer_dep
 endif
 vulkan_dep = dependency('vulkan', required: get_option('vulkan'))
 if vulkan_dep.found()
@@ -81,6 +86,11 @@ sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 if sdl2_dep.found()
   sources += 'backends/imgui_impl_sdl2.cpp'
   dependencies += sdl2_dep
+endif
+sdl3_dep = dependency('sdl3', required: get_option('sdl3'))
+if sdl3_dep.found()
+  sources += 'backends/imgui_impl_sdl3.cpp'
+  dependencies += sdl3_dep
 endif
 osx_dep = dependency('appleframeworks', modules: ['Carbon', 'Cocoa', 'GameController'], required: get_option('osx'))
 if osx_dep.found()
