@@ -1,12 +1,30 @@
 project('cppzmq', 'cpp',
   version : '4.10.0',
   license : 'MIT',
-  meson_version: '>=0.47.0',
+  meson_version: '>=0.60.0',
 )
 
 libzmq_dep = dependency('libzmq')
 
 cppzmq_dep = declare_dependency(include_directories: include_directories('.'), dependencies: libzmq_dep)
+
+# install
+install_headers('zmq.hpp', 'zmq_addon.hpp')
+conf_data = configuration_data()
+conf_data.set('CMAKE_INSTALL_PREFIX', get_option('prefix'))
+conf_data.set('CMAKE_INSTALL_FULL_INCLUDEDIR', get_option('prefix') / get_option('includedir'))
+conf_data.set('PROJECT_NAME', meson.project_name())
+conf_data.set('PROJECT_VERSION', meson.project_version())
+conf_data.set('pkg_config_defines', '')
+configure_file(
+  input: 'cppzmq.pc.in',
+  output: 'cppzmq.pc',
+  configuration: conf_data,
+  install: true,
+  install_tag: 'devel',
+  install_dir: get_option('datadir') / 'pkgconfig',
+)
+
 
 # examples
 if get_option('examples')
