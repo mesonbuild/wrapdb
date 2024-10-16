@@ -53,4 +53,5 @@ pkgconfig.generate(
   libsqlite3,
   description: 'An embedded SQL database engine',
   version: meson.project_version(),
+  extra_cflags: sqlite_args,
 )
