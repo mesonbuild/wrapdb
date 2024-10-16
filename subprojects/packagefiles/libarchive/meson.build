@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.6',
+  version: '3.7.7',
   meson_version: '>=0.54.1',
 )
 
