@@ -16,11 +16,44 @@ libm = cc.find_library('m', required: false)
 
 sources = files('sqlite3.c')
 if host_machine.system() == 'windows'
-  sqlite_args = get_option('default_library') != 'static' ? '-DSQLITE_API=__declspec(dllexport)' : []
+  sqlite_args = get_option('default_library') != 'static' ? ['-DSQLITE_API=__declspec(dllexport)'] : []
   libthreads = dependency('', required: false)
 else
-  sqlite_args = '-DSQLITE_API=__attribute__((visibility("default")))'
+  sqlite_args = ['-DSQLITE_API=__attribute__((visibility("default")))']
   libthreads = dependency('threads')
+endif
+
+foreach h: [
+  'inttypes.h',
+  'malloc.h',
+  'stdint.h',
+]
+  if cc.has_header(h)
+    sqlite_args += '-DHAVE_' + h.to_upper().underscorify()
+  endif
+endforeach
+
+foreach signed: ['', 'u']
+  foreach width: ['8', '16', '32']
+    typ = signed + 'int' + width + '_t'
+    if cc.has_type(typ, prefix: '#include <stdint.h>')
+      sqlite_args += '-DHAVE_' + typ.to_upper()
+    endif
+  endforeach
+endforeach
+
+foreach f: [
+  'malloc_usable_size',
+  'posix_fallocate',
+  'strchrnul',
+  'strerror_r',
+]
+  if cc.has_function(f)
+    sqlite_args += '-DHAVE_' + f.to_upper()
+  endif
+endforeach
+if cc.has_function('isnan', dependencies: libm)
+  sqlite_args += '-DSQLITE_HAVE_ISNAN'
 endif
 
 libsqlite3 = library(
