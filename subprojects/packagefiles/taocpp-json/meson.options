@@ -1,0 +1,18 @@
+option(
+    'tests',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build test programs',
+)
+option(
+    'examples',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build example programs',
+)
+option(
+    'perfs',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build perf programs',
+)
