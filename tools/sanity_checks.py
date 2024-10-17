@@ -87,6 +87,14 @@ PER_PROJECT_PERMITTED_FILES = {
     'openal-soft': [
         'hexify.py'
     ],
+    'openblas': [
+        'gen_install_headers.py',
+        'prepare_config_last.py',
+        'read_config.py',
+        'write_to_file.py',
+        'test_runner.c',
+        'run_fortran.c',
+    ],
     'protobuf': [
         'symlink.py',
     ],
