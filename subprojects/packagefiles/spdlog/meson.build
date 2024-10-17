@@ -50,4 +50,16 @@ else
   )
 endif
 
+# install header and pkg-config file
+install_subdir('include/spdlog', install_dir: get_option('includedir'))
+pkg = import('pkgconfig')
+pkg.generate(
+  name: 'libspdlog',
+  filebase: 'spdlog',
+  description: 'Fast C++ logging library.',
+  url: 'https://github.com/gabime/spdlog',
+  libraries: [spdlog_dep, fmt_dep],
+  extra_cflags: spdlog_compile_args,
+)
+
 subdir('tests')
