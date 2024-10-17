@@ -1,7 +1,7 @@
 project(
   'msgpack-cxx', 'cpp',
   version: '6.1.1',
-  meson_version: '>=0.47.0',
+  meson_version: '>=0.48.0',
 )
 
 args = []
@@ -32,5 +32,8 @@ msgpack_cxx_dep = declare_dependency(
   include_directories: include_directories('include'),
   dependencies: boost_dep,
 )
+
+install_headers('include/msgpack.hpp')
+install_subdir('include/msgpack', install_dir: get_option('includedir'))
 
 subdir('test')
