@@ -1,9 +1,11 @@
 project(
   'libuv',
   'c',
-  version: '1.48.0',
+  version: '1.49.1',
   license: 'libuv',
-  default_options: ['c_std=gnu99,c99'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+  ],
   meson_version: '>=0.49.0',
 )
 
@@ -287,6 +289,11 @@ if apple
 endif
 
 if gnu
+  libuv_cargs += [
+    '-D_GNU_SOURCE',
+    '-D_POSIX_C_SOURCE=200112',
+    '-D_XOPEN_SOURCE=500',
+  ]
   libuv_libs += ['dl']
   libuv_src += files(
     'src/unix/bsd-ifaddrs.c',
@@ -531,6 +538,7 @@ if libuv_build_tests
     'test/test-hrtime.c',
     'test/test-idle.c',
     'test/test-idna.c',
+    'test/test-iouring-pollhup.c',
     'test/test-ip-name.c',
     'test/test-ip4-addr.c',
     'test/test-ip6-addr.c',
@@ -609,6 +617,7 @@ if libuv_build_tests
     'test/test-tcp-open.c',
     'test/test-tcp-read-stop-start.c',
     'test/test-tcp-read-stop.c',
+    'test/test-tcp-reuseport.c',
     'test/test-tcp-rst.c',
     'test/test-tcp-shutdown-after-write.c',
     'test/test-tcp-try-write-error.c',
@@ -650,6 +659,7 @@ if libuv_build_tests
     'test/test-udp-open.c',
     'test/test-udp-options.c',
     'test/test-udp-recv-in-a-row.c',
+    'test/test-udp-reuseport.c',
     'test/test-udp-send-and-recv.c',
     'test/test-udp-send-hang-loop.c',
     'test/test-udp-send-immediate.c',
