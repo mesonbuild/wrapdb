@@ -16,6 +16,7 @@ io_lib = library(
 )
 
 icuio_dep = declare_dependency(
+  include_directories: include_directories('.'),
   link_with: io_lib,
   dependencies: icui18n_dep,
 )
