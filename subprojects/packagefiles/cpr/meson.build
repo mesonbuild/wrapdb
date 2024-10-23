@@ -1,12 +1,12 @@
 project(
   'cpr',
   'cpp',
-  version: '1.10.5',
+  version: '1.11.0',
   license: 'MIT',
   default_options: 'cpp_std=c++17',
 )
 
-curl_dep = dependency('libcurl')
+curl_dep = dependency('libcurl', version: '>=7.64.0')
 thread_dep = dependency('threads')
 
 includes = include_directories('.', 'include')
