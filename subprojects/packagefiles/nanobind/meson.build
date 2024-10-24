@@ -52,6 +52,13 @@ if get_option('buildtype') == 'release'
   add_project_arguments('-DNB_COMPACT_ASSERTIONS', language: 'cpp')
 endif
 
+freethreaded = py.get_variable('Py_GIL_DISABLED', 0) != 0
+if freethreaded
+  freethreaded_def = '-DNB_FREE_THREADED'
+  add_project_arguments(freethreaded_def, language : 'cpp')
+  dep_compile_args += [freethreaded_def]
+endif
+
 nanobind_lib = static_library(
     'nanobind',
     sources: [
