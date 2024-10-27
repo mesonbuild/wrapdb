@@ -17,3 +17,14 @@ monocypher_dep = declare_dependency(
   include_directories: ['src', 'src/optional'],
   link_with: monocypher_lib,
 )
+
+monocypher_test = executable(
+  'monocypher_test', [
+    'tests/test.c',
+    'tests/utils.c',
+  ],
+  include_directories: ['tests'],
+  dependencies: monocypher_dep,
+)
+
+test('monocypher', monocypher_test)
