@@ -2424,6 +2424,14 @@
       "1.0-2"
     ]
   },
+  "monocypher": {
+    "dependency_names": [
+      "monocypher"
+    ],
+    "versions": [
+      "4.0.2-1"
+    ]
+  },
   "mpdecimal": {
     "dependency_names": [
       "mpdec",
