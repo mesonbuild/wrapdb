@@ -736,6 +736,11 @@
     ],
     "skip_tests": true
   },
+  "monocypher": {
+    "build_on": {
+      "windows": false
+    }
+  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",
