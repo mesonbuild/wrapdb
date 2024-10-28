@@ -82,6 +82,9 @@ configure_file(
   output: 'jansson_config.h',
   format: 'cmake@',
   configuration: cdata,
+  install: true,
+  install_dir: get_option('includedir'),
+  install_tag: 'devel'
 )
 
 jansson_lib = library('jansson',
@@ -96,8 +99,20 @@ jansson_lib = library('jansson',
   'src/strconv.c',
   'src/utf.c',
   'src/value.c',
+  'src/version.c',
   c_args : '-DHAVE_CONFIG_H',
-  vs_module_defs : 'src/jansson.def'
+  vs_module_defs : 'src/jansson.def',
+  install : true
+)
+
+install_headers('src/jansson.h')
+
+pkg = import('pkgconfig')
+
+pkg.generate(
+  jansson_lib,
+  name: 'jansson',
+  description: 'Library for encoding, decoding and manipulating JSON data'
 )
 
 jansson_dep = declare_dependency(
