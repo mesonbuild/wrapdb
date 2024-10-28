@@ -96,7 +96,8 @@ jansson_lib = library('jansson',
   'src/strconv.c',
   'src/utf.c',
   'src/value.c',
-  c_args : '-DHAVE_CONFIG_H'
+  c_args : '-DHAVE_CONFIG_H',
+  vs_module_defs : 'src/jansson.def'
 )
 
 jansson_dep = declare_dependency(
