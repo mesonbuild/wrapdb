@@ -1,0 +1,26 @@
+option(
+    'curl',
+    type: 'feature',
+    description: 'Enable linking with the curl library. Enables remote file i/o support',
+)
+option(
+    'reentrant',
+    type: 'feature',
+    description: 'Enable reentrant multithreading',
+)
+option(
+    'utils',
+    type: 'boolean',
+    description: 'Build fpack, funpack, fitscopy, and fitsverify executables',
+)
+option('hera', type: 'boolean', description: 'Build for HERA (ASD use only)')
+option(
+    'bzip2',
+    type: 'feature',
+    description: 'Enable bzip2 support. Optional path to the location of include/bzlib.h and lib/libbz2',
+)
+option(
+    'fortran',
+    type: 'feature',
+    description: 'Build package with Fortran support',
+)
