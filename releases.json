@@ -1498,6 +1498,14 @@
       "1.8.4-1"
     ]
   },
+  "kraken-engine": {
+    "dependency_names": [
+      "kraken-engine"
+    ],
+    "versions": [
+      "0.0.1-1"
+    ]
+  },
   "lame": {
     "dependency_names": [
       "mp3lame",
