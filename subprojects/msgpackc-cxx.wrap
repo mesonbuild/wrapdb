@@ -1,8 +1,8 @@
 [wrap-file]
-directory = msgpack-cxx-6.1.1
-source_url = https://github.com/msgpack/msgpack-c/releases/download/cpp-6.1.1/msgpack-cxx-6.1.1.tar.gz
-source_filename = msgpack-cxx-6.1.1.tar.gz
-source_hash = 5fd555742e37bbd58d166199e669f01f743c7b3c6177191dd7b31fb0c37fa191
+directory = msgpack-cxx-7.0.0
+source_url = https://github.com/msgpack/msgpack-c/releases/download/cpp-7.0.0/msgpack-cxx-7.0.0.tar.gz
+source_filename = msgpack-cxx-7.0.0.tar.gz
+source_hash = 7504b7af7e7b9002ce529d4f941e1b7fb1fb435768780ce7da4abaac79bb156f
 patch_directory = msgpackc-cxx
 
 [provide]
