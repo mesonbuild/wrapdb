@@ -94,7 +94,11 @@ pkg = import('pkgconfig')
 
 m_dep = cc.find_library('m', required: false)
 
-add_project_arguments('-DHAVE_CONFIG_H', '-DWEBP_DLL', language: 'c')
+add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+
+if get_option('default_library') != 'static'
+  add_project_arguments('-DWEBP_DLL', language: 'c')
+endif
 
 top_includes = include_directories('.', 'src')
 
