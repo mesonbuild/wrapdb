@@ -4,12 +4,9 @@
 # https://www.nginx.com/resources/wiki/start/
 # https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
 # https://wiki.debian.org/Nginx/DirectoryStructure
+##
 
 # This is the web server config for wrapdb.mesonbuild.com
-
-upstream uwsgi {
-  server 127.0.0.1:8081;
-}
 
 server {
   location /v2 {
@@ -19,7 +16,8 @@ server {
   }
 
   # Redirect legacy v1 patch URLs.
-  # FIXME: This breaks download of sqlite that has not been imported to v2 because it is replaced by sqlite3
+  # FIXME: This breaks download of sqlite that has not been imported to v2 because it is replaced by sqlite3 (xclaesse)
+  # NOTE: no longer needed, we now serve v1 patch URLs directly from a static files mirror (in /var/www/v1-static, see below) (Tim, Nov 2024)
   #location ~ get_zip$ {
   #  rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_zip https://github.com/mesonbuild/wrapdb/releases/download/$1_$2-$3/$1_$2-$3_patch.zip permanent;
   #}
@@ -28,18 +26,96 @@ server {
     return 301 https://mesonbuild.com/Wrapdb-projects.html;
   }
 
+  # Serve v1 files from a static mirror (requires redirects because the
+  # structure of the mirror can't 1:1 map to the file path in the request URIs,
+  # as we have to disambiguate files and directories for the same path).
+  # (Tim, 3 Nov 2024)
+  #
+  # See https://github.com/tp-m/wrapdb-v1-api-mirror/
+  #
+  location /v1/ {
 
-  location / {
-    try_files $uri @uwsgi;
+    # v1 project list redirect
+    location = /v1/projects {
+      return 301 https://wrapdb.mesonbuild.com/v1-static/-/projects;
+    }
+
+    # v1 project info redirect
+    location /v1/projects/ {
+      rewrite ^.*/v1/projects/([^/]+)$ https://wrapdb.mesonbuild.com/v1-static/projects/-/$1 permanent;
+    }
+
+    # v1 get_latest redirect to static mirror
+    location /v1/query/get_latest/ {
+      rewrite ^.*/v1/query/get_latest/([^/]+)$ https://wrapdb.mesonbuild.com/v1-static/query/get_latest/-/$1 permanent;
+    }
+
+    # v1 get_wrap redirect to static mirror
+    location ~ /v1/projects/[^/]+/[^/]+/[^/]+/get_wrap$ {
+      rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_wrap$ https://wrapdb.mesonbuild.com/v1-static/projects/$1/$2/$3/-/get_wrap permanent;
+      #rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_wrap$ https://wrapdb.mesonbuild.com/v1-static/projects/$1/$2/$3/$1-$2-$3.wrap permanent;
+    }
+
+    # v1 get_zip redirect to static mirror
+    location ~ /v1/projects/[^/]+/[^/]+/[^/]+/get_zip$ {
+      rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_zip$ https://wrapdb.mesonbuild.com/v1-static/projects/$1/$2/$3/-/get_zip permanent;
+      #rewrite ^.*/v1/projects/([^/]+)/([^/]+)/([^/]+)/get_zip$ https://wrapdb.mesonbuild.com/v1-static/projects/$1/$2/$3/$1-$2-$3-wrap.zip permanent;
+    }
   }
 
-  location /static {
-    root /home/legeana/wrapweb/wrapweb/;
-  }
+  # Make sure v1 files served from static mirror are decorated with the
+  # right Content-type and where applicable Content-disposition headers.
+  #
+  # Data: https://github.com/mesonbuild/wrapdb/pull/1772#issuecomment-2466273083
+  #
+  location /v1-static/ {
+    root /var/www/;
 
-  location @uwsgi {
-    include uwsgi_params;
-    uwsgi_pass uwsgi;
+    # v1 project list (json)
+    location = /v1-static/-/projects {
+      types { }
+      default_type application/json;
+    }
+
+    # v1 project info (json)
+    location /v1-static/projects/-/ {
+      types { }
+      default_type application/json;
+    }
+
+    # v1 project latest version (json)
+    location /v1-static/query/get_latest/ {
+      types { }
+      default_type application/json;
+    }
+
+    # v1 get_wrap (text)
+    location ~ /v1-static/projects/[^/]+/[^/]+/[^/]+/-/get_wrap$ {
+      types { }
+      default_type "text/plain; charset=utf-8";
+    }
+
+    # v1 wrap file full name alias (text) (bonus addition, not part of the original v1 api)
+    location ~ /v1-static/projects/[^/]+/[^/]+/[^/]+/[^/]+.wrap$ {
+      types { }
+      default_type "text/plain; charset=utf-8";
+    }
+
+    # v1 get_zip (zip)
+    location ~ /v1-static/projects/[^/]+/[^/]+/[^/]+/-/get_zip$ {
+      types { }
+      default_type application/zip;
+      if ( $request_filename ~ "^.*/projects/([^/]+)/([^/]+)/([^/]+)/-/get_zip$" ){
+            set $fname $1-$2-$3-wrap.zip;
+            add_header Content-Disposition 'attachment; filename=$fname';
+        }
+    }
+
+    # v1 zip file full name alias (zip) (bonus addition, not part of the original v1 api)
+    location ~ /v1-static/projects/[^/]+/[^/]+/[^/]+/[^/]+.zip$ {
+      types { }
+      default_type application/zip;
+    }
   }
 
   server_name wrapdb.mesonbuild.com;
