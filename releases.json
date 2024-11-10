@@ -280,6 +280,14 @@
       "1.18.0-1"
     ]
   },
+  "canfigger": {
+    "dependency_names": [
+      "canfigger-0.3.0"
+    ],
+    "versions": [
+      "0.3.0-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",

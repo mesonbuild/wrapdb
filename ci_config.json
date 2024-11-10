@@ -50,6 +50,12 @@
     "fatal_warnings": false,
     "skip_tests": true
   },
+  "canfigger": {
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"
