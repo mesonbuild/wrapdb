@@ -14,7 +14,7 @@ cc = meson.get_compiler('c')
 add_project_arguments(cc.get_supported_arguments('-Wno-string-plus-int', '-Wno-stringop-overflow'), language: 'c')
 
 # Platform-specific defines.
-is_posix = host_machine.system() not in ['windows', 'emscripten', 'android']
+is_posix = host_machine.system() in ['cygwin', 'darwin', 'dragonfly', 'freebsd', 'gnu', 'haiku', 'linux', 'netbsd', 'openbsd', 'sunos']
 if is_posix
   add_project_arguments('-DLUA_USE_POSIX', language: 'c')
 elif get_option('default_library') != 'static' and host_machine.system() == 'windows'
