@@ -169,6 +169,9 @@ class TestReleases(unittest.TestCase):
         # All tags must be in the releases file
         for t in self.tags:
             name, version = t.rsplit('_', 1)
+            # Those are imported tags from v1, they got renamed to sqlite3 and libjpeg-turbo.
+            if name in {'sqlite', 'libjpeg'}:
+                continue
             self.assertIn(name, self.releases)
             self.assertIn(version, self.releases[name]['versions'], f"for {name}")
 
