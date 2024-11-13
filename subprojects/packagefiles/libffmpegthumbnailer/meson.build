@@ -1,14 +1,10 @@
 project(
   'ffmpegthumbnailer',
   'cpp',
-  version: '2.2.2',
+  version: '2.2.3',
   default_options: ['warning_level=0', 'cpp_std=c++11'],
   meson_version: '>=0.54.1',
 )
-
-if host_machine.system() == 'windows'
-  error('Windows is not supported currently. See https://github.com/dirkvdb/ffmpegthumbnailer/commit/c2fba253f3751f9bb825defec66109e5d33c74d6')
-endif
 
 libavcodec_dep = dependency('libavcodec')
 libavfilter_dep = dependency('libavfilter')
