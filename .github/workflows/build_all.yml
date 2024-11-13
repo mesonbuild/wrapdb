@@ -154,7 +154,7 @@ jobs:
 
   MacOS:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
-    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-12' }}
+    runs-on: macos-latest
     env:
       TEST_BUILD_ALL: 1
       TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
