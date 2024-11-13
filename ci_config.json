@@ -512,10 +512,10 @@
   },
   "libffmpegthumbnailer": {
     "alpine_packages": [
-      "ffmpeg4-dev"
+      "ffmpeg-dev"
     ],
     "brew_packages": [
-      "ffmpeg@4"
+      "ffmpeg"
     ],
     "debian_packages": [
       "libavcodec-dev",
@@ -523,13 +523,11 @@
       "libavformat-dev",
       "libavutil-dev"
     ],
-    "_comment": "ffmpeg4 is keg-only. Need to add pkgconfig path.",
-    "build_options": [
-      "pkg_config_path=/usr/local/opt/ffmpeg@4/lib/pkgconfig"
+    "msys_packages": [
+      "ffmpeg"
     ],
-    "_comment": "Broken with Windows because of a header issue",
+    "_comment": "MSVC needs ffmpeg to build",
     "build_on": {
-      "msys2": false,
       "windows": false
     }
   },

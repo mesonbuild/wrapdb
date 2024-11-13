@@ -1,8 +1,8 @@
 [wrap-file]
-directory = ffmpegthumbnailer-2.2.2
-source_url = https://github.com/dirkvdb/ffmpegthumbnailer/releases/download/2.2.2/ffmpegthumbnailer-2.2.2.tar.bz2
-source_filename = ffmpegthumbnailer-2.2.2.tar.bz2
-source_hash = 1cb24059c38223f657b300c84dd80491b7040d4b69471c4fea69be862bc99b5b
+directory = ffmpegthumbnailer-2.2.3
+source_url = https://github.com/dirkvdb/ffmpegthumbnailer/archive/refs/tags/2.2.3.tar.gz
+source_filename = ffmpegthumbnailer-2.2.3.tar.gz
+source_hash = 8c9b9057c6cc8bce9d11701af224c8139c940f734c439a595525e073b09d19b8
 patch_directory = libffmpegthumbnailer
 
 [provide]
