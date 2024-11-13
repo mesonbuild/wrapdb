@@ -39,7 +39,7 @@ jobs:
       - uses: jirutka/setup-alpine@v1
         with:
           packages: >
-            build-base cmake git linux-headers pkgconf py3-pip samurai sudo
+            binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
       - uses: actions/checkout@v4
         with:
