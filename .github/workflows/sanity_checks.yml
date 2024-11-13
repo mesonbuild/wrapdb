@@ -140,7 +140,7 @@ jobs:
           python tools/sanity_checks.py
 
   MacOS:
-    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-12' }}
+    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
     strategy:
       fail-fast: false
       matrix:
