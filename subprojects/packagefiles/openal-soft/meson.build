@@ -259,7 +259,7 @@ if cdata.get('HAVE_NEON')
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
-if host_machine.system() == 'windows' or cpp.links('int main(){__sync_synchronize();}')
+if cpp.links('#include <atomic>\n#include <bitset>\nint main(){std::atomic<std::bitset<4u>> b;std::atomic_is_lock_free(&b);}')
   atomic_dep = dependency('', required: false)
 else
   atomic_dep = cpp.find_library('atomic', required: false)
