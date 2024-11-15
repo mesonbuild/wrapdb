@@ -1,7 +1,7 @@
 project(
   'sfml',
   'cpp',
-  version: '2.6.1',
+  version: '2.6.2',
   default_options: [
     'cpp_std=c++17',
     'wrap_mode=forcefallback',
