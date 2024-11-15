@@ -1,4 +1,9 @@
-project('fdk-aac', 'cpp', 'c', version: '2.0.2')
+project(
+  'fdk-aac',
+  'cpp',
+  'c',
+  version: '2.0.3',
+)
 
 fdk_aac_inc = [include_directories(
   'libAACdec/include',
@@ -360,7 +365,7 @@ fdk_aac_headers = [
 
 if host_machine.system() == 'windows'
   fdk_aac_src += files('win32/getopt.h')
-  fdk_aac_inc += [include_directories('win32')]
+  fdk_aac_inc += include_directories('win32')
 endif
 
 install_headers(files(fdk_aac_headers), subdir : 'fdk-aac')
@@ -373,23 +378,23 @@ m_dep = cc.find_library('m', required : false)
 
 extra_args = ['-Dfdk_aac_EXPORTS']
 if get_option('remove-date')
-  extra_args += ['-DSUPPRESS_BUILD_DATE_INFO']
+  extra_args += '-DSUPPRESS_BUILD_DATE_INFO'
 endif
 
 fdk_aac = library(
   'fdk_aac',
   fdk_aac_src,
-  dependencies: [m_dep],
+  dependencies: m_dep,
   include_directories : fdk_aac_inc,
   install : true,
-  cpp_args : cc.get_supported_arguments(['-fno-exceptions', '-fno-rtti']) + extra_args,
+  cpp_args : cc.get_supported_arguments('-fno-exceptions', '-fno-rtti') + extra_args,
   c_args: extra_args,
   vs_module_defs : 'fdk-aac.def',
 )
 
 fdk_aac_dep = declare_dependency(
   link_with : fdk_aac,
-  dependencies : [m_dep],
+  dependencies : m_dep,
   include_directories : fdk_aac_inc
 )
 
