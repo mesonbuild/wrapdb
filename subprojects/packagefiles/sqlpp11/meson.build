@@ -1,6 +1,7 @@
 project('sqlpp11', 'cpp', version: '0.64', license: 'BSD-2-Clause')
 
 meson.override_find_program('ddl2cpp', files('scripts/ddl2cpp'))
+meson.override_find_program('sqlite2cpp', files('scripts/sqlite2cpp.py'))
 
 connector_deps = []
 
