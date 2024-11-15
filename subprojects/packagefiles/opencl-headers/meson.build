@@ -2,7 +2,7 @@ project(
   'OpenCLHeaders',
   'c',
   license: 'Apache-2.0',
-  version: '2023.04.17',
+  version: '2024.10.24',
 )
 
 install_headers(

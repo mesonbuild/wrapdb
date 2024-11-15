@@ -1,8 +1,8 @@
 [wrap-file]
-directory = OpenCL-Headers-2023.04.17
-source_url = https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v2023.04.17.tar.gz
-source_filename = OpenCL-Headers-2023.04.17.tar.gz
-source_hash = 0ce992f4167f958f68a37918dec6325be18f848dee29a4521c633aae3304915d
+directory = OpenCL-Headers-2024.10.24
+source_url = https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v2024.10.24.tar.gz
+source_filename = OpenCL-Headers-2024.10.24.tar.gz
+source_hash = 159f2a550592bae49859fee83d372acd152328fdf95c0dcd8b9409f8fad5db93
 patch_directory = opencl-headers
 
 [provide]
