@@ -1,8 +1,8 @@
 [wrap-file]
-directory = quill-7.4.0
-source_url = https://github.com/odygrd/quill/archive/refs/tags/v7.4.0.tar.gz
-source_filename = quill-7.4.0.tar.gz
-source_hash = 749e6f75ee0889062f7135306832de5ad4d5d2e638b52316b5cd3f9af8671aff
+directory = quill-7.5.0
+source_url = https://github.com/odygrd/quill/archive/refs/tags/v7.5.0.tar.gz
+source_filename = quill-7.5.0.tar.gz
+source_hash = 18846d7c50f2ffe753661b204004fac2df9143e59cf150ecbe77315bc0b232c4
 
 [provide]
 quill = quill_dep
