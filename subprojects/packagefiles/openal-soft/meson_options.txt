@@ -6,6 +6,10 @@ option('jack', type: 'feature',
   description: 'JACK backend',
 )
 
+option('oboe', type: 'feature',
+  description: 'Oboe backend',
+)
+
 option('opensl', type: 'feature',
   description: 'OpenSL backend',
 )
