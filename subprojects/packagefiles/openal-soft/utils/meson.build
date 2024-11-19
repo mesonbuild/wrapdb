@@ -17,6 +17,6 @@ foreach u, d : utils
     u.split('.')[0],
     u,
     dependencies: d,
-    link_args: host_machine.system() == 'windows' ? '-municode' : [],
+    link_args: cpp.get_supported_arguments('-municode'),
   )
 endforeach
