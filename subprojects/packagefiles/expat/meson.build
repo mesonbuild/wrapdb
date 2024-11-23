@@ -49,7 +49,7 @@ else
 endif
 
 config.set('XML_DTD', get_option('xml_dtd'))
-config.set('XML_GE', get_option('xml_ge'))
+config.set10('XML_GE', get_option('xml_ge'))
 config.set('XML_NS', get_option('xml_ns'))
 
 foreach h : ['dlfcn', 'fcntl', 'inttypes', 'memory', 'stdint', 'stdlib', 'strings', 'string', 'sys/stat', 'sys/types', 'unistd']
