@@ -44,7 +44,7 @@ compiler = meson.get_compiler('cpp')
 cxx_id = compiler.get_id()
 if cxx_id == 'msvc'
   dep_compile_args += ['-D_CRT_SECURE_NO_WARNINGS']
-elif cxx_id == 'clang-dl'
+elif cxx_id == 'clang-cl'
   add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
 else
   # Discussion in WrapDB PR #1556 as to whether or not this is necessary
