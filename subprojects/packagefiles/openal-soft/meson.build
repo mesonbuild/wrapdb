@@ -1,7 +1,7 @@
 project(
   'openal-soft',
   'cpp',
-  version: '1.24.0',
+  version: '1.24.1',
   meson_version: '>=0.58',
   default_options: ['cpp_std=c++17', 'c_std=c11'],
 )
@@ -12,6 +12,7 @@ if meson.version().version_compare('>= 0.62')
 else
   dl_dep = cpp.find_library('dl', required: false)
 endif
+fmt_dep = dependency('fmt')
 thread_dep = dependency('threads')
 alsa_dep = dependency('alsa', required: get_option('alsa'))
 apple_dep = dependency('appleframeworks', modules: ['AudioToolbox', 'CoreAudio', 'CoreFoundation'], required: host_machine.system() == 'darwin')
@@ -27,9 +28,6 @@ rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
 sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
 sndio_dep = dependency('sndio', required: get_option('sndio'))
 solaris_dep = dependency('audioio', required: get_option('solaris'))
-
-#Disable SIMD on PPC for now. It's fixed in master, broken in releaee
-add_project_arguments('-DPFFFT_SIMD_DISABLE', language: 'cpp')
 
 if host_machine.system() == 'windows'
   add_project_arguments('-DNOMINMAX', language: 'cpp')
@@ -237,8 +235,12 @@ configure_file(input: 'config_simd.h.in', output: 'config_simd.h', format: 'cmak
 cdata = configuration_data()
 
 #ignore for now
-cdata.set('ALSOFT_EAX', false)
 cdata.set('ALSOFT_UWP', false)
+
+cdata.set('ALSOFT_EAX', host_machine.system() == 'windows')
+if cdata.get('ALSOFT_EAX')
+  alc_sources += files('al/eax/api.cpp', 'al/eax/call.cpp', 'al/eax/exception.cpp', 'al/eax/fx_slot_index.cpp', 'al/eax/fx_slots.cpp', 'al/eax/utils.cpp')
+endif
 
 cdata.set('HAVE_RTKIT', rtkit_dep.found())
 if cdata.get('HAVE_RTKIT')
@@ -292,7 +294,6 @@ endif
 common_lib = static_library(
   'common',
   common_sources,
-  dependencies: atomic_dep,
 )
 
 common_inc = include_directories('.')
@@ -300,7 +301,7 @@ common_inc = include_directories('.')
 common_dep = declare_dependency(
   link_with: common_lib,
   include_directories: common_inc,
-  dependencies: atomic_dep,
+  dependencies: [atomic_dep, fmt_dep],
 )
 
 openal_inc = include_directories('common', 'include', 'include/AL')
