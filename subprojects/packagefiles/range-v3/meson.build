@@ -7,4 +7,6 @@ range_dep = declare_dependency(
   include_directories : range_inc
 )
 
-subdir('test')
+if get_option('tests')
+  subdir('test')
+endif
