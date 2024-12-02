@@ -1579,6 +1579,14 @@
       "3.6.2-1"
     ]
   },
+  "libattr": {
+    "dependency_names": [
+      "libattr"
+    ],
+    "versions": [
+      "2.5.1-1"
+    ]
+  },
   "libccp4c": {
     "dependency_names": [
       "libccp4c"
