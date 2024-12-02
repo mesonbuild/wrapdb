@@ -1,0 +1,8 @@
+[wrap-file]
+directory = canfigger-0.3.0
+source_url = https://github.com/andy5995/canfigger/releases/download/v0.3.0/canfigger-0.3.0.tar.xz
+source_filename = canfigger-0.3.0.tar.xz
+source_hash = 3d813e69e0cc3a43c09cf565138ac1278f7bcea74053204f54e3872c094cb534
+
+[provide]
+canfigger-0.3.0 = canfigger_dep
