@@ -10,6 +10,6 @@ insert_final_newline = true
 [*.py]
 indent_size = 4
 
-[meson.build]
+[{meson.build,meson.options,meson_options.txt}]
 indent_size = 2
 
