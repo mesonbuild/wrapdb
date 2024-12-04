@@ -1,16 +1,15 @@
 import sys
 import subprocess
 import os
-import tempfile
 
 # We want to print line endings normally, but each line should be a b'' string
 def clean(x):
     lines = []
-    for l in x.splitlines():
-        if b'examples' in l:
-            lines.append(str(l.replace(b'\\',b'/')))
+    for line in x.splitlines():
+        if b'examples' in line:
+            lines.append(str(line.replace(b'\\',b'/')))
         else:
-            lines.append(str(l))
+            lines.append(str(line))
     return '\n'.join(lines)
 
 def check_error(run_result,
@@ -45,29 +44,28 @@ def check_error(run_result,
 def main() -> int:
     m4_path = sys.argv[1]
     input_path = sys.argv[2]
-    tmproot = sys.argv[3]
-    workdir = sys.argv[4]
+    workdir = sys.argv[3]
     examples_path = workdir + '/examples'
     if ':' in examples_path:
         examples_path = examples_path.partition(':')[2]
-    with open(input_path, 'rb') as input_file, tempfile.TemporaryDirectory(dir=tmproot) as tmpdir:
+    with open(input_path, 'rb') as input_file:
         expected_out = bytes()
         expected_err = bytes()
         ignore_err = False
         m4_input = bytes()
-        for l in input_file.read().splitlines():
-            if l.startswith(b'dnl @ expected status: '):
-                expected_code = int(l[len('dnl @ expected status: '):].rstrip())
-            if l.startswith(b'dnl @ extra options: '):
-                args = l[len('dnl @ extra options: '):].rstrip().decode()
-            if l.startswith(b'dnl @result{}'):
-                expected_out += l[len('dnl @result{}'):] + os.linesep.encode()
-            if l.startswith(b'dnl @error{}'):
-                expected_err += l[len('dnl @error{}'):] + os.linesep.encode()
-            if l.startswith(b'dnl @ expected error: ignore'):
+        for line in input_file.read().splitlines():
+            if line.startswith(b'dnl @ expected status: '):
+                expected_code = int(line[len('dnl @ expected status: '):].rstrip())
+            if line.startswith(b'dnl @ extra options: '):
+                args = line[len('dnl @ extra options: '):].rstrip().decode()
+            if line.startswith(b'dnl @result{}'):
+                expected_out += line[len('dnl @result{}'):] + os.linesep.encode()
+            if line.startswith(b'dnl @error{}'):
+                expected_err += line[len('dnl @error{}'):] + os.linesep.encode()
+            if line.startswith(b'dnl @ expected error: ignore'):
                 ignore_err = True
-            if not l.startswith(b'dnl @'):
-                m4_input += l + b'\n'
+            if not line.startswith(b'dnl @'):
+                m4_input += line + b'\n'
         runargs = []
         runargs.append(m4_path)
         runargs.append('-d')

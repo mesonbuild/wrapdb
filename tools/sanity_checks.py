@@ -52,8 +52,8 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_export.h'
     ],
     'godot-cpp' : [
-         'meson-bindings-generator.py',
-     ],
+        'meson-bindings-generator.py',
+    ],
     'gumbo-parser': [
         'tokenizer.cc',
     ],

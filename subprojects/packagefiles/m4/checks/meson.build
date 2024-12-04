@@ -260,7 +260,7 @@ m4_path = m4.full_path()
 
 foreach file : checks
   test(file, py,
-       args: [m4_test, m4_path, files(file), meson.current_build_dir(), meson.project_source_root()],
+       args: [m4_test, m4_path, files(file), meson.project_source_root()],
        env: m4_env,
        depends: m4)
 endforeach
@@ -268,7 +268,7 @@ endforeach
 if host_machine.system() != 'windows'
   foreach file : noparallel_checks
     test(file, py,
-         args: [m4_test, m4_path, files(file), meson.current_build_dir(), meson.project_source_root()],
+         args: [m4_test, m4_path, files(file), meson.project_source_root()],
          depends: m4,
          env: m4_env,
          is_parallel: false)
@@ -276,7 +276,7 @@ if host_machine.system() != 'windows'
 
   foreach file : nowindows_checks
     test(file, py,
-         args: [m4_test, m4_path, files(file), meson.current_build_dir(), meson.project_source_root()],
+         args: [m4_test, m4_path, files(file), meson.project_source_root()],
          env: m4_env,
          depends: m4)
   endforeach

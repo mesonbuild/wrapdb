@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import re
 from pathlib import Path
 
 def write_openblas_config_header(dest_dir, version, config_last_path, template_path):
@@ -20,7 +21,7 @@ def write_openblas_config_header(dest_dir, version, config_last_path, template_p
                                 rest_of_line = " ".join(parts[1:]) if len(parts) > 1 else ""
                                 line_to_write = f"#define OPENBLAS_{macro_name} {rest_of_line}"
                                 f.write(f"{line_to_write.strip()}\n")
-       
+
 
         f.write(f'#define OPENBLAS_VERSION " OpenBLAS {version} "\n')
 
@@ -101,3 +102,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
