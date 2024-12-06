@@ -7,13 +7,15 @@ if get_option('default_library') == 'shared'
   fmt_interface_cpp_args += ['-DFMT_SHARED']
 endif
 
+fmt_lib_install = (not meson.is_subproject()) or (get_option('default_library') != 'static')
+
 fmt_lib = library(
   'fmt',
   'src/format.cc',
   'src/os.cc',
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
-  install: true,
+  install: fmt_lib_install,
 )
 
 install_subdir('include',
