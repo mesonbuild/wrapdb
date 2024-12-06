@@ -15,6 +15,7 @@ fmt_lib = library(
   'src/os.cc',
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
+  build_by_default: false,
   install: fmt_lib_install,
 )
 
