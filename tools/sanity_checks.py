@@ -331,8 +331,6 @@ class TestReleases(unittest.TestCase):
             segs = version.split('.')
             assert(len(segs) == 3)
             version = segs[0] + segs[1] + '0' + segs[2]
-        elif name == 're2':
-            version = f'{version[:4]}-{version[4:6]}-{version[6:8]}'
         elif name == 'netstring-c':
             # There is no specific version for netstring-c
             return True
@@ -348,7 +346,9 @@ class TestReleases(unittest.TestCase):
             version = segs[0] + segs[1] + segs[2]
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
-        self.assertTrue(version in source_url or version_ in source_url,
+        # re2 and quickjs use YYYY-MM-DD suffix in version names, we map it into YYYYMMDD
+        version_date = re.sub(r'^(\d\d\d\d)(\d\d)(\d\d)$', r'\1-\2-\3', version)
+        self.assertTrue(version in source_url or version_ in source_url or version_date in source_url,
                         f'Version {version} not found in {source_url}')
 
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
