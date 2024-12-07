@@ -173,7 +173,7 @@ class TestReleases(unittest.TestCase):
             if name in {'sqlite', 'libjpeg'}:
                 continue
             self.assertIn(name, self.releases)
-            self.assertIn(version, self.releases[name]['versions'], f"for {name}")
+            self.assertIn(version, self.releases[name]['versions'], f'for {name}')
 
         # Verify keys are sorted
         self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
@@ -388,7 +388,7 @@ class TestReleases(unittest.TestCase):
         meson_env = os.environ.copy()
         def install_packages(kind, cmd, packages):
             if is_ci():
-                with ci_group('install {} packages'.format(kind)):
+                with ci_group(f'install {kind} packages'):
                     subprocess.check_call(cmd + packages)
             else:
                 s = ', '.join(packages)
@@ -436,7 +436,7 @@ class TestReleases(unittest.TestCase):
                 if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
                     print('unsupported, as expected')
                     return
-                elif any('ERROR: '+x in error for x in {'Dependency', 'Program', 'Pkg-config binary', 'CMake binary'}):
+                elif any(f'ERROR: {x}' in error for x in {'Dependency', 'Program', 'Pkg-config binary', 'CMake binary'}):
                     if 'not found' in error:
                         print('cannot verify in wrapdb due to missing dependency')
                         return
@@ -480,10 +480,10 @@ class TestReleases(unittest.TestCase):
                 tabs.append(f)
         if tabs:
             tabs_str = ', '.join([str(f) for f in tabs])
-            self.fail('Tabs in meson files are not allowed: ' + tabs_str)
+            self.fail(f'Tabs in meson files are not allowed: {tabs_str}')
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
-            self.fail('Not permitted files found: ' + not_permitted_str)
+            self.fail(f'Not permitted files found: {not_permitted_str}')
 
 
 if __name__ == '__main__':
