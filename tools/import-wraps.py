@@ -40,7 +40,7 @@ def get_wrap_info(wrap: str) -> T.List[T.Tuple[str, str]]:
             version, revision = line.split()
             versions.append((version, revision))
     except subprocess.CalledProcessError:
-       pass
+        pass
     return versions
 
 def rewrite_wrap(wrap: str):
@@ -86,7 +86,7 @@ def create_release(tag: str, token: str):
         # This release has already been uploaded by previous run of the script
         return None
     response.raise_for_status()
-    return response.json()['upload_url'].replace(u'{?name,label}','')
+    return response.json()['upload_url'].replace('{?name,label}','')
 
 def upload(upload_url: str, content: T.AnyStr, mimetype: str, name: str, token: str):
     headers = {
