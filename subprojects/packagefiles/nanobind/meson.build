@@ -41,8 +41,11 @@ elif host_machine.system() != 'windows' and host_machine.system() != 'darwin'
 endif
 
 compiler = meson.get_compiler('cpp')
-if compiler.get_id() == 'msvc'
+cxx_id = compiler.get_id()
+if cxx_id == 'msvc'
   dep_compile_args += ['-D_CRT_SECURE_NO_WARNINGS']
+elif cxx_id == 'clang-cl'
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
 else
   # Discussion in WrapDB PR #1556 as to whether or not this is necessary
   # add_project_arguments('-fno-strict-aliasing', language: 'cpp')
