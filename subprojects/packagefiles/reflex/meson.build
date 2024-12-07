@@ -141,6 +141,8 @@ libsimd_avx512bw = static_library(
   cpp_args: simd_avx512bw_args,
   include_directories: includes,
   build_by_default: false,
+  # clang 14.0 fails to compile this code at optimization levels higher than 0
+  override_options: cpp.get_id() == 'clang' and cpp.version() == '14.0.0' ? {'optimization': '0'} : {},
 )
 
 # No DLLEXPORT declarations, thus only static library supported with MSVC
