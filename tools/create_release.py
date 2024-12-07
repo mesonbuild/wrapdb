@@ -125,7 +125,7 @@ class CreateRelease:
         response.raise_for_status()
         for r in response.json():
             if r['tag_name'] == self.tag:
-                self.upload_url = r['upload_url'].replace(u'{?name,label}','')
+                self.upload_url = r['upload_url'].replace('{?name,label}','')
                 print('Found release:', self.upload_url)
                 return
 
@@ -135,7 +135,7 @@ class CreateRelease:
         }
         response = requests.post(api, headers=headers, json=content)
         response.raise_for_status()
-        self.upload_url = response.json()['upload_url'].replace(u'{?name,label}','')
+        self.upload_url = response.json()['upload_url'].replace('{?name,label}','')
         print('Created release:', self.upload_url)
 
     def upload(self, path: Path, mimetype: str):
