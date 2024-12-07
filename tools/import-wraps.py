@@ -40,7 +40,7 @@ def get_wrap_info(wrap: str) -> T.List[T.Tuple[str, str]]:
             version, revision = line.split()
             versions.append((version, revision))
     except subprocess.CalledProcessError:
-       pass
+        pass
     return versions
 
 def rewrite_wrap(wrap: str):
