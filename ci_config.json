@@ -1061,6 +1061,7 @@
       "libpq-dev"
     ],
     "brew_packages": [
+      "mariadb",
       "mariadb-connector-c",
       "libpq"
     ],
