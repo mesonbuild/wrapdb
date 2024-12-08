@@ -449,6 +449,14 @@
       "libvulkan-dev"
     ]
   },
+  "imgui-docking": {
+    "debian_packages": [
+      "liballegro5-dev",
+      "libglfw3-dev",
+      "libsdl2-dev",
+      "libvulkan-dev"
+    ]
+  },
   "imgui-sfml": {
     "alpine_packages": [
       "libudev-zero-dev",

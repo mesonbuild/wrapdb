@@ -1358,6 +1358,14 @@
       "1.76-1"
     ]
   },
+  "imgui-docking": {
+    "dependency_names": [
+      "imgui_docking"
+    ],
+    "versions": [
+      "1.91.0-1"
+    ]
+  },
   "imgui-sfml": {
     "dependency_names": [
       "imgui-sfml"
