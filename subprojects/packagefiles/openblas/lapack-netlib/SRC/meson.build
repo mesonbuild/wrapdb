@@ -28,21 +28,18 @@ _allaux = [
   'ilaenv.f', 'ilaenv2stage.f', 'ieeeck.f', 'lsamen.f', 'iparmq.f',
   'iparam2stage.F', 'ilaprec.f', 'ilatrans.f', 'ilauplo.f', 'iladiag.f',
   'chla_transtype.f', 'la_xisnan.F90', 'la_constants.f90',
+  'xerbla_array.f',
 ]
 
-_deps = []
-_libs = [ _allblas, _install_aux ]
 # _auxlapack -- Auxiliary routines for lapack
-_auxlapack = library('_auxlapack',
+_auxlapack = static_library('_auxlapack',
                      sources: _allaux,
-                     link_with: _libs,
+                     link_with: _allblas,
+                     link_whole: _install_aux,
                     )
-_libs += _auxlapack
-
 
 # All other sources
 _lapack_netlib_srcs = []
-
 
 # _slaux -- Auxiliary routines called from single precision
 # Needs _int_cpu and _install_aux
@@ -471,6 +468,8 @@ _zxlasrc = [
 ]
 
 # Start making the lapack target
+_libs = [_allblas]
+_deps = []
 if use_xblas
   _lapack_netlib_srcs += _sxlasrc + _dxlasrc + _cxlasrc + _zxlasrc
   _deps = dependency('xblas')
@@ -494,19 +493,20 @@ if prec == 'z' or build_complex16 or build_all_prec
   _lapack_netlib_srcs += _zlasrc + _zclasrc + _dzlaux
 endif
 
-# Create the blas library
+# Create the lapack library
 netlib_lapack = library(_netlib_lapack_name,
                         sources: _lapack_netlib_srcs,
                         link_with: _libs,
-                        version: lapack_version,
-                        soversion: lapack_major_version,
+                        link_whole: [_auxlapack],
                         install: true,
-                       )
+                        kwargs: lapack_version_kwargs)
 
-pkg.generate(netlib_lapack,
-             name: 'lapack',
-             filebase: 'meson-lapack',
-             description: 'lapack via meson build',
-             version: f'@pkg_ver@_lapack',
-             install_dir: pkg_install_dir,
-            )
+if not as_subproject
+  pkg.generate(netlib_lapack,
+               name: 'lapack',
+               filebase: 'meson-lapack',
+               description: 'lapack via meson build',
+               version: f'@pkg_ver@_lapack',
+               install_dir: pkg_install_dir,
+              )
+endif
