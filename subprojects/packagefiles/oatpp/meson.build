@@ -1,10 +1,10 @@
-
 project(
   'oatpp',
   'cpp',
   default_options: ['default_library=static', 'cpp_std=c++11'],
-  version: '1.3.0',
+  version: '1.3.1',
   license: 'Apache-2.0',
+  meson_version: '>=1.3.0',
 )
 
 oatpp_version = meson.project_version()
@@ -12,11 +12,9 @@ oatpp_so_version = (oatpp_version.split('.').get(0) + '.' + oatpp_version.split(
   '.',
 ).get(
   1,
-)
-)
+))
 
 flags = []
-
 
 if get_option('disable_env_object_counters')
   flags += '-DOATPP_DISABLE_ENV_OBJECT_COUNTERS'
@@ -28,16 +26,14 @@ if get_option('disable_pool_allocations')
 endif
 
 if not get_option('thread_hardware_concurrency').auto()
-  flags += ('-DOATPP_THREAD_HARDWARE_CONCURRENCY=' + get_option(
-    'thread_hardware_concurrency',
-  ).enabled().to_string().to_upper()
+  flags += ('-DOATPP_THREAD_HARDWARE_CONCURRENCY='
+    + get_option('thread_hardware_concurrency').enabled().to_string().to_upper()
 )
 endif
 
 if get_option('thread_distributed_mem_pool_shards_count')
-  flags += ('-DOATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT=' + get_option(
-    'thread_hardware_concurrency',
-  ).enabled().to_string().to_upper()
+  flags += ('-DOATPP_THREAD_DISTRIBUTED_MEM_POOL_SHARDS_COUNT='
+    + get_option('thread_hardware_concurrency').enabled().to_string().to_upper()
 )
 
   warning(
@@ -48,7 +44,6 @@ endif
 if get_option('compat_build_no_thread_local')
   flags += '-DOATPP_COMPAT_BUILD_NO_THREAD_LOCAL'
 endif
-
 
 if get_option('compat_build_no_set_affinity')
   flags += '-DOATPP_COMPAT_BUILD_NO_SET_AFFINITY'
@@ -78,7 +73,6 @@ if get_option('disable_loge')
   flags += '-DOATPP_DISABLE_LOGE'
 endif
 
-
 cpp = meson.get_compiler('cpp')
 if cpp.get_id() == 'gcc' and cpp.version().version_compare('<5.0.0') == false
   flags += '-DOATPP_DISABLE_STD_PUT_TIME'
@@ -92,7 +86,15 @@ if is_msvc_or_similar
   )
 endif
 
-
+proj_flags = cpp.get_supported_arguments(
+  '-Wno-unused-parameter',
+  '-Wno-pessimizing-move',
+  '-Wno-unknown-warning-option',
+)
+add_project_arguments(
+  proj_flags,
+  language: 'cpp',
+)
 deps = []
 src_files = []
 inc_dirs = []
@@ -118,6 +120,8 @@ if is_msvc_or_similar
   endif
 endif
 
+create_test_lib = get_option('create_test_lib')
+
 subdir('src')
 
 lib_oatpp = library(
@@ -132,49 +136,38 @@ lib_oatpp = library(
   version: oatpp_version,
 )
 
-
 oatpp_dep = declare_dependency(
   include_directories: inc_dirs,
   link_with: lib_oatpp,
   version: oatpp_version,
 )
 
+oatpp_test_dep = disabler()
 
-# test module of oatpp (not the tests, but the module that is the test suite like e.g gtest)
-lib_test_oatpp = library(
-  'oatpp-test',
-  test_module_src_files,
-  dependencies: test_module_deps,
-  include_directories: test_module_inc_dirs,
-  cpp_args: flags,
-  install: install,
-  override_options: override_options,
-  soversion: oatpp_so_version,
-  version: oatpp_version,
-)
+if create_test_lib
 
+  # test module of oatpp (not the tests, but the module that is the test suite like e.g gtest)
+  lib_test_oatpp = library(
+    'oatpp-test',
+    test_module_src_files,
+    dependencies: test_module_deps,
+    include_directories: test_module_inc_dirs,
+    cpp_args: flags,
+    install: install,
+    override_options: override_options,
+    soversion: oatpp_so_version,
+    version: oatpp_version,
+  )
 
-oatpp_test_dep = declare_dependency(
-  dependencies: oatpp_dep,
-  include_directories: test_module_inc_dirs,
-  link_with: lib_test_oatpp,
-  version: oatpp_version,
-)
+  oatpp_test_dep = declare_dependency(
+    dependencies: oatpp_dep,
+    include_directories: test_module_inc_dirs,
+    link_with: lib_test_oatpp,
+    version: oatpp_version,
+  )
 
-
-# tests is a feature, so has three states: auto => run tests, if possible, enabled / disabled, run them always or never
-run_tests = get_option('tests').enabled()
-if get_option('tests').auto()
-  tests_are_fixed_on_windows = oatpp_version.version_compare('>=1.4.0')
-
-  if host_machine.system() == 'windows' and not tests_are_fixed_on_windows
-    run_tests = false
-  else
-    run_tests = true
-  endif
 endif
 
-
-if run_tests
+if get_option('tests').allowed() and create_test_lib
   subdir('test')
 endif

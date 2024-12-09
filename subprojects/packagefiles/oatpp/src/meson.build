@@ -42,6 +42,11 @@ endforeach
 
 
 foreach oatpp_module : oatpp_modules
+  if (oatpp_module == 'oatpp-tests') and not allowed
+    continue
+  endif
+
+
   conf = configuration_data()
   conf.set_quoted('OATPP_THIS_MODULE_NAME', 'oatpp')  ## name of the module (also name of folders in installation dirs)
   conf.set_quoted('OATPP_THIS_MODULE_VERSION', meson.project_version())  ## version of the module (also sufix of folders in installation dirs)
