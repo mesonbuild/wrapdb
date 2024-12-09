@@ -31,7 +31,7 @@
 # _cblas3 -- Single precision complex BLAS3 routines
 
 # _allblas -- Auxiliary routines for Level 2 and 3 BLAS
-_allblas = library('_allblas',
+_allblas = static_library('_allblas',
                    sources: [ 'lsame.f', 'xerbla.f', 'xerbla_array.f' ])
 
 
@@ -279,6 +279,5 @@ endif
 netlib_blas = library(_netlib_blas_name,
                sources: _blas_netlib_srcs,
                link_with: _allblas,
-               version: lapack_version,
-               soversion: lapack_major_version,
-               install: true)
+               install: true,
+               kwargs: lapack_version_kwargs)

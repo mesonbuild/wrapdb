@@ -36,10 +36,6 @@ if CGEMM3M_UNROLL_M.to_int() > 8
   CGEMM3M_UNROLL_M = 8
 endif
 
-subdir('meson_base')
-subdir('x86_64')
-subdir('arm64')
-
 # TODO: This is currently following x86_64 generic for src and dir, but it needs
 # to diversify
 # NOTE: The def and undefs are from Makefile.L1
@@ -1085,9 +1081,11 @@ base_kops = [
   },
 ]
 
+subdir('meson_base')  # defines base_dict
 search_order = [base_dict]
 
 if conf_hdat.has('ARCH_X86_64')
+  subdir('x86_64')
   search_order = [x86_64_base_dict] + search_order
   if conf_hdat.has('HASWELL')
     search_order = [x86_64_haswell_dict] + search_order
@@ -1099,6 +1097,7 @@ if conf_hdat.has('ARCH_X86_64')
     search_order = [x86_64_sandybridge_dict] + search_order
   endif
 elif conf_hdat.has('ARCH_ARM64')
+  subdir('arm64')
   search_order = [arm64_base_dict] + search_order
   if conf_hdat.has('ARMV8')
     search_order = [arm64_armv8_dict] + search_order

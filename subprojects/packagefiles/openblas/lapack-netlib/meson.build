@@ -10,6 +10,13 @@ lapack_minor_version = 12
 lapack_patch_version = 0
 lapack_version = f'@lapack_major_version@.@lapack_minor_version@.@lapack_patch_version@'
 
+if as_subproject
+  # Avoid creation versioned .so symlinks.
+  lapack_version_kwargs = {}
+else
+  lapack_version_kwargs = {'version': lapack_version, 'soversion': lapack_major_version}
+endif
+
 # Common variables
 prec = get_option('realkind')
 build_single = get_option('build_single')

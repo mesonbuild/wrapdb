@@ -11,7 +11,7 @@
 #
 # NOTE: This is still a work in progress, the Makefiles are canonical
 project('OpenBLAS', ['c', 'fortran'],
-        default_options: ['c_std=c99'],
+        default_options: ['c_std=gnu11'],
         meson_version: '>=1.0.0',
         version: '0.3.28')
 
@@ -19,6 +19,14 @@ openblas_major_version = 0 # soversion
 openblas_minor_version = 3
 openblas_patch_version = '28'
 openblas_version = f'@openblas_major_version@.@openblas_minor_version@.@openblas_patch_version@'
+
+supported_architectures = ['x86_64', 'aarch64']
+if host_machine.cpu_family() not in supported_architectures
+  cpu_family = host_machine.cpu_family()
+  error(f'Building OpenBLAS with Meson is currently not supported on @cpu_family@.')
+endif
+
+as_subproject = get_option('as_subproject')
 
 # Skip the check for valid CC
 cc = meson.get_compiler('c')
@@ -154,20 +162,48 @@ else
   add_project_arguments(f'-DF_INTERFACE_@upper_fcid@', language: 'c')
 endif
 
+# Warnings from LAPACK that we're not interested in seeing:
+add_project_arguments(
+  fc.get_supported_arguments(
+    '-Wno-conversion',
+    '-Wno-maybe-uninitialized',
+    '-Wno-unused-dummy-argument',
+    '-Wno-unused-variable',
+  ),
+  language: 'fortran'
+)
+add_project_arguments(
+  cc.get_supported_arguments(
+    '-Wno-maybe-uninitialized',
+    '-Wno-unused-function',
+    '-Wno-unused-variable',
+  ),
+  language: 'c'
+)
+
 py3 = find_program('python')
 
-simd_extensions = [
-  {'flag': '-mmmx', 'define': 'HAVE_MMX'},
-  {'flag': '-msse', 'define': 'HAVE_SSE'},
-  {'flag': '-msse2', 'define': 'HAVE_SSE2'},
-  {'flag': '-msse3', 'define': 'HAVE_SSE3'},
-  {'flag': '-mssse3', 'define': 'HAVE_SSSE3'},
-  {'flag': '-msse4.1', 'define': 'HAVE_SSE4_1'},
-  {'flag': '-msse4.2', 'define': 'HAVE_SSE4_2'},
-  {'flag': '-mfma', 'define': 'HAVE_FMA3'},
-  {'flag': '-mavx', 'define': 'HAVE_AVX'},
-  {'flag': '-mavx2', 'define': 'HAVE_AVX2'},
-]
+# TODO: these checks are not very robust, copy from NumPy instead
+simd_extensions = []
+if host_machine.cpu_family() == 'x86_64'
+  simd_extensions += [
+    {'flag': '-mmmx', 'define': 'HAVE_MMX'},
+    {'flag': '-msse', 'define': 'HAVE_SSE'},
+    {'flag': '-msse2', 'define': 'HAVE_SSE2'},
+    {'flag': '-msse3', 'define': 'HAVE_SSE3'},
+    {'flag': '-mssse3', 'define': 'HAVE_SSSE3'},
+    {'flag': '-msse4.1', 'define': 'HAVE_SSE4_1'},
+    {'flag': '-msse4.2', 'define': 'HAVE_SSE4_2'},
+    {'flag': '-mfma', 'define': 'HAVE_FMA3'},
+    {'flag': '-mavx', 'define': 'HAVE_AVX'},
+    {'flag': '-mavx2', 'define': 'HAVE_AVX2'},
+    {'flag': '-mavx512f', 'define': 'HAVE_AVX512F'},
+    {'flag': '-mavx512vl', 'define': 'HAVE_AVX512VL'},
+    {'flag': '-mavx512dq', 'define': 'HAVE_AVX512DQ'},
+    {'flag': '-mavx512cd', 'define': 'HAVE_AVX512CD'},
+    {'flag': '-march=skylake-avx512', 'define': 'HAVE_AVX512'},
+  ]
+endif
 
 simd_cargs = []
 simd_conf_data = configuration_data()
@@ -184,7 +220,12 @@ endforeach
 # Generate configuration header
 configure_file(output : 'simd_conf.h',
                configuration : simd_conf_data)
-# Can't be added as a project argument since it won't be generated until later
+
+# Header is named simd_conf.h only in this Meson build (TODO: fix that up),
+# so adding a project-global include for it here.
+if cc.has_multi_arguments('-include', f'@_mbproot@/simd_conf.h')
+  add_project_arguments(['-include', f'@_mbproot@/simd_conf.h'], language: 'c')
+endif
 add_project_arguments(simd_cargs, language: 'c')
 
 # Common symbol related options
@@ -561,7 +602,9 @@ subdir('driver/level3')
 subdir('driver/others')
 subdir('kernel')
 
-openblas = both_libraries('openblas',
+threads_dep = dependency('threads')
+
+openblas = library('openblas',
                           link_whole: [
                            _interface,
                            _l2_driver,
@@ -569,11 +612,10 @@ openblas = both_libraries('openblas',
                            _others,
                            _kern,
                           ],
-                          dependencies: [dependency('threads'), quadmath_dep],
+                          dependencies: [threads_dep, quadmath_dep],
                           override_options: ['b_lundef=false', 'b_asneeded=false'],
                           install: true,
                          )
-openblas_static = openblas.get_static_lib()
 
 # Handle headers
 fs = import('fs')
@@ -597,43 +639,45 @@ template = f'@_msproot@/openblas_config_template.h'
 common_interface = f'@_msproot@/common_interface.h'
 cblas = f'@_msproot@/cblas.h'
 
-# Prepare config_last.h from config.h
-pcl = custom_target('prepare_config_last',
-  output : 'config_last.h',
-  command : [py3, f'@_msproot@/prepare_config_last.py',
-             '--config', fconfig_h,
-             '--output', fconfig_last,
-             quad_prec ? '--quad-precision' : [],
-             exprecision ? '--exprecision' : [],
-            ],
-  build_by_default : true,
-)
+if not as_subproject
+  # Prepare config_last.h from config.h
+  pcl = custom_target('prepare_config_last',
+    output : 'config_last.h',
+    command : [py3, f'@_msproot@/prepare_config_last.py',
+               '--config', fconfig_h,
+               '--output', fconfig_last,
+               quad_prec ? '--quad-precision' : [],
+               exprecision ? '--exprecision' : [],
+              ],
+    build_by_default : true,
+  )
 
-# Generate the headers
-custom_target('gen_install_headers',
-  output : ['openblas_config.h', 'f77blas.h', 'cblas.h'],
-  command : [py3, f'@_msproot@/gen_install_headers.py',
-             '--dest-dir', f'@_mbproot@',
-             '--version', meson.project_version(),
-             '--config-last', fconfig_last,
-             '--template', template,
-             '--common-interface', common_interface,
-             '--cblas', cblas,
-             not get_option('no_fortran') ? '--generate-f77blas' : [],
-             not get_option('build_without_cblas') ? '--generate-cblas' : [],
-            ],
-  install : true,
-  install_dir : 'include',
-  depends : pcl,
-)
+  # Generate the headers
+  custom_target('gen_install_headers',
+    output : ['openblas_config.h', 'f77blas.h', 'cblas.h'],
+    command : [py3, f'@_msproot@/gen_install_headers.py',
+               '--dest-dir', f'@_mbproot@',
+               '--version', meson.project_version(),
+               '--config-last', fconfig_last,
+               '--template', template,
+               '--common-interface', common_interface,
+               '--cblas', cblas,
+               not get_option('no_fortran') ? '--generate-f77blas' : [],
+               not get_option('build_without_cblas') ? '--generate-cblas' : [],
+              ],
+    install : true,
+    install_dir : 'include',
+    depends : pcl,
+  )
 
-pkg.generate(openblas,
-             name: 'openblas',
-             filebase: 'meson-openblas',
-             description: 'OpenBLAS via meson build',
-             version: f'@pkg_ver@_meson',
-             install_dir: pkg_install_dir,
-            )
+  pkg.generate(openblas,
+               name: 'openblas',
+               filebase: 'meson-openblas',
+               description: 'OpenBLAS via meson build',
+               version: f'@pkg_ver@_meson',
+               install_dir: pkg_install_dir,
+              )
+endif
 
 if build_testing
   subdir('test')
@@ -641,9 +685,16 @@ if build_testing
   subdir('utest')
 endif
 
+
 # Dependency setup
-openblas_dep = declare_dependency(
-    link_whole : openblas_static,
-    include_directories : _inc,
-    version: meson.project_version(),
+openblas_dep =  declare_dependency(
+  link_with : openblas,
+  include_directories : _inc,
+  version: meson.project_version(),
+)
+
+netlib_lapack_dep = declare_dependency(
+  link_with : netlib_lapack,
+  include_directories : _inc,
+  version: meson.project_version(),
 )
