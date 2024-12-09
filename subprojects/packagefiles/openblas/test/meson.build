@@ -27,7 +27,7 @@ foreach _test : _test_input_array
         test_id,
         sources: f'@test_id@.f',
         link_with: [openblas_static],
-        dependencies: [dependency('threads')],
+        dependencies: threads_dep,
     )
 
     if is_win

@@ -36,11 +36,7 @@ if not use_c_lapack
       'sroundup_lwork.f',
     ]
   endif
-  _int_cpu = library('_int_cpu',
-                     sources: _int_cpu_srcs,
-                     version: lapack_version,
-                     soversion: lapack_major_version,
-                     install: true)
+  _int_cpu = static_library('_int_cpu', sources: _int_cpu_srcs)
 else
   _install_aux_srcs += ['ilaver.c', 'lsame.c']
 
@@ -58,9 +54,6 @@ else
 
 endif
 
-_install_aux = library('_install_aux',
-                       sources: _install_aux_srcs,
-                       link_with: _ia_linkwith,
-                       version: lapack_version,
-                       soversion: lapack_major_version,
-                       install: true)
+_install_aux = static_library('_install_aux',
+                              sources: _install_aux_srcs,
+                              link_with: _ia_linkwith)

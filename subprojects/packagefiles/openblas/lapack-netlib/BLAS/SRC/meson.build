@@ -31,7 +31,7 @@
 # _cblas3 -- Single precision complex BLAS3 routines
 
 # _allblas -- Auxiliary routines for Level 2 and 3 BLAS
-_allblas = library('_allblas',
+_allblas = static_library('_allblas',
                    sources: [ 'lsame.f', 'xerbla.f', 'xerbla_array.f' ])
 
 
@@ -276,9 +276,18 @@ if prec == 's' or build_single or build_all_prec
 endif
 
 # Create the blas library
-netlib_blas = library(_netlib_blas_name,
-               sources: _blas_netlib_srcs,
-               link_with: _allblas,
-               version: lapack_version,
-               soversion: lapack_major_version,
-               install: true)
+if as_subproject
+  # Avoid creation versioned .so symlinks. We can't pass empty string or list
+  # to the version/soversion keyword to make this more concise.
+  netlib_blas = library(_netlib_blas_name,
+                 sources: _blas_netlib_srcs,
+                 link_with: _allblas,
+                 install: true)
+else
+  netlib_blas = library(_netlib_blas_name,
+                 sources: _blas_netlib_srcs,
+                 link_with: _allblas,
+                 version: lapack_version,
+                 soversion: lapack_major_version,
+                 install: true)
+endif
