@@ -1,8 +1,8 @@
 [wrap-file]
-directory = Kraken-Engine-0.0.5
-source_url = https://github.com/durkisneer1/Kraken-Engine/releases/download/v0.0.5/Kraken-Engine-0.0.5.tar.gz
-source_filename = Kraken-Engine-0.0.5.tar.gz
-source_hash = 883034a301ce52563a6f9fb1883d0578a63ca1e514fd059ed8fa20b037eb12a0
+directory = Kraken-Engine-0.0.6
+source_url = https://github.com/durkisneer1/Kraken-Engine/releases/download/v0.0.6/Kraken-Engine-0.0.6.tar.gz
+source_filename = Kraken-Engine-0.0.6.tar.gz
+source_hash = 620327cb4f5bb1aec3c079509e62a80d29b373265092f714e1a459021ae0b46d
 
 [provide]
 kraken-engine = kraken_engine_dep
