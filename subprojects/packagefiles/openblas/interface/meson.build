@@ -1,6 +1,4 @@
-interface_args = cc.get_supported_arguments(
-  f'-include @_mbproot@/simd_conf.h',
-)
+interface_args = []
 # if not build_without_cblas
 #   interface_args += '-DCBLAS'
 # endif
@@ -406,7 +404,7 @@ _blas_roots = [
   },
 ]
 
-if not is_win
+if not is_win and not get_option('build_without_lapack')
   subdir('lapack')
   _blas_roots += _lapack_interface_roots
 endif

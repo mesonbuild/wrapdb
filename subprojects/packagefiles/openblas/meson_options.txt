@@ -54,7 +54,11 @@ option('exprecision', type: 'boolean', value: false, description: 'Build extende
 
 # For naming netlib libraries
 option('netlib_blas_name', type: 'string', value: 'refblas', description: 'Name for the Netlib BLAS library')
-option('netlib_cblas_name', type: 'string', value: 'clbas', description: 'Name for the Netlib CBLAS library')
+option('netlib_cblas_name', type: 'string', value: 'cblas', description: 'Name for the Netlib CBLAS library')
 option('netlib_lapack_name', type: 'string', value: 'lapack', description: 'Name for the Netlib LAPACK library')
 option('netlib_tmglib_name', type: 'string', value: 'tmglib', description: 'Name for the Netlib TMGLIB library')
 option('netlib_lapacke_name', type: 'string', value: 'lapacke', description: 'Name for the Netlib LAPACKE library')
+
+# Specifically so *only the libopenblas and lapack `library` targets* gets
+# installed. This makes this package easier to consume as a Meson subproject.
+option('as_subproject', type: 'boolean', value: true, description: 'Whether being built as a Meson subproject')

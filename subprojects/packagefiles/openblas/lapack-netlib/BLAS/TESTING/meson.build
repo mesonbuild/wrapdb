@@ -66,7 +66,7 @@ foreach _test : _blas_input_test_array
              link_with : netlib_blas,
             )
   test_exe = meson.current_build_dir() / _test.get(1)
-  input_file = meson.source_root() + '/lapack-netlib/BLAS/TESTING/' + _test.get(3)
+  input_file = meson.project_source_root() + '/lapack-netlib/BLAS/TESTING/' + _test.get(3)
   test(_test.get(0), fortran_test_runner,
        args: [test_exe, input_file],
        workdir: meson.current_build_dir())
