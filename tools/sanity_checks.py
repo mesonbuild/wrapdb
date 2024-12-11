@@ -173,7 +173,7 @@ class TestReleases(unittest.TestCase):
             if name in {'sqlite', 'libjpeg'}:
                 continue
             self.assertIn(name, self.releases)
-            self.assertIn(version, self.releases[name]['versions'], f"for {name}")
+            self.assertIn(version, self.releases[name]['versions'], f'for {name}')
 
         # Verify keys are sorted
         self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
@@ -194,7 +194,7 @@ class TestReleases(unittest.TestCase):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
             # don't check if the build was skipped
             if json_file.exists():
-                with open(json_file) as project_info_file:
+                with open(json_file, encoding='utf-8') as project_info_file:
                     project_info = json.load(project_info_file)
                     subproject, = [subproj for subproj in project_info["subprojects"] if subproj["name"] == name]
                     if subproject['version'] != 'undefined' and patch_path:
@@ -329,27 +329,24 @@ class TestReleases(unittest.TestCase):
     def check_source_url(self, name: str, wrap_section: configparser.SectionProxy, version: str):
         if name == 'sqlite3':
             segs = version.split('.')
-            assert(len(segs) == 3)
+            assert len(segs) == 3
             version = segs[0] + segs[1] + '0' + segs[2]
         elif name == 're2':
             version = f'{version[:4]}-{version[4:6]}-{version[6:8]}'
-        elif name == 'netstring-c':
-            # There is no specific version for netstring-c
-            return True
-        elif name == 'directxmath':
-            # DirectXMath source url contains only tag name without version
-            return True
-        elif name == 'luajit':
-            # LuaJIT source URL does not contain the version number.
-            return True
         elif name == 'x-plane-sdk':
             segs = version.split('.')
             self.assertEqual(len(segs), 3)
             version = segs[0] + segs[1] + segs[2]
+        elif name in {'netstring-c', 'directxmath', 'luajit'}:
+            # There is no specific version for netstring-c
+            # DirectXMath source url contains only tag name without version
+            # LuaJIT source URL does not contain the version number.
+            return True
         source_url = wrap_section['source_url']
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,
                         f'Version {version} not found in {source_url}')
+        return True
 
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
         print() # Ensure output starts from an empty line (we're running under unittest).
@@ -388,7 +385,7 @@ class TestReleases(unittest.TestCase):
         meson_env = os.environ.copy()
         def install_packages(kind, cmd, packages):
             if is_ci():
-                with ci_group('install {} packages'.format(kind)):
+                with ci_group(f'install {kind} packages'):
                     subprocess.check_call(cmd + packages)
             else:
                 s = ', '.join(packages)
@@ -426,7 +423,7 @@ class TestReleases(unittest.TestCase):
         if res.returncode == 0:
             if not expect_working:
                 raise Exception(f'Wrap {name} successfully configured but was expected to fail')
-        if res.returncode != 0:
+        else:
             if expect_working:
                 res.check_returncode()
             else:
@@ -436,16 +433,16 @@ class TestReleases(unittest.TestCase):
                 if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
                     print('unsupported, as expected')
                     return
-                elif any('ERROR: '+x in error for x in {'Dependency', 'Program', 'Pkg-config binary', 'CMake binary'}):
+                if 'ERROR: Could not execute Vala compiler: valac' in error:
+                    print('cannot verify in wrapdb due to missing dependency')
+                    return
+                if 'ERROR: failed to unpack archive with error: ' in error:
+                    print('cannot verify in wrapdb because the archive cannot be unpacked')
+                    return
+                if any(f'ERROR: {x}' in error for x in ['Dependency', 'Program', 'Pkg-config binary', 'CMake binary']):
                     if 'not found' in error:
                         print('cannot verify in wrapdb due to missing dependency')
                         return
-                elif 'ERROR: Could not execute Vala compiler: valac' in error:
-                    print('cannot verify in wrapdb due to missing dependency')
-                    return
-                elif 'ERROR: failed to unpack archive with error: ' in error:
-                    print('cannot verify in wrapdb because the archive cannot be unpacked')
-                    return
             raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
         subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)
         if not ci.get('skip_tests', False):
@@ -474,16 +471,16 @@ class TestReleases(unittest.TestCase):
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
-            elif not self.is_permitted_file(subproject, f.name):
+            if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
             elif f.name in NO_TABS_FILES and '\t' in f.read_text(encoding='utf-8'):
                 tabs.append(f)
         if tabs:
             tabs_str = ', '.join([str(f) for f in tabs])
-            self.fail('Tabs in meson files are not allowed: ' + tabs_str)
+            self.fail(f'Tabs in meson files are not allowed: {tabs_str}')
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
-            self.fail('Not permitted files found: ' + not_permitted_str)
+            self.fail(f'Not permitted files found: {not_permitted_str}')
 
 
 if __name__ == '__main__':
