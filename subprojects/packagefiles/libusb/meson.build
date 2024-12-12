@@ -87,7 +87,7 @@ else
   sources += files('libusb/os/events_posix.c', 'libusb/os/threads_posix.c')
 endif
 
-if host_machine.system() == 'linux'
+if host_machine.system() in ['android', 'linux']
   sources += 'libusb/os/linux_usbfs.c'
   udev_dep = dependency('libudev', required: get_option('udev'))
   if udev_dep.found()
