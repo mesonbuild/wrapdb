@@ -1,6 +1,6 @@
 project('trompeloeil',
     'cpp',
-    version : '48',
+    version : '49',
     license : 'BSL-1.0'
 )
 
