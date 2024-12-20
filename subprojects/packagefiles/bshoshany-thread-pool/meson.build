@@ -1,5 +1,5 @@
 project('bshoshany-thread-pool', 'cpp',
-  version : '4.1.0',
+  version : '5.0.0',
   license : 'MIT',
   meson_version: '>=0.47.0',
   default_options: ['cpp_std=c++17'],
@@ -8,7 +8,7 @@ project('bshoshany-thread-pool', 'cpp',
 thread_dep = dependency('threads')
 
 bshoshany_thread_pool_dep = declare_dependency(
-  include_directories: include_directories('include'),
+  include_directories: include_directories('include', 'modules'),
   dependencies: thread_dep
 )
 
@@ -22,7 +22,7 @@ endif
 if not meson.is_subproject()
   install_headers(
     'include/BS_thread_pool.hpp',
-    'include/BS_thread_pool_utils.hpp'
+    'modules/BS.thread_pool.cppm'
   )
 endif
 
