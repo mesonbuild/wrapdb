@@ -2,7 +2,7 @@ project(
   'openjp2',
   'c',
   'cpp',
-  version: '2.5.2',
+  version: '2.5.3',
   meson_version: '>= 0.55.0',
   default_options: ['buildtype=debugoptimized', 'c_std=c99'],
 )

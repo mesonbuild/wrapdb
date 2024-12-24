@@ -1,8 +1,8 @@
 [wrap-file]
-directory = openjpeg-2.5.2
-source_url = https://github.com/uclouvain/openjpeg/archive/v2.5.2.tar.gz
-source_filename = openjpeg-2.5.2.tar.gz
-source_hash = 90e3896fed910c376aaf79cdd98bdfdaf98c6472efd8e1debf0a854938cbda6a
+directory = openjpeg-2.5.3
+source_url = https://github.com/uclouvain/openjpeg/archive/v2.5.3.tar.gz
+source_filename = openjpeg-2.5.3.tar.gz
+source_hash = 368fe0468228e767433c9ebdea82ad9d801a3ad1e4234421f352c8b06e7aa707
 patch_directory = libopenjp2
 
 [provide]
