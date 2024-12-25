@@ -1,7 +1,8 @@
 project('libjpeg-turbo', 'c',
-  version : '3.0.4',
+  version : '3.1.0',
   license : 'bsd-like',
-  meson_version : '>= 0.64.0')
+  meson_version : '>= 0.64.0',
+)
 
 pkg = import('pkgconfig')
 python = import('python').find_installation()
@@ -20,7 +21,7 @@ so_major = jpeg_lib_version / 10
 so_age = 3
 so_minor = 2
 so_version = '@0@.@1@.@2@'.format(so_major, so_age, so_minor)
-vs_defs = 'win/jpeg8.def'
+vs_defs = files('win/jpeg8.def')[0]
 
 version_arr = meson.project_version().split('.')
 version_major = version_arr[0]
@@ -129,168 +130,9 @@ if host_system == 'windows'
   add_project_arguments('-DDLLDEFINE', language: 'c')
 endif
 
-incdir = include_directories('.')
+incdir = include_directories('src')
 
 subdir('simd')
 cdata.set('WITH_SIMD', have_simd)
 
-jconfig_h = configure_file(input: 'jconfig.h.in',
-  output: 'jconfig.h',
-  format: 'cmake@',
-  configuration: cdata)
-
-configure_file(input: 'jconfigint.h.in',
-  output: 'jconfigint.h',
-  format: 'cmake@',
-  configuration: cdata)
-
-configure_file(input: 'jversion.h.in',
-  output: 'jversion.h',
-  format: 'cmake@',
-  configuration: cdata)
-
-install_headers('jmorecfg.h', 'jerror.h', 'jpeglib.h', jconfig_h)
-
-jpeg16_sources = [
-  'jcapistd.c', 'jccolor.c', 'jcdiffct.c', 'jclossls.c', 'jcmainct.c',
-  'jcprepct.c', 'jcsample.c', 'jdapistd.c', 'jdcolor.c', 'jddiffct.c',
-  'jdlossls.c', 'jdmainct.c', 'jdpostct.c', 'jdsample.c', 'jutils.c',
-]
-jpeg12_sources = [
-  jpeg16_sources, 'jccoefct.c', 'jcdctmgr.c', 'jdcoefct.c', 'jddctmgr.c',
-  'jdmerge.c', 'jfdctfst.c', 'jfdctint.c', 'jidctflt.c', 'jidctfst.c',
-  'jidctint.c', 'jidctred.c', 'jquant1.c', 'jquant2.c',
-]
-sources = [
-  jpeg12_sources, 'jcapimin.c', 'jchuff.c', 'jcicc.c', 'jcinit.c',
-  'jclhuff.c', 'jcmarker.c', 'jcmaster.c', 'jcomapi.c', 'jcparam.c',
-  'jcphuff.c', 'jctrans.c', 'jdapimin.c', 'jdatadst.c', 'jdatasrc.c',
-  'jdhuff.c', 'jdicc.c', 'jdinput.c', 'jdlhuff.c', 'jdmarker.c',
-  'jdmaster.c', 'jdphuff.c', 'jdtrans.c', 'jerror.c', 'jfdctflt.c',
-  'jmemmgr.c', 'jmemnobs.c', 'jpeg_nbits.c',
-  # TODO: `with_arith_dec` / `with_arith_enc` only.
-  'jaricom.c',
-  # TODO: `with_arith_enc` only
-  'jcarith.c',
-  # TODO: `with_arith_dec` only
-  'jdarith.c',
-]
-
-jpeg12 = static_library('jpeg12', jpeg12_sources,
-  c_args: ['-DBITS_IN_JSAMPLE=12'],
-  pic: get_option('default_library') != 'static',
-)
-jpeg16 = static_library('jpeg16', jpeg16_sources,
-  c_args: ['-DBITS_IN_JSAMPLE=16'],
-  pic: get_option('default_library') != 'static',
-)
-jpeg = library('jpeg', sources,
-  link_whole: [jpeg12, jpeg16, simd],
-  soversion: so_version,
-  vs_module_defs: vs_defs,
-  install: true,
-)
-
-pkg.generate(jpeg, description: 'A SIMD-accelerated JPEG codec that provides the libjpeg API', name: 'libjpeg')
-
-jpeg_dep = declare_dependency(
-  include_directories: incdir,
-  link_with: jpeg
-)
-
-meson.override_dependency('libjpeg', jpeg_dep)
-
-if get_option('jpeg-turbo').allowed()
-
-  install_headers('turbojpeg.h')
-
-  turbojpeg12 = static_library(
-    'turbojpeg12',
-    ['rdppm.c', 'wrppm.c'],
-    c_args: ['-DBITS_IN_JSAMPLE=12', '-DPPM_SUPPORTED'],
-  )
-
-  turbojpeg16 = static_library(
-    'turbojpeg16',
-    ['rdppm.c', 'wrppm.c'],
-    c_args: ['-DBITS_IN_JSAMPLE=16', '-DPPM_SUPPORTED'],
-  )
-
-  turbojpeg = library(
-    'turbojpeg',
-    sources + [
-      'turbojpeg.c',
-      'transupp.c',
-      'jdatadst-tj.c',
-      'jdatasrc-tj.c',
-      'rdbmp.c',
-      'rdppm.c',
-      'wrbmp.c',
-      'wrppm.c',
-    ],
-    c_args: ['-DBMP_SUPPORTED', '-DPPM_SUPPORTED'],
-    install: true,
-    link_with: [jpeg12, jpeg16, simd, turbojpeg12, turbojpeg16],
-    soversion: '0.3.0',
-  )
-
-  pkg.generate(
-    turbojpeg,
-    description: 'A SIMD-accelerated JPEG codec that provides the TurboJPEG API',
-    name: 'libturbojpeg',
-  )
-
-  turbojpeg_dep = declare_dependency(
-    include_directories: incdir,
-    link_with: turbojpeg,
-  )
-
-  meson.override_dependency('libturbojpeg', turbojpeg_dep)
-
-endif
-
-if get_option(
-  'tests',
-).require(
-  get_option('jpeg-turbo').allowed(),
-  error_message: 'jpeg-turbo feature needed',
-).allowed()
-
-  tjunittest = executable(
-    'tjunittest',
-    [
-      'tjunittest.c',
-      'tjutil.c',
-      'md5/md5.c',
-      'md5/md5hl.c',
-    ],
-    dependencies: turbojpeg_dep,
-  )
-
-  foreach _test, _args : {
-    'tjunittest'                 : '',
-    'tjunittest-alloc'           : '-alloc',
-    'tjunittest-yuv'             : '-yuv',
-    'tjunittest-yuv-alloc'       : '-yuv -alloc',
-    'tjunittest-yuv-nopad'       : '-yuv -noyuvpad',
-    'tjunittest-lossless'        : '-lossless',
-    'tjunittest-lossless-alloc'  : '-lossless -alloc',
-    'tjunittest-bmp'             : '-bmp',
-    'tjunittest12'               : '-precision 12',
-    'tjunittest12-alloc'         : '-precision 12 -alloc',
-    'tjunittest12-lossless'      : '-precision 12 -lossless',
-    'tjunittest12-lossless-alloc': '-precision 12 -lossless -alloc',
-    'tjunittest12-bmp'           : '-precision 12 -bmp',
-    'tjunittest16-lossless'      : '-precision 16',
-    'tjunittest16-lossless-alloc': '-precision 16 -alloc',
-    'tjunittest16-bmp'           : '-precision 16 -bmp',
-  }
-    test(
-      _test,
-      tjunittest,
-      args: _args.split(),
-      timeout: 60,
-    )
-  endforeach
-
-endif
+subdir('src')
