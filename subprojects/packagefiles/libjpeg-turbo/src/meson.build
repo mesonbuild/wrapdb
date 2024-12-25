@@ -95,7 +95,7 @@ if get_option('jpeg-turbo').allowed()
     c_args: ['-DBMP_SUPPORTED', '-DPPM_SUPPORTED'],
     install: true,
     link_with: [jpeg12, jpeg16, simd, turbojpeg12, turbojpeg16],
-    soversion: '0.3.0',
+    soversion: '0.4.0',
   )
 
   pkg.generate(
