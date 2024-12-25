@@ -25,7 +25,7 @@ jobs:
           ./tools/fake_tty.py ./tools/sanity_checks.py
 
   Alpine:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         platform: ['x86', 'riscv64', 'ppc64le', 'armv7']
