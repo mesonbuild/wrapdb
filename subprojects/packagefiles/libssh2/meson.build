@@ -1,7 +1,7 @@
 project(
   'libssh2',
   'c',
-  version: '1.11.0',
+  version: '1.11.1',
   license: 'BSD-3',
   meson_version: '>=0.54.1',
 )
@@ -22,7 +22,9 @@ libssh2_sources = files(
   'src/agent_win.c',
   'src/bcrypt_pbkdf.c',
   'src/blowfish.c',
+  'src/chacha.c',
   'src/channel.c',
+  'src/cipher-chachapoly.c',
   'src/comp.c',
   'src/crypt.c',
   'src/crypto.c',
@@ -35,6 +37,7 @@ libssh2_sources = files(
   'src/misc.c',
   'src/packet.c',
   'src/pem.c',
+  'src/poly1305.c',
   'src/publickey.c',
   'src/scp.c',
   'src/session.c',
