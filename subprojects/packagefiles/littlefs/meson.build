@@ -2,7 +2,7 @@ project(
   'littlefs',
   'c',
   license: 'BSD-3-Clause',
-  version: '2.9.3',
+  version: '2.10.1',
   default_options: [
     'c_std=c99',
   ],
