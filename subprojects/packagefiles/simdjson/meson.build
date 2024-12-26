@@ -2,7 +2,7 @@ project(
   'simdjson',
   'cpp',
   license: 'Apache-2.0',
-  version: '3.10.1',
+  version: '3.11.3',
 )
 
 simdjson_inc = include_directories('singleheader')
