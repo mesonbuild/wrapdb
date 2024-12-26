@@ -41,6 +41,9 @@ jobs:
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
       - name: Sanity Checks
+        env:
+          CC: clang
+          CXX: clang++
         run: |
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
