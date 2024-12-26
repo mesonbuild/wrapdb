@@ -1,8 +1,8 @@
 [wrap-file]
-directory = littlefs-2.9.3
-source_url = https://github.com/littlefs-project/littlefs/archive/refs/tags/v2.9.3.tar.gz
-source_filename = littlefs-2.9.3.tar.gz
-source_hash = 9cf2e7db673ea27d967a54cdafe8f55a7ffe27c63a2070ff7424fadd559cad67
+directory = littlefs-2.10.1
+source_url = https://github.com/littlefs-project/littlefs/archive/refs/tags/v2.10.1.tar.gz
+source_filename = littlefs-2.10.1.tar.gz
+source_hash = 620691695d65ad161eed1247122b63ad03e0251d8617864ba086a563afe98216
 patch_directory = littlefs
 
 [provide]
