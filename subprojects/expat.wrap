@@ -1,8 +1,8 @@
 [wrap-file]
-directory = expat-2.6.3
-source_url = https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.xz
-source_filename = expat-2.6.3.tar.bz2
-source_hash = 274db254a6979bde5aad404763a704956940e465843f2a9bd9ed7af22e2c0efc
+directory = expat-2.6.4
+source_url = https://github.com/libexpat/libexpat/releases/download/R_2_6_4/expat-2.6.4.tar.xz
+source_filename = expat-2.6.4.tar.bz2
+source_hash = a695629dae047055b37d50a0ff4776d1d45d0a4c842cf4ccee158441f55ff7ee
 patch_directory = expat
 
 [provide]

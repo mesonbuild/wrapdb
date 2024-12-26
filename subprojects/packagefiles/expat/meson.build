@@ -23,7 +23,7 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.6.3',
+  version: '2.6.4',
   meson_version: '>= 0.54.1',
 )
 
@@ -122,7 +122,7 @@ libexpat = library(
   'lib/xmltok.c',
   include_directories: incdir,
   dependencies: dep_libbsd,
-  version: '1.9.3',
+  version: '1.10.0',
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
   gnu_symbol_visibility: 'hidden',
