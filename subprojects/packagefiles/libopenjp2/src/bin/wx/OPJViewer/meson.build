@@ -9,7 +9,7 @@ opjv_srcs = files(
   '../../jp2/index.c',
 )
 
-inc_dirs = include_directories('/../..', '/..', '/src/lib', '/src/bin', '/src/lib/openjp2', '/src/lib/openjp2')1
+inc_dirs = include_directories('/../..', '/..', '/src/lib', '/src/bin', '/src/lib/openjp2', '/src/lib/openjp2')
 
 opjviewer_exe = 'opjviewer'
 c_args = ['-DwxUSE_LIBOPENJPEG', '-DOPENJPEG_VERSION="1.5.0"']
