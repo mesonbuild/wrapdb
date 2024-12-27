@@ -11,7 +11,7 @@ option(
     description: 'Create installation target for oat++',
 )
 option(
-    'create_test_lib', # cmake eqivalent to "OATPP_LINK_TEST_LIBRARY"
+    'create_test_lib',  # cmake eqivalent to "OATPP_LINK_TEST_LIBRARY"
     type: 'boolean',
     value: true,
     description: 'Create oat++ test library (oatpp-test dependency)',
