@@ -13,7 +13,7 @@ For example to test libjpeg-turbo and zlib:
 ```sh
 meson setup builddir -Dwraps=libjpeg-turbo,zlib
 meson compile -C builddir
-```
+``` 
 
 ## How to contribute new wraps
 
