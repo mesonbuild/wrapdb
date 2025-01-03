@@ -15,11 +15,15 @@ endif
 libm = cc.find_library('m', required: false)
 
 sources = files('sqlite3.c')
+
+sqlite_args = get_option('options')
 if host_machine.system() == 'windows'
-  sqlite_args = get_option('default_library') != 'static' ? ['-DSQLITE_API=__declspec(dllexport)'] : []
+  if get_option('default_library') != 'static'
+    sqlite_args += ['-DSQLITE_API=__declspec(dllexport)']
+  endif
   libthreads = dependency('', required: false)
 else
-  sqlite_args = ['-DSQLITE_API=__attribute__((visibility("default")))']
+  sqlite_args += ['-DSQLITE_API=__attribute__((visibility("default")))']
   libthreads = dependency('threads')
 endif
 
