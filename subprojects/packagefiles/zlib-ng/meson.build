@@ -120,15 +120,12 @@ foreach attr: [
 endforeach
 
 foreach opt: [
-  ['unaligned', 'Unaligned reads allowed', [], ['-DNO_UNALIGNED']],
-  ['inflate-strict', 'Inflate strict distance checking', ['-DINFLATE_STRICT'], []],
-  ['inflate-allow-invalid-dist', 'Zero fill for inflate invalid distances', ['-DINFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR'], []],
+  ['inflate-strict', 'Inflate strict distance checking', ['-DINFLATE_STRICT']],
+  ['inflate-allow-invalid-dist', 'Zero fill for inflate invalid distances', ['-DINFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR']],
 ]
   enable = get_option(opt[0])
   if enable
     compile_args += opt[2]
-  else
-    compile_args += opt[3]
   endif
   summary(opt[1], enable, section: general_section, bool_yn: true)
 endforeach
@@ -804,7 +801,7 @@ elif cpu_family in ['x86', 'x86_64']
   if cc_id == 'msvc'
     avx2flags = ['/arch:AVX2']
   else
-    avx2flags = ['-mavx2']
+    avx2flags = ['-mavx2', '-mbmi2']
   endif
   want_avx2 = get_option('avx2').require(have_sse42)
   have_avx2 = want_avx2.allowed() and cc.compiles(
@@ -834,7 +831,7 @@ elif cpu_family in ['x86', 'x86_64']
   if cc_id == 'msvc'
     avx512flags = ['/arch:AVX512']
   else
-    avx512flags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl']
+    avx512flags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl', '-mbmi2']
     # For CPUs that can benefit from AVX512, it seems GCC generates suboptimal
     # instruction scheduling unless you specify a reasonable -mtune= target
     foreach mtune: ['-mtune=cascadelake', '-mtune=skylake-avx512']
@@ -859,6 +856,7 @@ elif cpu_family in ['x86', 'x86_64']
     arch_libs += static_library(
       'avx512',
       archdir / 'adler32_avx512.c',
+      archdir / 'chunkset_avx512.c',
       c_args: compile_args + avx512flags,
       link_args: link_args,
     )
@@ -869,7 +867,7 @@ elif cpu_family in ['x86', 'x86_64']
   if cc_id == 'msvc'
     avx512vnniflags = ['/arch:AVX512']
   else
-    avx512vnniflags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl', '-mavx512vnni']
+    avx512vnniflags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl', '-mavx512vnni', '-mbmi2']
     # For CPUs that can benefit from AVX512, it seems GCC generates suboptimal
     # instruction scheduling unless you specify a reasonable -mtune= target
     foreach mtune: ['-mtune=cascadelake', '-mtune=skylake-avx512']
