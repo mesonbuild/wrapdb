@@ -15,11 +15,26 @@ endif
 libm = cc.find_library('m', required: false)
 
 sources = files('sqlite3.c')
+
+sqlite_args = [
+  '-DSQLITE_ENABLE_COLUMN_METADATA',
+  '-DSQLITE_ENABLE_DBSTAT_VTAB',
+  '-DSQLITE_ENABLE_FTS3',
+  '-DSQLITE_ENABLE_FTS3_PARENTHESIS',
+  '-DSQLITE_ENABLE_FTS3_TOKENIZER',
+  '-DSQLITE_ENABLE_FTS4',
+  '-DSQLITE_ENABLE_FTS5',
+  '-DSQLITE_ENABLE_UNLOCK_NOTIFY',
+  '-DSQLITE_SECURE_DELETE',
+]
+
 if host_machine.system() == 'windows'
-  sqlite_args = get_option('default_library') != 'static' ? ['-DSQLITE_API=__declspec(dllexport)'] : []
+  if get_option('default_library') != 'static'
+    sqlite_args += ['-DSQLITE_API=__declspec(dllexport)']
+  endif
   libthreads = dependency('', required: false)
 else
-  sqlite_args = ['-DSQLITE_API=__attribute__((visibility("default")))']
+  sqlite_args += ['-DSQLITE_API=__attribute__((visibility("default")))']
   libthreads = dependency('threads')
 endif
 
