@@ -20,12 +20,6 @@ option(
 # advanced options
 # generic
 option(
-  'unaligned',
-  description: 'Support unaligned reads on platforms that support it',
-  type: 'boolean',
-  value: true
-)
-option(
   'inflate-strict',
   description: 'Build with strict inflate distance checking',
   type: 'boolean',
