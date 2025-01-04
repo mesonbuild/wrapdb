@@ -7,12 +7,14 @@ arguments:
 --dirty: do not format/check all files, only process files changed (only valid in git repo)
 """
 
+import os
 import sys
 import shlex
 import pathlib
 import subprocess
 from shutil import which
 from itertools import chain
+from multiprocessing.pool import ThreadPool
 
 is_check = "--check" in sys.argv
 only_dirty = "--dirty" in sys.argv
@@ -53,14 +55,26 @@ else:
         )
     )
 
-for i, meson_file in enumerate(all_meson_files):
-    readable_filename = meson_file.relative_to(project_root).as_posix()
-    print("processing {}/{}: {}".format(i + 1, len(all_meson_files), readable_filename))
+
+def process_file(meson_file: pathlib.Path) -> tuple[bool, pathlib.Path]:
     try:
         subprocess.check_call(base_command + [str(meson_file)], cwd=str(project_root))
-    except subprocess.CalledProcessError as e:
-        if is_check:
-            print("{} is not formatted".format(readable_filename))
-            sys.exit(e.returncode)
-        else:
-            print("failed to format {}".format(readable_filename))
+    except subprocess.CalledProcessError:
+        return False, meson_file
+    return True, meson_file
+
+
+with ThreadPool(processes=(os.cpu_count() or 4) + 1) as pool:
+    err = False
+    for ok, meson_file in pool.imap_unordered(process_file, all_meson_files):
+        readable_filename = meson_file.relative_to(project_root).as_posix()
+        if not ok:
+            err = True
+            if is_check:
+                print("{} is not formatted".format(readable_filename))
+            else:
+                print("failed to format {}".format(readable_filename))
+            break
+
+if err:
+    sys.exit(1)
