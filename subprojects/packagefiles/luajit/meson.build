@@ -53,9 +53,28 @@ if TARGET_LJARCH == 'x64' and LJ_FR2 != '1'
   DASM_ARCH = 'x86'
 endif
 
+XCFLAGS = []
+use_valgrind = get_option('valgrind')
+if use_valgrind
+  XCFLAGS += ['-DLUAJIT_USE_VALGRIND']
+endif
+use_sysmalloc = (
+  use_valgrind
+  or get_option('sysmalloc')
+  or get_option('b_sanitize') != 'none'
+)
+if use_sysmalloc
+  XCFLAGS += '-DLUAJIT_USE_SYSMALLOC'
+endif
+
+if get_option('lua52compat')
+  XCFLAGS += '-DLUAJIT_ENABLE_LUA52COMPAT'
+endif
+
+
 DASM_FLAGS = []
 TARGET_ARCH = []
-TARGET_XCFLAGS = []
+TARGET_XCFLAGS = XCFLAGS
 
 prefix = get_option('prefix')
 if prefix != '/usr/local'
@@ -117,7 +136,7 @@ endif
 
 TARGET_ARCH += f'-DLUAJIT_TARGET=LUAJIT_ARCH_@TARGET_LJARCH@'
 
-HOST_XCFLAGS = []
+HOST_XCFLAGS = XCFLAGS
 
 if host_machine.system() in ['android', 'linux']
   LJVM_MODE = 'elfasm'
@@ -133,23 +152,6 @@ endif
 
 if get_option('valgrind') and get_option('b_sanitize') != 'none'
   error('valgrind and b_sanitize=' + get_option('b_sanitize') + ' are not compatible')
-endif
-
-use_valgrind = get_option('valgrind')
-if use_valgrind
-  TARGET_XCFLAGS += ['-DLUAJIT_USE_VALGRIND']
-endif
-use_sysmalloc = (
-  use_valgrind
-  or get_option('sysmalloc')
-  or get_option('b_sanitize') != 'none'
-)
-if use_sysmalloc
-  TARGET_XCFLAGS += '-DLUAJIT_USE_SYSMALLOC'
-endif
-
-if get_option('lua52compat')
-  TARGET_XCFLAGS += '-DLUAJIT_ENABLE_LUA52COMPAT'
 endif
 
 TARGET_XCFLAGS += cc.get_supported_arguments(
