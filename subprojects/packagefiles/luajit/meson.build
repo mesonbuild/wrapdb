@@ -121,6 +121,8 @@ DASM_FLAGS += ['-D', f'VER=@LJ_ARCH_VERSION@']
 
 if host_machine.system() == 'darwin'
   unwind_external = true
+elif host_machine.system() == 'windows'
+  unwind_external = false
 else
   unwind_external = (
     LJ_NO_UNWIND != '1'
