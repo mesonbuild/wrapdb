@@ -1,4 +1,4 @@
-project('fmt', 'cpp', version: '11.0.2', license: 'MIT WITH fmt-exception', default_options: ['cpp_std=c++14'])
+project('fmt', 'cpp', version: '11.1.1', license: 'MIT WITH fmt-exception', default_options: ['cpp_std=c++14'])
 
 fmt_private_cpp_args = []
 fmt_interface_cpp_args = []
