@@ -7,19 +7,24 @@ if get_option('default_library') == 'shared'
   fmt_interface_cpp_args += ['-DFMT_SHARED']
 endif
 
+header_only = get_option('header-only')
+
 fmt_lib = library(
   'fmt',
   'src/format.cc',
   'src/os.cc',
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
-  install: true,
+  build_by_default: not header_only,
+  install: not header_only,
 )
 
-install_subdir('include',
-  strip_directory: true,
-  install_dir: get_option('includedir'),
-)
+if not header_only
+  install_subdir('include',
+    strip_directory: true,
+    install_dir: get_option('includedir'),
+  )
+endif
 
 fmt_dep = declare_dependency(
   include_directories: 'include',
@@ -36,8 +41,10 @@ fmt_header_only_dep = declare_dependency(
   compile_args: '-DFMT_HEADER_ONLY',
 )
 
-pkg_mod = import('pkgconfig')
-pkg_mod.generate(fmt_lib,
-  name: 'fmt',
-  filebase: 'fmt',
-)
+if not header_only
+  pkg_mod = import('pkgconfig')
+  pkg_mod.generate(fmt_lib,
+    name: 'fmt',
+    filebase: 'fmt',
+  )
+endif
