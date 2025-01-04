@@ -1,0 +1,6 @@
+option(
+  'strict',
+  description: 'Enable extra checks',
+  type: 'boolean',
+  value: true
+)

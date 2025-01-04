@@ -28,6 +28,13 @@ sqlite_args = [
   '-DSQLITE_SECURE_DELETE',
 ]
 
+if get_option('strict')
+  sqlite_args += [
+    '-DSQLITE_LIKE_DOESNT_MATCH_BLOBS',
+    '-DSQLITE_STRICT_SUBTYPE=1',
+  ]
+endif
+
 if host_machine.system() == 'windows'
   if get_option('default_library') != 'static'
     sqlite_args += ['-DSQLITE_API=__declspec(dllexport)']
