@@ -19,11 +19,6 @@ sources = files('sqlite3.c')
 sqlite_args = [
   '-DSQLITE_ENABLE_COLUMN_METADATA',
   '-DSQLITE_ENABLE_DBSTAT_VTAB',
-  '-DSQLITE_ENABLE_FTS3',
-  '-DSQLITE_ENABLE_FTS3_PARENTHESIS',
-  '-DSQLITE_ENABLE_FTS3_TOKENIZER',
-  '-DSQLITE_ENABLE_FTS4',
-  '-DSQLITE_ENABLE_FTS5',
   '-DSQLITE_ENABLE_UNLOCK_NOTIFY',
   '-DSQLITE_SECURE_DELETE',
 ]
@@ -34,6 +29,38 @@ if get_option('strict')
     '-DSQLITE_STRICT_SUBTYPE=1',
   ]
 endif
+
+extensions = [
+  ['fts34', true, [
+    '-DSQLITE_ENABLE_FTS3',
+    '-DSQLITE_ENABLE_FTS3_PARENTHESIS',
+    '-DSQLITE_ENABLE_FTS3_TOKENIZER',
+  ]],
+  ['fts5', true, '-DSQLITE_ENABLE_FTS5'],
+  ['geopoly', false, '-DSQLITE_ENABLE_GEOPOLY'],
+  ['rbu', false, '-DSQLITE_ENABLE_RBU'],
+  ['rtree', false, '-DSQLITE_ENABLE_RTREE'],
+  ['session', false, [
+    '-DSQLITE_ENABLE_SESSION',
+    '-DSQLITE_ENABLE_PREUPDATE_HOOK'
+  ]],
+]
+extension_default = get_option('all-extensions')
+foreach extension : extensions
+  option = get_option(extension[0])
+  if option.auto()
+    if extension_default.auto()
+      enabled = extension[1]
+    else
+      enabled = extension_default.enabled()
+    endif
+  else
+    enabled = option.enabled()
+  endif
+  if enabled
+    sqlite_args += extension[2]
+  endif
+endforeach
 
 if host_machine.system() == 'windows'
   if get_option('default_library') != 'static'
