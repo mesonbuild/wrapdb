@@ -12,6 +12,10 @@ pkg = import('pkgconfig')
 
 cc = meson.get_compiler('c')
 
+if not cc.compiles('#include "lj_arch.h"', include_directories: include_directories('src'))
+  error('unsupported architecture or configuration, see: https://luajit.org/status.html#architectures')
+endif
+
 foreach _define : [
   'LJ_ABI_SOFTFP',
   'LJ_ARCH_BITS',
