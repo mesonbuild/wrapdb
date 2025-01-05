@@ -724,6 +724,12 @@
       "lmdb:programs=true"
     ]
   },
+  "luajit": {
+    "_comment": "Does not support RISC-V, which runs on Alpine on the CI",
+    "build_on": {
+      "alpine": false
+    }
+  },
   "lz4": {
     "_comment": [
       "- Examples and ossfuzz fail to build on some platforms",
