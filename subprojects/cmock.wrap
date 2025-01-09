@@ -1,8 +1,8 @@
 [wrap-file]
-directory = CMock-2.5.3
-source_url = https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v2.5.3.tar.gz
-source_filename = CMock-2.5.3.tar.gz
-source_hash = d30724405b527f2b1d2894b27a1600af3ccb4aad12e63e48ba4f0ea8ae88fe9c
+directory = CMock-2.6.0
+source_url = https://github.com/ThrowTheSwitch/CMock/archive/refs/tags/v2.6.0.tar.gz
+source_filename = CMock-2.6.0.tar.gz
+source_hash = 02d1202bf52c6631e180b463887f75f281d68f8713689990a5ce0e4524d98b00
 
 [provide]
 cmock = cmock_dep
