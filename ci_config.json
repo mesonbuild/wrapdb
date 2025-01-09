@@ -1141,5 +1141,11 @@
     "build_options": [
       "x-plane-sdk:cpp=enabled"
     ]
+  },
+  "zycore": {
+    "build_options": [
+      "zycore:examples=enabled",
+      "zycore:tests=enabled"
+    ]
   }
 }
