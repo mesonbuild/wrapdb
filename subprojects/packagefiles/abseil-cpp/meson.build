@@ -94,6 +94,7 @@ absl_base_headers = files(
   'absl/base/log_severity.h',
   'absl/base/macros.h',
   'absl/base/no_destructor.h',
+  'absl/base/nullability.h',
   'absl/base/optimization.h',
   'absl/base/options.h',
   'absl/base/policy_checks.h',
