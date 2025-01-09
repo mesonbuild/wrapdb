@@ -1,0 +1,9 @@
+[wrap-file]
+source_url = https://github.com/LoupVaillant/Monocypher/releases/download/4.0.2/monocypher-4.0.2.tar.gz
+directory = monocypher-4.0.2
+source_filename = monocypher-4.0.2.tar.gz
+source_hash = 38d07179738c0c90677dba3ceb7a7b8496bcfea758ba1a53e803fed30ae0879c
+patch_directory = monocypher
+
+[provide]
+monocypher = monocypher_dep
