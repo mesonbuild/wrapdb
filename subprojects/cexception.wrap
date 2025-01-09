@@ -1,8 +1,8 @@
 [wrap-file]
-directory = CException-1.3.3
-source_url = https://github.com/ThrowTheSwitch/CException/archive/refs/tags/v1.3.3.tar.gz
-source_filename = CException-1.3.3.tar.gz
-source_hash = 4c8330197e42f2ca4cbf45660e10b520ce5273ca15e8fc3a90af4cecc3b02b5c
+directory = CException-1.3.4
+source_url = https://github.com/ThrowTheSwitch/CException/archive/refs/tags/v1.3.4.tar.gz
+source_filename = CException-1.3.4.tar.gz
+source_hash = 641d26b32d1f92e7ec31bd5f1e86a1230e49b6a3eaaa181571ef1a5c9d2d22d1
 
 [provide]
 cexception = cexception_dep
