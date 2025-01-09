@@ -25,6 +25,12 @@
     "graphite2",
     "mocklibc"
   ],
+  "blueprint-compiler": {
+    "_comment": "py3-gobject3 needed for tests",
+    "alpine_packages": [
+      "py3-gobject"
+    ]
+  },
   "c-ares": {
     "build_options": [
       "c-ares:tests=true",
