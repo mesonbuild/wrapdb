@@ -1,8 +1,8 @@
 [wrap-file]
-directory = Unity-2.5.2
-source_url = https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v2.5.2.tar.gz
-source_filename = Unity-2.5.2.tar.gz
-source_hash = 3786de6c8f389be3894feae4f7d8680a02e70ed4dbcce36109c8f8646da2671a
+directory = Unity-2.6.1
+source_url = https://github.com/ThrowTheSwitch/Unity/archive/refs/tags/v2.6.1.tar.gz
+source_filename = Unity-2.6.1.tar.gz
+source_hash = b41a66d45a6b99758fb3202ace6178177014d52fc524bf1f72687d93e9867292
 
 [provide]
 unity = unity_dep
