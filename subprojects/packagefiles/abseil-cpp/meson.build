@@ -13,6 +13,7 @@ cpp = meson.get_compiler('cpp')
 flags = cpp.get_supported_arguments('/DNOMINMAX', '-Wno-sign-compare', '-Wno-gcc-compat')
 add_project_arguments(flags, language: 'cpp')
 
+arch_cpp_flags = []
 hw_cpp_flags = []
 if host_machine.cpu_family() == 'x86_64'
   hw_cpp_flags += ['-maes', '-msse4.1']
@@ -20,7 +21,18 @@ elif host_machine.cpu_family() == 'aarch64' and cpp.sizeof('void*') == 8
   hw_cpp_flags += ['-march=armv8-a+crypto']
 elif host_machine.cpu_family() == 'arm' and cpp.sizeof('void*') == 4
   hw_cpp_flags += ['-mfpu=neon']
+elif host_machine.cpu_family() == 'ppc' or host_machine.cpu_family() == 'ppc64'
+  # This will work with glibc but not musl
+  timebase_check = '''#include <sys/platform/ppc.h>
+    int main() {
+       __ppc_get_timebase_freq();
+       return 0;
+    }'''
+  if not cpp.compiles(timebase_check)
+    arch_cpp_flags += ['-DABSL_USE_UNSCALED_CYCLECLOCK=0']
+  endif
 endif
+arch_flags = cpp.get_supported_arguments(arch_cpp_flags)
 hw_flags = cpp.get_supported_arguments(hw_cpp_flags)
 
 libatomic = dependency('', required: false)
@@ -623,6 +635,7 @@ absl_base_lib = static_library(
   'absl_base',
   absl_base_sources,
   include_directories: absl_include_dir,
+  cpp_args: arch_flags,
   dependencies: [dependency('threads'), libatomic],
 )
 
