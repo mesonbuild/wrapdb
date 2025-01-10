@@ -3097,6 +3097,14 @@
       "4.2.0-1"
     ]
   },
+  "quickjs-ng": {
+    "dependency_names": [
+      "quickjs-ng"
+    ],
+    "versions": [
+      "0.8.0-1"
+    ]
+  },
   "rang": {
     "dependency_names": [
       "rang"
