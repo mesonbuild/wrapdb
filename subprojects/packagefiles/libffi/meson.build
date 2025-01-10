@@ -282,6 +282,7 @@ elif host_cpu_family == 'vax'
   asm_sources = ['elfbsd.S']
 elif host_cpu_family == 'wasm32'
   target = 'wasm32' # lowercase
+  asm_sources = []
 elif host_cpu_family == 'xtensa'
   # FIXME: xtensa family is missing in Meson
   target = 'XTENSA'
