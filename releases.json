@@ -4003,5 +4003,13 @@
       "1.3.3-2",
       "1.3.3-1"
     ]
+  },
+  "zycore": {
+    "dependency_names": [
+      "zycore"
+    ],
+    "versions": [
+      "1.5.1-1"
+    ]
   }
 }
