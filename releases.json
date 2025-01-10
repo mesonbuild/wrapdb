@@ -3080,6 +3080,14 @@
       "0.7.3-1"
     ]
   },
+  "quickjs-ng": {
+    "dependency_names": [
+      "quickjs-ng"
+    ],
+    "versions": [
+      "0.8.0-1"
+    ]
+  },
   "quill": {
     "dependency_names": [
       "quill"
@@ -3095,14 +3103,6 @@
       "4.5.0-1",
       "4.4.0-1",
       "4.2.0-1"
-    ]
-  },
-  "quickjs-ng": {
-    "dependency_names": [
-      "quickjs-ng"
-    ],
-    "versions": [
-      "0.8.0-1"
     ]
   },
   "rang": {

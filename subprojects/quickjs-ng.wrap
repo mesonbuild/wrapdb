@@ -6,4 +6,4 @@ source_hash = 7e60e1e0dcd07d25664331308a2f4aee2a88d60d85896e828d25df7c3d40204e
 patch_directory = quickjs-ng
 
 [provide]
-quickjs_ng = quickjs_ng_dep
+quickjs-ng = quickjs_ng_dep

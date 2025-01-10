@@ -1,93 +1,51 @@
+# DO not forget to update QJS_VERSION_MAJOR/QJS_VERSION_MINOR/QJS_VERSION_PATCH when upgrading version
 project('quickjs-ng', 'c', version: '0.8.0', default_options: ['c_std=c11'])
+
 
 cc = meson.get_compiler('c')
 dep_m = cc.find_library('m', required: false)
 dep_threads = dependency('threads')
-deps = [dep_m, dep_threads, dependency('dl')]
+deps = [dep_m, dep_threads]
+
+msvc_compat = cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
 
 add_project_arguments(
-  cc.get_supported_arguments('-Wall', '-D_CRT_SECURE_NO_WARNINGS'),
-  language: 'c',
-)
-
-
-if cc.get_id() != 'msvc'
-  add_project_arguments(
-    cc.get_supported_arguments('-Wall', '-Wextra'),
-    language: 'c',
-  )
-endif
-
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-implicit-fallthrough'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-sign-compare'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-missing-field-initializers'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-unused-parameter'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-unused-but-set-variable'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-array-bounds'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-Wno-format-truncation'),
-  language: 'c',
-)
-add_project_arguments(
-  cc.get_supported_arguments('-funsigned-char'),
+  '-DQJS_VERSION_MAJOR=0',
+  '-DQJS_VERSION_MINOR=8',
+  '-DQJS_VERSION_PATCH=0',
   language: 'c',
 )
 
-if cc.get_id() == 'msvc'
+add_project_arguments(
+  cc.get_supported_arguments(
+    '-Wno-implicit-fallthrough',
+    '-Wno-sign-compare',
+    '-Wno-missing-field-initializers',
+    '-Wno-unused-parameter',
+    '-Wno-unused-but-set-variable',
+    '-Wno-array-bounds',
+    '-Wno-format-truncation',
+    '-funsigned-char',
+  ),
+  language: 'c',
+)
+
+if msvc_compat
   add_project_arguments(
-    cc.get_supported_arguments('-Wno-unsafe-buffer-usage'),
+    cc.get_supported_arguments(
+      '-Wno-unsafe-buffer-usage',
+      '-Wno-sign-conversion',
+      '-Wno-nonportable-system-include-path',
+      '-Wno-implicit-int-conversion',
+      '-Wno-shorten-64-to-32',
+      '-Wno-reserved-macro-identifier',
+      '-Wno-reserved-identifier',
+      '-Wdeprecated-declarations',
+      '/experimental:c11atomics',
+    ),
     language: 'c',
   )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-sign-conversion'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-nonportable-system-include-path'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-implicit-int-conversion'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-shorten-64-to-32'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-reserved-macro-identifier'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wno-reserved-identifier'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('-Wdeprecated-declarations'),
-    language: 'c',
-  )
-  add_project_arguments(
-    cc.get_supported_arguments('/experimental:c11atomics'),
-    language: 'c',
-  )
+
   add_project_arguments(
     cc.get_supported_arguments(
       '/wd4018',  # -Wno-sign-conversion
@@ -127,8 +85,7 @@ lib_src = files(
   'quickjs.c',
 )
 
-# TODO: support shared libs
-c_defines = ['-funsigned-char', '-D_GNU_SOURCE', '-DCONFIG_BIGNUM']
+c_defines = ['-D_GNU_SOURCE', '-DCONFIG_BIGNUM']
 
 if host_machine.system() == 'windows'
   c_defines += ['-DWIN32_LEAN_AND_MEAN', '-D_WIN32_WINNT=0x0602']
@@ -136,27 +93,8 @@ endif
 
 add_project_arguments(c_defines, language: 'c')
 
-qjsc = executable('qjsc', 'qjsc.c', lib_src, dependencies: deps)
-
-repl_c = custom_target(
-  'repl_c',
-  input: 'repl.js',
-  output: 'repl.c',
-  command: [qjsc, '-c', '-o', '@OUTPUT@', '-m', '@INPUT@'],
-)
-
+# TODO: support shared libs
 quickjs_lib = static_library('quickjs', lib_src, dependencies: deps)
-
-qjs = executable(
-  'qjs',
-  'qjs.c',
-  'gen/standalone.c',
-  repl_c,
-  link_with: [quickjs_lib],
-  dependencies: deps,
-)
-
-
 
 quickjs_ng_dep = declare_dependency(
   include_directories: include_directories('.'),
