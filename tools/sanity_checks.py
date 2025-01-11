@@ -139,8 +139,8 @@ PER_PROJECT_PERMITTED_FILES = {
         'get-version.py',
         'process-zconf.py',
     ],
-    'quick-ng': [
-        'include/quickjs.h',
+    'quickjs-ng': [
+        'quickjs.h',
     ],
 }
 NO_TABS_FILES = ['meson.build', 'meson_options.txt']
