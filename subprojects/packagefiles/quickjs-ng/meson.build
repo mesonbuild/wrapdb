@@ -98,5 +98,14 @@ quickjs_ng_dep = declare_dependency(
   dependencies: deps,
 )
 
+if not meson.is_subproject()
+  pkg = import('pkgconfig')
+  pkg.generate(
+    quickjs_ng_dep,
+    description: 'QuickJS, the Next Generation: a mighty JavaScript engine',
+    url: 'https://github.com/quickjs-ng/quickjs',
+    version: meson.project_version(),
+  )
+endif
 
 # TODO: run tests
