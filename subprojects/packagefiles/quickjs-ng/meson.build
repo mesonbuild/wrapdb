@@ -109,4 +109,4 @@ if not meson.is_subproject()
 endif
 
 
-test('ctest', executable('ctest', 'ctest.c', dependencies: [quickjs_ng_dep]))
+test('ctest', executable('ctest', 'ctest.c', dependencies: [quickjs_ng_dep],build_by_default: false))
