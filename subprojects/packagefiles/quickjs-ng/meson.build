@@ -94,10 +94,15 @@ endif
 add_project_arguments(c_defines, language: 'c')
 
 # TODO: support shared libs
-quickjs_lib = static_library('quickjs', lib_src, dependencies: deps)
+quickjs_lib = static_library(
+  'quickjs',
+  lib_src,
+  dependencies: deps,
+  include_directories: include_directories('.'),
+)
 
 quickjs_ng_dep = declare_dependency(
-  include_directories: include_directories('.'),
+  include_directories: include_directories('include'),
   link_with: quickjs_lib,
   dependencies: deps,
 )
