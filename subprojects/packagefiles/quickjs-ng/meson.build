@@ -84,7 +84,8 @@ endif
 
 add_project_arguments(c_defines, language: 'c')
 
-quickjs_lib = library(
+# TODO: support shared libs
+quickjs_lib = static_library(
   'quickjs',
   lib_src,
   dependencies: deps,
