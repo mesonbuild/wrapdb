@@ -48,7 +48,7 @@ if get_option('ffi-build-versioned')
       ffi_map_file = cc.preprocess(libffi_map_in,
         output: '@BASENAME@',
         include_directories: ffiinc,
-        compile_args: '-DGENERATE_LIBFFI_MAP',
+        compile_args: ['-DGENERATE_LIBFFI_MAP', '-D' + target],
       )
       ffi_map_abs = ffi_map_file[0].full_path()
     else
@@ -61,6 +61,7 @@ if get_option('ffi-build-versioned')
           '-I' + join_paths(meson.current_build_dir(), '..', 'include'),
           '-I' + join_paths(meson.current_source_dir(), targetdir),
           '-DGENERATE_LIBFFI_MAP',
+          '-D' + target,
           '-E', '-x', 'assembler-with-cpp',
           join_paths(meson.current_source_dir(),'../libffi.map.in'),
           '-o',
