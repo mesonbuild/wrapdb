@@ -27,6 +27,7 @@ jobs:
   Alpine:
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         platform: ['x86', 'riscv64', 'ppc64le', 'armv7']
     steps:
