@@ -1102,9 +1102,6 @@
     "choco_packages": [
       "winflexbison3"
     ],
-    "msys_packages": [
-      "base::flex: ninja"
-    ],
     "test_options": [
       "--timeout-multiplier=2"
     ]
