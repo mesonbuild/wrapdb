@@ -126,6 +126,7 @@ jobs:
           install: >-
             bison
             dos2unix
+            flex
             git
           pacboy: >-
             cc:p
