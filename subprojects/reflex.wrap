@@ -1,8 +1,8 @@
 [wrap-file]
-directory = RE-flex-5.1.0
-source_url = https://github.com/Genivia/RE-flex/archive/refs/tags/v5.1.0.tar.gz
-source_filename = v5.1.0.tar.gz
-source_hash = 42bb511b6d7e12faf2972c4311534d3cca71cc84d2e9f3dd433e0eefb3b46fd1
+directory = RE-flex-5.1.1
+source_url = https://github.com/Genivia/RE-flex/archive/refs/tags/v5.1.1.tar.gz
+source_filename = v5.1.1.tar.gz
+source_hash = 550e371b3b52aad8836b0679ce0f6898f39cf4a6865651aa3f59b2201dd0740c
 patch_directory = reflex
 
 [provide]
