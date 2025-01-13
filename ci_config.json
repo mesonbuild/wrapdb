@@ -335,7 +335,7 @@
   "glib": {
     "_comment": [
       "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
-      "- Disable fatal warnings because upstream passes a file to str.format(), which warns in >= 1.3.0 but doesn't have an alternative until 1.4.0."
+      "- Don't fail on proxy-libintl Meson warning - https://github.com/frida/proxy-libintl/pull/6"
     ],
     "alpine_packages": [
       "gettext-tiny-dev"
@@ -787,7 +787,7 @@
       "nanoarrow:testing=true"
     ]
   },
-    "nanobind": {
+  "nanobind": {
     "_comment": "Python fails on 32-bit MSVC because we don't have 32-bit Python",
     "alpine_packages": [
       "python3-dev"
