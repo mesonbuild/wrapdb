@@ -1,6 +1,6 @@
 project(
   'reflex', 'cpp',
-  version: '5.1.0',
+  version: '5.1.1',
   license: 'BSD-3-Clause',
   meson_version: '>= 1.5.0',
   default_options: {
