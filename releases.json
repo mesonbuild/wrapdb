@@ -3537,6 +3537,17 @@
       "0.64-1"
     ]
   },
+  "stc": {
+    "dependency_names": [
+      "stc"
+    ],
+    "program_names": [
+      "checkscoped"
+    ],
+    "versions": [
+      "5.0-1"
+    ]
+  },
   "stduuid": {
     "dependency_names": [
       "stduuid"

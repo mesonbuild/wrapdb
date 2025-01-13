@@ -1087,6 +1087,28 @@
       "postgresql"
     ]
   },
+  "stc": {
+    "build_options": [
+      "stc:checkscoped=enabled",
+      "stc:tests=enabled",
+      "stc:examples=enabled"
+    ],
+    "alpine_packages": [
+      "flex"
+    ],
+    "brew_packages": [
+      "flex"
+    ],
+    "choco_packages": [
+      "winflexbison3"
+    ],
+    "msys_packages": [
+      "base::flex: ninja"
+    ],
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "sqlitecpp": {
     "_comment": "required to not use the default sqlite3 in MacOS to avoid compilation errors/tests failures, also add pkgconfig path to find sqlite3(keg-only)",
     "build_options": [
