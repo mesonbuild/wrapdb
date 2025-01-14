@@ -750,6 +750,11 @@
       "mpdecimal:tests=true"
     ]
   },
+  "mpark-patterns": {
+    "build_options": [
+      "mpark-patterns:tests=enabled"
+    ]
+  },
   "msgpackc-cxx": {
     "alpine_packages": [
       "boost-dev"
