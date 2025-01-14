@@ -2481,6 +2481,14 @@
       "1.0-2"
     ]
   },
+  "mpark-patterns": {
+    "dependency_names": [
+      "mpark_patterns"
+    ],
+    "versions": [
+      "0.3.0-1"
+    ]
+  },
   "mpdecimal": {
     "dependency_names": [
       "mpdec",
