@@ -144,7 +144,7 @@ TARGET_ARCH += f'-DLUAJIT_TARGET=LUAJIT_ARCH_@TARGET_LJARCH@'
 
 HOST_XCFLAGS = XCFLAGS
 
-if host_machine.system() in ['android', 'linux']
+if host_machine.system() in ['android', 'linux', 'openbsd']
   LJVM_MODE = 'elfasm'
 elif host_machine.system() == 'darwin'
   LJVM_MODE = 'machasm'
@@ -171,6 +171,7 @@ if meson.is_cross_build()
     'android': 'LINUX',
     'linux'  : 'LINUX',
     'windows': 'WINDOWS',
+    'openbsd': 'BSD',
   }.get(host_machine.system(), 'OTHER')
   HOST_XCFLAGS += '-DLUAJIT_OS=LUAJIT_OS_' + _luajit_os
 endif
