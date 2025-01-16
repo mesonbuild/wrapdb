@@ -8,7 +8,10 @@ concurrency:
 
 jobs:
   Ubuntu:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    strategy:
+      matrix:
+        platform: ['x86_64', 'aarch64']
     steps:
       - uses: actions/checkout@v4
         with:
