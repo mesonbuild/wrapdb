@@ -2,7 +2,7 @@
 directory = libuv-v1.50.0
 source_url = https://dist.libuv.org/dist/v1.50.0/libuv-v1.50.0.tar.gz
 source_filename = libuv-v1.50.0.tar.gz
-source_hash = b1ec56444ee3f1e10c8bd3eed16ba47016ed0b94fe42137435aaf2e0bd574579
+source_hash = 6dc2b39aa7fa66c04e2e015bf47738b84e1c6b86b8987d57dd432d149d77ee25
 patch_directory = libuv
 
 [provide]
