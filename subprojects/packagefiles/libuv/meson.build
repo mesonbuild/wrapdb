@@ -1,7 +1,7 @@
 project(
   'libuv',
   'c',
-  version: '1.49.1',
+  version: '1.50.0',
   license: 'libuv',
   default_options: [
     meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
@@ -634,6 +634,7 @@ if libuv_build_tests
     'test/test-thread-equal.c',
     'test/test-thread.c',
     'test/test-thread-priority.c',
+    'test/test-thread-name.c',
     'test/test-threadpool-cancel.c',
     'test/test-threadpool.c',
     'test/test-timer-again.c',
