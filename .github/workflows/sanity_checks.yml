@@ -32,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['x86', 'riscv64', 'ppc64le', 'armv7']
+        platform: ['x86_64', 'x86', 'aarch64', 'armv7', 'riscv64', 'ppc64le']
     steps:
       - uses: actions/checkout@v4
         with:
