@@ -212,6 +212,12 @@
     }
   },
   "fontconfig": {
+    "alpine_packages": [
+      "bash"
+    ],
+    "build_options": [
+      "libxml2:python=false"
+    ],
     "fatal_warnings": false
   },
   "freeglut": {
