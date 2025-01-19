@@ -10,6 +10,7 @@ jobs:
   Ubuntu:
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     strategy:
+      fail-fast: false
       matrix:
         platform: ['x86_64', 'aarch64']
     steps:
