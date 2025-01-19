@@ -1,9 +1,9 @@
 [wrap-file]
-directory = fontconfig-2.15.0
+directory = fontconfig-2.16.0
 
-source_url = https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.xz
-source_filename = fontconfig-2.15.0.tar.xz
-source_hash = 63a0658d0e06e0fa886106452b58ef04f21f58202ea02a94c39de0d3335d7c0e
+source_url = https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.16.0.tar.xz
+source_filename = fontconfig-2.16.0.tar.xz
+source_hash = 6a33dc555cc9ba8b10caf7695878ef134eeb36d0af366041f639b1da9b6ed220
 
 [provide]
 fontconfig = fontconfig_dep
