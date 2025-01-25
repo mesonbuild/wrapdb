@@ -47,6 +47,11 @@ jobs:
           packages: >
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
+      # https://github.com/jirutka/setup-alpine/pull/22
+      - name: Disable QEMU emulation
+        if: matrix.platform == 'armv7'
+        run: sudo update-binfmts --disable qemu-arm
+
       - name: Sanity Checks
         env:
           CC: clang
