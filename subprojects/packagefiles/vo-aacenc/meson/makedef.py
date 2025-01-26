@@ -127,7 +127,7 @@ if __name__ == '__main__':
         # Substitute prefix out
         dump = [re.sub(f'\s+{prefix}', ' ', x) for x in dump]
         # Substitute big chonky spaces out
-        dump = [re.sub(f'\s+', ' ', x) for x in dump]
+        dump = [re.sub('\s+', ' ', x) for x in dump]
         # Exclude blank lines
         dump = [x for x in dump if len(x) > 0]
         # Take only the *second* field (split by spaces)

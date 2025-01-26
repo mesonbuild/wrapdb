@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os
+import sys
 
 filename = sys.argv[1]
 linkname = sys.argv[2]
