@@ -1,0 +1,9 @@
+[wrap-file]
+directory = miniaudio-0.11.21
+source_url = https://github.com/mackron/miniaudio/archive/refs/tags/0.11.21.tar.gz
+source_filename = v0.11.21.tar.gz
+source_hash = 6afb5c231613d2fab4f1c668b7243ff9a7d6d78a7f5a2692c133f026fe508506
+patch_directory = miniaudio
+
+[provide]
+dependency_names = miniaudio

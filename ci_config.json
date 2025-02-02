@@ -790,6 +790,33 @@
       "boost"
     ]
   },
+  "miniaudio": {
+    "_comment": "Remove when fixed: https://github.com/xiph/opus/pull/285",
+    "fatal_warnings": false,
+    "_comment2": "Remove when fixed: https://github.com/xiph/opus/pull/287",
+    "test_options": [
+      "--timeout-multiplier=2"
+    ],
+    "build_options": [
+      "miniaudio:tests=enabled",
+      "miniaudio:tools=enabled",
+      "miniaudio:examples=enabled",
+      "miniaudio:libvorbis=auto",
+      "miniaudio:libopus=auto"
+    ],
+    "alpine_packages": [
+      "opusfile-dev"
+    ],
+    "brew_packages": [
+      "opusfile"
+    ],
+    "debian_packages": [
+      "libopusfile-dev"
+    ],
+    "msys_packages": [
+      "opusfile"
+    ]
+  },
   "nanoarrow": {
     "alpine_packages": [
       "apache-arrow-dev"
