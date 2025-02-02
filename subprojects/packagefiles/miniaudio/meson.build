@@ -116,9 +116,9 @@ if not get_option('dr_mp3')
   ma_c_args += '-DMA_NO_MP3'
 endif
 
-examples = get_option('examples').enable_auto_if(meson.is_subproject())
+examples = get_option('examples').disable_auto_if(meson.is_subproject())
 tools = get_option('tools').disable_auto_if(meson.is_subproject())
-tests = get_option('tests').enable_auto_if(meson.is_subproject())
+tests = get_option('tests').disable_auto_if(meson.is_subproject())
 
 ma_inc = include_directories('.')
 
