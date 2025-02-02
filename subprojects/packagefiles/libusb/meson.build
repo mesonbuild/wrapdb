@@ -3,9 +3,10 @@ project(
   'c',
   version: '1.0.27',
   meson_version: '>=0.49.0',
+  default_options: [
+    'cpp_std=c++20',
+  ],
 )
-
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 cc = meson.get_compiler('c')
 pconf = import('pkgconfig')
@@ -21,9 +22,17 @@ if host_machine.system() == 'windows'
     cc.get_supported_arguments('-Wno-deprecated-declarations'),
     language: 'c',
   )
+elif host_machine.system() == 'emscripten'
+  add_languages('cpp')
+  add_project_link_arguments(
+    '--bind', '-sASYNCIFY', '-sALLOW_MEMORY_GROWTH',
+    language: ['c', 'cpp'],
+  )
 endif
 
 cdata = configuration_data()
+cdata.set('_GNU_SOURCE', true)
+
 cdata.set('HAVE_SYSLOG', cc.has_function('syslog'))
 
 if not cdata.get('HAVE_SYSLOG') and get_option('system-log')
@@ -102,6 +111,8 @@ elif host_machine.system() == 'windows'
   sources += files('libusb/os/windows_common.c', 'libusb/os/windows_usbdk.c', 'libusb/os/windows_winusb.c')
 elif host_machine.system() in ['darwin', 'netbsd', 'openbsd', 'sunos']
   sources += files('libusb/os/@0@_usb.c'.format(host_machine.system()))
+elif host_machine.system() == 'emscripten'
+  sources += files('libusb/os/emscripten_webusb.cpp')
 else
   sources += files('libusb/os/null_usb.c')
 endif
