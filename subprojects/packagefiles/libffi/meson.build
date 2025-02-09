@@ -1,7 +1,7 @@
 project(
   'libffi',
   'c',
-  version: '3.4.6',
+  version: '3.4.8',
   meson_version: '>= 0.56.0',
   default_options: ['debug=true', 'optimization=3', 'warning_level=1'],
 )
@@ -246,9 +246,6 @@ elif host_cpu_family in ['mips', 'mips64'] and host_system in [
   asm_sources = ['o32.S', 'n32.S']
   # Support 128-bit long double for NewABI.
   have_long_double = 'defined(__mips64)'
-elif host_cpu_family == 'nios2' and host_system == 'linux'
-  # FIXME: nios2 family is missing in Meson
-  target = 'NIOS2'
 elif host_cpu_family == 'or1k'
   # FIXME: or1k family is missing in Meson
   target = 'OR1K'
@@ -392,17 +389,17 @@ endif
 ptrauth_code = '''
 #ifdef __clang__
 # if __has_feature(ptrauth_calls)
-#  define HAVE_PTRAUTH 1
+#  define HAVE_ARM64E_PTRAUTH 1
 # endif
 #endif
 
-#ifndef HAVE_PTRAUTH
+#ifndef HAVE_ARM64E_PTRAUTH
 # error Pointer authentication not supported
 #endif
 '''
 
 if cc.compiles(ptrauth_code)
-  ffi_conf.set('HAVE_PTRAUTH', 1)
+  ffi_conf.set('HAVE_ARM64E_PTRAUTH', 1)
 endif
 
 if get_option('pax_emutramp')
@@ -502,6 +499,9 @@ if get_option('exe_static_tramp')
     'x86',
     'x86_64',
     'loongarch',
+    's390x',
+    'ppc',
+    'ppc64',
   ]
     ffi_conf.set('FFI_EXEC_STATIC_TRAMP', 1)
   endif

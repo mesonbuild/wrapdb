@@ -31,6 +31,9 @@
 /* Define to 1 if you have the <alloca.h> header file. */
 #mesondefine HAVE_ALLOCA_H
 
+/* Define if your compiler supports pointer authentication. */
+#mesondefine HAVE_ARM64E_PTRAUTH
+
 /* Define if your assembler supports .cfi_* directives. */
 #mesondefine HAVE_AS_CFI_PSEUDO_OP
 
@@ -70,9 +73,6 @@
 
 /* Define to 1 if you have the `memfd_create' function. */
 #mesondefine HAVE_MEMFD_CREATE
-
-/* Define if your compiler supports pointer authentication. */
-#mesondefine HAVE_PTRAUTH
 
 /* Define if .eh_frame sections should be read-only. */
 #mesondefine HAVE_RO_EH_FRAME
