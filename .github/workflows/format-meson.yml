@@ -1,0 +1,19 @@
+name: Check meson.build Format
+
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  format-meson:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Meson
+        run: pip install git+https://github.com/mesonbuild/meson
+
+      - name: Format Checks
+        run: python ./tools/run_meson_fmt.py --check
