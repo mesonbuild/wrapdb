@@ -1099,6 +1099,26 @@
       "libjack-dev"
     ]
   },
+  "sdl3": {
+      "alpine_packages": [
+      "libudev-zero-dev",
+      "dbus-dev",
+      "pipewire-dev",
+      "libxkbcommon-dev",
+      "mesa-dev",
+      "wayland-dev"
+    ],
+    "debian_packages": [
+      "libudev-dev",
+      "libdbus-1-dev",
+      "libpipewire-0.3-dev",
+      "libwayland-dev",
+      "libwayland-bin",
+      "libxkbcommon-dev",
+      "libegl-dev",
+      "libgl-dev"
+    ]
+  },
   "sds": {
     "build_on": {
       "windows": false
