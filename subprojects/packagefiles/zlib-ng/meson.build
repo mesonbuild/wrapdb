@@ -335,7 +335,8 @@ if cpu_family in ['arm', 'aarch64']
     endif
   endif
   want_neon = get_option('neon')
-  have_neon = want_neon.allowed() and cc.compiles(
+  # avoid Alpine armv7 CI failure: https://github.com/zlib-ng/zlib-ng/issues/1844
+  have_neon = want_neon.allowed() and not (cc_id == 'clang' and cpu_family == 'arm') and cc.compiles(
     '''#if defined(_M_ARM64) || defined(_M_ARM64EC)
     #  include <arm64_neon.h>
     #else
@@ -932,7 +933,6 @@ elif cpu_family in ['x86', 'x86_64']
 
 else
   summary('Architecture', 'generic', section: arch_section)
-  archdir = 'arch/generic'
 endif
 
 zlib_ng = library(
@@ -941,7 +941,6 @@ zlib_ng = library(
   c_args: compile_args,
   link_args: link_args,
   vs_module_defs: def,
-  include_directories: [archdir, 'arch/generic'],
   link_with: arch_libs,
   install: true,
   version: lib_version,
