@@ -1,8 +1,8 @@
 [wrap-file]
-directory = zlib-ng-2.2.3
-source_url = https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.3.tar.gz
-source_filename = zlib-ng-2.2.3.tar.gz
-source_hash = f2fb245c35082fe9ea7a22b332730f63cf1d42f04d84fe48294207d033cba4dd
+directory = zlib-ng-2.2.4
+source_url = https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.4.tar.gz
+source_filename = zlib-ng-2.2.4.tar.gz
+source_hash = a73343c3093e5cdc50d9377997c3815b878fd110bf6511c2c7759f2afb90f5a3
 patch_directory = zlib-ng
 
 [provide]
