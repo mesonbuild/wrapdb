@@ -3,13 +3,13 @@ project(
   'c',
   license: 'BSD-3',
   meson_version: '>=0.49.0',
-  version: '10.44',
+  version: '10.45',
 )
 
-pcre2_8_lib_version = '0.13.0'
-pcre2_16_lib_version = '0.13.0'
-pcre2_32_lib_version = '0.13.0'
-pcre2_posix_lib_version = '3.0.5'
+pcre2_8_lib_version = '0.14.0'
+pcre2_16_lib_version = '0.14.0'
+pcre2_32_lib_version = '0.14.0'
+pcre2_posix_lib_version = '3.0.6'
 
 c_compiler = meson.get_compiler('c')
 
@@ -36,7 +36,7 @@ varr = meson.project_version().split('.')
 pcredata.set('PCRE2_MAJOR', varr[0])
 pcredata.set('PCRE2_MINOR', varr[1])
 pcredata.set('PCRE2_PRERELEASE', '')
-pcredata.set('PCRE2_DATE', '2024-06-07')
+pcredata.set('PCRE2_DATE', '2025-02-05')
 
 # config.h
 cdata = configuration_data()
@@ -80,6 +80,7 @@ sources = files(
   'src/pcre2_auto_possess.c',
   'src/pcre2_chkdint.c',
   'src/pcre2_compile.c',
+  'src/pcre2_compile_class.c',
   'src/pcre2_config.c',
   'src/pcre2_context.c',
   'src/pcre2_convert.c',
@@ -111,6 +112,7 @@ includes = include_directories('.', 'src')
 check_headers = [
   'sys/stat.h',
   'sys/types.h',
+  'assert.h',
   'dirent.h',
   'windows.h',
   'unistd.h',
@@ -124,6 +126,7 @@ endforeach
 
 check_funs = [
   '__builtin_mul_overflow',
+  '__builtin_unreachable',
   'bcopy',
   'memfd_create',
   'memmove',
@@ -137,6 +140,23 @@ foreach f : check_funs
     cdata.set10('HAVE_@0@'.format(f.to_upper().strip('_')), true)
   endif
 endforeach
+
+if c_compiler.links('''
+  int main() {
+    __assume(0);
+  }
+''', name: '__assume')
+  cdata.set10('HAVE_BUILTIN_ASSUME', true)
+endif
+
+if c_compiler.compiles('''
+  int main() {
+    char buf[128] __attribute__((uninitialized));
+    (void)buf;
+  }
+''', name: '__attribute__((uninitialized))')
+  cdata.set10('HAVE_ATTRIBUTE_UNINITIALIZED', true)
+endif
 
 cdata.set10('SUPPORT_PCRE2_8', true)
 cdata.set10('SUPPORT_PCRE2_16', true)
@@ -170,6 +190,10 @@ config_h = configure_file(
 )
 
 general_c_args = [static_defs, '-DHAVE_CONFIG_H', '-D_GNU_SOURCE']
+if host_machine.system() == 'windows'
+  general_c_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_SECURE_NO_WARNINGS']
+endif
+
 pcre2_8_lib = library(
   'pcre2-8',
   sources,
@@ -321,7 +345,7 @@ if (
     test(
       'RunGrepTest',
       rungreptest,
-      should_fail: host_machine.system() == 'windows',
+      should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
       env: 'srcdir=@0@'.format(meson.current_source_dir()),
       workdir: meson.current_build_dir(),
     )
