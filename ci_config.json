@@ -965,6 +965,11 @@
       "windows": false
     }
   },
+  "pcre2": {
+    "msys_packages": [
+      "diffutils"
+    ]
+  },
   "pegtl": {
     "build_options": [
       "pegtl:tests=enabled",
