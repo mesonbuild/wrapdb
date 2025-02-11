@@ -3383,6 +3383,14 @@
       "2.0.12-1"
     ]
   },
+  "sdl3": {
+    "dependency_names": [
+      "sdl3"
+    ],
+    "versions": [
+        "3.2.4-2"
+    ]
+  },
   "sds": {
     "dependency_names": [
       "sds"
