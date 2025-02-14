@@ -475,6 +475,10 @@
       "libxrandr-dev"
     ]
   },
+  "lcms2": {
+    "_comment": "https://github.com/mm2/Little-CMS/pull/473",
+    "fatal_warnings": false
+  },
   "leptonica": {
     "debian_packages": [
       "gnuplot",
