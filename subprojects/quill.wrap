@@ -1,8 +1,8 @@
 [wrap-file]
-directory = quill-8.1.0
-source_url = https://github.com/odygrd/quill/archive/refs/tags/v8.1.0.tar.gz
-source_filename = quill-8.1.0.tar.gz
-source_hash = ab24d11085c342040ef41b82b6a2ee49b3a2582ab1b733b7da8cf80a85e18054
+directory = quill-8.1.1
+source_url = https://github.com/odygrd/quill/archive/refs/tags/v8.1.1.tar.gz
+source_filename = quill-8.1.1.tar.gz
+source_hash = 1de3ccdce25b6d072d471d4bae9712cd4116311555724baf91155d868f988276
 
 [provide]
 quill = quill_dep
