@@ -1,0 +1,8 @@
+[wrap-file]
+directory = zydis-f6265fdcf35c86750627adddf833616399986570
+source_url = https://github.com/zyantific/zydis/archive/f6265fdcf35c86750627adddf833616399986570/4.1.1.tar.gz
+source_filename = zydis-4.1.1.tar.gz
+source_hash = ae98d240b2db1868ab1efc41757e8d828e86c60adf8365176d8c6cd8b5fab70f
+
+[provide]
+dependency_names = zydis

@@ -1222,5 +1222,12 @@
       "zycore:examples=enabled",
       "zycore:tests=enabled"
     ]
+  },
+  "zydis": {
+    "build_options": [
+      "zydis:examples=enabled",
+      "zydis:tests=enabled",
+      "zydis:tools=enabled"
+    ]
   }
 }
