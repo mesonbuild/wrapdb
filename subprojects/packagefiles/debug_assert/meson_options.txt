@@ -4,7 +4,5 @@ option('disable', type: 'boolean', value: false,
       description: 'Completely disable assertion macros')
 option('override-mark-unreachable', type: 'string', value: 'not overridden',
       description: 'Override DEBUG_ASSERT_MARK_UNREACHABLE macro')
-option('override-assume', type: 'string', value: 'not overridden',
-      description: 'Override DEBUG_ASSERT_ASSUME macro')
 option('override-force-inline', type: 'string', value: 'not overridden',
       description: 'Override DEBUG_ASSERT_FORCE_INLINE macro')

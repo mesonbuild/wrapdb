@@ -2,7 +2,7 @@ project(
     'debug_assert',
     'cpp',
     license: 'Zlib',
-    version: '1.3.3',
+    version: '1.3.4',
     meson_version: '>= 0.54.0'
 )
 
@@ -21,11 +21,6 @@ endif
 o_m_a = get_option('override-mark-unreachable')
 if o_m_a != 'not overridden'
     debug_assert_ca += f'-DDEBUG_ASSERT_MARK_UNREACHABLE=@o_m_a@'
-endif
-
-o_a = get_option('override-assume')
-if o_a != 'not overridden'
-    debug_assert_ca += f'-DDEBUG_ASSERT_ASSUME=@o_a@'
 endif
 
 o_f_i = get_option('override-force-inline')
