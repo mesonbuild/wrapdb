@@ -3123,6 +3123,18 @@
       "0.7.3-1"
     ]
   },
+  "quickjs": {
+    "dependency_names": [
+      "quickjs"
+    ],
+    "program_names": [
+      "qjs",
+      "qjsc"
+    ],
+    "versions": [
+      "0.8.0-1"
+    ]
+  },
   "quill": {
     "dependency_names": [
       "quill"
