@@ -12,17 +12,37 @@
 # upstream repo.
 
 gmock_incdir = include_directories('include', '.', is_system : true)
-gmock_libsources = files('src/gmock-all.cc')
-gmock_mainsources = files('src/gmock_main.cc')
+
+if host_machine.system() == 'windows'
+  target_type = 'static_library'
+else
+  target_type = 'shared_library'
+endif
+
+gmock_lib = build_target(
+    'gmock-all',
+    sources : files('src/gmock-all.cc'),
+    include_directories : [gtest_incdir, gmock_incdir],
+    link_with : gtest_lib,
+    target_type : target_type,
+)
+
+gmock_main_lib = build_target(
+    'gmock_main',
+    sources : files('src/gmock_main.cc'),
+    include_directories : [gtest_incdir, gmock_incdir],
+    link_with : [gtest_lib, gmock_lib],
+    target_type : target_type,
+)
 
 gmock_dep = declare_dependency(
     include_directories : [gtest_incdir, gmock_incdir],
-    sources : [gtest_libsources, gmock_libsources],
+    link_with : [gtest_lib, gmock_lib],
     dependencies : dependency('threads')
 )
 
 gmock_main_dep = declare_dependency(
     include_directories : [gtest_incdir, gmock_incdir],
-    sources : [gtest_libsources, gmock_libsources, gmock_mainsources],
+    link_with : [gtest_lib, gmock_lib, gmock_main_lib],
     dependencies : dependency('threads')
 )
