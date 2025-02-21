@@ -1081,6 +1081,18 @@
       "libjack-dev"
     ]
   },
+  "sdl3": {
+    "debian_packages": [
+      "libudev-dev",
+      "libdbus-1-dev",
+      "libpipewire-0.3-dev",
+      "libwayland-dev",
+      "libwayland-bin",
+      "libxkbcommon-dev",
+      "libegl-dev",
+      "libgl-dev"
+    ]
+  },
   "sds": {
     "build_on": {
       "windows": false
