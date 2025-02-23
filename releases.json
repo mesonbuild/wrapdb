@@ -1548,6 +1548,14 @@
       "1.8.4-1"
     ]
   },
+  "kafel": {
+    "dependency_names": [
+      "kafel"
+    ],
+    "versions": [
+      "2023.10.10"
+    ]
+  },
   "kraken-engine": {
     "dependency_names": [
       "kraken-engine"
