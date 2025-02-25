@@ -1,0 +1,18 @@
+sources += files(
+  'SDL_windowsmessagebox.c',
+  'SDL_windowsevents.c',
+  'SDL_windowsclipboard.c',
+  'SDL_windowsopengl.c',
+  'SDL_windowskeyboard.c',
+  'SDL_surface_utils.c',
+  'SDL_windowsgameinput.c',
+  'SDL_windowsvideo.c',
+  'SDL_windowsshape.c',
+  'SDL_windowsmodes.c',
+  'SDL_windowsopengles.c',
+  'SDL_windowswindow.c',
+  'SDL_windowsframebuffer.c',
+  'SDL_windowsvulkan.c',
+  'SDL_windowsmouse.c',
+  'SDL_windowsrawinput.c',
+)
