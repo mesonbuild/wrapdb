@@ -10,8 +10,13 @@ SOVERSION = 10
 
 cc = meson.get_compiler('c')
 libm = cc.find_library('m', required: false)
-zlib = dependency('zlib', method: 'pkg-config', required:true, fallback: ['zlib', 'zlib_dep'])
-deps = [libm,zlib]
+zlib = dependency(
+  'zlib',
+  method: 'pkg-config',
+  required: true,
+  fallback: ['zlib', 'zlib_dep'],
+)
+deps = [libm, zlib]
 has_fortran = false
 
 if host_machine.system() == 'windows'
@@ -24,8 +29,8 @@ else
     required: get_option('fortran'),
   )
 
-  bzip2 = cc.find_library('bz2', required: false)
-  if not bzip2.found()
+  bzip2 = cc.find_library('bz2', required: get_option('bzip2'))
+  if not bzip2.found() and get_option('bzip2').allowed()
     bzip2_proj = subproject('bzip2')
     bzip2 = bzip2_proj.get_variable('bzip2_dep')
   endif
@@ -58,7 +63,7 @@ endif
 if cc.has_header('unistd.h')
   add_project_arguments('-DHAVE_UNISTD_H', language: 'c')
   if cc.has_header_symbol('unistd.h', 'ftruncate')
-     add_project_arguments('-DHAVE_FTRUNCATE', language: 'c')
+    add_project_arguments('-DHAVE_FTRUNCATE', language: 'c')
   endif
 else
   add_project_arguments('-DYY_NO_UNISTD_H', language: 'c')
@@ -182,11 +187,8 @@ libcfitsio = library(
   soversion: SOVERSION,
   install: true,
 )
-message('libcfitsio: '+libcfitsio.name()+' '+libcfitsio.full_path())
 
-cfitsio_dep = declare_dependency(
-  link_with: libcfitsio,
-)
+cfitsio_dep = declare_dependency(include_directories: '.', link_with: libcfitsio)
 
 pkg = import('pkgconfig')
 pkg.generate(
@@ -227,7 +229,7 @@ if get_option('utils')
     'funpack',
     'utilities/funpack.c',
     'utilities/fpackutil.c',
-    dependencies: [libm,cfitsio_dep],
+    dependencies: [libm, cfitsio_dep],
     link_with: libcfitsio,
     install: true,
   )
