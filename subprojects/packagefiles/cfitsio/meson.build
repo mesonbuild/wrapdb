@@ -24,7 +24,7 @@ else
     required: get_option('fortran'),
   )
 
-  bzip2 = cc.find_library('bzip2', required: false)
+  bzip2 = cc.find_library('bz2', required: false)
   if not bzip2.found()
     bzip2_proj = subproject('bzip2')
     bzip2 = bzip2_proj.get_variable('bzip2_dep')
@@ -192,7 +192,7 @@ pkg = import('pkgconfig')
 pkg.generate(
   libraries: libcfitsio,
   version: meson.project_version(),
-  name: 'cifitsio',
+  name: 'cfitsio',
   description: 'FITS File Subroutine Library',
   url: 'https://heasarc.gsfc.nasa.gov/fitsio/',
 )
