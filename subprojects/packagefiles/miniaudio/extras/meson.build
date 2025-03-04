@@ -1,10 +1,4 @@
 ma_extras_c_args = ma_c_args
-if cc.get_argument_syntax() == 'msvc'
-  ma_extras_c_args += '/FIminiaudio.h'
-else
-  ma_extras_c_args += ['-include', 'miniaudio.h']
-endif
-
 ma_extra_srcs = []
 
 opus_dep = dependency('opus', required: get_option('libopus'))
@@ -12,12 +6,7 @@ opusfile_dep = dependency('opusfile', required: get_option('libopus'))
 if opus_dep.found() and opusfile_dep.found()
   ma_all_libs += static_library(
     'miniaudio_libopus',
-    configure_file(
-      input: 'miniaudio_libopus.h',
-      output: 'miinaudio_libopus.c',
-      copy: true,
-    ),
-    extra_files: 'miniaudio_libopus.h',
+    'decoders/libopus/miniaudio_libopus.c',
     dependencies: ma_sys_deps + [opus_dep, opusfile_dep],
     c_args: ma_extras_c_args,
     install: false,
@@ -32,12 +21,7 @@ vorbisfile_dep = dependency('vorbisfile', required: get_option('libvorbis'))
 if vorbis_dep.found() and vorbisfile_dep.found()
   ma_all_libs += static_library(
     'miniaudio_libvorbis',
-    configure_file(
-      input: 'miniaudio_libvorbis.h',
-      output: 'miinaudio_libvorbis.c',
-      copy: true,
-    ),
-    extra_files: 'miniaudio_libvorbis.h',
+    'decoders/libvorbis/miniaudio_libvorbis.c',
     dependencies: ma_sys_deps + [vorbis_dep, vorbisfile_dep],
     c_args: ma_extras_c_args,
     install: false,
