@@ -1,7 +1,7 @@
 project(
   'miniaudio',
   'c',
-  version: '0.11.21',
+  version: '0.11.22',
   license: 'Unlicense OR MIT-0',
   license_files: ['LICENSE'],
   default_options: [
@@ -133,6 +133,7 @@ if host_system in [
   'dragonfly',
   'android',
   'darwin',
+  'emscripten',
 ]
   if runtime_linking.enabled()
     ma_sys_deps += dependency('dl')
@@ -213,6 +214,28 @@ if runtime_linking.disabled()
   if 'opensl' in backends
     ma_backend_deps += dependency('OpenSLES')
   endif
+
+  if 'webaudio' in backends
+    if get_option('webaudio_worklet')
+      ma_backend_deps += declare_dependency(
+        compile_args: [
+          '-sWASM_WORKERS=1',
+          '-DMA_ENABLE_AUDIO_WORKLETS',
+        ],
+        link_args: [
+          '-sWASM_WORKERS=1',
+          '-sAUDIO_WORKLET=1',
+          '-sASYNCIFY',
+        ],
+      )
+    else
+      ma_backend_deps += declare_dependency(
+        link_args: [
+          '-sWASM=0',
+        ],
+      )
+    endif
+  endif
 endif
 
 # miniaudio + extra modules.
@@ -220,24 +243,16 @@ ma_all_libs = []
 
 # FIXME: workaround impl-only defines when building in different TUs.
 # need upstream changes to move the defines into header.
-ma_impl_workaround = true
+ma_impl_workaround = false
 
 subdir('extras')
 
-# NOTE: miniaudio_split will be _the_ only version of miniaudio starting from 0.12:
-# https://github.com/mackron/miniaudio/issues/934#issuecomment-2628895596
-# this can be removed afterwards.
-miniaudio_impl_src = configure_file(
-  input: 'miniaudio.h',
-  output: 'miniaudio_impl.c',
-  copy: true,
-)
 ma_impl_lib = static_library(
   'miniaudio_impl',
-  miniaudio_impl_src,
+  'miniaudio.c',
+  'miniaudio.h',
   ma_extra_srcs,
-  extra_files: ['miniaudio.h'],
-  c_args: ['-DMINIAUDIO_IMPLEMENTATION'] + ma_c_args,
+  c_args: ma_c_args,
   dependencies: ma_sys_deps + ma_backend_deps,
   install: false,
   implicit_include_directories: false,
@@ -258,6 +273,7 @@ ma_lib = library(
 
 ma_dep = declare_dependency(
   include_directories: ma_inc,
+  dependencies: ma_sys_deps + ma_backend_deps,
   link_with: ma_lib,
   compile_args: ma_global_args,
 )

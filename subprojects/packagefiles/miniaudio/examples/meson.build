@@ -1,12 +1,15 @@
-ma_example_broken = disabler()
-
 sdl_dep = disabler()
 if device_io.enabled()
-  sdl_dep = dependency('sdl2', required: false)
+  if host_system == 'emscripten'
+    sdl_dep = declare_dependency(compile_args: '--use-port=sdl2', link_args: '--use-port=sdl2')
+  else
+    sdl_dep = dependency('sdl2', required: false)
+  endif
   if sdl_dep.found()
     executable(
       'custom_backend',
       'custom_backend.c',
+      name_suffix: host_system == 'emscripten' ? 'html' : [],
       dependencies: ma_sys_deps + ma_backend_deps + sdl_dep,
       install: false,
       implicit_include_directories: false,
@@ -85,7 +88,7 @@ if engine and device_io.enabled() and resource_manager.enabled()
     implicit_include_directories: false,
     include_directories: ma_inc,
   )
-  if sdl_dep.found()
+  if sdl_dep.found() and host_system != 'emscripten'
     executable(
       'engine_sdl',
       'engine_sdl.c',
@@ -148,6 +151,7 @@ if resource_manager.enabled() and device_io.enabled()
   executable(
     'resource_manager',
     'resource_manager.c',
+    name_suffix: host_system == 'emscripten' ? 'html' : [],
     dependencies: ma_sys_deps + ma_backend_deps,
     install: false,
     implicit_include_directories: false,
@@ -156,9 +160,6 @@ if resource_manager.enabled() and device_io.enabled()
   executable(
     'resource_manager_advanced',
     'resource_manager_advanced.c',
-    # FIXME: resource_manager_advanced.c:194:37:
-    # error: ‘MA_RESOURCE_MANAGER_JOB_QUIT’ undeclared
-    ma_example_broken,
     dependencies: ma_sys_deps + ma_backend_deps,
     install: false,
     implicit_include_directories: false,
@@ -180,6 +181,7 @@ if device_io.enabled()
   executable(
     'simple_duplex',
     'simple_duplex.c',
+    name_suffix: host_system == 'emscripten' ? 'html' : [],
     dependencies: ma_sys_deps + ma_backend_deps,
     install: false,
     implicit_include_directories: false,
@@ -240,6 +242,7 @@ if device_io.enabled() and generation
   executable(
     'simple_playback_sine',
     'simple_playback_sine.c',
+    name_suffix: host_system == 'emscripten' ? 'html' : [],
     dependencies: ma_sys_deps + ma_backend_deps,
     install: false,
     implicit_include_directories: false,
