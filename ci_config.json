@@ -45,11 +45,13 @@
   "cairo": {
     "_comment": [
       "- Force-enable fontconfig to avoid https://gitlab.freedesktop.org/cairo/cairo/-/issues/862",
+      "- Prevent libxml2 from requiring Python",
       "- Don't fail on proxy-libintl Meson warning - https://github.com/frida/proxy-libintl/pull/6",
       "- Some tests fails and they are still run despite -Dtests=disabled"
     ],
     "build_options": [
-      "cairo:fontconfig=enabled"
+      "cairo:fontconfig=enabled",
+      "libxml2:python=false"
     ],
     "fatal_warnings": false,
     "skip_tests": true
