@@ -1064,6 +1064,12 @@
       "qtbase5-dev"
     ]
   },
+  "quickjs": {
+    "build_options": [
+      "quickjs-ng:tests=enabled",
+      "quickjs-ng:examples=enabled"
+    ]
+  },
   "rdkafka": {
     "_comment": "- broken CI finds bad version of OpenSSL on Windows",
     "build_options": [
