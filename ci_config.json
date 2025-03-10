@@ -761,6 +761,23 @@
       "lz4:tests=true"
     ]
   },
+  "kafel": {
+    "alpine_packages": [
+      "bison",
+      "flex"
+    ],
+    "debian_packages": [
+      "bison",
+      "flex"
+    ],
+    "brew_packages": [
+      "bison",
+      "flex"
+    ],
+    "choco_packages": [
+      "winflexbison"
+    ]
+  },
   "magic_enum": {
     "build_options": [
       "magic_enum:test=false"
