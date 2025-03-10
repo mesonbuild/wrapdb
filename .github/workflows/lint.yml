@@ -1,0 +1,21 @@
+name: Lint
+
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  Ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ruff for Python
+        uses: astral-sh/ruff-action@v2
+        with:
+          # Allows ruff to be cached, speeding up checks
+          version: 0.8.1
+
