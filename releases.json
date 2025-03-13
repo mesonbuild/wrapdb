@@ -1643,6 +1643,15 @@
       "6.5.1-1"
     ]
   },
+  "libcppgenerate": {
+    "dependency_names": [
+      "cppgenerate",
+      "cppgenerate-static"
+    ],
+    "versions": [
+      "0.2-1"
+    ]
+  },
   "libdicom": {
     "dependency_names": [
       "libdicom"

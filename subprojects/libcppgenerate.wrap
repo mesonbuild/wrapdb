@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libcppgenerate-cppgenerate-0.2
+source_url = https://github.com/rm5248/libcppgenerate/archive/refs/tags/cppgenerate-0.2.tar.gz
+source_filename = cppgenerate-0.2.tar.gz
+source_hash = c079a351ddcc3c63eea534b6aa844b7a9ba10ffdd99a5a617d5b089edc359a15
+patch_directory = libcppgenerate
+
+[provide]
+dependency_names = cppgenerate, cppgenerate-static
