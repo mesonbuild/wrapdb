@@ -1,0 +1,6 @@
+option(
+  'install',
+  type: 'boolean',
+  value: 'true',
+  description: 'install cxxopts.hpp to prefix'
+)
