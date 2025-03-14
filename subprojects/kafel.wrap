@@ -1,0 +1,10 @@
+[wrap-file]
+directory = kafel-20231004
+source_url = https://github.com/google/kafel/archive/20231004.tar.gz
+source_filename = 231004.tar.gz
+source_hash = b5fe85ad72070844dc24474a036f3b909c3f604b69c616d124793c37df7a9d7f
+patch_directory = kafel
+
+[provide]
+dependency_names = kafel
+program_names = dump_policy_bpf
