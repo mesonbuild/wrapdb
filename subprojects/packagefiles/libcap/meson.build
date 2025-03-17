@@ -8,13 +8,13 @@ project('libcap', 'c',
 incdir = include_directories('libcap/include')
 
 libcap_sources = files(
-  'libcap/cap_alloc.c',
+'libcap/cap_alloc.c',
   'libcap/cap_extint.c',
   'libcap/cap_file.c',
   'libcap/cap_flag.c',
   'libcap/cap_proc.c',
   'libcap/cap_text.c',
-  'libcap/libcap.c',
+  'libcap/cap_syscalls.c'
 )
 
 libcap = library('cap',
