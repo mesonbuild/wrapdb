@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libcap-2.75
+source_url = https://web.git.kernel.org/pub/scm/libs/libcap/libcap.git/snapshot/libcap-2.75.tar.gz
+source_filename = libcap-2.75.tar.gz
+source_hash = ed92ae4aea02acf7a767c1090d224ed6c2aa54c1366ed24464aff20bc86deab7
+patch_directory = libcap
+
+[provide]
+libcap = libcap_dep
