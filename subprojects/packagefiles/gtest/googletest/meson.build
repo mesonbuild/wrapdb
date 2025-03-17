@@ -42,8 +42,6 @@ gtest_dep = declare_dependency(
 )
 
 gtest_main_dep = declare_dependency(
-    compile_args: dllimp,
-    include_directories: gtest_incdir,
     link_with: gtest_main_lib,
-    dependencies: dependency('threads'),
+    dependencies: gtest_dep,
 )
