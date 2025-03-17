@@ -5,10 +5,10 @@ project('libcap', 'c',
     'c_std=gnu11',
   ])
 
-incdir = include_directories('libcap/include')
+incdir = include_directories('libcap', 'libcap/include')
 
 libcap_sources = files(
-'libcap/cap_alloc.c',
+  'libcap/cap_alloc.c',
   'libcap/cap_extint.c',
   'libcap/cap_file.c',
   'libcap/cap_flag.c',
