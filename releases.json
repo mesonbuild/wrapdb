@@ -1613,6 +1613,14 @@
       "1.83.1-1"
     ]
   },
+  "libaegis": {
+    "dependency_names": [
+      "libaegis"
+    ],
+    "versions": [
+      "0.4.0-1"
+    ]
+  },
   "libarchive": {
     "dependency_names": [
       "libarchive"
