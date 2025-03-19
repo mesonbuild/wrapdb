@@ -501,6 +501,12 @@
       "--timeout-multiplier=2"
     ]
   },
+  "libaegis": {
+    "_comment": "Fails in only VisualStudio-clang-cl. Reporting to upstream",
+    "build_on": {
+      "windows": false
+    }
+  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
