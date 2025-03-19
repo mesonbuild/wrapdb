@@ -54,7 +54,7 @@ configure_file(
 
 edata = configuration_data(
     {
-        'CMARK_GFM_STATIC_DEFINE': get_option('default_library') == 'static',
+        'CMARK_GFM_STATIC_DEFINE': get_option('default_library') == 'static' ? 1 : 0,
     },
 )
 
