@@ -1,7 +1,7 @@
 project(
   'libaegis',
   'c',
-  version: '0.40.0',
+  version: '0.4.0',
   license: 'MIT',
 )
 
