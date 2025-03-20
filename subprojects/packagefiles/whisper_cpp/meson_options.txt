@@ -1,0 +1,10 @@
+option('avx', type: 'feature', value: 'disabled', description: 'Enable AVX')
+option('avx2', type: 'feature', value: 'disabled', description: 'Enable AVX2')
+option('fma', type: 'feature', value: 'disabled', description: 'Enable FMA')
+option('f16C', type: 'feature', value: 'disabled', description: 'Enable F16c')
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build examples',
+)

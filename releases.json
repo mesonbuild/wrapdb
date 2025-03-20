@@ -3983,6 +3983,14 @@
       "0.8.2-1"
     ]
   },
+  "whisper_cpp": {
+    "dependency_names": [
+      "whisper_cpp"
+    ],
+    "versions": [
+      "1.5.2-1"
+    ]
+  },
   "wren": {
     "dependency_names": [
       "wren"
