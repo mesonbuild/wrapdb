@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pango-1.56.2
-source_url = https://download.gnome.org/sources/pango/1.56/pango-1.56.2.tar.xz
-source_filename = pango-1.56.2.tar.xz
-source_hash = 03b7afd7ed730bef651155cbfb5320556b8ef92b0dc04abbb9784dcd4057afe7
+directory = pango-1.56.3
+source_url = https://download.gnome.org/sources/pango/1.56/pango-1.56.3.tar.xz
+source_filename = pango-1.56.3.tar.xz
+source_hash = 2606252bc25cd8d24e1b7f7e92c3a272b37acd6734347b73b47a482834ba2491
 
 [provide]
 dependency_names = pango, pangoft2, pangoxft, pangowin32, pangocairo
