@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.10.1',
+  version: '8.12.1',
   meson_version: '>=0.60.0',
 )
 
@@ -814,6 +814,7 @@ foreach _feat : [
   'http2',
   'http-auth',
   'rtsp',
+  'ipfs'
 ]
   set_variable(
     _feat.underscorify() + '_opt',
@@ -849,7 +850,7 @@ https_proxy_opt = ssl_opt.allowed() ? proxy_opt : DISABLED_OPT
 # }}}
 
 # IPFS / IPNS.
-ipfs_opt = http_opt
+ipfs_opt = get_option('ipfs')
 ipns_opt = http_opt
 
 # LDAP. {{{
@@ -1482,7 +1483,7 @@ else
   _os = '-'.join(host_machine.cpu(), host_machine.system())
 endif
 
-cdata.set_quoted('OS', _os)
+cdata.set_quoted('CURL_OS', _os)
 
 # }}}
 
@@ -1585,6 +1586,7 @@ foreach _proto : [
   'imap',
   'pop3',
   'smtp',
+  'ws'
 ]
   set_variable(
     _proto + 's_opt',
@@ -1601,6 +1603,7 @@ foreach _proto : [
   'gopher',
   'http',
   'imap',
+  'ipfs',
   'ldap',
   'ldaps',
   'mqtt',
@@ -1610,6 +1613,7 @@ foreach _proto : [
   'smtp',
   'telnet',
   'tftp',
+  'ws'
 ]
   cdata.set(
     'CURL_DISABLE_' + _proto.to_upper(),
@@ -1825,6 +1829,7 @@ cdata.set_quoted(
   'LIBCURL_PC_CFLAGS',
   get_option('default_library') == 'static' ? '-DCURL_STATICLIB' : '',
 )
+cdata.set('LIBCURL_PC_LDFLAGS_PRIVATE', '')
 cdata.set('LIBCURL_PC_LIBS_PRIVATE', '')
 cdata.set_quoted(
   'ENABLE_SHARED',
@@ -1967,7 +1972,7 @@ endif
 
 summary(
   {
-    'OS': cdata.get_unquoted('OS'),
+    'OS': cdata.get_unquoted('CURL_OS'),
   },
   bool_yn: true,
   section: 'System',
