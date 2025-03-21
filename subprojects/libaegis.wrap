@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libaegis-0.4.0
+source_url = https://github.com/aegis-aead/libaegis/archive/refs/tags/0.4.0.tar.gz
+source_filename = libaegis-0.4.0.tar.gz
+source_hash = bf8d363edc28b9969e9d0decc41b41f818461136619652b1a977c8afa9b81363
+patch_directory = libaegis
+
+[provide]
+libaegis = libaegis_dep
