@@ -12,13 +12,25 @@ $$(foreach prog,$$(noinst_PROGRAMS),
 endef
 extract_noinst_progs := $(strip $(extract_noinst_progs))
 
+define extract_libtest_progs
+$$(foreach prog,$$(LIBTESTPROGS),
+   $$(info $$(prog)
+      $$(filter-out %.h,
+         $$(call nodist_$$(prog)_SOURCES)
+         $$(call $$(prog)_SOURCES)
+      )
+      $$(call $$(prog)_CPPFLAGS) $$(call $$(prog)_LDADD)
+))
+endef
+extract_libtest_progs := $(strip $(extract_libtest_progs))
+
 define extract_rule
 $(eval include $1/Makefile.inc)
 @$(eval $2)$(eval $3)
 endef
 
 tests/libtest:
-	$(call extract_rule,$@,TESTUTIL_LIBS = @TESTUTIL_LIBS@,$(extract_noinst_progs))
+	$(call extract_rule,$@,TESTUTIL_LIBS = @TESTUTIL_LIBS@,$(extract_libtest_progs))
 
 tests/server:
 	$(call extract_rule,$@,,$(extract_noinst_progs))
