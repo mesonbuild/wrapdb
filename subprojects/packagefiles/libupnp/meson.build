@@ -27,6 +27,7 @@ libixml = static_library(
   'ixml/src/node.c',
   'ixml/src/nodeList.c',
   include_directories: [libixml_incdir, libupnp_incdir],
+  pic: true,
 )
 
 upnp_sources = files(
