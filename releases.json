@@ -1617,6 +1617,14 @@
       "1.83.1-1"
     ]
   },
+  "lexy": {
+    "dependency_names": [
+      "lexy"
+    ],
+    "versions": [
+      "2022.12.1-1"
+    ]
+  },
   "libarchive": {
     "dependency_names": [
       "libarchive"
