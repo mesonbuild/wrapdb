@@ -1,1 +1,5 @@
-option('build_samples', type: 'boolean', value: false)
+option(
+    'build_samples',
+    type: 'boolean',
+    value: false,
+)

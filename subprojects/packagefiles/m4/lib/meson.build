@@ -2,109 +2,149 @@ cc = meson.get_compiler('c')
 cdata = configuration_data()
 generated_header_data = configuration_data()
 
-if  host_machine.cpu_family() == 'x86'
+if host_machine.cpu_family() == 'x86'
   cdata.set('__i386__', 1)
 endif
-if  host_machine.cpu_family() == 'x86_64' and cc.get_define('__ILP32__') != '' or cc.get_define('_ILP32') != ''
+if host_machine.cpu_family() == 'x86_64' and cc.get_define('__ILP32__') != '' or cc.get_define(
+  '_ILP32',
+) != ''
   cdata.set('__x86_64_x32__', 1)
 endif
-if  host_machine.cpu_family() == 'x86_64' and cc.get_define('__ILP32__') == '' and cc.get_define('_ILP32') == ''
+if host_machine.cpu_family() == 'x86_64' and cc.get_define('__ILP32__') == '' and cc.get_define(
+  '_ILP32',
+) == ''
   cdata.set('__x86_64__', 1)
 endif
-if  host_machine.cpu_family() == 'alpha'
+if host_machine.cpu_family() == 'alpha'
   cdata.set('__alpha__', 1)
 endif
-if  host_machine.cpu_family() == 'arm' and cc.get_define('__ARM_PCS') != ''
+if host_machine.cpu_family() == 'arm' and cc.get_define('__ARM_PCS') != ''
   cdata.set('__arm__', 1)
 endif
-if  host_machine.cpu_family() == 'arm' and cc.get_define('__ARM_PCS_VFP') != ''
+if host_machine.cpu_family() == 'arm' and cc.get_define('__ARM_PCS_VFP') != ''
   cdata.set('__armhf__', 1)
 endif
-if  host_machine.cpu_family() == 'aarch64' and cc.get_define('__ILP32__') != '' or cc.get_define('_ILP32') != ''
+if host_machine.cpu_family() == 'aarch64' and cc.get_define('__ILP32__') != '' or cc.get_define(
+  '_ILP32',
+) != ''
   cdata.set('__arm64_ilp32__', 1)
 endif
-if  host_machine.cpu_family() == 'aarch64' and cc.get_define('__ILP32__') == '' and cc.get_define('_ILP32') == ''
+if host_machine.cpu_family() == 'aarch64' and cc.get_define('__ILP32__') == '' and cc.get_define(
+  '_ILP32',
+) == ''
   cdata.set('__arm64__', 1)
 endif
-if  host_machine.cpu_family() == 'parisc' and cc.get_define('__ILP64__') == '' and cc.get_define('_ILP64') == ''
+if host_machine.cpu_family() == 'parisc' and cc.get_define('__ILP64__') == '' and cc.get_define(
+  '_ILP64',
+) == ''
   cdata.set('__hppa__', 1)
 endif
-if  host_machine.cpu_family() == 'parisc' and cc.get_define('__ILP64__') != '' or cc.get_define('_ILP64') != ''
+if host_machine.cpu_family() == 'parisc' and cc.get_define('__ILP64__') != '' or cc.get_define(
+  '_ILP64',
+) != ''
   cdata.set('__hppa64__', 1)
 endif
-if  host_machine.cpu_family() == 'ia64' and cc.get_define('_ILP32') != ''
+if host_machine.cpu_family() == 'ia64' and cc.get_define('_ILP32') != ''
   cdata.set('__ia64_ilp32__', 1)
 endif
-if  host_machine.cpu_family() == 'ia64' and cc.get_define('_ILP32') == ''
+if host_machine.cpu_family() == 'ia64' and cc.get_define('_ILP32') == ''
   cdata.set('__ia64__', 1)
 endif
-if  host_machine.cpu_family() == 'm68k'
+if host_machine.cpu_family() == 'm68k'
   cdata.set('__m68k__', 1)
 endif
-if  host_machine.cpu_family() == 'mips' and cc.get_define('_MIPS_SIM') != cc.get_define('_ABIN32')
+if host_machine.cpu_family() == 'mips' and cc.get_define('_MIPS_SIM') != cc.get_define(
+  '_ABIN32',
+)
   cdata.set('__mips__', 1)
 endif
-if  host_machine.cpu_family() == 'mips' and cc.get_define('_MIPS_SIM') == cc.get_define('_ABIN32')
+if host_machine.cpu_family() == 'mips' and cc.get_define('_MIPS_SIM') == cc.get_define(
+  '_ABIN32',
+)
   cdata.set('__mipsn32__', 1)
 endif
-if  host_machine.cpu_family() == 'mips64'
+if host_machine.cpu_family() == 'mips64'
   cdata.set('__mips64__', 1)
 endif
-if  host_machine.cpu_family() == 'ppc'
+if host_machine.cpu_family() == 'ppc'
   cdata.set('__powerpc__', 1)
 endif
-if  host_machine.cpu_family() == 'ppc64' and cc.get_define('_CALL_ELF') != '2'
+if host_machine.cpu_family() == 'ppc64' and cc.get_define('_CALL_ELF') != '2'
   cdata.set('__powerpc64__', 1)
 endif
-if  host_machine.cpu_family() == 'ppc64' and cc.get_define('_CALL_ELF') == '2'
+if host_machine.cpu_family() == 'ppc64' and cc.get_define('_CALL_ELF') == '2'
   cdata.set('__powerpc64_elfv2__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv32'
+if host_machine.cpu_family() == 'riscv32'
   cdata.set('__riscv32__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64'
+if host_machine.cpu_family() == 'riscv64'
   cdata.set('__riscv64__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv32' and cc.get_define('__riscv_float_abi_single') == '' and cc.get_define('__riscv_float_abi_double') == ''
+if host_machine.cpu_family() == 'riscv32' and cc.get_define(
+  '__riscv_float_abi_single',
+) == '' and cc.get_define(
+  '__riscv_float_abi_double',
+) == ''
   cdata.set('__riscv32_ilp32__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv32' and cc.get_define('__riscv_float_abi_single') != ''
+if host_machine.cpu_family() == 'riscv32' and cc.get_define(
+  '__riscv_float_abi_single',
+) != ''
   cdata.set('__riscv32_ilp32f__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv32' and cc.get_define('__riscv_float_abi_double') != ''
+if host_machine.cpu_family() == 'riscv32' and cc.get_define(
+  '__riscv_float_abi_double',
+) != ''
   cdata.set('__riscv32_ilp32d__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define('__riscv_float_abi_single') == '' and cc.get_define('__riscv_float_abi_double') == ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define(
+  '__riscv_float_abi_single',
+) == '' and cc.get_define(
+  '__riscv_float_abi_double',
+) == ''
   cdata.set('__riscv64_ilp32__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define('__riscv_float_abi_single') != ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define(
+  '__riscv_float_abi_single',
+) != ''
   cdata.set('__riscv64_ilp32f__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define('__riscv_float_abi_double') != ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') == '' and cc.get_define(
+  '__riscv_float_abi_double',
+) != ''
   cdata.set('__riscv64_ilp32d__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define('__riscv_float_abi_single') == '' and cc.get_define('__riscv_float_abi_double') == ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define(
+  '__riscv_float_abi_single',
+) == '' and cc.get_define(
+  '__riscv_float_abi_double',
+) == ''
   cdata.set('__riscv64_lp64__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define('__riscv_float_abi_single') != ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define(
+  '__riscv_float_abi_single',
+) != ''
   cdata.set('__riscv64_lp64f__', 1)
 endif
-if  host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define('__riscv_float_abi_double') != ''
+if host_machine.cpu_family() == 'riscv64' and cc.get_define('__LP64__') != '' and cc.get_define(
+  '__riscv_float_abi_double',
+) != ''
   cdata.set('__riscv64_lp64d__', 1)
 endif
-if  host_machine.cpu_family() == 's390'
+if host_machine.cpu_family() == 's390'
   cdata.set('__s390__', 1)
 endif
-if  host_machine.cpu_family() == 's390x'
+if host_machine.cpu_family() == 's390x'
   cdata.set('__s390x__', 1)
 endif
-if  host_machine.cpu_family() == 'sh4'
+if host_machine.cpu_family() == 'sh4'
   cdata.set('__sh__', 1)
 endif
-if  host_machine.cpu_family() == 'sparc'
+if host_machine.cpu_family() == 'sparc'
   cdata.set('__sparc__', 1)
 endif
-if  host_machine.cpu_family() == 'sparc64'
+if host_machine.cpu_family() == 'sparc64'
   cdata.set('__sparc64__', 1)
 endif
 
@@ -180,9 +220,19 @@ foreach h : check_headers
     generated_header_data.set10('HAVE_' + h.underscorify().to_upper(), false)
   endif
 endforeach
-if cc.has_header('stdlib.h') and cc.has_header('stdarg.h') and cc.has_header('string.h') and cc.has_header('float.h') and cc.has_header_symbol('string.h', 'memchr') and cc.has_header_symbol('stdlib.h', 'free')
-    cdata.set('STDC_HEADERS', 1)
-    have_header_args += '-DSTDC_HEADERS=1'
+if cc.has_header('stdlib.h') and cc.has_header('stdarg.h') and cc.has_header(
+  'string.h',
+) and cc.has_header(
+  'float.h',
+) and cc.has_header_symbol(
+  'string.h',
+  'memchr',
+) and cc.has_header_symbol(
+  'stdlib.h',
+  'free',
+)
+  cdata.set('STDC_HEADERS', 1)
+  have_header_args += '-DSTDC_HEADERS=1'
 endif
 
 
@@ -245,7 +295,10 @@ foreach ext : unconditional_extensions
   extension_args += '-D' + ext + '=1'
 endforeach
 
-if cc.compiles('#define __EXTENSIONS__ 1\n' + ac_includes_default, args: have_header_args)
+if cc.compiles(
+  '#define __EXTENSIONS__ 1\n' + ac_includes_default,
+  args: have_header_args,
+)
   cdata.set('__EXTENSIONS__', 1)
   extension_args += '-D__EXTENSIONS__=1'
 endif
@@ -261,7 +314,9 @@ if host_machine.system() == 'minix'
   cdata.set('_POSIX_1_SOURCE', 2)
   extension_args += '-D_POSIX_1_SOURCE=2'
 endif
-if not cc.compiles('#include <wchar.h>\\nmbstate_t x;') and cc.compiles('#define _XOPEN_SOURCE 500\\n#include <wchar.h>\\nmbstate_t x;')
+if not cc.compiles('#include <wchar.h>\\nmbstate_t x;') and cc.compiles(
+  '#define _XOPEN_SOURCE 500\\n#include <wchar.h>\\nmbstate_t x;',
+)
   cdata.set('_XOPEN_SOURCE', 500)
   extension_args += '-D_XOPEN_SOURCE=500'
 endif
@@ -293,7 +348,11 @@ check_types = [
   ['HAVE__BOOL', '_Bool', 'stdint.h'],
 ]
 foreach f : check_types
-  if cc.has_type(f.get(1), prefix: '#include <@0@>'.format(f.get(2)), args:  extension_args)
+  if cc.has_type(
+    f.get(1),
+    prefix: '#include <@0@>'.format(f.get(2)),
+    args: extension_args,
+  )
     cdata.set(f.get(0), 1)
     generated_header_data.set10(f.get(0), true)
   else
@@ -302,9 +361,12 @@ foreach f : check_types
 
 endforeach
 
-if cc.compiles('''#include <signal.h>
+if cc.compiles(
+  '''#include <signal.h>
 struct sigaction m_sigaction;
-void f(void) { (void)m_sigaction.sa_sigaction; }''', name: 'struct sigaction has sa_sigaction member')
+void f(void) { (void)m_sigaction.sa_sigaction; }''',
+  name: 'struct sigaction has sa_sigaction member',
+)
   cdata.set('HAVE_STRUCT_SIGACTION_SA_SIGACTION', 1)
   generated_header_data.set10('HAVE_STRUCT_SIGACTION_SA_SIGACTION', true)
 else
@@ -313,17 +375,22 @@ endif
 
 # Bcrypt
 if host_machine.system() == 'windows'
-  if cc.has_header('bcrypt.h', prefix: '#include <windows.h>')
+  if cc.has_header(
+    'bcrypt.h',
+    prefix: '#include <windows.h>',
+  )
     cdata.set('HAVE_BCRYPT_H', 1)
     generated_header_data.set10('HAVE_BCRYPT_H', true)
 
-    if cc.compiles('''#include <windows.h>
+    if cc.compiles(
+      '''#include <windows.h>
 #if !(_WIN32_WINNT >= _WIN32_WINNT_WIN7)
   cannot assume it
-#endif''')
-    cdata.set10('HAVE_LIB_BCRYPT', true)
-    generated_header_data.set10('HAVE_LIB_BCRYPT', true)
-    getrandom_dep = cc.find_library('bcrypt')
+#endif''',
+    )
+      cdata.set10('HAVE_LIB_BCRYPT', true)
+      generated_header_data.set10('HAVE_LIB_BCRYPT', true)
+      getrandom_dep = cc.find_library('bcrypt')
     else
       generated_header_data.set10('HAVE_LIB_BCRYPT', false)
       getrandom_dep = cc.find_library('advapi32')
@@ -386,7 +453,11 @@ check_declarations = [
   ['HAVE_DECL_O_CLOEXEC', 'O_CLOEXEC', 'fcntl.h'],
   ['HAVE_DECL_POSIX_SPAWN', 'posix_spawn', 'spawn.h'],
   ['HAVE_DECL_PROGRAM_INVOCATION_NAME', 'program_invocation_name', 'errno.h'],
-  ['HAVE_DECL_PROGRAM_INVOCATION_SHORT_NAME', 'program_invocation_short_name', 'errno.h'],
+  [
+    'HAVE_DECL_PROGRAM_INVOCATION_SHORT_NAME',
+    'program_invocation_short_name',
+    'errno.h',
+  ],
   ['HAVE_DECL_PUTCHAR_UNLOCKED', 'putchar_unlocked', 'stdio.h'],
   ['HAVE_DECL_PUTC_UNLOCKED', 'putc_unlocked', 'stdio.h'],
   ['HAVE_DECL_SETENV', 'setenv', 'stdlib.h'],
@@ -420,14 +491,22 @@ check_declarations = [
   ['HAVE_ENVIRON_DECL', 'environ', 'unistd.h'],
   ['HAVE_LC_MESSAGES', 'LC_MESSAGES', 'locale.h'],
   ['HAVE_MAP_ANONYMOUS', 'MAP_ANONYMOUS', 'sys/mman.h'],
-  ['HAVE_OBSTACK', 'obstack_init', 'obstack.h'], # it's a define
+  ['HAVE_OBSTACK', 'obstack_init', 'obstack.h'],  # it's a define
   ['HAVE_PTHREAD_MUTEX_RECURSIVE', 'PTHREAD_MUTEX_RECURSIVE', 'pthread.h'],
   ['HAVE_VAR___PROGNAME', '__progname', 'stdlib.h'],
 ]
 
 # HAVe_DECL_FOO tends to want to be explicitly 1 or 0, rather than 1 or undefined.
 foreach f : check_declarations
-  cdata.set10(f.get(0), cc.has_header_symbol(f.get(2), f.get(1), prefix: ac_includes_default, args: have_header_args + extension_args))
+  cdata.set10(
+    f.get(0),
+    cc.has_header_symbol(
+      f.get(2),
+      f.get(1),
+      prefix: ac_includes_default,
+      args: have_header_args + extension_args,
+    ),
+  )
 endforeach
 
 check_functions = [
@@ -482,10 +561,22 @@ check_functions = [
   ['HAVE_ALLOCA', 'alloca', '#include<alloca.h>'],
   ['HAVE_ATOLL', 'atoll', '#include<stdlib.h>'],
   ['HAVE_BTOWC', 'btowc', '#include<wchar.h>'],
-  ['HAVE_CANONICALIZE_FILE_NAME', 'canonicalize_file_name', '#include<stdlib.h>'],
+  [
+    'HAVE_CANONICALIZE_FILE_NAME',
+    'canonicalize_file_name',
+    '#include<stdlib.h>',
+  ],
   ['HAVE_CATGETS', 'catgets', '#include<nl_types.h>'],
-  ['HAVE_CFLOCALECOPYPREFERREDLANGUAGES', 'CFLocaleCopyPreferredLanguages', '#include<CoreFoundation/CFLocale.h>'],
-  ['HAVE_CFPREFERENCESCOPYAPPVALUE', 'CFPreferencesCopyAppValue', '#include<CoreFoundation/CFPreferences.h>'],
+  [
+    'HAVE_CFLOCALECOPYPREFERREDLANGUAGES',
+    'CFLocaleCopyPreferredLanguages',
+    '#include<CoreFoundation/CFLocale.h>',
+  ],
+  [
+    'HAVE_CFPREFERENCESCOPYAPPVALUE',
+    'CFPreferencesCopyAppValue',
+    '#include<CoreFoundation/CFPreferences.h>',
+  ],
   ['HAVE_CHOWN', 'chown', '#include<unistd.h>'],
   ['HAVE_CLOCK_GETTIME', 'clock_gettime', '#include<time.h>'],
   ['HAVE_CLOCK_SETTIME', 'clock_settime', '#include<time.h>'],
@@ -582,7 +673,11 @@ check_functions = [
   ['HAVE_MKSTEMPS', 'mkstemps', '#include<stdlib.h>'],
   ['HAVE_MPROTECT', 'mprotect', '#include<sys/mman.h>'],
   ['HAVE_MQUERY', 'mquery', '#include<sys/mman.h>'],
-  ['HAVE_MSVC_INVALID_PARAMETER_HANDLER', '_set_invalid_parameter_handler', '#include<stdlib.h>'],
+  [
+    'HAVE_MSVC_INVALID_PARAMETER_HANDLER',
+    '_set_invalid_parameter_handler',
+    '#include<stdlib.h>',
+  ],
   ['HAVE_NEWLOCALE', 'newlocale', '#include<locale.h>'],
   ['HAVE_NL_LANGINFO', 'nl_langinfo', '#include<langinfo.h>'],
   ['HAVE_OPENAT', 'openat', '#include<fcntl.h>'],
@@ -594,8 +689,16 @@ check_functions = [
   ['HAVE_POSIX_MEMALIGN', 'posix_memalign', '#include<stdlib.h>'],
   ['HAVE_POSIX_OPENPT', 'posix_openpt', '#include<stdlib.h>'],
   ['HAVE_POSIX_SPAWN', 'posix_spawn', '#include<spawn.h>'],
-  ['HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCHDIR', 'posix_spawn_file_actions_addchdir', '#include <spawn.h>'],
-  ['HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDFCHDIR', 'posix_spawn_file_actions_addfchdir', '#include <spawn.h>'],
+  [
+    'HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCHDIR',
+    'posix_spawn_file_actions_addchdir',
+    '#include <spawn.h>',
+  ],
+  [
+    'HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDFCHDIR',
+    'posix_spawn_file_actions_addfchdir',
+    '#include <spawn.h>',
+  ],
   ['HAVE_PREAD', 'pread', '#include<unistd.h>'],
   ['HAVE_PSTAT_GETPROCVM', 'pstat_getprocvm', '#include<sys/pstat.h>'],
   ['HAVE_PTHREAD_ATFORK', 'pthread_atfork', '#include<pthread.h>'],
@@ -685,7 +788,11 @@ check_functions = [
   ['HAVE__EXIT', '_exit', '#include<stdlib.h>'],
   ['HAVE__FSEEKI64', '_fseeki64', '#include<stdio.h>'],
   ['HAVE__FTELLI64', '_ftelli64', '#include<stdio.h>'],
-  ['HAVE__SET_INVALID_PARAMETER_HANDLER', '_set_invalid_parameter_handler', '#include<stdlib.h>'],
+  [
+    'HAVE__SET_INVALID_PARAMETER_HANDLER',
+    '_set_invalid_parameter_handler',
+    '#include<stdlib.h>',
+  ],
   ['HAVE___FPURGE', '__fpurge', '#include<stdio_ext.h>'],
   ['HAVE___FREADAHEAD', '__freadahead', '#include<stdio_ext.h>'],
   ['HAVE___FREADING', '__freading', '#include<stdio_ext.h>'],
@@ -696,7 +803,11 @@ check_functions = [
 # HAVE_FOO tends to want to be 1 or undefined
 # generated_header_data needs to be defined to 0, however.
 foreach f : check_functions
-  if cc.has_function(f.get(1), prefix : f.get(2) + '\n' + ac_includes_default, args : have_header_args + extension_args)
+  if cc.has_function(
+    f.get(1),
+    prefix: f.get(2) + '\n' + ac_includes_default,
+    args: have_header_args + extension_args,
+  )
     cdata.set(f.get(0), 1)
     generated_header_data.set10(f.get(0), true)
   else
@@ -705,13 +816,37 @@ foreach f : check_functions
 endforeach
 
 
-cdata.set('D_INO_IN_DIRENT', 1, description: 'Define if struct dirent has a member d_ino that actually works.')
-cdata.set('FLEXIBLE_ARRAY_MEMBER', '', description: 'Define to nothing if C supports flexible array members, and to 1 if it does not.')
-cdata.set('ENABLE_NLS', 0, description: '''Define to 1 if translation of program messages to the user's native language is requested''')
-cdata.set('FUNC_FFLUSH_STDIN', -1, description: 'Define to 1 if fflush is known to work on stdin as per POSIX.1-2008, 0 if fflush is known to not work, -1 if unknown.')
+cdata.set(
+  'D_INO_IN_DIRENT',
+  1,
+  description: 'Define if struct dirent has a member d_ino that actually works.',
+)
+cdata.set(
+  'FLEXIBLE_ARRAY_MEMBER',
+  '',
+  description: 'Define to nothing if C supports flexible array members, and to 1 if it does not.',
+)
+cdata.set(
+  'ENABLE_NLS',
+  0,
+  description: '''Define to 1 if translation of program messages to the user's native language is requested''',
+)
+cdata.set(
+  'FUNC_FFLUSH_STDIN',
+  -1,
+  description: 'Define to 1 if fflush is known to work on stdin as per POSIX.1-2008, 0 if fflush is known to not work, -1 if unknown.',
+)
 cdata.set('FUNC_REALPATH_WORKS', 1)
-cdata.set('GETTIMEOFDAY_TIMEZONE', 'void', description: '''Define this to 'void' or 'struct timezone' to match the system's declaration of the second argument to gettimeofday.''')
-cdata.set('MALLOC_0_IS_NONNULL', 1, description: 'If malloc(0) is != NULL, define this to 1. Otherwise define this to 0.')
+cdata.set(
+  'GETTIMEOFDAY_TIMEZONE',
+  'void',
+  description: '''Define this to 'void' or 'struct timezone' to match the system's declaration of the second argument to gettimeofday.''',
+)
+cdata.set(
+  'MALLOC_0_IS_NONNULL',
+  1,
+  description: 'If malloc(0) is != NULL, define this to 1. Otherwise define this to 0.',
+)
 
 cdata.set('ENABLE_CHANGEWORD', get_option('enable_changeword'))
 cdata.set('NEED_SETLOCALE_IMPROVED', 0)
@@ -729,7 +864,8 @@ cdata.set('SETLOCALE_NULL_ALL_MTSAFE', 1)
 cdata.set('SETLOCALE_NULL_ONE_MTSAFE', 1)
 cdata.set('SIGNAL_SAFE_LIST', 1)
 
-stack_direction_result = cc.run('''#include <stdio.h>
+stack_direction_result = cc.run(
+  '''#include <stdio.h>
 int
 find_stack_direction (int *addr, int depth)
 {
@@ -745,7 +881,9 @@ main (int argc, char *argv[])
 {
     printf("%d", find_stack_direction (NULL, argc + 20));
     return 0;
-}''', name: 'Determine STACK_DIRECTION')
+}''',
+  name: 'Determine STACK_DIRECTION',
+)
 
 if stack_direction_result.stdout().to_int() > 0
   message('STACK_DIRECTION=1')
@@ -765,14 +903,20 @@ endif
 cdata.set_quoted('SYSCMD_SHELL', syscmd_shell)
 cdata.set_quoted('VERSION', '1.4.19')
 
-if (cc.get_define('O_BINARY', prefix: '#include<fcntl.h>') == '')
-  if (cc.get_define('_O_BINARY', prefix: '#include<fcntl.h>') != '')
+if (cc.get_define(
+  'O_BINARY',
+  prefix: '#include<fcntl.h>',
+) == '')
+  if (cc.get_define(
+    '_O_BINARY',
+    prefix: '#include<fcntl.h>',
+  ) != '')
     cdata.set('O_BINARY', '_O_BINARY')
     cdata.set('O_TEXT', '_O_TEXT')
   else
     cdata.set('O_BINARY', '0')
     cdata.set('O_TEXT', '0')
-endif
+  endif
 endif
 cdata.set('_GL_ATTRIBUTE_SPEC_PRINTF_SYSTEM', '__printf__')
 cdata.set('_GL_ATTRIBUTE_SPEC_PRINTF_STANDARD', '__printf__')
@@ -786,7 +930,11 @@ cdata.set('GNULIB_CANONICALIZE', 1)
 cdata.set('GNULIB_CANONICALIZE_LGPL', 1)
 cdata.set('ICONV_CONST', '')
 if cdata.get('HAVE_DECL_EACCESS') == 0
-  cdata.set('eaccess', 'access', description: 'Define as \'access\' if you don\'t have the eaccess() function.')
+  cdata.set(
+    'eaccess',
+    'access',
+    description: 'Define as \'access\' if you don\'t have the eaccess() function.',
+  )
 endif
 
 cdata.set('GNULIB_FD_SAFER_FLAG', 1)
@@ -845,7 +993,8 @@ else
   cdata.set('REPLACE_RENAME', 0)
 endif
 
-if cc.run('''#include <sys/types.h> /* for off_t */
+if cc.run(
+  '''#include <sys/types.h> /* for off_t */
 #include <stdio.h> /* for SEEK_CUR */
 #if HAVE_UNISTD_H
 # include <unistd.h>
@@ -856,7 +1005,8 @@ if cc.run('''#include <sys/types.h> /* for off_t */
 int main(int argc, char *argv[]) {
     return lseek (0, (off_t)0, SEEK_CUR) < 0;
 }
-''').returncode() == 0
+''',
+).returncode() == 0
   cdata.set('LSEEK_PIPE_BROKEN', 1)
 endif
 
@@ -867,51 +1017,112 @@ if not cdata.has('HAVE_SSIZE_T')
   cdata.set('ssize_t', 'ptrdiff_t')
 endif
 if not cdata.has('HAVE_PID_T')
-    cdata.set('pid_t', 'intptr_t')
+  cdata.set('pid_t', 'intptr_t')
 endif
 if not cdata.has('HAVE_UID_T')
-    cdata.set('uid_t', 'int')
+  cdata.set('uid_t', 'int')
 endif
 if not cdata.has('HAVE_MODE_T')
-    cdata.set('mode_t', 'int')
+  cdata.set('mode_t', 'int')
 endif
 
-configure_file(input : 'config.h.meson',
-  output : 'config.h',
-  configuration : cdata)
+configure_file(
+  input: 'config.h.meson',
+  output: 'config.h',
+  configuration: cdata,
+)
 
 configmake_data = configuration_data()
 configmake_data.set_quoted('PREFIX', get_option('prefix'))
 configmake_data.set_quoted('EXEC_PREFIX', get_option('prefix'))
 configmake_data.set_quoted('BINDIR', get_option('prefix') / get_option('bindir'))
-configmake_data.set_quoted('SBINDIR', get_option('prefix') / get_option('sbindir'))
-configmake_data.set_quoted('LIBEXECDIR', get_option('prefix') / get_option('libexecdir'))
-configmake_data.set_quoted('DATAROOTDIR', get_option('prefix') / get_option('datadir'))
-configmake_data.set_quoted('DATADIR', get_option('prefix') / get_option('datadir'))
-configmake_data.set_quoted('SYSCONFDIR', get_option('prefix') / get_option('sysconfdir'))
+configmake_data.set_quoted(
+  'SBINDIR',
+  get_option('prefix') / get_option('sbindir'),
+)
+configmake_data.set_quoted(
+  'LIBEXECDIR',
+  get_option('prefix') / get_option('libexecdir'),
+)
+configmake_data.set_quoted(
+  'DATAROOTDIR',
+  get_option('prefix') / get_option('datadir'),
+)
+configmake_data.set_quoted(
+  'DATADIR',
+  get_option('prefix') / get_option('datadir'),
+)
+configmake_data.set_quoted(
+  'SYSCONFDIR',
+  get_option('prefix') / get_option('sysconfdir'),
+)
 configmake_data.set_quoted('SHAREDSTATEDIR', get_option('sharedstatedir'))
 configmake_data.set_quoted('LOCALSTATEDIR', get_option('localstatedir'))
 configmake_data.set_quoted('RUNSTATEDIR', get_option('prefix') / 'var/run')
-configmake_data.set_quoted('INCLUDEDIR', get_option('prefix') / get_option('includedir'))
-configmake_data.set_quoted('OLDINCLUDEDIR', get_option('prefix') / get_option('includedir'))
-configmake_data.set_quoted('DOCDIR', get_option('prefix') / get_option('datadir') / 'doc/m4')
-configmake_data.set_quoted('INFODIR', get_option('prefix') / get_option('datadir') / 'info')
-configmake_data.set_quoted('HTMLDIR', get_option('prefix') / get_option('datadir') / 'doc/m4')
-configmake_data.set_quoted('DVIDIR', get_option('prefix') / get_option('datadir') / 'doc/m4')
-configmake_data.set_quoted('PDFDIR', get_option('prefix') / get_option('datadir') / 'doc/m4')
-configmake_data.set_quoted('PSDIR', get_option('prefix') / get_option('datadir') / 'doc/m4')
+configmake_data.set_quoted(
+  'INCLUDEDIR',
+  get_option('prefix') / get_option('includedir'),
+)
+configmake_data.set_quoted(
+  'OLDINCLUDEDIR',
+  get_option('prefix') / get_option('includedir'),
+)
+configmake_data.set_quoted(
+  'DOCDIR',
+  get_option('prefix') / get_option('datadir') / 'doc/m4',
+)
+configmake_data.set_quoted(
+  'INFODIR',
+  get_option('prefix') / get_option('datadir') / 'info',
+)
+configmake_data.set_quoted(
+  'HTMLDIR',
+  get_option('prefix') / get_option('datadir') / 'doc/m4',
+)
+configmake_data.set_quoted(
+  'DVIDIR',
+  get_option('prefix') / get_option('datadir') / 'doc/m4',
+)
+configmake_data.set_quoted(
+  'PDFDIR',
+  get_option('prefix') / get_option('datadir') / 'doc/m4',
+)
+configmake_data.set_quoted(
+  'PSDIR',
+  get_option('prefix') / get_option('datadir') / 'doc/m4',
+)
 configmake_data.set_quoted('LIBDIR', get_option('prefix') / get_option('libdir'))
-configmake_data.set_quoted('LISPDIR', get_option('prefix') / get_option('datadir') / 'emacs/site-lisp')
-configmake_data.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
+configmake_data.set_quoted(
+  'LISPDIR',
+  get_option('prefix') / get_option('datadir') / 'emacs/site-lisp',
+)
+configmake_data.set_quoted(
+  'LOCALEDIR',
+  get_option('prefix') / get_option('localedir'),
+)
 configmake_data.set_quoted('MANDIR', get_option('prefix') / get_option('mandir'))
-configmake_data.set_quoted('PKGDATADIR', get_option('prefix') / get_option('datadir') / 'm4')
-configmake_data.set_quoted('PKGINCLUDEDIR', get_option('prefix') / get_option('includedir') / 'm4')
-configmake_data.set_quoted('PKGLIBDIR', get_option('prefix') / get_option('libdir') / 'm4')
-configmake_data.set_quoted('PKGLIBEXECDIR', get_option('prefix') / get_option('libexecdir') / 'm4')
+configmake_data.set_quoted(
+  'PKGDATADIR',
+  get_option('prefix') / get_option('datadir') / 'm4',
+)
+configmake_data.set_quoted(
+  'PKGINCLUDEDIR',
+  get_option('prefix') / get_option('includedir') / 'm4',
+)
+configmake_data.set_quoted(
+  'PKGLIBDIR',
+  get_option('prefix') / get_option('libdir') / 'm4',
+)
+configmake_data.set_quoted(
+  'PKGLIBEXECDIR',
+  get_option('prefix') / get_option('libexecdir') / 'm4',
+)
 
-configure_file(input : 'configmake.h.meson',
-  output : 'configmake.h',
-  configuration : configmake_data)
+configure_file(
+  input: 'configmake.h.meson',
+  output: 'configmake.h',
+  configuration: configmake_data,
+)
 
 generated_header_data.set('PRAGMA_SYSTEM_HEADER', '#pragma GCC system_header')
 if cc.compiles('#include_next <string.h>')
@@ -1439,143 +1650,212 @@ generated_header_data.set('UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS', 0)
 generated_header_data.set('WINDOWS_64_BIT_ST_SIZE', 0)
 generated_header_data.set('WINDOWS_STAT_INODES', 0)
 generated_header_data.set('WINDOWS_STAT_TIMESPEC', 0)
-if host_machine.system() == 'windows' and not cc.compiles('''#include <sys/types.h>
+if host_machine.system() == 'windows' and not cc.compiles(
+  '''#include <sys/types.h>
 struct stat buf;
-int verify_offt_size[sizeof (off_t) >= 8 ? 1 : -1];''')
-generated_header_data.set('WINDOWS_64_BIT_OFF_T', 1)
+int verify_offt_size[sizeof (off_t) >= 8 ? 1 : -1];''',
+)
+  generated_header_data.set('WINDOWS_64_BIT_OFF_T', 1)
 else
-generated_header_data.set('WINDOWS_64_BIT_OFF_T', 0)
+  generated_header_data.set('WINDOWS_64_BIT_OFF_T', 0)
 endif
 
 
-generated_header_data.set10('GNULIB_ENVIRON', cdata.get('HAVE_ENVIRON_DECL') == 0)
-generated_header_data.set10('GNULIB_REALLOCARRAY', not cdata.has('HAVE_REALLOCARRAY'))
+generated_header_data.set10(
+  'GNULIB_ENVIRON',
+  cdata.get('HAVE_ENVIRON_DECL') == 0,
+)
+generated_header_data.set10(
+  'GNULIB_REALLOCARRAY',
+  not cdata.has('HAVE_REALLOCARRAY'),
+)
 generated_header_data.set10('GNULIB_MEMPCPY', not cdata.has('HAVE_MEMPCPY'))
 generated_header_data.set10('GNULIB_STRNDUP', not cdata.has('HAVE_STRNDUP'))
 generated_header_data.set10('GNULIB_WAITPID', not cdata.has('HAVE_WAITPID'))
 generated_header_data.set10('GNULIB_RAWMEMCHR', not cdata.has('HAVE_RAWMEMCHR'))
-generated_header_data.set10('GNULIB_SECURE_GETENV', not cdata.has('HAVE_SECURE_GETENV'))
-generated_header_data.set10('GNULIB_CANONICALIZE_FILE_NAME', not cdata.has('HAVE_CANONICALIZE_FILE_NAME'))
+generated_header_data.set10(
+  'GNULIB_SECURE_GETENV',
+  not cdata.has('HAVE_SECURE_GETENV'),
+)
+generated_header_data.set10(
+  'GNULIB_CANONICALIZE_FILE_NAME',
+  not cdata.has('HAVE_CANONICALIZE_FILE_NAME'),
+)
 generated_header_data.set10('GNULIB_SIGACTION', not cdata.has('HAVE_SIGACTION'))
-generated_header_data.set10('GNULIB_SIGPROCMASK', not cdata.has('HAVE_SIGPROCMASK'))
+generated_header_data.set10(
+  'GNULIB_SIGPROCMASK',
+  not cdata.has('HAVE_SIGPROCMASK'),
+)
 generated_header_data.set10('GNULIB_REALPATH', not cdata.has('HAVE_REALPATH'))
-generated_header_data.set10('GNULIB_NL_LANGINFO', not cdata.has('HAVE_NL_LANGINFO'))
-generated_header_data.set10('GNULIB_SETLOCALE_NULL', not cdata.has('HAVE_NL_LANGINFO'))
+generated_header_data.set10(
+  'GNULIB_NL_LANGINFO',
+  not cdata.has('HAVE_NL_LANGINFO'),
+)
+generated_header_data.set10(
+  'GNULIB_SETLOCALE_NULL',
+  not cdata.has('HAVE_NL_LANGINFO'),
+)
 generated_header_data.set10('GNULIB_STRSIGNAL', not cdata.has('HAVE_STRSIGNAL'))
 generated_header_data.set10('GNULIB_MKSTEMP', not cdata.has('HAVE_MKSTEMP'))
 generated_header_data.set10('GNULIB_MKDTEMP', not cdata.has('HAVE_MKDTEMP'))
 generated_header_data.set10('GNULIB_READLINK', not cdata.has('HAVE_READLINK'))
-generated_header_data.set10('GNULIB_VASNPRINTF', not cdata.has('HAVE_VASNPRINTF'))
+generated_header_data.set10(
+  'GNULIB_VASNPRINTF',
+  not cdata.has('HAVE_VASNPRINTF'),
+)
 generated_header_data.set10('GNULIB_VASPRINTF', not cdata.has('HAVE_VASPRINTF'))
 generated_header_data.set10('GNULIB_WCWIDTH', not cdata.has('HAVE_WCWIDTH'))
 generated_header_data.set10('GNULIB_FCNTL', not cdata.has('HAVE_FCNTL'))
 generated_header_data.set10('GNULIB_STPCPY', not cdata.has('HAVE_STPCPY'))
-generated_header_data.set10('GNULIB_TEMPNAME', not cdata.has('HAVE_MKDTEMP') or not cdata.has('HAVE_MKSTEMP'))
+generated_header_data.set10(
+  'GNULIB_TEMPNAME',
+  not cdata.has('HAVE_MKDTEMP') or not cdata.has('HAVE_MKSTEMP'),
+)
 generated_header_data.set10('GNULIB_PIPE2', not cdata.has('HAVE_PIPE2'))
-generated_header_data.set10('GNULIB_GETDTABLESIZE', not cdata.has('HAVE_GETDTABLESIZE'))
+generated_header_data.set10(
+  'GNULIB_GETDTABLESIZE',
+  not cdata.has('HAVE_GETDTABLESIZE'),
+)
 generated_header_data.set10('GNULIB_GETRANDOM', not cdata.has('HAVE_GETRANDOM'))
 generated_header_data.set10('GNULIB_LSTAT', not cdata.has('HAVE_LSTAT'))
-generated_header_data.set10('GNULIB_MDA_MKDIR', host_machine.system() == 'windows')
+generated_header_data.set10(
+  'GNULIB_MDA_MKDIR',
+  host_machine.system() == 'windows',
+)
 
 
 # STRING.H
-configure_file(input : 'string.in.h.meson',
-               output : 'string.h',
-               configuration : generated_header_data)
+configure_file(
+  input: 'string.in.h.meson',
+  output: 'string.h',
+  configuration: generated_header_data,
+)
 
 # STDIO.H
-configure_file(input : 'stdio.in.h.meson',
-               output : 'stdio.h',
-               configuration : generated_header_data)
+configure_file(
+  input: 'stdio.in.h.meson',
+  output: 'stdio.h',
+  configuration: generated_header_data,
+)
 
 # SPAWN.H
-configure_file(input : 'spawn.in.h.meson',
-               output : 'spawn.h',
-               configuration : generated_header_data)
+configure_file(
+  input: 'spawn.in.h.meson',
+  output: 'spawn.h',
+  configuration: generated_header_data,
+)
 
 # UNISTD.H
 if generated_header_data.get('GNULIB_ENVIRON') == 1
-configure_file(input : 'unistd.in.h.meson',
-               output : 'unistd.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'unistd.in.h.meson',
+    output: 'unistd.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # STDLIB.H
 if generated_header_data.get('GNULIB_REALLOCARRAY') == 1
-configure_file(input : 'stdlib.in.h.meson',
-               output : 'stdlib.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'stdlib.in.h.meson',
+    output: 'stdlib.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # SIGSEGV.H
 if not cdata.has('HAVE_SIGSEGV_H')
-configure_file(input : 'sigsegv.in.h',
-               output : 'sigsegv.h',
-               copy: true)
+  configure_file(
+    input: 'sigsegv.in.h',
+    output: 'sigsegv.h',
+    copy: true,
+  )
 endif
 
 # ALLOCA.H
 if not cdata.has('HAVE_ALLOCA_H')
-configure_file(input : 'alloca.in.h',
-               output : 'alloca.h',
-               configuration: generated_header_data)
+  configure_file(
+    input: 'alloca.in.h',
+    output: 'alloca.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # STDIO.H
 if not cdata.has('HAVE_MAX_ALIGN_T')
-configure_file(input : 'stddef.in.h.meson',
-               output : 'stddef.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'stddef.in.h.meson',
+    output: 'stddef.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # SIGNAL.H
 if not cdata.has('HAVE_SIGSET_T')
-configure_file(input : 'signal.in.h.meson',
-               output : 'signal.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'signal.in.h.meson',
+    output: 'signal.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # FCNTL.H
 if cdata.get('HAVE_DECL_O_CLOEXEC') == 0
-configure_file(input : 'fcntl.in.h.meson',
-               output : 'fcntl.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'fcntl.in.h.meson',
+    output: 'fcntl.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # LANGINFO.H
 if not cdata.has('HAVE_LANGINFO_H')
-configure_file(input : 'langinfo.in.h.meson',
-               output : 'langinfo.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'langinfo.in.h.meson',
+    output: 'langinfo.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # LOCALE.H
 if generated_header_data.get('GNULIB_SETLOCALE_NULL') == 1
-configure_file(input : 'locale.in.h.meson',
-               output : 'locale.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'locale.in.h.meson',
+    output: 'locale.h',
+    configuration: generated_header_data,
+  )
 endif
 
 # GETOPT.H
 if not cdata.has('HAVE_GETOPT_H')
-configure_file(input : 'getopt.in.h.meson',
-               output : 'getopt.h',
-               configuration : generated_header_data)
-configure_file(input : 'getopt-cdefs.in.h',
-               output : 'getopt-cdefs.h',
-               configuration : generated_header_data)
+  configure_file(
+    input: 'getopt.in.h.meson',
+    output: 'getopt.h',
+    configuration: generated_header_data,
+  )
+  configure_file(
+    input: 'getopt-cdefs.in.h',
+    output: 'getopt-cdefs.h',
+    configuration: generated_header_data,
+  )
 endif
 
 if generated_header_data.get('GNULIB_WCWIDTH') == 1
-configure_file(input : 'wchar.in.h.meson',
-               output : 'wchar.h',
-               configuration : generated_header_data)
-configure_file(input : 'uniwidth.in.h',
-               output : 'uniwidth.h',
-               copy: true)
-configure_file(input : 'unitypes.in.h',
-               output : 'unitypes.h',
-               copy: true)
+  configure_file(
+    input: 'wchar.in.h.meson',
+    output: 'wchar.h',
+    configuration: generated_header_data,
+  )
+  configure_file(
+    input: 'uniwidth.in.h',
+    output: 'uniwidth.h',
+    copy: true,
+  )
+  configure_file(
+    input: 'unitypes.in.h',
+    output: 'unitypes.h',
+    copy: true,
+  )
 endif
 sys_random_src = files('sys_random.in.h.meson')
 sys_wait_src = files('sys_wait.in.h.meson')
@@ -1662,36 +1942,38 @@ m4lib_src = [
 ]
 
 if host_machine.system() == 'windows'
-  m4lib_src += ['windows-spawn.c',
-                'windows-spin.c', # used by asyncsafe-spin.c only for windows
-                'msvc-nothrow.c',
-                'msvc-inval.c']
+  m4lib_src += [
+    'windows-spawn.c',
+    'windows-spin.c',  # used by asyncsafe-spin.c only for windows
+    'msvc-nothrow.c',
+    'msvc-inval.c',
+  ]
 else
-m4lib_src += 'spawn_faction_addchdir.c'
+  m4lib_src += 'spawn_faction_addchdir.c'
 endif
 
 if generated_header_data.get('GNULIB_STRNDUP') == 1
-m4lib_src += 'strndup.c'
+  m4lib_src += 'strndup.c'
 endif
 
 if cdata.get('HAVE_DECL___FPENDING') == 0
-m4lib_src += 'fpending.c'
+  m4lib_src += 'fpending.c'
 endif
 
 if not cdata.has('HAVE_RAWMEMCHR')
-m4lib_src += 'rawmemchr.c'
+  m4lib_src += 'rawmemchr.c'
 endif
 
 if not cdata.has('HAVE_SECURE_GETENV')
-m4lib_src += 'secure_getenv.c'
+  m4lib_src += 'secure_getenv.c'
 endif
 
 if not cdata.has('HAVE_ERROR_AT_LINE')
-m4lib_src += 'error.c'
+  m4lib_src += 'error.c'
 endif
 
 if generated_header_data.get('GNULIB_REALLOCARRAY') == 1
-m4lib_src += 'reallocarray.c'
+  m4lib_src += 'reallocarray.c'
 endif
 
 if not cdata.has('HAVE_SYS_WAIT_H') or not cdata.has('HAVE_SYS_TYPES_H')
@@ -1707,11 +1989,12 @@ if generated_header_data.get('GNULIB_SIGACTION') == 1
 endif
 
 if not cdata.has('HAVE_REGEX_H') or not cdata.has('HAVE_RE_COMPILE_PATTERN')
-  m4lib_src += ['regex.c',
-                'malloc/dynarray_resize.c',
-                'malloc/dynarray_emplace_enlarge.c',
-                'malloc/dynarray_finalize.c',
-               ]
+  m4lib_src += [
+    'regex.c',
+    'malloc/dynarray_resize.c',
+    'malloc/dynarray_emplace_enlarge.c',
+    'malloc/dynarray_finalize.c',
+  ]
 endif
 
 if not cdata.has('HAVE_GETPROGNAME')
@@ -1855,19 +2138,29 @@ if generated_header_data.get('GNULIB_RENAME') == 1
   m4lib_src += 'rename.c'
 endif
 
-m4_lib_nononnull_h = configure_file(input: 'nononnull.h.meson',
-                                    output: 'nononnull.h',
-                                    copy: true)
+m4_lib_nononnull_h = configure_file(
+  input: 'nononnull.h.meson',
+  output: 'nononnull.h',
+  copy: true,
+)
 
-m4_lib = static_library('m4', m4lib_src, m4_lib_nononnull_h,
-                        c_args: libm4_c_args)
+m4_lib = static_library(
+  'm4',
+  m4lib_src,
+  m4_lib_nononnull_h,
+  c_args: libm4_c_args,
+)
 if host_machine.system() == 'windows'
-  m4_dep = declare_dependency(link_with: m4_lib,
-                              dependencies: getrandom_dep,
-                              compile_args: libm4_c_args,
-                              include_directories: lib_inc)
+  m4_dep = declare_dependency(
+    link_with: m4_lib,
+    dependencies: getrandom_dep,
+    compile_args: libm4_c_args,
+    include_directories: lib_inc,
+  )
 else
-  m4_dep = declare_dependency(link_with: m4_lib,
-                              compile_args: libm4_c_args,
-                              include_directories: lib_inc)
+  m4_dep = declare_dependency(
+    link_with: m4_lib,
+    compile_args: libm4_c_args,
+    include_directories: lib_inc,
+  )
 endif

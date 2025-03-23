@@ -11,7 +11,9 @@ compile_opts = [
   '-DLOGURU_SCOPE_TEXT_SIZE=@0@'.format(get_option('loguru_scope_text_size')),
   '-DLOGURU_FILENAME_WIDTH=@0@'.format(get_option('loguru_filename_width')),
   '-DLOGURU_THREADNAME_WIDTH=@0@'.format(get_option('loguru_threadname_width')),
-  '-DLOGURU_SCOPE_TIME_PRECISION=@0@'.format(get_option('loguru_scope_time_precision')),
+  '-DLOGURU_SCOPE_TIME_PRECISION=@0@'.format(
+    get_option('loguru_scope_time_precision'),
+  ),
 ]
 loguru_deps_internal = [dependency('threads')]
 
@@ -31,12 +33,21 @@ foreach o : options
   compile_opts += '-D@0@=@1@'.format(o.to_upper(), get_option(o).to_int())
 endforeach
 
-dl_dep = cxx.find_library('dl', required: get_option('loguru_stacktraces'))
+dl_dep = cxx.find_library(
+  'dl',
+  required: get_option('loguru_stacktraces'),
+)
 loguru_deps_internal += dl_dep
-execinfo = cxx.has_header('execinfo.h', required: get_option('loguru_stacktraces'))
+execinfo = cxx.has_header(
+  'execinfo.h',
+  required: get_option('loguru_stacktraces'),
+)
 if execinfo
   # execinfo needs -lexecinfo on FreeBSD and others
-  libexecinfo_dep = cxx.find_library('execinfo', required: false)
+  libexecinfo_dep = cxx.find_library(
+    'execinfo',
+    required: false,
+  )
   if libexecinfo_dep.found()
     loguru_deps_internal += libexecinfo_dep
   endif
@@ -46,7 +57,10 @@ else
   compile_opts += '-DLOGURU_STACKTRACES=0'
 endif
 
-fmt_dep = dependency('fmt', required: get_option('loguru_use_fmtlib'))
+fmt_dep = dependency(
+  'fmt',
+  required: get_option('loguru_use_fmtlib'),
+)
 loguru_deps_internal += fmt_dep
 compile_opts += '-DLOGURU_USE_FMTLIB=@0@'.format(fmt_dep.found().to_int())
 
@@ -62,7 +76,9 @@ emilk_loguru_lib = library(
   cpp_args: [compile_opts, api],
   dependencies: loguru_deps_internal,
   gnu_symbol_visibility: 'hidden',
-  soversion: host_machine.system() == 'windows' ? '' : meson.project_version().split('.')[0],
+  soversion: host_machine.system() == 'windows' ? '' : meson.project_version().split(
+    '.',
+  )[0],
   version: meson.project_version(),
   install: true,
 )

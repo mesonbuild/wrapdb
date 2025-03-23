@@ -13,12 +13,11 @@ gumbo_lib = library(
     'util.c',
     'vector.c',
   ],
-  include_directories: (
-    host_machine.system() == 'windows'
-    and not cc.has_header('strings.h')
-    ? include_directories('../visualc/include')
-    : []
-  ),
+  include_directories: (host_machine.system() == 'windows' and not cc.has_header(
+    'strings.h',
+  ) ? include_directories(
+    '../visualc/include',
+  ) : []),
   install: true,
   version: '2.0.0',
   vs_module_defs: 'gumbo.def',
@@ -36,7 +35,4 @@ pkg.generate(
   description: 'A fully-compliant HTML5 parser.',
 )
 
-install_headers(
-  'gumbo.h',
-  'tag_enum.h',
-)
+install_headers('gumbo.h', 'tag_enum.h')

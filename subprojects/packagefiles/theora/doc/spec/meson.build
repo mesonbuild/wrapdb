@@ -48,10 +48,21 @@ vp3huff_tex = custom_target(
   output: 'vp3huff.tex',
 )
 
-spec_file = configure_file(input: 'spec.tex', output: 'spec.tex', copy: true)
-bib_file = configure_file(input: 'spec.bib', output: 'spec.bib', copy: true)
+spec_file = configure_file(
+  input: 'spec.tex',
+  output: 'spec.tex',
+  copy: true,
+)
+bib_file = configure_file(
+  input: 'spec.bib',
+  output: 'spec.bib',
+  copy: true,
+)
 
-latexmk_wrapper = find_program('latexmk-wrapper.py', required: true)
+latexmk_wrapper = find_program(
+  'latexmk-wrapper.py',
+  required: true,
+)
 
 built_docs = custom_target(
   'Theora.pdf',

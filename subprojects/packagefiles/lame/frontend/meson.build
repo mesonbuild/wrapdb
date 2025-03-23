@@ -8,9 +8,7 @@ common_sources = files(
   'timestatus.c',
 )
 
-frontend_includes = mp3lame_includes + [
-  include_directories('.'),
-]
+frontend_includes = mp3lame_includes + [include_directories('.')]
 
 tools_deps = [lame_dep, m_dep, iconv_dep, curses_dep]
 if host_machine.system() == 'windows'

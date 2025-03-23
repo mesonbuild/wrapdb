@@ -14,15 +14,25 @@ endif
 
 test_deps = [
   msgpack_cxx_dep,
-  dependency('threads', required: get_option('tests')),
-  dependency('zlib', required: get_option('tests')),
-  dependency('boost', modules: ['unit_test_framework', 'system'], required: get_option('tests'))
+  dependency(
+    'threads',
+    required: get_option('tests'),
+  ),
+  dependency(
+    'zlib',
+    required: get_option('tests'),
+  ),
+  dependency(
+    'boost',
+    modules: ['unit_test_framework', 'system'],
+    required: get_option('tests'),
+  ),
 ]
 
 # skip tests if test dependencies not found
-foreach dep: test_deps
+foreach dep : test_deps
   if not dep.found()
-    message('Skipping tests as test dependency '+dep.name()+' not found')
+    message('Skipping tests as test dependency ' + dep.name() + ' not found')
     subdir_done()
   endif
 endforeach
@@ -69,19 +79,21 @@ progs = [
   'zone',
 ]
 
-foreach t: progs
+foreach t : progs
   exe = executable(
-    t, t+'.cpp',
+    t,
+    t + '.cpp',
     implicit_include_directories: false,
-    dependencies: test_deps
+    dependencies: test_deps,
   )
   test(t, exe)
 endforeach
 
 exe = executable(
   'multi_file',
-  'multi_file1.cpp', 'multi_file2.cpp',
+  'multi_file1.cpp',
+  'multi_file2.cpp',
   implicit_include_directories: false,
-  dependencies: msgpack_cxx_dep
+  dependencies: msgpack_cxx_dep,
 )
 test('multi_file', exe)

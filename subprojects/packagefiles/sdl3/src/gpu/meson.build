@@ -8,6 +8,4 @@ else
   subdir('vulkan')
 endif
 
-sources += files(
-  'SDL_gpu.c',
-)
+sources += files('SDL_gpu.c')

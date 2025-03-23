@@ -8,36 +8,97 @@ project(
 
 cpp = meson.get_compiler('cpp')
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required: false)
+  dl_dep = dependency(
+    'dl',
+    required: false,
+  )
 else
-  dl_dep = cpp.find_library('dl', required: false)
+  dl_dep = cpp.find_library(
+    'dl',
+    required: false,
+  )
 endif
 fmt_dep = dependency('fmt')
 thread_dep = dependency('threads')
-alsa_dep = dependency('alsa', required: get_option('alsa'))
-apple_dep = dependency('appleframeworks', modules: ['AudioToolbox', 'CoreAudio', 'CoreFoundation'], required: host_machine.system() == 'darwin')
-jack_dep = dependency('jack', required: get_option('jack'))
-mm_dep = cpp.find_library('winmm', required: get_option('winmm'))
-oboe_dep = dependency('oboe', required: get_option('oboe'))
-opensl_dep = dependency('opensl', required: get_option('opensl'))
-oss_dep = dependency('oss', required: get_option('oss'))
-pipewire_dep = dependency('libpipewire-0.3', required: get_option('pipewire'))
-portaudio_dep = dependency('portaudio', required: get_option('portaudio'))
-pulseaudio_dep = dependency('libpulse', required: get_option('pulseaudio'))
-rtkit_dep = dependency('dbus-1', required: get_option('rtkit'))
-sdl2_dep = dependency('sdl2', required: get_option('sdl2'))
-sndio_dep = dependency('sndio', required: get_option('sndio'))
-solaris_dep = dependency('audioio', required: get_option('solaris'))
+alsa_dep = dependency(
+  'alsa',
+  required: get_option('alsa'),
+)
+apple_dep = dependency(
+  'appleframeworks',
+  modules: ['AudioToolbox', 'CoreAudio', 'CoreFoundation'],
+  required: host_machine.system() == 'darwin',
+)
+jack_dep = dependency(
+  'jack',
+  required: get_option('jack'),
+)
+mm_dep = cpp.find_library(
+  'winmm',
+  required: get_option('winmm'),
+)
+oboe_dep = dependency(
+  'oboe',
+  required: get_option('oboe'),
+)
+opensl_dep = dependency(
+  'opensl',
+  required: get_option('opensl'),
+)
+oss_dep = dependency(
+  'oss',
+  required: get_option('oss'),
+)
+pipewire_dep = dependency(
+  'libpipewire-0.3',
+  required: get_option('pipewire'),
+)
+portaudio_dep = dependency(
+  'portaudio',
+  required: get_option('portaudio'),
+)
+pulseaudio_dep = dependency(
+  'libpulse',
+  required: get_option('pulseaudio'),
+)
+rtkit_dep = dependency(
+  'dbus-1',
+  required: get_option('rtkit'),
+)
+sdl2_dep = dependency(
+  'sdl2',
+  required: get_option('sdl2'),
+)
+sndio_dep = dependency(
+  'sndio',
+  required: get_option('sndio'),
+)
+solaris_dep = dependency(
+  'audioio',
+  required: get_option('solaris'),
+)
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-DNOMINMAX', language: 'cpp')
+  add_project_arguments(
+    '-DNOMINMAX',
+    language: 'cpp',
+  )
   if cpp.get_argument_syntax() == 'msvc'
-    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
-    add_project_arguments('/wd5051', language: 'cpp')
+    add_project_arguments(
+      '-D_CRT_SECURE_NO_WARNINGS',
+      language: 'cpp',
+    )
+    add_project_arguments(
+      '/wd5051',
+      language: 'cpp',
+    )
   endif
 endif
 
-add_project_arguments('-DRESTRICT=__restrict', language: 'cpp')
+add_project_arguments(
+  '-DRESTRICT=__restrict',
+  language: 'cpp',
+)
 
 openal_args = []
 api = ''
@@ -184,11 +245,43 @@ cdata.set('HAVE_SDL2', sdl2_dep.found())
 cdata.set('HAVE_SNDIO', sndio_dep.found())
 cdata.set('HAVE_SOLARIS', solaris_dep.found())
 cdata.set('HAVE_WINMM', mm_dep.found())
-cdata.set('HAVE_DSOUND', cpp.has_header('dsound.h', dependencies: mm_dep))
-cdata.set('HAVE_WASAPI', cpp.has_header('wasapi.h', dependencies: mm_dep))
-configure_file(input: 'config_backends.h.in', output: 'config_backends.h', format: 'cmake', configuration: cdata)
+cdata.set(
+  'HAVE_DSOUND',
+  cpp.has_header(
+    'dsound.h',
+    dependencies: mm_dep,
+  ),
+)
+cdata.set(
+  'HAVE_WASAPI',
+  cpp.has_header(
+    'wasapi.h',
+    dependencies: mm_dep,
+  ),
+)
+configure_file(
+  input: 'config_backends.h.in',
+  output: 'config_backends.h',
+  format: 'cmake',
+  configuration: cdata,
+)
 
-foreach b : ['alsa', 'coreaudio', 'jack', 'opensl', 'oss', 'pipewire', 'portaudio', 'pulseaudio', 'sdl2', 'sndio', 'solaris', 'winmm', 'dsound', 'wasapi']
+foreach b : [
+  'alsa',
+  'coreaudio',
+  'jack',
+  'opensl',
+  'oss',
+  'pipewire',
+  'portaudio',
+  'pulseaudio',
+  'sdl2',
+  'sndio',
+  'solaris',
+  'winmm',
+  'dsound',
+  'wasapi',
+]
   if cdata.get('HAVE_@0@'.format(b.to_upper()))
     alc_sources += 'alc/backends/@0@.cpp'.format(b)
   endif
@@ -199,7 +292,10 @@ cdata.set('HAVE_SSE', cpp.check_header('xmmintrin.h'))
 cdata.set('HAVE_SSE2', cpp.check_header('emmintrin.h'))
 cdata.set('HAVE_SSE3', cpp.check_header('pmmintrin.h'))
 cdata.set('HAVE_SSE4_1', cpp.check_header('smmintrin.h'))
-cdata.set('HAVE_SSE_INTRINSICS', cpp.has_header_symbol('xmmintrin.h', '_mm_pause'))
+cdata.set(
+  'HAVE_SSE_INTRINSICS',
+  cpp.has_header_symbol('xmmintrin.h', '_mm_pause'),
+)
 cdata.set('HAVE_NEON', cpp.check_header('arm_neon.h'))
 
 if cdata.get('HAVE_SSE')
@@ -229,7 +325,12 @@ if cdata.get('HAVE_NEON')
   core_sources += 'core/mixer/mixer_neon.cpp'
 endif
 
-configure_file(input: 'config_simd.h.in', output: 'config_simd.h', format: 'cmake', configuration: cdata)
+configure_file(
+  input: 'config_simd.h.in',
+  output: 'config_simd.h',
+  format: 'cmake',
+  configuration: cdata,
+)
 
 cdata = configuration_data()
 
@@ -238,7 +339,14 @@ cdata.set('ALSOFT_UWP', false)
 
 cdata.set('ALSOFT_EAX', host_machine.system() == 'windows')
 if cdata.get('ALSOFT_EAX')
-  alc_sources += files('al/eax/api.cpp', 'al/eax/call.cpp', 'al/eax/exception.cpp', 'al/eax/fx_slot_index.cpp', 'al/eax/fx_slots.cpp', 'al/eax/utils.cpp')
+  alc_sources += files(
+    'al/eax/api.cpp',
+    'al/eax/call.cpp',
+    'al/eax/exception.cpp',
+    'al/eax/fx_slot_index.cpp',
+    'al/eax/fx_slots.cpp',
+    'al/eax/utils.cpp',
+  )
 endif
 
 cdata.set('HAVE_RTKIT', rtkit_dep.found())
@@ -250,7 +358,13 @@ foreach h : ['guiddef.h', 'pthread_np.h']
   cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cpp.has_header(h))
 endforeach
 
-cdata.set('HAVE_DLFCN_H', cpp.has_header('dlfcn.h', dependencies: dl_dep))
+cdata.set(
+  'HAVE_DLFCN_H',
+  cpp.has_header(
+    'dlfcn.h',
+    dependencies: dl_dep,
+  ),
+)
 
 #needs to be check_header for LLVM as well as MinGW
 cdata.set('HAVE_CPUID_H', cpp.check_header('cpuid.h'))
@@ -258,12 +372,36 @@ cdata.set('HAVE_INTRIN_H', cpp.check_header('intrin.h'))
 
 #need to check for non windows because meson wrongly detects its presence under MinGW
 cdata.set('HAVE_PROC_PIDPATH', cpp.has_function('proc_pidpath'))
-cdata.set('HAVE_PTHREAD_SETSCHEDPARAM', cpp.has_function('pthread_setschedparam', dependencies: thread_dep))
-cdata.set('HAVE_PTHREAD_SETNAME_NP', cpp.has_function('pthread_setname_np', dependencies: thread_dep))
-cdata.set('HAVE_PTHREAD_SET_NAME_NP', cpp.has_function('pthread_set_name_np', dependencies: thread_dep))
+cdata.set(
+  'HAVE_PTHREAD_SETSCHEDPARAM',
+  cpp.has_function(
+    'pthread_setschedparam',
+    dependencies: thread_dep,
+  ),
+)
+cdata.set(
+  'HAVE_PTHREAD_SETNAME_NP',
+  cpp.has_function(
+    'pthread_setname_np',
+    dependencies: thread_dep,
+  ),
+)
+cdata.set(
+  'HAVE_PTHREAD_SET_NAME_NP',
+  cpp.has_function(
+    'pthread_set_name_np',
+    dependencies: thread_dep,
+  ),
+)
 
 cdata.set('HAVE_CPUID_INTRINSIC', cpp.get_argument_syntax() == 'msvc')
-cdata.set('HAVE_GCC_GET_CPUID', cpp.has_function('__get_cpuid', prefix: '#include <cpuid.h>'))
+cdata.set(
+  'HAVE_GCC_GET_CPUID',
+  cpp.has_function(
+    '__get_cpuid',
+    prefix: '#include <cpuid.h>',
+  ),
+)
 
 if cpp.has_function_attribute('force_align_arg_pointer')
   cdata.set('ALSOFT_FORCE_ALIGN', '__attribute__((force_align_arg_pointer))')
@@ -274,20 +412,57 @@ endif
 cdata.set('ALSOFT_EMBED_HRTF_DATA', true)
 cdata.set('ALSOFT_INSTALL_DATADIR', get_option('prefix') / get_option('datadir'))
 
-configure_file(input: 'config.h.in', output: 'config.h', format: 'cmake@', configuration: cdata)
+configure_file(
+  input: 'config.h.in',
+  output: 'config.h',
+  format: 'cmake@',
+  configuration: cdata,
+)
 
 vdata = configuration_data()
-vdata.set('GIT_BRANCH', run_command('git', 'rev-parse', '--symbolic-full-name', 'HEAD', check: false, capture: true).stdout().strip())
-vdata.set('GIT_COMMIT_HASH', run_command('git', 'rev-parse', 'HEAD', check: false, capture: true).stdout().strip())
+vdata.set(
+  'GIT_BRANCH',
+  run_command(
+    'git',
+    'rev-parse',
+    '--symbolic-full-name',
+    'HEAD',
+    check: false,
+    capture: true,
+  ).stdout().strip(),
+)
+vdata.set(
+  'GIT_COMMIT_HASH',
+  run_command(
+    'git',
+    'rev-parse',
+    'HEAD',
+    check: false,
+    capture: true,
+  ).stdout().strip(),
+)
 vdata.set('LIB_VERSION', meson.project_version())
 vdata.set('LIB_VERSION_NUM', meson.project_version().replace('.', ','))
 
-configure_file(input: 'version.h.in', output: 'version.h', format: 'cmake', configuration: vdata)
+configure_file(
+  input: 'version.h.in',
+  output: 'version.h',
+  format: 'cmake',
+  configuration: vdata,
+)
 
-if cpp.links('#include <atomic>\n#include <bitset>\nint main(){std::atomic<std::bitset<3>> b;std::atomic_is_lock_free(&b);}')
-  atomic_dep = dependency('', required: false)
+if cpp.links(
+  '#include <atomic>\n#include <bitset>\nint main(){std::atomic<std::bitset<3>> b;std::atomic_is_lock_free(&b);}',
+)
+  atomic_dep = dependency(
+    '',
+    required: false,
+  )
 else
-  atomic_dep = cpp.find_library('atomic', required: false)
+  atomic_dep = cpp.find_library(
+    'atomic',
+    required: false,
+  )
 endif
 
 common_lib = static_library(

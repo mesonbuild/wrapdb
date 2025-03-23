@@ -1,12 +1,16 @@
 project(
-  'msgpack-cxx', 'cpp',
+  'msgpack-cxx',
+  'cpp',
   version: '7.0.0',
   meson_version: '>=0.48.0',
 )
 
 args = []
 
-boost_dep = dependency('boost', required: get_option('boost'))
+boost_dep = dependency(
+  'boost',
+  required: get_option('boost'),
+)
 if not boost_dep.found()
   message('Disabling Boost interface, some features might not be available')
   args += ['-DMSGPACK_NO_BOOST']
@@ -34,6 +38,9 @@ msgpack_cxx_dep = declare_dependency(
 )
 
 install_headers('include/msgpack.hpp')
-install_subdir('include/msgpack', install_dir: get_option('includedir'))
+install_subdir(
+  'include/msgpack',
+  install_dir: get_option('includedir'),
+)
 
 subdir('test')

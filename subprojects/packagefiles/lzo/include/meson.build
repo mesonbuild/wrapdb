@@ -1,9 +1,9 @@
 headers = files(
+  'lzo/lzo1.h',
   'lzo/lzo1a.h',
   'lzo/lzo1b.h',
   'lzo/lzo1c.h',
   'lzo/lzo1f.h',
-  'lzo/lzo1.h',
   'lzo/lzo1x.h',
   'lzo/lzo1y.h',
   'lzo/lzo1z.h',

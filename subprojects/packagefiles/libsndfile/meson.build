@@ -8,13 +8,20 @@ project(
 
 #needed for time_r functions
 if host_machine.system() == 'windows'
-  add_project_arguments('-D_POSIX_C_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_POSIX_C_SOURCE',
+    language: 'c',
+  )
 endif
 
 cc = meson.get_compiler('c')
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cc.get_supported_arguments('-Wno-deprecated-declarations'),
+    language: 'c',
+  )
 endif
 
 cdata = configuration_data()
@@ -33,25 +40,58 @@ cdata.set10('OSX_DARWIN_VERSION', host_machine.system() == 'macos')
 cdata.set10('OS_IS_OPENBSD', host_machine.system() == 'openbsd')
 cdata.set10('OS_IS_WIN32', host_machine.system() == 'windows')
 cdata.set10('USE_WINDOWS_API', host_machine.system() == 'windows')
-cdata.set10('WIN32_TARGET_DLL', host_machine.system() == 'windows' and get_option('buildtype') != 'static')
+cdata.set10(
+  'WIN32_TARGET_DLL',
+  host_machine.system() == 'windows' and get_option('buildtype') != 'static',
+)
 
 # code errors if this is not 8
 cdata.set('SIZEOF_SF_COUNT_T_CODE', '#define SIZEOF_SF_COUNT_T 8')
 
-libm_dep = cc.find_library('m', required: false)
+libm_dep = cc.find_library(
+  'm',
+  required: false,
+)
 cdata.set10('HAVE_LIBM', libm_dep.found())
-mp3_dep = dependency('libmpg123', required: get_option('mpeg'))
-mp3lame_dep = cc.find_library('mp3lame', required: get_option('mpeg'))
+mp3_dep = dependency(
+  'libmpg123',
+  required: get_option('mpeg'),
+)
+mp3lame_dep = cc.find_library(
+  'mp3lame',
+  required: get_option('mpeg'),
+)
 cdata.set10('HAVE_MPEG', mp3_dep.found() and mp3lame_dep.found())
-ogg_dep = dependency('ogg', required: get_option('external_libs'))
-flac_dep = dependency('flac', required: get_option('external_libs'))
-vorbis_dep = dependency('vorbis', required: get_option('external_libs'))
-vorbisenc_dep = dependency('vorbisenc', required: get_option('external_libs'))
-opus_dep = dependency('opus', required: get_option('external_libs'))
+ogg_dep = dependency(
+  'ogg',
+  required: get_option('external_libs'),
+)
+flac_dep = dependency(
+  'flac',
+  required: get_option('external_libs'),
+)
+vorbis_dep = dependency(
+  'vorbis',
+  required: get_option('external_libs'),
+)
+vorbisenc_dep = dependency(
+  'vorbisenc',
+  required: get_option('external_libs'),
+)
+opus_dep = dependency(
+  'opus',
+  required: get_option('external_libs'),
+)
 if host_machine.system() == 'openbsd'
-  sndio_dep = dependency('sndio', required: get_option('sndio'))
+  sndio_dep = dependency(
+    'sndio',
+    required: get_option('sndio'),
+  )
 else
-  sndio_dep = dependency('', required: false)
+  sndio_dep = dependency(
+    '',
+    required: false,
+  )
 endif
 cdata.set10('HAVE_SNDIO_H', sndio_dep.found())
 cdata.set10(
@@ -136,7 +176,15 @@ sizes = {
 
 #completely unused by the code but meson demands definitions
 cdata.set('SIZEOF_VOIDP_CODE', '#define VOIDP_CODE')
-sizes += {'double': '', 'float': '', 'int': '', 'loff_t': '', 'off64_t': '', 'short': '', 'size_t': ''}
+sizes += {
+  'double': '',
+  'float': '',
+  'int': '',
+  'loff_t': '',
+  'off64_t': '',
+  'short': '',
+  'size_t': '',
+}
 
 foreach f : funcs
   if cc.has_function(f)
@@ -156,7 +204,10 @@ foreach s, h : sizes
     'SIZEOF_@0@_CODE'.format(upper),
     '#define @0@ @1@'.format(
       'SIZEOF_@0@'.format(upper),
-      cc.sizeof(s, prefix: h.contains('.h') ? '#include <@0@>'.format(h) : ''),
+      cc.sizeof(
+        s,
+        prefix: h.contains('.h') ? '#include <@0@>'.format(h) : '',
+      ),
     ),
   )
 endforeach
@@ -269,13 +320,25 @@ if host_machine.system() == 'windows'
   libsndfile_sources += 'src/windows.c'
 endif
 
-gnu_sym_ldflag = '-Wl,--version-script,@0@/src/Symbols.gnu-binutils'.format(meson.current_source_dir())
-darwin_sym_ldflag = '-Wl,-exported_symbols_list,@0@/src/Symbols.darwin'.format(meson.current_source_dir())
+gnu_sym_ldflag = '-Wl,--version-script,@0@/src/Symbols.gnu-binutils'.format(
+  meson.current_source_dir(),
+)
+darwin_sym_ldflag = '-Wl,-exported_symbols_list,@0@/src/Symbols.darwin'.format(
+  meson.current_source_dir(),
+)
 link_args = []
 if get_option('default_library') != 'static'
-  if cc.links('', name: '-Wl,--version-script', args: ['-shared', gnu_sym_ldflag])
+  if cc.links(
+    '',
+    name: '-Wl,--version-script',
+    args: ['-shared', gnu_sym_ldflag],
+  )
     link_args += gnu_sym_ldflag
-  elif cc.links('', name: '-Wl,-exported_symbols_list', args: ['-shared', darwin_sym_ldflag])
+  elif cc.links(
+    '',
+    name: '-Wl,-exported_symbols_list',
+    args: ['-shared', darwin_sym_ldflag],
+  )
     link_args += darwin_sym_ldflag
   endif
 endif
@@ -287,7 +350,17 @@ libsndfile = library(
   version: meson.project_version(),
   vs_module_defs: 'src/libsndfile-1.def',
   link_args: link_args,
-  dependencies: [mp3_dep, mp3lame_dep, libm_dep, ogg_dep, flac_dep, vorbis_dep, vorbisenc_dep, opus_dep, sndio_dep],
+  dependencies: [
+    mp3_dep,
+    mp3lame_dep,
+    libm_dep,
+    ogg_dep,
+    flac_dep,
+    vorbis_dep,
+    vorbisenc_dep,
+    opus_dep,
+    sndio_dep,
+  ],
   install: true,
 )
 
@@ -302,10 +375,7 @@ pconf.generate(
   description: 'A library for reading and writing audio files',
 )
 
-install_headers(
-  'include/sndfile.h',
-  'include/sndfile.hh',
-)
+install_headers('include/sndfile.h', 'include/sndfile.hh')
 
 install_man(
   'man/sndfile-cmp.1',

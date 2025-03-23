@@ -1,4 +1,7 @@
-protobuf_dep = dependency('protobuf', version: '>= 3.0.0')
+protobuf_dep = dependency(
+  'protobuf',
+  version: '>= 3.0.0',
+)
 
 protoc_c_src = files(
   'c_bytes_field.cc',

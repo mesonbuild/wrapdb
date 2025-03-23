@@ -9,6 +9,4 @@ else
   subdir('linux')
 endif
 
-sources += files(
-  'SDL_haptic.c',
-)
+sources += files('SDL_haptic.c')

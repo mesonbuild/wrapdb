@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_windowsdialog.c',
-)
+sources += files('SDL_windowsdialog.c')

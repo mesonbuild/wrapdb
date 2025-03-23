@@ -1,8 +1,10 @@
-project('utf8proc', 'c',
-    version : '2.9.0',
-    license: 'MIT',
-    default_options: 'c_std=c99',
-    meson_version: '>=0.59.0',
+project(
+  'utf8proc',
+  'c',
+  version: '2.9.0',
+  license: 'MIT',
+  default_options: 'c_std=c99',
+  meson_version: '>=0.59.0',
 )
 
 cc = meson.get_compiler('c')
@@ -10,12 +12,19 @@ fs = import('fs')
 pkg = import('pkgconfig')
 
 if get_option('default_library') == 'static'
-  add_project_arguments('-DUTF8PROC_STATIC', language: 'c')
+  add_project_arguments(
+    '-DUTF8PROC_STATIC',
+    language: 'c',
+  )
 endif
 
-add_project_arguments('-DUTF8PROC_EXPORTS', language: 'c')
+add_project_arguments(
+  '-DUTF8PROC_EXPORTS',
+  language: 'c',
+)
 
-utf8proc_lib = library('utf8proc',
+utf8proc_lib = library(
+  'utf8proc',
   'utf8proc.c',
   gnu_symbol_visibility: 'hidden',
   install: true,
@@ -24,7 +33,7 @@ utf8proc_lib = library('utf8proc',
 
 utf8proc_dep = declare_dependency(
   include_directories: include_directories('.'),
-  link_with: utf8proc_lib
+  link_with: utf8proc_lib,
 )
 
 pkg.generate(
@@ -36,7 +45,10 @@ pkg.generate(
 
 install_headers('utf8proc.h')
 
-curl = find_program('curl', required: get_option('tests'))
+curl = find_program(
+  'curl',
+  required: get_option('tests'),
+)
 
 if get_option('tests').require(curl.found()).allowed()
 
@@ -51,8 +63,14 @@ if get_option('tests').require(curl.found()).allowed()
     'valid'        : '',
   }
 
-  if cc.has_header_symbol('wchar.h', 'wcwidth', args: '-D_XOPEN_SOURCE')
-    _testdefs += {'charwidth': ''}
+  if cc.has_header_symbol(
+    'wchar.h',
+    'wcwidth',
+    args: '-D_XOPEN_SOURCE',
+  )
+    _testdefs += {
+      'charwidth': '',
+    }
   endif
 
   foreach _test, _data : _testdefs
@@ -68,7 +86,8 @@ if get_option('tests').require(curl.found()).allowed()
           curl,
           '--continue-at',
           '-',
-          '--output', '@OUTPUT@',
+          '--output',
+          '@OUTPUT@',
           'https://www.unicode.org/Public/15.1.0/ucd' / _data,
         ],
         console: true,

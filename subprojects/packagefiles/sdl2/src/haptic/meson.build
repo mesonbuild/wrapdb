@@ -1,6 +1,4 @@
-c_sources += files(
-    'SDL_haptic.c',
-)
+c_sources += files('SDL_haptic.c')
 
 subdir('android')
 subdir('darwin')

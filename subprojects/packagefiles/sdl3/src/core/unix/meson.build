@@ -1,4 +1,1 @@
-sources += files(
-  'SDL_poll.c',
-  'SDL_appid.c',
-)
+sources += files('SDL_appid.c', 'SDL_poll.c')

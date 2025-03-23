@@ -9,7 +9,10 @@ test_files = [
   'test_savedialog.c',
 ]
 
-add_languages('c', native: false)
+add_languages(
+  'c',
+  native: false,
+)
 
 foreach test : test_files
   name = test.replace('.', '_')

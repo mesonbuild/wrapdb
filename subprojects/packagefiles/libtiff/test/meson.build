@@ -38,11 +38,34 @@ tests = [
 ]
 
 foreach t : tests
-  test(t, executable(t, '@0@.c'.format(t), dependencies: [libtiff4_dep, tiff_port]))
+  test(
+    t,
+    executable(
+      t,
+      '@0@.c'.format(t),
+      dependencies: [libtiff4_dep, tiff_port],
+    ),
+  )
 endforeach
 
-test('short_tag', executable('short_tag', 'short_tag.c', 'check_tag.c', dependencies: [libtiff4_dep, tiff_port]))
-test('long_tag', executable('long_tag', 'long_tag.c', 'check_tag.c', dependencies: [libtiff4_dep, tiff_port]))
+test(
+  'short_tag',
+  executable(
+    'short_tag',
+    'short_tag.c',
+    'check_tag.c',
+    dependencies: [libtiff4_dep, tiff_port],
+  ),
+)
+test(
+  'long_tag',
+  executable(
+    'long_tag',
+    'long_tag.c',
+    'check_tag.c',
+    dependencies: [libtiff4_dep, tiff_port],
+  ),
+)
 
 test(
   'strip_rw',
@@ -52,9 +75,17 @@ test(
     'strip.c',
     'test_arrays.c',
     dependencies: [libtiff4_dep, tiff_port],
-  )
+  ),
 )
 
 if jpeg_dep.found()
-  test('raw_decode', executable('raw_decode', 'raw_decode.c', dependencies: [libtiff4_dep, tiff_port, jpeg_dep]), workdir: meson.current_source_dir())
+  test(
+    'raw_decode',
+    executable(
+      'raw_decode',
+      'raw_decode.c',
+      dependencies: [libtiff4_dep, tiff_port, jpeg_dep],
+    ),
+    workdir: meson.current_source_dir(),
+  )
 endif

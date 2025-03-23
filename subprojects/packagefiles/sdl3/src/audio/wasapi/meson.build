@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_wasapi.c',
-)
+sources += files('SDL_wasapi.c')

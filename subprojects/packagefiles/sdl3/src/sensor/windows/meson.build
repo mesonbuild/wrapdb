@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_windowssensor.c',
-)
+sources += files('SDL_windowssensor.c')

@@ -9,20 +9,44 @@ libtiff_current = 7
 libtiff_revision = 0
 libtiff_age = 1
 library_version = '@0@.@1@.@2@'.format(
-    libtiff_current - libtiff_age,
-    libtiff_age,
-    libtiff_revision
+  libtiff_current - libtiff_age,
+  libtiff_age,
+  libtiff_revision,
 )
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required: false)
-jbig_dep = cc.find_library('jbig', required: get_option('jbig'))
-jpeg_dep = dependency('libjpeg', required: get_option('jpeg'))
-lerc_dep = dependency('liblerc', required: get_option('lerc'))
-lzma_dep = dependency('liblzma', required: get_option('lzma'))
-webp_dep = dependency('libwebp', required: get_option('webp'))
-zlib_dep = dependency('zlib', required: get_option('zlib'))
-zstd_dep = dependency('libzstd', required: get_option('zstd'))
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+jbig_dep = cc.find_library(
+  'jbig',
+  required: get_option('jbig'),
+)
+jpeg_dep = dependency(
+  'libjpeg',
+  required: get_option('jpeg'),
+)
+lerc_dep = dependency(
+  'liblerc',
+  required: get_option('lerc'),
+)
+lzma_dep = dependency(
+  'liblzma',
+  required: get_option('lzma'),
+)
+webp_dep = dependency(
+  'libwebp',
+  required: get_option('webp'),
+)
+zlib_dep = dependency(
+  'zlib',
+  required: get_option('zlib'),
+)
+zstd_dep = dependency(
+  'libzstd',
+  required: get_option('zstd'),
+)
 
 cdata = configuration_data()
 
@@ -31,7 +55,10 @@ if host_machine.endian() == 'big'
   # missing cmakedefine in tif_config.h.cmake.in
   # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
   # this is how upstream handles it in cmake/ProcessorChecks.cmake
-  add_project_arguments('-DWORDS_BIGENDIAN', language : 'c')
+  add_project_arguments(
+    '-DWORDS_BIGENDIAN',
+    language: 'c',
+  )
 endif
 
 cdata.set('TIFF_INT8_T', 'int8_t')
@@ -84,18 +111,23 @@ if jpeg_dep.found()
     # and check its version number.
     have_jpeg12 = jpeg_dep.version().version_compare('>=3')
     if have_jpeg12
-      message('Found sibling libjpeg-turbo >= 3.0.0; enabling 12-bit JPEG support')
+      message(
+        'Found sibling libjpeg-turbo >= 3.0.0; enabling 12-bit JPEG support',
+      )
     endif
   else
     have_jpeg12 = cc.has_function(
       'jpeg12_read_scanlines',
-      dependencies: jpeg_dep
+      dependencies: jpeg_dep,
     )
   endif
   if have_jpeg12
     # missing cmakedefine in tif_config.h.cmake.in
     # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
-    add_project_arguments('-DHAVE_JPEGTURBO_DUAL_MODE_8_12', language : 'c')
+    add_project_arguments(
+      '-DHAVE_JPEGTURBO_DUAL_MODE_8_12',
+      language: 'c',
+    )
   endif
 endif
 

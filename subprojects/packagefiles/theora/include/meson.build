@@ -5,6 +5,9 @@ theorainclude_headers = files(
   'theora/theoraenc.h',
 )
 
-install_headers(theorainclude_headers, subdir: 'theora')
+install_headers(
+  theorainclude_headers,
+  subdir: 'theora',
+)
 
 incdir = include_directories('.', '..')

@@ -10,5 +10,9 @@ examples = [
 ]
 
 foreach example : examples
-  executable(example, '@0@.c'.format(example), dependencies: mpdec_dep)
+  executable(
+    example,
+    '@0@.c'.format(example),
+    dependencies: mpdec_dep,
+  )
 endforeach

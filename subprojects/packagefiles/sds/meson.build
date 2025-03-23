@@ -13,10 +13,7 @@ endif
 
 sds_inc = include_directories('.')
 
-sds_lib = library(
-  'sds',
-  'sds.c',
-)
+sds_lib = library('sds', 'sds.c')
 
 sds_dep = declare_dependency(
   link_with: sds_lib,

@@ -1,6 +1,4 @@
-c_sources += files(
-    'SDL_power.c',
-)
+c_sources += files('SDL_power.c')
 
 subdir('android')
 subdir('emscripten')

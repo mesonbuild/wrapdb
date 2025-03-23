@@ -20,6 +20,7 @@ tiffvers_h = configure_file(
 )
 
 sources = files(
+  'tif_@0@.c'.format(host_machine.system() == 'windows' ? 'win32' : 'unix'),
   'tif_aux.c',
   'tif_close.c',
   'tif_codec.c',
@@ -61,13 +62,12 @@ sources = files(
   'tif_write.c',
   'tif_zip.c',
   'tif_zstd.c',
-  'tif_@0@.c'.format(host_machine.system() == 'windows' ? 'win32' : 'unix'),
 )
 
 if host_machine.system() == 'windows'
   sources += import('windows').compile_resources(
     'tif_win32_versioninfo.rc',
-    include_directories : meson.current_build_dir(),
+    include_directories: meson.current_build_dir(),
   )
 endif
 
@@ -75,14 +75,18 @@ tiff4_lib = library(
   'tiff',
   sources,
   install: true,
-  dependencies: [m_dep, jbig_dep, jpeg_dep, lerc_dep, lzma_dep, webp_dep, zlib_dep, zstd_dep],
+  dependencies: [
+    m_dep,
+    jbig_dep,
+    jpeg_dep,
+    lerc_dep,
+    lzma_dep,
+    webp_dep,
+    zlib_dep,
+    zstd_dep,
+  ],
   vs_module_defs: 'libtiff.def',
   version: library_version,
 )
 
-install_headers(
-  'tiff.h',
-  'tiffio.h',
-  tiffconf_h,
-  tiffvers_h,
-)
+install_headers('tiff.h', 'tiffio.h', tiffconf_h, tiffvers_h)

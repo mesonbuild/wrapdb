@@ -2,7 +2,10 @@ fs = import('fs')
 sources = fs.read('sources.txt').split()
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources('layoutex.rc', include_directories: incdir)
+  sources += windows.compile_resources(
+    'layoutex.rc',
+    include_directories: incdir,
+  )
 endif
 
 layoutex_name = '@0@lx@1@'.format(library_prefix, library_suffix)
@@ -29,6 +32,9 @@ endif
 pkg.generate(
   layoutex_lib,
   name: 'icu-lx',
-  description: '@0@: Paragraph Layout library @1@'.format(PACKAGE_ICU_DESCRIPTION, ''),
+  description: '@0@: Paragraph Layout library @1@'.format(
+    PACKAGE_ICU_DESCRIPTION,
+    '',
+  ),
   url: PACKAGE_ICU_URL,
 )

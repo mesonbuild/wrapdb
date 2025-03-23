@@ -1,21 +1,87 @@
-option('progs', type: 'array', choices: ['all', 'bsdtar', 'bsdcat', 'bsdcpio'], value: ['all'],
-  description: 'Which programs should be built')
+option(
+    'progs',
+    type: 'array',
+    choices: ['all', 'bsdtar', 'bsdcat', 'bsdcpio'],
+    value: ['all'],
+    description: 'Which programs should be built',
+)
 
 # enable deps
-option('zlib', type: 'feature', description: 'Build support for gzip')
-option('bz2lib', type: 'feature', description: 'Build support for bzip2')
-option('libb2', type: 'feature', description: 'Build support for BLAKE2')
-option('iconv', type: 'feature', description: 'Build with iconv support')
-option('lz4', type: 'feature', description: 'Build support for lz4')
-option('zstd', type: 'feature', description: 'Build support for zstd')
-option('lzma', type: 'feature', description: 'Build support for xz')
-option('lzo2', type: 'feature', description: 'Build support for lzo')
-option('openssl', type: 'feature', description: 'Build support for mtree and xar hashes through openssl')
-option('xml2', type: 'feature', description: 'Build support for xar hashes through libxml2')
-option('expat', type: 'feature', description: 'Build support for xar hashes through expat')
-option('regex', type: 'feature', description: 'Enable POSIX regex support')
-option('regex_provider', type: 'array', choices: ['libc', 'libregex', 'libpcreposix', 'libpcre2posix'], description: 'Regex implementation to check for in preferred order')
+option(
+    'zlib',
+    type: 'feature',
+    description: 'Build support for gzip',
+)
+option(
+    'bz2lib',
+    type: 'feature',
+    description: 'Build support for bzip2',
+)
+option(
+    'libb2',
+    type: 'feature',
+    description: 'Build support for BLAKE2',
+)
+option(
+    'iconv',
+    type: 'feature',
+    description: 'Build with iconv support',
+)
+option(
+    'lz4',
+    type: 'feature',
+    description: 'Build support for lz4',
+)
+option(
+    'zstd',
+    type: 'feature',
+    description: 'Build support for zstd',
+)
+option(
+    'lzma',
+    type: 'feature',
+    description: 'Build support for xz',
+)
+option(
+    'lzo2',
+    type: 'feature',
+    description: 'Build support for lzo',
+)
+option(
+    'openssl',
+    type: 'feature',
+    description: 'Build support for mtree and xar hashes through openssl',
+)
+option(
+    'xml2',
+    type: 'feature',
+    description: 'Build support for xar hashes through libxml2',
+)
+option(
+    'expat',
+    type: 'feature',
+    description: 'Build support for xar hashes through expat',
+)
+option(
+    'regex',
+    type: 'feature',
+    description: 'Enable POSIX regex support',
+)
+option(
+    'regex_provider',
+    type: 'array',
+    choices: ['libc', 'libregex', 'libpcreposix', 'libpcre2posix'],
+    description: 'Regex implementation to check for in preferred order',
+)
 
 # enable features
-option('xattr', type: 'feature', description: 'Extended Attributes support')
-option('acl', type: 'feature', description: 'ACL support')
+option(
+    'xattr',
+    type: 'feature',
+    description: 'Extended Attributes support',
+)
+option(
+    'acl',
+    type: 'feature',
+    description: 'ACL support',
+)

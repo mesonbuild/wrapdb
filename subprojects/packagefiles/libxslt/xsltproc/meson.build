@@ -1,6 +1,4 @@
-sources = [
-  'xsltproc.c',
-]
+sources = ['xsltproc.c']
 
 xsltproc = executable(
   'xsltproc',

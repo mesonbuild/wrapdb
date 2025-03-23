@@ -1,7 +1,15 @@
-project('chipmunk', 'c', version: '7.0.3', license: 'MIT')
+project(
+  'chipmunk',
+  'c',
+  version: '7.0.3',
+  license: 'MIT',
+)
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 
 inc = include_directories('include')
 lib = library(
@@ -27,4 +35,7 @@ lib = library(
   dependencies: m_dep,
 )
 
-chipmunk_dep = declare_dependency(include_directories: inc, link_with: lib)
+chipmunk_dep = declare_dependency(
+  include_directories: inc,
+  link_with: lib,
+)

@@ -13,8 +13,8 @@ else
 endif
 
 sources += files(
+  'SDL_d3dmath.c',
   'SDL_render.c',
   'SDL_render_unsupported.c',
   'SDL_yuv_sw.c',
-  'SDL_d3dmath.c',
 )

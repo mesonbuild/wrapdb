@@ -1,9 +1,6 @@
 webpdemux_lib = library(
   'webpdemux',
-  [
-    'anim_decode.c',
-    'demux.c',
-  ],
+  ['anim_decode.c', 'demux.c'],
   dependencies: [build_libwebpdemux, common_deps, webp_dec_dep],
   gnu_symbol_visibility: 'hidden',
   install: true,

@@ -36,7 +36,10 @@ cc_dict = {
 }
 
 cc_native_dict = {
-  'compiler': meson.get_compiler('c', native: true),
+  'compiler': meson.get_compiler(
+    'c',
+    native: true,
+  ),
   'machine': build_machine,
   'native': true,
 }
@@ -50,8 +53,8 @@ config = configuration_data()
 
 if compiler.get_argument_syntax() == 'gcc'
   add_project_arguments(
-    # I've explicitly skipped the duplicated -W versions when they also test
-    # for the -Werror version
+# I've explicitly skipped the duplicated -W versions when they also test
+# for the -Werror version
     compiler.get_supported_arguments(
       '-Wshadow',
       '-Wmissing-prototypes',
@@ -123,7 +126,11 @@ foreach h : [
   endif
 endforeach
 
-if compiler.has_member('struct timespec', 'tv_sec', prefix: '#include <time.h>')
+if compiler.has_member(
+  'struct timespec',
+  'tv_sec',
+  prefix: '#include <time.h>',
+)
   config.set('HAVE_STRUCT_TIMESPEC', 1)
 endif
 
@@ -155,16 +162,25 @@ endforeach
 
 threads_dep = []
 if not config.has('HAVE_CLOCK_GETTIME')
-  if compiler.has_function('clock_gettime', dependencies: dependency('threads'))
+  if compiler.has_function(
+    'clock_gettime',
+    dependencies: dependency('threads'),
+  )
     config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
     threads_dep = dependency('threads')
   endif
 endif
 
 if compiler.get_argument_syntax() == 'msvc'
-  config.set('HAVE_MSVC_THREAD_LOCAL_STORAGE', compiler.compiles('__declspec(thread) int tls;'))
+  config.set(
+    'HAVE_MSVC_THREAD_LOCAL_STORAGE',
+    compiler.compiles('__declspec(thread) int tls;'),
+  )
 else
-  config.set10('HAVE_GCC_THREAD_LOCAL_STORAGE', compiler.compiles('__thread int tls;'))
+  config.set10(
+    'HAVE_GCC_THREAD_LOCAL_STORAGE',
+    compiler.compiles('__thread int tls;'),
+  )
 endif
 
 config.set('WORDS_SIZEOF_VOID_P', compiler.sizeof('void*'))
@@ -206,7 +222,7 @@ libcmocka_native = library(
   soversion: build_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version: lib_version,
   dependencies: threads_dep,
-  install: false, # Cannot install native targets in cross builds
+  install: false,  # Cannot install native targets in cross builds
   native: true,
   build_by_default: false,
 )

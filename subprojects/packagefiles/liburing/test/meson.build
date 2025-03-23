@@ -162,11 +162,11 @@ all_tests = [
 ]
 
 if has_statx or glibc_statx
-    all_tests += ['statx.c']
+  all_tests += ['statx.c']
 endif
 
 if has_cxx
-    all_tests += ['sq-full-cpp.cc']
+  all_tests += ['sq-full-cpp.cc']
 endif
 
 runtests_sh = find_program('runtests.sh')
@@ -175,63 +175,81 @@ runtests_quiet_sh = find_program('runtests-quiet.sh')
 
 xcflags = ['-Wno-sign-compare']
 if has_stringop_overflow
-    xcflags = xcflags + ['-Wstringop-overflow=0']
+  xcflags = xcflags + ['-Wstringop-overflow=0']
 endif
 if has_array_bounds
-    xcflags = xcflags + ['-Warray-bounds=0']
+  xcflags = xcflags + ['-Warray-bounds=0']
 endif
 
 fs = import('fs')
 
 foreach test_source : all_tests
-    test_name = fs.stem(test_source)
-    executable(test_name,
-               [test_source, 'helpers.c'],
-               c_args: xcflags,
-               cpp_args: xcflags,
-               include_directories : inc,
-               link_with : liburing.get_static_lib(),
-               dependencies : [thread_dep],
-               install : true,
-               install_dir : get_option('datadir') / 'liburing-test')
+  test_name = fs.stem(test_source)
+  executable(
+    test_name,
+    [test_source, 'helpers.c'],
+    c_args: xcflags,
+    cpp_args: xcflags,
+    include_directories: inc,
+    link_with: liburing.get_static_lib(),
+    dependencies: [thread_dep],
+    install: true,
+    install_dir: get_option('datadir') / 'liburing-test',
+  )
 
-    test(test_name,
-         runtests_sh,
-         args : test_name,
-         is_parallel: false,
-         workdir : meson.current_build_dir(),
-         suite : 'once')
+  test(
+    test_name,
+    runtests_sh,
+    args: test_name,
+    is_parallel: false,
+    workdir: meson.current_build_dir(),
+    suite: 'once',
+  )
 
-    test(test_name + '_loop',
-         runtests_loop_sh,
-         args : test_name,
-         is_parallel: false,
-         workdir : meson.current_build_dir(),
-         suite : 'loop')
+  test(
+    test_name + '_loop',
+    runtests_loop_sh,
+    args: test_name,
+    is_parallel: false,
+    workdir: meson.current_build_dir(),
+    suite: 'loop',
+  )
 
-    test(test_name + '_quiet',
-         runtests_quiet_sh,
-         args : test_name,
-         workdir : meson.current_build_dir(),
-         suite : 'parallel')
+  test(
+    test_name + '_quiet',
+    runtests_quiet_sh,
+    args: test_name,
+    workdir: meson.current_build_dir(),
+    suite: 'parallel',
+  )
 endforeach
 
-add_test_setup('runtests',
-               exclude_suites: ['loop', 'parallel'],
-               is_default: true)
+add_test_setup(
+  'runtests',
+  exclude_suites: ['loop', 'parallel'],
+  is_default: true,
+)
 
-configure_file(input : 'runtests.sh',
-               output: 'runtests.sh',
-               copy : true)
+configure_file(
+  input: 'runtests.sh',
+  output: 'runtests.sh',
+  copy: true,
+)
 
-configure_file(input : 'runtests-loop.sh',
-               output: 'runtests-loop.sh',
-               copy : true)
+configure_file(
+  input: 'runtests-loop.sh',
+  output: 'runtests-loop.sh',
+  copy: true,
+)
 
-configure_file(input : 'config',
-               output: 'config.local',
-               copy : true)
+configure_file(
+  input: 'config',
+  output: 'config.local',
+  copy: true,
+)
 
-install_data('runtests.sh',
-             'runtests-loop.sh',
-             install_dir : get_option('datadir') / 'liburing-test')
+install_data(
+  'runtests.sh',
+  'runtests-loop.sh',
+  install_dir: get_option('datadir') / 'liburing-test',
+)

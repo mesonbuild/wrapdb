@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_asyncio_liburing.c',
-)
+sources += files('SDL_asyncio_liburing.c')

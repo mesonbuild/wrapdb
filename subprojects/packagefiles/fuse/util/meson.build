@@ -7,7 +7,10 @@ executable(
 )
 
 #does not compile with glibc greater than 2.33
-if cc.get_define('__GLIBC_MINOR__', prefix: '#include <stdint.h>\n') < '34'
+if cc.get_define(
+  '__GLIBC_MINOR__',
+  prefix: '#include <stdint.h>\n',
+) < '34'
   executable(
     'ulockmgr_server',
     'ulockmgr_server.c',

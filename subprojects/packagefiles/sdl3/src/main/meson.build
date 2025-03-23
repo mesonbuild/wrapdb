@@ -5,7 +5,4 @@ else
   subdir('generic')
 endif
 
-sources += files(
-  'SDL_main_callbacks.c',
-  'SDL_runapp.c',
-)
+sources += files('SDL_main_callbacks.c', 'SDL_runapp.c')

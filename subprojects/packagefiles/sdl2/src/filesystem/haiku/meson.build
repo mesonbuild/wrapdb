@@ -1,3 +1,1 @@
-cxx_sources += files(
-  'SDL_sysfilesystem.cc',
-)
+cxx_sources += files('SDL_sysfilesystem.cc')

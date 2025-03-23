@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_syshaptic.c',
-)
+sources += files('SDL_syshaptic.c')

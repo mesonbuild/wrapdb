@@ -7,7 +7,10 @@ project(
 
 cc = meson.get_compiler('c')
 
-cpp_available = add_languages('cpp', required: false)
+cpp_available = add_languages(
+  'cpp',
+  required: false,
+)
 if cpp_available
   cpp = meson.get_compiler('cpp')
 endif

@@ -1,10 +1,16 @@
-add_languages('c', native: false)
+add_languages(
+  'c',
+  native: false,
+)
 
 utils = {
   'openal-info.c': openal_dep,
 }
 
-sndfile_dep = dependency('sndfile', required: false)
+sndfile_dep = dependency(
+  'sndfile',
+  required: false,
+)
 if sndfile_dep.found()
   utils += {
     'uhjdecoder.cpp': [openal_dep, sndfile_dep],

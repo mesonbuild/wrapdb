@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_sysloadso.c',
-)
+sources += files('SDL_sysloadso.c')

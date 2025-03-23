@@ -1,5 +1,1 @@
-sources += files(
-  'SDL_portaldialog.c',
-  'SDL_zenitydialog.c',
-  'SDL_unixdialog.c',
-)
+sources += files('SDL_portaldialog.c', 'SDL_unixdialog.c', 'SDL_zenitydialog.c')

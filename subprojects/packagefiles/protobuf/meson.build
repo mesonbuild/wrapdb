@@ -26,12 +26,16 @@ if is_msvc
     '-D_CRT_SECURE_NO_WARNINGS',
     '-permissive',
     cc.get_supported_arguments(['-Wno-deprecated-declarations']),
-    language: 'cpp')
+    language: 'cpp',
+  )
 endif
 
 #   Hey Dev! If you have unresolved `abseil` symbols while linking, when using wrapdb version of the `abseil-cpp`,
 # Make sure to build `abseil` using `cpp_std` >= `c++17`
-absl_string_view_dep = dependency('absl_string_view', default_options: ['cpp_std=c++17'])
+absl_string_view_dep = dependency(
+  'absl_string_view',
+  default_options: ['cpp_std=c++17'],
+)
 
 deps = [
   dependency('absl_base'),
@@ -50,16 +54,19 @@ deps = [
   dependency('absl_synchronization'),
   absl_string_view_dep,
   dependency('threads'),
-  cc.find_library('dbghelp', required: host_machine.system() == 'windows'),
+  cc.find_library(
+    'dbghelp',
+    required: host_machine.system() == 'windows',
+  ),
 ]
 
 incdir = include_directories('src')
 
 libutf8_range_src = files(
   'third_party/utf8_range/naive.c',
+  'third_party/utf8_range/range-avx2.c',
   'third_party/utf8_range/range-neon.c',
   'third_party/utf8_range/range-sse.c',
-  'third_party/utf8_range/range-avx2.c',
   'third_party/utf8_range/utf8_validity.cc',
 )
 libutf8_range = static_library(
@@ -121,18 +128,10 @@ protobuf_lite_dep = declare_dependency(
 )
 
 libprotobuf_src = files(
-  'src/google/protobuf/any.pb.cc',
-  'src/google/protobuf/api.pb.cc',
-  'src/google/protobuf/duration.pb.cc',
-  'src/google/protobuf/empty.pb.cc',
-  'src/google/protobuf/field_mask.pb.cc',
-  'src/google/protobuf/source_context.pb.cc',
-  'src/google/protobuf/struct.pb.cc',
-  'src/google/protobuf/timestamp.pb.cc',
-  'src/google/protobuf/type.pb.cc',
-  'src/google/protobuf/wrappers.pb.cc',
   'src/google/protobuf/any.cc',
+  'src/google/protobuf/any.pb.cc',
   'src/google/protobuf/any_lite.cc',
+  'src/google/protobuf/api.pb.cc',
   'src/google/protobuf/arena.cc',
   'src/google/protobuf/arena_align.cc',
   'src/google/protobuf/arenastring.cc',
@@ -143,10 +142,13 @@ libprotobuf_src = files(
   'src/google/protobuf/descriptor.cc',
   'src/google/protobuf/descriptor.pb.cc',
   'src/google/protobuf/descriptor_database.cc',
+  'src/google/protobuf/duration.pb.cc',
   'src/google/protobuf/dynamic_message.cc',
+  'src/google/protobuf/empty.pb.cc',
   'src/google/protobuf/extension_set.cc',
   'src/google/protobuf/extension_set_heavy.cc',
   'src/google/protobuf/feature_resolver.cc',
+  'src/google/protobuf/field_mask.pb.cc',
   'src/google/protobuf/generated_enum_util.cc',
   'src/google/protobuf/generated_message_bases.cc',
   'src/google/protobuf/generated_message_reflection.cc',
@@ -187,8 +189,12 @@ libprotobuf_src = files(
   'src/google/protobuf/repeated_field.cc',
   'src/google/protobuf/repeated_ptr_field.cc',
   'src/google/protobuf/service.cc',
+  'src/google/protobuf/source_context.pb.cc',
+  'src/google/protobuf/struct.pb.cc',
   'src/google/protobuf/stubs/common.cc',
   'src/google/protobuf/text_format.cc',
+  'src/google/protobuf/timestamp.pb.cc',
+  'src/google/protobuf/type.pb.cc',
   'src/google/protobuf/unknown_field_set.cc',
   'src/google/protobuf/util/delimited_message_util.cc',
   'src/google/protobuf/util/field_comparator.cc',
@@ -198,8 +204,11 @@ libprotobuf_src = files(
   'src/google/protobuf/util/type_resolver_util.cc',
   'src/google/protobuf/wire_format.cc',
   'src/google/protobuf/wire_format_lite.cc',
+  'src/google/protobuf/wrappers.pb.cc',
 )
-libprotobuf_linker_args = is_msvc ? ['/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z'] : []
+libprotobuf_linker_args = is_msvc ? [
+  '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
+] : []
 libprotobuf = library(
   'protobuf',
   sources: libprotobuf_src,
@@ -349,8 +358,14 @@ protoc_dep = declare_dependency(
 
 if should_install
   pkg = import('pkgconfig')
-  pkg.generate(libprotobuf_lite, description: 'Google\'s Data Interchange Format')
-  pkg.generate(libprotobuf, description: 'Google\'s Data Interchange Format')
+  pkg.generate(
+    libprotobuf_lite,
+    description: 'Google\'s Data Interchange Format',
+  )
+  pkg.generate(
+    libprotobuf,
+    description: 'Google\'s Data Interchange Format',
+  )
   pkg.generate(libprotoc)
 endif
 

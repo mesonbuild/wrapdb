@@ -31,8 +31,10 @@
 # _cblas3 -- Single precision complex BLAS3 routines
 
 # _allblas -- Auxiliary routines for Level 2 and 3 BLAS
-_allblas = static_library('_allblas',
-                   sources: [ 'lsame.f', 'xerbla.f', 'xerbla_array.f' ])
+_allblas = static_library(
+  '_allblas',
+  sources: ['lsame.f', 'xerbla.f', 'xerbla_array.f'],
+)
 
 
 # All other sources
@@ -74,14 +76,7 @@ _zblas1 = [
 ]
 
 # _zb1aux -- D.P. real BLAS routines called by d.p. complex routines
-_zb1aux = [
-  'idamax.f',
-  'dasum.f',
-  'daxpy.f',
-  'dcopy.f',
-  'dnrm2.f',
-  'dscal.f',
-]
+_zb1aux = ['idamax.f', 'dasum.f', 'daxpy.f', 'dcopy.f', 'dnrm2.f', 'dscal.f']
 
 # _sblas1 -- Single precision real BLAS routines
 _sblas1 = [
@@ -118,14 +113,7 @@ _cblas1 = [
 ]
 
 # _cb1aux -- Real BLAS routines called by complex routines
-_cb1aux = [
-  'isamax.f',
-  'sasum.f',
-  'saxpy.f',
-  'scopy.f',
-  'snrm2.f',
-  'sscal.f'
-]
+_cb1aux = ['isamax.f', 'sasum.f', 'saxpy.f', 'scopy.f', 'snrm2.f', 'sscal.f']
 
 # Level 2 BLAS
 # _dblas2 -- Double precision real BLAS2 routines
@@ -213,14 +201,7 @@ _cblas2 = [
 # Level 3 BLAS
 
 # _dblas3 -- Double precision real BLAS3 routines
-_dblas3 = [
-  'dgemm.f',
-  'dsymm.f',
-  'dsyrk.f',
-  'dsyr2k.f',
-  'dtrmm.f',
-  'dtrsm.f',
-]
+_dblas3 = ['dgemm.f', 'dsymm.f', 'dsyrk.f', 'dsyr2k.f', 'dtrmm.f', 'dtrsm.f']
 
 # _zblas3 -- Double precision complex BLAS3 routines
 _zblas3 = [
@@ -236,14 +217,7 @@ _zblas3 = [
 ]
 
 # _sblas3 -- Single precision real BLAS3 routines
-_sblas3 =[
-  'sgemm.f',
-  'ssymm.f',
-  'ssyrk.f',
-  'ssyr2k.f',
-  'strmm.f',
-  'strsm.f',
-]
+_sblas3 = ['sgemm.f', 'ssymm.f', 'ssyrk.f', 'ssyr2k.f', 'strmm.f', 'strsm.f']
 
 # _cblas3 -- Single precision complex BLAS3 routines
 _cblas3 = [
@@ -276,8 +250,10 @@ if prec == 's' or build_single or build_all_prec
 endif
 
 # Create the blas library
-netlib_blas = library(_netlib_blas_name,
-               sources: _blas_netlib_srcs,
-               link_with: _allblas,
-               install: true,
-               kwargs: lapack_version_kwargs)
+netlib_blas = library(
+  _netlib_blas_name,
+  sources: _blas_netlib_srcs,
+  link_with: _allblas,
+  install: true,
+  kwargs: lapack_version_kwargs,
+)

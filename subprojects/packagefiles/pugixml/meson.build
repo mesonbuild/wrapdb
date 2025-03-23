@@ -47,10 +47,7 @@ pugixml_dep = declare_dependency(
   include_directories: incdir,
 )
 
-install_headers(
-  'src/pugiconfig.hpp',
-  'src/pugixml.hpp',
-)
+install_headers('src/pugiconfig.hpp', 'src/pugixml.hpp')
 
 pconf = import('pkgconfig')
 pconf.generate(
@@ -80,6 +77,14 @@ pconf.generate(
 #Windows doesn't compile with C++17 until next version
 if get_option('tests')
   subdir('tests')
-  pugixml_check = executable('pugixml-check', test_sources, dependencies: pugixml_dep)
-  test('pugixml-check', pugixml_check, workdir: meson.current_source_dir())
+  pugixml_check = executable(
+    'pugixml-check',
+    test_sources,
+    dependencies: pugixml_dep,
+  )
+  test(
+    'pugixml-check',
+    pugixml_check,
+    workdir: meson.current_source_dir(),
+  )
 endif

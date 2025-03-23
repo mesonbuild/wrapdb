@@ -31,21 +31,39 @@ host_system = host_machine.system()
 
 dep_gl = dependency('gl')
 
-dep_glu = dependency('glu', required: get_option('glu'))
+dep_glu = dependency(
+  'glu',
+  required: get_option('glu'),
+)
 if not dep_glu.found()
-  add_project_arguments('-DGLEW_NO_GLU', language: 'c')
+  add_project_arguments(
+    '-DGLEW_NO_GLU',
+    language: 'c',
+  )
 endif
 
-dep_egl = dependency('egl', required: get_option('egl'))
+dep_egl = dependency(
+  'egl',
+  required: get_option('egl'),
+)
 if dep_egl.found()
-  add_project_arguments('-DGLEW_EGL', language: 'c')
+  add_project_arguments(
+    '-DGLEW_EGL',
+    language: 'c',
+  )
 endif
 
 user_args = []
 if get_option('default_library') != 'static'
-  add_project_arguments('-DGLEW_BUILD', language: 'c')
+  add_project_arguments(
+    '-DGLEW_BUILD',
+    language: 'c',
+  )
 else
-  add_project_arguments('-DGLEW_STATIC', language: 'c')
+  add_project_arguments(
+    '-DGLEW_STATIC',
+    language: 'c',
+  )
   user_args += '-DGLEW_STATIC'
 endif
 
@@ -59,25 +77,20 @@ if host_system == 'windows'
   name = 'glew32'
 
   if cc.get_argument_syntax() == 'msvc'
-    c_args += [
-      '-DVC_EXTRALEAN',
-      '-GS-',
-    ]
-    ld_args += [
-      '-BASE:0x62AA0000',
-      '-nodefaultlib',
-      '-noentry',
-    ]
+    c_args += ['-DVC_EXTRALEAN', '-GS-']
+    ld_args += ['-BASE:0x62AA0000', '-nodefaultlib', '-noentry']
   else
-    c_args += [
-      '-fno-builtin',
-      '-fno-stack-protector',
-    ]
+    c_args += ['-fno-builtin', '-fno-stack-protector']
     ld_args += '-nostdlib'
   endif
 else
   name = 'GLEW'
-  c_args = cc.get_supported_arguments('-ansi', '-W', '-Wcast-qual', '-fno-stack-protector')
+  c_args = cc.get_supported_arguments(
+    '-ansi',
+    '-W',
+    '-Wcast-qual',
+    '-fno-stack-protector',
+  )
 endif
 
 glew_include = include_directories('include')

@@ -1,1 +1,6 @@
-option('example', type: 'feature', value: 'disabled', description: 'Build example encoding program')
+option(
+    'example',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build example encoding program',
+)

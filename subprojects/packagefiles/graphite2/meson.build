@@ -1,6 +1,9 @@
-project('graphite2', 'cpp',
+project(
+  'graphite2',
+  'cpp',
   version: '1.3.14',
-  default_options: ['cpp_std=c++17'])
+  default_options: ['cpp_std=c++17'],
+)
 
 if get_option('default_library') == 'static'
   extra_args = ['-DGRAPHITE2_STATIC']
@@ -8,7 +11,8 @@ else
   extra_args = ['-DGRAPHITE2_EXPORTING']
 endif
 
-graphite2_lib = library('graphite2',
+graphite2_lib = library(
+  'graphite2',
   'src/CmapCache.cpp',
   'src/Code.cpp',
   'src/Collider.cpp',
@@ -31,7 +35,7 @@ graphite2_lib = library('graphite2',
   'src/TtfUtil.cpp',
   'src/UtfCodec.cpp',
   'src/call_machine.cpp',
-#  'src/direct_machine.cpp',
+  #  'src/direct_machine.cpp',
   'src/gr_char_info.cpp',
   'src/gr_face.cpp',
   'src/gr_features.cpp',
@@ -45,5 +49,7 @@ graphite2_lib = library('graphite2',
   gnu_symbol_visibility: 'hidden',
 )
 
-graphite2_dep = declare_dependency(include_directories: 'include',
-  link_with: graphite2_lib)
+graphite2_dep = declare_dependency(
+  include_directories: 'include',
+  link_with: graphite2_lib,
+)

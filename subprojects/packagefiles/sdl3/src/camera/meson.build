@@ -1,5 +1,3 @@
 subdir('dummy')
 
-sources += files(
-  'SDL_camera.c',
-)
+sources += files('SDL_camera.c')

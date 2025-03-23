@@ -1,3 +1,1 @@
-sources += files(
-  'test.c',
-)
+sources += files('test.c')

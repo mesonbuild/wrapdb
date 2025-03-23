@@ -19,7 +19,10 @@ if host_machine.system() == 'windows'
   api = get_option('default_library') != 'static' ? '-D__LZO_EXPORT1=__declspec(dllexport)' : []
 endif
 
-add_project_arguments('-DLZO_ABI_@0@_ENDIAN=1'.format(host_machine.endian().to_upper()), language: 'c')
+add_project_arguments(
+  '-DLZO_ABI_@0@_ENDIAN=1'.format(host_machine.endian().to_upper()),
+  language: 'c',
+)
 
 liblzo2 = library(
   'lzo2',

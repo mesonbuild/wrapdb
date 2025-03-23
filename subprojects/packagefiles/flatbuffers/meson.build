@@ -1,16 +1,31 @@
-project('flatbuffers', 'cpp', version: '24.3.25', license: 'Apache-2.0', meson_version: '>=0.49.0')
+project(
+  'flatbuffers',
+  'cpp',
+  version: '24.3.25',
+  license: 'Apache-2.0',
+  meson_version: '>=0.49.0',
+)
 
 cpp = meson.get_compiler('cpp')
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    language: 'cpp',
+  )
 endif
 
-add_project_arguments('-DFLATBUFFERS_LOCALE_INDEPENDENT=@0@'.format(cpp.has_function('strtoull_l')), language: 'cpp')
+add_project_arguments(
+  '-DFLATBUFFERS_LOCALE_INDEPENDENT=@0@'.format(cpp.has_function('strtoull_l')),
+  language: 'cpp',
+)
 
 # Certain platforms such as ARM do not use signed chars by default
 # which causes issues with certain bounds checks.
-add_project_arguments(cpp.get_supported_arguments('-fsigned-char'), language: 'cpp')
+add_project_arguments(
+  cpp.get_supported_arguments('-fsigned-char'),
+  language: 'cpp',
+)
 
 includes = include_directories('include', 'grpc')
 
@@ -161,7 +176,15 @@ flatc = executable(
   flatc_sources,
   include_directories: includes,
   install: true,
-  link_with: [flatc_lib, cpp_gen_lib, go_gen_lib, java_gen_lib, python_gen_lib, swift_gen_lib, ts_gen_lib],
+  link_with: [
+    flatc_lib,
+    cpp_gen_lib,
+    go_gen_lib,
+    java_gen_lib,
+    python_gen_lib,
+    swift_gen_lib,
+    ts_gen_lib,
+  ],
 )
 
 meson.override_find_program('flatc', flatc)

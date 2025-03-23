@@ -6,9 +6,15 @@ project(
   license: 'custom',
 )
 
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
+add_project_arguments(
+  '-D_GNU_SOURCE',
+  language: 'c',
+)
 if host_machine.system() == 'windows'
-  add_project_arguments('-D_CRT_SECURE_NO_DEPRECATE', language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_DEPRECATE',
+    language: 'c',
+  )
 endif
 
 gc_src = files(

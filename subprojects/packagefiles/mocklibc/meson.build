@@ -1,5 +1,6 @@
 project(
-  'mocklibc', 'c',
+  'mocklibc',
+  'c',
   version: '1.0',
   license: 'Apache',
   default_options: 'c_std=none',

@@ -1,11 +1,23 @@
-project('nng', 'c', license: 'MIT', version: '1.5.2', meson_version: '>=0.47.0')
+project(
+  'nng',
+  'c',
+  license: 'MIT',
+  version: '1.5.2',
+  meson_version: '>=0.47.0',
+)
 
 cc = meson.get_compiler('c')
 
 if get_option('buildtype') != 'static'
-  add_project_arguments('-DNNG_SHARED_LIB', language: 'c')
+  add_project_arguments(
+    '-DNNG_SHARED_LIB',
+    language: 'c',
+  )
 else
-  add_project_arguments('-DNNG_STATIC_LIB', language: 'c')
+  add_project_arguments(
+    '-DNNG_STATIC_LIB',
+    language: 'c',
+  )
 endif
 
 deps = [dependency('threads')]
@@ -113,7 +125,10 @@ if target_machine.system() == 'windows'
   )
 
   include_dirs += include_directories('src/platform/windows')
-  add_project_arguments('-DNNG_PLATFORM_WINDOWS', language: 'c')
+  add_project_arguments(
+    '-DNNG_PLATFORM_WINDOWS',
+    language: 'c',
+  )
 else
   nng_src += files(
     'src/platform/posix/posix_alloc.c',
@@ -134,11 +149,13 @@ else
     'src/platform/posix/posix_tcplisten.c',
     'src/platform/posix/posix_thread.c',
     'src/platform/posix/posix_udp.c',
-
   )
 
   include_dirs += include_directories('src/platform/posix')
-  add_project_arguments('-DNNG_PLATFORM_POSIX', language: 'c')
+  add_project_arguments(
+    '-DNNG_PLATFORM_POSIX',
+    language: 'c',
+  )
 endif
 
 nng_args = [
@@ -159,9 +176,17 @@ nng_args = [
   '-DNNG_TRANSPORT_TLS',
 ]
 
-add_project_arguments(nng_args, language: 'c')
+add_project_arguments(
+  nng_args,
+  language: 'c',
+)
 
-nng = library('nng', nng_src, dependencies: deps, include_directories: include_dirs)
+nng = library(
+  'nng',
+  nng_src,
+  dependencies: deps,
+  include_directories: include_dirs,
+)
 
 nng_dep = declare_dependency(
   compile_args: nng_args,

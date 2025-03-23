@@ -1,6 +1,9 @@
-project('hinnant-date', ['cpp'],
-        default_options: ['cpp_std=c++17'],
-        license: 'MIT')
+project(
+  'hinnant-date',
+  ['cpp'],
+  default_options: ['cpp_std=c++17'],
+  license: 'MIT',
+)
 
 pkg = import('pkgconfig')
 
@@ -16,7 +19,7 @@ header_files = files(
   'include/date/ptz.h',
   'include/date/solar_hijri.h',
   'include/date/tz.h',
-  'include/date/tz_private.h'
+  'include/date/tz_private.h',
 )
 defines = []
 date_public_defines = []
@@ -37,10 +40,12 @@ elif get_option('use_system_tzdb')
   if host_machine.system() != 'windows'
     defines += ['-DAUTO_DOWNLOAD=0', '-DHAS_REMOTE_API=0']
     tz_public_defines += ['-DUSE_OS_TZDB=1']
-    else
+  else
     # system tzdb is not available on windows
     # display a warning but not fail
-    message('hinntant-date[WARNING]: use_system_tzdb is not supported on windows')
+    message(
+      'hinntant-date[WARNING]: use_system_tzdb is not supported on windows',
+    )
   endif
 else
   defines += ['-DAUTO_DOWNLOAD=1', '-DHAS_REMOTE_API=1']
@@ -53,17 +58,19 @@ if get_option('use_tzdb_in_dot')
 endif
 
 i = include_directories('include')
-tz_lib = library('tz', 'src/tz.cpp',
+tz_lib = library(
+  'tz',
+  'src/tz.cpp',
   include_directories: i,
   cpp_args: defines + date_public_defines + tz_public_defines,
-  dependencies: tz_deps
+  dependencies: tz_deps,
 )
 tz_dep = declare_dependency(
   compile_args: date_public_defines + tz_public_defines,
   include_directories: i,
-  link_with: tz_lib
+  link_with: tz_lib,
 )
 date_dep = declare_dependency(
   compile_args: date_public_defines,
-  include_directories: i
+  include_directories: i,
 )

@@ -1,4 +1,9 @@
-project('tclap', 'cpp', version : '1.2.4', license : 'MIT License')
+project(
+  'tclap',
+  'cpp',
+  version: '1.2.4',
+  license: 'MIT License',
+)
 
 # This is a minimum meson.build to use TCLAP.
 # TODO: Full porting from autotools remains to be done.
@@ -9,8 +14,9 @@ project('tclap', 'cpp', version : '1.2.4', license : 'MIT License')
 # --
 
 tclap_dep = declare_dependency(
-  version : '1.2.4',
-  include_directories : 'include')
+  version: '1.2.4',
+  include_directories: 'include',
+)
 
 # --
 # Examples

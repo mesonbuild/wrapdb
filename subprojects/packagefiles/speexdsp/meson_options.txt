@@ -1,14 +1,20 @@
-option('examples',
-       type : 'boolean',
-       value : false,
-       description : 'Build example programs')
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build example programs',
+)
 
-option('fixed-point',
-       type : 'boolean',
-       value : false,
-       description : 'Use fixed-point math instead of floating-point')
+option(
+    'fixed-point',
+    type: 'boolean',
+    value: false,
+    description: 'Use fixed-point math instead of floating-point',
+)
 
-option('simd',
-       type : 'boolean',
-       value : true,
-       description : 'Use SSE2 or NEON SIMD instructions')
+option(
+    'simd',
+    type: 'boolean',
+    value: true,
+    description: 'Use SSE2 or NEON SIMD instructions',
+)

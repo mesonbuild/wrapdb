@@ -1,5 +1,1 @@
-c_sources += files(
-    'gl.c',
-    'keyboard.c',
-    'video.c',
-)
+c_sources += files('gl.c', 'keyboard.c', 'video.c')

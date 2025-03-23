@@ -1,5 +1,3 @@
 subdir('generic')
 
-sources += files(
-  'SDL_storage.c',
-)
+sources += files('SDL_storage.c')

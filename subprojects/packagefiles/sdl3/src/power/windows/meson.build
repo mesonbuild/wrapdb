@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_syspower.c',
-)
+sources += files('SDL_syspower.c')

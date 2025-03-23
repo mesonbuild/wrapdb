@@ -16,7 +16,10 @@ is_posix = sys_os != 'windows'
 opt_display = get_option('display-api')
 
 if get_option('default_library') != 'static'
-  add_project_arguments('-D_GLFW_BUILD_DLL', language: 'c')
+  add_project_arguments(
+    '-D_GLFW_BUILD_DLL',
+    language: 'c',
+  )
 endif
 
 if opt_display == 'auto'
@@ -38,22 +41,48 @@ if opt_display == 'osmesa'
   #  X11
 elif opt_display == 'x11'
   foreach x : ['x11', 'xrandr', 'xinerama', 'xcursor', 'xi', 'xkbcommon']
-    deps += dependency(x, required: true)
+    deps += dependency(
+      x,
+      required: true,
+    )
   endforeach
   #  Wayland
 elif opt_display == 'wayland'
   warning('Wayland support is experimental & incomplete.')
-  warning('GLFW < 3.4 cannot detect Wayland if both x11 and Wayland exist on-system!')
-  foreach w : ['wayland-client', 'wayland-cursor', 'wayland-server', 'wayland-egl', 'xkbcommon']
-    deps += dependency(w, required: true)
+  warning(
+    'GLFW < 3.4 cannot detect Wayland if both x11 and Wayland exist on-system!',
+  )
+  foreach w : [
+    'wayland-client',
+    'wayland-cursor',
+    'wayland-server',
+    'wayland-egl',
+    'xkbcommon',
+  ]
+    deps += dependency(
+      w,
+      required: true,
+    )
   endforeach
   wl_protocols = dependency('wayland-protocols')
   wl_dir = wl_protocols.get_variable('pkgdatadir')
-  wl_scan_dep = dependency('wayland-scanner', required: false, native: true)
+  wl_scan_dep = dependency(
+    'wayland-scanner',
+    required: false,
+    native: true,
+  )
   if wl_scan_dep.found()
-    wl_scanner = find_program(wl_scan_dep.get_variable(pkgconfig: 'wayland_scanner'), native: true)
+    wl_scanner = find_program(
+      wl_scan_dep.get_variable(
+        pkgconfig: 'wayland_scanner',
+      ),
+      native: true,
+    )
   else
-    wl_scanner = find_program('wayland-scanner', native: true)
+    wl_scanner = find_program(
+      'wayland-scanner',
+      native: true,
+    )
   endif
   s_wayland = []
   protocols = {
@@ -103,16 +132,28 @@ elif opt_display == 'cocoa'
   if sys_os != 'darwin'
     error('Non macOS is unsupported')
   endif
-  deps += dependency('appleframeworks', modules: ['Cocoa', 'CoreFoundation', 'IOKit'])
+  deps += dependency(
+    'appleframeworks',
+    modules: ['Cocoa', 'CoreFoundation', 'IOKit'],
+  )
 endif
 #@ System Dependencies
 foreach l : ['m', 'rt']
-  deps += sys_cc.find_library(l, required: false)
+  deps += sys_cc.find_library(
+    l,
+    required: false,
+  )
 endforeach
 if meson.version().version_compare('>= 0.62')
-  deps += dependency('dl', required: false)
+  deps += dependency(
+    'dl',
+    required: false,
+  )
 else
-  deps += sys_cc.find_library('dl', required: false)
+  deps += sys_cc.find_library(
+    'dl',
+    required: false,
+  )
 endif
 deps += dependency('threads')
 
@@ -121,13 +162,23 @@ cfg_data = configuration_data()
 foreach d : ['osmesa', 'x11', 'wayland', 'win32', 'cocoa']
   cfg_data.set('_GLFW_' + d.to_upper(), opt_display == d)
 endforeach
-cfg_file = configure_file(configuration: cfg_data, output: 'glfw_config.h')
+cfg_file = configure_file(
+  configuration: cfg_data,
+  output: 'glfw_config.h',
+)
 
 ### Targets ###
 #@ Primary target:
 ##   GLFW library
 #  Common files
-s_common = files('src/context.c', 'src/init.c', 'src/input.c', 'src/monitor.c', 'src/vulkan.c', 'src/window.c')
+s_common = files(
+  'src/context.c',
+  'src/init.c',
+  'src/input.c',
+  'src/monitor.c',
+  'src/vulkan.c',
+  'src/window.c',
+)
 s_common += cfg_file
 #  Backend files
 if opt_display == 'osmesa'
@@ -142,6 +193,7 @@ if opt_display == 'osmesa'
   )
 elif opt_display == 'x11'
   s_display = files(
+    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
     'src/egl_context.c',
     'src/glx_context.c',
     'src/osmesa_context.c',
@@ -151,10 +203,10 @@ elif opt_display == 'x11'
     'src/x11_monitor.c',
     'src/x11_window.c',
     'src/xkb_unicode.c',
-    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
   )
 elif opt_display == 'wayland'
   s_display = files(
+    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
     'src/egl_context.c',
     'src/osmesa_context.c',
     'src/posix_thread.c',
@@ -163,7 +215,6 @@ elif opt_display == 'wayland'
     'src/wl_monitor.c',
     'src/wl_window.c',
     'src/xkb_unicode.c',
-    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
   )
 elif opt_display == 'win32'
   s_display = files(
@@ -178,7 +229,10 @@ elif opt_display == 'win32'
     'src/win32_window.c',
   )
 elif opt_display == 'cocoa'
-  add_languages('objc', native: false)
+  add_languages(
+    'objc',
+    native: false,
+  )
   s_display = files(
     'src/cocoa_init.m',
     'src/cocoa_joystick.m',
@@ -190,9 +244,15 @@ elif opt_display == 'cocoa'
     'src/osmesa_context.c',
     'src/posix_thread.c',
   )
-  add_project_arguments('-D_GLFW_USE_CONFIG_H', language: 'objc')
+  add_project_arguments(
+    '-D_GLFW_USE_CONFIG_H',
+    language: 'objc',
+  )
   if host_machine.system() == 'darwin'
-    add_project_arguments('-D_DARWIN_C_SOURCE', language: 'objc')
+    add_project_arguments(
+      '-D_DARWIN_C_SOURCE',
+      language: 'objc',
+    )
   endif
 endif
 srcfiles = [s_common, s_display]
@@ -201,9 +261,15 @@ if opt_display == 'wayland'
 endif
 incdirs = include_directories('include', 'src')
 #@ Flags
-add_project_arguments('-D_GLFW_USE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-D_GLFW_USE_CONFIG_H',
+  language: 'c',
+)
 if host_machine.system() == 'darwin'
-  add_project_arguments('-D_DARWIN_C_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_DARWIN_C_SOURCE',
+    language: 'c',
+  )
 endif
 #  Build
 glfw_lib = library(
@@ -225,7 +291,11 @@ if meson.version().version_compare('>=0.54.0')
 endif
 #  Headers
 if get_option('install')
-  install_headers('include/GLFW/glfw3.h', 'include/GLFW/glfw3native.h', subdir: 'GLFW')
+  install_headers(
+    'include/GLFW/glfw3.h',
+    'include/GLFW/glfw3native.h',
+    subdir: 'GLFW',
+  )
 endif
 #@ Secondary target:
 ##   Test programs

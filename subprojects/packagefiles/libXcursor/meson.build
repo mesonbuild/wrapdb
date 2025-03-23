@@ -1,4 +1,9 @@
-project('libXcursor', 'c', version: '1.2.1', default_options: ['warning_level=3'])
+project(
+  'libXcursor',
+  'c',
+  version: '1.2.1',
+  default_options: ['warning_level=3'],
+)
 
 subdir('include/X11/Xcursor')
 
@@ -11,7 +16,8 @@ cfile = configure_file(
 
 xrender_dep = dependency('xrender')
 
-xcursor = library('Xcursor',
+xcursor = library(
+  'Xcursor',
   'src/cursor.c',
   'src/display.c',
   'src/file.c',

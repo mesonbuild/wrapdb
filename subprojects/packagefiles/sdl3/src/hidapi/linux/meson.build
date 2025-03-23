@@ -1,3 +1,1 @@
-sources += files(
-  'hid.c',
-)
+sources += files('hid.c')

@@ -45,7 +45,11 @@ sources = [
 ]
 
 version_arr = meson.project_version().split('.')
-version_int = [version_arr[0].to_int(), version_arr[1].to_int(), version_arr[2].to_int()]
+version_int = [
+  version_arr[0].to_int(),
+  version_arr[1].to_int(),
+  version_arr[2].to_int(),
+]
 version_number = version_int[0] * 10000 + version_int[1] * 100 + version_int[2]
 version_extra = ''
 
@@ -53,7 +57,10 @@ xsltconfig = configuration_data()
 xsltconfig.set('VERSION', meson.project_version())
 xsltconfig.set('LIBXSLT_VERSION_NUMBER', version_number)
 xsltconfig.set('LIBXSLT_VERSION_EXTRA', version_extra)
-xsltconfig.set('LIBXSLT_DEFAULT_PLUGINS_PATH', get_option('prefix') / get_option('libdir') / 'libxslt-plugins')
+xsltconfig.set(
+  'LIBXSLT_DEFAULT_PLUGINS_PATH',
+  get_option('prefix') / get_option('libdir') / 'libxslt-plugins',
+)
 xsltconfig.set10('WITH_DEBUGGER', get_option('debugger'))
 xsltconfig.set10('WITH_MODULES', with_modules)
 xsltconfig.set10('WITH_PROFILER', get_option('profiler'))

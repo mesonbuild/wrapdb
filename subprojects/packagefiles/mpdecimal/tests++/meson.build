@@ -11,14 +11,16 @@ endif
 
 configure_file(
   output: 'config.h',
-  configuration: conf)
+  configuration: conf,
+)
 
 threads_dep = dependency('threads')
 
 runtest = executable(
   'runtest',
   ['runtest.cc', 'test.cc'],
-  dependencies: [mpdecpp_dep, threads_dep])
+  dependencies: [mpdecpp_dep, threads_dep],
+)
 
 # These tests require to download test data.
 # test(
@@ -28,8 +30,10 @@ runtest = executable(
 #   workdir: join_paths(meson.current_build_dir(), '..', 'tests'))
 
 test(
-  'libmpdec++/additional', runtest,
+  'libmpdec++/additional',
+  runtest,
   args: files('additional.topTest'),
   depends: testdata,
   workdir: join_paths(meson.current_build_dir(), '..', 'tests'),
-  timeout: 660)
+  timeout: 660,
+)

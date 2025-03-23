@@ -9,7 +9,10 @@ option(
     type: 'feature',
     value: 'auto',
     description: 'Build tests for this module',
-    deprecated: {'true': 'enabled', 'false': 'disabled'},
+    deprecated: {
+        'true': 'enabled',
+        'false': 'disabled',
+    },
 )
 option(
     'install',

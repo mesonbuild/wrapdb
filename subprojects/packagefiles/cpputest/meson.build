@@ -1,4 +1,6 @@
-project('cpputest', 'cpp',
+project(
+  'cpputest',
+  'cpp',
   license: 'BSD-3',
   version: '4.0',
 )
@@ -13,6 +15,7 @@ if get_option('enable_cpputest_extensions')
 endif
 
 cpputest_dep = declare_dependency(
-    link_with : cpputest_libs,
-    version : meson.project_version(),
-    include_directories : cpputest_includes)
+  link_with: cpputest_libs,
+  version: meson.project_version(),
+  include_directories: cpputest_includes,
+)

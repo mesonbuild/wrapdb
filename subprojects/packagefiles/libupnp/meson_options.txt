@@ -1,74 +1,104 @@
-option('scriptsupport', type : 'boolean',
-  value : true,
-  description : 'script support for IXML document tree, see ixml.h',
+option(
+    'scriptsupport',
+    type: 'boolean',
+    value: true,
+    description: 'script support for IXML document tree, see ixml.h',
 )
 
-option('samples', type : 'boolean',
-  value : true,
-  description : 'compilation of upnp/sample/ code',
+option(
+    'samples',
+    type: 'boolean',
+    value: true,
+    description: 'compilation of upnp/sample/ code',
 )
 
-option('blocking_tcp_connectionsr', type : 'boolean',
-  value : false,
-  description : 'blocking TCP connections',
+option(
+    'blocking_tcp_connectionsr',
+    type: 'boolean',
+    value: false,
+    description: 'blocking TCP connections',
 )
 
-option('client', type : 'boolean',
-  value : true,
-  description : 'control point code (client)',
+option(
+    'client',
+    type: 'boolean',
+    value: true,
+    description: 'control point code (client)',
 )
 
-option('device', type : 'boolean',
-  value : true,
-  description : 'device specific code (implies --disable-webserver if disabled)',
+option(
+    'device',
+    type: 'boolean',
+    value: true,
+    description: 'device specific code (implies --disable-webserver if disabled)',
 )
 
-option('gena', type : 'boolean',
-  value : true,
-  description : 'GENA part',
+option(
+    'gena',
+    type: 'boolean',
+    value: true,
+    description: 'GENA part',
 )
 
-option('tools', type : 'boolean',
-  value : true,
-  description : 'helper APIs in upnptools.h',
+option(
+    'tools',
+    type: 'boolean',
+    value: true,
+    description: 'helper APIs in upnptools.h',
 )
 
-option('ipv6', type : 'boolean',
-  value : true,
-  description : 'ipv6 support',
+option(
+    'ipv6',
+    type: 'boolean',
+    value: true,
+    description: 'ipv6 support',
 )
 
-option('optssdp', type : 'boolean',
-  value : true,
-  description : 'optional SSDP headers support',
+option(
+    'optssdp',
+    type: 'boolean',
+    value: true,
+    description: 'optional SSDP headers support',
 )
 
-option('open_ssl', type : 'boolean',
-  value : false,
-  description : 'open-ssl support',
+option(
+    'open_ssl',
+    type: 'boolean',
+    value: false,
+    description: 'open-ssl support',
 )
 
-option('soap', type : 'boolean',
-  value : true,
-  description : 'SOAP part',
+option(
+    'soap',
+    type: 'boolean',
+    value: true,
+    description: 'SOAP part',
 )
 
-option('ssdp', type : 'boolean',
-  value : true,
-  description : 'SSDP part',
+option(
+    'ssdp',
+    type: 'boolean',
+    value: true,
+    description: 'SSDP part',
 )
 
-option('unspecified_server', type : 'boolean',
-  value : false,
-  description : 'unspecified SERVER header',
+option(
+    'unspecified_server',
+    type: 'boolean',
+    value: false,
+    description: 'unspecified SERVER header',
 )
 
-option('webserver', type : 'boolean',
-  value : true,
-  description : 'integrated web server',
+option(
+    'webserver',
+    type: 'boolean',
+    value: true,
+    description: 'integrated web server',
 )
 
-option('reuseaddr', type : 'boolean',
-  value : true,
-  description : 'bind the miniserver socket with reuseaddr to allow clean restarts',
+option(
+    'reuseaddr',
+    type: 'boolean',
+    value: true,
+    description: 'bind the miniserver socket with reuseaddr to allow clean restarts',
 )

@@ -1,4 +1,5 @@
-option('test',
-  type : 'feature',
-  description: 'Build tests'
+option(
+    'test',
+    type: 'feature',
+    description: 'Build tests',
 )

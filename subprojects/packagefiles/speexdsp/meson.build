@@ -6,7 +6,7 @@ project(
   default_options: [
     meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
     'default_library=both',
-    'warning_level=0'
+    'warning_level=0',
   ],
 )
 
@@ -22,7 +22,10 @@ cc = meson.get_compiler('c')
 host_cpu_family = host_machine.cpu_family()
 
 # Round up configuration data
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 cdata = configuration_data()
 
 arm_neon_code = '''
@@ -86,11 +89,7 @@ if get_option('simd')
     cdata.set('USE_SSE', true)
     cdata.set('USE_SSE2', true)
     simd_type = 'SSE2'
-    sse_flags = [
-      '-mfpmath=sse',
-      '-msse',
-      '-msse2',
-    ]
+    sse_flags = ['-mfpmath=sse', '-msse', '-msse2']
     add_project_arguments(
       cc.get_supported_arguments(sse_flags),
       language: 'c',
@@ -102,14 +101,13 @@ if get_option('simd')
     #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
     #  - https://docs.microsoft.com/en-us/cpp/build/reference/arch-arm
     neon_flags = cc.get_supported_arguments(
-      [
-        '-march=armv7-a',
-        '-mfpu=neon',
-        '/arch:VFPv4',
-      ],
+      ['-march=armv7-a', '-mfpu=neon', '/arch:VFPv4'],
     )
     # The SIMD test code might need libmath to link
-    m_dep = cc.find_library('m', required: false)
+    m_dep = cc.find_library(
+      'm',
+      required: false,
+    )
     neon_test = cc.run(
       arm_neon_code,
       args: neon_flags,
@@ -127,8 +125,8 @@ if get_option('simd')
     endif
 
   elif host_cpu_family == 'aarch64'
-    # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions. 
-    # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions. 
+    # Armv8.0-A refers to the generic Armv8-A architecture without any incremental architecture extensions.
+    # Adding "+simd" is GCC's generic flag to add Armv8-A SIMD and floating-point instructions.
     # Refs:
     #  - https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
     #  - https://developer.arm.com/documentation/101754/0618/armclang-Reference/armclang-Command-line-Options/-mcpu
@@ -197,11 +195,7 @@ configure_file(
 )
 
 # Set header include paths
-incdir = include_directories(
-  '.',
-  'include',
-  'include/speex',
-)
+incdir = include_directories('.', 'include', 'include/speex')
 
 # Nested Meson builds
 subdir('include/speex')

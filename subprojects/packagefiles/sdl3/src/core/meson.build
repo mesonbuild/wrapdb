@@ -7,6 +7,4 @@ else
   subdir('linux')
 endif
 
-sources += files(
-  'SDL_core_unsupported.c',
-)
+sources += files('SDL_core_unsupported.c')

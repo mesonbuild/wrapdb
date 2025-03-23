@@ -1,7 +1,27 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # Copyright 2021 IBM Corp.
 
-option('tools', type: 'boolean', description: 'enable libgpiod command-line tools', value: false)
-option('tests', type: 'boolean', description: 'enable libgpiod tests', value: false)
-option('docs', type: 'boolean', description: 'enable libgpiod documentation', value: false)
-option('bindings', type: 'array', choices: [ 'cxx', 'python' ], value: [])
+option(
+    'tools',
+    type: 'boolean',
+    description: 'enable libgpiod command-line tools',
+    value: false,
+)
+option(
+    'tests',
+    type: 'boolean',
+    description: 'enable libgpiod tests',
+    value: false,
+)
+option(
+    'docs',
+    type: 'boolean',
+    description: 'enable libgpiod documentation',
+    value: false,
+)
+option(
+    'bindings',
+    type: 'array',
+    choices: ['cxx', 'python'],
+    value: [],
+)

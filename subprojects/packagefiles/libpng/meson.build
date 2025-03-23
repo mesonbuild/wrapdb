@@ -11,7 +11,11 @@ png_major_version = png_versions[0]
 png_minor_version = png_versions[1]
 png_micro_version = png_versions[2]
 png_libname = 'png@0@@1@'.format(png_major_version, png_minor_version)
-png_libversion = '@0@@1@.@2@.0'.format(png_major_version, png_minor_version, png_micro_version)
+png_libversion = '@0@@1@.@2@.0'.format(
+  png_major_version,
+  png_minor_version,
+  png_micro_version,
+)
 
 cc = meson.get_compiler('c')
 
@@ -23,7 +27,7 @@ if host_machine.system() == 'windows'
   add_project_arguments(
     '-D_CRT_NONSTDC_NO_DEPRECATE',
     '-D_CRT_SECURE_NO_DEPRECATE',
-    language : 'c'
+    language: 'c',
   )
   if get_option('default_library') != 'static'
     c_args += '-DPNG_BUILD_DLL'
@@ -32,7 +36,10 @@ endif
 
 libpng_deps = [
   dependency('zlib'),
-  cc.find_library('m', required: false),
+  cc.find_library(
+    'm',
+    required: false,
+  ),
 ]
 
 png_src = files(
@@ -61,16 +68,10 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip()
   )
   c_args += '-DPNG_ARM_NEON_OPT=2'
 elif host_machine.cpu_family() in ['x86', 'x86_64']
-  png_src += files(
-    'intel/filter_sse2_intrinsics.c',
-    'intel/intel_init.c',
-  )
+  png_src += files('intel/filter_sse2_intrinsics.c', 'intel/intel_init.c')
   c_args += '-DPNG_INTEL_SSE_OPT=1'
 elif host_machine.cpu_family() in ['ppc64', 'ppc64le', 'powerpc64le'] and host_machine.endian() == 'little'
-  png_src += files(
-    'powerpc/filter_vsx_intrinsics.c',
-    'powerpc/powerpc_init.c',
-  )
+  png_src += files('powerpc/filter_vsx_intrinsics.c', 'powerpc/powerpc_init.c')
   c_args += '-DPNG_POWERPC_VSX_OPT=2'
 endif
 
@@ -136,5 +137,13 @@ libpng_dep = declare_dependency(
 # dependency(..., fallback ['libpng': 'png_dep'])
 png_dep = libpng_dep
 
-png_test = executable('pngtest', 'pngtest.c', dependencies: libpng_dep)
-test('pngtest', png_test, args: files('pngtest.png'))
+png_test = executable(
+  'pngtest',
+  'pngtest.c',
+  dependencies: libpng_dep,
+)
+test(
+  'pngtest',
+  png_test,
+  args: files('pngtest.png'),
+)
