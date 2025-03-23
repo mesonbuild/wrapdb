@@ -84,6 +84,7 @@ re2_sources = files(
 libre2_static = static_library(
   '_re2',
   re2_sources,
+  pic: true,
   dependencies: threads_dep,
   install: false,
 )
