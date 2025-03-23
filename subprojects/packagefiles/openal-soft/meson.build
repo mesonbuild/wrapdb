@@ -1,7 +1,7 @@
 project(
   'openal-soft',
   'cpp',
-  version: '1.24.1',
+  version: '1.24.2',
   meson_version: '>=0.58',
   default_options: ['cpp_std=c++17', 'c_std=c11'],
 )
@@ -88,7 +88,6 @@ core_sources = files(
   'core/filters/biquad.cpp',
   'core/filters/nfc.cpp',
   'core/filters/splitter.cpp',
-  'core/fmt_traits.cpp',
   'core/fpu_ctrl.cpp',
   'core/helpers.cpp',
   'core/hrtf.cpp',
@@ -294,6 +293,8 @@ endif
 common_lib = static_library(
   'common',
   common_sources,
+  pic: true,
+  dependencies: fmt_dep,
 )
 
 common_inc = include_directories('.')
