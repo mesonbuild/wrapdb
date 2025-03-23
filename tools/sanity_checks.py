@@ -140,7 +140,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'process-zconf.py',
     ],
 }
-NO_TABS_FILES = ['meson.build', 'meson_options.txt']
+NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 
 
