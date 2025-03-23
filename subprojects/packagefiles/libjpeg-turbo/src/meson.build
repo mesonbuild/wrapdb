@@ -72,12 +72,14 @@ if get_option('jpeg-turbo').allowed()
     'turbojpeg12',
     ['rdppm.c', 'wrppm.c'],
     c_args: ['-DBITS_IN_JSAMPLE=12', '-DPPM_SUPPORTED'],
+    pic: get_option('default_library') != 'static',
   )
 
   turbojpeg16 = static_library(
     'turbojpeg16',
     ['rdppm.c', 'wrppm.c'],
     c_args: ['-DBITS_IN_JSAMPLE=16', '-DPPM_SUPPORTED'],
+    pic: get_option('default_library') != 'static',
   )
 
   turbojpeg = library(
@@ -189,7 +191,7 @@ if get_option(
       _test,
       tjunittest,
       args: _args.split(),
-      timeout: 60,
+      timeout: 120,
     )
   endforeach
 

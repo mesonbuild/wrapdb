@@ -67,7 +67,8 @@ if host_cpu in ['x86', 'x86_64']
     dir = x64 ? 'x86_64' : 'i386'
     simd_src = x64 ? simd_src_x86_64 : simd_src_i386
     simd = static_library('simd', dir / 'jsimd.c',
-      simd_src, include_directories: [incdir, 'nasm', dir])
+      simd_src, include_directories: [incdir, 'nasm', dir],
+      pic: get_option('default_library') != 'static')
   endif
 elif host_cpu in ['arm', 'aarch64']
   aarch = host_cpu == 'aarch64' ? 'aarch64' : 'aarch32'
@@ -234,6 +235,7 @@ elif host_cpu in ['arm', 'aarch64']
       simd_src_arm + files(
         dir / 'jsimd.c',
       ),
+      pic: get_option('default_library') != 'static',
       include_directories: [incdir, 'arm', dir],
       c_args: neon_flags,
     )
