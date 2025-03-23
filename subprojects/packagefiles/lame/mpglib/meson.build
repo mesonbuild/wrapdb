@@ -21,6 +21,7 @@ mpglib = static_library(
   mpglib_sources,
   include_directories: mpglib_includes,
   c_args: common_args,
+  pic: true,
   install: false,
 )
 
