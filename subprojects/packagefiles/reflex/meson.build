@@ -130,6 +130,7 @@ libsimd_avx2 = static_library(
   'lib/matcher_avx2.cpp',
   'lib/simd_avx2.cpp',
   cpp_args: simd_avx2_args,
+  pic: true,
   include_directories: includes,
   build_by_default: false,
 )
@@ -139,6 +140,7 @@ libsimd_avx512bw = static_library(
   'lib/matcher_avx512bw.cpp',
   'lib/simd_avx512bw.cpp',
   cpp_args: simd_avx512bw_args,
+  pic: true,
   include_directories: includes,
   build_by_default: false,
   # clang 14.0 fails to compile this code at optimization levels higher than 0
