@@ -24,6 +24,7 @@ compatlib = static_library(
   'compat',
   sources,
   c_args: '-DHAVE_CONFIG_H=1',
+  pic: true,
   dependencies: librt,
   include_directories: confinc,
 )
