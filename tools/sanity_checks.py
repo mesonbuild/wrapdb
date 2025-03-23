@@ -25,6 +25,7 @@ import tempfile
 import platform
 import io
 import sys
+import shlex
 
 from pathlib import Path
 from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
@@ -140,6 +141,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'process-zconf.py',
     ],
 }
+FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 
@@ -465,12 +467,31 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
+    def is_formatted_correctly(self, file: Path) -> bool:
+        res = subprocess.run(
+            [
+                "meson",
+                "format",
+                "--check-only",
+                "--configuration",
+                "./meson.format",
+                file.absolute(),
+            ]
+        )
+
+        return res.returncode == 0
+
     def check_files(self, subproject: str, patch_path: Path) -> None:
         tabs: T.List[Path] = []
         not_permitted: T.List[Path] = []
+        unformatted: T.List[Path] = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
+
+            if f.name in FORMAT_CHECK_FILES and not self.is_formatted_correctly(f):
+                unformatted.append(f)
+
             if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
             elif f.name in NO_TABS_FILES and '\t' in f.read_text(encoding='utf-8'):
@@ -481,6 +502,13 @@ class TestReleases(unittest.TestCase):
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
             self.fail(f'Not permitted files found: {not_permitted_str}')
+        if unformatted:
+            unformatted_str = ', '.join([str(f) for f in unformatted])
+            unformatted_files_for_command = ' '.join([f"{shlex.quote(str(f))}" for f in unformatted])
+            self.fail(
+                f'''Not formatted files found: {unformatted_str}
+Run the following command, to format these files:
+meson format --inplace {unformatted_files_for_command}''')
 
 
 if __name__ == '__main__':
