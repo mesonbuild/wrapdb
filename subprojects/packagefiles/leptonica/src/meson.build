@@ -191,10 +191,7 @@ lept_lib = library(
     'zlibmem.c',
     'zlibmemstub.c',
   ],
-  c_args: [
-    '-DHAVE_CONFIG_H',
-    '-DLIBLEPT_EXPORTS',
-  ],
+  c_args: ['-DHAVE_CONFIG_H', '-DLIBLEPT_EXPORTS'],
   dependencies: dependencies,
   include_directories: '..',
   install: true,
@@ -209,7 +206,10 @@ lept_dep = declare_dependency(
 meson.override_dependency('lept', lept_dep)
 
 pkg = import('pkgconfig')
-pkg.generate(lept_lib, subdirs: 'leptonica')
+pkg.generate(
+  lept_lib,
+  subdirs: 'leptonica',
+)
 
 install_headers(
   [endiannes_h] + [

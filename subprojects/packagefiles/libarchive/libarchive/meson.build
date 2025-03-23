@@ -139,10 +139,7 @@ if host == 'windows'
 endif
 
 if not b2_dep.found()
-  sources += files(
-    'archive_blake2s_ref.c',
-    'archive_blake2sp_ref.c',
-  )
+  sources += files('archive_blake2s_ref.c', 'archive_blake2sp_ref.c')
 endif
 
 libinc = []
@@ -168,7 +165,7 @@ libarchive = library(
   version: '.'.join(['13', ver_parts[1], ver_parts[2]]),
   darwin_versions: [
     ver_darwin_compat,
-    '.'.join([ver_darwin_compat, ver_parts[2]])
+    '.'.join([ver_darwin_compat, ver_parts[2]]),
   ],
   gnu_symbol_visibility: 'hidden',
   dependencies: deps,

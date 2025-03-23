@@ -1,4 +1,1 @@
-sources += files(
-  'SDL_windowshaptic.c',
-  'SDL_dinputhaptic.c',
-)
+sources += files('SDL_dinputhaptic.c', 'SDL_windowshaptic.c')

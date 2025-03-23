@@ -1,37 +1,88 @@
-jconfig_h = configure_file(input: 'jconfig.h.in',
+jconfig_h = configure_file(
+  input: 'jconfig.h.in',
   output: 'jconfig.h',
   format: 'cmake@',
-  configuration: cdata)
+  configuration: cdata,
+)
 
-configure_file(input: 'jconfigint.h.in',
+configure_file(
+  input: 'jconfigint.h.in',
   output: 'jconfigint.h',
   format: 'cmake@',
-  configuration: cdata)
+  configuration: cdata,
+)
 
-configure_file(input: 'jversion.h.in',
+configure_file(
+  input: 'jversion.h.in',
   output: 'jversion.h',
   format: 'cmake@',
-  configuration: cdata)
+  configuration: cdata,
+)
 
 install_headers('jmorecfg.h', 'jerror.h', 'jpeglib.h', jconfig_h)
 
 jpeg16_sources = [
-  'jcapistd.c', 'jccolor.c', 'jcdiffct.c', 'jclossls.c', 'jcmainct.c',
-  'jcprepct.c', 'jcsample.c', 'jdapistd.c', 'jdcolor.c', 'jddiffct.c',
-  'jdlossls.c', 'jdmainct.c', 'jdpostct.c', 'jdsample.c', 'jutils.c',
+  'jcapistd.c',
+  'jccolor.c',
+  'jcdiffct.c',
+  'jclossls.c',
+  'jcmainct.c',
+  'jcprepct.c',
+  'jcsample.c',
+  'jdapistd.c',
+  'jdcolor.c',
+  'jddiffct.c',
+  'jdlossls.c',
+  'jdmainct.c',
+  'jdpostct.c',
+  'jdsample.c',
+  'jutils.c',
 ]
 jpeg12_sources = [
-  jpeg16_sources, 'jccoefct.c', 'jcdctmgr.c', 'jdcoefct.c', 'jddctmgr.c',
-  'jdmerge.c', 'jfdctfst.c', 'jfdctint.c', 'jidctflt.c', 'jidctfst.c',
-  'jidctint.c', 'jidctred.c', 'jquant1.c', 'jquant2.c',
+  jpeg16_sources,
+  'jccoefct.c',
+  'jcdctmgr.c',
+  'jdcoefct.c',
+  'jddctmgr.c',
+  'jdmerge.c',
+  'jfdctfst.c',
+  'jfdctint.c',
+  'jidctflt.c',
+  'jidctfst.c',
+  'jidctint.c',
+  'jidctred.c',
+  'jquant1.c',
+  'jquant2.c',
 ]
 sources = [
-  jpeg12_sources, 'jcapimin.c', 'jchuff.c', 'jcicc.c', 'jcinit.c',
-  'jclhuff.c', 'jcmarker.c', 'jcmaster.c', 'jcomapi.c', 'jcparam.c',
-  'jcphuff.c', 'jctrans.c', 'jdapimin.c', 'jdatadst.c', 'jdatasrc.c',
-  'jdhuff.c', 'jdicc.c', 'jdinput.c', 'jdlhuff.c', 'jdmarker.c',
-  'jdmaster.c', 'jdphuff.c', 'jdtrans.c', 'jerror.c', 'jfdctflt.c',
-  'jmemmgr.c', 'jmemnobs.c', 'jpeg_nbits.c',
+  jpeg12_sources,
+  'jcapimin.c',
+  'jchuff.c',
+  'jcicc.c',
+  'jcinit.c',
+  'jclhuff.c',
+  'jcmarker.c',
+  'jcmaster.c',
+  'jcomapi.c',
+  'jcparam.c',
+  'jcphuff.c',
+  'jctrans.c',
+  'jdapimin.c',
+  'jdatadst.c',
+  'jdatasrc.c',
+  'jdhuff.c',
+  'jdicc.c',
+  'jdinput.c',
+  'jdlhuff.c',
+  'jdmarker.c',
+  'jdmaster.c',
+  'jdphuff.c',
+  'jdtrans.c',
+  'jerror.c',
+  'jfdctflt.c',
+  'jmemmgr.c',
+  'jmemnobs.c',
+  'jpeg_nbits.c',
   # TODO: `with_arith_dec` / `with_arith_enc` only.
   'jaricom.c',
   # TODO: `with_arith_enc` only
@@ -40,26 +91,36 @@ sources = [
   'jdarith.c',
 ]
 
-jpeg12 = static_library('jpeg12', jpeg12_sources,
+jpeg12 = static_library(
+  'jpeg12',
+  jpeg12_sources,
   c_args: ['-DBITS_IN_JSAMPLE=12'],
   pic: get_option('default_library') != 'static',
 )
-jpeg16 = static_library('jpeg16', jpeg16_sources,
+jpeg16 = static_library(
+  'jpeg16',
+  jpeg16_sources,
   c_args: ['-DBITS_IN_JSAMPLE=16'],
   pic: get_option('default_library') != 'static',
 )
-jpeg = library('jpeg', sources,
+jpeg = library(
+  'jpeg',
+  sources,
   link_whole: [jpeg12, jpeg16, simd],
   soversion: so_version,
   vs_module_defs: vs_defs,
   install: true,
 )
 
-pkg.generate(jpeg, description: 'A SIMD-accelerated JPEG codec that provides the libjpeg API', name: 'libjpeg')
+pkg.generate(
+  jpeg,
+  description: 'A SIMD-accelerated JPEG codec that provides the libjpeg API',
+  name: 'libjpeg',
+)
 
 jpeg_dep = declare_dependency(
   include_directories: incdir,
-  link_with: jpeg
+  link_with: jpeg,
 )
 
 meson.override_dependency('libjpeg', jpeg_dep)
@@ -115,21 +176,14 @@ if get_option('jpeg-turbo').allowed()
 
 endif
 
-if get_option(
-  'tests',
-).require(
+if get_option('tests').require(
   get_option('jpeg-turbo').allowed(),
   error_message: 'jpeg-turbo feature needed',
 ).allowed()
 
   tjunittest = executable(
     'tjunittest',
-    [
-      'tjunittest.c',
-      'tjutil.c',
-      'md5/md5.c',
-      'md5/md5hl.c',
-    ],
+    ['tjunittest.c', 'tjutil.c', 'md5/md5.c', 'md5/md5hl.c'],
     dependencies: turbojpeg_dep,
   )
 

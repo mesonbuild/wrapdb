@@ -8,10 +8,11 @@
 # in the COPYING file in the root directory of this source tree).
 # #############################################################################
 
-project('zstd',
+project(
+  'zstd',
   ['c', 'cpp'],
   license: ['BSD', 'GPLv2'],
-  default_options : [
+  default_options: [
     # There shouldn't be any need to force a C standard convention for zstd
     # but in case one would want that anyway, this can be done here.
     # 'c_std=gnu99',
@@ -24,7 +25,8 @@ project('zstd',
     #'werror=true'
   ],
   version: '1.5.7',
-  meson_version: '>=0.50.0')
+  meson_version: '>=0.50.0',
+)
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -85,54 +87,98 @@ feature_lz4 = get_option('lz4')
 # Dependencies
 # =============================================================================
 
-libm_dep = cc.find_library('m', required: false)
+libm_dep = cc.find_library(
+  'm',
+  required: false,
+)
 if host_machine_os == os_windows
-  thread_dep = dependency('', required: false)
+  thread_dep = dependency(
+    '',
+    required: false,
+  )
   use_multi_thread = not feature_multi_thread.disabled()
 else
-  thread_dep = dependency('threads', required: feature_multi_thread)
+  thread_dep = dependency(
+    'threads',
+    required: feature_multi_thread,
+  )
   use_multi_thread = thread_dep.found()
 endif
 # Arguments in dependency should be equivalent to those passed to pkg-config
-zlib_dep = dependency('zlib', required: feature_zlib)
+zlib_dep = dependency(
+  'zlib',
+  required: feature_zlib,
+)
 use_zlib = zlib_dep.found()
-lzma_dep = dependency('liblzma', required: feature_lzma)
+lzma_dep = dependency(
+  'liblzma',
+  required: feature_lzma,
+)
 use_lzma = lzma_dep.found()
-lz4_dep = dependency('liblz4', required: feature_lz4)
+lz4_dep = dependency(
+  'liblz4',
+  required: feature_lz4,
+)
 use_lz4 = lz4_dep.found()
 
 # =============================================================================
 # Compiler flags
 # =============================================================================
 
-add_project_arguments('-DXXH_NAMESPACE=ZSTD_', language: ['c'])
+add_project_arguments(
+  '-DXXH_NAMESPACE=ZSTD_',
+  language: ['c'],
+)
 
 pzstd_warning_flags = []
 if [compiler_gcc, compiler_clang].contains(cc_id)
-  common_warning_flags = [ '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]
+  common_warning_flags = ['-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual']
   pzstd_warning_flags = ['-Wno-shadow', '-Wno-deprecated-declarations']
   if cc_id == compiler_clang
-    common_warning_flags += ['-Wconversion', '-Wno-sign-conversion', '-Wdocumentation']
+    common_warning_flags += [
+      '-Wconversion',
+      '-Wno-sign-conversion',
+      '-Wdocumentation',
+    ]
   endif
-  noexecstack_flags = ['-Wa,--noexecstack' ]
+  noexecstack_flags = ['-Wa,--noexecstack']
   noexecstack_link_flags = ['-Wl,-z,noexecstack']
-  cc_compile_flags = cc.get_supported_arguments(common_warning_flags + noexecstack_flags + ['-Wstrict-prototypes'])
-  cxx_compile_flags = cxx.get_supported_arguments(common_warning_flags + noexecstack_flags)
-  add_project_arguments(cc_compile_flags, language : 'c')
-  add_project_arguments(cxx_compile_flags, language : 'cpp')
+  cc_compile_flags = cc.get_supported_arguments(
+    common_warning_flags + noexecstack_flags + ['-Wstrict-prototypes'],
+  )
+  cxx_compile_flags = cxx.get_supported_arguments(
+    common_warning_flags + noexecstack_flags,
+  )
+  add_project_arguments(
+    cc_compile_flags,
+    language: 'c',
+  )
+  add_project_arguments(
+    cxx_compile_flags,
+    language: 'cpp',
+  )
   cc_link_flags = cc.get_supported_link_arguments(noexecstack_link_flags)
   cxx_link_flags = cxx.get_supported_link_arguments(noexecstack_link_flags)
-  add_project_link_arguments(cc_link_flags, language: 'c')
-  add_project_link_arguments(cxx_link_flags, language: 'cpp')
+  add_project_link_arguments(
+    cc_link_flags,
+    language: 'c',
+  )
+  add_project_link_arguments(
+    cxx_link_flags,
+    language: 'cpp',
+  )
 elif cc_id == compiler_msvc
-  msvc_compile_flags = [ '/D_UNICODE', '/DUNICODE' ]
+  msvc_compile_flags = ['/D_UNICODE', '/DUNICODE']
   if use_multi_thread
     msvc_compile_flags += '/MP'
   endif
   if use_static_runtime
     msvc_compile_flags += '/MT'
   endif
-  add_project_arguments(msvc_compile_flags, language: ['c', 'cpp'])
+  add_project_arguments(
+    msvc_compile_flags,
+    language: ['c', 'cpp'],
+  )
 endif
 
 # =============================================================================

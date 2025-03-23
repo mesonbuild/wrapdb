@@ -15,7 +15,10 @@ if get_option('default_library') != 'static' and host_machine.system() == 'windo
   c_args += '-DDLL_EXPORT'
 endif
 
-m_dep = cc.find_library('m', required : false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 freetype_dep = dependency('freetype2')
 sdl2_dep = dependency('sdl2')
 
@@ -24,7 +27,7 @@ sdl2_ttf = library(
   'SDL_ttf.c',
   c_args: c_args,
   dependencies: [freetype_dep, m_dep, sdl2_dep],
-  install: true
+  install: true,
 )
 
 depinc = include_directories('.')

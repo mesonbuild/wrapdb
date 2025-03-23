@@ -1,9 +1,15 @@
 sdl_dep = disabler()
 if device_io.enabled()
   if host_system == 'emscripten'
-    sdl_dep = declare_dependency(compile_args: '--use-port=sdl2', link_args: '--use-port=sdl2')
+    sdl_dep = declare_dependency(
+      compile_args: '--use-port=sdl2',
+      link_args: '--use-port=sdl2',
+    )
   else
-    sdl_dep = dependency('sdl2', required: false)
+    sdl_dep = dependency(
+      'sdl2',
+      required: false,
+    )
   endif
   if sdl_dep.found()
     executable(
@@ -18,18 +24,20 @@ if device_io.enabled()
   endif
 endif
 
-if decoding and device_io.enabled() and (
-  opus_dep.found()
-  and opusfile_dep.found()
-  and vorbis_dep.found()
-  and vorbisfile_dep.found()
+if decoding and device_io.enabled() and (opus_dep.found()
+and opusfile_dep.found()
+and vorbis_dep.found()
+and vorbisfile_dep.found()
 )
   executable(
     'custom_decoder',
     'custom_decoder.c',
-    dependencies: ma_sys_deps
-    + ma_backend_deps
-    + [opus_dep, opusfile_dep, vorbis_dep, vorbisfile_dep],
+    dependencies: ma_sys_deps + ma_backend_deps + [
+      opus_dep,
+      opusfile_dep,
+      vorbis_dep,
+      vorbisfile_dep,
+    ],
     install: false,
     implicit_include_directories: false,
     include_directories: ma_inc,
@@ -39,9 +47,12 @@ if decoding and device_io.enabled() and (
     executable(
       'custom_decoder_engine',
       'custom_decoder_engine.c',
-      dependencies: ma_sys_deps
-      + ma_backend_deps
-      + [opus_dep, opusfile_dep, vorbis_dep, vorbisfile_dep],
+      dependencies: ma_sys_deps + ma_backend_deps + [
+        opus_dep,
+        opusfile_dep,
+        vorbis_dep,
+        vorbisfile_dep,
+      ],
       install: false,
       implicit_include_directories: false,
       include_directories: ma_inc,
@@ -112,7 +123,10 @@ if engine and node_graph.enabled()
 endif
 
 if engine
-  phonon_dep = dependency('phonon', required: false)
+  phonon_dep = dependency(
+    'phonon',
+    required: false,
+  )
   if phonon_dep.found()
     executable(
       'engine_steamaudio',
@@ -197,9 +211,8 @@ if device_io.enabled()
   )
 endif
 
-if device_io.enabled() and (
-  'wasapi' in backends
-  or (backends == ['_miniaudio_default'] and host_system == 'windows')
+if device_io.enabled() and ('wasapi' in backends
+or (backends == ['_miniaudio_default'] and host_system == 'windows')
 )
   executable(
     'simple_loopback',

@@ -1,7 +1,4 @@
-src = [
-  'cmdline.c',
-  'cpio.c',
-]
+src = ['cmdline.c', 'cpio.c']
 
 if host_machine.system() == 'windows'
   src += 'cpio_windows.c'

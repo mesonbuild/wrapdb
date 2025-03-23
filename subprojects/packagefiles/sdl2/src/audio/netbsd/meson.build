@@ -1,3 +1,1 @@
-c_sources += files(
-    'SDL_netbsdaudio.c',
-)
+c_sources += files('SDL_netbsdaudio.c')

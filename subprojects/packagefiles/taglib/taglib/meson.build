@@ -1,7 +1,15 @@
-if host_machine.system() == 'windows' or cpp.links('int main(){__sync_synchronize();}')
-  atomic_dep = dependency('', required: false)
+if host_machine.system() == 'windows' or cpp.links(
+  'int main(){__sync_synchronize();}',
+)
+  atomic_dep = dependency(
+    '',
+    required: false,
+  )
 else
-  atomic_dep = cpp.find_library('atomic', required: false)
+  atomic_dep = cpp.find_library(
+    'atomic',
+    required: false,
+  )
 endif
 
 utfcpp_dep = dependency('utf8cpp')
@@ -268,7 +276,11 @@ taglib = library(
 )
 
 pkg = import('pkgconfig')
-pkg.generate(taglib, name: 'taglib', subdirs: 'taglib')
+pkg.generate(
+  taglib,
+  name: 'taglib',
+  subdirs: 'taglib',
+)
 
 taglib_dep = declare_dependency(
   include_directories: taglib_includes,

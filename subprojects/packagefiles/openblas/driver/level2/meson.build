@@ -3,415 +3,492 @@
 # Ported in order from the Makefile
 # TODO(rg): Add the CONJ flags
 driver_kops = [
-  { 'base': '?gbmv',
+  {
+    'base': '?gbmv',
     'sources': {
-        'gbmv_k.c': {'mode': ['s', 'd', 'q'], 'exts': ['_n', '_t']},
-        'zgbmv_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_n', '_t', '_r', '_c',
-                               '_o', '_u', '_s', '_d']},
-    }
-  },
-  { 'base': '?gbmv_thread',
-    'sources': {
-        'gbmv_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_n', '_t', '_r', '_c',
-                                   '_o', '_u', '_s', '_d']},
-    }
-  },
-  { 'base': '?gemv_thread',
-    'sources': {
-        'gemv_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_n', '_t', '_r', '_c',
-                                   '_o', '_u', '_s', '_d']},
-    }
-  },
-  { 'base': '?ger_thread',
-    'sources': {
-        'ger_thread.c': {'mode': ['s', 'd', 'q'], 'exts': ['']},
-    }
-  },
-  { 'base': '?ger_thread',
-    'sources': {
-        'ger_thread.c': {'mode': ['c', 'z', 'x'],
-                         'exts': ['_U', '_C',
-                                  '_V', '_D']},
-    }
-  },
-  { 'base': '?symv_thread',
-    'sources': {
-        'symv_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
-    }
-  },
-  { 'base': '?hemv_thread',
-    'sources': {
-        'symv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_U', '_L',
-                                   '_V', '_M']},
+      'gbmv_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_n', '_t'],
+      },
+      'zgbmv_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_n', '_t', '_r', '_c', '_o', '_u', '_s', '_d'],
+      },
     },
   },
-  { 'base': '?syr_thread',
+  {
+    'base': '?gbmv_thread',
     'sources': {
-        'syr_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
+      'gbmv_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_n', '_t', '_r', '_c', '_o', '_u', '_s', '_d'],
+      },
     },
   },
-  { 'base': '?her_thread',
+  {
+    'base': '?gemv_thread',
     'sources': {
-        'syr_thread.c': {'mode': ['c', 'z', 'x'],
-                         'exts': ['_U', '_L',
-                                  '_V', '_M']},
+      'gemv_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_n', '_t', '_r', '_c', '_o', '_u', '_s', '_d'],
+      },
     },
   },
-  { 'base': '?syr2_thread',
+  {
+    'base': '?ger_thread',
     'sources': {
-        'syr2_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
+      'ger_thread.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': [''],
+      },
     },
   },
-  { 'base': '?her2_thread',
+  {
+    'base': '?ger_thread',
     'sources': {
-        'syr2_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_U', '_L',
-                                   '_V', '_M']},
+      'ger_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_C', '_V', '_D'],
+      },
     },
   },
-  { 'base': '?hbmv',
+  {
+    'base': '?symv_thread',
     'sources': {
-        'zhbmv_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L',
-                               '_V', '_M']},
+      'symv_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
     },
   },
-  { 'base': '?hbmv_thread',
+  {
+    'base': '?hemv_thread',
     'sources': {
-        'sbmv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_U', '_L',
-                                   '_V', '_M']},
+      'symv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?her',
+  {
+    'base': '?syr_thread',
     'sources': {
-        'zher_k.c': {'mode': ['c', 'z', 'x'],
-                     'exts': ['_U', '_L',
-                              '_V', '_M']},
+      'syr_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
     },
   },
-  { 'base': '?her2',
+  {
+    'base': '?her_thread',
     'sources': {
-        'zher2_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L',
-                               '_V', '_M']},
+      'syr_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?hpmv',
+  {
+    'base': '?syr2_thread',
     'sources': {
-        'zhpmv_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L',
-                               '_V', '_M']},
+      'syr2_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
     },
   },
-  { 'base': '?hpmv_thread',
+  {
+    'base': '?her2_thread',
     'sources': {
-        'spmv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_U', '_L',
-                                   '_V', '_M']},
+      'syr2_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?hpr',
+  {
+    'base': '?hbmv',
     'sources': {
-        'zhpr_k.c': {'mode': ['c', 'z', 'x'],
-                     'exts': ['_U', '_L',
-                              '_V', '_M']},
+      'zhbmv_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?hpr_thread',
+  {
+    'base': '?hbmv_thread',
     'sources': {
-        'spr_thread.c': {'mode': ['c', 'z', 'x'],
-                         'exts': ['_U', '_L',
-                                  '_V', '_M']},
+      'sbmv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?hpr2',
+  {
+    'base': '?her',
     'sources': {
-        'zhpr2_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L',
-                               '_V', '_M']},
+      'zher_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?hpr2_thread',
+  {
+    'base': '?her2',
     'sources': {
-        'spr2_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_U', '_L',
-                                   '_V', '_M']},
+      'zher2_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
     },
   },
-  { 'base': '?sbmv',
+  {
+    'base': '?hpmv',
     'sources': {
-        'sbmv_k.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_U', '_L']},
-        'zsbmv_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L']},
-    }
+      'zhpmv_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?sbmv_thread',
+  {
+    'base': '?hpmv_thread',
     'sources': {
-        'sbmv_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
-    }
+      'spmv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?spmv',
+  {
+    'base': '?hpr',
     'sources': {
-        'spmv_k.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_U', '_L']},
-        'zspmv_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L']},
-    }
+      'zhpr_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?spmv_thread',
+  {
+    'base': '?hpr_thread',
     'sources': {
-        'spmv_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
-    }
+      'spr_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?spr',
+  {
+    'base': '?hpr2',
     'sources': {
-        'spr_k.c': {'mode': ['s', 'd', 'q'],
-                    'exts': ['_U', '_L']},
-        'zspr_k.c': {'mode': ['c', 'z', 'x'],
-                     'exts': ['_U', '_L']},
-    }
+      'zhpr2_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?spr_thread',
+  {
+    'base': '?hpr2_thread',
     'sources': {
-        'spr_thread.c': {'mode': ['s', 'd', 'q',
-                                  'c', 'z', 'x'],
-                         'exts': ['_U', '_L']},
-    }
+      'spr2_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L', '_V', '_M'],
+      },
+    },
   },
-  { 'base': '?spr2',
+  {
+    'base': '?sbmv',
     'sources': {
-        'spr2_k.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_U', '_L']},
-        'zspr2_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L']},
-    }
+      'sbmv_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zsbmv_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?spr2_thread',
+  {
+    'base': '?sbmv_thread',
     'sources': {
-        'spr2_thread.c': {'mode': ['s', 'd', 'q',
-                                   'c', 'z', 'x'],
-                          'exts': ['_U', '_L']},
-    }
+      'sbmv_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?syr',
+  {
+    'base': '?spmv',
     'sources': {
-        'syr_k.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_U', '_L']},
-        'zsyr_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L']},
-    }
+      'spmv_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zspmv_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?syr2',
+  {
+    'base': '?spmv_thread',
     'sources': {
-        'syr2_k.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_U', '_L']},
-        'zsyr2_k.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_U', '_L']},
-    }
+      'spmv_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tbmv',
+  {
+    'base': '?spr',
     'sources': {
-        'tbmv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'tbmv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztbmv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztbmv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'spr_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zspr_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tbmv_thread',
+  {
+    'base': '?spr_thread',
     'sources': {
-        'tbmv_thread.c': {'mode': ['s', 'd', 'q'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN']},
-    }
+      'spr_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tbmv_thread',
+  {
+    'base': '?spr2',
     'sources': {
-        'tbmv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_RLU', '_RLN',
-                                   '_CLU', '_CLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN',
-                                   '_RUU', '_RUN',
-                                   '_CUU', '_CUN']},
-    }
+      'spr2_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zspr2_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tbsv',
+  {
+    'base': '?spr2_thread',
     'sources': {
-        'tbsv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'tbsv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztbsv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztbsv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'spr2_thread.c': {
+        'mode': ['s', 'd', 'q', 'c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tpmv',
+  {
+    'base': '?syr',
     'sources': {
-        'tpmv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'tpmv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztpmv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztpmv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'syr_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zsyr_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tpmv_thread',
+  {
+    'base': '?syr2',
     'sources': {
-        'tpmv_thread.c': {'mode': ['s', 'd', 'q'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN']},
-    }
+      'syr2_k.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_U', '_L'],
+      },
+      'zsyr2_k.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?tpmv_thread',
+  {
+    'base': '?tbmv',
     'sources': {
-        'tpmv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_RLU', '_RLN',
-                                   '_CLU', '_CLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN',
-                                   '_RUU', '_RUN',
-                                   '_CUU', '_CUN']},
-    }
+      'tbmv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'tbmv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztbmv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztbmv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
   },
-  { 'base': '?tpsv',
+  {
+    'base': '?tbmv_thread',
     'sources': {
-        'tpsv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'tpsv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztpsv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztpsv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'tbmv_thread.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+    },
   },
-  { 'base': '?trmv',
+  {
+    'base': '?tbmv_thread',
     'sources': {
-        'trmv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'trmv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztrmv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztrmv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'tbmv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_RLU', '_RLN', '_CLU', '_CLN', '_NLU', '_NLN', '_TUU', '_TUN', '_RUU', '_RUN', '_CUU', '_CUN'],
+      },
+    },
   },
-  { 'base': '?trmv_thread',
+  {
+    'base': '?tbsv',
     'sources': {
-        'trmv_thread.c': {'mode': ['s', 'd', 'q'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN']},
-    }
+      'tbsv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'tbsv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztbsv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztbsv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
   },
-  { 'base': '?trmv_thread',
+  {
+    'base': '?tpmv',
     'sources': {
-        'trmv_thread.c': {'mode': ['c', 'z', 'x'],
-                          'exts': ['_NUU', '_NUN',
-                                   '_TLU', '_TLN',
-                                   '_RLU', '_RLN',
-                                   '_CLU', '_CLN',
-                                   '_NLU', '_NLN',
-                                   '_TUU', '_TUN',
-                                   '_RUU', '_RUN',
-                                   '_CUU', '_CUN']},
-    }
+      'tpmv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'tpmv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztpmv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztpmv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
   },
-  { 'base': '?trsv',
+  {
+    'base': '?tpmv_thread',
     'sources': {
-        'trsv_U.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NUU', '_NUN',
-                              '_TLU', '_TLN']},
-        'trsv_L.c': {'mode': ['s', 'd', 'q'],
-                     'exts': ['_NLU', '_NLN',
-                              '_TUU', '_TUN']},
-        'ztrsv_U.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_NUU', '_NUN',
-                               '_TLU', '_TLN',
-                               '_CLU', '_CLN',
-                               '_RUU', '_RUN']},
-        'ztrsv_L.c': {'mode': ['c', 'z', 'x'],
-                      'exts': ['_RLU', '_RLN',
-                               '_NLU', '_NLN',
-                               '_TUU', '_TUN',
-                               '_CUU', '_CUN']},
-    }
+      'tpmv_thread.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+    },
+  },
+  {
+    'base': '?tpmv_thread',
+    'sources': {
+      'tpmv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_RLU', '_RLN', '_CLU', '_CLN', '_NLU', '_NLN', '_TUU', '_TUN', '_RUU', '_RUN', '_CUU', '_CUN'],
+      },
+    },
+  },
+  {
+    'base': '?tpsv',
+    'sources': {
+      'tpsv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'tpsv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztpsv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztpsv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
+  },
+  {
+    'base': '?trmv',
+    'sources': {
+      'trmv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'trmv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztrmv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztrmv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
+  },
+  {
+    'base': '?trmv_thread',
+    'sources': {
+      'trmv_thread.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+    },
+  },
+  {
+    'base': '?trmv_thread',
+    'sources': {
+      'trmv_thread.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_RLU', '_RLN', '_CLU', '_CLN', '_NLU', '_NLN', '_TUU', '_TUN', '_RUU', '_RUN', '_CUU', '_CUN'],
+      },
+    },
+  },
+  {
+    'base': '?trsv',
+    'sources': {
+      'trsv_U.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN'],
+      },
+      'trsv_L.c': {
+        'mode': ['s', 'd', 'q'],
+        'exts': ['_NLU', '_NLN', '_TUU', '_TUN'],
+      },
+      'ztrsv_U.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_NUU', '_NUN', '_TLU', '_TLN', '_CLU', '_CLN', '_RUU', '_RUN'],
+      },
+      'ztrsv_L.c': {
+        'mode': ['c', 'z', 'x'],
+        'exts': ['_RLU', '_RLN', '_NLU', '_NLN', '_TUU', '_TUN', '_CUU', '_CUN'],
+      },
+    },
   },
   # TODO(rg): Add the bfloat conditionals from Makefile:3709
 ]
@@ -540,16 +617,20 @@ endforeach
 # Create the static libraries from the configurations
 _kern_libs = []
 foreach conf : kernel_confs
-    # message(conf['name'])
-    # message(conf)
-    _kern_libs += [static_library(
-        conf['name'],
-        conf['src'],
-        include_directories: _inc,
-        c_args: conf['c_args'],
-    )]
+  # message(conf['name'])
+  # message(conf)
+  _kern_libs += [
+    static_library(
+      conf['name'],
+      conf['src'],
+      include_directories: _inc,
+      c_args: conf['c_args'],
+    ),
+  ]
 endforeach
 
 # Create the final kernel library
-_l2_driver = static_library('l2_driver',
-                           link_whole: _kern_libs)
+_l2_driver = static_library(
+  'l2_driver',
+  link_whole: _kern_libs,
+)

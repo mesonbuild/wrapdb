@@ -9,7 +9,11 @@ project(
 cpp = meson.get_compiler('cpp')
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-DUNICODE', '-DFTXUI_MICROSOFT_TERMINAL_FALLBACK', language: 'cpp')
+  add_project_arguments(
+    '-DUNICODE',
+    '-DFTXUI_MICROSOFT_TERMINAL_FALLBACK',
+    language: 'cpp',
+  )
 endif
 
 thread_dep = dependency('threads')

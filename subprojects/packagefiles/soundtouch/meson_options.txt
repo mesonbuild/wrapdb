@@ -1,9 +1,34 @@
-option('integer_samples', type: 'boolean', value: false, description: 'Use integers instead of floats for samples')
+option(
+    'integer_samples',
+    type: 'boolean',
+    value: false,
+    description: 'Use integers instead of floats for samples',
+)
 
-option('neon', type: 'boolean', value: true, description: 'Use ARM Neon SIMD instructions if in ARM CPU')
+option(
+    'neon',
+    type: 'boolean',
+    value: true,
+    description: 'Use ARM Neon SIMD instructions if in ARM CPU',
+)
 
-option('soundtouch_dll', type: 'boolean', value: true, description: 'Build SoundTouchDLL C wrapper library.')
+option(
+    'soundtouch_dll',
+    type: 'boolean',
+    value: true,
+    description: 'Build SoundTouchDLL C wrapper library.',
+)
 
-option('soundstretch', type: 'boolean', value: false, description: 'Build soundstretch command line utility.')
+option(
+    'soundstretch',
+    type: 'boolean',
+    value: false,
+    description: 'Build soundstretch command line utility.',
+)
 
-option('openmp', type: 'feature', value: 'disabled', description: 'Use parallel multicore calculation through OpenMP')
+option(
+    'openmp',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Use parallel multicore calculation through OpenMP',
+)

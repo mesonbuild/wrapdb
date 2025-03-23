@@ -5,12 +5,14 @@ project(
 )
 
 cc = meson.get_compiler('c')
-libm = cc.find_library('m', required: false)
+libm = cc.find_library(
+  'm',
+  required: false,
+)
 
 argtable3_includes = include_directories(['src'])
 argtable3_headers = files('src/argtable3.h')
 argtable3_sources = files(
-  'src/argtable3.c',
   'src/arg_cmd.c',
   'src/arg_date.c',
   'src/arg_dbl.c',
@@ -25,6 +27,7 @@ argtable3_sources = files(
   'src/arg_rex.c',
   'src/arg_str.c',
   'src/arg_utils.c',
+  'src/argtable3.c',
 )
 argtable3 = library(
   'argtable3',
@@ -38,6 +41,6 @@ argtable3 = library(
 install_headers(argtable3_headers)
 argtable3_dep = declare_dependency(
   include_directories: argtable3_includes,
-  link_with : argtable3
+  link_with: argtable3,
 )
 

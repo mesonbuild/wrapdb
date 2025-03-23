@@ -1,4 +1,9 @@
-project('libxrender', 'c', version:'0.9.10', default_options: ['warning_level=3'])
+project(
+  'libxrender',
+  'c',
+  version: '0.9.10',
+  default_options: ['warning_level=3'],
+)
 
 incdirs = include_directories('.', 'include', 'include/X11/extensions/')
 

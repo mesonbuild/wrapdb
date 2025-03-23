@@ -1,5 +1,5 @@
 if system == 'android'
-    subdir('Android-lib')
+  subdir('Android-lib')
 endif
 subdir('SoundTouch')
 subdir('SoundStretch')

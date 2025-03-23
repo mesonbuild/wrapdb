@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_gameinputjoystick.c',
-)
+sources += files('SDL_gameinputjoystick.c')

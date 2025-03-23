@@ -8,21 +8,32 @@ project(
 
 cpp = meson.get_compiler('cpp')
 if host_machine.system() == 'windows' and cpp.has_header('winapifamily.h')
-  add_project_arguments('-DHAVE_WINAPIFAMILY_H', language: 'cpp')
+  add_project_arguments(
+    '-DHAVE_WINAPIFAMILY_H',
+    language: 'cpp',
+  )
 endif
 
 if get_option('default_library') == 'static'
-  add_project_arguments('-DEBML_STATIC_DEFINE', language: 'cpp')
+  add_project_arguments(
+    '-DEBML_STATIC_DEFINE',
+    language: 'cpp',
+  )
 endif
 
 if host_machine.system() == 'windows'
-  dllapi = '-DEBML_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '')
+  dllapi = '-DEBML_DLL_API=@0@'.format(
+    get_option('default_library') != 'static' ? '__declspec(dllexport)' : '',
+  )
 else
   dllapi = '-DEBML_DLL_API=__attribute__((visibility("default")))'
 endif
 
 ebml_api = configuration_data()
-ebml_conf = configure_file(output: 'ebml_export.h', configuration: ebml_api)
+ebml_conf = configure_file(
+  output: 'ebml_export.h',
+  configuration: ebml_api,
+)
 
 install_headers(
   'ebml/Debug.h',

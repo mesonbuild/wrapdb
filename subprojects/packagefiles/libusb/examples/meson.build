@@ -2,8 +2,20 @@ if not get_option('examples')
   subdir_done()
 endif
 
-foreach e : ['dpfp', 'hotplugtest', 'listdevs', 'sam3u_benchmark', 'testlibusb', 'xusb']
-  executable(e, '@0@.c'.format(e), dependencies: libusb_dep, include_directories: config_inc)
+foreach e : [
+  'dpfp',
+  'hotplugtest',
+  'listdevs',
+  'sam3u_benchmark',
+  'testlibusb',
+  'xusb',
+]
+  executable(
+    e,
+    '@0@.c'.format(e),
+    dependencies: libusb_dep,
+    include_directories: config_inc,
+  )
 endforeach
 
 executable(

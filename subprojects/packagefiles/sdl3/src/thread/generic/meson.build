@@ -4,5 +4,5 @@ sources += files(
   'SDL_sysrwlock.c',
   'SDL_syssem.c',
   'SDL_systhread.c',
-  'SDL_systls.c'
+  'SDL_systls.c',
 )

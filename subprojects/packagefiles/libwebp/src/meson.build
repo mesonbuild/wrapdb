@@ -33,11 +33,7 @@ webpdecoder_lib = library(
   dependencies: build_libwebpdecoder,
   gnu_symbol_visibility: 'hidden',
   install: true,
-  link_whole: [
-    webpdec_lib,
-    webpdspdec_lib,
-    webputilsdec_lib,
-  ],
+  link_whole: [webpdec_lib, webpdspdec_lib, webputilsdec_lib],
   version: '3.1.8',
 )
 

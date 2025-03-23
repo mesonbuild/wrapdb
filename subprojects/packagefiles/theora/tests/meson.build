@@ -14,7 +14,9 @@ noop = executable(
   include_directories: incdir,
 )
 
-tests += {'noop': noop}
+tests += {
+  'noop': noop,
+}
 
 # dummy call tests for the pre-1.0 legacy api with current link line
 noop_theoraenc = executable(
@@ -26,7 +28,9 @@ noop_theoraenc = executable(
   include_directories: incdir,
 )
 
-tests += {'noop_theoraenc': noop_theoraenc}
+tests += {
+  'noop_theoraenc': noop_theoraenc,
+}
 
 # dummy call tests for the pre-1.0 legacy api with legacy link line
 noop_theora = executable(
@@ -38,7 +42,9 @@ noop_theora = executable(
   include_directories: incdir,
 )
 
-tests += {'noop_theora': noop_theora}
+tests += {
+  'noop_theora': noop_theora,
+}
 
 # comment utilities for the current api
 comment = executable(
@@ -50,7 +56,9 @@ comment = executable(
   include_directories: incdir,
 )
 
-tests += {'comment': comment}
+tests += {
+  'comment': comment,
+}
 
 # comment utilities for the legacy api and current lib
 comment_theoradec = executable(
@@ -62,7 +70,9 @@ comment_theoradec = executable(
   include_directories: incdir,
 )
 
-tests += {'comment_theoradec': comment_theoradec}
+tests += {
+  'comment_theoradec': comment_theoradec,
+}
 
 # comment utilities for the legacy api and legacy lib
 comment_theora = executable(
@@ -74,7 +84,9 @@ comment_theora = executable(
   include_directories: incdir,
 )
 
-tests += {'comment_theora': comment_theora}
+tests += {
+  'comment_theora': comment_theora,
+}
 
 granulepos = executable(
   'granulepos',
@@ -85,7 +97,9 @@ granulepos = executable(
   include_directories: incdir,
 )
 
-tests += {'granulepos': granulepos}
+tests += {
+  'granulepos': granulepos,
+}
 
 granulepos_theoraenc = executable(
   'granulepos_theoraenc',
@@ -96,7 +110,9 @@ granulepos_theoraenc = executable(
   include_directories: incdir,
 )
 
-tests += {'granulepos_theoraenc': granulepos_theoraenc}
+tests += {
+  'granulepos_theoraenc': granulepos_theoraenc,
+}
 
 granulepos_theora = executable(
   'granulepos_theora',
@@ -107,7 +123,9 @@ granulepos_theora = executable(
   include_directories: incdir,
 )
 
-tests += {'granulepos_theora': granulepos_theora}
+tests += {
+  'granulepos_theora': granulepos_theora,
+}
 
 foreach name, exe : tests
   test(name, exe)

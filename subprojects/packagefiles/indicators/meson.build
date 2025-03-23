@@ -1,17 +1,18 @@
 project(
-    'indicators',
-    'cpp',
-    version : '2.3',
-    license : 'MIT'
+  'indicators',
+  'cpp',
+  version: '2.3',
+  license: 'MIT',
 )
 
 includes = include_directories(['single_include', 'include'])
 
 indicators_dep = declare_dependency(
-    include_directories: includes
+  include_directories: includes,
 )
 
-install_headers([
+install_headers(
+  [
     'include/indicators/block_progress_bar.hpp',
     'include/indicators/color.hpp',
     'include/indicators/cursor_control.hpp',
@@ -28,6 +29,7 @@ install_headers([
     'include/indicators/setting.hpp',
     'include/indicators/termcolor.hpp',
     'include/indicators/terminal_size.hpp',
-
     'single_include/indicators/indicators.hpp',
-], subdir: 'indicators')
+  ],
+  subdir: 'indicators',
+)

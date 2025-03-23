@@ -1,3 +1,1 @@
-cxx_sources += files(
-    'SDL_haikuaudio.cc'
-)
+cxx_sources += files('SDL_haikuaudio.cc')

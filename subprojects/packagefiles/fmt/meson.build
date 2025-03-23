@@ -1,4 +1,10 @@
-project('fmt', 'cpp', version: '11.1.1', license: 'MIT WITH fmt-exception', default_options: ['cpp_std=c++14'])
+project(
+  'fmt',
+  'cpp',
+  version: '11.1.1',
+  license: 'MIT WITH fmt-exception',
+  default_options: ['cpp_std=c++14'],
+)
 
 fmt_private_cpp_args = []
 fmt_interface_cpp_args = []
@@ -20,7 +26,8 @@ fmt_lib = library(
 )
 
 if not header_only
-  install_subdir('include',
+  install_subdir(
+    'include',
     strip_directory: true,
     install_dir: get_option('includedir'),
   )
@@ -43,7 +50,8 @@ fmt_header_only_dep = declare_dependency(
 
 if not header_only
   pkg_mod = import('pkgconfig')
-  pkg_mod.generate(fmt_lib,
+  pkg_mod.generate(
+    fmt_lib,
     name: 'fmt',
     filebase: 'fmt',
   )

@@ -1,22 +1,30 @@
 #####  GLFW build options
 
 #@ Build options
-option('tests',
-        type : 'boolean',
-        value : false,
-        description : 'Build GLFW test programs?')
-option('examples',
-        type : 'boolean',
-        value : false,
-        description : 'Build GLFW example programs?')
-option('install',
-        type : 'boolean',
-        value : false,
-        description : 'Install GLFW?')
+option(
+    'tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build GLFW test programs?',
+)
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build GLFW example programs?',
+)
+option(
+    'install',
+    type: 'boolean',
+    value: false,
+    description: 'Install GLFW?',
+)
 
 #@ Configuration options
-option('display-api',
-        type : 'combo',
-        choices : ['auto', 'osmesa', 'x11', 'wayland', 'win32', 'cocoa'],
-        value : 'auto',
-        description : 'Choose backend display API.')
+option(
+    'display-api',
+    type: 'combo',
+    choices: ['auto', 'osmesa', 'x11', 'wayland', 'win32', 'cocoa'],
+    value: 'auto',
+    description: 'Choose backend display API.',
+)

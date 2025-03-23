@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_gpu_vulkan.c',
-)
+sources += files('SDL_gpu_vulkan.c')

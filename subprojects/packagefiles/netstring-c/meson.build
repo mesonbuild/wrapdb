@@ -2,7 +2,7 @@ project(
   'netstring-c',
   'c',
   version: '0.0.0',
-  license : 'Unlicense',
+  license: 'Unlicense',
   meson_version: '>= 0.40',
 )
 
@@ -10,7 +10,7 @@ project(
 cc = meson.get_compiler('c')
 libm_dep = cc.find_library(
   'm',
-  required : false,
+  required: false,
 )
 
 netstring_c_lib = library(

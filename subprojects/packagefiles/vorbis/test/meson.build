@@ -1,9 +1,18 @@
-c_args = meson.get_compiler('c').get_argument_syntax() == 'msvc' ? ['-D_USE_MATH_DEFINES'] : []
+c_args = meson.get_compiler('c').get_argument_syntax() == 'msvc' ? [
+  '-D_USE_MATH_DEFINES',
+] : []
 
-testexe = executable('testbin',
-  'util.c', 'write_read.c', 'test.c',
+testexe = executable(
+  'testbin',
+  'util.c',
+  'write_read.c',
+  'test.c',
   c_args: c_args,
-  dependencies : [vorbisenc_dep, vorbis_dep, ogg_dep],
+  dependencies: [vorbisenc_dep, vorbis_dep, ogg_dep],
 )
 
-test('vorbistest', testexe, timeout: 90)
+test(
+  'vorbistest',
+  testexe,
+  timeout: 90,
+)

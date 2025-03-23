@@ -32,18 +32,11 @@ config_types_h = configure_file(
   output: 'config_types.h',
 )
 
-lib_inc += [
-  config_h,
-  config_types_h,
-  jbig2_h,
-]
+lib_inc += [config_h, config_types_h, jbig2_h]
 
 jbig2dec_lib = library(
   'jbig2dec',
-  [
-    lib_inc,
-    lib_src,
-  ],
+  [lib_inc, lib_src],
   dependencies: m_dep,
   install: true,
   version: '0.0.0',
@@ -78,7 +71,9 @@ if tests_opt.allowed()
   # Tests need access to all symbols, including on Windows.
   jbig2dec_priv_lib = static_library(
     'jbig2dec_priv',
-    objects: jbig2dec_lib.extract_all_objects(recursive: true),
+    objects: jbig2dec_lib.extract_all_objects(
+      recursive: true,
+    ),
   )
   foreach _name, _src : {
     'arith'  : jbig2_arith_c,

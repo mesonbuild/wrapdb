@@ -1,2 +1,5 @@
-executable('sample', 'sample.c',
-    dependencies: liblbfgs_dep)
+executable(
+  'sample',
+  'sample.c',
+  dependencies: liblbfgs_dep,
+)

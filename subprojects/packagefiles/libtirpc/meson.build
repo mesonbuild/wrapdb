@@ -1,4 +1,9 @@
-project('libtirpc', 'c', license: 'BSD-3-Clause', version: '1.3.3')
+project(
+  'libtirpc',
+  'c',
+  license: 'BSD-3-Clause',
+  version: '1.3.3',
+)
 
 if host_machine.system() != 'linux'
   error('Everything except Linux is unsupported.')
@@ -7,21 +12,45 @@ endif
 cc = meson.get_compiler('c')
 
 threads_dep = dependency('threads')
-queue_dep = cc.has_header('sys/queue.h') ? dependency('', required: false) : dependency('libbsd-overlay')
+queue_dep = cc.has_header('sys/queue.h') ? dependency(
+  '',
+  required: false,
+) : dependency('libbsd-overlay')
 
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
-add_project_arguments('-DPORTMAP', language: 'c')
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-D_GNU_SOURCE',
+  language: 'c',
+)
+add_project_arguments(
+  '-DPORTMAP',
+  language: 'c',
+)
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 
 cdata = configuration_data()
-gssapi_dep = dependency('krb5-gssapi', required: get_option('gssapi'))
+gssapi_dep = dependency(
+  'krb5-gssapi',
+  required: get_option('gssapi'),
+)
 if gssapi_dep.found() and cc.has_header('gssapi/gssapi_ext.h')
-  add_project_arguments('-DHAVE_GSSAPI_GSSAPI_EXT_H', language: 'c')
+  add_project_arguments(
+    '-DHAVE_GSSAPI_GSSAPI_EXT_H',
+    language: 'c',
+  )
 else
-  gssapi_dep = dependency('gssapi', required: get_option('gssapi'))
+  gssapi_dep = dependency(
+    'gssapi',
+    required: get_option('gssapi'),
+  )
 endif
 if gssapi_dep.found()
-  add_project_arguments('-DHAVE_RPCSEC_GSS', language: 'c')
+  add_project_arguments(
+    '-DHAVE_RPCSEC_GSS',
+    language: 'c',
+  )
 endif
 
 cdata.set('HAVE_FEATURES_H', cc.has_header('features.h'))
@@ -30,7 +59,10 @@ cdata.set10('HAVE_GETRPCBYNUMBER', cc.has_function('getrpcbynumber'))
 cdata.set10('HAVE_SETRPCENT', cc.has_function('setrpcent'))
 cdata.set10('HAVE_GETRPCENT', cc.has_function('getrpcent'))
 cdata.set10('HAVE_ENDRPCENT', cc.has_function('endrpcent'))
-cfile = configure_file(output: 'config.h', configuration: cdata)
+cfile = configure_file(
+  output: 'config.h',
+  configuration: cdata,
+)
 
 incdirs = include_directories('.', 'tirpc')
 
@@ -106,11 +138,17 @@ if get_option('authdes')
     'src/des_soft.c',
     'src/svc_auth_des.c',
   )
-  add_project_arguments('-DAUTHDES_SUPPORT', language: 'c')
+  add_project_arguments(
+    '-DAUTHDES_SUPPORT',
+    language: 'c',
+  )
 endif
 
 if get_option('ipv6')
-  add_project_arguments('-DINET6', language: 'c')
+  add_project_arguments(
+    '-DINET6',
+    language: 'c',
+  )
 endif
 
 if gssapi_dep.found()

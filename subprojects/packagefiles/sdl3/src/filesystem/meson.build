@@ -9,6 +9,4 @@ else
   subdir('posix')
 endif
 
-sources += files(
-  'SDL_filesystem.c',
-)
+sources += files('SDL_filesystem.c')

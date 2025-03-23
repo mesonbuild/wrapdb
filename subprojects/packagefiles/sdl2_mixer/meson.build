@@ -1,7 +1,7 @@
 project(
   'sdl2 mixer',
   'c',
-  version : '2.6.2'
+  version: '2.6.2',
 )
 
 cc = meson.get_compiler('c')
@@ -16,17 +16,26 @@ ogg_dep = dependency('ogg')
 vorbis_dep = dependency('vorbis')
 vorbisfile_dep = dependency('vorbisfile')
 
-flac_dep = dependency('libflac', required: get_option('flac'))
+flac_dep = dependency(
+  'libflac',
+  required: get_option('flac'),
+)
 if flac_dep.found()
   feature_args += '-DMUSIC_FLAC_LIBFLAC'
 endif
 
-mpg123_dep = dependency('mpg123', required: get_option('mpg123'))
+mpg123_dep = dependency(
+  'mpg123',
+  required: get_option('mpg123'),
+)
 if mpg123_dep.found()
   feature_args += '-DMUSIC_MP3_MPG123'
 endif
 
-opus_dep = dependency('opusfile', required: get_option('opus'))
+opus_dep = dependency(
+  'opusfile',
+  required: get_option('opus'),
+)
 if opus_dep.found()
   feature_args += '-DMUSIC_OPUS'
 endif
@@ -64,8 +73,16 @@ sdl2_mixer_lib = library(
   sources,
   c_args: feature_args,
   include_directories: incdirs,
-  dependencies: [vorbisfile_dep, vorbis_dep, ogg_dep, opus_dep, mpg123_dep, flac_dep, sdl2_dep],
-  install: true
+  dependencies: [
+    vorbisfile_dep,
+    vorbis_dep,
+    ogg_dep,
+    opus_dep,
+    mpg123_dep,
+    flac_dep,
+    sdl2_dep,
+  ],
+  install: true,
 )
 
 sdl2_mixer_dep = declare_dependency(

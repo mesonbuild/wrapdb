@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_steamstorage.c',
-)
+sources += files('SDL_steamstorage.c')

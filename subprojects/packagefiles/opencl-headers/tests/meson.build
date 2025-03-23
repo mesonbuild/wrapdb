@@ -1,12 +1,4 @@
-cl_versions = [
-  '100',
-  '110',
-  '120',
-  '200',
-  '210',
-  '220',
-  '300',
-]
+cl_versions = ['100', '110', '120', '200', '210', '220', '300']
 
 cl_tests = [
   'cl',
@@ -40,4 +32,11 @@ foreach t : cl_tests
   endforeach
 endforeach
 
-test('test_headers', executable('headers', 'test_headers.c', dependencies: opencl_headers_dep))
+test(
+  'test_headers',
+  executable(
+    'headers',
+    'test_headers.c',
+    dependencies: opencl_headers_dep,
+  ),
+)

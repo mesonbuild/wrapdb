@@ -1,11 +1,11 @@
-project('mpdecimal', 'c', 'cpp',
-        version: '2.5.1',
-        license: 'BSD-2-Clause',
-        default_options: [
-          'c_std=c99',
-          'cpp_std=c++14',
-          'b_ndebug=true',
-        ])
+project(
+  'mpdecimal',
+  'c',
+  'cpp',
+  version: '2.5.1',
+  license: 'BSD-2-Clause',
+  default_options: ['c_std=c99', 'cpp_std=c++14', 'b_ndebug=true'],
+)
 
 library_soversion = '3'
 library_version = meson.project_version()
@@ -13,33 +13,41 @@ v = library_version.split('.')
 compat_version = '.'.join([v[0], v[1]])
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 
 conf = configuration_data()
 
 have_uint128_t = cc.sizeof('__uint128_t') > 0
 
 # x64 with gcc asm:
-gcc_asm_for_x64 = cc.compiles('''
+gcc_asm_for_x64 = cc.compiles(
+  '''
   int main()
   {
     __asm__ __volatile__ ("movq %rcx, %rax");
   }''',
-  name: 'x64 gcc inline assembler')
+  name: 'x64 gcc inline assembler',
+)
 
 # x87 with gcc asm:
-gcc_asm_for_x87 = cc.compiles('''
+gcc_asm_for_x87 = cc.compiles(
+  '''
   int main()
   {
     unsigned short cw;
     __asm__ __volatile__ ("fnstcw %0" : "=m" (cw));
     __asm__ __volatile__ ("fldcw %0" : : "m" (cw));
   }''',
-  name: 'x87 gcc inline assembler')
+  name: 'x87 gcc inline assembler',
+)
 
 # _FORTIFY_SOURCE wrappers for memmove and bcopy are incorrect:
 # http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
-if cc.run('''
+if cc.run(
+  '''
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
@@ -55,9 +63,11 @@ if cc.run('''
     return 0;
   }''',
   args: ['-O2', '-D_FORTIFY_SOURCE=2'],
-  name: 'glibc _FORTIFY_SOURCE/memmove').returncode() != 0
+  name: 'glibc _FORTIFY_SOURCE/memmove',
+).returncode() != 0
 
-  warning('''
+  warning(
+    '''
 ***************************** WARNING *********************************
 
 Detected glibc _FORTIFY_SOURCE/memmove bug. See:
@@ -74,8 +84,12 @@ A better solution is to upgrade glibc or to report the bug to your
 OS vendor.
 
 ***************************** WARNING *********************************
-''')
-  add_project_arguments('-U_FORTIFY_SOURCE', language: 'c')
+''',
+  )
+  add_project_arguments(
+    '-U_FORTIFY_SOURCE',
+    language: 'c',
+  )
 endif
 
 
@@ -169,7 +183,7 @@ machine = get_option('machine')
 if machine == 'auto'
   if host_machine.system() == 'windows'
     if have_uint128_t
-        machine = 'uint128'
+      machine = 'uint128'
     elif host_machine.cpu_family() == 'x86'
       machine = 'ppro'
     elif host_machine.cpu_family() == 'x86_64'
@@ -202,51 +216,108 @@ if machine == 'auto'
 endif
 
 
-add_project_arguments(cc.get_supported_arguments('-Wno-unknown-pragmas'), language: ['c', 'cpp'])
+add_project_arguments(
+  cc.get_supported_arguments('-Wno-unknown-pragmas'),
+  language: ['c', 'cpp'],
+)
 
 
 if machine == 'x64'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
-  add_project_arguments('-DCONFIG_64', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_64',
+    language: 'c',
+  )
   if host_machine.system() == 'windows'
-    add_project_arguments('-DMASM', language: 'c')
+    add_project_arguments(
+      '-DMASM',
+      language: 'c',
+    )
   else
-    add_project_arguments('-DASM', language: 'c')
-    add_project_arguments('-m64', language: ['c', 'cpp'])
-    add_project_link_arguments('-m64', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-DASM',
+      language: 'c',
+    )
+    add_project_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
   endif
 
 elif machine == 'uint128'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
-  add_project_arguments('-DCONFIG_64', '-DANSI', '-DHAVE_UINT128_T', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_64',
+    '-DANSI',
+    '-DHAVE_UINT128_T',
+    language: 'c',
+  )
   if host_machine.system() != 'windows'
-    add_project_arguments('-m64', language: ['c', 'cpp'])
-    add_project_link_arguments('-m64', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
   endif
 
 elif machine == 'ansi64'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_64)
-  add_project_arguments('-DCONFIG_64', '-DANSI', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_64',
+    '-DANSI',
+    language: 'c',
+  )
   if host_machine.system() != 'windows'
-    add_project_arguments('-m64', language: ['c', 'cpp'])
-    add_project_link_arguments('-m64', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m64',
+      language: ['c', 'cpp'],
+    )
   endif
 
 elif machine == 'ppro'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
-  add_project_arguments('-DCONFIG_32', '-DPPRO', '-DASM', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_32',
+    '-DPPRO',
+    '-DASM',
+    language: 'c',
+  )
   if host_machine.system() == 'windows'
-    add_project_arguments('-DMASM', language: 'c')
+    add_project_arguments(
+      '-DMASM',
+      language: 'c',
+    )
   else
-    add_project_arguments('-DASM', language: 'c')
-    add_project_arguments('-m32', language: ['c', 'cpp'])
-    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-DASM',
+      language: 'c',
+    )
+    add_project_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
   endif
 
   # Some versions of gcc miscompile inline asm:
   # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46491
   # http://gcc.gnu.org/ml/gcc/2010-11/msg00366.html
-  if cc.get_id() == 'gcc' and cc.run('''
+  if cc.get_id() == 'gcc' and cc.run(
+    '''
     __attribute__((noinline)) int
     foo(int *p) {
       int r;
@@ -263,29 +334,57 @@ elif machine == 'ppro'
       return 0;
     }''',
     args: ['-O2'],
-    name: 'gcc ipa-pure-const').returncode() != 0
+    name: 'gcc ipa-pure-const',
+  ).returncode() != 0
 
-    add_project_arguments('-fno-ipa-pure-const', language: 'c')
+    add_project_arguments(
+      '-fno-ipa-pure-const',
+      language: 'c',
+    )
   endif
 
 elif machine == 'ansi32'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32)
-  add_project_arguments('-DCONFIG_32', '-DANSI', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_32',
+    '-DANSI',
+    language: 'c',
+  )
   if host_machine.system() != 'windows' and cc.sizeof('size_t') > 4
-    add_project_arguments('-m32', language: ['c', 'cpp'])
-    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
   endif
 
 elif machine == 'ansi-legacy'
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_32_LEGACY)
-  add_project_arguments('-DCONFIG_32', '-DANSI', '-DLEGACY_COMPILER', language: 'c')
+  add_project_arguments(
+    '-DCONFIG_32',
+    '-DANSI',
+    '-DLEGACY_COMPILER',
+    language: 'c',
+  )
   if host_machine.system() != 'windows'
-    add_project_arguments('-m32', language: ['c', 'cpp'])
-    add_project_link_arguments('-m32', language: ['c', 'cpp'])
+    add_project_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
+    add_project_link_arguments(
+      '-m32',
+      language: ['c', 'cpp'],
+    )
   endif
 
 elif machine == 'universal'
-  add_project_arguments('-DUNIVERSAL', language: 'c')
+  add_project_arguments(
+    '-DUNIVERSAL',
+    language: 'c',
+  )
   conf.set('MPD_HEADER_CONFIG', mpd_header_config_UNIVERSAL)
   if host_machine.system() == 'windows'
     error('machine "universal" not supported on Windows')
@@ -296,7 +395,14 @@ endif
 libmpdec_c_args = []
 libmpdecpp_cpp_args = []
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('/wd4200', '/wd4204', '/wd4221', '/D_CRT_SECURE_NO_WARNINGS', '/nologo', language: 'c')
+  add_project_arguments(
+    '/wd4200',
+    '/wd4204',
+    '/wd4221',
+    '/D_CRT_SECURE_NO_WARNINGS',
+    '/nologo',
+    language: 'c',
+  )
   if get_option('default_library') != 'static'
     libmpdec_c_args = ['/DBUILD_LIBMPDEC']
     libmpdecpp_cpp_args = ['/DBUILD_LIBMPDECXX']
@@ -305,27 +411,29 @@ if cc.get_argument_syntax() == 'msvc'
   mpdecimal_h = configure_file(
     input: 'libmpdec/mpdecimal@0@.h'.format(vcver),
     output: 'mpdecimal.h',
-    copy: true)
+    copy: true,
+  )
 else
   mpdecimal_h = configure_file(
     input: 'libmpdec/mpdecimal.h.in',
     output: 'mpdecimal.h',
-    configuration: conf)
+    configuration: conf,
+  )
 endif
 
 libmpdec_sources = files(
   'libmpdec/basearith.c',
-  'libmpdec/context.c',
   'libmpdec/constants.c',
+  'libmpdec/context.c',
   'libmpdec/convolute.c',
   'libmpdec/crt.c',
-  'libmpdec/mpdecimal.c',
-  'libmpdec/mpsignal.c',
   'libmpdec/difradix2.c',
   'libmpdec/fnt.c',
   'libmpdec/fourstep.c',
   'libmpdec/io.c',
   'libmpdec/mpalloc.c',
+  'libmpdec/mpdecimal.c',
+  'libmpdec/mpsignal.c',
   'libmpdec/numbertheory.c',
   'libmpdec/sixstep.c',
   'libmpdec/transpose.c',
@@ -337,7 +445,8 @@ if cc.get_argument_syntax() == 'msvc' and machine == 'x64'
     'vcdiv64.asm.obj',
     input: 'libmpdec/vcdiv64.asm',
     output: 'vcdiv64.asm.obj',
-    command: [ml, '/Cx', '/Fo', '@OUTPUT@', '/c', '@INPUT@'])
+    command: [ml, '/Cx', '/Fo', '@OUTPUT@', '/c', '@INPUT@'],
+  )
 endif
 
 libmpdec = library(
@@ -348,33 +457,36 @@ libmpdec = library(
   version: library_version,
   soversion: library_soversion,
   darwin_versions: [compat_version, library_version],
-  override_options: ['optimization=2'])
+  override_options: ['optimization=2'],
+)
 
 mpdec_dep = declare_dependency(
   link_with: libmpdec,
   # mpdecimal.h is generated in the project root directory
-  include_directories: include_directories('.', 'libmpdec'))
-
-libmpdecpp_sources = files(
-  'libmpdec++/decimal.cc',
+  include_directories: include_directories('.', 'libmpdec'),
 )
+
+libmpdecpp_sources = files('libmpdec++/decimal.cc')
 
 libmpdecpp = library(
   'mpdec++',
-  libmpdecpp_sources, mpdecimal_h,
+  libmpdecpp_sources,
+  mpdecimal_h,
   cpp_args: libmpdecpp_cpp_args,
   dependencies: [m_dep, mpdec_dep],
   version: library_version,
   soversion: library_soversion,
   darwin_versions: [compat_version, library_version],
-  override_options: ['optimization=3'])
+  override_options: ['optimization=3'],
+)
 
 install_headers(mpdecimal_h, 'libmpdec++/decimal.hh')
 
 mpdecpp_dep = declare_dependency(
   link_with: libmpdecpp,
   include_directories: include_directories('libmpdec++'),
-  dependencies: mpdec_dep)
+  dependencies: mpdec_dep,
+)
 
 if get_option('examples')
   subdir('libmpdec/examples')

@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_tray.c',
-)
+sources += files('SDL_tray.c')

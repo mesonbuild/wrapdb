@@ -48,4 +48,11 @@ if not catch2_dep.found()
   subdir_done()
 endif
 
-test('tests', executable('tests_exe', test_src, dependencies: [catch2_dep, spdlog_dep]))
+test(
+  'tests',
+  executable(
+    'tests_exe',
+    test_src,
+    dependencies: [catch2_dep, spdlog_dep],
+  ),
+)

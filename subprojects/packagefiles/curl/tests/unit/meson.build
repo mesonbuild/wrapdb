@@ -9,13 +9,7 @@ foreach _spec : makefile_extractions['unit']
   unit_targets += executable(
     _spec,
     c_args: curlu_flags,
-    dependencies: [
-      curl_iflags_dep,
-      _deps.get(_name, [curltool_dep, curlu_dep]),
-    ],
-    include_directories: include_directories(
-      '../../src',
-      '../libtest',
-    ),
+    dependencies: [curl_iflags_dep, _deps.get(_name, [curltool_dep, curlu_dep])],
+    include_directories: include_directories('../../src', '../libtest'),
   )
 endforeach

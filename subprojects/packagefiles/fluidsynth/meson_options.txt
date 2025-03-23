@@ -1,24 +1,24 @@
 # Options disabled by default
 
 option(
-  'enable-floats',
-  type: 'boolean',
-  value: false,
-  description: 'enable type float instead of double for DSP samples',
+    'enable-floats',
+    type: 'boolean',
+    value: false,
+    description: 'enable type float instead of double for DSP samples',
 )
 
 option(
-  'enable-threads',
-  type: 'boolean',
-  value: true,
-  description: 'enable multi-threading support (such as parallel voice synthesis)',
+    'enable-threads',
+    type: 'boolean',
+    value: true,
+    description: 'enable multi-threading support (such as parallel voice synthesis)',
 )
 
 option(
-  'openmp',
-  type: 'feature',
-  value: 'auto',
-  description: 'enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)',
+    'openmp',
+    type: 'feature',
+    value: 'auto',
+    description: 'enable OpenMP support (parallelization of soundfont decoding, vectorization of voice mixing, etc.)',
 )
 
 # TODO enable-fpe-check   'enable Floating Point Exception checks and debug messages'
@@ -69,15 +69,15 @@ option(
 # Wrap-specific options
 
 option(
-  'try-static-deps',
-  type: 'boolean',
-  value: false,
-  description: 'try using static linking for FluidSynth dependencies',
+    'try-static-deps',
+    type: 'boolean',
+    value: false,
+    description: 'try using static linking for FluidSynth dependencies',
 )
 
 option(
-  'tests',
-  type: 'boolean',
-  value: true,
-  description: 'Build self-test programs',
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Build self-test programs',
 )

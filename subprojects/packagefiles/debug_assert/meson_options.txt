@@ -1,8 +1,24 @@
-option('no-stdio', type: 'boolean', value: false,
-       description: 'Disable using fprintf() in the default_handler to print an error message')
-option('disable', type: 'boolean', value: false,
-      description: 'Completely disable assertion macros')
-option('override-mark-unreachable', type: 'string', value: 'not overridden',
-      description: 'Override DEBUG_ASSERT_MARK_UNREACHABLE macro')
-option('override-force-inline', type: 'string', value: 'not overridden',
-      description: 'Override DEBUG_ASSERT_FORCE_INLINE macro')
+option(
+    'no-stdio',
+    type: 'boolean',
+    value: false,
+    description: 'Disable using fprintf() in the default_handler to print an error message',
+)
+option(
+    'disable',
+    type: 'boolean',
+    value: false,
+    description: 'Completely disable assertion macros',
+)
+option(
+    'override-mark-unreachable',
+    type: 'string',
+    value: 'not overridden',
+    description: 'Override DEBUG_ASSERT_MARK_UNREACHABLE macro',
+)
+option(
+    'override-force-inline',
+    type: 'string',
+    value: 'not overridden',
+    description: 'Override DEBUG_ASSERT_FORCE_INLINE macro',
+)

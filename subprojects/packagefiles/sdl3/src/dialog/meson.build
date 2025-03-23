@@ -4,7 +4,4 @@ else
   subdir('unix')
 endif
 
-sources += files(
-  'SDL_dialog.c',
-  'SDL_dialog_utils.c',
-)
+sources += files('SDL_dialog.c', 'SDL_dialog_utils.c')

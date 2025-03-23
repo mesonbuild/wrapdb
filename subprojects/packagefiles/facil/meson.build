@@ -13,14 +13,26 @@ if cc.get_argument_syntax() == 'msvc'
   error('MSVC is unsupported. Only MinGW')
 endif
 
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 thread_dep = dependency('threads')
-ws_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
+ws_dep = cc.find_library(
+  'ws2_32',
+  required: host_machine.system() == 'windows',
+)
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-D_WIN32_WINNT=0x0600', language: 'c')
+  add_project_arguments(
+    '-D_WIN32_WINNT=0x0600',
+    language: 'c',
+  )
 elif host_machine.system() == 'linux'
-  add_project_arguments('-D_LARGEFILE64_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_LARGEFILE64_SOURCE',
+    language: 'c',
+  )
 endif
 
 facil_src = files(

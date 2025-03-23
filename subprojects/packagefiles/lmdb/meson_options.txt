@@ -1,2 +1,12 @@
-option('tests', type: 'boolean', value: false, description: 'build tests')
-option('programs', type: 'boolean', value: false, description: 'build programs')
+option(
+    'tests',
+    type: 'boolean',
+    value: false,
+    description: 'build tests',
+)
+option(
+    'programs',
+    type: 'boolean',
+    value: false,
+    description: 'build programs',
+)

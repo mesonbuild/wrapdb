@@ -6,11 +6,7 @@ else
   quazip_dep_args = []
 endif
 
-quazip_moc_headers = [
-  'quagzipfile.h',
-  'quaziodevice.h',
-  'quazipfile.h'
-]
+quazip_moc_headers = ['quagzipfile.h', 'quaziodevice.h', 'quazipfile.h']
 
 quazip_src = [
   'qioapi.cpp',
@@ -26,10 +22,12 @@ quazip_src = [
   'quazipfileinfo.cpp',
   'quazipnewinfo.cpp',
   'unzip.c',
-  'zip.c'
+  'zip.c',
 ]
 
-quazip_pp = qt.preprocess(moc_headers: quazip_moc_headers)
+quazip_pp = qt.preprocess(
+  moc_headers: quazip_moc_headers,
+)
 
 quazip_lib = library(
   'quazip',
@@ -45,5 +43,5 @@ quazip_dep = declare_dependency(
   version: meson.project_version(),
   include_directories: quazip_incdir,
   compile_args: quazip_dep_args,
-  link_with: quazip_lib
+  link_with: quazip_lib,
 )

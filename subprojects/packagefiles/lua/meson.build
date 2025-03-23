@@ -11,40 +11,80 @@ lua_versions = meson.project_version().split('.')
 cc = meson.get_compiler('c')
 
 # Skip bogus warning.
-add_project_arguments(cc.get_supported_arguments('-Wno-string-plus-int', '-Wno-stringop-overflow'), language: 'c')
+add_project_arguments(
+  cc.get_supported_arguments('-Wno-string-plus-int', '-Wno-stringop-overflow'),
+  language: 'c',
+)
 
 # Platform-specific defines.
-is_posix = host_machine.system() in ['cygwin', 'darwin', 'dragonfly', 'freebsd', 'gnu', 'haiku', 'linux', 'netbsd', 'openbsd', 'sunos']
+is_posix = host_machine.system() in [
+  'cygwin',
+  'darwin',
+  'dragonfly',
+  'freebsd',
+  'gnu',
+  'haiku',
+  'linux',
+  'netbsd',
+  'openbsd',
+  'sunos',
+]
 if is_posix
-  add_project_arguments('-DLUA_USE_POSIX', language: 'c')
+  add_project_arguments(
+    '-DLUA_USE_POSIX',
+    language: 'c',
+  )
 elif get_option('default_library') != 'static' and host_machine.system() == 'windows'
-  add_project_arguments('-DLUA_BUILD_AS_DLL', language: 'c')
+  add_project_arguments(
+    '-DLUA_BUILD_AS_DLL',
+    language: 'c',
+  )
 endif
 
 # Library dependencies.
-lua_lib_deps = [cc.find_library('m', required: false)]
+lua_lib_deps = [
+  cc.find_library(
+    'm',
+    required: false,
+  ),
+]
 
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required: get_option('loadlib'))
+  dl_dep = dependency(
+    'dl',
+    required: get_option('loadlib'),
+  )
 else
-  dl_dep = cc.find_library('dl', required: get_option('loadlib'))
+  dl_dep = cc.find_library(
+    'dl',
+    required: get_option('loadlib'),
+  )
 endif
 
 if dl_dep.found()
   lua_lib_deps += dl_dep
-  add_project_arguments('-DLUA_USE_DLOPEN', language: 'c')
+  add_project_arguments(
+    '-DLUA_USE_DLOPEN',
+    language: 'c',
+  )
 endif
 
 # Interpreter dependencies.
 lua_exe_deps = []
 lua_exe_args = []
 
-readline_dep = dependency('readline', required: get_option('line_editing'))
+readline_dep = dependency(
+  'readline',
+  required: get_option('line_editing'),
+)
 if readline_dep.found()
   lua_exe_deps += readline_dep
   lua_exe_args += '-DLUA_USE_READLINE'
 else
-  readline_dep = dependency('libedit', required: get_option('line_editing'))
+  readline_dep = dependency(
+    'libedit',
+    required: get_option('line_editing'),
+  )
 endif
 
 # Targets.

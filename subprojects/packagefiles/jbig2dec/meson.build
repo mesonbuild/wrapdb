@@ -51,47 +51,47 @@ lib_src = [
   'jbig2_symbol_dict.c',
   'jbig2_text.c',
 ]
-progs_src = [
-  'jbig2dec.c',
-  'sha1.c',
-]
-tests_src = [
-]
+progs_src = ['jbig2dec.c', 'sha1.c']
+tests_src = []
 
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 
-png_dep = dependency('libpng', required: progs_opt.disabled() ? progs_opt : false)
+png_dep = dependency(
+  'libpng',
+  required: progs_opt.disabled() ? progs_opt : false,
+)
 if png_dep.found()
   progs_src += 'jbig2_image_png.c'
 endif
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 
 cdata = configuration_data()
 cdata.set('HAVE_LIBPNG', png_dep.found())
 cdata.set('WORDS_BIGENDIAN', host_machine.endian() == 'big' ? 1 : false)
 
-foreach _header : [
-  'stdint.h',
-  'string.h',
-]
+foreach _header : ['stdint.h', 'string.h']
   cdata.set(
     'HAVE_' + _header.underscorify().to_upper(),
     cc.has_header(_header) ? 1 : false,
   )
 endforeach
 
-if (
-  progs_opt.allowed()
-  and cc.has_function('getopt_long', prefix: '#include<getopt.h>')
+if (progs_opt.allowed()
+and cc.has_function(
+  'getopt_long',
+  prefix: '#include<getopt.h>',
+)
 )
   cdata.set('HAVE_GETOPT_H', 1)
 else
-  progs_src += [
-    'getopt.c',
-    'getopt.h',
-    'getopt1.c',
-  ]
+  progs_src += ['getopt.c', 'getopt.h', 'getopt1.c']
 endif
 
 # Optional replacement for int…_t / uint…_t types.
@@ -102,10 +102,12 @@ cdata.set('JBIG2_INT32_T' , '')
 if cdata.get('HAVE_STDINT_H').to_string() != '1'
   sizeof_types = {}
   foreach _type : ['char', 'short', 'int', 'long']
-    sizeof_types += {_type: cc.sizeof(_type)}
+    sizeof_types += {
+      _type: cc.sizeof(_type),
+    }
   endforeach
   foreach _spec : [
-    ['int8' , 1, 'char'          ],
+    ['int8' , 1, 'char'],
     ['int16', 2, 'short char int'],
     ['int32', 4, 'int long short'],
   ]
@@ -120,7 +122,11 @@ if cdata.get('HAVE_STDINT_H').to_string() != '1'
       endif
     endforeach
     if _type == ''
-      error('could not find a suitable replacement type for @0@_t / u@0@_t'.format(_name))
+      error(
+        'could not find a suitable replacement type for @0@_t / u@0@_t'.format(
+          _name,
+        ),
+      )
     endif
     message('using @0@ for @1@_t / u@1@_t'.format(_type, _name))
     cdata.set('JBIG2_@0@_T'.format(_name.to_upper()), _type)

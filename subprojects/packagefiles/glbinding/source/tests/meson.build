@@ -1,8 +1,20 @@
 build_tests_opt = get_option('build_tests')
 
-glfw3_dep = dependency('glfw3', required: build_tests_opt, disabler: true)
-gtest_dep = dependency('gtest', required: build_tests_opt, disabler: true)
-gmock_dep = dependency('gmock', required: build_tests_opt, disabler: true)
+glfw3_dep = dependency(
+  'glfw3',
+  required: build_tests_opt,
+  disabler: true,
+)
+gtest_dep = dependency(
+  'gtest',
+  required: build_tests_opt,
+  disabler: true,
+)
+gmock_dep = dependency(
+  'gmock',
+  required: build_tests_opt,
+  disabler: true,
+)
 
 # Commented out tests are broken and unused upstream - see https://github.com/cginternals/glbinding/pull/345
 glbinding_test_sources = files(
@@ -21,12 +33,21 @@ glbinding_test_sources = files(
 glbinding_test_exe = executable(
   'glbinding-test',
   glbinding_test_sources,
-
   cpp_args: [system_name_arg],
   override_options: ['cpp_std=c++14'],
-  dependencies: [glbinding_dep, glbinding_aux_dep, glfw3_dep, gtest_dep, gmock_dep]
+  dependencies: [
+    glbinding_dep,
+    glbinding_aux_dep,
+    glfw3_dep,
+    gtest_dep,
+    gmock_dep,
+  ],
 )
 
 if get_option('run_tests')
-  test('glbinding test suite', glbinding_test_exe, protocol: 'gtest')
+  test(
+    'glbinding test suite',
+    glbinding_test_exe,
+    protocol: 'gtest',
+  )
 endif

@@ -21,7 +21,10 @@ box2d_dep = declare_dependency(
   version: meson.project_version(),
 )
 
-doctest_dep = dependency('doctest', required: false)
+doctest_dep = dependency(
+  'doctest',
+  required: false,
+)
 if doctest_dep.found()
   subdir('unit-test')
 endif

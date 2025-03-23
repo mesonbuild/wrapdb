@@ -18,7 +18,10 @@ if cc.get_argument_syntax() == 'msvc'
   compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
 endif
 
-add_project_arguments('-D_LARGEFILE64_SOURCE', language: 'c')
+add_project_arguments(
+  '-D_LARGEFILE64_SOURCE',
+  language: 'c',
+)
 
 src = files(
   'adler32.c',
@@ -40,7 +43,10 @@ if host_machine.system() == 'windows'
   if cc.get_argument_syntax() != 'msvc'
     win_args += '-DGCC_WINDRES'
   endif
-  src += win.compile_resources('win32/zlib1.rc', args: win_args)
+  src += win.compile_resources(
+    'win32/zlib1.rc',
+    args: win_args,
+  )
 endif
 
 solo_args = []
@@ -49,15 +55,18 @@ if get_option('solo')
     error('-Dsolo=true is incompatible with building a DLL')
   endif
   solo_args = ['-DZ_SOLO']
-  add_project_arguments(solo_args, language: 'c')
+  add_project_arguments(
+    solo_args,
+    language: 'c',
+  )
 else
   src += files(
     'compress.c',
-    'uncompr.c',
     'gzclose.c',
     'gzlib.c',
     'gzread.c',
     'gzwrite.c',
+    'uncompr.c',
   )
 endif
 

@@ -2,11 +2,9 @@ project(
   'openssl',
   'c',
   version: '3.0.8',
-  license : 'Apache-2.0',
+  license: 'Apache-2.0',
   meson_version: '>= 0.55',
-  default_options: [
-    'warning_level=1',
-  ],
+  default_options: ['warning_level=1'],
 )
 
 # Make sure to generate configs in case they are not already
@@ -56,10 +54,15 @@ asm_opt = get_option('asm')
 if asm_opt.disabled()
   gas_or_nasm = false
 else
-  gas_or_nasm = (
-    find_program('as', required: false).found() or
-    find_program('nasm', required: false).found()
-  )
+  gas_or_nasm = (find_program(
+    'as',
+    required: false,
+  ).found() or
+find_program(
+    'nasm',
+    required: false,
+  ).found()
+)
 endif
 
 is_bsd = host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
@@ -148,7 +151,9 @@ if gas_or_nasm
       #  }
       #],
     elif is_x86_64
-      warning('x86_64 + windows combo does not support ASM yet, please contribute')
+      warning(
+        'x86_64 + windows combo does not support ASM yet, please contribute',
+      )
       asm = 'no-asm'
       # TODO: Port this for Windows and uncomment
       # arch_subdir = 'VC-WIN64A'
@@ -179,7 +184,9 @@ if gas_or_nasm
     asm = 'no-asm'
   endif
 elif asm_opt.enabled()
-  error('Neither GNU Assembler nor Netwide Assembler were found, cannot use use "asm=enabled" option')
+  error(
+    'Neither GNU Assembler nor Netwide Assembler were found, cannot use use "asm=enabled" option',
+  )
 else
   asm = 'no-asm'
 endif
@@ -262,13 +269,15 @@ if is_windows
     'OPENSSLDIR="C:\\Program Files\\Common Files\\SSL"',
     'ENGINESDIR="NUL"',
     'MODULESDIR="NUL"',
-    'OPENSSL_SYS_WIN32', 'WIN32_LEAN_AND_MEAN', 'L_ENDIAN',
-    '_CRT_SECURE_NO_DEPRECATE', 'UNICODE', '_UNICODE',
+    'OPENSSL_SYS_WIN32',
+    'WIN32_LEAN_AND_MEAN',
+    'L_ENDIAN',
+    '_CRT_SECURE_NO_DEPRECATE',
+    'UNICODE',
+    '_UNICODE',
   ]
   if compiler.get_id() == 'msvc'
-    c_args += [
-      '-wd4090', '-Gs0', '-GF', '-Gy', '-nologo',
-    ]
+    c_args += ['-wd4090', '-Gs0', '-GF', '-Gy', '-nologo']
   endif
 elif is_darwin
   defines += [
@@ -276,16 +285,14 @@ elif is_darwin
     'ENGINESDIR="/dev/null"',
     'MODULESDIR="/dev/null"',
   ]
-  c_args += [
-    '-Wno-missing-field-initializers',
-  ]
+  c_args += ['-Wno-missing-field-initializers']
 elif is_sunos
   defines += [
-   'OPENSSLDIR="/etc/ssl"',
-   'ENGINESDIR="/dev/null"',
-   'MODULESDIR="/dev/null"',
-   '__EXTENSIONS__'
- ]
+    'OPENSSLDIR="/etc/ssl"',
+    'ENGINESDIR="/dev/null"',
+    'MODULESDIR="/dev/null"',
+    '__EXTENSIONS__',
+  ]
 else
   # Linux and others
   defines += [
@@ -293,22 +300,16 @@ else
     'ENGINESDIR="/dev/null"',
     'MODULESDIR="/dev/null"',
   ]
-  c_args += [
-    '-Wno-missing-field-initializers',
-  ]
+  c_args += ['-Wno-missing-field-initializers']
   if compiler.get_id() != 'clang'
-    c_args += [
-      '-Wno-old-style-declaration',
-    ]
+    c_args += ['-Wno-old-style-declaration']
   endif
 endif
 
-foreach library: openssl_libraries
+foreach library : openssl_libraries
   # MSVC fails with "ERROR: C static library 'ws2_32' not found" when `static` is specified at all
   if compiler.get_id() == 'msvc'
-    dependencies += [
-      compiler.find_library(library),
-    ]
+    dependencies += [compiler.find_library(library)]
   else
     dependencies += [
       compiler.find_library(
@@ -373,9 +374,7 @@ openssl_dep = declare_dependency(
   dependencies: [libcrypto_dep, libssl_dep],
 )
 
-openssl_cli_directories = include_directories + [
-  'apps/include'
-]
+openssl_cli_directories = include_directories + ['apps/include']
 
 cli_opt = get_option('build_cli')
 

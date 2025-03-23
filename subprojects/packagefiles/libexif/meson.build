@@ -8,23 +8,38 @@ project(
 
 cc = meson.get_compiler('c')
 
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 if meson.version().version_compare('>= 0.59')
-  intl_dep = dependency('intl', required: get_option('nls'))
+  intl_dep = dependency(
+    'intl',
+    required: get_option('nls'),
+  )
 else
-  intl_dep = dependency('', required: false)
+  intl_dep = dependency(
+    '',
+    required: false,
+  )
 endif
 
 #bugfix for msvc builds
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-Dssize_t=ptrdiff_t', language: 'c')
+  add_project_arguments(
+    '-Dssize_t=ptrdiff_t',
+    language: 'c',
+  )
 endif
 
 cdata = configuration_data()
 cdata.set('HAVE_LOCALTIME_R', cc.has_function('localtime_r'))
 cdata.set('HAVE_LOCALTIME_S', cc.has_header_symbol('time.h', 'localtime_s'))
 cdata.set('ENABLE_NLS', intl_dep.found())
-cdata.set_quoted('GETTEXT_PACKAGE', '@0@-@1@'.format(meson.project_name(), meson.project_version()))
+cdata.set_quoted(
+  'GETTEXT_PACKAGE',
+  '@0@-@1@'.format(meson.project_name(), meson.project_version()),
+)
 cdata.set_quoted('LOCALEDIR', get_option('prefix') / get_option('localedir'))
 
 configure_file(

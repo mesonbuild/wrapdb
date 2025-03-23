@@ -72,21 +72,9 @@ webpdspdec_lib = static_library(
 
 webp_dsp_enc_simd_libs = []
 foreach _variant, _sources : {
-  'neon': [
-    'cost_neon.c',
-    'enc_neon.c',
-    'lossless_enc_neon.c',
-  ],
-  'sse2': [
-    'cost_sse2.c',
-    'enc_sse2.c',
-    'lossless_enc_sse2.c',
-    'ssim_sse2.c',
-  ],
-  'sse41': [
-    'enc_sse41.c',
-    'lossless_enc_sse41.c',
-  ],
+  'neon': ['cost_neon.c', 'enc_neon.c', 'lossless_enc_neon.c'],
+  'sse2': ['cost_sse2.c', 'enc_sse2.c', 'lossless_enc_sse2.c', 'ssim_sse2.c'],
+  'sse41': ['enc_sse41.c', 'lossless_enc_sse41.c'],
 }
   webp_dsp_enc_simd_libs += static_library(
     'webpdspenc_' + _variant,

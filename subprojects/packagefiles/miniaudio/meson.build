@@ -19,11 +19,11 @@ ma_c_args = []
 
 backends = get_option('backends')
 runtime_linking = get_option('runtime_linking').disable_auto_if(
-  # on darwin, disable runtime linking if not requested explictly,
-  # to avoid requesting extra entitlements.
+# on darwin, disable runtime linking if not requested explictly,
+# to avoid requesting extra entitlements.
   host_system == 'darwin',
 ).enable_auto_if(
-  # enable runtime linking if backend is not specified.
+# enable runtime linking if backend is not specified.
   '_meson_default' in backends,
 )
 
@@ -63,7 +63,10 @@ if not generation
   ma_global_args += '-DMA_NO_GENERATION'
 endif
 
-add_project_arguments(ma_global_args, language: ['c', 'cpp'])
+add_project_arguments(
+  ma_global_args,
+  language: ['c', 'cpp'],
+)
 
 # backend not specified?
 if '_meson_default' in backends
@@ -138,9 +141,18 @@ if host_system in [
   if runtime_linking.enabled()
     ma_sys_deps += dependency('dl')
   endif
-  ma_sys_deps += dependency('threads', required: threading)
-  ma_sys_deps += dependency('atomic', required: threading)
-  ma_sys_deps += cc.find_library('m', required: false)
+  ma_sys_deps += dependency(
+    'threads',
+    required: threading,
+  )
+  ma_sys_deps += dependency(
+    'atomic',
+    required: threading,
+  )
+  ma_sys_deps += cc.find_library(
+    'm',
+    required: false,
+  )
 endif
 
 if backends != ['_miniaudio_default']
@@ -152,13 +164,7 @@ endif
 
 ma_backend_deps = []
 if runtime_linking.disabled()
-  foreach runtime_backend : [
-    'wasapi',
-    'dsound',
-    'winmm',
-
-    'aaudio',
-  ]
+  foreach runtime_backend : ['wasapi', 'dsound', 'winmm', 'aaudio']
     if runtime_backend in backends
       # NOTE: https://github.com/mackron/miniaudio/issues/935
       # not planned at the time.
@@ -169,13 +175,24 @@ if runtime_linking.disabled()
   ma_c_args += '-DMA_NO_RUNTIME_LINKING'
 
   if 'coreaudio' in backends
-    ma_backend_deps += dependency('appleframeworks', modules: ['foundation', 'coreaudio'])
-    audiotoolbox_dep = dependency('appleframeworks', modules: 'audiotoolbox', required: false)
+    ma_backend_deps += dependency(
+      'appleframeworks',
+      modules: ['foundation', 'coreaudio'],
+    )
+    audiotoolbox_dep = dependency(
+      'appleframeworks',
+      modules: 'audiotoolbox',
+      required: false,
+    )
 
     if audiotoolbox_dep.found()
       ma_backend_deps += audiotoolbox_dep
     else
-      audiounit_dep = dependency('appleframeworks', modules: 'audiounit', required: false)
+      audiounit_dep = dependency(
+        'appleframeworks',
+        modules: 'audiounit',
+        required: false,
+      )
       if audiounit_dep.found()
         ma_backend_deps += audiounit_dep
       else
@@ -188,10 +205,16 @@ if runtime_linking.disabled()
     ma_backend_deps += dependency('sndio')
   endif
   if 'audio4' in backends
-    cc.has_header('sys/audioio.h', required: true)
+    cc.has_header(
+      'sys/audioio.h',
+      required: true,
+    )
   endif
   if 'oss' in backends
-    cc.has_header('sys/soundcard.h', required: true)
+    cc.has_header(
+      'sys/soundcard.h',
+      required: true,
+    )
   endif
 
   if 'pulseaudio' in backends
@@ -200,7 +223,9 @@ if runtime_linking.disabled()
       # error: initialization of ‘ma_pa_threaded_mainloop_get_retval_proc’
       # {aka ‘int (*)(pa_threaded_mainloop *)’} from incompatible pointer type
       # ‘int (*)(const pa_threaded_mainloop *)’ [-Wincompatible-pointer-types]
-      ma_c_args += cc.first_supported_argument('-Wno-error=incompatible-pointer-types')
+      ma_c_args += cc.first_supported_argument(
+        '-Wno-error=incompatible-pointer-types',
+      )
     endif
     ma_backend_deps += dependency('libpulse')
   endif
@@ -218,21 +243,12 @@ if runtime_linking.disabled()
   if 'webaudio' in backends
     if get_option('webaudio_worklet')
       ma_backend_deps += declare_dependency(
-        compile_args: [
-          '-sWASM_WORKERS=1',
-          '-DMA_ENABLE_AUDIO_WORKLETS',
-        ],
-        link_args: [
-          '-sWASM_WORKERS=1',
-          '-sAUDIO_WORKLET=1',
-          '-sASYNCIFY',
-        ],
+        compile_args: ['-sWASM_WORKERS=1', '-DMA_ENABLE_AUDIO_WORKLETS'],
+        link_args: ['-sWASM_WORKERS=1', '-sAUDIO_WORKLET=1', '-sASYNCIFY'],
       )
     else
       ma_backend_deps += declare_dependency(
-        link_args: [
-          '-sWASM=0',
-        ],
+        link_args: ['-sWASM=0'],
       )
     endif
   endif
@@ -260,7 +276,7 @@ ma_impl_lib = static_library(
   pic: true,
   override_options: ma_impl_workaround ? [
     'unity=on',
-    'unity_size=32', # should be sufficient for now.
+    'unity_size=32',  # should be sufficient for now.
   ] : [],
 )
 ma_all_libs += ma_impl_lib

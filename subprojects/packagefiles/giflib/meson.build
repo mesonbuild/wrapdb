@@ -15,36 +15,41 @@ fs = import('fs')
 enable_progs = get_option('progs').allowed()
 
 enable_tests = get_option('tests')
-sh = find_program('sh', required: enable_tests)
+sh = find_program(
+  'sh',
+  required: enable_tests,
+)
 enable_tests = enable_tests.require(sh.found())
-foreach _name : [
-  'cmp',
-  'diff',
-  'head',
-]
-  _prog = find_program(_name, required: enable_tests).found()
+foreach _name : ['cmp', 'diff', 'head']
+  _prog = find_program(
+    _name,
+    required: enable_tests,
+  ).found()
   enable_tests = enable_tests.require(_prog)
 endforeach
 enable_tests = enable_tests.allowed()
 
-add_project_arguments(cc.get_supported_arguments('-Wno-format-truncation'), language: 'c')
+add_project_arguments(
+  cc.get_supported_arguments('-Wno-format-truncation'),
+  language: 'c',
+)
 
-foreach _hdr : [
-  'limits.h',
-  'fcntl.h',
-  'stdint.h',
-  'stdarg.h',
-]
-  cc.has_header(_hdr, required: true)
+foreach _hdr : ['limits.h', 'fcntl.h', 'stdint.h', 'stdarg.h']
+  cc.has_header(
+    _hdr,
+    required: true,
+  )
 endforeach
 
 # No `strtok_r` when building with MSVC, use `strtok_s` instead.
-if (
-  host_machine.system() == 'windows'
-  and not cc.has_header_symbol('string.h', 'strtok_r')
-  and cc.has_header_symbol('string.h', 'strtok_s')
+if (host_machine.system() == 'windows'
+and not cc.has_header_symbol('string.h', 'strtok_r')
+and cc.has_header_symbol('string.h', 'strtok_s')
 )
-  add_project_arguments('-Dstrtok_r=strtok_s', language: 'c')
+  add_project_arguments(
+    '-Dstrtok_r=strtok_s',
+    language: 'c',
+  )
 endif
 
 gif_lib = library(
@@ -75,43 +80,54 @@ install_headers('gif_lib.h')
 
 if enable_progs or enable_tests
 
-  m_dep = cc.find_library('m', required: false)
-
-  util_lib = static_library(
-    'util',
-    [
-      'getarg.c',
-      'qprintf.c',
-      'quantize.c',
-    ],
+  m_dep = cc.find_library(
+    'm',
+    required: false,
   )
+
+  util_lib = static_library('util', ['getarg.c', 'qprintf.c', 'quantize.c'])
 
   # NOTE: `gifcolor` & `gifecho` are not built on Windows
   # when using Visual Studio because of an issue exporting
   # `GifAsciiTable8x8` (required) in the def file.
   _programs = [
     # name        build?                           install?
-    ['gif2rgb'  , true                           , enable_progs],
-    ['gifbg'    , enable_progs                   , false       ],
-    ['gifbuild' , true                           , enable_progs],
-    ['gifclrmp' , true                           , enable_progs],
-    ['gifcolor' , enable_progs and not cc_is_msvc, false       ],
-    ['gifecho'  , not cc_is_msvc                 , false       ],
-    ['giffilter', true                           , false       ],
-    ['giffix'   , true                           , enable_progs],
-    ['gifhisto' , enable_progs                   , false       ],
-    ['gifinto'  , true                           , false       ],
-    ['gifsponge', true                           , false       ],
-    ['giftext'  , true                           , enable_progs],
-    ['gifwedge' , true                           , false       ],
+    ['gif2rgb'  , true, enable_progs],
+    ['gifbg'    , enable_progs, false],
+    ['gifbuild' , true, enable_progs],
+    ['gifclrmp' , true, enable_progs],
+    ['gifcolor' , enable_progs and not cc_is_msvc, false],
+    ['gifecho'  , not cc_is_msvc, false],
+    ['giffilter', true, false],
+    ['giffix'   , true, enable_progs],
+    ['gifhisto' , enable_progs, false],
+    ['gifinto'  , true, false],
+    ['gifsponge', true, false],
+    ['giftext'  , true, enable_progs],
+    ['gifwedge' , true, false],
   ]
 
   if cc.has_header('getopt.h')
     _programs += [['giftool', true, enable_progs]]
     giftool_tests = [
-      ['copy'       , ''      , 'pic/gifgrid.gif'            , 'tests/gifgrid.rgb'            ],
-      ['deinterlace', '-i on' , 'pic/treescap-interlaced.gif', 'tests/treescap.rgb'           ],
-      ['interlace'  , '-i off', 'pic/treescap.gif'           , 'tests/treescap-interlaced.rgb'],
+      [
+        'copy'       ,
+        ''      ,
+        'pic/gifgrid.gif'            ,
+        'tests/gifgrid.rgb',
+      ],
+      [
+        'deinterlace',
+        '-i on' ,
+        'pic/treescap-interlaced.gif',
+        'tests/treescap.rgb',
+      ],
+      [
+        'interlace'  ,
+        '-i off',
+        'pic/treescap.gif'           ,
+        'tests/treescap-interlaced.rgb',
+      ],
     ]
   else
     giftool_tests = []
@@ -253,10 +269,7 @@ if enable_tests
   endforeach
 
   # Test giffilter, gifsponge.
-  foreach _suite : [
-    'giffilter',
-    'gifsponge',
-  ]
+  foreach _suite : ['giffilter', 'gifsponge']
     _prog = get_variable(_suite)
     foreach _gif : gifs
       _stem = _gif.substring(0, -4)
@@ -371,13 +384,7 @@ if enable_tests
   test(
     'regress',
     sh,
-    args: [
-      '-xc',
-      '"$1" | cmp "$2" -',
-      '--',
-      gifwedge,
-      files('tests/wedge.gif'),
-    ],
+    args: ['-xc', '"$1" | cmp "$2" -', '--', gifwedge, files('tests/wedge.gif')],
     suite: 'gifwedge',
   )
 

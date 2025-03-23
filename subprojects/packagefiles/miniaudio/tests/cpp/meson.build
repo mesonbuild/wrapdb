@@ -1,4 +1,8 @@
-if add_languages('cpp', native: false, required: false)
+if add_languages(
+  'cpp',
+  native: false,
+  required: false,
+)
   test(
     'deviceio_cpp',
     executable(

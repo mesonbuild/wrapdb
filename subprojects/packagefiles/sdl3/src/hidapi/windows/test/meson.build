@@ -1,3 +1,1 @@
-sources += files(
-  'hid_report_reconstructor_test.c',
-)
+sources += files('hid_report_reconstructor_test.c')

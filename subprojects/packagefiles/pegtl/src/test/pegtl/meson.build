@@ -130,11 +130,7 @@ cpp = meson.get_compiler('cpp')
 
 # This tests only work on Windows when compiling with MSVC.
 if host_machine.system() != 'windows' or cpp.get_id() in ['clang-cl', 'msvc']
-  test_files += [
-    'file_file.cpp',
-    'file_mmap.cpp',
-    'file_read.cpp',
-  ]
+  test_files += ['file_file.cpp', 'file_mmap.cpp', 'file_read.cpp']
 endif
 
 args = []
@@ -142,7 +138,13 @@ args = []
 if cpp.get_argument_syntax() == 'msvc'
   args += cpp.get_supported_arguments('/W4', '/WX', '/utf-8')
 else
-  args += cpp.get_supported_arguments('-pedantic', '-Wall', '-Wextra', '-Wshadow', '-Werror')
+  args += cpp.get_supported_arguments(
+    '-pedantic',
+    '-Wall',
+    '-Wextra',
+    '-Wshadow',
+    '-Werror',
+  )
 endif
 
 fs = import('fs')
@@ -158,6 +160,10 @@ foreach file : test_files
     cpp_args: args,
   )
 
-  test(name, test_exe, workdir: meson.project_source_root())
+  test(
+    name,
+    test_exe,
+    workdir: meson.project_source_root(),
+  )
 
 endforeach

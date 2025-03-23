@@ -1,8 +1,5 @@
 tests = {
-  'bhaible': [
-    'test-callback.c',
-    'test-call.c'
-  ],
+  'bhaible': ['test-callback.c', 'test-call.c'],
   'call': [
     'align_mixed.c',
     'align_stdcall.c',
@@ -202,10 +199,7 @@ tests = {
     'return_complex_float.c',
     'return_complex_longdouble.c',
   ],
-  'go': [
-    'aa-direct.c',
-    'closure1.c',
-  ],
+  'go': ['aa-direct.c', 'closure1.c'],
 }
 
 feature_check_code = '''
@@ -227,7 +221,10 @@ feature_check = {
   'go': '#if FFI_GO_CLOSURES',
 }
 
-add_languages('cpp', native: false)
+add_languages(
+  'cpp',
+  native: false,
+)
 
 # We generate a full set of tests for each optimization
 tests_optimizations = get_option('tests_optimizations')
@@ -245,19 +242,23 @@ endif
 # We generate a full set of tests for each ABI
 tests_abis = [['']]
 if cc.get_id() == 'gcc'
-  if cc.compiles(feature_check_code.format('#ifdef __i386__'),
-       include_directories: ffiinc, args: feature_check_cargs)
+  if cc.compiles(
+    feature_check_code.format('#ifdef __i386__'),
+    include_directories: ffiinc,
+    args: feature_check_cargs,
+  )
     tests_abis += [
       ['-DABI_NUM=FFI_STDCALL', '-DABI_ATTR=__STDCALL__'],
       ['-DABI_NUM=FFI_THISCALL', '-DABI_ATTR=__THISCALL__'],
       ['-DABI_NUM=FFI_FASTCALL', '-DABI_ATTR=__FASTCALL__'],
     ]
   elif host_cpu_family == 'x86_64' and \
-       cc.compiles(feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'),
-         include_directories: ffiinc, args: feature_check_cargs)
-    tests_abis += [
-      ['-DABI_NUM=FFI_GNUW64', '-DABI_ATTR=__MSABI__'],
-    ]
+  cc.compiles(
+    feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'),
+    include_directories: ffiinc,
+    args: feature_check_cargs,
+  )
+    tests_abis += [['-DABI_NUM=FFI_GNUW64', '-DABI_ATTR=__MSABI__']]
   endif
 endif
 
@@ -265,7 +266,11 @@ foreach suite, sources : tests
   # Skip this set of tests if the feature is not supported
   if suite in feature_check
     code = feature_check_code.format(feature_check[suite])
-    if not cc.compiles(code, include_directories: ffiinc, args: feature_check_cargs)
+    if not cc.compiles(
+      code,
+      include_directories: ffiinc,
+      args: feature_check_cargs,
+    )
       continue
     endif
   endif
@@ -286,18 +291,42 @@ foreach suite, sources : tests
     if suite == 'bhaible'
       suite_c_args += ['-wd4996', '-wd4116', '-wd4101', '-wd4244']
     elif suite == 'call'
-      suite_c_args += ['-wd4005', '-wd4244', '-wd4305', '-wd4477', '-wd4312', '-wd4311', '-EHsc']
+      suite_c_args += [
+        '-wd4005',
+        '-wd4244',
+        '-wd4305',
+        '-wd4477',
+        '-wd4312',
+        '-wd4311',
+        '-EHsc',
+      ]
     elif suite == 'closure'
-      suite_c_args += ['-wd4005', '-wd4244', '-wd4305', '-wd4477', '-wd4312', '-wd4311', '-EHsc']
+      suite_c_args += [
+        '-wd4005',
+        '-wd4244',
+        '-wd4305',
+        '-wd4477',
+        '-wd4312',
+        '-wd4311',
+        '-EHsc',
+      ]
     endif
   elif is_gnu_like
     if suite == 'bhaible'
-      suite_c_args += ['-Wno-unused-variable', '-Wno-unused-parameter', '-Wno-unused-but-set-variable',
-                       '-Wno-uninitialized']
+      suite_c_args += [
+        '-Wno-unused-variable',
+        '-Wno-unused-parameter',
+        '-Wno-unused-but-set-variable',
+        '-Wno-uninitialized',
+      ]
     endif
   else
     if suite == 'bhaible'
-      suite_c_args += ['-Wno-unused-variable', '-Wno-unused-parameter', '-Wno-uninitialized']
+      suite_c_args += [
+        '-Wno-unused-variable',
+        '-Wno-unused-parameter',
+        '-Wno-uninitialized',
+      ]
     endif
   endif
 
@@ -318,7 +347,11 @@ foreach suite, sources : tests
       endforeach
     elif suite == 'bhaible' and base_name == 'test-callback'
       code = feature_check_code.format('#if FFI_CLOSURES')
-      if not cc.compiles(code, include_directories: ffiinc, args: feature_check_cargs)
+      if not cc.compiles(
+        code,
+        include_directories: ffiinc,
+        args: feature_check_cargs,
+      )
         continue
       endif
       foreach i : range(1, 81)
@@ -342,14 +375,20 @@ foreach suite, sources : tests
             test_name += ' ' + ' '.join(matrix_c_args)
             exe_name += ''.join(matrix_c_args).underscorify()
           endif
-          exe = executable(exe_name, src,
+          exe = executable(
+            exe_name,
+            src,
             dependencies: ffi_dep,
             c_args: [common_c_args, suite_c_args, matrix_c_args],
             cpp_args: [common_c_args, suite_c_args, matrix_c_args],
             # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
             #override_options: ['optimization=plain'],
           )
-          test(test_name, exe, suite: suite)
+          test(
+            test_name,
+            exe,
+            suite: suite,
+          )
         endforeach
       endforeach
     endforeach

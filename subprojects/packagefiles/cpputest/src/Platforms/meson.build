@@ -8,8 +8,9 @@ if cpputest_platform != 'none'
     elif compiler_id == 'msvc' or compiler_id == 'clang-cl'
       cpputest_platform = 'VisualCpp'
     else
-      error(f'Unknown compiler ID @compiler_id@, cannot autodetect the platform.\n' +
-             'Define the platform manually or provide your own implementation.')
+      error(
+        f'Unknown compiler ID @compiler_id@, cannot autodetect the platform.\n' + 'Define the platform manually or provide your own implementation.',
+      )
     endif
   endif
 

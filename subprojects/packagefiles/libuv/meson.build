@@ -27,11 +27,9 @@ haiku = host_machine.system() == 'haiku'
 sunos = host_machine.system() == 'sunos'
 qnx = cc.get_define('__QNX__') != ''
 aix = cc.get_define('_AIX') != ''
-os390 = (
-  false # TODO: detect
+os390 = (false  # TODO: detect
 )
-os400 = (
-  false # TODO: detect
+os400 = (false  # TODO: detect
 )
 message('System: ' + host_machine.system())
 
@@ -79,17 +77,17 @@ endif
 # compiler flags
 if cc_msvc
   cc_msvc_cargs_all = [
-    '/wd4100', # no_unused_parameter
-    '/wd4127', # no conditional constant
-    '/wd4201', # no_nonstandard
-    '/wd4206', # no_nonstandard_empty_tu
-    '/wd4210', # no_nonstandard_file_scope
-    '/wd4232', # no_nonstandard_nonstatic_dlimport
-    '/wd4456', # no_hides_local
-    '/wd4457', # no_hides_param
-    '/wd4459', # no_hides_global
-    '/wd4706', # no_conditional_assignment
-    '/wd4496', # no_unsafe
+    '/wd4100',  # no_unused_parameter
+    '/wd4127',  # no conditional constant
+    '/wd4201',  # no_nonstandard
+    '/wd4206',  # no_nonstandard_empty_tu
+    '/wd4210',  # no_nonstandard_file_scope
+    '/wd4232',  # no_nonstandard_nonstatic_dlimport
+    '/wd4456',  # no_hides_local
+    '/wd4457',  # no_hides_param
+    '/wd4459',  # no_hides_global
+    '/wd4706',  # no_conditional_assignment
+    '/wd4496',  # no_unsafe
   ]
 
   foreach flag : cc_msvc_cargs_all
@@ -100,7 +98,7 @@ if cc_msvc
 endif
 
 cc_other_cargs_all = [
-  '-fno-strict-aliasing', # f_strict_aliasing
+  '-fno-strict-aliasing',  # f_strict_aliasing
 ]
 foreach flag : cc_other_cargs_all
   if cc.has_argument(flag)
@@ -129,7 +127,7 @@ if win32
   libuv_cargs += [
     '-DWIN32_LEAN_AND_MEAN',
     '-D_WIN32_WINNT=0x0602',
-    '-D_CRT_DECLARE_NONSTDC_NAMES=0'
+    '-D_CRT_DECLARE_NONSTDC_NAMES=0',
   ]
   libuv_libs += [
     'psapi',
@@ -170,19 +168,10 @@ if win32
     'src/win/winapi.c',
     'src/win/winsock.c',
   )
-  libuv_test_src += files(
-    'src/win/snprintf.c',
-    'test/runner-win.c',
-  )
-  libuv_headers += files(
-    'include/uv/tree.h',
-    'include/uv/win.h',
-  )
+  libuv_test_src += files('src/win/snprintf.c', 'test/runner-win.c')
+  libuv_headers += files('include/uv/tree.h', 'include/uv/win.h')
 else
-  libuv_cargs += [
-    '-D_FILE_OFFSET_BITS=64',
-    '-D_LARGEFILE_SOURCE',
-  ]
+  libuv_cargs += ['-D_FILE_OFFSET_BITS=64', '-D_LARGEFILE_SOURCE']
   libuv_src += files(
     'src/unix/async.c',
     'src/unix/core.c',
@@ -204,9 +193,7 @@ else
     'src/unix/udp.c',
   )
   libuv_test_src += files('test/runner-unix.c')
-  libuv_headers += files(
-    'include/uv/unix.h',
-  )
+  libuv_headers += files('include/uv/unix.h')
 endif
 
 if aix
@@ -219,13 +206,8 @@ if aix
     '-DHAVE_SYS_AHAFS_EVPRODS_H',
   ]
   libuv_libs += 'perfstat'
-  libuv_src += files(
-    'src/unix/aix-common.c',
-    'src/unix/aix.c',
-  )
-  libuv_headers += files(
-    'include/uv/aix.h',
-  )
+  libuv_src += files('src/unix/aix-common.c', 'src/unix/aix.c')
+  libuv_headers += files('include/uv/aix.h')
 endif
 
 if android
@@ -249,20 +231,12 @@ if dragonfly or freebsd
 endif
 
 if dragonfly or freebsd or netbsd or openbsd
-  libuv_src += files(
-    'src/unix/bsd-proctitle.c',
-    'src/unix/posix-hrtime.c',
-  )
-  libuv_headers += files(
-    'include/uv/bsd.h',
-  )
+  libuv_src += files('src/unix/bsd-proctitle.c', 'src/unix/posix-hrtime.c')
+  libuv_headers += files('include/uv/bsd.h')
 endif
 
 if apple or dragonfly or freebsd or netbsd or openbsd
-  libuv_src += files(
-    'src/unix/bsd-ifaddrs.c',
-    'src/unix/kqueue.c',
-  )
+  libuv_src += files('src/unix/bsd-ifaddrs.c', 'src/unix/kqueue.c')
 endif
 
 if freebsd
@@ -283,9 +257,7 @@ if apple
     'src/unix/darwin.c',
     'src/unix/fsevents.c',
   )
-  libuv_headers += files(
-    'include/uv/darwin.h',
-  )
+  libuv_headers += files('include/uv/darwin.h')
 endif
 
 if gnu
@@ -306,10 +278,7 @@ if gnu
 endif
 
 if linux
-  libuv_cargs += [
-    '-D_GNU_SOURCE',
-    '-D_POSIX_C_SOURCE=200112',
-  ]
+  libuv_cargs += ['-D_GNU_SOURCE', '-D_POSIX_C_SOURCE=200112']
   libuv_libs += ['dl', 'rt']
   libuv_src += files(
     'src/unix/linux.c',
@@ -317,9 +286,7 @@ if linux
     'src/unix/random-getrandom.c',
     'src/unix/random-sysctl-linux.c',
   )
-  libuv_headers += files(
-    'include/uv/linux.h',
-  )
+  libuv_headers += files('include/uv/linux.h')
 endif
 
 if netbsd
@@ -340,18 +307,10 @@ if os400
 endif
 
 if sunos
-  libuv_cargs += [
-    '-D__EXTENSIONS__',
-    '-D_XOPEN_SOURCE=500',
-  ]
+  libuv_cargs += ['-D__EXTENSIONS__', '-D_XOPEN_SOURCE=500']
   libuv_libs += ['kstat', 'nsl', 'sendfile', 'socket']
-  libuv_src += files(
-    'src/unix/no-proctitle.c',
-    'src/unix/sunos.c',
-  )
-  libuv_headers += files(
-    'include/uv/sunos.h',
-  )
+  libuv_src += files('src/unix/no-proctitle.c', 'src/unix/sunos.c')
+  libuv_headers += files('include/uv/sunos.h')
 endif
 
 if haiku
@@ -365,9 +324,7 @@ if haiku
     'src/unix/posix-hrtime.c',
     'src/unix/posix-poll.c',
   )
-  libuv_headers += files(
-    'include/uv/posix.h',
-  )
+  libuv_headers += files('include/uv/posix.h')
 endif
 
 if qnx
@@ -383,28 +340,31 @@ if qnx
 endif
 
 # test-depending config
-if (
-  libuv_build_tests
-  and (apple
-  or dragonfly
-  or freebsd
-  or linux
-  or netbsd
-  or openbsd)
+if (libuv_build_tests
+and (apple
+or dragonfly
+or freebsd
+or linux
+or netbsd
+or openbsd)
 )
   libuv_test_libs += 'util'
 endif
 
 # convert libs to dependencies
-libuv_deps = [
-  dependency('threads'),
-]
+libuv_deps = [dependency('threads')]
 foreach lib : libuv_libs
-  libuv_deps += cc.find_library(lib, required: true)
+  libuv_deps += cc.find_library(
+    lib,
+    required: true,
+  )
 endforeach
 libuv_test_deps = []
 foreach lib : libuv_test_libs
-  libuv_test_deps += cc.find_library(lib, required: true)
+  libuv_test_deps += cc.find_library(
+    lib,
+    required: true,
+  )
 endforeach
 
 # include directories
@@ -440,9 +400,7 @@ libuv_dep = declare_dependency(
   link_with: libuv,
   include_directories: libuv_public_inc,
 )
-import(
-  'pkgconfig'
-).generate(
+import('pkgconfig').generate(
   libuv,
   name: 'libuv',
   description: 'multi-platform support library with a focus on asynchronous I/O.',
@@ -450,7 +408,10 @@ import(
 )
 
 install_headers('include/uv.h')
-install_headers(libuv_headers, subdir: 'uv')
+install_headers(
+  libuv_headers,
+  subdir: 'uv',
+)
 
 # benchmark & test config
 if libuv_build_bench
@@ -486,7 +447,11 @@ if libuv_build_bench
     dependencies: [libuv_dep, libuv_test_deps],
     c_args: libuv_cargs,
   )
-  benchmark('uv_run_benchmarks', libuv_bench_exe, timeout: 6000)
+  benchmark(
+    'uv_run_benchmarks',
+    libuv_bench_exe,
+    timeout: 6000,
+  )
 endif
 
 if libuv_build_tests
@@ -632,8 +597,8 @@ if libuv_build_tests
     'test/test-test-macros.c',
     'test/test-thread-affinity.c',
     'test/test-thread-equal.c',
-    'test/test-thread.c',
     'test/test-thread-priority.c',
+    'test/test-thread.c',
     'test/test-threadpool-cancel.c',
     'test/test-threadpool.c',
     'test/test-timer-again.c',
@@ -680,9 +645,7 @@ if libuv_build_tests
     if get_option('default_library') == 'both'
       error('default_library=both is not supported with MSVC')
     elif get_option('default_library') == 'shared'
-      libuv_test_cargs += [
-        '-DUSING_UV_SHARED=1',
-      ]
+      libuv_test_cargs += ['-DUSING_UV_SHARED=1']
     endif
     libuv_test_lflags += [
       '/MANIFEST:EMBED',
@@ -707,7 +670,7 @@ if libuv_build_tests
       link_file_in_build_dir,
       'uv_run_tests.exe',
       'uv_run_tests_no_ext',
-      check: true
+      check: true,
     )
   endif
   test(

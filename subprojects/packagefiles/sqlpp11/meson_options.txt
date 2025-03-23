@@ -1,5 +1,30 @@
-option('sqlite3_connector', type : 'boolean', value : false, description : 'Build SQLite3 connector')
-option('mysql_connector', type : 'boolean', value : false, description : 'Build MySQL connector')
-option('mariadb_connector', type : 'boolean', value : false, description : 'Build MariaDB connector')
-option('postgresql_connector', type : 'boolean', value : false, description : 'Build PostgreSQL connector')
-option('sqlcipher_connector', type : 'boolean', value : false, description : 'Build SQLite3 connector with SQLCipher')
+option(
+    'sqlite3_connector',
+    type: 'boolean',
+    value: false,
+    description: 'Build SQLite3 connector',
+)
+option(
+    'mysql_connector',
+    type: 'boolean',
+    value: false,
+    description: 'Build MySQL connector',
+)
+option(
+    'mariadb_connector',
+    type: 'boolean',
+    value: false,
+    description: 'Build MariaDB connector',
+)
+option(
+    'postgresql_connector',
+    type: 'boolean',
+    value: false,
+    description: 'Build PostgreSQL connector',
+)
+option(
+    'sqlcipher_connector',
+    type: 'boolean',
+    value: false,
+    description: 'Build SQLite3 connector with SQLCipher',
+)

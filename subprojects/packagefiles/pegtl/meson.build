@@ -3,7 +3,9 @@ project(
   'cpp',
   version: '3.2.7',
   meson_version: '>=1.2.0',
-  default_options: {'cpp_std': 'c++17'},
+  default_options: {
+    'cpp_std': 'c++17',
+  },
 )
 
 pegtl_dep = declare_dependency(

@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_openslES.c',
-)
+sources += files('SDL_openslES.c')

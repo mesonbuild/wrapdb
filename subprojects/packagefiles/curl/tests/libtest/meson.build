@@ -6,8 +6,10 @@ _generated_srcs = {
     capture: true,
     command: [
       bash_exe,
-      '-c', 'exec perl "$@"',
-      '--', meson.current_source_dir() / 'mk-lib1521.pl',
+      '-c',
+      'exec perl "$@"',
+      '--',
+      meson.current_source_dir() / 'mk-lib1521.pl',
     ],
     depend_files: 'mk-lib1521.pl',
     feed: true,
@@ -42,9 +44,10 @@ foreach _spec : makefile_extractions['libtest']
     elif _part.startswith('-I')
       _incs += include_directories(_part.substring(2))
     elif _part.endswith('.c')
-      _srcs += (
-        _part in _generated_srcs ? _generated_srcs.get(_part) : files(_part)
+      _srcs += (_part in _generated_srcs ? _generated_srcs.get(_part) : files(
+        _part,
       )
+)
     endif
   endforeach
   libtest_targets += executable(

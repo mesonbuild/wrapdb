@@ -3,17 +3,21 @@ project(
   'c',
   version: '1.0.28',
   meson_version: '>=0.49.0',
-  default_options: [
-    'cpp_std=c++20',
-  ],
+  default_options: ['cpp_std=c++20'],
 )
 
 cc = meson.get_compiler('c')
 pconf = import('pkgconfig')
 
 thread_dep = dependency('threads')
-udev_dep = dependency('', required: false)
-macos_dep = dependency('', required: false)
+udev_dep = dependency(
+  '',
+  required: false,
+)
+macos_dep = dependency(
+  '',
+  required: false,
+)
 
 if host_machine.system() == 'windows'
   add_project_arguments(
@@ -25,7 +29,9 @@ if host_machine.system() == 'windows'
 elif host_machine.system() == 'emscripten'
   add_languages('cpp')
   add_project_link_arguments(
-    '--bind', '-sASYNCIFY', '-sALLOW_MEMORY_GROWTH',
+    '--bind',
+    '-sASYNCIFY',
+    '-sALLOW_MEMORY_GROWTH',
     language: ['c', 'cpp'],
   )
 endif
@@ -49,7 +55,13 @@ functions = {
 }
 
 foreach f, d : functions
-  cdata.set('HAVE_@0@'.format(f.to_upper()), cc.has_function(f, dependencies: d))
+  cdata.set(
+    'HAVE_@0@'.format(f.to_upper()),
+    cc.has_function(
+      f,
+      dependencies: d,
+    ),
+  )
 endforeach
 
 foreach h : ['asm/types.h', 'string.h', 'sys/time.h']
@@ -58,10 +70,16 @@ endforeach
 
 cdata.set('HAVE_TIMERFD', cc.has_function('timerfd_create'))
 cdata.set('HAVE_NFDS_T', cc.has_header_symbol('poll.h', 'nfds_t'))
-cdata.set('HAVE_STRUCT_TIMESPEC', cc.has_header_symbol('time.h', 'struct timespec'))
+cdata.set(
+  'HAVE_STRUCT_TIMESPEC',
+  cc.has_header_symbol('time.h', 'struct timespec'),
+)
 
 if cc.has_function_attribute('format')
-  cdata.set('PRINTF_FORMAT(a, b)', '__attribute__ ((__format__ (__printf__, a, b)))')
+  cdata.set(
+    'PRINTF_FORMAT(a, b)',
+    '__attribute__ ((__format__ (__printf__, a, b)))',
+  )
 else
   cdata.set('PRINTF_FORMAT(a, b)', '')
 endif
@@ -77,7 +95,10 @@ cdata.set('ENABLE_DEBUG_LOGGING', get_option('debug-logging'))
 cdata.set('USE_SYSTEM_LOGGING_FACILITY', get_option('system-log'))
 
 incdirs = include_directories('libusb', 'libusb/os')
-install_headers('libusb/libusb.h', subdir: 'libusb-1.0')
+install_headers(
+  'libusb/libusb.h',
+  subdir: 'libusb-1.0',
+)
 
 sources = files(
   'libusb/core.c',
@@ -98,7 +119,10 @@ endif
 
 if host_machine.system() in ['android', 'linux']
   sources += 'libusb/os/linux_usbfs.c'
-  udev_dep = dependency('libudev', required: get_option('udev'))
+  udev_dep = dependency(
+    'libudev',
+    required: get_option('udev'),
+  )
   if udev_dep.found()
     cdata.set('HAVE_LIBUDEV', true)
     sources += 'libusb/os/linux_udev.c'
@@ -106,9 +130,17 @@ if host_machine.system() in ['android', 'linux']
     sources += 'libusb/os/linux_netlink.c'
   endif
 elif host_machine.system() == 'haiku'
-  sources += files('libusb/os/haiku_pollfs.cpp', 'libusb/os/haiku_usb_backend.cpp', 'libusb/os/haiku_usb_raw.cpp')
+  sources += files(
+    'libusb/os/haiku_pollfs.cpp',
+    'libusb/os/haiku_usb_backend.cpp',
+    'libusb/os/haiku_usb_raw.cpp',
+  )
 elif host_machine.system() == 'windows'
-  sources += files('libusb/os/windows_common.c', 'libusb/os/windows_usbdk.c', 'libusb/os/windows_winusb.c')
+  sources += files(
+    'libusb/os/windows_common.c',
+    'libusb/os/windows_usbdk.c',
+    'libusb/os/windows_winusb.c',
+  )
 elif host_machine.system() in ['darwin', 'netbsd', 'openbsd', 'sunos']
   sources += files('libusb/os/@0@_usb.c'.format(host_machine.system()))
 elif host_machine.system() == 'emscripten'
@@ -118,7 +150,10 @@ else
 endif
 
 if host_machine.system() == 'darwin'
-  macos_dep = dependency('appleframeworks', modules: ['CoreFoundation', 'IOKit', 'Security'])
+  macos_dep = dependency(
+    'appleframeworks',
+    modules: ['CoreFoundation', 'IOKit', 'Security'],
+  )
 endif
 
 configure_file(

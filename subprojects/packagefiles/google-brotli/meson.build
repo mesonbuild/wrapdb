@@ -28,19 +28,34 @@ project(
 
 cc = meson.get_compiler('c')
 
-dep_m = cc.find_library('m', required: false)
-if not cc.has_function('log2', dependencies: dep_m)
+dep_m = cc.find_library(
+  'm',
+  required: false,
+)
+if not cc.has_function(
+  'log2',
+  dependencies: dep_m,
+)
   error('Cannot find required log2() function')
 endif
 
 inc = include_directories('c/include')
 
 if host_machine.system() == 'linux'
-  add_project_arguments('-DOS_LINUX', language: 'c')
+  add_project_arguments(
+    '-DOS_LINUX',
+    language: 'c',
+  )
 elif host_machine.system() == 'freebsd'
-  add_project_arguments('-DOS_FREEBSD', language: 'c')
+  add_project_arguments(
+    '-DOS_FREEBSD',
+    language: 'c',
+  )
 elif host_machine.system() == 'darwin'
-  add_project_arguments('-DOS_MACOSX', language: 'c')
+  add_project_arguments(
+    '-DOS_MACOSX',
+    language: 'c',
+  )
 endif
 
 c_args = []

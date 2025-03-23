@@ -1,5 +1,1 @@
-sources += files(
-  'SDL_qnxvideo.c',
-  'SDL_qnxgl.c',
-  'SDL_qnxkeyboard.c',
-)
+sources += files('SDL_qnxgl.c', 'SDL_qnxkeyboard.c', 'SDL_qnxvideo.c')

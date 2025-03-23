@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_posixprocess.c',
-)
+sources += files('SDL_posixprocess.c')

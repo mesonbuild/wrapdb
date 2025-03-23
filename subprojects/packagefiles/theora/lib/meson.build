@@ -12,7 +12,7 @@ encoder_sources = files(
   'fragment.c',
   'huffenc.c',
   'idct.c',
-  'info.c', # not in SConstruct or Makefile.am
+  'info.c',  # not in SConstruct or Makefile.am
   'internal.c',
   'mathops.c',
   'mcenc.c',
@@ -224,7 +224,7 @@ libtheora = library(
   include_directories: incdir,
   c_args: compile_args,
   link_args: theora_version_flag,
-  vs_module_defs: 'theora.def', # Missing in the official tarballs
+  vs_module_defs: 'theora.def',  # Missing in the official tarballs
   version: theora_libversion,
   darwin_versions: theora_darwin_version,
   install: true,

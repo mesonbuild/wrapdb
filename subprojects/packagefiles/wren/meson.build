@@ -1,4 +1,9 @@
-project('wren', 'c', version : '0.4.0', license : 'mit')
+project(
+  'wren',
+  'c',
+  version: '0.4.0',
+  license: 'mit',
+)
 
 cc = meson.get_compiler('c')
 
@@ -15,7 +20,10 @@ sources = [
 ]
 
 system_deps = [
-  cc.find_library('m', required: false),
+  cc.find_library(
+    'm',
+    required: false,
+  ),
 ]
 
 incdir = include_directories('src/vm', 'src/optional', 'src/include')
