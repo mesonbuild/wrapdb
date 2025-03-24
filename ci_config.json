@@ -501,6 +501,11 @@
       "--timeout-multiplier=2"
     ]
   },
+  "libcppgenerate" : {
+    "build_options": [
+      "libcppgenerate:enable-tests=true"
+    ]
+  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {

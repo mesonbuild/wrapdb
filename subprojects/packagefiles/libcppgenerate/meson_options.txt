@@ -1,0 +1,13 @@
+option(
+    'enable-tests',
+    type: 'boolean',
+    value: false,
+    description: 'Enable the unit tests',
+)
+
+option(
+    'enable-examples',
+    type: 'boolean',
+    value: false,
+    description: 'Enable the examples',
+)
