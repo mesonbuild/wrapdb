@@ -1617,6 +1617,14 @@
       "1.83.1-1"
     ]
   },
+  "libadwaita": {
+    "dependency_names": [
+      "libadwaita-1"
+    ],
+    "versions": [
+      "1.4.0-1"
+    ]
+  },
   "libarchive": {
     "dependency_names": [
       "libarchive"
