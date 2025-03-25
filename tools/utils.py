@@ -121,7 +121,7 @@ def is_linux() -> bool:
     return platform.system().lower() == 'linux'
 
 def is_windows() -> bool:
-    return platform.system().lower() == 'windows' and not "MSYSTEM" in os.environ
+    return platform.system().lower() == 'windows' and "MSYSTEM" not in os.environ
 
 def is_msys() -> bool:
     return platform.system().lower() == 'windows' and "MSYSTEM" in os.environ
