@@ -730,6 +730,12 @@
       "windows": false
     }
   },
+  "libxslt": {
+    "_comment": "Python fails on MSVC because we try to do a debug build against a release Python",
+    "build_options": [
+      "libxml2:python=false"
+    ]
+  },
   "libxv": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {

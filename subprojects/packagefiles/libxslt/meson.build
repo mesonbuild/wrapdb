@@ -2,7 +2,7 @@ project(
   'libxslt',
   'c',
   license: 'MIT',
-  version: '1.1.39',
+  version: '1.1.43',
   meson_version: '>=0.54.1',
 )
 
@@ -97,6 +97,11 @@ endif
 
 libxml2_dep = dependency('libxml-2.0', version: '>=2.9.10')
 with_modules = libxml2_dep.get_variable(pkgconfig: 'modules', internal: 'modules', default_value: '0').to_int() != 0
+if host_machine.system() in ['cygwin', 'windows']
+  config.set('MODULE_EXTENSION', '.dll')
+else
+  config.set('MODULE_EXTENSION', '.so')
+endif
 
 configure_file(
   input: 'config.h.cmake.in',
