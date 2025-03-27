@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.7',
+  version: '3.7.8',
   meson_version: '>=0.54.1',
 )
 
@@ -23,7 +23,7 @@ if host_machine.system() == 'windows'
   if cc.sizeof('void*') == 4
     add_project_arguments('-D__MINGW_USE_VC2005_COMPAT', language: 'c')
   endif
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
   cdata.set('_WIN32_WINNT', '0x0A00', description: 'Windows Server 2003 APIs')
   cdata.set('NTDDI_VERSION', '0x0A000000', description: 'Windows Server 2003 APIs')
   cdata.set('WINVER', '0x0A00', description: 'Windows Server 2003 APIs')
@@ -543,6 +543,8 @@ functions = {
   'strnlen': [],
   'strrchr': [],
   'symlink': [],
+  'tcgetattr': [],
+  'tcsetattr': [],
   'timegm': [],
   'tzset': [],
   'unlinkat': [],
