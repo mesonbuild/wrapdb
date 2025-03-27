@@ -17,13 +17,6 @@ option(
 )
 
 option(
-    'ng',
-    type: 'boolean',
-    description: 'Build without compatibility support for traditional minizip',
-    value: false,
-)
-
-option(
     'bzip2',
     type: 'feature',
     description: 'Build with bzip2 support',
