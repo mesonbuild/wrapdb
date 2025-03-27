@@ -775,6 +775,15 @@
     ],
     "skip_tests": true
   },
+  "minizip-ng": {
+    "_comment": [
+      "- 4.0.8 won't build without zlib: https://github.com/zlib-ng/minizip-ng/issues/852"
+    ],
+    "build_options": [
+      "minizip-ng:tests=enabled",
+      "minizip-ng:zlib=enabled"
+    ]
+  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",

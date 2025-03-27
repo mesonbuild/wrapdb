@@ -1,4 +1,5 @@
 add_languages('cpp')
+cpp = meson.get_compiler('cpp')
 
 testlib = static_library(
   'testlib',
@@ -23,8 +24,13 @@ test_srcs = files(
 
 test_srcs += files('test_main.cc')
 
+if cpp.get_id() == 'msvc'
+  test_srcs += 'test_file.cc'
+endif
+
 test(
   'gtest_minizip',
   executable('gtest_minizip', test_srcs, cpp_args: margs, dependencies: [gtest_dep, testlib_dep]),
   workdir: testdir,
+  timeout: 600,
 )
