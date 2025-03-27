@@ -2,7 +2,7 @@ project(
   'icu',
   'c',
   'cpp',
-  version: '76.1',
+  version: '77.1',
   meson_version: '>=0.57.0',
   default_options: 'cpp_std=c++17',
 )

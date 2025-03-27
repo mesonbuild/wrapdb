@@ -1,8 +1,8 @@
 [wrap-file]
 directory = icu
-source_url = https://github.com/unicode-org/icu/releases/download/release-76-1/icu4c-76_1-src.tgz
-source_filename = icu4c-76_1-src.tgz
-source_hash = dfacb46bfe4747410472ce3e1144bf28a102feeaa4e3875bac9b4c6cf30f4f3e
+source_url = https://github.com/unicode-org/icu/releases/download/release-77-1/icu4c-77_1-src.tgz
+source_filename = icu4c-77_1-src.tgz
+source_hash = 588e431f77327c39031ffbb8843c0e3bc122c211374485fa87dc5f3faff24061
 patch_directory = icu
 
 [provide]
