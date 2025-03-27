@@ -1,8 +1,8 @@
 [wrap-file]
-directory = dlfcn-win32-1.4.1
-source_url = https://github.com/dlfcn-win32/dlfcn-win32/archive/refs/tags/v1.4.1.tar.gz
-source_filename = dlfcn-win32-1.4.1.tar.gz
-source_hash = 30a9f72bdf674857899eb7e553df1f0d362c5da2a576ae51f886e1171fbdb399
+directory = dlfcn-win32-1.4.2
+source_url = https://github.com/dlfcn-win32/dlfcn-win32/archive/refs/tags/v1.4.2.tar.gz
+source_filename = dlfcn-win32-1.4.2.tar.gz
+source_hash = f61a874bc9163ab488accb364fd681d109870c86e8071f4710cbcdcbaf9f2565
 patch_directory = dlfcn-win32
 
 [provide]
