@@ -1,7 +1,7 @@
 project(
   'minizip-ng',
   'c',
-  version: '4.0.7',
+  version: '4.0.9',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
@@ -46,6 +46,9 @@ if not cc.has_function('fseeko')
 endif
 
 sources = files(
+  'compat/ioapi.c',
+  'compat/unzip.c',
+  'compat/zip.c',
   'mz_crypt.c',
   'mz_os.c',
   'mz_strm.c',
@@ -61,9 +64,6 @@ if host_machine.system() == 'windows'
 else
   sources += files('mz_os_posix.c', 'mz_strm_os_posix.c')
 endif
-
-sources += files('mz_compat.c')
-margs += '-DHAVE_COMPAT'
 
 bsd_dep = dependency(
   'libbsd',
@@ -105,6 +105,7 @@ elif host_machine.system() == 'darwin'
   )
   if crypt_dep.found()
     sources += files('mz_crypt_apple.c')
+    margs += '-DMZ_TARGET_APPSTORE=0'
   endif
 else
   crypt_dep = dependency(
@@ -197,6 +198,7 @@ minizip_ng = library(
   version: meson.project_version(),
   soversion: host_machine.system() == 'windows' ? '' : '1',
   vs_module_defs: 'mz.def',
+  include_directories: include_directories('compat'),
   dependencies: [
     bcrypt_dep,
     bsd_dep,
@@ -218,6 +220,9 @@ pconf.generate(
 )
 
 headers = files(
+  'compat/ioapi.h',
+  'compat/unzip.h',
+  'compat/zip.h',
   'mz.h',
   'mz_crypt.h',
   'mz_os.h',
@@ -235,30 +240,6 @@ headers = files(
   'mz_zip.h',
   'mz_zip_rw.h',
 )
-
-zip_h = configure_file(
-  input: 'mz_compat_shim.h.in',
-  output: 'zip.h',
-  format: 'cmake@',
-  configuration: {
-    'MZ_COMPAT_FILE': 'MZ_COMPAT_ZIP',
-    'FILE_H': 'zip.h',
-  },
-)
-
-unzip_h = configure_file(
-  input: 'mz_compat_shim.h.in',
-  output: 'unzip.h',
-  format: 'cmake@',
-  configuration: {
-    'MZ_COMPAT_FILE': 'MZ_COMPAT_UNZIP',
-    'FILE_H': 'unzip.h',
-  },
-)
-
-headers += files('mz_compat.h')
-headers += zip_h
-headers += unzip_h
 
 install_headers(headers)
 

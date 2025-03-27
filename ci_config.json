@@ -801,6 +801,13 @@
     ],
     "skip_tests": true
   },
+  "minizip-ng": {
+    "_comment": "Fatal warnings disabled because CMake is unhappy: https://github.com/mesonbuild/meson/pull/14216",
+    "build_options": [
+      "minizip-ng:tests=enabled"
+    ],
+    "fatal_warnings": false
+  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",
