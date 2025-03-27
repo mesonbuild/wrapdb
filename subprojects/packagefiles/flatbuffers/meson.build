@@ -1,4 +1,4 @@
-project('flatbuffers', 'cpp', version: '24.3.6', license: 'Apache-2.0', meson_version: '>=0.49.0')
+project('flatbuffers', 'cpp', version: '24.3.25', license: 'Apache-2.0', meson_version: '>=0.49.0')
 
 cpp = meson.get_compiler('cpp')
 
