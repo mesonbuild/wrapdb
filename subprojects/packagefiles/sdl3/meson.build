@@ -278,9 +278,9 @@ elif host_machine.system() == 'windows'
   cdata.set('SDL_XINPUT', 1)
   cdata.set('SDL_TIMER_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
-  sdl_deps += cc.find_library('Imm32')
-  sdl_deps += cc.find_library('SetupAPI')
-  sdl_deps += cc.find_library('Winmm')
+  sdl_deps += cc.find_library('imm32')
+  sdl_deps += cc.find_library('setupapi')
+  sdl_deps += cc.find_library('winmm')
 elif host_machine.subsystem() == 'macos'
   cdata.set('SDL_PLATFORM_APPLE', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
