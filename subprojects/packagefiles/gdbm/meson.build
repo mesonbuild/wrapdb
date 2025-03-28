@@ -1,7 +1,7 @@
 project(
   'gdbm',
   'c',
-  version: '1.24',
+  version: '1.25',
   license: 'GPL-3.0-or-later',
   meson_version: '>=0.49.0',
 )
@@ -88,6 +88,7 @@ functions = {
   'gettext': intl_dep,
   'lockf': [],
   'setlocale': [],
+  'timer_settime': [],
 }
 
 if get_option('mmap')
@@ -99,6 +100,14 @@ foreach f, d : functions
     conf.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
   endif
 endforeach
+
+if not conf.has('HAVE_TIMER_SETTIME')
+  rt = cc.find_library('rt', required: false)
+  if rt.found() and cc.has_function('timer_settime', dependencies: rt)
+    conf.set('HAVE_TIMER_SETTIME', 1)
+    deps += rt
+  endif
+endif
 
 configure_file(
   input: 'autoconf.h.meson',
