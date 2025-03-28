@@ -1,0 +1,9 @@
+[wrap-file]
+directory = farmhash-1.1
+source_url = https://github.com/raghaven447/farmhash/archive/refs/tags/v1.1.tar.gz
+source_filename = farmhash-1.1.tar.gz
+source_hash = b8e8990a72493cc54a5977a8600f17801a7b42185f273968042bc1c55a455ce3
+patch_directory = farmhash
+
+[provide]
+farmhash = farmhash_dep

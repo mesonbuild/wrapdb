@@ -782,6 +782,14 @@
       "0.7.5-1"
     ]
   },
+  "farmhash": {
+    "dependency_names": [
+      "farmhash"
+    ],
+   "versions": [
+      "1.1-1"
+   ]
+  },
   "fdk-aac": {
     "dependency_names": [
       "fdk-aac"
