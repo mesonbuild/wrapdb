@@ -2,7 +2,7 @@ project(
   'exif',
   'c',
   license: 'LGPL-2.1',
-  version: '0.6.24',
+  version: '0.6.25',
   meson_version: '>=0.49.0',
 )
 
@@ -33,9 +33,6 @@ configure_file(
 )
 
 sources = files(
-  'libexif/apple/exif-mnote-data-apple.c',
-  'libexif/apple/mnote-apple-entry.c',
-  'libexif/apple/mnote-apple-tag.c',
   'libexif/canon/exif-mnote-data-canon.c',
   'libexif/canon/mnote-canon-entry.c',
   'libexif/canon/mnote-canon-tag.c',
@@ -76,7 +73,7 @@ exif = library(
   vs_module_defs: defs,
   install: true,
   dependencies: [m_dep, intl_dep],
-  version: meson.project_version(),
+  version: '12.3.4',
 )
 
 install_headers(
