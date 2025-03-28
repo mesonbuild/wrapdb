@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pv-1.8.14
-source_url = https://codeberg.org/a-j-wood/pv/releases/download/v1.8.14/pv-1.8.14.tar.gz
-source_hash = 0cc18811a4809a587d4b11d47691bbc0ad83a5d95d2c2606af74ea7b4a674756
-source_filename = pv-1.8.14.tar.gz
+directory = pv-1.9.31
+source_url = https://codeberg.org/ivarch/pv/releases/download/v1.9.31/pv-1.9.31.tar.gz
+source_hash = a35e92ec4ac0e8f380e8e840088167ae01014bfa008a3a9d6506b848079daedf
+source_filename = pv-1.9.31.tar.gz
 patch_directory = pv
 
 [provide]

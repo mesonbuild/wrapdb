@@ -1,4 +1,5 @@
 option('ipc', type: 'feature')
+option('ncurses', type: 'feature')
 option('nls', type: 'feature')
 option('splice', type: 'feature')
 option('tests', type: 'feature')

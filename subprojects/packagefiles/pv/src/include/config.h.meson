@@ -1,7 +1,10 @@
-/* config.h.  Generated from config.meson.h by meson.  */
+/* config.h.  Generated from config.h.meson by meson.  */
 
 /* Debugging support enabled */
 #mesondefine ENABLE_DEBUGGING
+
+/* Build with ncurses support */
+#mesondefine ENABLE_NCURSES
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
@@ -10,8 +13,15 @@
 /* Define to 1 if you have the `basename' function. */
 #mesondefine HAVE_BASENAME
 
+/* Define to 1 if you have the declaration of `SA_SIGINFO', and to 0 if you
+   don't. */
+#mesondefine HAVE_DECL_SA_SIGINFO
+
 /* Define to 1 if you have the `fdatasync' function. */
 #mesondefine HAVE_FDATASYNC
+
+/* Define to 1 if you have the `fmod' function. */
+#mesondefine HAVE_FMOD
 
 /* Define to 1 if you have the `fpathconf' function. */
 #mesondefine HAVE_FPATHCONF
@@ -25,6 +35,9 @@
 /* IPC support enabled */
 #mesondefine HAVE_IPC
 
+/* Define to 1 if you have the <langinfo.h> header file. */
+#mesondefine HAVE_LANGINFO_H
+
 /* Define to 1 if you have the <libgen.h> header file. */
 #mesondefine HAVE_LIBGEN_H
 
@@ -34,11 +47,17 @@
 /* Define to 1 if you have the <locale.h> header file. */
 #mesondefine HAVE_LOCALE_H
 
+/* Define to 1 if you have the <math.h> header file. */
+#mesondefine HAVE_MATH_H
+
 /* Define to 1 if you have the `memcpy' function. */
 #mesondefine HAVE_MEMCPY
 
 /* Define to 1 if you have the `memrchr' function. */
 #mesondefine HAVE_MEMRCHR
+
+/* Define to 1 if you have the `mkdir' function. */
+#mesondefine HAVE_MKDIR
 
 /* Define to 1 if you have the `nanosleep' function. */
 #mesondefine HAVE_NANOSLEEP
@@ -52,11 +71,20 @@
 /* Define to 1 if you have the `setitimer' function. */
 #mesondefine HAVE_SETITIMER
 
+/* Define to 1 if you have the `setproctitle' function. */
+#mesondefine HAVE_SETPROCTITLE
+
 /* Define to 1 if you have the `splice' function. */
 #mesondefine HAVE_SPLICE
 
+/* Define to 1 if you have the `sqrtl' function. */
+#mesondefine HAVE_SQRTL
+
 /* Define to 1 if stdbool.h conforms to C99. */
 #mesondefine HAVE_STDBOOL_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
 
 /* Define to 1 if you have the `strlcat' function. */
 #mesondefine HAVE_STRLCAT
@@ -67,6 +95,9 @@
 /* Define to 1 if `st_blksize' is a member of `struct stat'. */
 #mesondefine HAVE_STRUCT_STAT_ST_BLKSIZE
 
+/* Define to 1 if `st_rdev' is a member of `struct stat'. */
+#mesondefine HAVE_STRUCT_STAT_ST_RDEV
+
 /* Define to 1 if you have the `sysconf' function. */
 #mesondefine HAVE_SYSCONF
 
@@ -76,8 +107,14 @@
 /* Define to 1 if you have the <sys/param.h> header file. */
 #mesondefine HAVE_SYS_PARAM_H
 
+/* Define to 1 if you have the <sys/sysmacros.h> header file. */
+#mesondefine HAVE_SYS_SYSMACROS_H
+
 /* Define to 1 if you have the <termios.h> header file. */
 #mesondefine HAVE_TERMIOS_H
+
+/* Define to 1 if you have the <term.h> header file. */
+#mesondefine HAVE_TERM_H
 
 /* Define to 1 if you have the `vsnprintf' function. */
 #mesondefine HAVE_VSNPRINTF
@@ -109,6 +146,7 @@
 /* Define to the version of this package. */
 #mesondefine PACKAGE_VERSION
 
-#include "config-aux.h"
+/* Signal handlers can determine the sending PID */
+#mesondefine SIGINFO_PROVIDES_PID
 
-/* vim: set ft=c: */
+#include "config-aux.h"
