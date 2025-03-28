@@ -1,0 +1,9 @@
+[wrap-file]
+directory = gemmlowp-master
+source_url = https://github.com/google/gemmlowp/archive/refs/heads/master.zip
+source_filename = gemmlowp-master.zip
+source_hash = b35c3161ed4a6d911e826359370d918b4db6c8ce2fe5e94a6ecf06df4f4cf8d9
+patch_directory = gemmlowp
+
+[provide]
+gemmlowp = gemmlowp_dep
