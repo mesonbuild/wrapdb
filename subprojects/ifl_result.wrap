@@ -1,0 +1,8 @@
+[wrap-file]
+directory = ifl_result-1.0.0
+source_url = https://github.com/IronFractal/ifl_result/archive/refs/tags/v1.0.0.tar.gz
+source_filename = ifl_result-v1.0.0.tar.gz
+source_hash = 148d16a7b5600b280ec71fdd5f5ce448be5b4318de4f7aa3dbe4b2e842fc6595
+
+[provide]
+ifl_result = ifl_result_dep
