@@ -1,0 +1,9 @@
+[wrap-file]
+directory = farmhash-master
+source_url = https://github.com/google/farmhash/archive/refs/heads/master.zip
+source_filename = farmhash-master.zip
+source_hash = d27a245e59f5e10fba10b88cb72c5f0e03d3f2936abbaf0cb78eeec686523ec1
+patch_directory = farmhash
+
+[provide]
+farmhash = farmhash_dep
