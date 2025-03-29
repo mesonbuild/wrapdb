@@ -763,6 +763,12 @@
       "alpine": false
     }
   },
+  "lvgl": {
+    "_comment": "lv_conf.h is meant to be user-provided. For the sake of tests, skip its inclusion",
+    "build_options": [
+      "lvgl:LV_CONF_SKIP=true"
+    ]
+  },
   "lz4": {
     "_comment": [
       "- Examples and ossfuzz fail to build on some platforms",
@@ -1106,7 +1112,7 @@
     ]
   },
   "sdl3": {
-      "alpine_packages": [
+    "alpine_packages": [
       "libudev-zero-dev",
       "dbus-dev",
       "pipewire-dev",
@@ -1216,7 +1222,6 @@
     "brew_packages": [
       "sqlite"
     ]
-
   },
   "tinyfsm": {
     "build_options": [
