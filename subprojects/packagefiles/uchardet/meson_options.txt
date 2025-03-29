@@ -1,5 +1,5 @@
 option(
     'use_sse2',
-    type : 'feature',
-    description : 'Enable SSE2 support'
+    type: 'feature',
+    description: 'Enable SSE2 support',
 )

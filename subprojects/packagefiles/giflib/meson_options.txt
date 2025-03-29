@@ -1,2 +1,10 @@
-option('progs', type: 'feature', value: 'auto')
-option('tests', type: 'feature', value: 'auto')
+option(
+    'progs',
+    type: 'feature',
+    value: 'auto',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'auto',
+)

@@ -25,11 +25,10 @@ luajit_h = custom_target(
   capture: true,
   command: [
     'sed',
-    '-e', 's/@0@/@1@/'.format(
-      'ROLLING',
-      meson.project_version().split('.')[-1],
-    ),
-    '-e', '/^#error /d',
+    '-e',
+    's/@0@/@1@/'.format('ROLLING', meson.project_version().split('.')[-1]),
+    '-e',
+    '/^#error /d',
     '@INPUT@',
   ],
   input: 'luajit_rolling.h',
@@ -44,11 +43,7 @@ subdir('host')
 lj_vm = custom_target(
   'lj_vm',
   output: host_machine.system() == 'windows' ? 'lj_vm.o' : 'lj_vm.S',
-  command: [
-    buildvm_exe,
-    '-m', LJVM_MODE,
-    '-o', '@OUTPUT@',
-  ],
+  command: [buildvm_exe, '-m', LJVM_MODE, '-o', '@OUTPUT@'],
 )
 
 lib_sources = files(
@@ -68,11 +63,31 @@ lib_sources = files(
 
 buildvm_headers = []
 foreach _target : [
-  {'mode': 'bcdef', 'output': 'lj_bcdef.h', 'input': lib_sources},
-  {'mode': 'ffdef', 'output': 'lj_ffdef.h', 'input': lib_sources},
-  {'mode': 'folddef', 'output': 'lj_folddef.h', 'input': 'lj_opt_fold.c'},
-  {'mode': 'libdef', 'output': 'lj_libdef.h', 'input': lib_sources},
-  {'mode': 'recdef', 'output': 'lj_recdef.h', 'input': lib_sources},
+  {
+    'mode': 'bcdef',
+    'output': 'lj_bcdef.h',
+    'input': lib_sources,
+  },
+  {
+    'mode': 'ffdef',
+    'output': 'lj_ffdef.h',
+    'input': lib_sources,
+  },
+  {
+    'mode': 'folddef',
+    'output': 'lj_folddef.h',
+    'input': 'lj_opt_fold.c',
+  },
+  {
+    'mode': 'libdef',
+    'output': 'lj_libdef.h',
+    'input': lib_sources,
+  },
+  {
+    'mode': 'recdef',
+    'output': 'lj_recdef.h',
+    'input': lib_sources,
+  },
 ]
   buildvm_headers += custom_target(
     _target['output'],
@@ -92,11 +107,7 @@ custom_target(
   install_tag: 'runtime',
 )
 
-luajit_lib_flags = [
-  TARGET_XCFLAGS,
-  '-D_LARGEFILE_SOURCE',
-  '-U_FORTIFY_SOURCE',
-]
+luajit_lib_flags = [TARGET_XCFLAGS, '-D_LARGEFILE_SOURCE', '-U_FORTIFY_SOURCE']
 
 luajit_lib_src = [buildvm_headers, lj_vm, luajit_h]
 if get_option('amalgam')
@@ -187,9 +198,7 @@ if get_option('default_library') != 'static'
   luajit_shared_lib = shared_library(
     luajit_lib_name,
     luajit_lib_src,
-    c_args: luajit_lib_flags + (
-      host_machine.system() == 'windows' ? '-DLUA_BUILD_AS_DLL' : []
-    ),
+    c_args: luajit_lib_flags + (host_machine.system() == 'windows' ? '-DLUA_BUILD_AS_DLL' : []),
     kwargs: luajit_lib_kwargs,
     soversion: meson.project_version(),
     # A version number like `2.1.1713773202` breaks clang when compiling for x86_64 on macOS:
@@ -242,14 +251,18 @@ if get_option('luajit')
   if get_option('default_library') == 'both'
     # Mixed mode creates a static + dynamic library and a statically linked luajit.
     if host_machine.system() == 'windows'
-      error('mixing a static LuaJIT executable with a dynamic LuaJIT library is not supported on Windows')
+      error(
+        'mixing a static LuaJIT executable with a dynamic LuaJIT library is not supported on Windows',
+      )
     endif
     luajit_exe_export_dynamic = true
     luajit_exe_lib = luajit_static_lib
   elif get_option('default_library') == 'static'
     # Static mode creates a static library and a statically linked luajit.
     if host_machine.system() == 'windows'
-      warning('static mode doesn\'t work well on Windows: C modules cannot be loaded, because they bind to lua51.dll')
+      warning(
+        'static mode doesn\'t work well on Windows: C modules cannot be loaded, because they bind to lua51.dll',
+      )
     endif
     luajit_exe_export_dynamic = true
     luajit_exe_lib = luajit_static_lib
@@ -280,8 +293,9 @@ if get_option('luajit')
 
 endif
 
-licensedir = (
-  meson.version().version_compare('>= 1.1.0') ? get_option('licensedir') : ''
+licensedir = (meson.version().version_compare('>= 1.1.0') ? get_option(
+  'licensedir',
+) : ''
 )
 if licensedir == ''
   licensedir = get_option('datadir') / 'licenses/luajit'

@@ -57,13 +57,21 @@ python_exe = import('python').find_installation('python3')
 
 icudata_exports = custom_target(
   'icudata_exports',
-  command: [python_exe, '@INPUT@', '@0@_dat'.format(U_ICUDATA_NAME), '@OUTDIR@/module.def'],
+  command: [
+    python_exe,
+    '@INPUT@',
+    '@0@_dat'.format(U_ICUDATA_NAME),
+    '@OUTDIR@/module.def',
+  ],
   input: 'export_module.py',
   output: 'module.def',
 )
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources('misc/icudata.rc', include_directories: incdir)
+  sources += windows.compile_resources(
+    'misc/icudata.rc',
+    include_directories: incdir,
+  )
 endif
 
 if cpp.get_argument_syntax() != 'msvc'

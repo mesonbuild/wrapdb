@@ -24,26 +24,51 @@ openjpeg_version_subdir = 'openjpeg-@0@.@1@'.format(
   openjpeg_version_minor,
 )
 
-m_dep = cc.find_library('m', required: false)
-pthread_dep = dependency('threads', required: false)
-rt_dep = cc.find_library('rt', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+pthread_dep = dependency(
+  'threads',
+  required: false,
+)
+rt_dep = cc.find_library(
+  'rt',
+  required: false,
+)
 
-wxwidgets_dep = dependency('wxWidgets', required: get_option('build_viewer'))
+wxwidgets_dep = dependency(
+  'wxWidgets',
+  required: get_option('build_viewer'),
+)
 
 opj_static_args = []
 if host_system == 'windows'
   if get_option('default_library') == 'static'
     opj_static_args += '-DOPJ_STATIC'
-    add_project_arguments(opj_static_args, language: 'c')
+    add_project_arguments(
+      opj_static_args,
+      language: 'c',
+    )
   else
-    add_project_arguments('-DOPJ_EXPORTS', language: 'c')
+    add_project_arguments(
+      '-DOPJ_EXPORTS',
+      language: 'c',
+    )
   endif
 endif
 
 #-----------------------------------------------------------------------------
 # Build Library
-curl_dep = dependency('libcurl', version: '>= 7.55.0', required: get_option('build_jpip_server'))
-fcgi_dep = dependency('fcgi', required: get_option('build_jpip_server'))
+curl_dep = dependency(
+  'libcurl',
+  version: '>= 7.55.0',
+  required: get_option('build_jpip_server'),
+)
+fcgi_dep = dependency(
+  'fcgi',
+  required: get_option('build_jpip_server'),
+)
 
 subdir('src/lib')
 

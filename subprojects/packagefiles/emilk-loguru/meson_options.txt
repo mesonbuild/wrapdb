@@ -1,71 +1,71 @@
 option(
-  'loguru_debug_logging',
-  type: 'boolean',
-  value: true,
-  description: 'Enables debug versions of logging statments (DLOG_F etc).',
+    'loguru_debug_logging',
+    type: 'boolean',
+    value: true,
+    description: 'Enables debug versions of logging statments (DLOG_F etc).',
 )
 
 option(
-  'loguru_debug_checks',
-  type: 'boolean',
-  value: true,
-  description: 'Enables debug versions of checks (DCHECK_F etc).',
+    'loguru_debug_checks',
+    type: 'boolean',
+    value: true,
+    description: 'Enables debug versions of checks (DCHECK_F etc).',
 )
 
 option(
-  'loguru_scope_text_size',
-  type: 'integer',
-  min: 1,
-  value: 196,
-  description: '''Maximum length of text that can be printed by a LOG_SCOPE.
+    'loguru_scope_text_size',
+    type: 'integer',
+    min: 1,
+    value: 196,
+    description: '''Maximum length of text that can be printed by a LOG_SCOPE.
 This should be long enough to get most things, but short enough not to
 clutter the stack.''',
 )
 
 option(
-  'loguru_catch_sigabrt',
-  type: 'boolean',
-  value: true,
-  description: 'Should loguru catch SIGABRT to print stack trace etc?',
+    'loguru_catch_sigabrt',
+    type: 'boolean',
+    value: true,
+    description: 'Should loguru catch SIGABRT to print stack trace etc?',
 )
 
 option(
-  'loguru_redefine_assert',
-  type: 'boolean',
-  value: false,
-  description: 'Redefine "assert" to call loguru version (!NDEBUG only).',
+    'loguru_redefine_assert',
+    type: 'boolean',
+    value: false,
+    description: 'Redefine "assert" to call loguru version (!NDEBUG only).',
 )
 
 option(
-  'loguru_with_streams',
-  type: 'boolean',
-  value: false,
-  description: '''Add support for the _S versions for all LOG and CHECK
+    'loguru_with_streams',
+    type: 'boolean',
+    value: false,
+    description: '''Add support for the _S versions for all LOG and CHECK
 functions. This is off by default to keep down compilation times.''',
 )
 
 option(
-  'loguru_replace_glog',
-  type: 'boolean',
-  value: false,
-  description: '''Make loguru mimic glog as close as possible, including
+    'loguru_replace_glog',
+    type: 'boolean',
+    value: false,
+    description: '''Make loguru mimic glog as close as possible, including
 #defining LOG, CHECK, VLOG_IS_ON etc. Great if you plan to migrate from glog to
 #loguru and don't want to add _S suffixes to all your logging functions (see
 #loguru_with_streams). loguru_replace_glog implies loguru_with_streams.''',
 )
 
 option(
-  'loguru_use_fmtlib',
-  type: 'feature',
-  description: '''Use fmtlib formatting. See https://github.com/fmtlib/fmt.This
+    'loguru_use_fmtlib',
+    type: 'feature',
+    description: '''Use fmtlib formatting. See https://github.com/fmtlib/fmt.This
 will make loguru.hpp depend on <fmt/format.h>.''',
 )
 
 option(
-  'loguru_with_fileabs',
-  type: 'boolean',
-  value: false,
-  description: '''When loguru_with_fileabs is turned on, a check of file change
+    'loguru_with_fileabs',
+    type: 'boolean',
+    value: false,
+    description: '''When loguru_with_fileabs is turned on, a check of file change
 will be performed on every call to file_log. If the file is moved, or inode
 changes, file is reopened using the same FileMode as is done by add_file. Such
 a scheme is useful if you have a daemon program that moves the log file every
@@ -73,45 +73,46 @@ a scheme is useful if you have a daemon program that moves the log file every
 )
 
 option(
-  'loguru_stacktraces',
-  type: 'feature',
-  description: 'Print stack traces on abort',
+    'loguru_stacktraces',
+    type: 'feature',
+    description: 'Print stack traces on abort',
 )
 
 option(
-  'loguru_rtti',
-  type: 'boolean',
-  value: true,
-  description: '''Set to false if your platform does not support runtime type
-information (-fno-rtti).''',)
-
-option(
-  'loguru_filename_width',
-  type: 'integer',
-  min: 1,
-  value: 23,
-  description: 'Width of the column containing the file name',
+    'loguru_rtti',
+    type: 'boolean',
+    value: true,
+    description: '''Set to false if your platform does not support runtime type
+information (-fno-rtti).''',
 )
 
 option(
-  'loguru_threadname_width',
-  type: 'integer',
-  min: 1,
-  value: 16,
-  description: 'Width of the column containing the thread name',
+    'loguru_filename_width',
+    type: 'integer',
+    min: 1,
+    value: 23,
+    description: 'Width of the column containing the file name',
 )
 
 option(
-  'loguru_verbose_scope_endings',
-  type: 'boolean',
-  value: true,
-  description: 'Show milliseconds and scope name at end of scope',
+    'loguru_threadname_width',
+    type: 'integer',
+    min: 1,
+    value: 16,
+    description: 'Width of the column containing the thread name',
 )
 
 option(
-  'loguru_scope_time_precision',
-  type: 'combo',
-  choices: ['3', '6', '9'],
-  value: '3',
-  description: 'Resolution of scope timers. 3=ms, 6=us, 9=ns',
+    'loguru_verbose_scope_endings',
+    type: 'boolean',
+    value: true,
+    description: 'Show milliseconds and scope name at end of scope',
+)
+
+option(
+    'loguru_scope_time_precision',
+    type: 'combo',
+    choices: ['3', '6', '9'],
+    value: '3',
+    description: 'Resolution of scope timers. 3=ms, 6=us, 9=ns',
 )

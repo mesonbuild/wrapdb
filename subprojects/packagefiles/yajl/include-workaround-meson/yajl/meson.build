@@ -1,5 +1,5 @@
 # https://github.com/mesonbuild/meson/issues/2546
-foreach h: api
+foreach h : api
   configure_file(
     copy: true,
     input: h,
@@ -7,10 +7,15 @@ foreach h: api
   )
 endforeach
 
-vconf = configure_file(configuration: version,
+vconf = configure_file(
+  configuration: version,
   input: versionh,
   output: 'yajl_version.h',
   format: 'cmake',
 )
 
-install_headers(api, vconf, subdir: 'yajl')
+install_headers(
+  api,
+  vconf,
+  subdir: 'yajl',
+)

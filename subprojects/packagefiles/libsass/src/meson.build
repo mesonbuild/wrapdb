@@ -65,9 +65,7 @@ cpp_sources = [
   'base64vlq.cpp',
 ]
 
-c_sources = [
-  'cencode.c',
-]
+c_sources = ['cencode.c']
 
 sass_sources = cpp_sources + c_sources
 
@@ -80,10 +78,16 @@ if host_machine.system() != 'windows'
   if meson.version().version_compare('>= 0.62')
     dl_dep = dependency('dl')
   else
-    dl_dep = cc.find_library('dl', required : false)
+    dl_dep = cc.find_library(
+      'dl',
+      required: false,
+    )
   endif
 else
-  dl_dep = dependency('', required: false)
+  dl_dep = dependency(
+    '',
+    required: false,
+  )
 endif
 
 lib_args = []
@@ -93,17 +97,19 @@ endif
 
 libsass = library(
   'sass',
-   sass_sources,
-   dependencies: [dl_dep],
-   c_args: lib_args,
-   cpp_args: lib_args,
-   include_directories: inc,
-   soversion: '1',
-   install: true)
+  sass_sources,
+  dependencies: [dl_dep],
+  c_args: lib_args,
+  cpp_args: lib_args,
+  include_directories: inc,
+  soversion: '1',
+  install: true,
+)
 
 libsass_dep = declare_dependency(
   link_with: libsass,
-  include_directories: [inc])
+  include_directories: [inc],
+)
 
 pkg = import('pkgconfig')
 pkg.generate(

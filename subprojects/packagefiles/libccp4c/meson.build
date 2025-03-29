@@ -1,15 +1,27 @@
 # Meson file for libccp4c (CCP4 core libraries, C part only)
-project('libccp4c', 'c', version: '8.0.0', meson_version: '>=0.49.0', license: 'LGPL-3.0-or-later')
+project(
+  'libccp4c',
+  'c',
+  version: '8.0.0',
+  meson_version: '>=0.49.0',
+  license: 'LGPL-3.0-or-later',
+)
 
 cc = meson.get_compiler('c')
-mdep = cc.find_library('m', required: false)
+mdep = cc.find_library(
+  'm',
+  required: false,
+)
 
 # Note that the source code assumes that datadir='share'.
 # If it is not, programs using the library will not be able
 # to find 'environ.def'.
 datadir = get_option('datadir') / 'ccp4'
 
-add_project_arguments('-DPACKAGE_ROOT="@0@"'.format(get_option('prefix')), language: 'c')
+add_project_arguments(
+  '-DPACKAGE_ROOT="@0@"'.format(get_option('prefix')),
+  language: 'c',
+)
 add_project_arguments(
   cc.get_supported_arguments(
     '-Wno-uninitialized',

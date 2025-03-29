@@ -1,11 +1,6 @@
 webpmux_lib = library(
   'webpmux',
-  [
-    'anim_encode.c',
-    'muxedit.c',
-    'muxinternal.c',
-    'muxread.c',
-  ],
+  ['anim_encode.c', 'muxedit.c', 'muxinternal.c', 'muxread.c'],
   dependencies: [build_libwebpmux, common_deps, webp_dep],
   gnu_symbol_visibility: 'hidden',
   install: true,

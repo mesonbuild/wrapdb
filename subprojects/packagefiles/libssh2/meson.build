@@ -10,11 +10,18 @@ cc = meson.get_compiler('c')
 pkgconfig = import('pkgconfig')
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cc.get_supported_arguments('-Wno-deprecated-declarations'),
+    language: 'c',
+  )
 endif
 
 if host_machine.system() == 'windows' and get_option('default_library') != 'static'
-  add_project_arguments('-D_WINDLL', language: 'c')
+  add_project_arguments(
+    '-D_WINDLL',
+    language: 'c',
+  )
 endif
 
 libssh2_sources = files(
@@ -52,9 +59,15 @@ libssh2_deps = []
 
 if host_machine.system() == 'windows'
   win = import('windows')
-  libssh2_sources += win.compile_resources('src/libssh2.rc', include_directories: meson.current_source_dir() / 'include')
+  libssh2_sources += win.compile_resources(
+    'src/libssh2.rc',
+    include_directories: meson.current_source_dir() / 'include',
+  )
 elif host_machine.system() == 'darwin'
-  add_project_arguments('-DLIBSSH2_DARWIN', language: 'c')
+  add_project_arguments(
+    '-DLIBSSH2_DARWIN',
+    language: 'c',
+  )
 endif
 
 crypto = get_option('crypto_backend')
@@ -67,24 +80,42 @@ if crypto == 'auto'
 endif
 
 if crypto == 'gcrypt'
-  gcrypt_dep = dependency('libgcrypt', required: get_option('crypto_backend') == 'gcrypt')
+  gcrypt_dep = dependency(
+    'libgcrypt',
+    required: get_option('crypto_backend') == 'gcrypt',
+  )
   if gcrypt_dep.found()
     libssh2_sources += 'src/libgcrypt.c'
     libssh2_deps += gcrypt_dep
-    add_project_arguments('-DLIBSSH2_LIBGCRYPT', language: 'c')
+    add_project_arguments(
+      '-DLIBSSH2_LIBGCRYPT',
+      language: 'c',
+    )
   else
     crypto = 'mbedtls'
   endif
 endif
 
 if crypto == 'mbedtls'
-  libmbedtls = cc.find_library('mbedtls', required: get_option('crypto_backend') == 'mbedtls')
-  libmbedx509 = cc.find_library('mbedx509', required: get_option('crypto_backend') == 'mbedtls')
-  libmbedcrypto = cc.find_library('mbedcrypto', required: get_option('crypto_backend') == 'mbedtls')
+  libmbedtls = cc.find_library(
+    'mbedtls',
+    required: get_option('crypto_backend') == 'mbedtls',
+  )
+  libmbedx509 = cc.find_library(
+    'mbedx509',
+    required: get_option('crypto_backend') == 'mbedtls',
+  )
+  libmbedcrypto = cc.find_library(
+    'mbedcrypto',
+    required: get_option('crypto_backend') == 'mbedtls',
+  )
   if libmbedtls.found() and libmbedx509.found() and libmbedcrypto.found()
     libssh2_sources += 'src/mbedtls.c'
     libssh2_deps += [libmbedtls, libmbedx509, libmbedcrypto]
-    add_project_arguments('-DLIBSSH2_MBEDTLS', language: 'c')
+    add_project_arguments(
+      '-DLIBSSH2_MBEDTLS',
+      language: 'c',
+    )
   else
     crypto = 'openssl'
   endif
@@ -92,13 +123,19 @@ endif
 
 if crypto == 'openssl'
   if meson.version().version_compare('>= 0.62.0')
-    openssl_dep = dependency('openssl', version: '>= 1.0.0')
+    openssl_dep = dependency(
+      'openssl',
+      version: '>= 1.0.0',
+    )
   else
     openssl_dep = cc.find_library('libcrypto')
   endif
   libssh2_sources += 'src/openssl.c'
   libssh2_deps += openssl_dep
-  add_project_arguments('-DLIBSSH2_OPENSSL', language: 'c')
+  add_project_arguments(
+    '-DLIBSSH2_OPENSSL',
+    language: 'c',
+  )
 endif
 
 if crypto == 'wincng'
@@ -107,7 +144,10 @@ if crypto == 'wincng'
   endif
   libssh2_sources += 'src/wincng.c'
   libssh2_deps += [cc.find_library('bcrypt'), cc.find_library('crypt32')]
-  add_project_arguments('-DLIBSSH2_WINCNG', language: 'c')
+  add_project_arguments(
+    '-DLIBSSH2_WINCNG',
+    language: 'c',
+  )
 endif
 
 libssh2_config = configuration_data()
@@ -133,27 +173,56 @@ check_headers = [
 ]
 
 foreach h : check_headers
-  libssh2_config.set('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+  libssh2_config.set(
+    'HAVE_@0@'.format(h.underscorify().to_upper()),
+    cc.has_header(h),
+  )
 endforeach
 
-libssh2_config.set('HAVE_O_NONBLOCK', cc.has_header_symbol('fcntl.h', 'O_NONBLOCK'))
-libssh2_config.set('HAVE_FIONBIO', cc.has_header_symbol('sys/ioctl.h', 'FIONBIO'))
-libssh2_config.set('HAVE_IOCTLSOCKET', cc.has_header_symbol('winsock2.h', 'ioctlsocket'))
+libssh2_config.set(
+  'HAVE_O_NONBLOCK',
+  cc.has_header_symbol('fcntl.h', 'O_NONBLOCK'),
+)
+libssh2_config.set(
+  'HAVE_FIONBIO',
+  cc.has_header_symbol('sys/ioctl.h', 'FIONBIO'),
+)
+libssh2_config.set(
+  'HAVE_IOCTLSOCKET',
+  cc.has_header_symbol('winsock2.h', 'ioctlsocket'),
+)
 
-ws_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
+ws_dep = cc.find_library(
+  'ws2_32',
+  required: host_machine.system() == 'windows',
+)
 libssh2_deps += ws_dep
 
 #hack for MSVC
 libssh2_config.set('HAVE_SNPRINTF', cc.has_header_symbol('stdio.h', 'snprintf'))
 
-foreach f : ['EVP_aes_128_ctr', 'gettimeofday', 'poll', 'select', 'socket', 'strtoll', 'strtoi64']
-  libssh2_config.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
+foreach f : [
+  'EVP_aes_128_ctr',
+  'gettimeofday',
+  'poll',
+  'select',
+  'socket',
+  'strtoll',
+  'strtoi64',
+]
+  libssh2_config.set(
+    'HAVE_@0@'.format(f.underscorify().to_upper()),
+    cc.has_function(f),
+  )
 endforeach
 
 libssh2_config.set('HAVE_LONGLONG', 1)
 libssh2_config.set('LIBSSH2DEBUG', get_option('buildtype') == 'debug')
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 libssh2_config_h = configure_file(
   input: 'src/libssh2_config_cmake.h.in',
   output: 'libssh2_config.h',

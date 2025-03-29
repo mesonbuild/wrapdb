@@ -1,17 +1,17 @@
 option(
     'with_sdl2_image',
-    type : 'feature',
-    description : 'Enable SDL2_image wrappers'
+    type: 'feature',
+    description: 'Enable SDL2_image wrappers',
 )
 
 option(
     'with_sdl2_mixer',
-    type : 'feature',
-    description : 'Enable SDL2_mixer wrappers'
+    type: 'feature',
+    description: 'Enable SDL2_mixer wrappers',
 )
 
 option(
     'with_sdl2_ttf',
-    type : 'feature',
-    description : 'Enable SDL2_ttf wrappers'
+    type: 'feature',
+    description: 'Enable SDL2_ttf wrappers',
 )

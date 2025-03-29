@@ -12,8 +12,13 @@ pkg = import('pkgconfig')
 
 cc = meson.get_compiler('c')
 
-if not cc.compiles('#include "lj_arch.h"', include_directories: include_directories('src'))
-  error('unsupported architecture or configuration, see: https://luajit.org/status.html#architectures')
+if not cc.compiles(
+  '#include "lj_arch.h"',
+  include_directories: include_directories('src'),
+)
+  error(
+    'unsupported architecture or configuration, see: https://luajit.org/status.html#architectures',
+  )
 endif
 
 foreach _define : [
@@ -62,10 +67,9 @@ use_valgrind = get_option('valgrind')
 if use_valgrind
   XCFLAGS += ['-DLUAJIT_USE_VALGRIND']
 endif
-use_sysmalloc = (
-  use_valgrind
-  or get_option('sysmalloc')
-  or get_option('b_sanitize') != 'none'
+use_sysmalloc = (use_valgrind
+or get_option('sysmalloc')
+or get_option('b_sanitize') != 'none'
 )
 if use_sysmalloc
   XCFLAGS += '-DLUAJIT_USE_SYSMALLOC'
@@ -128,13 +132,12 @@ if host_machine.system() == 'darwin'
 elif host_machine.system() == 'windows'
   unwind_external = false
 else
-  unwind_external = (
-    LJ_NO_UNWIND != '1'
-    and run_command(
-      [find_program('./unwind_check.sh'), meson.project_build_root()] + cc.cmd_array(),
-      check: true,
-    ).stdout().strip() == 'E'
-  )
+  unwind_external = (LJ_NO_UNWIND != '1'
+and run_command(
+    [find_program('./unwind_check.sh'), meson.project_build_root()] + cc.cmd_array(),
+    check: true,
+  ).stdout().strip() == 'E'
+)
 endif
 if unwind_external
   TARGET_XCFLAGS += '-DLUAJIT_UNWIND_EXTERNAL'
@@ -157,7 +160,9 @@ else
 endif
 
 if get_option('valgrind') and get_option('b_sanitize') != 'none'
-  error('valgrind and b_sanitize=' + get_option('b_sanitize') + ' are not compatible')
+  error(
+    'valgrind and b_sanitize=' + get_option('b_sanitize') + ' are not compatible',
+  )
 endif
 
 TARGET_XCFLAGS += cc.get_supported_arguments(
@@ -176,15 +181,23 @@ if meson.is_cross_build()
   HOST_XCFLAGS += '-DLUAJIT_OS=LUAJIT_OS_' + _luajit_os
 endif
 
-if (
-  cc.sizeof('void *') == 4
-  and meson.get_compiler('c', native: true).sizeof('void *') == 8
+if (cc.sizeof('void *') == 4
+and meson.get_compiler(
+  'c',
+  native: true,
+).sizeof('void *') == 8
 )
   HOST_XCFLAGS += '-m32'
 endif
 
-m_dep = cc.find_library('m', required: false)
-dl_dep = cc.find_library('dl', required: host_machine.system() == 'linux')
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+dl_dep = cc.find_library(
+  'dl',
+  required: host_machine.system() == 'linux',
+)
 
 subdir('dynasm')
 subdir('src')

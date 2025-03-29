@@ -7,7 +7,12 @@ project(
 
 cc = meson.get_compiler('c')
 
-dependencies = [cc.find_library('m', required: false)]
+dependencies = [
+  cc.find_library(
+    'm',
+    required: false,
+  ),
+]
 
 cdata = configuration_data()
 
@@ -19,7 +24,11 @@ foreach _feat, _spec : {
   'libwebp': ['libwebp'],
   'libz'   : ['zlib'],
 }
-  _dep = dependency(_spec[0], required: get_option(_feat), version: _spec.get(1, []))
+  _dep = dependency(
+    _spec[0],
+    required: get_option(_feat),
+    version: _spec.get(1, []),
+  )
   set_variable('has_' + _feat.underscorify(), _dep.found())
   if _dep.found()
     cdata.set('HAVE_' + _feat.underscorify().to_upper(), 1)
@@ -40,9 +49,7 @@ if has_libgif
       required: false,
     )
   endif
-  has_libgif = get_option(
-    'libgif',
-  ).require(
+  has_libgif = get_option('libgif').require(
     gif_dep.found(),
     error_message: 'giflib not found',
   ).allowed()
@@ -58,9 +65,7 @@ endif
 
 dependencies += dependency(
   'libwebpmux',
-  required: get_option(
-    'libwebp-anim',
-  ).require(
+  required: get_option('libwebp-anim').require(
     has_libwebp,
     error_message: 'libwebp feature needed',
   ),

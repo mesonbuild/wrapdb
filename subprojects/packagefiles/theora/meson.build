@@ -19,7 +19,10 @@ conf = configuration_data()
 
 valgrind_testing = get_option('valgrind-testing')
 
-valgrind_exe = find_program('valgrind', required: valgrind_testing)
+valgrind_exe = find_program(
+  'valgrind',
+  required: valgrind_testing,
+)
 
 if valgrind_exe.found()
   add_test_setup(
@@ -42,13 +45,22 @@ compile_args = cc.get_supported_arguments(
   '-Wno-shift-negative-value',
 )
 
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 
 if get_option('collect-metrics')
-  add_project_arguments('-DOC_COLLECT_METRICS', language: 'c')
+  add_project_arguments(
+    '-DOC_COLLECT_METRICS',
+    language: 'c',
+  )
 endif
 
-ogg_dep = dependency('ogg', version: '>= 1.1')
+ogg_dep = dependency(
+  'ogg',
+  version: '>= 1.1',
+)
 
 vorbis_dep = dependency(
   'vorbis',
@@ -64,18 +76,25 @@ vorbisenc_dep = dependency(
   disabler: true,
 )
 
-sdl_dep = dependency('sdl', required: false, disabler: true)
+sdl_dep = dependency(
+  'sdl',
+  required: false,
+  disabler: true,
+)
 if not sdl_dep.found()
   message('*** Unable to find SDL -- Not compiling example players ***')
 endif
 
-if (
-  cc.has_header('sys/soundcard.h')
-  or cc.has_header('soundcard.h')
-  or cc.has_header('machine/soundcard.h')
+if (cc.has_header('sys/soundcard.h')
+or cc.has_header('soundcard.h')
+or cc.has_header('machine/soundcard.h')
 )
   if host_machine.system() == 'openbsd'
-    oss_dep = dependency('ossaudio', required: false, disabler: true)
+    oss_dep = dependency(
+      'ossaudio',
+      required: false,
+      disabler: true,
+    )
   else
     oss_dep = declare_dependency()
   endif
@@ -87,7 +106,10 @@ if not oss_dep.found()
   message('OSS audio support not found -- not compiling player_example')
 endif
 
-libpng_dep = dependency('libpng', required: false)
+libpng_dep = dependency(
+  'libpng',
+  required: false,
+)
 
 if cc.has_header('unistd.h')
   unistd_dep = declare_dependency()
@@ -95,7 +117,10 @@ else
   unistd_dep = disabler()
 endif
 
-cairo_dep = dependency('cairo', required: get_option('telemetry'))
+cairo_dep = dependency(
+  'cairo',
+  required: get_option('telemetry'),
+)
 if cairo_dep.found()
   conf.set('HAVE_CAIRO', true)
 endif
@@ -103,7 +128,10 @@ endif
 mem_constraint = get_option('mem-constraint')
 
 if mem_constraint.enabled()
-  conf.set('HAVE_MEMORY_CONSTRAINT', language: 'c')
+  conf.set(
+    'HAVE_MEMORY_CONSTRAINT',
+    language: 'c',
+  )
 endif
 
 asm = not get_option('asm').disabled()
@@ -120,11 +148,19 @@ if asm
   endif
 endif
 
-config_h = configure_file(configuration: conf, output: 'config.h')
+config_h = configure_file(
+  configuration: conf,
+  output: 'config.h',
+)
 
-config_dep = declare_dependency(sources: config_h)
+config_dep = declare_dependency(
+  sources: config_h,
+)
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 
 pkg = import('pkgconfig')
 windows = import('windows')
@@ -161,18 +197,29 @@ if spec.auto() or spec.enabled()
   # This implicates that we've got to copy spec.{tex,bib}
   # to the build folder in /doc/spec/ to make all files
   # live in the same folder.
-  latexmk_exe = find_program('latexmk', required: spec)
-  transfig_exe = find_program('fig2dev', required: spec)
-  # used indirectly by latexmk
-  pdflatex = find_program('pdflatex', required: spec)
-  bibtex = find_program('bibtex', required: spec)
-
-  if (
-    latexmk_exe.found()
-    and pdflatex.found()
-    and bibtex.found()
-    and transfig_exe.found()
+  latexmk_exe = find_program(
+    'latexmk',
+    required: spec,
   )
+  transfig_exe = find_program(
+    'fig2dev',
+    required: spec,
+  )
+  # used indirectly by latexmk
+  pdflatex = find_program(
+    'pdflatex',
+    required: spec,
+  )
+  bibtex = find_program(
+    'bibtex',
+    required: spec,
+  )
+
+  if (latexmk_exe.found()
+and pdflatex.found()
+and bibtex.found()
+and transfig_exe.found()
+)
     check_needed_tex_packages = find_program(
       'doc/spec/check-needed-tex-packages.py',
       required: true,

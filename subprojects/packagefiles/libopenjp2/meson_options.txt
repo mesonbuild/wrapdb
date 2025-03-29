@@ -1,11 +1,62 @@
-option('opj_disable_tpsot_fix', type : 'boolean', value : false, description : 'Disable TPsot==TNsot fix. See https://github.com/uclouvain/openjpeg/issues/254.')
-option('opj_use_thread', type : 'boolean', value : true, description : 'Build with thread/mutex support ')
-option('build_luts_generator', type : 'boolean', value : false, description : 'Build utility to generate t1_luts.h')
-option('build_unit_tests', type : 'boolean', value : false, description : 'Build unit tests (bench_dwt, test_sparse_array, etc..)')
-option('build_codec_apps', type : 'boolean', value : true, description : 'Build the CODEC executables')
-option('build_jpip', type : 'boolean', value : false, description : 'Build the JPIP library and executables.')
-option('build_jpip_server', type : 'boolean', value : false, description : 'Build the JPIP server.')
-option('build_viewer', type : 'feature', description : 'Build the OPJViewer executable (C++)')
-option('bin_png', type : 'feature', description : 'Build binaries with libpng')
-option('bin_tiff', type : 'feature', description : 'Build binaries with libtiff')
-option('bin_lcms2', type : 'feature', description : 'Build binaries with liblcms2')
+option(
+    'opj_disable_tpsot_fix',
+    type: 'boolean',
+    value: false,
+    description: 'Disable TPsot==TNsot fix. See https://github.com/uclouvain/openjpeg/issues/254.',
+)
+option(
+    'opj_use_thread',
+    type: 'boolean',
+    value: true,
+    description: 'Build with thread/mutex support ',
+)
+option(
+    'build_luts_generator',
+    type: 'boolean',
+    value: false,
+    description: 'Build utility to generate t1_luts.h',
+)
+option(
+    'build_unit_tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build unit tests (bench_dwt, test_sparse_array, etc..)',
+)
+option(
+    'build_codec_apps',
+    type: 'boolean',
+    value: true,
+    description: 'Build the CODEC executables',
+)
+option(
+    'build_jpip',
+    type: 'boolean',
+    value: false,
+    description: 'Build the JPIP library and executables.',
+)
+option(
+    'build_jpip_server',
+    type: 'boolean',
+    value: false,
+    description: 'Build the JPIP server.',
+)
+option(
+    'build_viewer',
+    type: 'feature',
+    description: 'Build the OPJViewer executable (C++)',
+)
+option(
+    'bin_png',
+    type: 'feature',
+    description: 'Build binaries with libpng',
+)
+option(
+    'bin_tiff',
+    type: 'feature',
+    description: 'Build binaries with libtiff',
+)
+option(
+    'bin_lcms2',
+    type: 'feature',
+    description: 'Build binaries with liblcms2',
+)

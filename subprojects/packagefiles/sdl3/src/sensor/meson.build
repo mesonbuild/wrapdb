@@ -4,6 +4,4 @@ else
   subdir('dummy')
 endif
 
-sources += files(
-  'SDL_sensor.c',
-)
+sources += files('SDL_sensor.c')

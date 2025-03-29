@@ -27,11 +27,15 @@ if is_msvc
   # MSVC, cannot compile assembly files directly. They need to be preprocessed
   # with the C compiler first, then compiled with MASM.
   if meson.version().version_compare('>=0.64.0')
-    ffi_asm_sources = cc.preprocess(ffi_asm_sources,
+    ffi_asm_sources = cc.preprocess(
+      ffi_asm_sources,
       output: '@BASENAME@.masm',
       include_directories: ffiinc,
     )
-    add_languages('masm', native: false)
+    add_languages(
+      'masm',
+      native: false,
+    )
   else
     error('Meson >= 0.64 is required with MSVC')
   endif
@@ -45,7 +49,8 @@ if get_option('ffi-build-versioned')
   arg_prefix = '-Wl,--version-script='
   if cc.has_multi_link_arguments(['-shared', arg_prefix + libffi_map_in])
     if meson.version().version_compare('>=1.3.2')
-      ffi_map_file = cc.preprocess(libffi_map_in,
+      ffi_map_file = cc.preprocess(
+        libffi_map_in,
         output: '@BASENAME@',
         include_directories: ffiinc,
         compile_args: ['-DGENERATE_LIBFFI_MAP', '-D' + target],
@@ -62,10 +67,12 @@ if get_option('ffi-build-versioned')
           '-I' + join_paths(meson.current_source_dir(), targetdir),
           '-DGENERATE_LIBFFI_MAP',
           '-D' + target,
-          '-E', '-x', 'assembler-with-cpp',
-          join_paths(meson.current_source_dir(),'../libffi.map.in'),
+          '-E',
+          '-x',
+          'assembler-with-cpp',
+          join_paths(meson.current_source_dir(), '../libffi.map.in'),
           '-o',
-          '@OUTPUT@'
+          '@OUTPUT@',
         ],
       )
       ffi_map_abs = meson.current_build_dir() / 'libffi.map'
@@ -84,29 +91,38 @@ endif
 # Meson >= 0.64 above, this tricks avoids passing it to older versions.
 extra_kwargs = {}
 if meson.version().version_compare('>=0.64.0')
-  extra_kwargs += {'masm_args': masm_args}
+  extra_kwargs += {
+    'masm_args': masm_args,
+  }
 endif
 
-ffi_lib = library('ffi', ffi_c_sources, ffi_asm_sources,
-  c_args : ['-DFFI_BUILDING_DLL', public_c_args],
-  include_directories : ffiinc,
+ffi_lib = library(
+  'ffi',
+  ffi_c_sources,
+  ffi_asm_sources,
+  c_args: ['-DFFI_BUILDING_DLL', public_c_args],
+  include_directories: ffiinc,
   link_args: ffi_link_args,
   link_depends: ffi_map_file,
-  version : ffi_version,
-  soversion : ffi_soversion,
-  darwin_versions : ffi_darwin_versions,
-  install : true,
+  version: ffi_version,
+  soversion: ffi_soversion,
+  darwin_versions: ffi_darwin_versions,
+  install: true,
   kwargs: extra_kwargs,
 )
 
 pkgconf = import('pkgconfig')
-pkgconf.generate(ffi_lib,
-  description : 'Library supporting Foreign Function Interfaces',
-  filebase : 'libffi',
-  extra_cflags: public_c_args)
+pkgconf.generate(
+  ffi_lib,
+  description: 'Library supporting Foreign Function Interfaces',
+  filebase: 'libffi',
+  extra_cflags: public_c_args,
+)
 
-ffi_dep = declare_dependency(link_with : ffi_lib,
+ffi_dep = declare_dependency(
+  link_with: ffi_lib,
   compile_args: public_c_args,
-  include_directories : ffiinc)
+  include_directories: ffiinc,
+)
 
 meson.override_dependency('libffi', ffi_dep)

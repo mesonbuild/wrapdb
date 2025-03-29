@@ -36,10 +36,12 @@ config.set('VERSION_MINOR', version[1])
 config.set('VERSION_PATCH', version[2])
 
 freeglut_sources = files(
+  'src/fg_callback_macros.h',
   'src/fg_callbacks.c',
   'src/fg_cursor.c',
   'src/fg_display.c',
   'src/fg_ext.c',
+  'src/fg_font.c',
   'src/fg_font_data.c',
   'src/fg_gamemode.c',
   'src/fg_geometry.c',
@@ -47,11 +49,11 @@ freeglut_sources = files(
   'src/fg_gl2.h',
   'src/fg_init.c',
   'src/fg_init.h',
-  'src/fg_internal.h',
-  'src/fg_callback_macros.h',
   'src/fg_input_devices.c',
+  'src/fg_internal.h',
   'src/fg_joystick.c',
   'src/fg_main.c',
+  'src/fg_menu.c',
   'src/fg_misc.c',
   'src/fg_overlay.c',
   'src/fg_spaceball.c',
@@ -63,28 +65,33 @@ freeglut_sources = files(
   'src/fg_teapot_data.h',
   'src/fg_videoresize.c',
   'src/fg_window.c',
-  'src/fg_font.c',
-  'src/fg_menu.c',
 )
 
 freeglut_deps = [
-  cc.find_library('m', required: false),
-  dependency('gl')
+  cc.find_library(
+    'm',
+    required: false,
+  ),
+  dependency('gl'),
 ]
 
 if host_system == 'windows'
   if cc.get_id() == 'msvc'
-    add_project_arguments('/source-charset:windows-1252', language: 'c')
+    add_project_arguments(
+      '/source-charset:windows-1252',
+      language: 'c',
+    )
   endif
 
   freeglut_sources += files(
+    'src/mswin/fg_cmap_mswin.c',
     'src/mswin/fg_cursor_mswin.c',
     'src/mswin/fg_display_mswin.c',
     'src/mswin/fg_ext_mswin.c',
     'src/mswin/fg_gamemode_mswin.c',
     'src/mswin/fg_init_mswin.c',
-    'src/mswin/fg_internal_mswin.h',
     'src/mswin/fg_input_devices_mswin.c',
+    'src/mswin/fg_internal_mswin.h',
     'src/mswin/fg_joystick_mswin.c',
     'src/mswin/fg_main_mswin.c',
     'src/mswin/fg_menu_mswin.c',
@@ -92,82 +99,91 @@ if host_system == 'windows'
     'src/mswin/fg_state_mswin.c',
     'src/mswin/fg_structure_mswin.c',
     'src/mswin/fg_window_mswin.c',
-    'src/mswin/fg_cmap_mswin.c',
   )
 
   freeglut_rc = configure_file(
     input: 'freeglut.rc.in',
     output: 'freeglut.rc',
     encoding: 'cp1252',
-    configuration: config)
+    configuration: config,
+  )
   freeglut_sources += import('windows').compile_resources(freeglut_rc)
 
-  add_project_arguments('-DFREEGLUT_EXPORTS', language: 'c')
-  add_project_arguments('-D_WIN32_WINNT=0x0601', language: 'c')
+  add_project_arguments(
+    '-DFREEGLUT_EXPORTS',
+    language: 'c',
+  )
+  add_project_arguments(
+    '-D_WIN32_WINNT=0x0601',
+    language: 'c',
+  )
 
   freeglut_deps += cc.find_library('winmm')
   freeglut_deps += cc.find_library('gdi32')
 
-else # not windows
+else  # not windows
 
   if get_option('wayland')
     freeglut_sources += files(
-      'src/wayland/fg_cursor_wl.c',
-      'src/wayland/fg_ext_wl.c',
-      'src/wayland/fg_gamemode_wl.c',
-      'src/wayland/fg_init_wl.c',
-      'src/wayland/fg_internal_wl.h',
-      'src/wayland/fg_input_devices_wl.c',
-      'src/wayland/fg_main_wl.c',
-      'src/wayland/fg_state_wl.c',
-      'src/wayland/fg_structure_wl.c',
-      'src/wayland/fg_window_wl.c',
-      # font, serial port & joystick code are agnostic
-      'src/x11/fg_glutfont_definitions_x11.c',
-      'src/x11/fg_input_devices_x11.c',
-      'src/x11/fg_joystick_x11.c',
-      'src/egl/fg_internal_egl.h',
       'src/egl/fg_display_egl.c',
       'src/egl/fg_ext_egl.c',
       'src/egl/fg_init_egl.c',
       'src/egl/fg_init_egl.h',
+      'src/egl/fg_internal_egl.h',
       'src/egl/fg_state_egl.c',
       'src/egl/fg_state_egl.h',
       'src/egl/fg_structure_egl.c',
       'src/egl/fg_structure_egl.h',
       'src/egl/fg_window_egl.c',
+      # font, serial port & joystick code are agnostic
       'src/egl/fg_window_egl.h',
+      'src/wayland/fg_cursor_wl.c',
+      'src/wayland/fg_ext_wl.c',
+      'src/wayland/fg_gamemode_wl.c',
+      'src/wayland/fg_init_wl.c',
+      'src/wayland/fg_input_devices_wl.c',
+      'src/wayland/fg_internal_wl.h',
+      'src/wayland/fg_main_wl.c',
+      'src/wayland/fg_state_wl.c',
+      'src/wayland/fg_structure_wl.c',
+      'src/wayland/fg_window_wl.c',
+      'src/x11/fg_glutfont_definitions_x11.c',
+      'src/x11/fg_input_devices_x11.c',
+      'src/x11/fg_joystick_x11.c',
     )
 
-    add_project_arguments('-DFREEGLUT_WAYLAND', language: 'c')
+    add_project_arguments(
+      '-DFREEGLUT_WAYLAND',
+      language: 'c',
+    )
     freeglut_deps += dependency('wayland-client, wayland-cursor')
     freeglut_deps += dependency('wayland-egl, egl')
     freeglut_deps += dependency('xkbcommon')
 
   else
     freeglut_sources += files(
+      'src/x11/fg_cmap_x11.c',
       'src/x11/fg_cursor_x11.c',
+      'src/x11/fg_display_x11_glx.c',
       'src/x11/fg_ext_x11.c',
       'src/x11/fg_gamemode_x11.c',
       'src/x11/fg_glutfont_definitions_x11.c',
       'src/x11/fg_init_x11.c',
-      'src/x11/fg_internal_x11.h',
       'src/x11/fg_input_devices_x11.c',
+      'src/x11/fg_internal_x11.h',
+      'src/x11/fg_internal_x11_glx.h',
       'src/x11/fg_joystick_x11.c',
       'src/x11/fg_main_x11.c',
       'src/x11/fg_menu_x11.c',
       'src/x11/fg_spaceball_x11.c',
       'src/x11/fg_state_x11.c',
-      'src/x11/fg_structure_x11.c',
-      'src/x11/fg_window_x11.c',
-      'src/x11/fg_xinput_x11.c',
-      'src/x11/fg_cmap_x11.c',
-      'src/x11/fg_internal_x11_glx.h',
-      'src/x11/fg_display_x11_glx.c',
       'src/x11/fg_state_x11_glx.c',
       'src/x11/fg_state_x11_glx.h',
+      'src/x11/fg_structure_x11.c',
+      'src/x11/fg_window_x11.c',
       'src/x11/fg_window_x11_glx.c',
       'src/x11/fg_window_x11_glx.h',
+      'src/x11/fg_xinput_x11.c',
     )
 
     if host_machine.system() == 'linux'
@@ -179,45 +195,78 @@ else # not windows
     freeglut_deps += dependency('xi')
     freeglut_deps += dependency('xkbcommon')
 
-    foreach d, s : {'xrandr': 'XRANDR',
-                    'xxf86vm': 'XF86VMODE',
-                    'xi': 'XINPUT2'}
-      _dep = dependency(d, required: false)
+    foreach d, s : {
+      'xrandr': 'XRANDR',
+      'xxf86vm': 'XF86VMODE',
+      'xi': 'XINPUT2',
+    }
+      _dep = dependency(
+        d,
+        required: false,
+      )
       if _dep.found()
         freeglut_deps += _dep
-        add_project_arguments('-DHAVE_X11_EXTENSIONS_@0@_H'.format(s),
-                              language: 'c')
+        add_project_arguments(
+          '-DHAVE_X11_EXTENSIONS_@0@_H'.format(s),
+          language: 'c',
+        )
       endif
     endforeach
 
   endif
 
-  add_project_arguments('-D_GNU_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_GNU_SOURCE',
+    language: 'c',
+  )
 endif
 
-foreach h : ['sys/types.h', 'unistd.h', 'sys/time.h', 'stdbool.h',
-             'sys/param.h', 'sys/ioctl.h', 'fcntl.h', 'stdint.h',
-             'inttypes.h']
+foreach h : [
+  'sys/types.h',
+  'unistd.h',
+  'sys/time.h',
+  'stdbool.h',
+  'sys/param.h',
+  'sys/ioctl.h',
+  'fcntl.h',
+  'stdint.h',
+  'inttypes.h',
+]
   if cc.has_header(h)
     h = h.replace('/', '_')
     h = h.replace('.', '_')
-    add_project_arguments('-DHAVE_@0@'.format(h.to_upper()), language: 'c')
+    add_project_arguments(
+      '-DHAVE_@0@'.format(h.to_upper()),
+      language: 'c',
+    )
   endif
 endforeach
 
 if cc.has_function('gettimeofday')
-  add_project_arguments('-DHAVE_GETTIMEOFDAY', language: 'c')
+  add_project_arguments(
+    '-DHAVE_GETTIMEOFDAY',
+    language: 'c',
+  )
 endif
 
-if cc.has_function('XParseGeometry', dependencies: freeglut_deps,
-                   prefix: '#include <X11/Xlib.h>')
-  add_project_arguments('-DHAVE_XPARSEGEOMETRY', language: 'c')
+if cc.has_function(
+  'XParseGeometry',
+  dependencies: freeglut_deps,
+  prefix: '#include <X11/Xlib.h>',
+)
+  add_project_arguments(
+    '-DHAVE_XPARSEGEOMETRY',
+    language: 'c',
+  )
 else
   freeglut_sources += files(
     'src/util/xparsegeometry_repl.c',
     'src/util/xparsegeometry_repl.h',
   )
-  add_project_arguments('-DNEED_XPARSEGEOMETRY_IMPL', language: 'c')
+  add_project_arguments(
+    '-DNEED_XPARSEGEOMETRY_IMPL',
+    language: 'c',
+  )
 endif
 
 freeglut_def = configure_file(
@@ -229,7 +278,10 @@ freeglut_def = configure_file(
 compile_args = ['-DFREEGLUT_LIB_PRAGMAS=0']
 if get_option('default_library') == 'static'
   compile_args += '-DFREEGLUT_STATIC'
-  add_project_arguments('-DFREEGLUT_STATIC', language: 'c')
+  add_project_arguments(
+    '-DFREEGLUT_STATIC',
+    language: 'c',
+  )
 endif
 
 freeglut_includes = include_directories('include')

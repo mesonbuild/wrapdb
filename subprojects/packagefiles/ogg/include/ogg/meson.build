@@ -22,5 +22,8 @@ configure_file(
   configuration: cdata,
 )
 
-headers = files(['ogg.h', 'os_types.h'])
-install_headers(headers, subdir: 'ogg')
+headers = files('ogg.h', 'os_types.h')
+install_headers(
+  headers,
+  subdir: 'ogg',
+)

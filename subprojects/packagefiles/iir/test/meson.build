@@ -9,8 +9,10 @@ tests = [
 ]
 
 foreach t : tests
-  exe = executable(t,
-                   t + '.cpp',
-                   dependencies : libiir_dep)
+  exe = executable(
+    t,
+    t + '.cpp',
+    dependencies: libiir_dep,
+  )
   test(t, exe)
 endforeach

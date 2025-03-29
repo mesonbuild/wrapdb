@@ -1,8 +1,14 @@
 ma_extras_c_args = ma_c_args
 ma_extra_srcs = []
 
-opus_dep = dependency('opus', required: get_option('libopus'))
-opusfile_dep = dependency('opusfile', required: get_option('libopus'))
+opus_dep = dependency(
+  'opus',
+  required: get_option('libopus'),
+)
+opusfile_dep = dependency(
+  'opusfile',
+  required: get_option('libopus'),
+)
 if opus_dep.found() and opusfile_dep.found()
   ma_all_libs += static_library(
     'miniaudio_libopus',
@@ -16,8 +22,14 @@ if opus_dep.found() and opusfile_dep.found()
   )
 endif
 
-vorbis_dep = dependency('vorbis', required: get_option('libvorbis'))
-vorbisfile_dep = dependency('vorbisfile', required: get_option('libvorbis'))
+vorbis_dep = dependency(
+  'vorbis',
+  required: get_option('libvorbis'),
+)
+vorbisfile_dep = dependency(
+  'vorbisfile',
+  required: get_option('libvorbis'),
+)
 if vorbis_dep.found() and vorbisfile_dep.found()
   ma_all_libs += static_library(
     'miniaudio_libvorbis',

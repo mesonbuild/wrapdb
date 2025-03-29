@@ -3,21 +3,21 @@ cpputest_ext_sources = files(
   'GTest.cpp',
   'IEEE754ExceptionsPlugin.cpp',
   'MemoryReportAllocator.cpp',
-  'MemoryReporterPlugin.cpp',
   'MemoryReportFormatter.cpp',
+  'MemoryReporterPlugin.cpp',
   'MockActualCall.cpp',
   'MockExpectedCall.cpp',
   'MockExpectedCallsList.cpp',
   'MockFailure.cpp',
   'MockNamedValue.cpp',
   'MockSupport.cpp',
-  'MockSupport_c.cpp',
   'MockSupportPlugin.cpp',
+  'MockSupport_c.cpp',
   'OrderedTest.cpp',
 )
 
 cpputest_ext_lib = library(
   'CppUTest',
-  cpputest_ext_sources, 
-  include_directories: cpputest_includes
+  cpputest_ext_sources,
+  include_directories: cpputest_includes,
 )

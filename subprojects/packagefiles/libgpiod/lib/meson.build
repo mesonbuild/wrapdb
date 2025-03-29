@@ -24,18 +24,25 @@
 # [1] https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 abi_version = '2.2.3'
 
-gpiod_sources = [ 'core.c', 'ctxless.c', 'helpers.c', 'iter.c', 'misc.c' ]
-gpiod = library('gpiod', gpiod_sources,
-                include_directories: gpiod_includes,
-                gnu_symbol_visibility: 'hidden',
-                c_args: [ '-include', meson.project_build_root() / 'config.h' ],
-                version: abi_version,
-                install: true)
+gpiod_sources = ['core.c', 'ctxless.c', 'helpers.c', 'iter.c', 'misc.c']
+gpiod = library(
+  'gpiod',
+  gpiod_sources,
+  include_directories: gpiod_includes,
+  gnu_symbol_visibility: 'hidden',
+  c_args: ['-include', meson.project_build_root() / 'config.h'],
+  version: abi_version,
+  install: true,
+)
 
-pkg.generate(gpiod,
-             name: 'libgpiod',
-             description: 'Library and tools for the Linux GPIO chardev')
+pkg.generate(
+  gpiod,
+  name: 'libgpiod',
+  description: 'Library and tools for the Linux GPIO chardev',
+)
 
-gpiod_dep = declare_dependency(link_with: gpiod,
-                               include_directories: gpiod_includes,
-                               version: abi_version)
+gpiod_dep = declare_dependency(
+  link_with: gpiod,
+  include_directories: gpiod_includes,
+  version: abi_version,
+)

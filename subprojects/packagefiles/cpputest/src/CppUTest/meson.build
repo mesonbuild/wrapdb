@@ -27,5 +27,5 @@ endif
 cpputest_lib = library(
   'CppUTest',
   cpputest_sources,
-  include_directories: cpputest_includes
+  include_directories: cpputest_includes,
 )

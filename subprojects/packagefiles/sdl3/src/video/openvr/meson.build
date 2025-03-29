@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_openvrvideo.c',
-)
+sources += files('SDL_openvrvideo.c')

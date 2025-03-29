@@ -10,8 +10,14 @@ cc = meson.get_compiler('c')
 
 progs_opt = get_option('progs')
 
-m_dep = cc.find_library('m', required: false)
-readline_dep = dependency('readline', required: progs_opt.disabled() ? progs_opt : false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+readline_dep = dependency(
+  'readline',
+  required: progs_opt.disabled() ? progs_opt : false,
+)
 
 mujs_lib = library(
   'mujs',

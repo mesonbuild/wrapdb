@@ -43,9 +43,15 @@ lib_benchmark_deps = [dependency('threads')]
 if host_machine.system() == 'windows'
   cc = meson.get_compiler('cpp')
   if cc.get_argument_syntax() == 'msvc'
-    add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'cpp')
+    add_project_arguments(
+      '-D_CRT_SECURE_NO_WARNINGS',
+      language: 'cpp',
+    )
   endif
-  lib_benchmark_deps += cc.find_library('shlwapi', required: true)
+  lib_benchmark_deps += cc.find_library(
+    'shlwapi',
+    required: true,
+  )
 endif
 
 lib_benchmark = library(

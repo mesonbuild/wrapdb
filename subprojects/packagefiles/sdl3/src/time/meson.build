@@ -6,6 +6,4 @@ else
   subdir('unix')
 endif
 
-sources += files(
-  'SDL_time.c',
-)
+sources += files('SDL_time.c')

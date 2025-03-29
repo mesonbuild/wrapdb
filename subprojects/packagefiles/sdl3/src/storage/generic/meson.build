@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_genericstorage.c',
-)
+sources += files('SDL_genericstorage.c')

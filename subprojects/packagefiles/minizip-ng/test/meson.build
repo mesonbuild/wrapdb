@@ -2,8 +2,20 @@ add_languages('cpp')
 
 testlib = static_library(
   'testlib',
-  objects: minizip_ng.extract_all_objects(recursive: false),
-  dependencies: [bcrypt_dep, bsd_dep, crypt_dep, iconv_dep, bzip2_dep, lzma_dep, zlib_dep, zstd_dep, minizip_ng_dep],
+  objects: minizip_ng.extract_all_objects(
+    recursive: false,
+  ),
+  dependencies: [
+    bcrypt_dep,
+    bsd_dep,
+    crypt_dep,
+    iconv_dep,
+    bzip2_dep,
+    lzma_dep,
+    zlib_dep,
+    zstd_dep,
+    minizip_ng_dep,
+  ],
 )
 
 testinc = include_directories('.')
@@ -25,6 +37,11 @@ test_srcs += files('test_main.cc')
 
 test(
   'gtest_minizip',
-  executable('gtest_minizip', test_srcs, cpp_args: margs, dependencies: [gtest_dep, testlib_dep]),
+  executable(
+    'gtest_minizip',
+    test_srcs,
+    cpp_args: margs,
+    dependencies: [gtest_dep, testlib_dep],
+  ),
   workdir: testdir,
 )

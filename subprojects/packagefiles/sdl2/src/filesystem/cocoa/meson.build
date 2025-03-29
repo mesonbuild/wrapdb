@@ -1,3 +1,1 @@
-objc_sources += files(
-    'SDL_sysfilesystem.m'
-)
+objc_sources += files('SDL_sysfilesystem.m')

@@ -3,9 +3,7 @@ project(
   'cpp',
   version: '20230301',
   license: 'BSD-3-Clause',
-  default_options: [
-    'cpp_std=c++14',
-  ],
+  default_options: ['cpp_std=c++14'],
 )
 
 threads_dep = dependency('threads')
@@ -13,16 +11,12 @@ threads_dep = dependency('threads')
 cpp = meson.get_compiler('cpp')
 
 if cpp.get_argument_syntax() == 'msvc'
-  cpp_args = [
-    '/wd4100',
-    '/wd4201',
-    '/wd4456',
-    '/wd4457',
-    '/wd4702',
-    '/wd4815',
-  ]
+  cpp_args = ['/wd4100', '/wd4201', '/wd4456', '/wd4457', '/wd4702', '/wd4815']
   cpp_args = cpp.get_supported_arguments(cpp_args)
-  add_project_arguments(cpp_args, language: 'cpp')
+  add_project_arguments(
+    cpp_args,
+    language: 'cpp',
+  )
 endif
 
 if host_machine.system() == 'windows'
@@ -36,14 +30,21 @@ if host_machine.system() == 'windows'
     '-DWINVER=0x0600',
     '-D_WIN32_WINNT=0x0600',
   ]
-  add_project_arguments(cpp_args, language: 'cpp')
+  add_project_arguments(
+    cpp_args,
+    language: 'cpp',
+  )
 endif
 
 sym_path_gnu = meson.current_source_dir() / 'libre2.symbols'
 sym_path_darwin = meson.current_source_dir() / 'libre2.symbols.darwin'
 ldflag_gnu = '-Wl,--version-script=' + sym_path_gnu
 ldflag_darwin = '-Wl,-exported_symbols_list,' + sym_path_darwin
-if cpp.links('', name: '-Wl,--version-script', args: ['-shared', ldflag_gnu])
+if cpp.links(
+  '',
+  name: '-Wl,--version-script',
+  args: ['-shared', ldflag_gnu],
+)
   link_args = [ldflag_gnu]
   link_depends = [sym_path_gnu]
 elif host_machine.system() == 'darwin' and cpp.has_link_argument(ldflag_darwin)
@@ -94,7 +95,7 @@ libre2 = library(
   link_whole: libre2_static,
   link_args: link_args,
   link_depends: link_depends,
-  install: (cpp.get_id() != 'msvc'), # does not generate .lib file, cmake version exports all symbols, can't do that here
+  install: (cpp.get_id() != 'msvc'),  # does not generate .lib file, cmake version exports all symbols, can't do that here
   soversion: '9',
   dependencies: threads_dep,
 )
@@ -182,6 +183,10 @@ if get_option('bigtests')
       dependencies: threads_dep,
     )
 
-    test(test, t, timeout: 1800)
+    test(
+      test,
+      t,
+      timeout: 1800,
+    )
   endforeach
 endif

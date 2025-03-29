@@ -29,13 +29,15 @@ subdir('timer')
 subdir('tray')
 subdir('video')
 
-sources += files('SDL_assert.c',
-'SDL.c',
-'SDL_error.c',
-'SDL_guid.c',
-'SDL_hashtable.c',
-'SDL_hints.c',
-'SDL_list.c',
-'SDL_log.c',
-'SDL_properties.c',
-'SDL_utils.c')
+sources += files(
+  'SDL.c',
+  'SDL_assert.c',
+  'SDL_error.c',
+  'SDL_guid.c',
+  'SDL_hashtable.c',
+  'SDL_hints.c',
+  'SDL_list.c',
+  'SDL_log.c',
+  'SDL_properties.c',
+  'SDL_utils.c',
+)

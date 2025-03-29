@@ -1,3 +1,1 @@
-sources += files(
-  'pp_data_dump.c',
-)
+sources += files('pp_data_dump.c')

@@ -30,30 +30,40 @@
 project(
   'google-snappy',
   'cpp',
-  version : '1.1.9',
-  license : 'BSD3',
-  meson_version : '>= 0.50'
+  version: '1.1.9',
+  license: 'BSD3',
+  meson_version: '>= 0.50',
 )
 
 cpp = meson.get_compiler('cpp')
 conf = configuration_data()
 pconf = configuration_data()
-dep_null = dependency('', required : false)
+dep_null = dependency(
+  '',
+  required: false,
+)
 
 add_project_arguments(
-  cpp.get_supported_arguments(
-    '-Wno-sign-compare',
-  ),
-  language : 'cpp',
+  cpp.get_supported_arguments('-Wno-sign-compare'),
+  language: 'cpp',
 )
 
 if host_machine.endian() == 'big'
   conf.set('SNAPPY_IS_BIG_ENDIAN', 1)
 endif
 
-foreach h : ['byteswap.h', 'stddef.h', 'stdint.h', 'sys/endian.h',
-             'sys/mman.h', 'sys/resource.h', 'sys/time.h', 'sys/uio.h',
-             'unistd.h', 'windows.h']
+foreach h : [
+  'byteswap.h',
+  'stddef.h',
+  'stdint.h',
+  'sys/endian.h',
+  'sys/mman.h',
+  'sys/resource.h',
+  'sys/time.h',
+  'sys/uio.h',
+  'unistd.h',
+  'windows.h',
+]
   if cpp.has_header(h)
     conf.set('HAVE_' + h.to_upper().underscorify(), 1)
   endif
@@ -65,19 +75,25 @@ foreach f : ['expect', 'ctzll']
   endif
 endforeach
 if conf.get('HAVE_SYS_MMAN_H', 0) == 1
-  if cpp.has_function('mmap', prefix : '#include <sys/mman.h>')
+  if cpp.has_function(
+    'mmap',
+    prefix: '#include <sys/mman.h>',
+  )
     conf.set('HAVE_FUNC_MMAP', 1)
   endif
 endif
 if conf.get('HAVE_UNISTD_H', 0) == 1
-  if cpp.has_function('sysconf', prefix : '#include <unistd.h>')
+  if cpp.has_function(
+    'sysconf',
+    prefix: '#include <unistd.h>',
+  )
     conf.set('HAVE_FNC_SYSCONF', 1)
   endif
 endif
 
 configure_file(
-  configuration : conf,
-  output : 'config.h',
+  configuration: conf,
+  output: 'config.h',
 )
 
 foreach h : ['HAVE_STDINT_H', 'HAVE_STDDEF_H', 'HAVE_SYS_UIO_H']
@@ -90,10 +106,10 @@ pconf.set('PROJECT_VERSION_MINOR', version[1])
 pconf.set('PROJECT_VERSION_PATCH', version[2])
 
 configure_file(
-  configuration : pconf,
-  input : 'snappy-stubs-public.h.in',
-  output : 'snappy-stubs-public.h',
-  format : 'cmake',
+  configuration: pconf,
+  input: 'snappy-stubs-public.h.in',
+  output: 'snappy-stubs-public.h',
+  format: 'cmake',
 )
 
 libsnappy = library(
@@ -104,12 +120,12 @@ libsnappy = library(
     'snappy-stubs-internal.cc',
     'snappy.cc',
   ],
-  cpp_args : ['-DHAVE_CONFIG_H'],
-  version : meson.project_version(),
+  cpp_args: ['-DHAVE_CONFIG_H'],
+  version: meson.project_version(),
 )
 
 snappy_dep = declare_dependency(
-  link_with : libsnappy,
-  include_directories : include_directories('.'),
-  version : meson.project_version(),
+  link_with: libsnappy,
+  include_directories: include_directories('.'),
+  version: meson.project_version(),
 )

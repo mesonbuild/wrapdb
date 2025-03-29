@@ -1,17 +1,18 @@
 project(
-    'tabulate',
-    'cpp',
-    version : '1.5',
-    license : 'MIT'
+  'tabulate',
+  'cpp',
+  version: '1.5',
+  license: 'MIT',
 )
 
 includes = include_directories(['single_include', 'include'])
 
 tabulate_dep = declare_dependency(
-    include_directories: includes
+  include_directories: includes,
 )
 
-install_headers([
+install_headers(
+  [
     'include/tabulate/asciidoc_exporter.hpp',
     'include/tabulate/cell.hpp',
     'include/tabulate/color.hpp',
@@ -32,6 +33,7 @@ install_headers([
     'include/tabulate/termcolor.hpp',
     'include/tabulate/utf8.hpp',
     'include/tabulate/variant_lite.hpp',
-
     'single_include/tabulate/tabulate.hpp',
-], subdir: 'tabulate')
+  ],
+  subdir: 'tabulate',
+)

@@ -1,5 +1,25 @@
-option('crypto', type : 'feature', value : 'auto', description : 'build with libcrypto support')
+option(
+    'crypto',
+    type: 'feature',
+    value: 'auto',
+    description: 'build with libcrypto support',
+)
 
-option('xslt_debug', type : 'boolean', value : false, description : 'Add the debugging code')
-option('debugger', type : 'boolean', value : false, description : 'Add the debugging support')
-option('profiler', type : 'boolean', value : false, description : 'Add the profiling support')
+option(
+    'xslt_debug',
+    type: 'boolean',
+    value: false,
+    description: 'Add the debugging code',
+)
+option(
+    'debugger',
+    type: 'boolean',
+    value: false,
+    description: 'Add the debugging support',
+)
+option(
+    'profiler',
+    type: 'boolean',
+    value: false,
+    description: 'Add the profiling support',
+)

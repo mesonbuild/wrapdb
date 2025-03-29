@@ -29,14 +29,8 @@ foreach _spec : makefile_extractions['server']
   server_targets += executable(
     _name,
     _srcs,
-    c_args: [
-      '-DCURL_STATICLIB',
-      _args,
-    ],
-    dependencies: [
-      _deps,
-      curl_iflags_dep,
-    ],
+    c_args: ['-DCURL_STATICLIB', _args],
+    dependencies: [_deps, curl_iflags_dep],
     include_directories: [include_directories('../../src'), _incs],
   )
 endforeach

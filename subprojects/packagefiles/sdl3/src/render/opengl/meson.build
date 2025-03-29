@@ -1,4 +1,1 @@
-sources += files(
-  'SDL_shaders_gl.c',
-  'SDL_render_gl.c',
-)
+sources += files('SDL_render_gl.c', 'SDL_shaders_gl.c')

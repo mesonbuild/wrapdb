@@ -5,7 +5,10 @@ static_docs = files(
   'vp3-format.txt',
 )
 
-install_data(static_docs, install_dir: get_option('datadir') / 'theora')
+install_data(
+  static_docs,
+  install_dir: get_option('datadir') / 'theora',
+)
 
 if doxygen_exe.found()
   doxygen_conf = configuration_data()

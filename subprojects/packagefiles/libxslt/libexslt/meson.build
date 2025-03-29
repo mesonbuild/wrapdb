@@ -1,7 +1,4 @@
-headers = [
-  'exslt.h',
-  'exsltexports.h',
-]
+headers = ['exslt.h', 'exsltexports.h']
 install_headers(headers)
 
 sources = [
@@ -19,7 +16,11 @@ sources = [
 ]
 
 version_arr = exslt_version.split('.')
-version_int = [version_arr[0].to_int(), version_arr[1].to_int(), version_arr[2].to_int()]
+version_int = [
+  version_arr[0].to_int(),
+  version_arr[1].to_int(),
+  version_arr[2].to_int(),
+]
 version_number = version_int[0] * 10000 + version_int[1] * 100 + version_int[2]
 version_extra = ''
 

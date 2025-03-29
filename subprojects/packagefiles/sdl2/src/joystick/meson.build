@@ -1,8 +1,8 @@
 c_sources += files(
-    'SDL_gamecontroller.c',
-    'SDL_joystick.c',
-    'SDL_steam_virtual_gamepad.c',
-    'controller_type.c'
+  'SDL_gamecontroller.c',
+  'SDL_joystick.c',
+  'SDL_steam_virtual_gamepad.c',
+  'controller_type.c',
 )
 
 subdir('dummy')
@@ -11,24 +11,24 @@ subdir('steam')
 subdir('virtual')
 
 if platform_is_android
-    subdir('android')
+  subdir('android')
 elif platform_is_ios
-    subdir('iphoneos')
+  subdir('iphoneos')
 elif platform_is_darwin
-    subdir('darwin')
-    subdir('iphoneos')
+  subdir('darwin')
+  subdir('iphoneos')
 elif platform_is_linux
-    subdir('linux')
+  subdir('linux')
 elif platform_is_bsd
-    subdir('bsd')
+  subdir('bsd')
 elif platform_is_emscripten
-    subdir('emscripten')
+  subdir('emscripten')
 elif platform_is_psp
-    subdir('psp')
+  subdir('psp')
 elif platform_is_windows
-    subdir('windows')
+  subdir('windows')
 elif platform_is_vita
-    subdir('vita')
+  subdir('vita')
 elif platform_is_os2
-    subdir('os2')
+  subdir('os2')
 endif

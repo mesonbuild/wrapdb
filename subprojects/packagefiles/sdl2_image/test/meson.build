@@ -9,12 +9,12 @@ endif
 testimage_exe = executable(
   'testimage',
   'main.c',
-
   dependencies: [sdl2_dep, sdl2_image_dep, sdl2_test_dep, sdl2main_dep],
-  c_args: feature_args, # required by test suite
+  c_args: feature_args,  # required by test suite
 )
 
-test('testimage',
+test(
+  'testimage',
   testimage_exe,
   env: {
     'SDL_TEST_SRCDIR': meson.current_source_dir(),

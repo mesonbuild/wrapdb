@@ -8,11 +8,20 @@ project(
 
 cc = meson.get_compiler('c')
 if meson.version().version_compare('>= 0.62.0')
-  libdl = dependency('dl', required: false)
+  libdl = dependency(
+    'dl',
+    required: false,
+  )
 else
-  libdl = cc.find_library('dl', required: false)
+  libdl = cc.find_library(
+    'dl',
+    required: false,
+  )
 endif
-libm = cc.find_library('m', required: false)
+libm = cc.find_library(
+  'm',
+  required: false,
+)
 
 sources = files('sqlite3.c')
 
@@ -31,19 +40,24 @@ if get_option('strict')
 endif
 
 extensions = [
-  ['fts34', true, [
-    '-DSQLITE_ENABLE_FTS3',
-    '-DSQLITE_ENABLE_FTS3_PARENTHESIS',
-    '-DSQLITE_ENABLE_FTS3_TOKENIZER',
-  ]],
+  [
+    'fts34',
+    true,
+    [
+      '-DSQLITE_ENABLE_FTS3',
+      '-DSQLITE_ENABLE_FTS3_PARENTHESIS',
+      '-DSQLITE_ENABLE_FTS3_TOKENIZER',
+    ],
+  ],
   ['fts5', true, '-DSQLITE_ENABLE_FTS5'],
   ['geopoly', false, '-DSQLITE_ENABLE_GEOPOLY'],
   ['rbu', false, '-DSQLITE_ENABLE_RBU'],
   ['rtree', false, '-DSQLITE_ENABLE_RTREE'],
-  ['session', false, [
-    '-DSQLITE_ENABLE_SESSION',
-    '-DSQLITE_ENABLE_PREUPDATE_HOOK'
-  ]],
+  [
+    'session',
+    false,
+    ['-DSQLITE_ENABLE_SESSION', '-DSQLITE_ENABLE_PREUPDATE_HOOK'],
+  ],
 ]
 extension_default = get_option('all-extensions')
 foreach extension : extensions
@@ -66,42 +80,42 @@ if host_machine.system() == 'windows'
   if get_option('default_library') != 'static'
     sqlite_args += ['-DSQLITE_API=__declspec(dllexport)']
   endif
-  libthreads = dependency('', required: false)
+  libthreads = dependency(
+    '',
+    required: false,
+  )
 else
   sqlite_args += ['-DSQLITE_API=__attribute__((visibility("default")))']
   libthreads = dependency('threads')
 endif
 
-foreach h: [
-  'inttypes.h',
-  'malloc.h',
-  'stdint.h',
-]
+foreach h : ['inttypes.h', 'malloc.h', 'stdint.h']
   if cc.has_header(h)
     sqlite_args += '-DHAVE_' + h.to_upper().underscorify()
   endif
 endforeach
 
-foreach signed: ['', 'u']
-  foreach width: ['8', '16', '32']
+foreach signed : ['', 'u']
+  foreach width : ['8', '16', '32']
     typ = signed + 'int' + width + '_t'
-    if cc.has_type(typ, prefix: '#include <stdint.h>')
+    if cc.has_type(
+      typ,
+      prefix: '#include <stdint.h>',
+    )
       sqlite_args += '-DHAVE_' + typ.to_upper()
     endif
   endforeach
 endforeach
 
-foreach f: [
-  'malloc_usable_size',
-  'posix_fallocate',
-  'strchrnul',
-  'strerror_r',
-]
+foreach f : ['malloc_usable_size', 'posix_fallocate', 'strchrnul', 'strerror_r']
   if cc.has_function(f)
     sqlite_args += '-DHAVE_' + f.to_upper()
   endif
 endforeach
-if cc.has_function('isnan', dependencies: libm)
+if cc.has_function(
+  'isnan',
+  dependencies: libm,
+)
   sqlite_args += '-DSQLITE_HAVE_ISNAN'
 endif
 

@@ -4,11 +4,14 @@ cdata.set('ORCUS_MINOR_VERSION', version_minor)
 cdata.set('ORCUS_MICRO_VERSION', version_micro)
 
 
-configure_file(input: 'constants.inl.in',
+configure_file(
+  input: 'constants.inl.in',
   output: 'constants.inl',
-  configuration: cdata)
+  configuration: cdata,
+)
 
-orcus_lib = library('orcus-0.19',
+orcus_lib = library(
+  'orcus-0.19',
   # core
   'config.cpp',
   'css_document_tree.cpp',
@@ -56,16 +59,16 @@ orcus_lib = library('orcus-0.19',
   'spreadsheet_impl_types.cpp',
   'string_helper.cpp',
   # gnumeric filter
-#  'gnumeric_cell_context.cpp',
-#  'gnumeric_cell_context_test.cpp',
-#  'gnumeric_context.cpp',
-#  'gnumeric_detection_handler.cpp',
-#  'gnumeric_handler.cpp',
-#  'gnumeric_helper_test.cpp',
-#  'gnumeric_sheet_context.cpp',
-#  'gnumeric_sheet_context_test.cpp',
-#  'gnumeric_tokens.cpp',
-#  'orcus_gnumeric.cpp',
+  #  'gnumeric_cell_context.cpp',
+  #  'gnumeric_cell_context_test.cpp',
+  #  'gnumeric_context.cpp',
+  #  'gnumeric_detection_handler.cpp',
+  #  'gnumeric_handler.cpp',
+  #  'gnumeric_helper_test.cpp',
+  #  'gnumeric_sheet_context.cpp',
+  #  'gnumeric_sheet_context_test.cpp',
+  #  'gnumeric_tokens.cpp',
+  #  'orcus_gnumeric.cpp',
   # xlsx filter
   'ooxml_content_types.cpp',
   'ooxml_global.cpp',
@@ -110,10 +113,12 @@ orcus_lib = library('orcus-0.19',
   'odf_helper.cpp',
   'orcus_ods.cpp',
   'orcus_import_ods.cpp',
-  cpp_args: ['-D__ORCUS_BUILDING_DLL',
-             '-D__ORCUS_XLSX',
-             '-D__ORCUS_ODS',
-             '-D__ORCUS_XLS_XML'],
+  cpp_args: [
+    '-D__ORCUS_BUILDING_DLL',
+    '-D__ORCUS_XLSX',
+    '-D__ORCUS_ODS',
+    '-D__ORCUS_XLS_XML',
+  ],
   include_directories: ['../../include', '../include'],
   link_with: [parser_lib],
   dependencies: [boost_ios_dep, boost_fs_dep, mdds_dep, thread_dep],

@@ -1,7 +1,17 @@
-project('YetAnotherJSONParser', 'c', license: 'ISC', version: '2.1.0', meson_version: '>=0.47.0')
+project(
+  'YetAnotherJSONParser',
+  'c',
+  license: 'ISC',
+  version: '2.1.0',
+  meson_version: '>=0.47.0',
+)
 
 if get_option('default_library') != 'static'
-  add_project_arguments('-DYAJL_SHARED', '-DYAJL_BUILD', language: 'c')
+  add_project_arguments(
+    '-DYAJL_SHARED',
+    '-DYAJL_BUILD',
+    language: 'c',
+  )
 endif
 
 version = configuration_data()

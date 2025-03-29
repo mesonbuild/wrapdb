@@ -13,11 +13,22 @@ thread_dep = dependency('threads')
 spdlog_dependencies = [thread_dep]
 spdlog_compile_args = []
 
-if meson.get_compiler('cpp').has_header_symbol('format', '__cpp_lib_format', required: get_option('std_format'))
+if meson.get_compiler('cpp').has_header_symbol(
+  'format',
+  '__cpp_lib_format',
+  required: get_option('std_format'),
+)
   spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
-  fmt_dep = dependency('', required: false)
+  fmt_dep = dependency(
+    '',
+    required: false,
+  )
 else
-  fmt_dep = dependency('fmt', version: '>=8.1', required: get_option('external_fmt'))
+  fmt_dep = dependency(
+    'fmt',
+    version: '>=8.1',
+    required: get_option('external_fmt'),
+  )
   if fmt_dep.found()
     spdlog_dependencies += fmt_dep
     spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
@@ -51,7 +62,10 @@ else
 endif
 
 # install header and pkg-config file
-install_subdir('include/spdlog', install_dir: get_option('includedir'))
+install_subdir(
+  'include/spdlog',
+  install_dir: get_option('includedir'),
+)
 pkg = import('pkgconfig')
 pkg.generate(
   name: 'libspdlog',

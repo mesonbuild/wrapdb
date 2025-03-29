@@ -7,23 +7,42 @@ project(
 
 cc = meson.get_compiler('c')
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 if host_machine.system() == 'darwin'
-  add_project_arguments('-D_DARWIN_C_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_DARWIN_C_SOURCE',
+    language: 'c',
+  )
 endif
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    cc.get_supported_arguments('-Wno-deprecated-declarations'),
+    language: 'c',
+  )
 endif
 
 ogg_dep = dependency('ogg')
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 if meson.version().version_compare('>= 0.60')
-  iconv_dep = dependency('iconv', required: false)
+  iconv_dep = dependency(
+    'iconv',
+    required: false,
+  )
 elif cc.links('#include <iconv.h>\nint main(){iconv_open("", "");}')
   iconv_dep = declare_dependency()
 else
-  iconv_dep = cc.find_library('iconv', required: false)
+  iconv_dep = cc.find_library(
+    'iconv',
+    required: false,
+  )
 endif
 
 cdata = configuration_data()
@@ -50,7 +69,10 @@ endforeach
 cdata.set('HAVE_CPUID_H', cc.check_header('cpuid.h'))
 cdata.set('HAVE_X86INTRIN_H', cc.check_header('x86intrin.h'))
 cdata.set10('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
-cdata.set10('FLAC__HAS_A64NEONINTRIN', cc.check_header('arm_neon.h') and host_machine.cpu_family() == 'aarch64')
+cdata.set10(
+  'FLAC__HAS_A64NEONINTRIN',
+  cc.check_header('arm_neon.h') and host_machine.cpu_family() == 'aarch64',
+)
 cdata.set('FLAC__USE_ALTIVEC', cc.check_header('altivec.h'))
 cdata.set('WITH_AVX', cc.check_header('immintrin.h'))
 
@@ -69,7 +91,13 @@ cdata.set('HAVE_ICONV', iconv_dep.found())
 cdata.set10('HAVE_CLOCK_GETTIME', cc.has_function('clock_gettime'))
 cdata.set10('HAVE_FSEEKO', cc.has_function('fseeko'))
 cdata.set10('HAVE_GETOPT_LONG', cc.has_function('getopt_long'))
-cdata.set10('HAVE_LROUND', cc.has_function('lround', dependencies: m_dep))
+cdata.set10(
+  'HAVE_LROUND',
+  cc.has_function(
+    'lround',
+    dependencies: m_dep,
+  ),
+)
 cdata.set('HAVE_BSWAP16', cc.has_function('__builtin_bswap16'))
 cdata.set('HAVE_BSWAP32', cc.has_function('__builtin_bswap32'))
 
@@ -85,7 +113,9 @@ configure_file(
 
 main_inc = include_directories('include', '.')
 
-win32_utf8 = host_machine.system() == 'windows' ? files('src/share/win_utf8_io/win_utf8_io.c') : []
+win32_utf8 = host_machine.system() == 'windows' ? files(
+  'src/share/win_utf8_io/win_utf8_io.c',
+) : []
 
 subdir('src')
 

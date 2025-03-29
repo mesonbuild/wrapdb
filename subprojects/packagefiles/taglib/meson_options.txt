@@ -1,7 +1,11 @@
-option('zlib', type: 'feature',
-  description: 'Build with zlib support',
+option(
+    'zlib',
+    type: 'feature',
+    description: 'Build with zlib support',
 )
 
-option('tests', type: 'feature',
-  description: 'Build tests',
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build tests',
 )

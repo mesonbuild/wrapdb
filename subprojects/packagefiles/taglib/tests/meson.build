@@ -1,4 +1,7 @@
-cppunit_dep = dependency('cppunit', required: get_option('tests'))
+cppunit_dep = dependency(
+  'cppunit',
+  required: get_option('tests'),
+)
 if not cppunit_dep.found()
   subdir_done()
 endif

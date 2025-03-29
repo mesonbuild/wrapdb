@@ -16,16 +16,28 @@ feature_macros = [
   '-D_POSIX_SOURCE',
 ]
 
-ncurses_dep = dependency('curses', required: get_option('ncurses'))
-intl_dep = cc.find_library('intl', required: false)
-rt_dep = cc.find_library('rt', required: false)
+ncurses_dep = dependency(
+  'curses',
+  required: get_option('ncurses'),
+)
+intl_dep = cc.find_library(
+  'intl',
+  required: false,
+)
+rt_dep = cc.find_library(
+  'rt',
+  required: false,
+)
 
-m_dep = dependency('', required: false)
-foreach _fn : [
-  'fmod',
-  'sqrtl',
-]
-  if not cc.has_function(_fn, prefix: '#include <math.h>')
+m_dep = dependency(
+  '',
+  required: false,
+)
+foreach _fn : ['fmod', 'sqrtl']
+  if not cc.has_function(
+    _fn,
+    prefix: '#include <math.h>',
+  )
     m_dep = cc.find_library('m')
     break
   endif
@@ -45,7 +57,10 @@ foreach _spec : [
   ['stdint.h'],
   ['stdio.h', 'vsnprintf'],
   ['stdlib.h', 'posix_memalign strtoul'],
-  ['string.h', 'memcpy memmove memrchr memset strchr strerror strlcat strrchr strstr'],
+  [
+    'string.h',
+    'memcpy memmove memrchr memset strchr strerror strlcat strrchr strstr',
+  ],
   ['sys/file.h'],
   ['sys/ioctl.h'],
   ['sys/ipc.h'],
@@ -58,7 +73,10 @@ foreach _spec : [
   ['term.h'],
   ['termios.h'],
   ['time.h', 'clock_gettime nanosleep'],
-  ['unistd.h', 'alarm dup2 fdatasync fpathconf getcwd getopt setproctitle sysconf'],
+  [
+    'unistd.h',
+    'alarm dup2 fdatasync fpathconf getcwd getopt setproctitle sysconf',
+  ],
   ['wchar.h'],
   ['wctype.h'],
 ]
@@ -73,27 +91,29 @@ foreach _spec : [
     endif
     cdata.set(
       _flag,
-      _has_hdr and cc.has_header_symbol(_hdr, _sym, args: feature_macros),
+      _has_hdr and cc.has_header_symbol(
+        _hdr,
+        _sym,
+        args: feature_macros,
+      ),
     )
   endforeach
 endforeach
 
-foreach _sym : [
-  'SA_SIGINFO',
-]
+foreach _sym : ['SA_SIGINFO']
   cdata.set('HAVE_DECL_' + _sym, cdata.get('HAVE_' + _sym))
 endforeach
 
 _missing = []
 foreach _hdr : [
- 'fcntl.h',
- 'limits.h',
- 'stdio.h',
- 'stdlib.h',
- 'string.h',
- 'sys/file.h',
- 'sys/time.h',
- 'unistd.h',
+  'fcntl.h',
+  'limits.h',
+  'stdio.h',
+  'stdlib.h',
+  'string.h',
+  'sys/file.h',
+  'sys/time.h',
+  'unistd.h',
 ]
   if not cdata.get('HAVE_' + _hdr.underscorify().to_upper())
     _missing += [_hdr]
@@ -129,12 +149,13 @@ if _missing.length() > 0
   error('unsupported system, missing required functions: ' + ', '.join(_missing))
 endif
 
-foreach _type : [
-  '_Bool',
-]
+foreach _type : ['_Bool']
   cdata.set(
     'HAVE_' + _type.underscorify().to_upper(),
-    cc.has_type(_type, args: feature_macros),
+    cc.has_type(
+      _type,
+      args: feature_macros,
+    ),
   )
 endforeach
 
@@ -180,33 +201,29 @@ cdata.set('SIGINFO_PROVIDES_PID', siginfo_provides_pid)
 
 cdata.set(
   'HAVE_GETTEXT',
-  cdata.get('HAVE_GETTEXT')
-  and cc.has_function('gettext', dependencies: intl_dep),
+  cdata.get('HAVE_GETTEXT') and cc.has_function(
+    'gettext',
+    dependencies: intl_dep,
+  ),
 )
 
 cdata.set('ENABLE_NCURSES', ncurses_dep.found())
 
-nls_opt = get_option(
-  'nls',
-).require(
+nls_opt = get_option('nls').require(
   cdata.get('HAVE_GETTEXT'),
   error_message: 'not supported',
 )
 cdata.set('ENABLE_NLS', nls_opt.allowed())
 
-ipc_opt = get_option(
-  'ipc',
-).require(
-  cdata.get('HAVE_SHMGET')
-  and cdata.get('HAVE_SYS_IPC_H')
-  and cdata.get('HAVE_SYS_SHM_H'),
+ipc_opt = get_option('ipc').require(
+  cdata.get('HAVE_SHMGET') and cdata.get('HAVE_SYS_IPC_H') and cdata.get(
+    'HAVE_SYS_SHM_H',
+  ),
   error_message: 'not supported',
 )
 cdata.set('HAVE_IPC', ipc_opt.allowed())
 
-splice_opt = get_option(
-  'splice',
-).require(
+splice_opt = get_option('splice').require(
   cdata.get('HAVE_SPLICE'),
   error_message: 'need "splice" system call',
 )
@@ -218,7 +235,11 @@ foreach _spec : [
 ]
   cdata.set(
     'HAVE_' + _spec[1].underscorify().to_upper() + '_' + _spec[2].underscorify().to_upper(),
-    cc.has_member(_spec[1], _spec[2], prefix: '#include <' + _spec[0] + '>'),
+    cc.has_member(
+      _spec[1],
+      _spec[2],
+      prefix: '#include <' + _spec[0] + '>',
+    ),
   )
 endforeach
 
@@ -236,7 +257,10 @@ foreach _flag : cdata.keys()
   cdata.set(_flag, cdata.get(_flag) ? 1 : false)
 endforeach
 
-cdata.set_quoted('LOCALEDIR'        , get_option('prefix') / get_option('localedir'))
+cdata.set_quoted(
+  'LOCALEDIR'        ,
+  get_option('prefix') / get_option('localedir'),
+)
 cdata.set_quoted('PACKAGE'          , meson.project_name())
 cdata.set_quoted('PACKAGE_BUGREPORT', 'pv@ivarch.com')
 cdata.set_quoted('PACKAGE_NAME'     , meson.project_name())
@@ -289,13 +313,14 @@ pv = executable(
   install: true,
 )
 
-tests_opt = get_option(
-  'tests',
-).disable_auto_if(
-  # Tests are way to flaky on macOS.
+tests_opt = get_option('tests').disable_auto_if(
+# Tests are way to flaky on macOS.
   host_machine.system() == 'darwin',
 )
-sh = find_program('sh', required: tests_opt)
+sh = find_program(
+  'sh',
+  required: tests_opt,
+)
 if tests_opt.require(sh.found()).allowed()
   subdir('tests')
 endif

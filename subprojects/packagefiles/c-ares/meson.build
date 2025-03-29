@@ -203,13 +203,19 @@ header_options = {
     'recvfrom',
     prefix: '#include <sys/types.h>\n#include <sys/socket.h>',
   ),
-  'HAVE_WRITEV': cc.has_function('writev', prefix: '#include <sys/uio.h>'),
+  'HAVE_WRITEV': cc.has_function(
+    'writev',
+    prefix: '#include <sys/uio.h>',
+  ),
   'HAVE_GETIFADDRS': cc.has_function(
     'getifaddrs',
     prefix: '#include <ifaddrs.h>',
   ),
   # on windows will cause redefinition warnings
-  'HAVE_BOOL_T': (cc.has_type('bool', prefix: '#include <stdbool.h>') and not is_windows),
+  'HAVE_BOOL_T': (cc.has_type(
+    'bool',
+    prefix: '#include <stdbool.h>',
+  ) and not is_windows),
   'HAVE_STRUCT_TIMEVAL': cc.has_type(
     'struct timeval',
     prefix: '#include <sys/time.h>',
@@ -270,7 +276,9 @@ cares_args_map = {
   ],
   'windows': ['-DRECVFROM_TYPE_RETV=int', '-DRECVFROM_TYPE_ARG3=int'],
 }
-cares_args_map += {'darwin': cares_args_map['linux']}
+cares_args_map += {
+  'darwin': cares_args_map['linux'],
+}
 
 cares_compile_args = [
   cares_args_map['common'],
@@ -411,7 +419,10 @@ test_sources = files(
 )
 
 if get_option('tests')
-  add_languages('cpp', native: false)
+  add_languages(
+    'cpp',
+    native: false,
+  )
 
   cxx = meson.get_compiler('cpp')
 

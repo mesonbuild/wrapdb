@@ -5,7 +5,10 @@ cdata = configuration_data()
 cdata.set10('INCLUDE_INTTYPES_H', cc.has_header('inttypes.h'))
 cdata.set10('INCLUDE_SYS_TYPES_H', cc.has_header('sys/types.h'))
 
-cc.has_header('stdint.h', required: true)
+cc.has_header(
+  'stdint.h',
+  required: true,
+)
 cdata.set('SIZE16', 'int16_t')
 cdata.set('USIZE16', 'uint16_t')
 cdata.set('SIZE32', 'int32_t')
@@ -27,4 +30,7 @@ headers = [
   'speex_resampler.h',
 ]
 
-install_headers(headers, subdir: 'speex')
+install_headers(
+  headers,
+  subdir: 'speex',
+)

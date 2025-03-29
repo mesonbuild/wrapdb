@@ -6,15 +6,18 @@ endif
 runtest = executable(
   'runtest',
   ['runtest.c', 'test.c'],
-  dependencies: mpdec_dep)
+  dependencies: mpdec_dep,
+)
 
 testdata = custom_target(
   'testdata',
   command: [
     find_program('gettests.py'),
     join_paths(meson.current_source_dir(), 'testdata_dist'),
-    join_paths(meson.current_build_dir(), 'testdata')],
-  output: 'testdata.stamp')
+    join_paths(meson.current_build_dir(), 'testdata'),
+  ],
+  output: 'testdata.stamp',
+)
 
 # These tests require to download test data.
 # test(
@@ -24,8 +27,10 @@ testdata = custom_target(
 #   workdir: meson.current_build_dir())
 
 test(
-  'libmpdec/additional', runtest,
+  'libmpdec/additional',
+  runtest,
   args: files('additional.decTest'),
   depends: testdata,
   workdir: meson.current_build_dir(),
-  timeout: 660)
+  timeout: 660,
+)

@@ -14,8 +14,8 @@ else
 endif
 
 sources += files(
-  'SDL_steam_virtual_gamepad.c',
-  'SDL_joystick.c',
   'SDL_gamepad.c',
+  'SDL_joystick.c',
+  'SDL_steam_virtual_gamepad.c',
   'controller_type.c',
 )

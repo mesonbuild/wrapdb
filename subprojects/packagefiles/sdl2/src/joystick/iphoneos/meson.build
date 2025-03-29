@@ -1,3 +1,1 @@
-objc_sources += files(
-    'SDL_mfijoystick.m',
-)
+objc_sources += files('SDL_mfijoystick.m')

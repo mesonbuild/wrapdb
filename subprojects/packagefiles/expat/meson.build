@@ -34,26 +34,59 @@ config.set('PACKAGE_NAME', meson.project_name())
 config.set('PACKAGE_TARNAME', meson.project_name())
 config.set('PACKAGE_VERSION', meson.project_version())
 config.set('PACKAGE_BUGREPORT', 'expat-bugs@libexpat.org')
-config.set('PACKAGE_STRING', '@0@ @1@'.format(meson.project_name(), meson.project_version()))
+config.set(
+  'PACKAGE_STRING',
+  '@0@ @1@'.format(meson.project_name(), meson.project_version()),
+)
 
 # Define how much context to retain around the current parse point.
 config.set('XML_CONTEXT_BYTES', 1024)
 
-dep_libbsd = dependency('libbsd-overlay', required: get_option('use_libbsd'))
+dep_libbsd = dependency(
+  'libbsd-overlay',
+  required: get_option('use_libbsd'),
+)
 if dep_libbsd.type_name() == 'internal'
   config.set('HAVE_ARC4RANDOM_BUF', dep_libbsd.found())
   config.set('HAVE_ARC4RANDOM', dep_libbsd.found())
 else
-  config.set('HAVE_ARC4RANDOM_BUF', cc.has_function('arc4random_buf', dependencies: dep_libbsd))
-  config.set('HAVE_ARC4RANDOM', cc.has_function('arc4random', dependencies: dep_libbsd))
+  config.set(
+    'HAVE_ARC4RANDOM_BUF',
+    cc.has_function(
+      'arc4random_buf',
+      dependencies: dep_libbsd,
+    ),
+  )
+  config.set(
+    'HAVE_ARC4RANDOM',
+    cc.has_function(
+      'arc4random',
+      dependencies: dep_libbsd,
+    ),
+  )
 endif
 
 config.set('XML_DTD', get_option('xml_dtd'))
 config.set10('XML_GE', get_option('xml_ge'))
 config.set('XML_NS', get_option('xml_ns'))
 
-foreach h : ['dlfcn', 'fcntl', 'inttypes', 'memory', 'stdint', 'stdlib', 'strings', 'string', 'sys/stat', 'sys/types', 'unistd']
-  config.set('HAVE_@0@_H'.format(h.underscorify().to_upper()), cc.has_header(h + '.h'))
+foreach h : [
+  'dlfcn',
+  'fcntl',
+  'inttypes',
+  'memory',
+  'stdint',
+  'stdlib',
+  'strings',
+  'string',
+  'sys/stat',
+  'sys/types',
+  'unistd',
+]
+  config.set(
+    'HAVE_@0@_H'.format(h.underscorify().to_upper()),
+    cc.has_header(h + '.h'),
+  )
 endforeach
 
 _stdc = true
@@ -79,7 +112,10 @@ if not cc.has_header_symbol('sys/types.h', 'off_t')
   config.set('off_t', 'long')
 endif
 
-config.set('HAVE_SYSCALL_GETRANDOM', cc.has_header_symbol('sys/syscall.h', 'SYS_getrandom'))
+config.set(
+  'HAVE_SYSCALL_GETRANDOM',
+  cc.has_header_symbol('sys/syscall.h', 'SYS_getrandom'),
+)
 
 # Install headers
 config_h = configure_file(
@@ -92,24 +128,52 @@ install_headers('lib/expat.h', 'lib/expat_external.h', config_h)
 
 expat_static_args = []
 
-add_project_arguments('-DXML_ENABLE_VISIBILITY=1', language: 'c')
-add_project_arguments('-DHAVE_EXPAT_CONFIG_H', language: 'c')
-add_project_arguments(cc.get_supported_arguments('-fno-strict-aliasing'), language: 'c')
+add_project_arguments(
+  '-DXML_ENABLE_VISIBILITY=1',
+  language: 'c',
+)
+add_project_arguments(
+  '-DHAVE_EXPAT_CONFIG_H',
+  language: 'c',
+)
+add_project_arguments(
+  cc.get_supported_arguments('-fno-strict-aliasing'),
+  language: 'c',
+)
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', '-wd4996', language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    '-wd4996',
+    language: 'c',
+  )
 endif
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-DXMLCALL=WINAPIV', language: 'c')
-  add_project_arguments('-DXMLIMPORT=__declspec(dllexport)', language: 'c')
+  add_project_arguments(
+    '-DXMLCALL=WINAPIV',
+    language: 'c',
+  )
+  add_project_arguments(
+    '-DXMLIMPORT=__declspec(dllexport)',
+    language: 'c',
+  )
   if get_option('default_library') == 'static'
-    add_project_arguments('-DXML_STATIC', language: 'c')
+    add_project_arguments(
+      '-DXML_STATIC',
+      language: 'c',
+    )
     expat_static_args += '-DXML_STATIC'
   endif
 else
-  add_project_arguments('-DXMLIMPORT=__attribute__ ((visibility("default")))', language: 'c')
+  add_project_arguments(
+    '-DXMLIMPORT=__attribute__ ((visibility("default")))',
+    language: 'c',
+  )
   if get_option('use_dev_urandom')
-    add_project_arguments('-DXML_DEV_URANDOM', language: 'c')
+    add_project_arguments(
+      '-DXML_DEV_URANDOM',
+      language: 'c',
+    )
   endif
 endif
 

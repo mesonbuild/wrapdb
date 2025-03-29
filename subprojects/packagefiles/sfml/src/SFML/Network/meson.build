@@ -1,4 +1,7 @@
 network_sources = files(
+  '@0@/SocketImpl.cpp'.format(
+    host_machine.system() == 'windows' ? 'Win32' : 'Unix',
+  ),
   'Ftp.cpp',
   'Http.cpp',
   'IpAddress.cpp',
@@ -8,7 +11,6 @@ network_sources = files(
   'TcpListener.cpp',
   'TcpSocket.cpp',
   'UdpSocket.cpp',
-  '@0@/SocketImpl.cpp'.format(host_machine.system() == 'windows' ? 'Win32' : 'Unix'),
 )
 
 network_lib = library(

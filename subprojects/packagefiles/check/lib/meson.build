@@ -9,8 +9,19 @@ if not librt.found()
   )
 endif
 
-foreach f : ['getline', 'gettimeofday', 'localtime_r', 'malloc', 'realloc', 'snprintf', 'strsignal', 'alarm']
-  if not cdata.has('HAVE_@0@'.format(f.to_upper())) and not cdata.has('HAVE_DECL_@0@'.format(f.to_upper()))
+foreach f : [
+  'getline',
+  'gettimeofday',
+  'localtime_r',
+  'malloc',
+  'realloc',
+  'snprintf',
+  'strsignal',
+  'alarm',
+]
+  if not cdata.has('HAVE_@0@'.format(f.to_upper())) and not cdata.has(
+    'HAVE_DECL_@0@'.format(f.to_upper()),
+  )
     message('Adding @0@.c to compat sources'.format(f))
     sources += files('@0@.c'.format(f))
   endif

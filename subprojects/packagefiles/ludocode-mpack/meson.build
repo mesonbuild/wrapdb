@@ -1,9 +1,9 @@
 project(
   'mpack',
   'c',
-  version : '1.1.1',
-  license : 'MIT',
-  default_options : [
+  version: '1.1.1',
+  license: 'MIT',
+  default_options: [
     meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
   ],
 )
@@ -26,14 +26,22 @@ headers = files('src/mpack/mpack.h')
 # Ideally we'd only ever build it as a static library, but limit the refusal
 # to MSVC for backward compatibility.
 if meson.get_compiler('c').get_id() == 'msvc'
-  mpack = static_library('mpack', src, install : true)
+  mpack = static_library(
+    'mpack',
+    src,
+    install: true,
+  )
 else
-  mpack = library('mpack', src, install : true)
+  mpack = library(
+    'mpack',
+    src,
+    install: true,
+  )
 endif
 
 ludocode_mpack_dep = declare_dependency(
-  link_with : mpack,
-  include_directories : incdir,
+  link_with: mpack,
+  include_directories: incdir,
 )
 
 install_headers(headers)
@@ -41,9 +49,9 @@ install_headers(headers)
 pkg = import('pkgconfig')
 
 pkg.generate(
-  name : 'mpack',
-  description : 'mpack msgpack serialization library',
-  libraries : mpack,
+  name: 'mpack',
+  description: 'mpack msgpack serialization library',
+  libraries: mpack,
 )
 
 if meson.version().version_compare('>=0.54.0')

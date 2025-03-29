@@ -37,11 +37,20 @@ check_headers = [
 ]
 
 foreach header : check_headers
-  cdata.set10('HAVE_@0@'.format(header.underscorify().to_upper()), cc.has_header(header))
+  cdata.set10(
+    'HAVE_@0@'.format(header.underscorify().to_upper()),
+    cc.has_header(header),
+  )
 endforeach
 
-cdata.set10('HAVE_NOTE_REVOKE', cc.has_header_symbol('sys/event.h', 'NOTE_REVOKE'))
-cdata.set10('HAVE_NOTE_TRUNCATE', cc.has_header_symbol('sys/event.h', 'NOTE_TRUNCATE'))
+cdata.set10(
+  'HAVE_NOTE_REVOKE',
+  cc.has_header_symbol('sys/event.h', 'NOTE_REVOKE'),
+)
+cdata.set10(
+  'HAVE_NOTE_TRUNCATE',
+  cc.has_header_symbol('sys/event.h', 'NOTE_TRUNCATE'),
+)
 cdata.set10('HAVE_EPOLLRDHUP', cc.has_header_symbol('sys/epoll.h', 'EPOLLRDHUP'))
 cdata.set10('HAVE_DECL_PPOLL', cc.has_function('ppoll'))
 cdata.set10('HAVE_SYS_PIDFD_OPEN', cc.has_function('pidfd_open'))
@@ -68,11 +77,19 @@ if target_machine.system() == 'windows'
     'src/windows/user.c',
   )
 
-  kqueue_args += ['-D_USRDLL', '-D_WINDLL', '-D_CRT_SECURE_NO_WARNINGS', '-DWIN32_LEAN_AND_MEAN']
+  kqueue_args += [
+    '-D_USRDLL',
+    '-D_WINDLL',
+    '-D_CRT_SECURE_NO_WARNINGS',
+    '-DWIN32_LEAN_AND_MEAN',
+  ]
 
   kqueue_deps = cc.find_library('ws2_32')
 elif target_machine.system() == 'linux'
   kqueue_sources += files(
+    'src/@0@/proc.c'.format(
+      cdata.get('HAVE_SYS_PIDFD_OPEN', 0) == 1 ? 'linux' : 'posix',
+    ),
     'src/linux/platform.c',
     'src/linux/read.c',
     'src/linux/signal.c',
@@ -80,14 +97,11 @@ elif target_machine.system() == 'linux'
     'src/linux/user.c',
     'src/linux/vnode.c',
     'src/linux/write.c',
-    'src/@0@/proc.c'.format(cdata.get('HAVE_SYS_PIDFD_OPEN', 0) == 1 ? 'linux' : 'posix'),
   )
 
   kqueue_inc += 'src/common'
 
-  kqueue_args += [
-    '-D_XOPEN_SOURCE=600',
-  ]
+  kqueue_args += ['-D_XOPEN_SOURCE=600']
 elif target_machine.system() == 'sunos'
   kqueue_sources += files(
     'src/posix/eventfd.c',
@@ -102,9 +116,7 @@ elif target_machine.system() == 'sunos'
 
   kqueue_inc += 'src/common'
 
-  kqueue_args += [
-    '-D_XOPEN_SOURCE=600',
-  ]
+  kqueue_args += ['-D_XOPEN_SOURCE=600']
 else
   error('unsupported host os')
 endif

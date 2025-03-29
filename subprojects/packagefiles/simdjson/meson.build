@@ -11,7 +11,10 @@ simdjson_args_public = []
 simdjson_args_private = []
 if meson.get_compiler('cpp').get_id() == 'msvc'
   simdjson_args_public += '-DSIMDJSON_VISUAL_STUDIO'
-  simdjson_args_private += [ '-DSIMDJSON_VISUAL_STUDIO', '-DSIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY' ]
+  simdjson_args_private += [
+    '-DSIMDJSON_VISUAL_STUDIO',
+    '-DSIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY',
+  ]
 endif
 
 simdjson_lib = library(

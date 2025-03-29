@@ -5,7 +5,7 @@ project(
     'get-version.py',
     'zlib-ng',
     capture: true,
-    check: true
+    check: true,
   ).stdout().strip(),
   license: 'zlib',
   meson_version: '>=0.60.0',
@@ -21,7 +21,9 @@ link_args = []
 pkg_config_cflags = []
 arch_libs = []
 
-sym_prefix = {'ZLIB_SYMBOL_PREFIX': ''}
+sym_prefix = {
+  'ZLIB_SYMBOL_PREFIX': '',
+}
 general_section = 'General features'
 arch_section = 'Architecture-specific features'
 
@@ -34,7 +36,7 @@ if with_zlib_compat
     'get-version.py',
     'zlib',
     capture: true,
-    check: true
+    check: true,
   ).stdout().strip()
   pkg_version = lib_version + '.zlib-ng'
 else
@@ -43,42 +45,42 @@ else
   lib_version = meson.project_version()
   pkg_version = lib_version
 endif
-summary('Library version', pkg_version, section: general_section)
+summary(
+  'Library version',
+  pkg_version,
+  section: general_section,
+)
 summary(
   'zlib compatibility',
   with_zlib_compat,
   section: general_section,
-  bool_yn: true
+  bool_yn: true,
 )
 
 cc = meson.get_compiler('c')
 
 link_args += cc.get_supported_link_arguments(
   '-Wl,--version-script,@0@/zlib@1@.map'.format(
-    meson.current_source_dir(), suffix
+    meson.current_source_dir(),
+    suffix,
   ),
   # force-disable LTO at link time in case -flto was passed manually
   '-fno-lto',
 )
 
 largefile_args = ['-D_LARGEFILE64_SOURCE=1', '-D__USE_LARGEFILE64']
-foreach type: ['off64_t', '_off64_t']
+foreach type : ['off64_t', '_off64_t']
   if cc.has_type(
     type,
     args: largefile_args,
-    prefix: '#include <sys/types.h>'
+    prefix: '#include <sys/types.h>',
   )
     compile_args += largefile_args
     break
   endif
 endforeach
 
-foreach h: [
-  'linux/auxvec.h',
-  'sys/auxv.h',
-  'sys/sdt.h',
-  'arm_acle.h',
-]
+foreach h : ['linux/auxvec.h', 'sys/auxv.h', 'sys/sdt.h', 'arm_acle.h']
   found = cc.has_header(h)
   set_variable('have_' + h.underscorify(), found)
   if found
@@ -86,7 +88,7 @@ foreach h: [
   endif
 endforeach
 
-foreach f: [
+foreach f : [
   ['__builtin_assume_aligned', ['-DHAVE_BUILTIN_ASSUME_ALIGNED'], []],
   ['__builtin_ctz', ['-DHAVE_BUILTIN_CTZ'], []],
   ['__builtin_ctzll', ['-DHAVE_BUILTIN_CTZLL'], []],
@@ -100,16 +102,30 @@ foreach f: [
   endif
 endforeach
 
-foreach s: [
-  ['stdlib.h', 'aligned_alloc', ['-D_ISOC11_SOURCE=1'], ['-DHAVE_ALIGNED_ALLOC']],
-  ['stdlib.h', 'posix_memalign', ['-D_POSIX_C_SOURCE=200112L'], ['-DHAVE_POSIX_MEMALIGN']],
+foreach s : [
+  [
+    'stdlib.h',
+    'aligned_alloc',
+    ['-D_ISOC11_SOURCE=1'],
+    ['-DHAVE_ALIGNED_ALLOC'],
+  ],
+  [
+    'stdlib.h',
+    'posix_memalign',
+    ['-D_POSIX_C_SOURCE=200112L'],
+    ['-DHAVE_POSIX_MEMALIGN'],
+  ],
 ]
-  if cc.has_header_symbol(s[0], s[1], args: s[2])
+  if cc.has_header_symbol(
+    s[0],
+    s[1],
+    args: s[2],
+  )
     compile_args += s[3]
   endif
 endforeach
 
-foreach attr: [
+foreach attr : [
   ['aligned', '-DHAVE_ATTRIBUTE_ALIGNED'],
   ['visibility:hidden', '-DHAVE_VISIBILITY_HIDDEN'],
   ['visibility:internal', '-DHAVE_VISIBILITY_INTERNAL'],
@@ -119,15 +135,24 @@ foreach attr: [
   endif
 endforeach
 
-foreach opt: [
+foreach opt : [
   ['inflate-strict', 'Inflate strict distance checking', ['-DINFLATE_STRICT']],
-  ['inflate-allow-invalid-dist', 'Zero fill for inflate invalid distances', ['-DINFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR']],
+  [
+    'inflate-allow-invalid-dist',
+    'Zero fill for inflate invalid distances',
+    ['-DINFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR'],
+  ],
 ]
   enable = get_option(opt[0])
   if enable
     compile_args += opt[2]
   endif
-  summary(opt[1], enable, section: general_section, bool_yn: true)
+  summary(
+    opt[1],
+    enable,
+    section: general_section,
+    bool_yn: true,
+  )
 endforeach
 
 src = [
@@ -168,7 +193,10 @@ zconf_cmd = ['process-zconf.py', '@INPUT0@']
 if cc.has_header('unistd.h')
   zconf_cmd += '--have-unistd'
 endif
-if not cc.has_type('ptrdiff_t', prefix: '#include <stddef.h>')
+if not cc.has_type(
+  'ptrdiff_t',
+  prefix: '#include <stddef.h>',
+)
   zconf_cmd += ['--ptrdiff-type', 'uint@0@_t'.format(8 * cc.sizeof('void *'))]
 endif
 configure_file(
@@ -209,7 +237,7 @@ if with_gzfileop
   src += configure_file(
     input: 'gzread.c.in',
     output: 'gzread.c',
-    configuration: sym_prefix
+    configuration: sym_prefix,
   )
   src += ['gzlib.c', 'gzwrite.c']
 endif
@@ -217,7 +245,7 @@ summary(
   'gzFile functions',
   with_gzfileop,
   section: general_section,
-  bool_yn: true
+  bool_yn: true,
 )
 
 cpu_family = host_machine.cpu_family()
@@ -228,7 +256,7 @@ cc_syntax = cc.get_argument_syntax()
 if system == 'windows'
   src += import('windows').compile_resources(
     'win32/zlib@0@1.rc'.format(suffix),
-    include_directories: include_directories('.')
+    include_directories: include_directories('.'),
   )
 
   compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
@@ -244,7 +272,11 @@ def = configure_file(
 )
 
 if cpu_family in ['arm', 'aarch64']
-  summary('Architecture', 'ARM', section: arch_section)
+  summary(
+    'Architecture',
+    'ARM',
+    section: arch_section,
+  )
   archdir = 'arch/arm'
   compile_args += '-DARM_FEATURES'
   src += archdir / 'arm_features.c'
@@ -254,26 +286,57 @@ if cpu_family in ['arm', 'aarch64']
     found_neon = false
     if cpu_family == 'aarch64'
       auxtests = [
-        ['crc', ['sys/auxv.h'], 'AT_HWCAP', 'HWCAP_CRC32', '-DARM_AUXV_HAS_CRC32'],
+        [
+          'crc',
+          ['sys/auxv.h'],
+          'AT_HWCAP',
+          'HWCAP_CRC32',
+          '-DARM_AUXV_HAS_CRC32',
+        ],
       ]
     else
       auxtests = [
-        ['crc', ['sys/auxv.h'], 'AT_HWCAP2', 'HWCAP2_CRC32', '-DARM_AUXV_HAS_CRC32'],
-        ['crc', ['sys/auxv.h', 'asm/hwcap.h'], 'AT_HWCAP2', 'HWCAP2_CRC32', ['-DARM_AUXV_HAS_CRC32', '-DARM_ASM_HWCAP']],
-        ['neon', ['sys/auxv.h'], 'AT_HWCAP', 'HWCAP_ARM_NEON', '-DARM_AUXV_HAS_NEON'],
-        ['neon', ['sys/auxv.h'], 'AT_HWCAP', 'HWCAP_NEON', '-DARM_AUXV_HAS_NEON'],
+        [
+          'crc',
+          ['sys/auxv.h'],
+          'AT_HWCAP2',
+          'HWCAP2_CRC32',
+          '-DARM_AUXV_HAS_CRC32',
+        ],
+        [
+          'crc',
+          ['sys/auxv.h', 'asm/hwcap.h'],
+          'AT_HWCAP2',
+          'HWCAP2_CRC32',
+          ['-DARM_AUXV_HAS_CRC32', '-DARM_ASM_HWCAP'],
+        ],
+        [
+          'neon',
+          ['sys/auxv.h'],
+          'AT_HWCAP',
+          'HWCAP_ARM_NEON',
+          '-DARM_AUXV_HAS_NEON',
+        ],
+        [
+          'neon',
+          ['sys/auxv.h'],
+          'AT_HWCAP',
+          'HWCAP_NEON',
+          '-DARM_AUXV_HAS_NEON',
+        ],
       ]
     endif
-    foreach auxtest: auxtests
+    foreach auxtest : auxtests
       if get_variable('found_' + auxtest[0])
         continue
       endif
       testprog = ''
-      foreach include: auxtest[1]
+      foreach include : auxtest[1]
         testprog += '#include <@0@>\n'.format(include)
       endforeach
       testprog += 'int main() {return (getauxval(@0@) & @1@);}'.format(
-        auxtest[2], auxtest[3]
+        auxtest[2],
+        auxtest[3],
       )
       if cc.compiles(testprog)
         compile_args += auxtest[4]
@@ -320,7 +383,12 @@ if cpu_family in ['arm', 'aarch64']
     )
   endif
   want_acle.require(have_acle)
-  summary('ACLE', have_acle, section: arch_section, bool_yn: true)
+  summary(
+    'ACLE',
+    have_acle,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   neonflags = []
   if cc_id == 'msvc'
@@ -358,7 +426,7 @@ if cpu_family in ['arm', 'aarch64']
       #endif
       int32x4x4_t f(int var[16]) { return vld1q_s32_x4(var); }
       int main(void) { return 0; }''',
-      args: neonflags
+      args: neonflags,
     )
       compile_args += '-DARM_NEON_HASLD4'
     endif
@@ -373,7 +441,12 @@ if cpu_family in ['arm', 'aarch64']
     )
   endif
   want_neon.require(have_neon)
-  summary('NEON', have_neon, section: arch_section, bool_yn: true)
+  summary(
+    'NEON',
+    have_neon,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   if cpu_family == 'arm'
     # Upstream explicitly sets -march=armv6, but this also requires
@@ -387,7 +460,7 @@ if cpu_family in ['arm', 'aarch64']
           __asm__ __volatile__ ( "uqsub16 %0, %1, %2" : "=r" (c) : "r" (a), "r" (b) );
           return (int)c;
       }
-      int main(void) { return f(1,2); }'''
+      int main(void) { return f(1,2); }''',
     )
     have_armv6_intrin = cc.compiles(
       '''#if defined(_MSC_VER)
@@ -402,7 +475,7 @@ if cpu_family in ['arm', 'aarch64']
           return __uqsub16(a, b);
       #endif
       }
-      int main(void) { return f(1,2); }'''
+      int main(void) { return f(1,2); }''',
     )
     want_armv6 = get_option('armv6')
     have_armv6 = want_armv6.allowed() and (have_armv6_asm or have_armv6_intrin)
@@ -414,17 +487,26 @@ if cpu_family in ['arm', 'aarch64']
       src += archdir / 'slide_hash_armv6.c'
     endif
     want_armv6.require(have_armv6)
-    summary('ARMv6', have_armv6, section: arch_section, bool_yn: true)
+    summary(
+      'ARMv6',
+      have_armv6,
+      section: arch_section,
+      bool_yn: true,
+    )
   endif
 
 elif cpu_family in ['ppc', 'ppc64']
-  summary('Architecture', 'Power', section: arch_section)
+  summary(
+    'Architecture',
+    'Power',
+    section: arch_section,
+  )
   archdir = 'arch/power'
   src += archdir / 'power_features.c'
 
   altivecflags = []
   want_altivec = get_option('altivec')
-  foreach flag: ['-maltivec', '-mno-vsx']
+  foreach flag : ['-maltivec', '-mno-vsx']
     if want_altivec.allowed() and cc.compiles(
       '''#include <altivec.h>
       int main(void)
@@ -434,7 +516,7 @@ elif cpu_family in ['ppc', 'ppc64']
           a = vec_add(a, b);
           return 0;
       }''',
-      args: altivecflags + flag
+      args: altivecflags + flag,
     )
       altivecflags += flag
     endif
@@ -453,7 +535,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP) & PPC_FEATURE_HAS_ALTIVEC);
     #endif
     }''',
-    args: altivecflags
+    args: altivecflags,
   )
   if have_altivec
     compile_args += ['-DPPC_FEATURES', '-DPPC_VMX']
@@ -466,7 +548,12 @@ elif cpu_family in ['ppc', 'ppc64']
     )
   endif
   want_altivec.require(have_altivec)
-  summary('AltiVec', have_altivec, section: arch_section, bool_yn: true)
+  summary(
+    'AltiVec',
+    have_altivec,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   power8flags = ['-mcpu=power8']
   want_power8 = get_option('power8')
@@ -484,7 +571,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_2_07);
     #endif
     }''',
-    args: power8flags
+    args: power8flags,
   )
   if want_power8.allowed() and not have_power8 and have_linux_auxvec_h and cc.compiles(
     '''#include <sys/auxv.h>
@@ -492,7 +579,7 @@ elif cpu_family in ['ppc', 'ppc64']
     int main() {
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_2_07);
     }''',
-    args: power8flags
+    args: power8flags,
   )
     have_power8 = true
     compile_args += '-DPOWER_NEED_AUXVEC_H'
@@ -516,7 +603,12 @@ elif cpu_family in ['ppc', 'ppc64']
     )
   endif
   want_power8.require(have_power8)
-  summary('POWER8', have_power8, section: arch_section, bool_yn: true)
+  summary(
+    'POWER8',
+    have_power8,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   power9flags = ['-mcpu=power9']
   want_power9 = get_option('power9')
@@ -534,7 +626,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_3_00);
     #endif
     }''',
-    args: power9flags
+    args: power9flags,
   )
   if want_power9.allowed() and not have_power9 and have_linux_auxvec_h and cc.compiles(
     '''#include <sys/auxv.h>
@@ -542,7 +634,7 @@ elif cpu_family in ['ppc', 'ppc64']
     int main() {
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_3_00);
     }''',
-    args: power9flags
+    args: power9flags,
   )
     have_power9 = true
     compile_args += '-DPOWER_NEED_AUXVEC_H'
@@ -557,16 +649,25 @@ elif cpu_family in ['ppc', 'ppc64']
     )
   endif
   want_power9.require(have_power9)
-  summary('POWER9', have_power9, section: arch_section, bool_yn: true)
+  summary(
+    'POWER9',
+    have_power9,
+    section: arch_section,
+    bool_yn: true,
+  )
 
 elif cpu_family in ['riscv32', 'riscv64']
-  summary('Architecture', 'RISC-V', section: arch_section)
+  summary(
+    'Architecture',
+    'RISC-V',
+    section: arch_section,
+  )
   archdir = 'arch/riscv'
   rvvflags = ['-march=rv64gcv']
   want_rvv = get_option('rvv')
   have_rvv = want_rvv.allowed() and cc.check_header(
     'riscv_vector.h',
-    args: rvvflags
+    args: rvvflags,
   )
   if have_rvv
     compile_args += ['-DRISCV_FEATURES', '-DRISCV_RVV']
@@ -582,10 +683,19 @@ elif cpu_family in ['riscv32', 'riscv64']
     )
   endif
   want_rvv.require(have_rvv)
-  summary('RVV', have_rvv, section: arch_section, bool_yn: true)
+  summary(
+    'RVV',
+    have_rvv,
+    section: arch_section,
+    bool_yn: true,
+  )
 
 elif cpu_family in ['s390', 's390x']
-  summary('Architecture', 'S390', section: arch_section)
+  summary(
+    'Architecture',
+    'S390',
+    section: arch_section,
+  )
   archdir = 'arch/s390'
   have_s390 = cc.compiles(
     '''#include <sys/auxv.h>
@@ -594,22 +704,32 @@ elif cpu_family in ['s390', 's390x']
     #endif
     int main() {
         return (getauxval(AT_HWCAP) & HWCAP_S390_VXRS);
-    }'''
+    }''',
   )
   if have_s390
     compile_args += '-DS390_FEATURES'
     src += archdir / 's390_features.c'
   endif
-  summary('S390', have_s390, section: arch_section, bool_yn: true)
+  summary(
+    'S390',
+    have_s390,
+    section: arch_section,
+    bool_yn: true,
+  )
 
-  foreach direction: ['deflate', 'inflate']
+  foreach direction : ['deflate', 'inflate']
     # off by default
     enable = get_option('dfltcc-' + direction).enabled()
     if enable
       compile_args += '-DS390_DFLTCC_' + direction.to_upper()
       src += archdir / 'dfltcc_@0@.c'.format(direction)
     endif
-    summary('DFLTCC ' + direction, enable, section: arch_section, bool_yn: true)
+    summary(
+      'DFLTCC ' + direction,
+      enable,
+      section: arch_section,
+      bool_yn: true,
+    )
   endforeach
 
   vgfmaflags = ['-march=z13']
@@ -640,10 +760,19 @@ elif cpu_family in ['s390', 's390x']
     )
   endif
   want_crc32_vx.require(have_crc32_vx)
-  summary('CRC32-VX', have_crc32_vx, section: arch_section, bool_yn: true)
+  summary(
+    'CRC32-VX',
+    have_crc32_vx,
+    section: arch_section,
+    bool_yn: true,
+  )
 
 elif cpu_family in ['x86', 'x86_64']
-  summary('Architecture', 'x86', section: arch_section)
+  summary(
+    'Architecture',
+    'x86',
+    section: arch_section,
+  )
   archdir = 'arch/x86'
   compile_args += '-DX86_FEATURES'
 
@@ -668,7 +797,12 @@ elif cpu_family in ['x86', 'x86_64']
   else
     xsaveflags = []
   endif
-  summary('XSAVE', have_xsave, section: arch_section, bool_yn: true)
+  summary(
+    'XSAVE',
+    have_xsave,
+    section: arch_section,
+    bool_yn: true,
+  )
   arch_libs += static_library(
     'x86',
     archdir / 'x86_features.c',
@@ -702,7 +836,7 @@ elif cpu_family in ['x86', 'x86_64']
         'Assume SSE2',
         want_force_sse2,
         section: arch_section,
-        bool_yn: true
+        bool_yn: true,
       )
     endif
     arch_libs += static_library(
@@ -715,7 +849,12 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_sse2.require(have_sse2)
-  summary('SSE2', have_sse2, section: arch_section, bool_yn: true)
+  summary(
+    'SSE2',
+    have_sse2,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   ssse3flags = []
   if cc_syntax == 'msvc' and cc_id.startswith('intel')
@@ -744,7 +883,12 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_ssse3.require(have_ssse3)
-  summary('SSSE3', have_ssse3, section: arch_section, bool_yn: true)
+  summary(
+    'SSSE3',
+    have_ssse3,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   sse42flags = []
   if cc_syntax == 'msvc' and cc_id.startswith('intel')
@@ -769,7 +913,12 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_sse42.require(have_sse42)
-  summary('SSE4.2', have_sse42, section: arch_section, bool_yn: true)
+  summary(
+    'SSE4.2',
+    have_sse42,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   pclmulflags = []
   if cc_id != 'msvc'
@@ -777,8 +926,7 @@ elif cpu_family in ['x86', 'x86_64']
   endif
   # The pclmul code currently crashes on Mac in 32bit mode. Avoid for now.
   want_pclmulqdq = get_option('pclmulqdq').require(
-    have_sse42 and
-    not (system == 'darwin' and cpu_family == 'x86')
+    have_sse42 and not (system == 'darwin' and cpu_family == 'x86'),
   )
   have_pclmulqdq = want_pclmulqdq.allowed() and cc.compiles(
     '''#include <immintrin.h>
@@ -797,7 +945,12 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_pclmulqdq.require(have_pclmulqdq)
-  summary('PCLMULQDQ', have_pclmulqdq, section: arch_section, bool_yn: true)
+  summary(
+    'PCLMULQDQ',
+    have_pclmulqdq,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   if cc_id == 'msvc'
     avx2flags = ['/arch:AVX2']
@@ -827,15 +980,26 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_avx2.require(have_avx2)
-  summary('AVX2', have_avx2, section: arch_section, bool_yn: true)
+  summary(
+    'AVX2',
+    have_avx2,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   if cc_id == 'msvc'
     avx512flags = ['/arch:AVX512']
   else
-    avx512flags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl', '-mbmi2']
+    avx512flags = [
+      '-mavx512f',
+      '-mavx512dq',
+      '-mavx512bw',
+      '-mavx512vl',
+      '-mbmi2',
+    ]
     # For CPUs that can benefit from AVX512, it seems GCC generates suboptimal
     # instruction scheduling unless you specify a reasonable -mtune= target
-    foreach mtune: ['-mtune=cascadelake', '-mtune=skylake-avx512']
+    foreach mtune : ['-mtune=cascadelake', '-mtune=skylake-avx512']
       if cc.has_argument(mtune)
         avx512flags += mtune
         break
@@ -863,15 +1027,27 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_avx512.require(have_avx512)
-  summary('AVX512', have_avx512, section: arch_section, bool_yn: true)
+  summary(
+    'AVX512',
+    have_avx512,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   if cc_id == 'msvc'
     avx512vnniflags = ['/arch:AVX512']
   else
-    avx512vnniflags = ['-mavx512f', '-mavx512dq', '-mavx512bw', '-mavx512vl', '-mavx512vnni', '-mbmi2']
+    avx512vnniflags = [
+      '-mavx512f',
+      '-mavx512dq',
+      '-mavx512bw',
+      '-mavx512vl',
+      '-mavx512vnni',
+      '-mbmi2',
+    ]
     # For CPUs that can benefit from AVX512, it seems GCC generates suboptimal
     # instruction scheduling unless you specify a reasonable -mtune= target
-    foreach mtune: ['-mtune=cascadelake', '-mtune=skylake-avx512']
+    foreach mtune : ['-mtune=cascadelake', '-mtune=skylake-avx512']
       if cc.has_argument(mtune)
         avx512vnniflags += mtune
         break
@@ -898,16 +1074,19 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_avx512vnni.require(have_avx512vnni)
-  summary('AVX512-VNNI', have_avx512vnni, section: arch_section, bool_yn: true)
+  summary(
+    'AVX512-VNNI',
+    have_avx512vnni,
+    section: arch_section,
+    bool_yn: true,
+  )
 
   vpclmulflags = []
   if cc_id != 'msvc'
     vpclmulflags = ['-mvpclmulqdq', '-mavx512f']
   endif
   want_vpclmulqdq = get_option('vpclmulqdq').require(
-    have_avx512 and
-    have_pclmulqdq and
-    not (system == 'darwin' and cpu_family == 'x86')
+    have_avx512 and have_pclmulqdq and not (system == 'darwin' and cpu_family == 'x86'),
   )
   have_vpclmulqdq = want_vpclmulqdq.allowed() and cc.compiles(
     '''#include <immintrin.h>
@@ -929,10 +1108,19 @@ elif cpu_family in ['x86', 'x86_64']
     )
   endif
   want_vpclmulqdq.require(have_vpclmulqdq)
-  summary('VPCLMULQDQ', have_vpclmulqdq, section: arch_section, bool_yn: true)
+  summary(
+    'VPCLMULQDQ',
+    have_vpclmulqdq,
+    section: arch_section,
+    bool_yn: true,
+  )
 
 else
-  summary('Architecture', 'generic', section: arch_section)
+  summary(
+    'Architecture',
+    'generic',
+    section: arch_section,
+  )
 endif
 
 zlib_ng = library(

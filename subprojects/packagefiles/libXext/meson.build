@@ -1,10 +1,16 @@
-project('libXext', 'c', version: '1.3.5', default_options: ['warning_level=3'])
+project(
+  'libXext',
+  'c',
+  version: '1.3.5',
+  default_options: ['warning_level=3'],
+)
 
 incdirs = include_directories('.', 'include')
 
 x11_dep = dependency('x11')
 
-xext = library('Xext',
+xext = library(
+  'Xext',
   'src/DPMS.c',
   'src/MITMisc.c',
   'src/XAppgroup.c',

@@ -1,36 +1,52 @@
-option('cpu_clip', type: 'boolean',
-  value: false,
-  description: 'Enable tricky cpu specific clipper',
+option(
+    'cpu_clip',
+    type: 'boolean',
+    value: false,
+    description: 'Enable tricky cpu specific clipper',
 )
 
-option('examples', type: 'boolean',
-  value: false,
-  description: 'Build examples',
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build examples',
 )
 
-option('experimental', type: 'boolean',
-  value: false,
-  description: 'Enable experimental code',
+option(
+    'experimental',
+    type: 'boolean',
+    value: false,
+    description: 'Enable experimental code',
 )
 
-option('external_libs', type: 'feature',
-  description: 'build with flac, ogg, vorbis, and opus support'
+option(
+    'external_libs',
+    type: 'feature',
+    description: 'build with flac, ogg, vorbis, and opus support',
 )
 
-option('mpeg', type: 'feature',
-  description: 'enable MPEG audio (including mp3) codecs'
+option(
+    'mpeg',
+    type: 'feature',
+    description: 'enable MPEG audio (including mp3) codecs',
 )
 
-option('programs', type: 'boolean',
-  value: true,
-  description: 'Build programs',
+option(
+    'programs',
+    type: 'boolean',
+    value: true,
+    description: 'Build programs',
 )
 
-option('sndio', type: 'feature',
-  description: 'Build with sndio support. OpenBSD only.'
+option(
+    'sndio',
+    type: 'feature',
+    description: 'Build with sndio support. OpenBSD only.',
 )
 
-option('regtest', type: 'boolean',
-  value: false,
-  description: 'enable regtest'
+option(
+    'regtest',
+    type: 'boolean',
+    value: false,
+    description: 'enable regtest',
 )

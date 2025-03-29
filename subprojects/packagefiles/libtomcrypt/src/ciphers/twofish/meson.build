@@ -1,3 +1,1 @@
-all_sources += files(
-  'twofish.c',
-)
+all_sources += files('twofish.c')

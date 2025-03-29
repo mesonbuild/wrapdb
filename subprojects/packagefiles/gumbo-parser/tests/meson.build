@@ -1,5 +1,8 @@
 tests_opt = get_option('tests')
-gtest_dep = dependency('gtest_main', required: tests_opt)
+gtest_dep = dependency(
+  'gtest_main',
+  required: tests_opt,
+)
 tests_opt = tests_opt.require(
   gtest_dep.found() and cpp_available,
   error_message: 'missing C++ compiler',
@@ -21,8 +24,8 @@ gumbo_test = executable(
     'utf8.cc',
     'vector.cc',
   ] + (
-    # Does not link with MSVC: missing "C" specifier to
-    # `extern const char* kGumboTagNames[];` declaration.
+  # Does not link with MSVC: missing "C" specifier to
+  # `extern const char* kGumboTagNames[];` declaration.
     cpp.get_id() in ['clang-cl', 'msvc'] ? [] : ['tokenizer.cc']
   ),
   dependencies: [
@@ -34,7 +37,13 @@ gumbo_test = executable(
   ],
   # The testsuite need access to some private
   # symbols (not exported by the DLL on Windows).
-  objects: gumbo_lib.extract_all_objects(recursive: true),
+  objects: gumbo_lib.extract_all_objects(
+    recursive: true,
+  ),
 )
 
-test('gumbo_test', gumbo_test, protocol: 'gtest')
+test(
+  'gumbo_test',
+  gumbo_test,
+  protocol: 'gtest',
+)

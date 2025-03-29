@@ -7,14 +7,20 @@ configure_file(
   configuration: mocklibc_conf,
 )
 
-if find_program('innetgr', required: false).found()
+if find_program(
+  'innetgr',
+  required: false,
+).found()
   # FIXME: workaround due to zip format not storing file permissions
   #        mocklibc.in and mocklibc-test.in need execution permission
   bash = find_program('bash')
 
   test_conf = configuration_data()
   # FIXME: workaround to execute mocklibc properly
-  test_conf.set('bindir', '@0@ @1@'.format(bash.path(), meson.current_build_dir()))
+  test_conf.set(
+    'bindir',
+    '@0@ @1@'.format(bash.path(), meson.current_build_dir()),
+  )
   test_conf.set('etcdir', example_dir)
 
   test_unit = meson.project_name() + '-test'

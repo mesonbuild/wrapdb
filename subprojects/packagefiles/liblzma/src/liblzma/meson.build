@@ -29,10 +29,10 @@ main_enc_sources = files(
 )
 
 thread_sources = files(
+  '../common/tuklib_cpucores.c',
   'common/hardware_cputhreads.c',
   'common/outqueue.c',
   'common/stream_encoder_mt.c',
-  '../common/tuklib_cpucores.c',
 )
 
 main_dec_sources = files(
@@ -69,7 +69,7 @@ if get_option('filter_simple')
     'simple/simple_decoder.c',
     'simple/simple_encoder.c',
     'simple/x86.c',
-  ) # FIXME add other platforms.
+  )  # FIXME add other platforms.
 endif
 
 lzma1_sources = []
@@ -121,7 +121,17 @@ if host_machine.system() == 'windows' and get_option('default_library') != 'stat
   api += '-DDLL_EXPORT'
 endif
 
-lzmainc = include_directories('api', 'common', 'check', 'lz', 'rangecoder', 'lzma', 'delta', 'simple', '../common')
+lzmainc = include_directories(
+  'api',
+  'common',
+  'check',
+  'lz',
+  'rangecoder',
+  'lzma',
+  'delta',
+  'simple',
+  '../common',
+)
 
 liblzma = library(
   'lzma',

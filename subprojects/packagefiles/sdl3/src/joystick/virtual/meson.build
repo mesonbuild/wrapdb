@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_virtualjoystick.c',
-)
+sources += files('SDL_virtualjoystick.c')

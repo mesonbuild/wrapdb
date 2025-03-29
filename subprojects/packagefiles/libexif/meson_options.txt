@@ -1,13 +1,19 @@
-option('examples', type: 'boolean',
-  value: true,
-  description: 'Build examples',
+option(
+    'examples',
+    type: 'boolean',
+    value: true,
+    description: 'Build examples',
 )
 
-option('nls', type: 'feature',
-  description: 'Build with NLS support',
+option(
+    'nls',
+    type: 'feature',
+    description: 'Build with NLS support',
 )
 
-option('tests', type: 'boolean',
-  value: true,
-  description: 'Build tests',
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Build tests',
 )

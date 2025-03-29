@@ -6,6 +6,4 @@ else
   subdir('linux')
 endif
 
-sources += files(
-  'SDL_power.c',
-)
+sources += files('SDL_power.c')

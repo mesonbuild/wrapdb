@@ -9,13 +9,19 @@ m4_src = [
   'output.c',
   'path.c',
   'symtab.c',
-  'm4.c'
+  'm4.c',
 ]
 
-nononnull_h = configure_file(input: 'nononnull.h.meson',
-                             output: 'nononnull.h',
-                             copy: true)
+nononnull_h = configure_file(
+  input: 'nononnull.h.meson',
+  output: 'nononnull.h',
+  copy: true,
+)
 
-m4 = executable('m4', m4_src, nononnull_h,
-                dependencies: m4_dep,
-                install: true)
+m4 = executable(
+  'm4',
+  m4_src,
+  nononnull_h,
+  dependencies: m4_dep,
+  install: true,
+)

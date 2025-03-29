@@ -22,4 +22,7 @@ if build_libwebpmux.found()
   headers += ['mux.h', 'mux_types.h']
 endif
 
-install_headers(headers, subdir: 'webp')
+install_headers(
+  headers,
+  subdir: 'webp',
+)

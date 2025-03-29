@@ -1,13 +1,13 @@
 c_sources += files(
-    'SDL.c',
-    'SDL_assert.c',
-    'SDL_dataqueue.c',
-    'SDL_error.c',
-    'SDL_guid.c',
-    'SDL_hints.c',
-    'SDL_list.c',
-    'SDL_log.c',
-    'SDL_utils.c',
+  'SDL.c',
+  'SDL_assert.c',
+  'SDL_dataqueue.c',
+  'SDL_error.c',
+  'SDL_guid.c',
+  'SDL_hints.c',
+  'SDL_list.c',
+  'SDL_log.c',
+  'SDL_utils.c',
 )
 
 subdir('atomic')

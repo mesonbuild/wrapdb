@@ -41,15 +41,15 @@ if CURL_VERSION != meson.project_version()
 endif
 
 WINDOWS_ONLY_ERROR = 'only supported on Windows'
-MACOS_ONLY_ERROR   = 'only supported on macOS'
+MACOS_ONLY_ERROR = 'only supported on macOS'
 
 MISSING_LIBS_ERROR = 'required libraries missing'
 
-SSL_DISABLED_ERROR  = 'feature ssl is disabled'
+SSL_DISABLED_ERROR = 'feature ssl is disabled'
 HTTP_DISABLED_ERROR = 'feature http is disabled'
 
 DISABLED_OPT = get_option('_disabled')
-ENABLED_OPT  = get_option('_enabled')
+ENABLED_OPT = get_option('_enabled')
 
 # }}}
 
@@ -117,26 +117,32 @@ if host_machine.system() == 'windows'
   endif
   host_vista_or_newer = _WIN32_WINNT >= 0x600
   # For `BCryptGenRandom()`.
-  sys_deps += cc.find_library('bcrypt', required: false)
+  sys_deps += cc.find_library(
+    'bcrypt',
+    required: false,
+  )
   sys_deps += cc.find_library('ws2_32')
 else
   host_vista_or_newer = false
 endif
 
 # For `clock_gettime`.
-sys_deps += cc.find_library('rt', required: false)
+sys_deps += cc.find_library(
+  'rt',
+  required: false,
+)
 
 if host_machine.system() == 'darwin'
   sys_deps += dependency(
     'appleframeworks',
-    modules: [
-      'CoreFoundation',
-      'SystemConfiguration',
-    ],
+    modules: ['CoreFoundation', 'SystemConfiguration'],
   )
 endif
 
-threads_dep = dependency('threads', required: false)
+threads_dep = dependency(
+  'threads',
+  required: false,
+)
 
 # }}}
 
@@ -146,42 +152,19 @@ check_args = []
 check_headers = []
 
 _headerlist = {
-  'arpa/inet.h': [
-    'getpeername',
-    'getsockname',
-    'inet_ntop',
-    'inet_pton',
-  ],
-  'bsd/unistd.h': [
-    'setmode',
-  ],
-  'dirent.h': [
-    'opendir',
-  ],
-  'fcntl.h': [
-    'fcntl',
-  ],
-  'fnmatch.h': [
-    'fnmatch',
-  ],
+  'arpa/inet.h': ['getpeername', 'getsockname', 'inet_ntop', 'inet_pton'],
+  'bsd/unistd.h': ['setmode'],
+  'dirent.h': ['opendir'],
+  'fcntl.h': ['fcntl'],
+  'fnmatch.h': ['fnmatch'],
   'ifaddrs.h': [],
   'io.h': [],
   'krb.h': [],
-  'libgen.h': [
-    'basename',
-  ],
+  'libgen.h': ['basename'],
   'linux/tcp.h': [],
-  'locale.h': [
-    'setlocale',
-  ],
-  'net/if.h': [
-    'if_nametoindex',
-  ],
-  'netdb.h': [
-    'freeaddrinfo',
-    'getaddrinfo',
-    'gethostbyname_r',
-  ],
+  'locale.h': ['setlocale'],
+  'net/if.h': ['if_nametoindex'],
+  'netdb.h': ['freeaddrinfo', 'getaddrinfo', 'gethostbyname_r'],
   'netinet/in.h': [],
   'netinet/in6.h': [],
   'netinet/tcp.h': [],
@@ -191,84 +174,37 @@ _headerlist = {
   'process.h': [],
   'proto/bsdsocket.h': [],
   'pthread.h': [],
-  'pwd.h': [
-    'getpwuid',
-    'getpwuid_r',
-  ],
-  'sched.h': [
-    'sched_yield',
-  ],
-  'setjmp.h': [
-    'sigsetjmp',
-  ],
-  'signal.h': [
-    'SIGALRM',
-    'sigaction',
-    'siginterrupt',
-    'signal',
-  ],
+  'pwd.h': ['getpwuid', 'getpwuid_r'],
+  'sched.h': ['sched_yield'],
+  'setjmp.h': ['sigsetjmp'],
+  'signal.h': ['SIGALRM', 'sigaction', 'siginterrupt', 'signal'],
   'sockio.h': [],
   'stdatomic.h': [],
   'stdbool.h': [],
   'stddef.h': [],
   'stdint.h': [],
-  'stdio.h': [
-    '_fseeki64',
-    'fseeko',
-    'snprintf',
-  ],
-  'stdlib.h': [
-    '_strtoi64',
-    'arc4random',
-    'strtoll',
-  ],
-  'string.h': [
-    'strcmpi',
-    'strdup',
-    'strerror_r',
-    'stricmp',
-    'strtok_r',
-  ],
-  'strings.h': [
-    'strcasecmp',
-  ],
+  'stdio.h': ['_fseeki64', 'fseeko', 'snprintf'],
+  'stdlib.h': ['_strtoi64', 'arc4random', 'strtoll'],
+  'string.h': ['strcmpi', 'strdup', 'strerror_r', 'stricmp', 'strtok_r'],
+  'strings.h': ['strcasecmp'],
   'stropts.h': [],
-  'sys/eventfd.h': [
-    'eventfd',
-  ],
+  'sys/eventfd.h': ['eventfd'],
   'sys/filio.h': [],
   'sys/ioctl.h': [],
   'sys/param.h': [],
   'sys/poll.h': [],
-  'sys/resource.h': [
-    'getrlimit',
-    'setrlimit',
-  ],
-  'sys/select.h': [
-    'select',
-  ],
-  'sys/socket.h': [
-    'sa_family_t',
-    'sendmsg',
-    'socket',
-    'socketpair',
-  ],
+  'sys/resource.h': ['getrlimit', 'setrlimit'],
+  'sys/select.h': ['select'],
+  'sys/socket.h': ['sa_family_t', 'sendmsg', 'socket', 'socketpair'],
   'sys/sockio.h': [],
   'sys/stat.h': [],
-  'sys/time.h': [
-    'gettimeofday',
-    'utimes',
-  ],
+  'sys/time.h': ['gettimeofday', 'utimes'],
   'sys/types.h': [],
   'sys/un.h': [],
   'sys/utime.h': [],
-  'sys/utsname.h': [
-    'uname',
-  ],
+  'sys/utsname.h': ['uname'],
   'sys/wait.h': [],
-  'sys/xattr.h': [
-    'fsetxattr',
-  ],
+  'sys/xattr.h': ['fsetxattr'],
   'termio.h': [],
   'termios.h': [],
   'time.h': [
@@ -288,25 +224,17 @@ _headerlist = {
     'pipe',
     'setmode',
   ],
-  'utime.h': [
-    'utime',
-  ],
+  'utime.h': ['utime'],
 }
 
 if host_machine.system() == 'darwin'
   _headerlist += {
-    'mach/mach_time.h': [
-      'mach_absolute_time',
-    ],
+    'mach/mach_time.h': ['mach_absolute_time'],
   }
 elif host_machine.system() == 'windows'
   _headerlist += {
     'windows.h': [],
-    'winsock.h': [
-      'closesocket',
-      'gethostname',
-      'getsockname',
-    ],
+    'winsock.h': ['closesocket', 'gethostname', 'getsockname'],
     'winsock2.h': [
       'ADDRESS_FAMILY',
       'gethostname',
@@ -314,12 +242,7 @@ elif host_machine.system() == 'windows'
       'select',
       'socket',
     ],
-    'ws2tcpip.h': [
-      'freeaddrinfo',
-      'getaddrinfo',
-      'inet_ntop',
-      'inet_pton',
-    ],
+    'ws2tcpip.h': ['freeaddrinfo', 'getaddrinfo', 'inet_ntop', 'inet_pton'],
   }
 endif
 
@@ -333,25 +256,17 @@ foreach _header, _symlist : _headerlist
   endif
   foreach _symbol : _symlist
     _flag = 'HAVE_' + _symbol.underscorify().to_upper()
-    _available = (
-      cdata.get(_flag, false)
-      or (_has_header and cc.has_header_symbol(_header, _symbol))
-    )
+    _available = (cdata.get(_flag, false)
+or (_has_header and cc.has_header_symbol(_header, _symbol))
+)
     cdata.set(_flag, _available)
   endforeach
 endforeach
 
 check_prefix = {}
 foreach _name, _headerlist : {
-  'stdinc': [
-    'sys/types.h',
-    'stdint.h',
-    'stddef.h',
-  ],
-  'timeinc': [
-    'sys/time.h',
-    'time.h',
-  ],
+  'stdinc': ['sys/types.h', 'stdint.h', 'stddef.h'],
+  'timeinc': ['sys/time.h', 'time.h'],
 }
   _prefix = []
   foreach _header : _headerlist
@@ -359,7 +274,9 @@ foreach _name, _headerlist : {
       _prefix += '#include<@0@>'.format(_header)
     endif
   endforeach
-  check_prefix += {_name: '\n'.join(_prefix)}
+  check_prefix += {
+    _name: '\n'.join(_prefix),
+  }
 endforeach
 
 cdata.set('HAVE_LONGLONG', cc.has_type('long long'))
@@ -426,7 +343,10 @@ cdata.set('HAVE_SIGNAL', cdata.get('HAVE_SIGALRM') and cdata.get('HAVE_SIGNAL'))
 
 cdata.set(
   'HAVE_SUSECONDS_T',
-  cc.has_type('suseconds_t', prefix: '#include<sys/time.h>'),
+  cc.has_type(
+    'suseconds_t',
+    prefix: '#include<sys/time.h>',
+  ),
 )
 
 # }}}
@@ -435,27 +355,19 @@ cdata.set(
 
 # Windows. {{{
 
-use_win32_crypto = (
-  host_machine.system() == 'windows'
-  and cc.has_header_symbol(
-    'wincrypt.h',
-    'CryptAcquireContext',
-    prefix: '#include<windows.h>',
-  )
+use_win32_crypto = (host_machine.system() == 'windows'
+and cc.has_header_symbol(
+  'wincrypt.h',
+  'CryptAcquireContext',
+  prefix: '#include<windows.h>',
+)
 )
 
 if use_win32_crypto
-  lib_deps += [
-    cc.find_library('advapi32'),
-    cc.find_library('crypt32'),
-  ]
+  lib_deps += [cc.find_library('advapi32'), cc.find_library('crypt32')]
 endif
 
-sspi_opt = get_option(
-  'sspi',
-).disable_auto_if(
-  get_option('gss-api').enabled(),
-).require(
+sspi_opt = get_option('sspi').disable_auto_if(get_option('gss-api').enabled()).require(
   host_machine.system() == 'windows',
   error_message: WINDOWS_ONLY_ERROR,
 )
@@ -472,21 +384,22 @@ _required = asynchdns_opt.disabled() ? asynchdns_opt : false
 foreach _resolver : get_option('asynchdns-resolver')
   if _resolver == 'pthread'
     # Posix threaded resolver.
-    _dep = (
-      asynchdns_opt.allowed()
-      and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
-    )
+    _dep = (asynchdns_opt.allowed()
+and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
+)
     _flag = 'USE_THREADS_POSIX'
   elif _resolver == 'win32'
     # Win32 threaded resolver.
-    _dep = (
-      asynchdns_opt.allowed()
-      and host_machine.system() == 'windows' ? threads_dep : disabler()
-    )
+    _dep = (asynchdns_opt.allowed()
+and host_machine.system() == 'windows' ? threads_dep : disabler()
+)
     _flag = 'USE_THREADS_WIN32'
   elif _resolver == 'ares'
     # Library: c-ares.
-    _dep = dependency('libcares', required: _required)
+    _dep = dependency(
+      'libcares',
+      required: _required,
+    )
     _flag = 'USE_ARES'
   else
     error('invalid Asynchronous DNS provider: ' + _provider)
@@ -509,7 +422,10 @@ asynchdns_opt = asynchdns_opt.require(
 # Brotli. {{{
 
 brotli_opt = get_option('brotli')
-lib_deps += dependency('libbrotlidec', required: brotli_opt)
+lib_deps += dependency(
+  'libbrotlidec',
+  required: brotli_opt,
+)
 brotli_opt = brotli_opt.require(lib_deps[-1].found())
 cdata.set('HAVE_BROTLI', brotli_opt.allowed())
 
@@ -517,9 +433,7 @@ cdata.set('HAVE_BROTLI', brotli_opt.allowed())
 
 # Form API. {{{
 
-form_api_opt = get_option(
-  'form-api',
-).require(
+form_api_opt = get_option('form-api').require(
   mime_opt.allowed(),
   error_message: 'feature mime is disabled',
 )
@@ -529,8 +443,7 @@ form_api_opt = get_option(
 # IPv6. {{{
 
 ipv6_opt = get_option('ipv6').require(
-  host_machine.system() == 'windows'
-  or cc.has_members(
+  host_machine.system() == 'windows' or cc.has_members(
     'struct sockaddr_in6',
     'sin6_addr',
     'sin6_scope_id',
@@ -545,11 +458,10 @@ cdata.set('USE_IPV6', ipv6_opt.allowed())
 # Large file. {{{
 
 cdata.set('USE_WIN32_LARGE_FILES', host_machine.system() == 'windows')
-largefile_opt = (
-  cdata.get('USE_WIN32_LARGE_FILES')
-  or (cdata.get('SIZEOF_CURL_OFF_T') > 4
-  and cdata.get('SIZEOF_OFF_T') > 4)
-  ? ENABLED_OPT : DISABLED_OPT
+largefile_opt = (cdata.get('USE_WIN32_LARGE_FILES')
+or (cdata.get('SIZEOF_CURL_OFF_T') > 4
+and cdata.get('SIZEOF_OFF_T') > 4)
+? ENABLED_OPT : DISABLED_OPT
 )
 
 # }}}
@@ -561,7 +473,10 @@ ssh_provider = ''
 
 _required = ssh_opt.disabled() ? ssh_opt : false
 foreach _provider : get_option('ssh-provider')
-  _dep = dependency(_provider, required: _required)
+  _dep = dependency(
+    _provider,
+    required: _required,
+  )
   if _dep.found()
     cdata.set('USE_' + _provider.to_upper(), true)
     ssh_provider = _provider
@@ -575,7 +490,7 @@ ssh_opt = ssh_opt.require(
   error_message: 'no supported provider',
 )
 
-scp_opt  = ssh_opt
+scp_opt = ssh_opt
 sftp_opt = ssh_opt
 
 # }}}
@@ -587,11 +502,7 @@ ssl_opt = get_option('ssl')
 
 # Windows secure channel. {{{
 
-schannel_opt = get_option(
-  'schannel',
-).disable_auto_if(
-  ssl_backends.length() > 0,
-).require(
+schannel_opt = get_option('schannel').disable_auto_if(ssl_backends.length() > 0).require(
   host_machine.system() == 'windows',
   error_message: WINDOWS_ONLY_ERROR,
 ).require(
@@ -613,16 +524,15 @@ ssl_backends += schannel_opt.allowed() ? 'schannel' : []
 
 # OpenSSL. {{{
 
-openssl_opt = get_option(
-  'openssl',
-).disable_auto_if(
-  ssl_backends.length() > 0,
-).require(
+openssl_opt = get_option('openssl').disable_auto_if(ssl_backends.length() > 0).require(
   ssl_opt.allowed(),
   error_message: SSL_DISABLED_ERROR,
 )
 
-lib_deps += dependency('openssl', required: openssl_opt)
+lib_deps += dependency(
+  'openssl',
+  required: openssl_opt,
+)
 openssl_opt = openssl_opt.require(lib_deps[-1].found())
 openssl_auto_load_config_opt = openssl_opt
 
@@ -651,8 +561,7 @@ cdata.set(
     'SSL_CTX_set_srp_password',
     dependencies: _partial_dep,
     required: _required,
-  )
-  and cc.has_header_symbol(
+  ) and cc.has_header_symbol(
     'openssl/ssl.h',
     'SSL_CTX_set_srp_username',
     dependencies: _partial_dep,
@@ -673,9 +582,7 @@ cdata.set(
 
 # Secure transport (macOS). {{{
 
-secure_transport_opt = get_option(
-  'secure-transport',
-).disable_auto_if(
+secure_transport_opt = get_option('secure-transport').disable_auto_if(
   ssl_backends.length() > 0,
 ).require(
   ssl_opt.allowed(),
@@ -707,9 +614,7 @@ ssl_opt = ssl_opt.require(
   error_message: 'no supported backend',
 )
 
-tls_srp_opt = get_option(
-  'tls-srp',
-).require(cdata.get('HAVE_OPENSSL_SRP', false))
+tls_srp_opt = get_option('tls-srp').require(cdata.get('HAVE_OPENSSL_SRP', false))
 cdata.set('USE_TLS_SRP', tls_srp_opt.allowed())
 
 ssl_default_backend = get_option('ssl-default-backend')
@@ -720,7 +625,8 @@ elif ssl_default_backend in ssl_backends
 else
   error(
     'invalid default SSL backend: @0@ (available: @1@)'.format(
-      ssl_default_backend, ', '.join(ssl_backends),
+      ssl_default_backend,
+      ', '.join(ssl_backends),
     ),
   )
 endif
@@ -733,7 +639,10 @@ cdata.set('CURL_WITH_MULTI_SSL', multissl_opt.allowed())
 # GSASL. {{{
 
 gsasl_opt = get_option('gsasl')
-lib_deps += dependency('libgsasl', required: gsasl_opt)
+lib_deps += dependency(
+  'libgsasl',
+  required: gsasl_opt,
+)
 gsasl_opt = gsasl_opt.require(lib_deps[-1].found())
 cdata.set('USE_GSASL', gsasl_opt.allowed())
 
@@ -741,9 +650,7 @@ cdata.set('USE_GSASL', gsasl_opt.allowed())
 
 # GSS API. {{{
 
-gss_api_opt = get_option(
-  'gss-api',
-).require(
+gss_api_opt = get_option('gss-api').require(
   not sspi_opt.allowed(),
   error_message: 'feature sspi is enabled',
 )
@@ -753,22 +660,30 @@ _required = gss_api_opt.disabled() ? gss_api_opt : false
 foreach _provider : get_option('gss-api-provider')
   if _provider == 'gnu'
     # GNU GSS.
-    _dep = dependency('gss', disabler: true, required: _required)
+    _dep = dependency(
+      'gss',
+      disabler: true,
+      required: _required,
+    )
     cdata.set('HAVE_GSSGNU', _dep.found())
   elif _provider == 'mit'
     # MIT Kerberos.
-    _dep = dependency('mit-krb5-gssapi', disabler: true, required: _required)
+    _dep = dependency(
+      'mit-krb5-gssapi',
+      disabler: true,
+      required: _required,
+    )
     _partial_dep = _dep.partial_dependency(
       compile_args: true,
       includes: true,
     )
-    foreach _header : [
-      'gssapi/gssapi.h',
-      'gssapi/gssapi_generic.h',
-    ]
+    foreach _header : ['gssapi/gssapi.h', 'gssapi/gssapi_generic.h']
       cdata.set(
         'HAVE_' + _header.underscorify().to_upper(),
-        cc.has_header(_header, dependencies: _partial_dep),
+        cc.has_header(
+          _header,
+          dependencies: _partial_dep,
+        ),
       )
     endforeach
     # Need at least <gssapi/gssapi.h>.
@@ -777,12 +692,19 @@ foreach _provider : get_option('gss-api-provider')
     endif
   elif _provider == 'heimdal'
     # Heimdal.
-    _dep = dependency('heimdal-gssapi', disabler: true, required: _required)
+    _dep = dependency(
+      'heimdal-gssapi',
+      disabler: true,
+      required: _required,
+    )
     _partial_dep = _dep.partial_dependency(
       compile_args: true,
       includes: true,
     )
-    if not cc.has_header('gssapi.h', dependencies: _partial_dep)
+    if not cc.has_header(
+      'gssapi.h',
+      dependencies: _partial_dep,
+    )
       _dep = disabler()
     endif
   else
@@ -807,19 +729,10 @@ cdata.set('HAVE_GSSAPI', gss_api_opt.allowed())
 
 http_opt = get_option('http')
 
-foreach _feat : [
-  'alt-svc',
-  'headers-api',
-  'hsts',
-  'http2',
-  'http-auth',
-  'rtsp',
-]
+foreach _feat : ['alt-svc', 'headers-api', 'hsts', 'http2', 'http-auth', 'rtsp']
   set_variable(
     _feat.underscorify() + '_opt',
-    get_option(
-      _feat,
-    ).require(
+    get_option(_feat).require(
       http_opt.allowed(),
       error_message: HTTP_DISABLED_ERROR,
     ),
@@ -833,7 +746,10 @@ hsts_opt = hsts_opt.require(
 )
 
 # HTTP2.
-lib_deps += dependency('libnghttp2', required: http2_opt)
+lib_deps += dependency(
+  'libnghttp2',
+  required: http2_opt,
+)
 http2_opt = http2_opt.require(lib_deps[-1].found())
 cdata.set('USE_NGHTTP2', http2_opt.allowed())
 
@@ -868,13 +784,12 @@ foreach _provider : get_option('ldap-provider')
     )
     _flag = 'OPENLDAP'
   elif _provider == 'win32'
-    _dep = (
-      host_machine.system() == 'windows' ? cc.find_library(
-        'wldap32',
-        has_headers: 'winldap.h',
-        required: _required,
-      ) : disabler()
-    )
+    _dep = (host_machine.system() == 'windows' ? cc.find_library(
+      'wldap32',
+      has_headers: 'winldap.h',
+      required: _required,
+    ) : disabler()
+)
     _flag = 'WIN32_LDAP'
   else
     error('invalid LDAP provider: ' + _provider)
@@ -892,9 +807,7 @@ ldap_opt = ldap_opt.require(
   error_message: 'no supported provider',
 )
 
-ldaps_opt = get_option(
-  'ldaps',
-).require(
+ldaps_opt = get_option('ldaps').require(
   ldap_opt.allowed(),
   error_message: 'feature ldap is disabled',
 ).require(
@@ -907,9 +820,7 @@ cdata.set('HAVE_LDAP_SSL', ldaps_opt.allowed())
 
 # NTLM. {{{
 
-ntlm_opt = get_option(
-  'ntlm',
-).require(
+ntlm_opt = get_option('ntlm').require(
   use_win32_crypto or ssl_backends.length() > 0,
   error_message: MISSING_LIBS_ERROR,
 )
@@ -919,7 +830,10 @@ ntlm_opt = get_option(
 # Public Suffix List. {{{
 
 psl_opt = get_option('psl')
-lib_deps += dependency('libpsl', required: psl_opt)
+lib_deps += dependency(
+  'libpsl',
+  required: psl_opt,
+)
 psl_opt = psl_opt.require(lib_deps[-1].found())
 cdata.set('USE_LIBPSL', psl_opt.allowed())
 
@@ -928,7 +842,10 @@ cdata.set('USE_LIBPSL', psl_opt.allowed())
 # RTMP. {{{
 
 rtmp_opt = get_option('rtmp')
-lib_deps += dependency('librtmp', required: rtmp_opt)
+lib_deps += dependency(
+  'librtmp',
+  required: rtmp_opt,
+)
 rtmp_opt = rtmp_opt.require(lib_deps[-1].found())
 cdata.set('USE_LIBRTMP', rtmp_opt.allowed())
 
@@ -936,9 +853,7 @@ cdata.set('USE_LIBRTMP', rtmp_opt.allowed())
 
 # Samba. {{{
 
-smb_opt = get_option(
-  'smb',
-).require(
+smb_opt = get_option('smb').require(
   ntlm_opt.allowed(),
   error_message: 'feature ntlm is disabled',
 ).require(
@@ -952,11 +867,8 @@ smbs_opt = ssl_opt.allowed() ? smb_opt : DISABLED_OPT
 
 # Unix sockets. {{{
 
-unixsockets_opt = get_option(
-  'unixsockets',
-).require(
-  host_machine.system() == 'windows'
-  or cc.has_member(
+unixsockets_opt = get_option('unixsockets').require(
+  host_machine.system() == 'windows' or cc.has_member(
     'struct sockaddr_un',
     'sun_path',
     prefix: '#include<sys/un.h>',
@@ -1004,7 +916,10 @@ foreach _provider : get_option('idn-provider')
     endif
   elif _provider == 'libidn2'
     # Library: libdn2.
-    _dep = dependency('libidn2', required: _required)
+    _dep = dependency(
+      'libidn2',
+      required: _required,
+    )
     cdata.set('HAVE_LIBIDN2', _dep.found())
     cdata.set('HAVE_IDN2_H', _dep.found())
     if _dep.found()
@@ -1014,13 +929,12 @@ foreach _provider : get_option('idn-provider')
     endif
   elif _provider == 'winidn'
     # Windows IDN.
-    _dep = (
-      host_vista_or_newer ? cc.find_library(
-        'normaliz',
-        disabler: true,
-        required: _required,
-      ) : disabler()
-    )
+    _dep = (host_vista_or_newer ? cc.find_library(
+      'normaliz',
+      disabler: true,
+      required: _required,
+    ) : disabler()
+)
     if cc.has_function(
       'IdnToUnicode',
       dependencies: _dep,
@@ -1044,9 +958,7 @@ idn_opt = idn_opt.require(
 
 # Web sockets. {{{
 
-ws_opt = get_option(
-  'websockets',
-).require(
+ws_opt = get_option('websockets').require(
   http_opt.allowed(),
   error_message: HTTP_DISABLED_ERROR,
 ).require(
@@ -1063,7 +975,10 @@ wss_opt = ws_opt.allowed() and ssl_opt.allowed() ? ws_opt : DISABLED_OPT
 # ZLIB. {{{
 
 libz_opt = get_option('libz')
-lib_deps += dependency('zlib', required: libz_opt)
+lib_deps += dependency(
+  'zlib',
+  required: libz_opt,
+)
 libz_opt = libz_opt.require(lib_deps[-1].found())
 cdata.set('HAVE_LIBZ', libz_opt.allowed())
 
@@ -1072,7 +987,11 @@ cdata.set('HAVE_LIBZ', libz_opt.allowed())
 # ZSTD. {{{
 
 zstd_opt = get_option('zstd')
-lib_deps += dependency('libzstd', required: zstd_opt, version: '>=1.0.0')
+lib_deps += dependency(
+  'libzstd',
+  required: zstd_opt,
+  version: '>=1.0.0',
+)
 zstd_opt = zstd_opt.require(lib_deps[-1].found())
 cdata.set('HAVE_ZSTD', zstd_opt.allowed())
 
@@ -1123,8 +1042,7 @@ foreach _spec : [
   _enabled = _spec.get(1, true)
   cdata.set(
     _test,
-    _enabled
-    and cc.links(
+    _enabled and cc.links(
       files('CMake/CurlTests.c'),
       args: [check_args, '-D' + _test],
       dependencies: sys_deps,
@@ -1160,15 +1078,16 @@ else
   endforeach
 endif
 
-threadsafe_opt = (
-  host_vista_or_newer
-  or cdata.get('HAVE_STDATOMIC_H')
-  ? ENABLED_OPT : DISABLED_OPT
+threadsafe_opt = (host_vista_or_newer
+or cdata.get('HAVE_STDATOMIC_H')
+? ENABLED_OPT : DISABLED_OPT
 )
 
-_have_clock_gettime = (
-  cdata.get('HAVE_CLOCK_GETTIME')
-  and cc.has_function('clock_gettime', dependencies: sys_deps)
+_have_clock_gettime = (cdata.get('HAVE_CLOCK_GETTIME')
+and cc.has_function(
+  'clock_gettime',
+  dependencies: sys_deps,
+)
 )
 cdata.set(
   'HAVE_CLOCK_GETTIME_MONOTONIC',
@@ -1181,8 +1100,7 @@ cdata.set(
 
 cdata.set(
   'HAVE_GETADDRINFO_THREADSAFE',
-  host_machine.system() == 'windows'
-  or cc.compiles(
+  host_machine.system() == 'windows' or cc.compiles(
     '''
     #ifdef HAVE_SYS_SOCKET_H
     #  include<sys/socket.h>
@@ -1366,8 +1284,7 @@ endif
 
 cdata.set(
   'HAVE_TIME_T_UNSIGNED',
-  meson.can_run_host_binaries()
-  and cc.run(
+  meson.can_run_host_binaries() and cc.run(
     '''
     #include <time.h>
     #include <limits.h>
@@ -1382,8 +1299,7 @@ cdata.set(
 
 cdata.set(
   'HAVE_WRITABLE_ARGV',
-  meson.can_run_host_binaries()
-  and cc.run(
+  meson.can_run_host_binaries() and cc.run(
     '''
     int main(int argc, char **argv)
     {
@@ -1399,10 +1315,9 @@ cdata.set(
 _required = cdata.get('HAVE_GETHOSTNAME') ? true : disabler()
 foreach _arg1 : ['char *', 'unsigned char *', 'void *']
   foreach _arg2 : ['int', 'unsigned int', 'size_t']
-    if (
-      _required
-      and cc.compiles(
-        _source_epilogue + '''
+    if (_required
+and cc.compiles(
+      _source_epilogue + '''
         #ifdef HAVE_WINDOWS_H
         #  ifndef WIN32_LEAN_AND_MEAN
         #    define WIN32_LEAN_AND_MEAN
@@ -1432,10 +1347,10 @@ foreach _arg1 : ['char *', 'unsigned char *', 'void *']
           return 0;
         }
         '''.format(_arg1, _arg2),
-        args: check_args,
-        name: 'gethostname(@0@, @1@)'.format(_arg1, _arg2),
-      )
+      args: check_args,
+      name: 'gethostname(@0@, @1@)'.format(_arg1, _arg2),
     )
+)
       cdata.set('GETHOSTNAME_TYPE_ARG2', _arg2)
       _required = disabler()
     endif
@@ -1477,7 +1392,11 @@ endif
 # Some parts of the testsuite rely on a particular
 # formatting, e.g. for detecting the Windows build.
 if cc.get_argument_syntax() == 'gcc'
-  _os = run_command(cc.cmd_array(), '-dumpmachine', check: true).stdout().strip()
+  _os = run_command(
+    cc.cmd_array(),
+    '-dumpmachine',
+    check: true,
+  ).stdout().strip()
 else
   _os = '-'.join(host_machine.cpu(), host_machine.system())
 endif
@@ -1489,19 +1408,15 @@ cdata.set_quoted('OS', _os)
 # Compile flags. {{{
 
 # Symbols visibility.
-if (
-  cc.has_argument('-fvisibility=hidden')
-  and cc.has_function_attribute('visibility:default')
+if (cc.has_argument('-fvisibility=hidden')
+and cc.has_function_attribute('visibility:default')
 )
-  cdata.set(
-    'CURL_EXTERN_SYMBOL',
-    '__attribute__ ((__visibility__ ("default")))',
-  )
-  curl_symbols_hiding_flags      = ['-DCURL_HIDDEN_SYMBOLS']
+  cdata.set('CURL_EXTERN_SYMBOL', '__attribute__ ((__visibility__ ("default")))')
+  curl_symbols_hiding_flags = ['-DCURL_HIDDEN_SYMBOLS']
   curl_symbols_hiding_visibility = 'hidden'
 else
   cdata.set('CURL_EXTERN_SYMBOL', '')
-  curl_symbols_hiding_flags      = []
+  curl_symbols_hiding_flags = []
   curl_symbols_hiding_visibility = 'default'
 endif
 
@@ -1552,9 +1467,7 @@ endif
 
 ca_path = get_option('ca_path')
 if ca_path == 'auto'
-  foreach _path : [
-    '/etc/ssl/certs',
-  ]
+  foreach _path : ['/etc/ssl/certs']
     if fs.is_dir(_path)
       ca_path = _path
       break
@@ -1578,19 +1491,10 @@ cdata.set('CURL_CA_FALLBACK', get_option('ca_fallback'))
 # Protocols. {{{
 
 # SSL variants.
-foreach _proto : [
-  'ftp',
-  'gopher',
-  'http',
-  'imap',
-  'pop3',
-  'smtp',
-]
+foreach _proto : ['ftp', 'gopher', 'http', 'imap', 'pop3', 'smtp']
   set_variable(
     _proto + 's_opt',
-    ssl_opt.allowed()
-    and get_variable(_proto + '_opt').allowed()
-    ? ENABLED_OPT : DISABLED_OPT,
+    ssl_opt.allowed() and get_variable(_proto + '_opt').allowed() ? ENABLED_OPT : DISABLED_OPT,
   )
 endforeach
 
@@ -1621,16 +1525,14 @@ endforeach
 
 # Features. {{{
 
-kerberos_opt = (
-  kerberos_auth_opt.allowed()
-  and (gss_api_opt.allowed() or sspi_opt.allowed())
-  ? ENABLED_OPT : DISABLED_OPT
+kerberos_opt = (kerberos_auth_opt.allowed()
+and (gss_api_opt.allowed() or sspi_opt.allowed())
+? ENABLED_OPT : DISABLED_OPT
 )
 
-spnego_opt = (
-  negotiate_auth_opt.allowed()
-  and (gss_api_opt.allowed() or sspi_opt.allowed())
-  ? ENABLED_OPT : DISABLED_OPT
+spnego_opt = (negotiate_auth_opt.allowed()
+and (gss_api_opt.allowed() or sspi_opt.allowed())
+? ENABLED_OPT : DISABLED_OPT
 )
 
 # `CURL_DISABLE_ALTSVC` is used instead of `CURL_DISABLE_ALT_SVC`…
@@ -1736,11 +1638,7 @@ foreach _section, _optlist : {
     ['WS'],
     ['WSS'],
   ],
-  'ssl_backends': [
-    ['OpenSSL'],
-    ['Schannel'],
-    ['Secure Transport'],
-  ],
+  'ssl_backends': [['OpenSSL'], ['Schannel'], ['Secure Transport']],
 }
   _summary = {}
   _enabled_list = []
@@ -1758,30 +1656,28 @@ foreach _section, _optlist : {
         _disabled_list += _name
       endif
     endif
-    _summary += {_name: _summary_value}
+    _summary += {
+      _name: _summary_value,
+    }
   endforeach
   set_variable(_section + '_summary', _summary)
   set_variable('enabled_' + _section, _enabled_list)
   set_variable('disabled_' + _section, _disabled_list)
 endforeach
 
-ssl_backends_summary += {'Default backend': ssl_default_backend}
+ssl_backends_summary += {
+  'Default backend': ssl_default_backend,
+}
 
 # }}}
 
 # Sanitize boolean flags.
 _boolkeys = ['STDC_HEADERS']
 foreach _key : cdata.keys()
-  if (
-    _key.startswith('CURL_DISABLE_')
-    or _key.endswith('_ENABLED')
-    or _key.split('_')[0] in [
-      'ENABLE',
-      'HAVE',
-      'NEED',
-      'USE',
-    ]
-  )
+  if (_key.startswith('CURL_DISABLE_')
+or _key.endswith('_ENABLED')
+or _key.split('_')[0] in ['ENABLE', 'HAVE', 'NEED', 'USE']
+)
     _boolkeys += _key
   endif
 endforeach
@@ -1868,23 +1764,30 @@ curl_config_script = configure_file(
 
 # Don't automatically enable tests on Windows,
 # as the testsuite does not seem to support it.
-tests_opt = get_option(
-  'tests',
-).disable_auto_if(
+tests_opt = get_option('tests').disable_auto_if(
   host_machine.system() == 'windows',
 )
 
 # Absolute minimum for setting up & running the testsuite.
-bash_exe = find_program('bash', required: tests_opt)
+bash_exe = find_program(
+  'bash',
+  required: tests_opt,
+)
 # NOTE: look for `gmake` first so on macOS we get the
 # brew version (>=4) and not the old system one (3.xx)…
-make_exe = find_program(['gmake', 'make', 'mingw32-make'], required: tests_opt)
+make_exe = find_program(
+  ['gmake', 'make', 'mingw32-make'],
+  required: tests_opt,
+)
 # Don't use `find_program('perl')`, as is it may yield a different perl
 # than the one that is going to be used by the testsuite through bash
 # (e.g. on Windows).
 if bash_exe.found()
   _cmd = [bash_exe, '-c', 'perl -e ""']
-  _ret = run_command(_cmd, check: false)
+  _ret = run_command(
+    _cmd,
+    check: false,
+  )
   # message(
   #   '@0@ return @1@:\n@2@'.format(
   #     _cmd,
@@ -1903,9 +1806,7 @@ tests_opt = tests_opt.require(
 )
 build_tests = tests_opt.allowed() ? declare_dependency() : disabler()
 
-unittests_opt = get_option(
-  'unittests',
-).require(
+unittests_opt = get_option('unittests').require(
   tests_opt.allowed(),
   error_message: 'feature tests is disabled',
 ).require(

@@ -15,8 +15,14 @@ vers = meson.project_version().split('.')
 cdata.set('LWS_LIBRARY_VERSION_MAJOR', vers[0])
 cdata.set('LWS_LIBRARY_VERSION_MINOR', vers[1])
 cdata.set('LWS_LIBRARY_VERSION_PATCH', vers[2])
-cdata.set('LWS_LIBRARY_VERSION_PATCH_ELABORATED', '@0@-@1@'.format(vers[2], 'unknown'))
-cdata.set('LWS_LIBRARY_VERSION', '@0@-@1@'.format(meson.project_version(), 'unknown'))
+cdata.set(
+  'LWS_LIBRARY_VERSION_PATCH_ELABORATED',
+  '@0@-@1@'.format(vers[2], 'unknown'),
+)
+cdata.set(
+  'LWS_LIBRARY_VERSION',
+  '@0@-@1@'.format(meson.project_version(), 'unknown'),
+)
 
 cdata.set('LWS_PLAT_UNIX', host_machine.system() != 'windows')
 
@@ -102,9 +108,24 @@ cdata.set('LWS_NO_DAEMONIZE', host_machine.system() == 'windows')
 cdata.set('LWS_WITH_DISKCACHE', host_machine.system() != 'windows')
 
 cc = meson.get_compiler('c')
-cdata.set('LWS_HAS_INTPTR_T', cc.has_type('intptr_t', prefix: '#include <stdint.h>'))
-cdata.set('LWS_HAVE_SUSECONDS_T', cc.has_type('suseconds_t', prefix: '#include <sys/types.h>'))
-cdata.set('LWS_HAVE_RTA_PREF', cc.has_header_symbol('linux/rtnetlink.h', 'RTA_PREF'))
+cdata.set(
+  'LWS_HAS_INTPTR_T',
+  cc.has_type(
+    'intptr_t',
+    prefix: '#include <stdint.h>',
+  ),
+)
+cdata.set(
+  'LWS_HAVE_SUSECONDS_T',
+  cc.has_type(
+    'suseconds_t',
+    prefix: '#include <sys/types.h>',
+  ),
+)
+cdata.set(
+  'LWS_HAVE_RTA_PREF',
+  cc.has_header_symbol('linux/rtnetlink.h', 'RTA_PREF'),
+)
 cdata.set('LWS_WITH_UNIX_SOCK', not cc.has_header('afunix.h'))
 
 functions = [
@@ -137,58 +158,121 @@ cdata.set('LWS_HAS_GETOPT_LONG', cc.has_function('getopt_long'))
 
 windows_dep = []
 foreach d : ['ws2_32', 'userenv', 'psapi', 'iphlpapi', 'crypt32']
-  windows_dep += cc.find_library(d, required: host_machine.system() == 'windows')
+  windows_dep += cc.find_library(
+    d,
+    required: host_machine.system() == 'windows',
+  )
 endforeach
 
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required: get_option('plugins'))
+  dl_dep = dependency(
+    'dl',
+    required: get_option('plugins'),
+  )
 else
-  dl_dep = cc.find_library('dl', required: get_option('plugins'))
+  dl_dep = cc.find_library(
+    'dl',
+    required: get_option('plugins'),
+  )
 endif
 cdata.set('LWS_WITH_PLUGINS', dl_dep.found())
 cdata.set('LWS_WITH_PLUGINS_API', cdata.get('LWS_WITH_PLUGINS'))
 
-zlib_dep = dependency('zlib', required: get_option('compression'))
+zlib_dep = dependency(
+  'zlib',
+  required: get_option('compression'),
+)
 cdata.set('LWS_WITH_HTTP_STREAM_COMPRESSION', zlib_dep.found())
 cdata.set('LWS_WITHOUT_EXTENSIONS', not zlib_dep.found())
 
-brotlienc_dep = dependency('libbrotlienc', required: get_option('brotli'))
-brotlidec_dep = dependency('libbrotlidec', required: get_option('brotli'))
+brotlienc_dep = dependency(
+  'libbrotlienc',
+  required: get_option('brotli'),
+)
+brotlidec_dep = dependency(
+  'libbrotlidec',
+  required: get_option('brotli'),
+)
 brotli_dep = [brotlienc_dep, brotlidec_dep]
-cdata.set('LWS_WITH_HTTP_BROTLI', brotlienc_dep.found() and brotlidec_dep.found())
+cdata.set(
+  'LWS_WITH_HTTP_BROTLI',
+  brotlienc_dep.found() and brotlidec_dep.found(),
+)
 
-glib_dep = dependency('glib-2.0', required: get_option('glib'))
-cdata.set('LWS_WITH_GLIB', glib_dep.found() and host_machine.system() != 'windows')
+glib_dep = dependency(
+  'glib-2.0',
+  required: get_option('glib'),
+)
+cdata.set(
+  'LWS_WITH_GLIB',
+  glib_dep.found() and host_machine.system() != 'windows',
+)
 
-uv_dep = dependency('libuv', required: get_option('uv'))
+uv_dep = dependency(
+  'libuv',
+  required: get_option('uv'),
+)
 cdata.set('LWS_WITH_LIBUV', uv_dep.found())
 
-ev_dep = cc.find_library('libev', required: get_option('ev'))
+ev_dep = cc.find_library(
+  'libev',
+  required: get_option('ev'),
+)
 cdata.set('LWS_WITH_LIBEV', ev_dep.found())
 
-event_dep = dependency('libevent', required: get_option('event'))
+event_dep = dependency(
+  'libevent',
+  required: get_option('event'),
+)
 cdata.set('LWS_WITH_LIBEVENT', event_dep.found())
 
-cdata.set('LWS_WITH_EVENT_LIBS', glib_dep.found() or uv_dep.found() or ev_dep.found() or event_dep.found())
-cdata.set('LWS_WITH_EVLIB_PLUGINS', host_machine.system() != 'windows' and cdata.get('LWS_WITH_EVENT_LIBS'))
+cdata.set(
+  'LWS_WITH_EVENT_LIBS',
+  glib_dep.found() or uv_dep.found() or ev_dep.found() or event_dep.found(),
+)
+cdata.set(
+  'LWS_WITH_EVLIB_PLUGINS',
+  host_machine.system() != 'windows' and cdata.get('LWS_WITH_EVENT_LIBS'),
+)
 
-sqlite_dep = dependency('sqlite3', required: get_option('sqlite3'))
+sqlite_dep = dependency(
+  'sqlite3',
+  required: get_option('sqlite3'),
+)
 cdata.set('LWS_WITH_STRUCT_SQLITE3', sqlite_dep.found())
 
-sdevent_dep = cc.find_library('libsdevent', required: get_option('sdevent'))
+sdevent_dep = cc.find_library(
+  'libsdevent',
+  required: get_option('sdevent'),
+)
 cdata.set('LWS_WITH_SDEVENT', sdevent_dep.found())
 
-ubox_dep = cc.find_library('libubox', required: get_option('ubox'))
+ubox_dep = cc.find_library(
+  'libubox',
+  required: get_option('ubox'),
+)
 cdata.set('LWS_WITH_ULOOP', ubox_dep.found())
 
-mount_dep = dependency('mount', required: get_option('mount'))
+mount_dep = dependency(
+  'mount',
+  required: get_option('mount'),
+)
 cdata.set('LWS_WITH_FSMOUNT', mount_dep.found())
 
-dbus_dep = dependency('dbus-1', required: get_option('dbus'))
+dbus_dep = dependency(
+  'dbus-1',
+  required: get_option('dbus'),
+)
 cdata.set('LWS_ROLE_DBUS', dbus_dep.found())
 
-thread_dep = dependency('threads', required: false)
-cdata.set('LWS_WITH_THREADPOOL', thread_dep.found() and cc.has_header('pthread.h'))
+thread_dep = dependency(
+  'threads',
+  required: false,
+)
+cdata.set(
+  'LWS_WITH_THREADPOOL',
+  thread_dep.found() and cc.has_header('pthread.h'),
+)
 
 cfile = configure_file(
   input: 'cmake/lws_config.h.in',
@@ -216,7 +300,10 @@ privheaders = [
 ]
 
 foreach h : privheaders
-  privcdata.set('LWS_HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
+  privcdata.set(
+    'LWS_HAVE_@0@'.format(h.underscorify().to_upper()),
+    cc.has_header(h),
+  )
 endforeach
 
 privfunctions = [
@@ -233,9 +320,15 @@ privfunctions = [
 foreach f : privfunctions
   privcdata.set('LWS_HAVE_@0@'.format(f.to_upper()), cc.has_function(f))
 endforeach
-privcdata.set('LWS_HAS_PTHREAD_SETNAME_NP', host_machine.system() != 'darwin' and cc.has_function('pthread_setname_np'))
+privcdata.set(
+  'LWS_HAS_PTHREAD_SETNAME_NP',
+  host_machine.system() != 'darwin' and cc.has_function('pthread_setname_np'),
+)
 
-privcdata.set('LWS_HAVE_TCP_USER_TIMEOUT', cc.has_header_symbol('netinet/tcp.h', 'TCP_USER_TIMEOUT'))
+privcdata.set(
+  'LWS_HAVE_TCP_USER_TIMEOUT',
+  cc.has_header_symbol('netinet/tcp.h', 'TCP_USER_TIMEOUT'),
+)
 
 privcfile = configure_file(
   input: 'cmake/lws_config_private.h.in',
@@ -245,7 +338,13 @@ privcfile = configure_file(
 )
 
 incdirs = []
-incdirs += include_directories('include', 'lib', 'lib/core', 'lib/event-libs', 'lib/system/metrics')
+incdirs += include_directories(
+  'include',
+  'lib',
+  'lib/core',
+  'lib/event-libs',
+  'lib/system/metrics',
+)
 
 sources = files(
   'lib/core/alloc.c',
@@ -311,7 +410,11 @@ sources = files(
 )
 
 if cdata.get('LWS_WITH_DRIVERS')
-  incdirs += include_directories('lib/drivers', 'lib/drivers/devices/display', 'lib/drivers/led')
+  incdirs += include_directories(
+    'lib/drivers',
+    'lib/drivers/devices/display',
+    'lib/drivers/led',
+  )
   sources += files(
     'lib/drivers/button/lws-button.c',
     'lib/drivers/display/ili9341-spi.c',
@@ -450,7 +553,9 @@ if cdata.get('LWS_WITH_NETWORK')
       endif
     endif
 
-    if cdata.get('LWS_WITH_LEJP_CONF') and cdata.get('LWS_WITH_NETWORK') and not cdata.get('LWS_PLAT_OPTEE')
+    if cdata.get('LWS_WITH_LEJP_CONF') and cdata.get('LWS_WITH_NETWORK') and not cdata.get(
+      'LWS_PLAT_OPTEE',
+    )
       sources += files('lib/roles/http/server/lejp-conf.c')
     endif
 
@@ -483,9 +588,7 @@ if cdata.get('LWS_WITH_NETWORK')
 
   if cdata.get('LWS_ROLE_WS')
     incdirs += include_directories('lib/roles/ws')
-    sources += files(
-      'lib/roles/ws/ops-ws.c',
-    )
+    sources += files('lib/roles/ws/ops-ws.c')
 
     if cdata.get('LWS_WITH_CLIENT')
       sources += files(
@@ -522,10 +625,7 @@ if cdata.get('LWS_WITH_NETWORK')
 
   if cdata.get('LWS_WITH_CGI')
     incdirs += include_directories('lib/roles/cgi')
-    sources += files(
-      'lib/roles/cgi/cgi-server.c',
-      'lib/roles/cgi/ops-cgi.c',
-    )
+    sources += files('lib/roles/cgi/cgi-server.c', 'lib/roles/cgi/ops-cgi.c')
   endif
 
   if cdata.get('LWS_ROLE_RAW_PROXY')
@@ -533,7 +633,9 @@ if cdata.get('LWS_WITH_NETWORK')
     sources += files('lib/roles/raw-proxy/ops-raw-proxy.c')
   endif
 
-  if cdata.get('LWS_WITH_SERVER') or cdata.get('LWS_WITH_SECURE_STREAMS_PROCESS_API')
+  if cdata.get('LWS_WITH_SERVER') or cdata.get(
+    'LWS_WITH_SECURE_STREAMS_PROCESS_API',
+  )
     sources += files('lib/roles/listen/ops-listen.c')
   endif
 
@@ -645,10 +747,7 @@ if cdata.get('LWS_WITH_FILE_OPS')
 endif
 
 if cdata.get('LWS_WITH_FTS')
-  sources += files(
-    'lib/misc/fts/trie.c',
-    'lib/misc/fts/trie-fd.c',
-  )
+  sources += files('lib/misc/fts/trie-fd.c', 'lib/misc/fts/trie.c')
 endif
 
 if cdata.get('LWS_WITH_SECURE_STREAMS')
@@ -692,7 +791,9 @@ if cdata.get('LWS_WITH_SECURE_STREAMS')
       )
     endif
 
-    if cdata.get('LWS_WITH_SECURE_STREAMS_SYS_AUTH_API_AMAZON_COM') and cdata.get('LWS_WITH_SYS_STATE')
+    if cdata.get('LWS_WITH_SECURE_STREAMS_SYS_AUTH_API_AMAZON_COM') and cdata.get(
+      'LWS_WITH_SYS_STATE',
+    )
       sources += files('lib/secure-streams/system/auth-api.amazon.com/auth.c')
     endif
 
@@ -790,7 +891,20 @@ libwebsockets = library(
   'websockets',
   sources,
   include_directories: incdirs,
-  dependencies: [brotli_dep, zlib_dep, event_dep, ev_dep, uv_dep, glib_dep, mount_dep, sqlite_dep, dbus_dep, thread_dep, dl_dep, windows_dep],
+  dependencies: [
+    brotli_dep,
+    zlib_dep,
+    event_dep,
+    ev_dep,
+    uv_dep,
+    glib_dep,
+    mount_dep,
+    sqlite_dep,
+    dbus_dep,
+    thread_dep,
+    dl_dep,
+    windows_dep,
+  ],
 )
 
 depinc = include_directories('include')

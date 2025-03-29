@@ -1,4 +1,8 @@
-project('jbigkit', 'c', version: '2.1')
+project(
+  'jbigkit',
+  'c',
+  version: '2.1',
+)
 
 subdir('libjbig')
 

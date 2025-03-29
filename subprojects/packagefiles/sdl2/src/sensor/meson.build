@@ -1,6 +1,4 @@
-c_sources += files(
-    'SDL_sensor.c',
-)
+c_sources += files('SDL_sensor.c')
 
 subdir('android')
 subdir('coremotion')

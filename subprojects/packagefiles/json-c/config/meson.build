@@ -85,26 +85,44 @@ foreach f : ['snprintf', 'vsnprintf', 'vprintf']
   endif
 endforeach
 
-size = cc.sizeof('size_t', prefix: '#include <stddef.h>')
+size = cc.sizeof(
+  'size_t',
+  prefix: '#include <stddef.h>',
+)
 conf.set('SIZEOF_SIZE_T', size)
 
 if cc.get_argument_syntax() == 'msvc'
-  size = cc.sizeof('SSIZE_T', prefix: '#include <BaseTsd.h>')
+  size = cc.sizeof(
+    'SSIZE_T',
+    prefix: '#include <BaseTsd.h>',
+  )
 else
-  size = cc.sizeof('ssize_t', prefix: '#include <sys/types.h>')
+  size = cc.sizeof(
+    'ssize_t',
+    prefix: '#include <sys/types.h>',
+  )
 endif
 conf.set('SIZEOF_SSIZE_T', size)
 
 foreach type : ['int', 'int64_t', 'long', 'long long']
-  size = cc.sizeof(type, prefix: '#include <stdint.h>')
+  size = cc.sizeof(
+    type,
+    prefix: '#include <stdint.h>',
+  )
   conf.set('SIZEOF_@0@'.format(type.underscorify().to_upper()), size)
 endforeach
 
-if cc.links('int main(){__sync_synchronize();}', name : 'atomic builtins')
+if cc.links(
+  'int main(){__sync_synchronize();}',
+  name: 'atomic builtins',
+)
   conf.set('HAVE_ATOMIC_BUILTINS', 1)
 endif
 
-if cc.compiles('static __thread int x = 0;', name : '__thread')
+if cc.compiles(
+  'static __thread int x = 0;',
+  name: '__thread',
+)
   conf.set('HAVE___THREAD', 1)
 endif
 

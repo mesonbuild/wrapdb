@@ -1,1 +1,5 @@
-option('use_date_polyfill', type: 'boolean', value: true)
+option(
+    'use_date_polyfill',
+    type: 'boolean',
+    value: true,
+)

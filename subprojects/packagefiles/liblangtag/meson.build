@@ -11,26 +11,52 @@ cc = meson.get_compiler('c')
 xml_dep = dependency('libxml-2.0')
 threads_dep = dependency('threads')
 if meson.version().version_compare('>= 0.62.0')
-  dl_dep = dependency('dl', required: false)
+  dl_dep = dependency(
+    'dl',
+    required: false,
+  )
 else
-  dl_dep = cc.find_library('dl', required: false)
+  dl_dep = cc.find_library(
+    'dl',
+    required: false,
+  )
 endif
 
 cdata = configuration_data()
 
-foreach h : ['dirent.h', 'dlfcn.h', 'libgen.h', 'memory.h', 'string.h', 'sys/param.h', 'unistd.h']
+foreach h : [
+  'dirent.h',
+  'dlfcn.h',
+  'libgen.h',
+  'memory.h',
+  'string.h',
+  'sys/param.h',
+  'unistd.h',
+]
   cdata.set10('HAVE_@0@'.format(h.underscorify().to_upper()), cc.has_header(h))
 endforeach
 
 cdata.set('HAVE_EXECINFO_H', cc.has_header('execinfo.h'))
-cdata.set10('HAVE_PTHREAD', cc.has_header('pthread.h') and host_machine.system() != 'windows')
+cdata.set10(
+  'HAVE_PTHREAD',
+  cc.has_header('pthread.h') and host_machine.system() != 'windows',
+)
 
 foreach f : ['backtrace', 'strndup', 'vasprintf', 'vsnprintf']
-  cdata.set10('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f, prefix: '#include <stdio.h>'))
+  cdata.set10(
+    'HAVE_@0@'.format(f.underscorify().to_upper()),
+    cc.has_function(
+      f,
+      prefix: '#include <stdio.h>',
+    ),
+  )
 endforeach
 
 if cdata.get('HAVE_VASPRINTF') == 1
-  add_project_arguments('-D_GNU_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_GNU_SOURCE',
+    language: 'c',
+  )
 endif
 
 foreach f : ['getegid', 'geteuid', 'getgid', 'getuid']
@@ -44,7 +70,10 @@ cdata.set('ALIGNOF_VOID_P', cc.sizeof('void*'))
 # Because we are not living in the 1980s any more.
 cdata.set('LT_CAN_INLINE', true)
 
-cdata.set_quoted('LT_MODULE_SUFFIX', host_machine.system() == 'windows' ? 'dll' : 'so')
+cdata.set_quoted(
+  'LT_MODULE_SUFFIX',
+  host_machine.system() == 'windows' ? 'dll' : 'so',
+)
 
 if host_machine.system() != 'windows'
   cdata.set('ENABLE_MODULE', 1)

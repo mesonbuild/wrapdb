@@ -25,64 +25,84 @@ vorbisfile_sources = ['vorbisfile.c']
 
 vorbisenc_sources = ['vorbisenc.c']
 
-math_dep = meson.get_compiler('c').find_library('m', required: false)
+math_dep = meson.get_compiler('c').find_library(
+  'm',
+  required: false,
+)
 pkgconfig = import('pkgconfig')
 
-vorbis_lib = library('vorbis', vorbis_sources,
-  include_directories : [incdir],
-  dependencies : [ogg_dep, math_dep],
+vorbis_lib = library(
+  'vorbis',
+  vorbis_sources,
+  include_directories: [incdir],
+  dependencies: [ogg_dep, math_dep],
   vs_module_defs: '../vorbis.def',
   version: lib_version,
   soversion: lib_soversion,
   install: true,
 )
 
-vorbis_dep = declare_dependency(link_with : vorbis_lib,
-  include_directories : incdir,
-  dependencies: [ogg_dep, math_dep])
+vorbis_dep = declare_dependency(
+  link_with: vorbis_lib,
+  include_directories: incdir,
+  dependencies: [ogg_dep, math_dep],
+)
 
-pkgconfig.generate(vorbis_lib,
+pkgconfig.generate(
+  vorbis_lib,
   description: 'vorbis is the primary Ogg Vorbis library',
 )
 
-vorbisfile_lib = library('vorbisfile', vorbisfile_sources,
-  include_directories : [incdir],
+vorbisfile_lib = library(
+  'vorbisfile',
+  vorbisfile_sources,
+  include_directories: [incdir],
   link_with: vorbis_lib,
-  dependencies : [ogg_dep, math_dep],
+  dependencies: [ogg_dep, math_dep],
   vs_module_defs: '../vorbisfile.def',
   version: vorbisfile_version,
   soversion: vorbisfile_soversion,
   install: true,
 )
 
-vorbisfile_dep = declare_dependency(link_with : vorbisfile_lib,
-  include_directories : incdir)
+vorbisfile_dep = declare_dependency(
+  link_with: vorbisfile_lib,
+  include_directories: incdir,
+)
 
-pkgconfig.generate(vorbisfile_lib,
+pkgconfig.generate(
+  vorbisfile_lib,
   description: 'vorbisfile is a library that provides a convenient high-level API for decoding and basic manipulation of all Vorbis I audio streams',
 )
 
-vorbisenc_lib = library('vorbisenc', vorbisenc_sources,
-  include_directories : [incdir],
+vorbisenc_lib = library(
+  'vorbisenc',
+  vorbisenc_sources,
+  include_directories: [incdir],
   link_with: vorbis_lib,
-  dependencies : [ogg_dep, math_dep],
+  dependencies: [ogg_dep, math_dep],
   vs_module_defs: '../vorbisenc.def',
   version: vorbisenc_version,
   soversion: vorbisenc_soversion,
   install: true,
 )
 
-vorbisenc_dep = declare_dependency(link_with : vorbisenc_lib,
-  include_directories : incdir)
+vorbisenc_dep = declare_dependency(
+  link_with: vorbisenc_lib,
+  include_directories: incdir,
+)
 
-pkgconfig.generate(vorbisenc_lib,
+pkgconfig.generate(
+  vorbisenc_lib,
   description: 'vorbisenc is a library that provides a convenient API for setting up an encoding environment using libvorbis',
 )
 
-test_sharedbook = executable('test_sharedbook', 'sharedbook.c',
-  c_args : '-D_V_SELFTEST',
-  include_directories : [incdir],
-  link_with : vorbis_lib,
+test_sharedbook = executable(
+  'test_sharedbook',
+  'sharedbook.c',
+  c_args: '-D_V_SELFTEST',
+  include_directories: [incdir],
+  link_with: vorbis_lib,
   dependencies: [ogg_dep, math_dep],
 )
 

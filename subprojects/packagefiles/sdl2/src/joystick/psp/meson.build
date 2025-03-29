@@ -1,3 +1,1 @@
-c_sources += files(
-    'SDL_pspjoystick.c',
-)
+c_sources += files('SDL_pspjoystick.c')

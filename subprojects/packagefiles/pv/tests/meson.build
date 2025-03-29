@@ -6,13 +6,7 @@ _ignore_tests = [
 _tests_dir = meson.current_source_dir()
 
 foreach _test : run_command(
-  [
-    sh,
-    '-c',
-    'cd "$1" && printf \'%s\n\' *.test',
-    '--',
-    _tests_dir,
-  ],
+  [sh, '-c', 'cd "$1" && printf \'%s\n\' *.test', '--', _tests_dir],
   check: true,
 ).stdout().split()
   if _test in _ignore_tests

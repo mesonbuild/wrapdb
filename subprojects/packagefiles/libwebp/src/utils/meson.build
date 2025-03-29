@@ -20,11 +20,7 @@ webputilsdec_lib = static_library(
 
 webputilsenc_lib = static_library(
   'webputilsenc',
-  [
-    'bit_writer_utils.c',
-    'huffman_encode_utils.c',
-    'quant_levels_utils.c',
-  ],
+  ['bit_writer_utils.c', 'huffman_encode_utils.c', 'quant_levels_utils.c'],
   build_by_default: false,
   pic: get_option('default_library') != 'static',
   dependencies: common_deps,

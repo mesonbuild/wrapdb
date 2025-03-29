@@ -18,11 +18,7 @@ cpp_headers = [
   'Structures.h',
   'Synth.h',
 ]
-c_headers = [
-  'c_interface.h',
-  'c_types.h',
-  'cpp_interface.h',
-]
+c_headers = ['c_interface.h', 'c_types.h', 'cpp_interface.h']
 
 # These two maps exist only, so we can generate a new directory containing
 # all the headers later on.
@@ -37,14 +33,6 @@ foreach header : c_headers
 endforeach
 
 mt32emu_sources = files(
-  'c_interface/c_interface.cpp',
-  'sha1/sha1.cpp',
-  'srchelper/InternalResampler.cpp',
-  'srchelper/srctools/src/FIRResampler.cpp',
-  'srchelper/srctools/src/IIR2xResampler.cpp',
-  'srchelper/srctools/src/LinearResampler.cpp',
-  'srchelper/srctools/src/ResamplerModel.cpp',
-  'srchelper/srctools/src/SincResampler.cpp',
   'Analog.cpp',
   'BReverbModel.cpp',
   'Display.cpp',
@@ -66,4 +54,12 @@ mt32emu_sources = files(
   'TVP.cpp',
   'Tables.cpp',
   'VersionTagging.cpp',
+  'c_interface/c_interface.cpp',
+  'sha1/sha1.cpp',
+  'srchelper/InternalResampler.cpp',
+  'srchelper/srctools/src/FIRResampler.cpp',
+  'srchelper/srctools/src/IIR2xResampler.cpp',
+  'srchelper/srctools/src/LinearResampler.cpp',
+  'srchelper/srctools/src/ResamplerModel.cpp',
+  'srchelper/srctools/src/SincResampler.cpp',
 )

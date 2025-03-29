@@ -6,49 +6,15 @@ config_h = configure_file(
   output: 'curl_config.h',
 )
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  language: 'c',
+)
 
 # }}}
 
 # To update this list: `make -f meson/rewrite.mk curl_lib_src`.
 curl_lib_src = files(
-  'vauth/cleartext.c',
-  'vauth/cram.c',
-  'vauth/digest.c',
-  'vauth/digest_sspi.c',
-  'vauth/gsasl.c',
-  'vauth/krb5_gssapi.c',
-  'vauth/krb5_sspi.c',
-  'vauth/ntlm.c',
-  'vauth/ntlm_sspi.c',
-  'vauth/oauth2.c',
-  'vauth/spnego_gssapi.c',
-  'vauth/spnego_sspi.c',
-  'vauth/vauth.c',
-  'vquic/curl_msh3.c',
-  'vquic/curl_ngtcp2.c',
-  'vquic/curl_osslq.c',
-  'vquic/curl_quiche.c',
-  'vquic/vquic-tls.c',
-  'vquic/vquic.c',
-  'vssh/libssh.c',
-  'vssh/libssh2.c',
-  'vssh/wolfssh.c',
-  'vtls/bearssl.c',
-  'vtls/cipher_suite.c',
-  'vtls/gtls.c',
-  'vtls/hostcheck.c',
-  'vtls/keylog.c',
-  'vtls/mbedtls.c',
-  'vtls/mbedtls_threadlock.c',
-  'vtls/openssl.c',
-  'vtls/rustls.c',
-  'vtls/schannel.c',
-  'vtls/schannel_verify.c',
-  'vtls/sectransp.c',
-  'vtls/vtls.c',
-  'vtls/wolfssl.c',
-  'vtls/x509asn1.c',
   'altsvc.c',
   'amigaos.c',
   'asyn-ares.c',
@@ -178,8 +144,45 @@ curl_lib_src = files(
   'transfer.c',
   'url.c',
   'urlapi.c',
+  'vauth/cleartext.c',
+  'vauth/cram.c',
+  'vauth/digest.c',
+  'vauth/digest_sspi.c',
+  'vauth/gsasl.c',
+  'vauth/krb5_gssapi.c',
+  'vauth/krb5_sspi.c',
+  'vauth/ntlm.c',
+  'vauth/ntlm_sspi.c',
+  'vauth/oauth2.c',
+  'vauth/spnego_gssapi.c',
+  'vauth/spnego_sspi.c',
+  'vauth/vauth.c',
   'version.c',
   'version_win32.c',
+  'vquic/curl_msh3.c',
+  'vquic/curl_ngtcp2.c',
+  'vquic/curl_osslq.c',
+  'vquic/curl_quiche.c',
+  'vquic/vquic-tls.c',
+  'vquic/vquic.c',
+  'vssh/libssh.c',
+  'vssh/libssh2.c',
+  'vssh/wolfssh.c',
+  'vtls/bearssl.c',
+  'vtls/cipher_suite.c',
+  'vtls/gtls.c',
+  'vtls/hostcheck.c',
+  'vtls/keylog.c',
+  'vtls/mbedtls.c',
+  'vtls/mbedtls_threadlock.c',
+  'vtls/openssl.c',
+  'vtls/rustls.c',
+  'vtls/schannel.c',
+  'vtls/schannel_verify.c',
+  'vtls/sectransp.c',
+  'vtls/vtls.c',
+  'vtls/wolfssl.c',
+  'vtls/x509asn1.c',
   'warnless.c',
   'ws.c',
 )
@@ -188,11 +191,7 @@ curl_lib = library(
   'curl',
   config_h,
   curl_lib_src,
-  c_args: [
-    '-DBUILDING_LIBCURL',
-    curl_symbols_hiding_flags,
-    public_args,
-  ],
+  c_args: ['-DBUILDING_LIBCURL', curl_symbols_hiding_flags, public_args],
   dependencies: [lib_deps, sys_deps],
   gnu_symbol_visibility: curl_symbols_hiding_visibility,
   include_directories: [CURL_PUBLIC_INC, CURL_INTERNAL_INC],
@@ -206,16 +205,12 @@ pkg.generate(
   extra_cflags: public_args,
   name: 'libcurl',
   unescaped_variables: (
-    # NOTE: variables with empty values are not allowed…
-    (
-      enabled_features.length() > 0 ? {
+  # NOTE: variables with empty values are not allowed…
+    (enabled_features.length() > 0 ? {
         'supported_features': ' '.join(enabled_features),
-      } : {}
-    ) + (
-      enabled_protocols.length() > 0 ? {
+      } : {}) + (enabled_protocols.length() > 0 ? {
         'supported_protocols': ' '.join(enabled_protocols),
-      } : {}
-    )
+      } : {})
   ),
   url: 'https://curl.se/',
 )
@@ -246,19 +241,13 @@ curl_ilib_dep = declare_dependency(
   dependencies: [curl_dep, curl_iflags_dep, sys_deps],
 )
 
-curlu_flags = [
-  '-DCURL_STATICLIB',
-  '-DUNITTESTS',
-]
+curlu_flags = ['-DCURL_STATICLIB', '-DUNITTESTS']
 
 curlu_lib = static_library(
   'curlu',
   config_h,
   curl_lib_src,
-  c_args: [
-    curlu_flags,
-    '-DBUILDING_LIBCURL',
-  ],
+  c_args: [curlu_flags, '-DBUILDING_LIBCURL'],
   dependencies: [build_unittests, lib_deps],
   include_directories: [CURL_PUBLIC_INC, CURL_INTERNAL_INC],
 )

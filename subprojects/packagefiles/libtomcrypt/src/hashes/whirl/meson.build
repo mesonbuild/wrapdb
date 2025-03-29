@@ -1,3 +1,1 @@
-all_sources += files(
-  'whirl.c',
-)
+all_sources += files('whirl.c')

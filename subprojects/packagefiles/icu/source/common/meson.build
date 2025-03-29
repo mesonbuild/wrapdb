@@ -2,7 +2,10 @@ fs = import('fs')
 sources = fs.read('sources.txt').split()
 
 if host_machine.system() == 'windows'
-  sources += windows.compile_resources('common.rc', include_directories: incdir)
+  sources += windows.compile_resources(
+    'common.rc',
+    include_directories: incdir,
+  )
 endif
 
 icuuc_name = '@0@icuuc@1@'.format(library_prefix, library_suffix)

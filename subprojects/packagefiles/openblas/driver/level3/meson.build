@@ -9,38 +9,45 @@ driver_kops = [
   #                           '_tn', '_tt']},
   #   }
   # },
-  { 'base': '?gemm',
+  {
+    'base': '?gemm',
     'sources': {
-        'gemm.c': {'mode': ['s', 'd',], #'q'],
-                   'exts': ['_nn', '_nt',
-                            '_tn', '_tt']},
-    }
+      'gemm.c': {
+        'mode': ['s', 'd'],  #'q'],
+        'exts': ['_nn', '_nt', '_tn', '_tt'],
+      },
+    },
   },
-  { 'base': '?gemm',
+  {
+    'base': '?gemm',
     'sources': {
-        'gemm.c': {'mode': ['c', 'z',],# 'x'],
-                   'srcs': ['level3.c'],
-                   'exts': ['_nn', '_nt',
-                            '_nr', '_nc',
-                            '_tn', '_tt',
-                            '_tr', '_tc',
-                            '_rn', '_rt',
-                            '_rr', '_rc',
-                            '_cn', '_ct',
-                            '_cr', '_cc']},
-    }
+      'gemm.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'srcs': ['level3.c'],
+        'exts': ['_nn', '_nt', '_nr', '_nc', '_tn', '_tt', '_tr', '_tc', '_rn', '_rt', '_rr', '_rc', '_cn', '_ct', '_cr', '_cc'],
+      },
+    },
   },
-  { 'base': '?gemm_thread',
+  {
+    'base': '?gemm_thread',
     'sources': {
-        'gemm_thread_m.c': {'mode': [''],
-                            'exts': ['_m']},
-        'gemm_thread_n.c': {'mode': [''],
-                            'exts': ['_n']},
-        'gemm_thread_mn.c': {'mode': [''],
-                            'exts': ['_mn']},
-        'gemm_thread_variable.c': {'mode': [''],
-                            'exts': ['_variable']},
-    }
+      'gemm_thread_m.c': {
+        'mode': [''],
+        'exts': ['_m'],
+      },
+      'gemm_thread_n.c': {
+        'mode': [''],
+        'exts': ['_n'],
+      },
+      'gemm_thread_mn.c': {
+        'mode': [''],
+        'exts': ['_mn'],
+      },
+      'gemm_thread_variable.c': {
+        'mode': [''],
+        'exts': ['_variable'],
+      },
+    },
   },
   # { 'base': '?bgemm_thread',
   #   'sources': {
@@ -49,201 +56,241 @@ driver_kops = [
   #                           '_tn', '_tt']},
   #   }
   # },
-  { 'base': '?gemm_thread',
+  {
+    'base': '?gemm_thread',
     'sources': {
-        'gemm.c': {'mode': ['s', 'd'], #'q'],
-                   'addl': ['-DTHREADED_LEVEL3'],
-                   'exts': ['_nn', '_nt',
-                            '_tn', '_tt']},
-    }
+      'gemm.c': {
+        'mode': ['s', 'd'],  #'q'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_nn', '_nt', '_tn', '_tt'],
+      },
+    },
   },
-  { 'base': '?gemm_thread',
+  {
+    'base': '?gemm_thread',
     'sources': {
-        'gemm.c': {'mode': ['c', 'z'],# 'x'],
-                   'addl': ['-DTHREADED_LEVEL3'],
-                   'exts': ['_nn', '_nt',
-                            '_nr', '_nc',
-                            '_tn', '_tt',
-                            '_tr', '_tc',
-                            '_rn', '_rt',
-                            '_rr', '_rc',
-                            '_cn', '_ct',
-                            '_cr', '_cc']},
-    }
+      'gemm.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_nn', '_nt', '_nr', '_nc', '_tn', '_tt', '_tr', '_tc', '_rn', '_rt', '_rr', '_rc', '_cn', '_ct', '_cr', '_cc'],
+      },
+    },
   },
-  { 'base': '?trmm',
+  {
+    'base': '?trmm',
     'sources': {
-        'trmm_L.c': {'mode': ['s', 'd'],# 'q'],
-                     'exts': ['_LNUU', '_LNUN',
-                              '_LNLU', '_LNLN',
-                              '_LTUU', '_LTUN',
-                              '_LTLU', '_LTLN']},
-        'trmm_R.c': {'mode': ['s', 'd'],# 'q'],
-                     'exts': ['_RNUU', '_RNUN',
-                              '_RNLU', '_RNLN',
-                              '_RTUU', '_RTUN',
-                              '_RTLU', '_RTLN']},
-    }
+      'trmm_L.c': {
+        'mode': ['s', 'd'],  # 'q'],
+        'exts': ['_LNUU', '_LNUN', '_LNLU', '_LNLN', '_LTUU', '_LTUN', '_LTLU', '_LTLN'],
+      },
+      'trmm_R.c': {
+        'mode': ['s', 'd'],  # 'q'],
+        'exts': ['_RNUU', '_RNUN', '_RNLU', '_RNLN', '_RTUU', '_RTUN', '_RTLU', '_RTLN'],
+      },
+    },
   },
-  { 'base': '?trmm',
+  {
+    'base': '?trmm',
     'sources': {
-        'trmm_L.c': {'mode': ['c', 'z'],# 'x'],
-                     'exts': ['_LNUU', '_LNUN',
-                              '_LNLU', '_LNLN',
-                              '_LTUU', '_LTUN',
-                              '_LTLU', '_LTLN',
-                              '_LRUU', '_LRUN',
-                              '_LRLU', '_LRLN',
-                              '_LCUU', '_LCUN',
-                              '_LCLU', '_LCLN',
-                             ]},
-        'trmm_R.c': {'mode': ['c', 'z'],# 'x'],
-                     'exts': ['_RNUU', '_RNUN',
-                              '_RNLU', '_RNLN',
-                              '_RTUU', '_RTUN',
-                              '_RTLU', '_RTLN',
-                              '_RRUU', '_RRUN',
-                              '_RRLU', '_RRLN',
-                              '_RCUU', '_RCUN',
-                              '_RCLU', '_RCLN',
-                             ]},
-    }
+      'trmm_L.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_LNUU', '_LNUN', '_LNLU', '_LNLN', '_LTUU', '_LTUN', '_LTLU', '_LTLN', '_LRUU', '_LRUN', '_LRLU', '_LRLN', '_LCUU', '_LCUN', '_LCLU', '_LCLN'],
+      },
+      'trmm_R.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_RNUU', '_RNUN', '_RNLU', '_RNLN', '_RTUU', '_RTUN', '_RTLU', '_RTLN', '_RRUU', '_RRUN', '_RRLU', '_RRLN', '_RCUU', '_RCUN', '_RCLU', '_RCLN'],
+      },
+    },
   },
-  { 'base': '?symm',
+  {
+    'base': '?symm',
     'sources': {
-        'symm_k.c': {'mode': ['s', 'd', # 'q'],
-                              'c', 'z'], # 'x'],
-                     'exts': ['_LU', '_LL',
-                              '_RU', '_RL']},
-    }
+      'symm_k.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?symm_thread',
+  {
+    'base': '?symm_thread',
     'sources': {
-        'symm_k.c': {'mode': ['s', 'd', # 'q'],
-                              'c', 'z'], # 'x'],
-                     'addl': ['-DTHREADED_LEVEL3'],
-                     'exts': ['_LU', '_LL',
-                              '_RU', '_RL']},
-    }
+      'symm_k.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?syrk',
+  {
+    'base': '?syrk',
     'sources': {
-        'syrk_k.c': {'mode': ['s', 'd', # 'q'],
-                              'c', 'z'], # 'x'],
-                     'exts': ['_UN', '_UT',
-                              '_LN', '_LT']},
-    }
+      'syrk_k.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'exts': ['_UN', '_UT', '_LN', '_LT'],
+      },
+    },
   },
-  { 'base': '?syrk_thread',
+  {
+    'base': '?syrk_thread',
     'sources': {
-        'syrk_k.c': {'mode': ['s', 'd', # 'q'],
-                              'c', 'z'], # 'x'],
-                     'addl': ['-DTHREADED_LEVEL3'],
-                     'exts': ['_UN', '_UT',
-                              '_LN', '_LT', '']},
-    }
+      'syrk_k.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_UN', '_UT', '_LN', '_LT', ''],
+      },
+    },
   },
-  { 'base': 'syrk_thread',
+  {
+    'base': 'syrk_thread',
     'sources': {
-        'syrk_thread.c': {'mode': [''], 'exts': ['']}
-    }
+      'syrk_thread.c': {
+        'mode': [''],
+        'exts': [''],
+      },
+    },
   },
-  { 'base': '?syrk_kernel',
+  {
+    'base': '?syrk_kernel',
     'sources': {
-        'syrk_kernel.c': {'mode': ['s', 'd', # 'q'],
-                                   'c', 'z'], # 'x'],
-                     'exts': ['_U', '_L']},
-    }
+      'syrk_kernel.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?syr2k',
+  {
+    'base': '?syr2k',
     'sources': {
-        'syr2k_k.c': {'mode': ['s', 'd', # 'q'],
-                               'c', 'z'], # 'x'],
-                      'exts': ['_UN', '_UT',
-                               '_LN', '_LT']},
-    }
+      'syr2k_k.c': {
+        'mode': [
+          's',
+          'd',  # 'q'],
+          'c',
+          'z',
+        ],  # 'x'],
+        'exts': ['_UN', '_UT', '_LN', '_LT'],
+      },
+    },
   },
-  { 'base': '?syr2k_kernel',
+  {
+    'base': '?syr2k_kernel',
     'sources': {
-        'syr2k_kernel.c': {'mode': ['s', 'd', 'c', 'z'],
-                           'exts': ['_U', '_L']},
-    }
+      'syr2k_kernel.c': {
+        'mode': ['s', 'd', 'c', 'z'],
+        'exts': ['_U', '_L'],
+      },
+    },
   },
-  { 'base': '?hemm',
+  {
+    'base': '?hemm',
     'sources': {
-        'zhemm_k.c': {'mode': ['c', 'z'], # 'x'],
-                      # TODO(rg): Do we need ../../param.h ?
-                      # See Makefile:1612
-                      'exts': ['_LU', '_LL',
-                               '_RU', '_RL']},
-    }
+      'zhemm_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        # TODO(rg): Do we need ../../param.h ?
+        # See Makefile:1612
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?hemm_thread',
+  {
+    'base': '?hemm_thread',
     'sources': {
-        'zhemm_k.c': {'mode': ['c', 'z'], # 'x'],
-                     'addl': ['-DTHREADED_LEVEL3'],
-                     'exts': ['_LU', '_LL',
-                              '_RU', '_RL']},
-    }
+      'zhemm_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?herk',
+  {
+    'base': '?herk',
     'sources': {
-        'zherk_k.c': {'mode': ['c', 'z'], # 'x'],
-                      'addl': ['-DHERK'],
-                      # TODO(rg): Do we need ../../common.h ?
-                      # See Makefile:1684
-                      'exts': ['_UN', '_UC',
-                               '_LN', '_LC']},
-    }
+      'zherk_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DHERK'],
+        # TODO(rg): Do we need ../../common.h ?
+        # See Makefile:1684
+        'exts': ['_UN', '_UC', '_LN', '_LC'],
+      },
+    },
   },
-  { 'base': '?herk_kernel',
+  {
+    'base': '?herk_kernel',
     'sources': {
-        'zherk_kernel.c': {'mode': ['c', 'z'], # 'x'],
-                           'addl': ['-DHERK'],
-                           'exts': ['_UN', '_UC',
-                                    '_LN', '_LC']},
-    }
+      'zherk_kernel.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DHERK'],
+        'exts': ['_UN', '_UC', '_LN', '_LC'],
+      },
+    },
   },
-  { 'base': '?herk_thread',
+  {
+    'base': '?herk_thread',
     'sources': {
-        'zherk_k.c': {'mode': ['c', 'z'], # 'x'],
-                      'addl': ['-DHERK', '-DTHREADED_LEVEL3'],
-                      'exts': ['_UN', '_UC',
-                               '_LN', '_LC']},
-    }
+      'zherk_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DHERK', '-DTHREADED_LEVEL3'],
+        'exts': ['_UN', '_UC', '_LN', '_LC'],
+      },
+    },
   },
-  { 'base': '?her2k',
+  {
+    'base': '?her2k',
     'sources': {
-        'zher2k_k.c': {'mode': ['c', 'z'], # 'x'],
-                       'addl': ['-DHER2K'],
-                       # TODO(rg): Do we need ../../common.h ?
-                       # See Makefile:1793
-                       'exts': ['_UN', '_UC',
-                                '_LN', '_LC']},
-    }
+      'zher2k_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DHER2K'],
+        # TODO(rg): Do we need ../../common.h ?
+        # See Makefile:1793
+        'exts': ['_UN', '_UC', '_LN', '_LC'],
+      },
+    },
   },
-  { 'base': '?her2k_kernel',
+  {
+    'base': '?her2k_kernel',
     'sources': {
-        'zher2k_kernel.c': {'mode': ['c', 'z'], # 'x'],
-                            # TODO(rg): Do we need ../../common.h ?
-                            # See Makefile:1793
-                            'exts': ['_UN', '_UC',
-                                     '_LN', '_LC']},
-    }
+      'zher2k_kernel.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        # TODO(rg): Do we need ../../common.h ?
+        # See Makefile:1793
+        'exts': ['_UN', '_UC', '_LN', '_LC'],
+      },
+    },
   },
-  { 'base': '?gemm3m',
+  {
+    'base': '?gemm3m',
     'sources': {
-        'gemm3m.c': {'mode': ['c', 'z',],# 'x'],
-                     'srcs': ['level3.c'],
-                     'exts': ['_nn', '_nt',
-                              '_nr', '_nc',
-                              '_tn', '_tt',
-                              '_tr', '_tc',
-                              '_rn', '_rt',
-                              '_rr', '_rc',
-                              '_cn', '_ct',
-                              '_cr', '_cc']},
-    }
+      'gemm3m.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'srcs': ['level3.c'],
+        'exts': ['_nn', '_nt', '_nr', '_nc', '_tn', '_tt', '_tr', '_tc', '_rn', '_rt', '_rr', '_rc', '_cn', '_ct', '_cr', '_cc'],
+      },
+    },
   },
   # { 'base': '?gemmf',
   #   'sources': {
@@ -253,88 +300,80 @@ driver_kops = [
   #                    'exts': ['']},
   #   }
   # },
-  { 'base': '?gemm3m_thread',
+  {
+    'base': '?gemm3m_thread',
     'sources': {
-        'gemm3m.c': {'mode': ['c', 'z',],# 'x'],
-                     'addl': ['-DTHREADED_LEVEL3'],
-                     'srcs': ['level3.c'],
-                     'exts': ['_nn', '_nt',
-                              '_nr', '_nc',
-                              '_tn', '_tt',
-                              '_tr', '_tc',
-                              '_rn', '_rt',
-                              '_rr', '_rc',
-                              '_cn', '_ct',
-                              '_cr', '_cc']},
-    }
+      'gemm3m.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'srcs': ['level3.c'],
+        'exts': ['_nn', '_nt', '_nr', '_nc', '_tn', '_tt', '_tr', '_tc', '_rn', '_rt', '_rr', '_rc', '_cn', '_ct', '_cr', '_cc'],
+      },
+    },
   },
-  { 'base': '?symm3m',
+  {
+    'base': '?symm3m',
     'sources': {
-        'symm3m_k.c': {'mode': ['c', 'z'], # 'x'],
-                       'exts': ['_LU', '_LL',
-                                '_RU', '_RL']},
-    }
+      'symm3m_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?symm3m_thread',
+  {
+    'base': '?symm3m_thread',
     'sources': {
-        'symm3m_k.c': {'mode': ['c', 'z'], # 'x'],
-                       'addl': ['-DTHREADED_LEVEL3'],
-                       'exts': ['_LU', '_LL',
-                                '_RU', '_RL']},
-    }
+      'symm3m_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?hemm3m',
+  {
+    'base': '?hemm3m',
     'sources': {
-        'hemm3m_k.c': {'mode': ['c', 'z'], # 'x'],
-                       'exts': ['_LU', '_LL',
-                                '_RU', '_RL']},
-    }
+      'hemm3m_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?hemm3m_thread',
+  {
+    'base': '?hemm3m_thread',
     'sources': {
-        'hemm3m_k.c': {'mode': ['c', 'z'], # 'x'],
-                       'addl': ['-DTHREADED_LEVEL3'],
-                       'exts': ['_LU', '_LL',
-                                '_RU', '_RL']},
-    }
+      'hemm3m_k.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'addl': ['-DTHREADED_LEVEL3'],
+        'exts': ['_LU', '_LL', '_RU', '_RL'],
+      },
+    },
   },
-  { 'base': '?trsm',
+  {
+    'base': '?trsm',
     'sources': {
-        'trsm_L.c': {'mode': ['s', 'd'],# 'q'],
-                     'exts': ['_LNUU', '_LNUN',
-                              '_LNLU', '_LNLN',
-                              '_LTUU', '_LTUN',
-                              '_LTLU', '_LTLN']},
-        'trsm_R.c': {'mode': ['s', 'd'],# 'q'],
-                     'exts': ['_RNUU', '_RNUN',
-                              '_RNLU', '_RNLN',
-                              '_RTUU', '_RTUN',
-                              '_RTLU', '_RTLN']},
-    }
+      'trsm_L.c': {
+        'mode': ['s', 'd'],  # 'q'],
+        'exts': ['_LNUU', '_LNUN', '_LNLU', '_LNLN', '_LTUU', '_LTUN', '_LTLU', '_LTLN'],
+      },
+      'trsm_R.c': {
+        'mode': ['s', 'd'],  # 'q'],
+        'exts': ['_RNUU', '_RNUN', '_RNLU', '_RNLN', '_RTUU', '_RTUN', '_RTLU', '_RTLN'],
+      },
+    },
   },
-  { 'base': '?trsm',
+  {
+    'base': '?trsm',
     'sources': {
-        'trsm_L.c': {'mode': ['c', 'z'],# 'x'],
-                     'exts': ['_LNUU', '_LNUN',
-                              '_LNLU', '_LNLN',
-                              '_LTUU', '_LTUN',
-                              '_LTLU', '_LTLN',
-                              '_LRUU', '_LRUN',
-                              '_LRLU', '_LRLN',
-                              '_LCUU', '_LCUN',
-                              '_LCLU', '_LCLN',
-                             ]},
-        'trsm_R.c': {'mode': ['c', 'z'],# 'x'],
-                     'exts': ['_RNUU', '_RNUN',
-                              '_RNLU', '_RNLN',
-                              '_RTUU', '_RTUN',
-                              '_RTLU', '_RTLN',
-                              '_RRUU', '_RRUN',
-                              '_RRLU', '_RRLN',
-                              '_RCUU', '_RCUN',
-                              '_RCLU', '_RCLN',
-                             ]},
-    }
+      'trsm_L.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_LNUU', '_LNUN', '_LNLU', '_LNLN', '_LTUU', '_LTUN', '_LTLU', '_LTLN', '_LRUU', '_LRUN', '_LRLU', '_LRLN', '_LCUU', '_LCUN', '_LCLU', '_LCLN'],
+      },
+      'trsm_R.c': {
+        'mode': ['c', 'z'],  # 'x'],
+        'exts': ['_RNUU', '_RNUN', '_RNLU', '_RNLN', '_RTUU', '_RTUN', '_RTLU', '_RTLN', '_RRUU', '_RRUN', '_RRLU', '_RRLN', '_RCUU', '_RCUN', '_RCLU', '_RCLN'],
+      },
+    },
   },
 ]
 
@@ -422,7 +461,7 @@ foreach _kop : driver_kops
         endif
 
         # Construct the final paths
-        src = [ fname ]
+        src = [fname]
         # if sources[fname].has_key('srcs')
         #   src += sources[fname]['srcs']
         # endif
@@ -461,16 +500,20 @@ endforeach
 # Create the static libraries from the configurations
 _kern_libs = []
 foreach conf : kernel_confs
-    # message(conf['name'])
-    # message(conf)
-    _kern_libs += [static_library(
-        conf['name'],
-        conf['src'],
-        include_directories: _inc,
-        c_args: conf['c_args'],
-    )]
+  # message(conf['name'])
+  # message(conf)
+  _kern_libs += [
+    static_library(
+      conf['name'],
+      conf['src'],
+      include_directories: _inc,
+      c_args: conf['c_args'],
+    ),
+  ]
 endforeach
 
 # Create the final kernel library
-_l3_driver = static_library('l3_driver',
-                           link_whole: _kern_libs)
+_l3_driver = static_library(
+  'l3_driver',
+  link_whole: _kern_libs,
+)

@@ -1,9 +1,9 @@
 project(
-    'nanobind',
-    'cpp',
-    version: '2.4.0',
-    meson_version: '>=0.53.0',
-    license: 'BSD-3-Clause',
+  'nanobind',
+  'cpp',
+  version: '2.4.0',
+  meson_version: '>=0.53.0',
+  license: 'BSD-3-Clause',
 )
 
 py_mod = import('python')
@@ -26,14 +26,25 @@ if get_option('buildtype') == 'shared'
     else
       resp_file = meson.project_source_root() / 'cmake/darwin-ld-cpython.sym'
     endif
-    add_project_link_arguments('-Wl,-dead_strip', '-Wl,x', '-Wl,-S', '-Wl,@' + resp_file)
+    add_project_link_arguments(
+      '-Wl,-dead_strip',
+      '-Wl,x',
+      '-Wl,-S',
+      '-Wl,@' + resp_file,
+    )
     dep_link_args += ['-Wl,-dead_strip', '-Wl,x', '-Wl,-S', '-Wl,@' + resp_file]
   elif host_machine.system() != 'windows'
-    add_project_link_arguments('-Wl,-s', language: 'cpp')
+    add_project_link_arguments(
+      '-Wl,-s',
+      language: 'cpp',
+    )
     dep_link_args += ['-Wl,-s']
   endif
 
-  add_project_arguments('-DNB_BUILD', language: 'cpp')
+  add_project_arguments(
+    '-DNB_BUILD',
+    language: 'cpp',
+  )
   dep_compile_args += ['-DNB_SHARED']
 elif host_machine.system() != 'windows' and host_machine.system() != 'darwin'
   dep_compile_args += ['-ffunction-sections', '-fdata-sections']
@@ -42,47 +53,56 @@ endif
 
 compiler = meson.get_compiler('cpp')
 
-add_project_arguments(compiler.get_supported_arguments('/D_CRT_SECURE_NO_WARNINGS'), language: 'cpp')
+add_project_arguments(
+  compiler.get_supported_arguments('/D_CRT_SECURE_NO_WARNINGS'),
+  language: 'cpp',
+)
 
 cxx_id = compiler.get_id()
 # Discussion in WrapDB PR #1556 as to whether or not this is necessary
 # add_project_arguments('-fno-strict-aliasing', language: 'cpp')
 
 if get_option('buildtype') == 'release'
-  add_project_arguments('-DNB_COMPACT_ASSERTIONS', language: 'cpp')
+  add_project_arguments(
+    '-DNB_COMPACT_ASSERTIONS',
+    language: 'cpp',
+  )
 endif
 
 freethreaded = py.get_variable('Py_GIL_DISABLED', 0) != 0
 if freethreaded
   freethreaded_def = '-DNB_FREE_THREADED'
-  add_project_arguments(freethreaded_def, language : 'cpp')
+  add_project_arguments(
+    freethreaded_def,
+    language: 'cpp',
+  )
   dep_compile_args += [freethreaded_def]
 endif
 
 nanobind_lib = static_library(
-    'nanobind',
-    sources: [
-        'src/nb_internals.cpp',
-        'src/nb_func.cpp',
-        'src/nb_type.cpp',
-        'src/nb_enum.cpp',
-        'src/nb_ndarray.cpp',
-        'src/nb_static_property.cpp',
-        'src/common.cpp',
-        'src/error.cpp',
-        'src/trampoline.cpp',
-        'src/implicit.cpp',
-    ],
-    include_directories: [incdir],
-    dependencies: [py_dep, robin_map_dep],
-    gnu_symbol_visibility: 'hidden',
+  'nanobind',
+  sources: [
+    'src/nb_internals.cpp',
+    'src/nb_func.cpp',
+    'src/nb_type.cpp',
+    'src/nb_enum.cpp',
+    'src/nb_ndarray.cpp',
+    'src/nb_static_property.cpp',
+    'src/common.cpp',
+    'src/error.cpp',
+    'src/trampoline.cpp',
+    'src/implicit.cpp',
+  ],
+  include_directories: [incdir],
+  dependencies: [py_dep, robin_map_dep],
+  gnu_symbol_visibility: 'hidden',
 )
 
 
 nanobind_dep = declare_dependency(
-    include_directories: [incdir],
-    link_with: [nanobind_lib],
-    dependencies: [py_dep, robin_map_dep],
-    compile_args: dep_compile_args,
-    link_args: dep_link_args,
+  include_directories: [incdir],
+  link_with: [nanobind_lib],
+  dependencies: [py_dep, robin_map_dep],
+  compile_args: dep_compile_args,
+  link_args: dep_link_args,
 )

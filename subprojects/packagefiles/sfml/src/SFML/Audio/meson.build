@@ -28,5 +28,12 @@ audio_lib = library(
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_AUDIO_EXPORTS' : '-DSFML_STATIC',
   link_with: system_lib,
   include_directories: [pub_inc, priv_inc, mp3_inc],
-  dependencies: [openal_dep, flac_dep, vorbis_dep, vorbisenc_dep, vorbisfile_dep, ogg_dep],
+  dependencies: [
+    openal_dep,
+    flac_dep,
+    vorbis_dep,
+    vorbisenc_dep,
+    vorbisfile_dep,
+    ogg_dep,
+  ],
 )

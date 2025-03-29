@@ -1,4 +1,8 @@
-project('directxmath', 'cpp', version: '3.1.9')
+project(
+  'directxmath',
+  'cpp',
+  version: '3.1.9',
+)
 
 incdirs = include_directories('Inc')
 
@@ -16,14 +20,19 @@ directxmath_headers = files(
 )
 
 directxmath_dep = declare_dependency(
-  include_directories: incdirs
+  include_directories: incdirs,
 )
 
-install_headers(directxmath_headers, subdir: 'directxmath')
+install_headers(
+  directxmath_headers,
+  subdir: 'directxmath',
+)
 
 pkgconfig = import('pkgconfig')
-pkgconfig.generate(name: 'directxmath',
-    version: meson.project_version(),
-    subdirs: 'directxmath',
-    description: 'DirectXMath SIMD C++ math library')
+pkgconfig.generate(
+  name: 'directxmath',
+  version: meson.project_version(),
+  subdirs: 'directxmath',
+  description: 'DirectXMath SIMD C++ math library',
+)
 

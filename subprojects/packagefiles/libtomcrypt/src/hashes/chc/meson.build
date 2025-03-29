@@ -1,3 +1,1 @@
-all_sources += files(
-  'chc.c',
-)
+all_sources += files('chc.c')

@@ -23,7 +23,10 @@ examples = [
   'tcpip-forward',
 ]
 
-x11_dep = dependency('x11', required: false)
+x11_dep = dependency(
+  'x11',
+  required: false,
+)
 if x11_dep.found()
   examples += 'x11'
 endif

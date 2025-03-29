@@ -12,7 +12,10 @@ sources = [
   'smallft.c',
 ]
 
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
 
 speexdsp = library(
   'speexdsp',

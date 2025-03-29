@@ -1,11 +1,12 @@
 project(
-  'reflex', 'cpp',
+  'reflex',
+  'cpp',
   version: '5.1.1',
   license: 'BSD-3-Clause',
   meson_version: '>= 1.5.0',
   default_options: {
     'cpp_std': 'c++11',
-  }
+  },
 )
 
 includes = include_directories('include')
@@ -14,7 +15,10 @@ cpp = meson.get_compiler('cpp')
 msvc = cpp.get_argument_syntax() == 'msvc'
 
 flags = cpp.get_supported_arguments(['-Wno-non-virtual-dtor'])
-add_project_arguments(flags, language: 'cpp')
+add_project_arguments(
+  flags,
+  language: 'cpp',
+)
 
 unicode_sources = files(
   'unicode/block_scripts.cpp',
@@ -88,17 +92,26 @@ if have_simd_avx512bw
   simd_args = [msvc ? '/arch:SSE2' : '-msse2']
   simd_avx2_args = [msvc ? '/arch:AVX2' : '-mavx2']
   simd_avx512bw_args = [msvc ? '/arch:AVX512' : '-mavx512bw']
-  add_project_arguments('-DHAVE_AVX512BW', language: 'cpp')
+  add_project_arguments(
+    '-DHAVE_AVX512BW',
+    language: 'cpp',
+  )
 elif have_simd_avx2
   simd_args = [msvc ? '/arch:SSE2' : '-msse2']
   simd_avx2_args = [msvc ? '/arch:AVX2' : '-mavx2']
   simd_avx512bw_args = []
-  add_project_arguments('-DHAVE_AVX2', language: 'cpp')
+  add_project_arguments(
+    '-DHAVE_AVX2',
+    language: 'cpp',
+  )
 elif have_simd_sse2
   simd_args = [msvc ? '/arch:SSE2' : '-msse2']
   simd_avx2_args = []
   simd_avx512bw_args = []
-  add_project_arguments('-DHAVE_SSE2', language: 'cpp')
+  add_project_arguments(
+    '-DHAVE_SSE2',
+    language: 'cpp',
+  )
 else
   simd_args = []
   simd_avx2_args = []
@@ -120,7 +133,10 @@ foreach args : [[], ['-mfpu=neon'], ['-march=native', '-mfpu=neon']]
   )
   if have_neon
     simd_args = args
-    add_project_arguments('-DHAVE_NEON', language: 'cpp')
+    add_project_arguments(
+      '-DHAVE_NEON',
+      language: 'cpp',
+    )
     break
   endif
 endforeach
@@ -144,7 +160,9 @@ libsimd_avx512bw = static_library(
   include_directories: includes,
   build_by_default: false,
   # clang 14.0 fails to compile this code at optimization levels higher than 0
-  override_options: cpp.get_id() == 'clang' and cpp.version() == '14.0.0' ? {'optimization': '0'} : {},
+  override_options: cpp.get_id() == 'clang' and cpp.version() == '14.0.0' ? {
+    'optimization': '0',
+  } : {},
 )
 
 # No DLLEXPORT declarations, thus only static library supported with MSVC
@@ -162,7 +180,8 @@ libreflexmin = build_target(
 
 libreflex = build_target(
   'reflex',
-  libreflex_sources, unicode_sources,
+  libreflex_sources,
+  unicode_sources,
   include_directories: includes,
   cpp_args: simd_args,
   # Selected based on a runtime AVX2 AVX512BW check
@@ -176,12 +195,12 @@ reflex = executable(
   link_with: libreflex,
   include_directories: includes,
   install: true,
-  cpp_args: ['-DPLATFORM="@0@"'.format(host_machine.system())]
+  cpp_args: ['-DPLATFORM="@0@"'.format(host_machine.system())],
 )
 
 reflex_dep = declare_dependency(
   link_with: libreflex,
-  include_directories: includes
+  include_directories: includes,
 )
 
 meson.override_find_program('reflex', reflex)

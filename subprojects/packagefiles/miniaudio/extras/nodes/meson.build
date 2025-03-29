@@ -6,9 +6,7 @@ foreach node : [
   'ma_vocoder_node',
 ]
   if ma_impl_workaround
-    ma_extra_srcs += files(
-      f'@node@/@node@.c',
-    )
+    ma_extra_srcs += files(f'@node@/@node@.c')
   else
     ma_all_libs += static_library(
       node,

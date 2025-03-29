@@ -6,7 +6,10 @@ project(
   default_options: 'cpp_std=c++17',
 )
 
-curl_dep = dependency('libcurl', version: '>=7.64.0')
+curl_dep = dependency(
+  'libcurl',
+  version: '>=7.64.0',
+)
 thread_dep = dependency('threads')
 
 includes = include_directories('.', 'include')

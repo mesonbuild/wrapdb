@@ -1,11 +1,16 @@
-catch_dep = dependency('catch', required: false)
+catch_dep = dependency(
+  'catch',
+  required: false,
+)
 if not catch_dep.found() or not libpng_dep.found()
   subdir_done()
 endif
 
 testlib = static_library(
   'staticlib',
-  objects: libffmpegthumbnailer.extract_all_objects(recursive: false),
+  objects: libffmpegthumbnailer.extract_all_objects(
+    recursive: false,
+  ),
   include_directories: libffmpegthumbnailer_incdir,
   dependencies: [ffmpegthumbnailer_deps, libffmpegthumbnailer_dep],
 )

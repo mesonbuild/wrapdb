@@ -1,9 +1,11 @@
-tests = [ 'test-reader', 'test-version', ]
+tests = ['test-reader', 'test-version']
 
 foreach name : tests
-  exe = executable(name,
+  exe = executable(
+    name,
     sources: [name + '.c'],
-    include_directories: [ inc, include_directories('..') ],
-    link_with: yaml_lib)
+    include_directories: [inc, include_directories('..')],
+    link_with: yaml_lib,
+  )
   test(name, exe)
 endforeach

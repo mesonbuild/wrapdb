@@ -44,10 +44,7 @@ pkg.generate(
 
 if build_libsharpyuv.found()
   install_headers(
-    [
-      'sharpyuv.h',
-      'sharpyuv_csp.h',
-    ],
+    ['sharpyuv.h', 'sharpyuv_csp.h'],
     subdir: 'webp/sharpyuv',
   )
 endif

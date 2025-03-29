@@ -15,7 +15,7 @@ fluid_tests = [
   'test_jack_obtaining_synth',
   'test_sfont_unloading',
   'test_seq_scale',
-  'test_seq_event_queue_sort', # this test takes ~70s
+  'test_seq_event_queue_sort',  # this test takes ~70s
 ]
 
 test_args = []
@@ -32,5 +32,9 @@ foreach name : fluid_tests
     include_directories: lib_includes,
     c_args: test_args,
   )
-  test(name, exe, timeout: 100)
+  test(
+    name,
+    exe,
+    timeout: 100,
+  )
 endforeach

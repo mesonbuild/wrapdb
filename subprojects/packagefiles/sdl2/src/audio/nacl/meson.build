@@ -1,3 +1,1 @@
-c_sources += files(
-    'SDL_naclaudio.c'
-)
+c_sources += files('SDL_naclaudio.c')

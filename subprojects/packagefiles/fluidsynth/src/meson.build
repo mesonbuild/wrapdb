@@ -68,5 +68,5 @@ make_tables_exe = executable(
 gen_tables = custom_target(
   'gen_tables',
   command: [make_tables_exe, meson.current_build_dir() + '/'],
-  output: ['fluid_conv_tables.inc.h', 'fluid_rvoice_dsp_tables.inc.h']
+  output: ['fluid_conv_tables.inc.h', 'fluid_rvoice_dsp_tables.inc.h'],
 )

@@ -7,15 +7,23 @@ project(
 )
 
 if host_machine.system() == 'windows'
-  dllapi = '-DMATROSKA_DLL_API=@0@'.format(get_option('default_library') != 'static' ? '__declspec(dllexport)' : '')
+  dllapi = '-DMATROSKA_DLL_API=@0@'.format(
+    get_option('default_library') != 'static' ? '__declspec(dllexport)' : '',
+  )
 else
   dllapi = '-DMATROSKA_DLL_API=__attribute__ ((visibility("default")))'
 endif
 
 matroska_api = configuration_data()
-matroska_export = configure_file(output: 'matroska_export.h', configuration: matroska_api)
+matroska_export = configure_file(
+  output: 'matroska_export.h',
+  configuration: matroska_api,
+)
 
-libebml = dependency('libebml', version: '>=1.4.4')
+libebml = dependency(
+  'libebml',
+  version: '>=1.4.4',
+)
 
 install_headers(
   'matroska/FileKax.h',
@@ -97,4 +105,7 @@ libmatroska_dep = declare_dependency(
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libmatroska, description: 'Library for parsing EBML data structures')
+pkg.generate(
+  libmatroska,
+  description: 'Library for parsing EBML data structures',
+)

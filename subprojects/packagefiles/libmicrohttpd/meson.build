@@ -6,7 +6,10 @@ project(
   default_options: ['warning_level=1'],
 )
 
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
+add_project_arguments(
+  '-D_GNU_SOURCE',
+  language: 'c',
+)
 
 incdirs = include_directories('src/include')
 
@@ -75,7 +78,10 @@ foreach h : headers
 endforeach
 
 cdata.set('HAVE_ASSERT', cc.has_header_symbol('assert.h', 'assert'))
-cdata.set10('HAVE_INET6', cc.has_header_symbol('netinet/in.h', 'struct in6_addr'))
+cdata.set10(
+  'HAVE_INET6',
+  cc.has_header_symbol('netinet/in.h', 'struct in6_addr'),
+)
 
 functions = [
   'accept4',
@@ -123,9 +129,21 @@ if host_machine.system() == 'windows'
   # See https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-timeval
   cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('long'))
 else
-  cdata.set('SIZEOF_STRUCT_TIMEVAL_TV_SEC', cc.sizeof('time_t', prefix: '#include <time.h>'))
+  cdata.set(
+    'SIZEOF_STRUCT_TIMEVAL_TV_SEC',
+    cc.sizeof(
+      'time_t',
+      prefix: '#include <time.h>',
+    ),
+  )
 endif
-cdata.set('SIZEOF_UINT64_T', cc.sizeof('uint64_t', prefix: '#include <stdint.h>'))
+cdata.set(
+  'SIZEOF_UINT64_T',
+  cc.sizeof(
+    'uint64_t',
+    prefix: '#include <stdint.h>',
+  ),
+)
 
 cdata.set('HAVE_PIPE2_FUNC', cc.has_function('pipe2'))
 cdata.set('MHD_HAVE___BUILTIN_BSWAP32', cc.has_function('__builtin_bswap32'))
@@ -150,7 +168,10 @@ if cdata.has('HAVE_EPOLL_CREATE1')
 endif
 
 cdata.set(host_machine.system().to_upper(), 1)
-cdata.set_quoted('MHD_PLUGIN_INSTALL_PREFIX', get_option('prefix') / get_option('libdir') / 'libmicrohttpd')
+cdata.set_quoted(
+  'MHD_PLUGIN_INSTALL_PREFIX',
+  get_option('prefix') / get_option('libdir') / 'libmicrohttpd',
+)
 
 if host_machine.system() == 'windows'
   cdata.set('_MHD_ITC_SOCKETPAIR', 1)
@@ -160,38 +181,62 @@ else
   cdata.set('_MHD_ITC_PIPE', 1)
 endif
 
-ws2_dep = cc.find_library('ws2_32', required: host_machine.system() == 'windows')
+ws2_dep = cc.find_library(
+  'ws2_32',
+  required: host_machine.system() == 'windows',
+)
 
 if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency('dl', required: false)
+  dl_dep = dependency(
+    'dl',
+    required: false,
+  )
 else
-  dl_dep = cc.find_library('dl', required: false)
+  dl_dep = cc.find_library(
+    'dl',
+    required: false,
+  )
 endif
 if dl_dep.found()
   cdata.set('HAVE_DLFCN_H', 1)
 endif
 
-threads_dep = dependency('', required: false)
+threads_dep = dependency(
+  '',
+  required: false,
+)
 if host_machine.system() == 'windows'
   cdata.set('MHD_USE_W32_THREADS', 1)
 else
-  threads_dep = dependency('threads', required: false)
+  threads_dep = dependency(
+    'threads',
+    required: false,
+  )
   if threads_dep.found()
     cdata.set('MHD_USE_POSIX_THREADS', 1)
   endif
 endif
 
-curl_dep = dependency('libcurl', required: get_option('curl'))
+curl_dep = dependency(
+  'libcurl',
+  required: get_option('curl'),
+)
 if curl_dep.found()
   cdata.set('HAVE_LIBCURL', 1)
 endif
 
-gcrypt_dep = dependency('libgcrypt', required: get_option('gcrypt'))
+gcrypt_dep = dependency(
+  'libgcrypt',
+  required: get_option('gcrypt'),
+)
 if gcrypt_dep.found()
   cdata.set('HAVE_GCRYPT_H', 1)
 endif
 
-gnutls_dep = dependency('gnutls', required: get_option('gnutls'))
+gnutls_dep = dependency(
+  'gnutls',
+  required: get_option('gnutls'),
+)
 if gnutls_dep.found()
   cdata.set('HAVE_GNUTLS_GNUTLS_H', 1)
   cdata.set('HTTPS_SUPPORT', 1)

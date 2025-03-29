@@ -1,14 +1,20 @@
-option('exceptions',
-       type : 'boolean',
-       value : true,
-       description : 'Let IIR signal unexpected error using exceptions')
+option(
+    'exceptions',
+    type: 'boolean',
+    value: true,
+    description: 'Let IIR signal unexpected error using exceptions',
+)
 
-option('demos',
-       type : 'boolean',
-       value : false,
-       description : 'Build demonstration programs')
+option(
+    'demos',
+    type: 'boolean',
+    value: false,
+    description: 'Build demonstration programs',
+)
 
-option('tests',
-       type : 'boolean',
-       value : true,
-       description : 'Build self-test programs')
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Build self-test programs',
+)

@@ -1,6 +1,8 @@
 check_test_lib = static_library(
   'staticcheck',
-  objects: checklib.extract_all_objects(recursive: false),
+  objects: checklib.extract_all_objects(
+    recursive: false,
+  ),
   include_directories: confinc,
   dependencies: [libm, compatlib_dep],
 )

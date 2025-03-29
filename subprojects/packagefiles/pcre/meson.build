@@ -1,34 +1,49 @@
 project('pcre', 'c')
 
-libedit_dep = dependency('libedit', required: get_option('libedit'))
-readline_dep = dependency('readline', required: get_option('libreadline'))
+libedit_dep = dependency(
+  'libedit',
+  required: get_option('libedit'),
+)
+readline_dep = dependency(
+  'readline',
+  required: get_option('libreadline'),
+)
 
 cc = meson.get_compiler('c')
-native_cc = meson.get_compiler('c', native : true)
+native_cc = meson.get_compiler(
+  'c',
+  native: true,
+)
 
 compile_args = ['-DHAVE_CONFIG_H']
 if cc.get_id() == 'msvc'
   compile_args += ['-D_CRT_SECURE_NO_WARNINGS']
-  compile_args += cc.get_supported_arguments([
-    '/wd4244',  # 'conversion' conversion from 'type1' to 'type2', possible loss of data
-    '/wd4267',  # 'var' : conversion from 'size_t' to 'type', possible loss of data
-    '/wd4701',  # Potentially uninitialized local variable 'name' used
-    '/wd4703'   # Potentially uninitialized local pointer variable 'name' used
-  ])
+  compile_args += cc.get_supported_arguments(
+    [
+      '/wd4244',  # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+      '/wd4267',  # 'var' : conversion from 'size_t' to 'type', possible loss of data
+      '/wd4701',  # Potentially uninitialized local variable 'name' used
+      '/wd4703',  # Potentially uninitialized local pointer variable 'name' used
+    ],
+  )
 else
-  compile_args += cc.get_supported_arguments([
-    '-Wno-int-in-bool-context',
-    '-Wno-implicit-fallthrough',
-    '-Wno-array-bounds'
-  ])
+  compile_args += cc.get_supported_arguments(
+    [
+      '-Wno-int-in-bool-context',
+      '-Wno-implicit-fallthrough',
+      '-Wno-array-bounds',
+    ],
+  )
 endif
 
 native_compile_args = ['-DHAVE_CONFIG_H']
 if native_cc.get_id() == 'msvc'
   native_compile_args += ['-D_CRT_SECURE_NO_WARNINGS']
-  native_compile_args += native_cc.get_supported_arguments([
-    '/wd4244'   # 'conversion' conversion from 'type1' to 'type2', possible loss of data
-  ])
+  native_compile_args += native_cc.get_supported_arguments(
+    [
+      '/wd4244',  # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+    ],
+  )
 endif
 
 cdata = configuration_data()
@@ -61,7 +76,7 @@ foreach f : check_functions
   cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), cc.has_function(f))
 endforeach
 
-foreach t : [ 'long long', 'unsigned long long' ]
+foreach t : ['long long', 'unsigned long long']
   cdata.set('HAVE_@0@'.format(t.underscorify().to_upper()), cc.has_type(t))
 endforeach
 
@@ -74,7 +89,7 @@ else
   pcre_static = get_option('default_library') == 'static'
 endif
 
-cdata.set('NEWLINE', 10) # Currently unix only.
+cdata.set('NEWLINE', 10)  # Currently unix only.
 cdata.set('PCREGREP_BUFSIZE', 20480)
 cdata.set('PCRE_LINK_SIZE', 2)
 cdata.set('PCRE_MATCH_LIMIT', 10000000)
@@ -115,12 +130,17 @@ versiondata.set('PCRE_MAJOR', 8)
 versiondata.set('PCRE_MINOR', 37)
 versiondata.set('PCRE_PRERELEASE', '')
 versiondata.set('PCRE_DATE', '2015-04-28')
-configure_file(input : 'pcre.h.in',
-  output : 'pcre.h',
-  configuration : versiondata)
+configure_file(
+  input: 'pcre.h.in',
+  output: 'pcre.h',
+  configuration: versiondata,
+)
 
 if libedit_dep.found()
-  add_project_arguments('-DHAVE_EDITLINE_READLINE_H', language: 'c')
+  add_project_arguments(
+    '-DHAVE_EDITLINE_READLINE_H',
+    language: 'c',
+  )
 endif
 
 pcre8_sources = [
@@ -146,41 +166,50 @@ pcre8_sources = [
   'pcre_xclass.c',
 ]
 
-dftables = executable('dftables',
+dftables = executable(
+  'dftables',
   'dftables.c',
-  c_args : native_compile_args,
+  c_args: native_compile_args,
   # For cross-compilation this target needs to run on the build machine. It is
   # only used for the custom_target below. See:
   # http://mesonbuild.com/Cross-compilation.html#mixing-host-and-build-targets
-  native : true,
+  native: true,
 )
 
-char_tables = custom_target('chartables',
-  output : 'pcre_chartables.c',
-  command : [dftables, '@OUTPUT@'])
+char_tables = custom_target(
+  'chartables',
+  output: 'pcre_chartables.c',
+  command: [dftables, '@OUTPUT@'],
+)
 
-pcre8 = build_target('pcre',
-  pcre8_sources, char_tables,
+pcre8 = build_target(
+  'pcre',
+  pcre8_sources,
+  char_tables,
   target_type: libtype,
   c_args: compile_args,
 )
 
-pcre_posix = build_target('pcreposix',
+pcre_posix = build_target(
+  'pcreposix',
   'pcreposix.c',
   c_args: compile_args,
   target_type: libtype,
   link_with: pcre8,
 )
 
-pcretest = executable('pcretest',
-  'pcretest.c', 'pcre_printint.c',
+pcretest = executable(
+  'pcretest',
+  'pcretest.c',
+  'pcre_printint.c',
   c_args: compile_args,
-  dependencies: [ libedit_dep, readline_dep ],
+  dependencies: [libedit_dep, readline_dep],
   link_with: [pcre8, pcre_posix],
 )
 # Running test not added yet because it is
 # complicated.
 
-pcre_dep = declare_dependency(link_with : pcre8,
-  include_directories : include_directories('.'),
+pcre_dep = declare_dependency(
+  link_with: pcre8,
+  include_directories: include_directories('.'),
 )

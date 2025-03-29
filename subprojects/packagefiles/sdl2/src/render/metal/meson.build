@@ -1,3 +1,1 @@
-objc_sources += files(
-    'SDL_render_metal.m',
-)
+objc_sources += files('SDL_render_metal.m')

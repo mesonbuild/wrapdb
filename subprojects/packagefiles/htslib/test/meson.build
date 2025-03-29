@@ -1,7 +1,9 @@
 # tests rely on -fvisibility=hidden symbols
 htslib_test_lib = static_library(
   'statichts',
-  objects: htslib_lib.extract_all_objects(recursive: false),
+  objects: htslib_lib.extract_all_objects(
+    recursive: false,
+  ),
   include_directories: '..',
   install: false,
   dependencies: [libm_dep, regex_dep, thread_dep, ws_dep, zlib_dep],
@@ -27,5 +29,14 @@ tests = {
 }
 
 foreach t, a : tests
-  test(t, executable(t, t + '.c', dependencies: htslib_test_lib_dep), args: a, workdir: htslib_source_root)
+  test(
+    t,
+    executable(
+      t,
+      t + '.c',
+      dependencies: htslib_test_lib_dep,
+    ),
+    args: a,
+    workdir: htslib_source_root,
+  )
 endforeach

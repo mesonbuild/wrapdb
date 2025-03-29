@@ -7,7 +7,10 @@ project(
   meson_version: '>=0.49.0',
 )
 
-add_project_arguments('-D_GNU_SOURCE', language: 'c')
+add_project_arguments(
+  '-D_GNU_SOURCE',
+  language: 'c',
+)
 
 cc = meson.get_compiler('c')
 cdata = configuration_data()
@@ -116,7 +119,10 @@ if cc.check_header('immintrin.h')
   cdata.set('HAVE_IMMINTRIN_H', 1)
 endif
 
-if cdata.has('HAVE_IMMINTRIN_H') and cc.has_header_symbol('immintrin.h', '_mm_movemask_epi8')
+if cdata.has('HAVE_IMMINTRIN_H') and cc.has_header_symbol(
+  'immintrin.h',
+  '_mm_movemask_epi8',
+)
   cdata.set('HAVE__MM_MOVEMASK_EPI8', 1)
 endif
 
@@ -126,7 +132,9 @@ foreach f : functions
   endif
 endforeach
 
-if cc.has_function('__builtin_bswap16') and cc.has_function('__builtin_bswap32') and cc.has_function('__builtin_bswap64')
+if cc.has_function('__builtin_bswap16') and cc.has_function('__builtin_bswap32') and cc.has_function(
+  '__builtin_bswap64',
+)
   cdata.set('HAVE___BUILTIN_BSWAPXX', 1)
 endif
 
@@ -139,20 +147,33 @@ if cc.has_header_symbol('time.h', 'CLOCK_MONOTONIC') and host_machine.system() !
 endif
 
 if false
-#if cc.has_header_symbol('getopt.h', 'optreset', args: '-D_BSD_SOURCE')
+  #if cc.has_header_symbol('getopt.h', 'optreset', args: '-D_BSD_SOURCE')
   cdata.set('HAVE_OPTRESET', 1)
 endif
 
-if cc.has_header_symbol('errno.h', 'program_invocation_name', args: '-D_GNU_SOURCE')
+if cc.has_header_symbol(
+  'errno.h',
+  'program_invocation_name',
+  args: '-D_GNU_SOURCE',
+)
   cdata.set('HAVE_DECL_PROGRAM_INVOCATION_NAME', 1)
 endif
 
-if cc.has_header_symbol('unistd.h', '_SC_PAGESIZE') and cc.has_header_symbol('unistd.h', '_SC_PHYS_PAGES')
+if cc.has_header_symbol('unistd.h', '_SC_PAGESIZE') and cc.has_header_symbol(
+  'unistd.h',
+  '_SC_PHYS_PAGES',
+)
   cdata.set('TUKLIB_PHYSMEM_SYSCONF', 1)
 endif
 
-thread_dep = dependency('threads', required: get_option('threads'))
-if cc.has_function('pthread_condattr_setclock', dependencies: thread_dep)
+thread_dep = dependency(
+  'threads',
+  required: get_option('threads'),
+)
+if cc.has_function(
+  'pthread_condattr_setclock',
+  dependencies: thread_dep,
+)
   cdata.set('HAVE_PTHREAD_CONDATTR_SETCLOCK', 1)
 endif
 
@@ -161,7 +182,10 @@ if cc.has_function('clock_gettime')
   cdata.set('HAVE_CLOCK_GETTIME', 1)
 endif
 
-if cc.compiles('#include <pthread.h>\nint main() { int i = PTHREAD_PRIO_INHERIT; }', dependencies: thread_dep)
+if cc.compiles(
+  '#include <pthread.h>\nint main() { int i = PTHREAD_PRIO_INHERIT; }',
+  dependencies: thread_dep,
+)
   cdata.set('HAVE_PTHREAD_PRIO_INHERIT', 1)
 endif
 
@@ -173,24 +197,52 @@ if host_machine.system() == 'windows' and thread_dep.found()
   cdata.set('MYTHREAD_VISTA', 1)
 endif
 
-if cc.has_type('uintptr_t', prefix: '#include <stdint.h>')
+if cc.has_type(
+  'uintptr_t',
+  prefix: '#include <stdint.h>',
+)
   cdata.set('HAVE_UINTPTR_T', 1)
 endif
 
-if cc.has_member('struct stat', 'st_atim.tv_nsec', prefix: '#include <sys/stat.h>')
+if cc.has_member(
+  'struct stat',
+  'st_atim.tv_nsec',
+  prefix: '#include <sys/stat.h>',
+)
   cdata.set('HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC', 1)
 endif
 
 if meson.version().version_compare('>= 0.59')
-  nls_dep = dependency('intl', required: get_option('nls'))
+  nls_dep = dependency(
+    'intl',
+    required: get_option('nls'),
+  )
 else
-  nls_dep = dependency('', required: false)
+  nls_dep = dependency(
+    '',
+    required: false,
+  )
 endif
 if nls_dep.found()
   cdata.set10('ENABLE_NLS', true)
-  cdata.set10('HAVE_DCGETTEXT', cc.has_function('dcgettext', dependencies: nls_dep))
-  cdata.set10('HAVE_GETTEXT', cc.has_function('dcgettext', dependencies: nls_dep))
-  add_project_arguments('-DLOCALEDIR="@0@"'.format(get_option('prefix') / get_option('localedir')), language: 'c')
+  cdata.set10(
+    'HAVE_DCGETTEXT',
+    cc.has_function(
+      'dcgettext',
+      dependencies: nls_dep,
+    ),
+  )
+  cdata.set10(
+    'HAVE_GETTEXT',
+    cc.has_function(
+      'dcgettext',
+      dependencies: nls_dep,
+    ),
+  )
+  add_project_arguments(
+    '-DLOCALEDIR="@0@"'.format(get_option('prefix') / get_option('localedir')),
+    language: 'c',
+  )
 endif
 
 foreach i : decoders + encoders
@@ -201,9 +253,17 @@ endforeach
 
 largs = []
 if host_machine.system() == 'linux'
-  largs += cc.get_supported_link_arguments('-Wl,--version-script,@0@/src/liblzma/liblzma_linux.map'.format(meson.current_source_dir()))
+  largs += cc.get_supported_link_arguments(
+    '-Wl,--version-script,@0@/src/liblzma/liblzma_linux.map'.format(
+      meson.current_source_dir(),
+    ),
+  )
 elif host_machine.system() == 'freebsd'
-  largs += cc.get_supported_link_arguments('-Wl,--version-script,@0@/src/liblzma/liblzma_generic.map'.format(meson.current_source_dir()))
+  largs += cc.get_supported_link_arguments(
+    '-Wl,--version-script,@0@/src/liblzma/liblzma_generic.map'.format(
+      meson.current_source_dir(),
+    ),
+  )
 endif
 
 if get_option('b_ndebug') == 'true'
@@ -218,7 +278,10 @@ cdata.set_quoted('PACKAGE_TARNAME', 'xz')
 cdata.set_quoted('VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_NAME', 'XZ Utils')
-cdata.set_quoted('PACKAGE_STRING', 'XZ Utils @0@'.format(meson.project_version()))
+cdata.set_quoted(
+  'PACKAGE_STRING',
+  'XZ Utils @0@'.format(meson.project_version()),
+)
 cdata.set_quoted('PACKAGE_URL', 'https://tukaani.org/xz/')
 cdata.set_quoted('PACKAGE_BUGREPORT', 'lasse.collin@tukaani.org')
 

@@ -4,7 +4,4 @@ if host_machine.system() == 'windows'
 else
 endif
 
-sources += files(
-  'SDL_asyncio.c',
-  'SDL_iostream.c',
-)
+sources += files('SDL_asyncio.c', 'SDL_iostream.c')

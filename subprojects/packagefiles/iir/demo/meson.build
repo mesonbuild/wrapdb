@@ -1,9 +1,9 @@
-demos = [
-  'iirdemo',
-  'ecg50hzfilt']
+demos = ['iirdemo', 'ecg50hzfilt']
 
 foreach demo : demos
-  executable(demo,
-             demo + '.cpp',
-             dependencies : libiir_dep)
+  executable(
+    demo,
+    demo + '.cpp',
+    dependencies: libiir_dep,
+  )
 endforeach

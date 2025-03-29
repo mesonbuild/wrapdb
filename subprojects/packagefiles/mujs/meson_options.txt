@@ -1,1 +1,4 @@
-option('progs', type: 'feature')
+option(
+    'progs',
+    type: 'feature',
+)

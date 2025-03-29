@@ -1,4 +1,9 @@
-project('libogg', 'c', version : '1.3.5', license : 'bsd-like')
+project(
+  'libogg',
+  'c',
+  version: '1.3.5',
+  license: 'bsd-like',
+)
 
 # See configure.ac and CMakeLists.txt
 lib_current = 8

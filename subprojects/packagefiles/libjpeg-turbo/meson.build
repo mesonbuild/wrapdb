@@ -1,7 +1,9 @@
-project('libjpeg-turbo', 'c',
-  version : '3.1.0',
-  license : 'bsd-like',
-  meson_version : '>= 0.64.0',
+project(
+  'libjpeg-turbo',
+  'c',
+  version: '3.1.0',
+  license: 'bsd-like',
+  meson_version: '>= 0.64.0',
 )
 
 pkg = import('pkgconfig')
@@ -42,7 +44,10 @@ elif version_minor.to_int() < 100
 endif
 
 cdata.set('JPEG_LIB_VERSION', jpeg_lib_version)
-cdata.set('LIBJPEG_TURBO_VERSION_NUMBER', version_major + version_minor + version_revision)
+cdata.set(
+  'LIBJPEG_TURBO_VERSION_NUMBER',
+  version_major + version_minor + version_revision,
+)
 
 cdata.set('C_ARITH_CODING_SUPPORTED', true)
 cdata.set('D_ARITH_CODING_SUPPORTED', true)
@@ -100,7 +105,12 @@ else
   cdata.set('RIGHT_SHIFT_IS_UNSIGNED', false)
 endif
 
-p = run_command(python, '-c', 'import datetime; print(datetime.datetime.now().strftime("%Y%m%d"))', check: true)
+p = run_command(
+  python,
+  '-c',
+  'import datetime; print(datetime.datetime.now().strftime("%Y%m%d"))',
+  check: true,
+)
 cdata.set('BUILD', p.stdout().strip())
 
 if cc.get_id() == 'msvc'
@@ -109,12 +119,8 @@ else
   cdata.set('THREAD_LOCAL', '__thread')
 endif
 
-cdata.set(
-  'HIDDEN',
-  cc.has_function_attribute('visibility:hidden')
-  ? '__attribute__((visibility("hidden")))'
-  : '',
-)
+cdata.set('HIDDEN', cc.has_function_attribute('visibility:hidden') ? '__attribute__((visibility("hidden")))'
+  : '')
 
 if get_option('force_inline')
   if cc.get_id() == 'msvc'
@@ -127,7 +133,10 @@ else
 endif
 
 if host_system == 'windows'
-  add_project_arguments('-DDLLDEFINE', language: 'c')
+  add_project_arguments(
+    '-DDLLDEFINE',
+    language: 'c',
+  )
 endif
 
 incdir = include_directories('src')

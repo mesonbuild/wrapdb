@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_cpuinfo.c',
-)
+sources += files('SDL_cpuinfo.c')

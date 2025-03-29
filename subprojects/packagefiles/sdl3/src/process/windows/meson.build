@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_windowsprocess.c',
-)
+sources += files('SDL_windowsprocess.c')

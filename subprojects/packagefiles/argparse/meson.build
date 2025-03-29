@@ -1,19 +1,20 @@
 project(
-    'argparse',
-    'cpp',
-    version : '3.2',
-    license : 'MIT',
-    meson_version : '>=0.60.0',
+  'argparse',
+  'cpp',
+  version: '3.2',
+  license: 'MIT',
+  meson_version: '>=0.60.0',
 )
 
 includes = include_directories(['include'])
 
-install_headers([
-    'include/argparse/argparse.hpp',
-], subdir: 'argparse')
+install_headers(
+  ['include/argparse/argparse.hpp'],
+  subdir: 'argparse',
+)
 
 argparse_dep = declare_dependency(
-    include_directories: includes
+  include_directories: includes,
 )
 
 conf_data = configuration_data()

@@ -1,7 +1,8 @@
-project('frozen',
+project(
+  'frozen',
   'cpp',
-  version : '1.1.1',
-  license : 'Apache-2.0',
+  version: '1.1.1',
+  license: 'Apache-2.0',
 )
 
 install_headers(
@@ -12,7 +13,7 @@ install_headers(
   'include/frozen/string.h',
   'include/frozen/unordered_map.h',
   'include/frozen/unordered_set.h',
-  subdir : 'frozen',
+  subdir: 'frozen',
 )
 
 install_headers(
@@ -26,15 +27,16 @@ install_headers(
   'include/frozen/bits/hash_string.h',
   'include/frozen/bits/pmh.h',
   'include/frozen/bits/version.h',
-  subdir : 'frozen/bits',
+  subdir: 'frozen/bits',
 )
 
 pkgc = import('pkgconfig')
-pkgc.generate(name: 'frozen',
+pkgc.generate(
+  name: 'frozen',
   version: meson.project_version(),
-  description: '0 cost initialization for immutable containers, fixed-size containers, and various algorithms.'
+  description: '0 cost initialization for immutable containers, fixed-size containers, and various algorithms.',
 )
 
 frozen_dep = declare_dependency(
-  include_directories : include_directories('include')
+  include_directories: include_directories('include'),
 )

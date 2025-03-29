@@ -13,11 +13,9 @@ minilua_exe = executable(
 
 buildvm_arch_h = custom_target(
   'buildvm_arch.h',
-  command: [
-    minilua_exe,
-    dynasm_lua,
-  ] + DASM_FLAGS + [
-    '-o', '@OUTPUT@',
+  command: [minilua_exe, dynasm_lua] + DASM_FLAGS + [
+    '-o',
+    '@OUTPUT@',
     '@INPUT@',
   ],
   input: f'../vm_@DASM_ARCH@.dasc',

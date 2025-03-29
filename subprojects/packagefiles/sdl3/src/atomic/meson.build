@@ -1,4 +1,1 @@
-sources += files(
-  'SDL_spinlock.c',
-  'SDL_atomic.c',
-)
+sources += files('SDL_atomic.c', 'SDL_spinlock.c')

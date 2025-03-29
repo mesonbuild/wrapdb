@@ -10,8 +10,16 @@ project(
 
 cc = meson.get_compiler('c')
 
-summary('Build type', get_option('buildtype'), section: 'Build Summary')
-summary('Install prefix', get_option('prefix'), section: 'Build Summary')
+summary(
+  'Build type',
+  get_option('buildtype'),
+  section: 'Build Summary',
+)
+summary(
+  'Install prefix',
+  get_option('prefix'),
+  section: 'Build Summary',
+)
 
 # Due to symbol visibility issues, don't allow building 'both' library
 # types on MSVC
@@ -24,7 +32,10 @@ is_shared_lib = get_option('default_library') == 'shared'
 
 # Set global WIN32 define if windows
 if host_machine.system() == 'windows'
-  add_project_arguments('-DWIN32=1', language: ['c', 'cpp'])
+  add_project_arguments(
+    '-DWIN32=1',
+    language: ['c', 'cpp'],
+  )
 endif
 
 # Detect if compiling in an MSYS2-based MinGW/Clang environment
@@ -106,8 +117,11 @@ foreach h : headers_to_check
   endif
 endforeach
 
-if cc.has_function('inet_ntop', prefix: '#include <arpa/inet.h>')
-  conf.set('HAVE_INETNTOP', 1) # lib uses ifdef for this one
+if cc.has_function(
+  'inet_ntop',
+  prefix: '#include <arpa/inet.h>',
+)
+  conf.set('HAVE_INETNTOP', 1)  # lib uses ifdef for this one
 endif
 
 foreach fun : ['sinf', 'cosf', 'fabsf', 'powf', 'sqrtf', 'logf']
@@ -119,19 +133,38 @@ endforeach
 # Some compilers such as msvc may not support VLA, the following test
 # is adapted from upstream CMake
 vla_code = 'int main(int argc, char *argv[]){int arr[argc]; return 0;}'
-if cc.compiles(vla_code, name: 'VLA check')
+if cc.compiles(
+  vla_code,
+  name: 'VLA check',
+)
   conf.set('SUPPORTS_VLA', 1)
 endif
 
 # external dependencies
 
-m_dep = cc.find_library('m', required: false)
-glib_dep = dependency('glib-2.0', static: get_option('try-static-deps'))
-gthread_dep = dependency('gthread-2.0', static: get_option('try-static-deps'))
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+glib_dep = dependency(
+  'glib-2.0',
+  static: get_option('try-static-deps'),
+)
+gthread_dep = dependency(
+  'gthread-2.0',
+  static: get_option('try-static-deps'),
+)
 if cc.get_argument_syntax() != 'msvc'
-  openmp_dep = dependency('openmp', required: get_option('openmp'), version: '>=4.0')
+  openmp_dep = dependency(
+    'openmp',
+    required: get_option('openmp'),
+    version: '>=4.0',
+  )
 else
-  openmp_dep = dependency('', required: false)
+  openmp_dep = dependency(
+    '',
+    required: false,
+  )
 endif
 
 ext_deps = [m_dep, glib_dep, gthread_dep, openmp_dep]
@@ -145,7 +178,12 @@ if host_machine.system() == 'windows'
   # Specific workaround on MSYS2 to obtain static dependencies of intl, such as iconv
   # This is required as of meson 0.59
   if get_option('try-static-deps') and host_is_msys2
-    ext_deps += [dependency('intl', static: true)]
+    ext_deps += [
+      dependency(
+        'intl',
+        static: true,
+      ),
+    ]
   endif
 endif
 

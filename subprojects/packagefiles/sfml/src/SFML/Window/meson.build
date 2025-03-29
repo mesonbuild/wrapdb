@@ -38,15 +38,20 @@ elif host_machine.system() == 'linux'
     'Unix/GlxContext.cpp',
     'Unix/InputImpl.cpp',
     'Unix/JoystickImpl.cpp',
-    'Unix/KeyboardImpl.cpp',
     'Unix/KeySymToKeyMapping.cpp',
     'Unix/KeySymToUnicodeMapping.cpp',
+    'Unix/KeyboardImpl.cpp',
     'Unix/SensorImpl.cpp',
     'Unix/VideoModeImpl.cpp',
     'Unix/VulkanImplX11.cpp',
     'Unix/WindowImplX11.cpp',
   )
-  window_deps = [dependency('xcursor'), dependency('xrandr'), dependency('x11'), dependency('libudev')]
+  window_deps = [
+    dependency('xcursor'),
+    dependency('xrandr'),
+    dependency('x11'),
+    dependency('libudev'),
+  ]
 elif host_machine.system() == 'darwin'
   add_languages('objc')
   add_languages('objcpp')
@@ -76,7 +81,10 @@ elif host_machine.system() == 'darwin'
     'OSX/cg_sf_conversion.mm',
     'OSX/cpp_objc_conversion.mm',
   )
-  window_deps = dependency('appleframeworks', modules: ['Foundation', 'AppKit', 'IOKit', 'Carbon'])
+  window_deps = dependency(
+    'appleframeworks',
+    modules: ['Foundation', 'AppKit', 'IOKit', 'Carbon'],
+  )
 else
   error('Not yet implemented.')
 endif
@@ -84,7 +92,10 @@ endif
 window_lib = library(
   'sfml-window',
   window_sources,
-  cpp_args: [get_option('default_library') != 'static' ? '-DSFML_WINDOW_EXPORTS' : '-DSFML_STATIC', '-DUNICODE'],
+  cpp_args: [
+    get_option('default_library') != 'static' ? '-DSFML_WINDOW_EXPORTS' : '-DSFML_STATIC',
+    '-DUNICODE',
+  ],
   link_with: system_lib,
   include_directories: [glad_inc, pub_inc, priv_inc, vulkan_inc],
   dependencies: [gl_dep, winmm_dep, window_deps],

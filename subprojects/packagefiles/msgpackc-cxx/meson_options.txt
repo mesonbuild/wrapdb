@@ -1,4 +1,24 @@
-option('boost', type: 'feature', value: 'auto', description: 'Use Boost libraries')
-option('x3_parse', type: 'boolean', value: false, description: 'Use Boost X3 parse')
-option('std_variant', type: 'boolean', value: true, description: 'Use std::variant adaptor')
-option('tests', type: 'feature', value: 'auto', description: 'Build unit tests')
+option(
+    'boost',
+    type: 'feature',
+    value: 'auto',
+    description: 'Use Boost libraries',
+)
+option(
+    'x3_parse',
+    type: 'boolean',
+    value: false,
+    description: 'Use Boost X3 parse',
+)
+option(
+    'std_variant',
+    type: 'boolean',
+    value: true,
+    description: 'Use std::variant adaptor',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build unit tests',
+)

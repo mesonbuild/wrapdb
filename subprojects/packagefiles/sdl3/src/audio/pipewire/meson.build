@@ -1,3 +1,1 @@
-sources += files(
-  'SDL_pipewire.c',
-)
+sources += files('SDL_pipewire.c')

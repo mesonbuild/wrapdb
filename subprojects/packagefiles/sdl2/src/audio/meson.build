@@ -1,10 +1,10 @@
 c_sources += files(
-    'SDL_audio.c',
-    'SDL_audiocvt.c',
-    'SDL_audiodev.c',
-    'SDL_audiotypecvt.c',
-    'SDL_mixer.c',
-    'SDL_wave.c',
+  'SDL_audio.c',
+  'SDL_audiocvt.c',
+  'SDL_audiodev.c',
+  'SDL_audiotypecvt.c',
+  'SDL_mixer.c',
+  'SDL_wave.c',
 )
 
 subdir('aaudio')

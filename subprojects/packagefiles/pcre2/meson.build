@@ -22,13 +22,10 @@ platform_is_unixlike = host_machine.system() in [
   'linux',
   'android',
   'darwin',
-  'cygwin'
+  'cygwin',
 ]
 
-platform_supports_sealloc = host_machine.system() in [
-  'linux',
-  'netbsd'
-]
+platform_supports_sealloc = host_machine.system() in ['linux', 'netbsd']
 
 # pcre2.h
 pcredata = configuration_data()
@@ -44,7 +41,7 @@ cdata.set('LINK_SIZE', '2')
 cdata.set('HEAP_LIMIT', '20000000')
 cdata.set('MATCH_LIMIT', '10000000')
 cdata.set('MATCH_LIMIT_DEPTH', 'MATCH_LIMIT')
-cdata.set('NEWLINE_DEFAULT', '2') # default in config.h.generic
+cdata.set('NEWLINE_DEFAULT', '2')  # default in config.h.generic
 cdata.set('PARENS_NEST_LIMIT', '250')
 cdata.set('PCRE2GREP_BUFSIZE', '20480')
 cdata.set('PCRE2GREP_MAX_BUFSIZE', '1048576')
@@ -65,7 +62,11 @@ if not get_option('jit').disabled() and platform_is_unixlike
 endif
 
 if not get_option('jit_sealloc').disabled()
-  if c_compiler.has_function('mkostemp', prefix: '#include <stdlib.h>', args: ['-D_GNU_SOURCE'])
+  if c_compiler.has_function(
+    'mkostemp',
+    prefix: '#include <stdlib.h>',
+    args: ['-D_GNU_SOURCE'],
+  )
     if platform_supports_sealloc
       cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
     elif get_option('jit_sealloc').enabled()
@@ -141,20 +142,26 @@ foreach f : check_funs
   endif
 endforeach
 
-if c_compiler.links('''
+if c_compiler.links(
+  '''
   int main() {
     __assume(0);
   }
-''', name: '__assume')
+''',
+  name: '__assume',
+)
   cdata.set10('HAVE_BUILTIN_ASSUME', true)
 endif
 
-if c_compiler.compiles('''
+if c_compiler.compiles(
+  '''
   int main() {
     char buf[128] __attribute__((uninitialized));
     (void)buf;
   }
-''', name: '__attribute__((uninitialized))')
+''',
+  name: '__attribute__((uninitialized))',
+)
   cdata.set10('HAVE_ATTRIBUTE_UNINITIALIZED', true)
 endif
 
@@ -300,9 +307,8 @@ pkg.generate(
 
 #### tests
 
-if (
-  get_option('test')
-  and not meson.is_cross_build() # wine wrappers are not bat-friendly, this would need better testing
+if (get_option('test')
+and not meson.is_cross_build()  # wine wrappers are not bat-friendly, this would need better testing
 )
   link_args = []
   if c_compiler.get_argument_syntax() == 'msvc'

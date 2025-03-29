@@ -1,28 +1,48 @@
-project('json-c', 'c',
+project(
+  'json-c',
+  'c',
   version: '0.18',
   license: 'MIT',
   meson_version: '>=0.49',
   default_options: [
-    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99'
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
   ],
 )
 
 cc = meson.get_compiler('c')
 
 if cc.get_argument_syntax() == 'msvc'
-  add_project_arguments('-D_CRT_SECURE_NO_WARNINGS', language: 'c')
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_WARNINGS',
+    language: 'c',
+  )
 else
-  add_project_arguments('-D_GNU_SOURCE', language: 'c')
+  add_project_arguments(
+    '-D_GNU_SOURCE',
+    language: 'c',
+  )
 endif
 
 if get_option('default_library') != 'static'
-  add_project_arguments('-DJSON_C_DLL', language: 'c')
+  add_project_arguments(
+    '-DJSON_C_DLL',
+    language: 'c',
+  )
 endif
 
-add_project_arguments(cc.get_supported_arguments('-Wno-deprecated-declarations'), language: 'c')
+add_project_arguments(
+  cc.get_supported_arguments('-Wno-deprecated-declarations'),
+  language: 'c',
+)
 
-threads = dependency('threads', required: false)
-math = cc.find_library('m', required: false)
+threads = dependency(
+  'threads',
+  required: false,
+)
+math = cc.find_library(
+  'm',
+  required: false,
+)
 
 subdir('config')
 inc = include_directories('config')
@@ -93,10 +113,14 @@ json_c_dep = declare_dependency(
   sources: json_config_h,
 )
 
-install_headers(public_headers, subdir: 'json-c')
+install_headers(
+  public_headers,
+  subdir: 'json-c',
+)
 
 pkgconfig = import('pkgconfig')
-pkgconfig.generate(libjson_c,
+pkgconfig.generate(
+  libjson_c,
   description: 'A JSON implementation in C',
   version: meson.project_version(),
   filebase: meson.project_name(),

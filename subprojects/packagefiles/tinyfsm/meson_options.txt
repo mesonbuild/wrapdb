@@ -1,1 +1,6 @@
-option('build_examples', type: 'boolean', value: false, description: 'build examples')
+option(
+    'build_examples',
+    type: 'boolean',
+    value: false,
+    description: 'build examples',
+)
