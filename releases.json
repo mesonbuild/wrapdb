@@ -2442,6 +2442,17 @@
       "1.0-1"
     ]
   },
+  "lvgl": {
+    "dependency_names": [
+      "lvgl",
+      "lvgl_demos",
+      "lvgl_examples",
+      "lvgl_thorvg"
+    ],
+    "versions": [
+      "9.2.2-1"
+    ]
+  },
   "lz4": {
     "dependency_names": [
       "liblz4"
