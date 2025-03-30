@@ -2,7 +2,7 @@ project(
   'pugixml',
   'cpp',
   default_options: 'cpp_std=c++14',
-  version: '1.14',
+  version: '1.15',
   meson_version: '>=0.49.0',
 )
 
