@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libxml2-2.13.6
-source_url = https://download.gnome.org/sources/libxml2/2.13/libxml2-2.13.6.tar.xz
-source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/libxml2/2.13/libxml2-2.13.6.tar.xz
-source_filename = libxml2-2.13.6.tar.xz
-source_hash = f453480307524968f7a04ec65e64f2a83a825973bcd260a2e7691be82ae70c96
+directory = libxml2-2.14.1
+source_url = https://download.gnome.org/sources/libxml2/2.14/libxml2-2.14.1.tar.xz
+source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/libxml2/2.14/libxml2-2.14.1.tar.xz
+source_filename = libxml2-2.14.1.tar.xz
+source_hash = 310df85878b65fa717e5e28e0d9e8f6205fd29d883929303a70a4f2fc4f6f1f2
 
 [provide]
 libxml-2.0 = xml_dep
