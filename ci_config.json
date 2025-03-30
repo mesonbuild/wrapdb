@@ -51,7 +51,7 @@
     ],
     "build_options": [
       "cairo:fontconfig=enabled",
-      "libxml2:python=false"
+      "libxml2:python=disabled"
     ],
     "fatal_warnings": false,
     "skip_tests": true
@@ -222,7 +222,7 @@
       "bash"
     ],
     "build_options": [
-      "libxml2:python=false"
+      "libxml2:python=disabled"
     ],
     "fatal_warnings": false
   },
@@ -694,15 +694,22 @@
     }
   },
   "libxml2": {
-    "_comment": "Python fails on 32-bit MSVC because we don't have 32-bit Python, and on other MSVC because we try to do a debug build against a release Python",
+    "_comment": [
+      "Upstream removed autodetection of iconv and other deps; see discussion on https://gitlab.gnome.org/GNOME/libxml2/-/commit/c2ccbc0fed36de1d8c595867acb5e298c9a143f6",
+      "Python fails on 32-bit MSVC because we don't have 32-bit Python, and on other MSVC because we try to do a debug build against a release Python"
+    ],
     "build_options": [
-      "libxml2:python=false"
+      "libxml2:iconv=disabled",
+      "libxml2:python=disabled"
+    ],
+    "msys_packages": [
+      "diffutils"
     ]
   },
   "libxmlpp": {
     "_comment": "Python fails on MSVC because we try to do a debug build against a release Python",
     "build_options": [
-      "libxml2:python=false"
+      "libxml2:python=disabled"
     ]
   },
   "libxkbcommon": {
@@ -740,7 +747,7 @@
   "libxslt": {
     "_comment": "Python fails on MSVC because we try to do a debug build against a release Python",
     "build_options": [
-      "libxml2:python=false"
+      "libxml2:python=disabled"
     ]
   },
   "libxv": {
