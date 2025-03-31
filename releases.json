@@ -1006,6 +1006,14 @@
       "0.20.6-1"
     ]
   },
+  "gemmlowp": {
+    "dependency_names": [
+      "gemmlowp"
+    ],
+    "versions": [
+      "1.1-1"
+    ]
+  },
   "giflib": {
     "dependency_names": [
       "giflib"

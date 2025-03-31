@@ -1,0 +1,9 @@
+[wrap-file]
+directory = gemmlowp-1.1
+source_url = https://github.com/raghaven447/gemmlowp/archive/refs/tags/v1.1.tar.gz
+source_filename = gemmlowp-1.1.tar.gz
+source_hash = 1767fb66954331246234a5e05aebf635f89c1a34b17179f76af57b9b1979520b
+patch_directory = gemmlowp
+
+[provide]
+gemmlowp = gemmlowp_dep
