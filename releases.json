@@ -799,6 +799,14 @@
       "11.1.5.1-0"
     ]
   },
+  "fft2d" :{
+    "dependency_names": [
+      "fft2d"
+    ],
+    "versions": [
+      "1.0-1"
+    ]
+  },
   "flac": {
     "dependency_names": [
       "flac"

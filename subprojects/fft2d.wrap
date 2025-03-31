@@ -1,0 +1,9 @@
+[wrap-file]
+directory = fft2d-1.0
+source_url = https://github.com/raghaven447/fft2d/archive/refs/tags/v1.0.tar.gz
+source_filename = fft2d-1.0.tar.gz
+source_hash = 20ebf1db94c20e4f9df661d588085184c8613a34569721d150524bae3e1a1a62
+patch_directory = fft2d
+
+[provide]
+fft2d = fft2d_dep
