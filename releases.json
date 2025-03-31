@@ -900,6 +900,14 @@
       "2.14.2-1"
     ]
   },
+  "fp16": {
+    "dependency_names": [
+      "fp16"
+    ],
+    "versions": [
+      "1.0-1"
+    ]
+  },
   "freeglut": {
     "dependency_names": [
       "freeglut",

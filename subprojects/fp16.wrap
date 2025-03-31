@@ -1,0 +1,9 @@
+[wrap-file]
+directory = FP16-1.0
+source_url = https://github.com/raghaven447/FP16/archive/refs/tags/v1.0.tar.gz
+source_filename = FP16-1.0.tar.gz
+source_hash = fa95ea12553e92d64d834aa029f39c1af873c39f0ded3537e95a60095bf86fa2
+patch_directory = fp16
+
+[provide]
+fp16 = fp16_dep
