@@ -1,8 +1,8 @@
 [wrap-file]
-directory = fmt-11.1.1
-source_url = https://github.com/fmtlib/fmt/archive/11.1.1.tar.gz
-source_filename = fmt-11.1.1.tar.gz
-source_hash = 482eed9efbc98388dbaee5cb5f368be5eca4893456bb358c18b7ff71f835ae43
+directory = fmt-11.1.4
+source_url = https://github.com/fmtlib/fmt/archive/11.1.4.tar.gz
+source_filename = fmt-11.1.4.tar.gz
+source_hash = ac366b7b4c2e9f0dde63a59b3feb5ee59b67974b14ee5dc9ea8ad78aa2c1ee1e
 patch_directory = fmt
 
 [provide]
