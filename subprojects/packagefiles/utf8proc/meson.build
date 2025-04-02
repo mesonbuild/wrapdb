@@ -1,11 +1,19 @@
 project(
   'utf8proc',
   'c',
-  version: '2.9.0',
+  version: '2.10.0',
   license: 'MIT',
   default_options: 'c_std=c99',
   meson_version: '>=0.59.0',
 )
+
+## NOTE: update these versions on updates, if they change, see upstream Cmake defintions
+
+# This is the ABI version number, which may differ from the API (project) version number
+utfproc_abi_version = '3.1.0'
+
+# the unicode version this supports, used for tests
+unicode_version = '16.0.0'
 
 cc = meson.get_compiler('c')
 fs = import('fs')
@@ -23,12 +31,13 @@ add_project_arguments(
   language: 'c',
 )
 
+
 utf8proc_lib = library(
   'utf8proc',
   'utf8proc.c',
   gnu_symbol_visibility: 'hidden',
   install: true,
-  version: '3.0.0',
+  version: utfproc_abi_version,
 )
 
 utf8proc_dep = declare_dependency(
@@ -88,7 +97,7 @@ if get_option('tests').require(curl.found()).allowed()
           '-',
           '--output',
           '@OUTPUT@',
-          'https://www.unicode.org/Public/15.1.0/ucd' / _data,
+          ('https://www.unicode.org/Public/' + unicode_version + '/ucd') / _data,
         ],
         console: true,
         output: _args,
