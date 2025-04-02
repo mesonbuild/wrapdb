@@ -13,3 +13,5 @@ indent_size = 4
 [meson.build]
 indent_size = 2
 
+[meson{_options.txt,.options}]
+indent_size = 2
