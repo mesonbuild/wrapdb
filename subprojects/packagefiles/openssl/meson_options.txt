@@ -1,12 +1,12 @@
 option(
-    'asm',
-    type: 'feature',
-    value: 'auto',
-    description: 'Enable platform-specific assembly optimizations',
+  'asm',
+  type: 'feature',
+  value: 'auto',
+  description: 'Enable platform-specific assembly optimizations',
 )
 option(
-    'build_cli',
-    type: 'boolean',
-    value: false,
-    description: 'Enable openssl_cli build and install',
+  'build_cli',
+  type: 'boolean',
+  value: false,
+  description: 'Enable openssl_cli build and install',
 )

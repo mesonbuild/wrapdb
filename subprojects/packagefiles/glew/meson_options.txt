@@ -1,10 +1,10 @@
 option(
-    'egl',
-    type: 'feature',
-    description: 'build support for egl',
+  'egl',
+  type: 'feature',
+  description: 'build support for egl',
 )
 option(
-    'glu',
-    type: 'feature',
-    description: 'build support for glu',
+  'glu',
+  type: 'feature',
+  description: 'build support for glu',
 )

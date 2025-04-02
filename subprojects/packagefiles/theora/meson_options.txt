@@ -1,48 +1,48 @@
 option(
-    'doc',
-    type: 'feature',
-    value: 'auto',
-    description: 'Build API documentation',
+  'doc',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build API documentation',
 )
 option(
-    'spec',
-    type: 'feature',
-    value: 'auto',
-    description: 'Build the specification',
+  'spec',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the specification',
 )
 option(
-    'valgrind-testing',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable running of tests inside Valgrind',
+  'valgrind-testing',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Enable running of tests inside Valgrind',
 )
 option(
-    'asm',
-    type: 'feature',
-    value: 'enabled',
-    description: 'Enable assembly optimizations',
+  'asm',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Enable assembly optimizations',
 )
 option(
-    'telemetry',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable debugging output controls',
+  'telemetry',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Enable debugging output controls',
 )
 option(
-    'mem-constraint',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Abort if size exceeds 16384x16384 (for fuzzing only)',
+  'mem-constraint',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Abort if size exceeds 16384x16384 (for fuzzing only)',
 )
 option(
-    'examples',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable examples',
+  'examples',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Enable examples',
 )
 option(
-    'collect-metrics',
-    type: 'boolean',
-    value: false,
-    description: 'Enable metrics collection for mode training',
+  'collect-metrics',
+  type: 'boolean',
+  value: false,
+  description: 'Enable metrics collection for mode training',
 )

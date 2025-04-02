@@ -1,6 +1,6 @@
 option(
-    'win32_io',
-    type: 'boolean',
-    value: false,
-    description: 'Build the Windows I/O helper class',
+  'win32_io',
+  type: 'boolean',
+  value: false,
+  description: 'Build the Windows I/O helper class',
 )

@@ -1,30 +1,30 @@
 option(
-    'openmp',
-    type: 'feature',
-    value: 'auto',
-    description: 'Use OpenMP for parallel parsing',
+  'openmp',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use OpenMP for parallel parsing',
 )
 option(
-    'lightweight_symtab',
-    type: 'boolean',
-    value: false,
-    description: 'Use lightweight symtab interface for ParseAPI, ProcControl, and Stackwalker; disables DyninstAPI build',
+  'lightweight_symtab',
+  type: 'boolean',
+  value: false,
+  description: 'Use lightweight symtab interface for ParseAPI, ProcControl, and Stackwalker; disables DyninstAPI build',
 )
 option(
-    'sw_analysis_stepper',
-    type: 'boolean',
-    value: true,
-    description: 'Use ParseAPI-based analysis stepper in StackWalker',
+  'sw_analysis_stepper',
+  type: 'boolean',
+  value: true,
+  description: 'Use ParseAPI-based analysis stepper in StackWalker',
 )
 option(
-    'debuginfod',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Enable debuginfod support',
+  'debuginfod',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Enable debuginfod support',
 )
 option(
-    'valgrind_annotations',
-    type: 'boolean',
-    value: false,
-    description: 'Enable annotations for Valgrind analysis',
+  'valgrind_annotations',
+  type: 'boolean',
+  value: false,
+  description: 'Enable annotations for Valgrind analysis',
 )

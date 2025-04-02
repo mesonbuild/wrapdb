@@ -1,19 +1,19 @@
 option(
-    'authdes',
-    type: 'boolean',
-    value: false,
-    description: 'Enable DES support',
+  'authdes',
+  type: 'boolean',
+  value: false,
+  description: 'Enable DES support',
 )
 
 option(
-    'gssapi',
-    type: 'feature',
-    description: 'Use GSSAPI',
+  'gssapi',
+  type: 'feature',
+  description: 'Use GSSAPI',
 )
 
 option(
-    'ipv6',
-    type: 'boolean',
-    value: true,
-    description: 'Enable IPv6',
+  'ipv6',
+  type: 'boolean',
+  value: true,
+  description: 'Enable IPv6',
 )

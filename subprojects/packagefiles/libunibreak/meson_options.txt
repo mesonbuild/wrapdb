@@ -1,4 +1,4 @@
 option(
-    'tests',
-    type: 'feature',
+  'tests',
+  type: 'feature',
 )

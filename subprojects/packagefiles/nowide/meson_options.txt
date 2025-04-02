@@ -1,5 +1,5 @@
 option(
-    'tests',
-    type: 'boolean',
-    value: false,
+  'tests',
+  type: 'boolean',
+  value: false,
 )

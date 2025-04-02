@@ -1,20 +1,20 @@
 option(
-    'jpeg',
-    type: 'feature',
-    description: 'JPEG support',
+  'jpeg',
+  type: 'feature',
+  description: 'JPEG support',
 )
 option(
-    'png',
-    type: 'feature',
-    description: 'PNG support',
+  'png',
+  type: 'feature',
+  description: 'PNG support',
 )
 option(
-    'gio',
-    type: 'feature',
-    description: 'GIO support',
+  'gio',
+  type: 'feature',
+  description: 'GIO support',
 )
 option(
-    'tests',
-    type: 'feature',
-    description: 'Build tests. Requires catch library',
+  'tests',
+  type: 'feature',
+  description: 'Build tests. Requires catch library',
 )

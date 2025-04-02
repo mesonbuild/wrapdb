@@ -1,8 +1,8 @@
 
 
 option(
-    'tests',
-    type: 'boolean',
-    value: true,
-    description: 'whether or not tests should be built',
+  'tests',
+  type: 'boolean',
+  value: true,
+  description: 'whether or not tests should be built',
 )

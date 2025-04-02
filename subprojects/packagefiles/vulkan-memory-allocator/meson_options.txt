@@ -1,5 +1,5 @@
 option(
-    'build_samples',
-    type: 'boolean',
-    value: false,
+  'build_samples',
+  type: 'boolean',
+  value: false,
 )

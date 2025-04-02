@@ -1,12 +1,12 @@
 option(
-    'tests',
-    type: 'feature',
-    value: 'auto',
-    description: 'build unit tests (requires catch2)',
+  'tests',
+  type: 'feature',
+  value: 'auto',
+  description: 'build unit tests (requires catch2)',
 )
 option(
-    'examples',
-    type: 'boolean',
-    value: false,
-    description: 'build examples',
+  'examples',
+  type: 'boolean',
+  value: false,
+  description: 'build examples',
 )

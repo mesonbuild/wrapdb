@@ -1,14 +1,14 @@
 option(
-    'xplm-level',
-    type: 'integer',
-    min: 0,
-    max: 400,
-    value: 0,
-    description: 'The XPLM compatibility level to use. See the documentation.',
+  'xplm-level',
+  type: 'integer',
+  min: 0,
+  max: 400,
+  value: 0,
+  description: 'The XPLM compatibility level to use. See the documentation.',
 )
 option(
-    'cpp',
-    type: 'feature',
-    value: 'disabled',
-    description: 'Build C++ wrappers',
+  'cpp',
+  type: 'feature',
+  value: 'disabled',
+  description: 'Build C++ wrappers',
 )

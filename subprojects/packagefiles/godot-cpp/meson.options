@@ -1,7 +1,7 @@
 option(
-    'precision',
-    type: 'combo',
-    choices: ['single', 'double'],
-    value: 'single',
-    description: 'floating point type for godot-cpp',
+  'precision',
+  type: 'combo',
+  choices: ['single', 'double'],
+  value: 'single',
+  description: 'floating point type for godot-cpp',
 )

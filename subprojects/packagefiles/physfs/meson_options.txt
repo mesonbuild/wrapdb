@@ -1,59 +1,59 @@
 option(
-    'zip',
-    type: 'feature',
-    description: 'ZIP support',
+  'zip',
+  type: 'feature',
+  description: 'ZIP support',
 )
 
 option(
-    '7z',
-    type: 'feature',
-    description: '7zip support',
+  '7z',
+  type: 'feature',
+  description: '7zip support',
 )
 
 option(
-    'grp',
-    type: 'feature',
-    description: 'Build Engine GRP support',
+  'grp',
+  type: 'feature',
+  description: 'Build Engine GRP support',
 )
 
 option(
-    'wad',
-    type: 'feature',
-    description: 'Doom WAD support',
+  'wad',
+  type: 'feature',
+  description: 'Doom WAD support',
 )
 
 option(
-    'hog',
-    type: 'feature',
-    description: 'Descent I/II HOG support',
+  'hog',
+  type: 'feature',
+  description: 'Descent I/II HOG support',
 )
 
 option(
-    'mvl',
-    type: 'feature',
-    description: 'Descent I/II MVL support',
+  'mvl',
+  type: 'feature',
+  description: 'Descent I/II MVL support',
 )
 
 option(
-    'qpak',
-    type: 'feature',
-    description: 'Quake I/II QPAK support',
+  'qpak',
+  type: 'feature',
+  description: 'Quake I/II QPAK support',
 )
 
 option(
-    'slb',
-    type: 'feature',
-    description: 'I-War / Independence War SLB support',
+  'slb',
+  type: 'feature',
+  description: 'I-War / Independence War SLB support',
 )
 
 option(
-    'iso9660',
-    type: 'feature',
-    description: 'ISO9660 support',
+  'iso9660',
+  type: 'feature',
+  description: 'ISO9660 support',
 )
 
 option(
-    'vdf',
-    type: 'feature',
-    description: 'Gothic I/II VDF archive support',
+  'vdf',
+  type: 'feature',
+  description: 'Gothic I/II VDF archive support',
 )

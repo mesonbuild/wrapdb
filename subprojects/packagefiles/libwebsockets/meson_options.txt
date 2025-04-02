@@ -1,71 +1,71 @@
 option(
-    'compression',
-    type: 'feature',
-    description: 'zlib support',
+  'compression',
+  type: 'feature',
+  description: 'zlib support',
 )
 
 option(
-    'dbus',
-    type: 'feature',
-    description: 'DBus support',
+  'dbus',
+  type: 'feature',
+  description: 'DBus support',
 )
 
 option(
-    'brotli',
-    type: 'feature',
-    description: 'brotli support',
+  'brotli',
+  type: 'feature',
+  description: 'brotli support',
 )
 
 option(
-    'glib',
-    type: 'feature',
-    description: 'glib support',
+  'glib',
+  type: 'feature',
+  description: 'glib support',
 )
 
 option(
-    'ev',
-    type: 'feature',
-    description: 'libev support',
+  'ev',
+  type: 'feature',
+  description: 'libev support',
 )
 
 option(
-    'event',
-    type: 'feature',
-    description: 'libevent support',
+  'event',
+  type: 'feature',
+  description: 'libevent support',
 )
 
 option(
-    'mount',
-    type: 'feature',
-    description: 'libmount support',
+  'mount',
+  type: 'feature',
+  description: 'libmount support',
 )
 
 option(
-    'plugins',
-    type: 'feature',
-    description: 'libmount support',
+  'plugins',
+  type: 'feature',
+  description: 'libmount support',
 )
 
 option(
-    'sqlite3',
-    type: 'feature',
-    description: 'SQLite3 support',
+  'sqlite3',
+  type: 'feature',
+  description: 'SQLite3 support',
 )
 
 option(
-    'sdevent',
-    type: 'feature',
-    description: 'sd-event support',
+  'sdevent',
+  type: 'feature',
+  description: 'sd-event support',
 )
 
 option(
-    'ubox',
-    type: 'feature',
-    description: 'uloop support',
+  'ubox',
+  type: 'feature',
+  description: 'uloop support',
 )
 
 option(
-    'uv',
-    type: 'feature',
-    description: 'libuv support',
+  'uv',
+  type: 'feature',
+  description: 'libuv support',
 )

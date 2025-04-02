@@ -1,4 +1,4 @@
 option(
-    'progs',
-    type: 'feature',
+  'progs',
+  type: 'feature',
 )

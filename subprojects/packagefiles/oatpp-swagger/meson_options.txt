@@ -1,25 +1,25 @@
 option(
-    'shared_libs',
-    type: 'boolean',
-    value: false,
-    description: 'Build shared libraries',
+  'shared_libs',
+  type: 'boolean',
+  value: false,
+  description: 'Build shared libraries',
 )
 option(
-    'tests',
-    type: 'boolean',
-    value: true,
-    description: 'Build tests for this module',
+  'tests',
+  type: 'boolean',
+  value: true,
+  description: 'Build tests for this module',
 )
 # this is set to false, in the cmake files this is set to true per default, but since this needs res/ files installed there, for everything to work, it has to be set manually, and the you have to install it, for it to work, since it expectecs the files to be there
 option(
-    'install',
-    type: 'boolean',
-    value: false,
-    description: 'Install module binaries',
+  'install',
+  type: 'boolean',
+  value: false,
+  description: 'Install module binaries',
 )
 option(
-    'msvc_link_static_runtime',
-    type: 'boolean',
-    value: false,
-    description: 'MSVC: Link with static runtime (/MT and /MTd).',
+  'msvc_link_static_runtime',
+  type: 'boolean',
+  value: false,
+  description: 'MSVC: Link with static runtime (/MT and /MTd).',
 )

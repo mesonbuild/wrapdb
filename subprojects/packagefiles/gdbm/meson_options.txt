@@ -1,19 +1,19 @@
 option(
-    'mmap',
-    type: 'boolean',
-    value: true,
+  'mmap',
+  type: 'boolean',
+  value: true,
 )
 option(
-    'compat',
-    type: 'boolean',
-    value: false,
+  'compat',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'gdbm_debug',
-    type: 'boolean',
-    value: false,
+  'gdbm_debug',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'nls',
-    type: 'feature',
+  'nls',
+  type: 'feature',
 )

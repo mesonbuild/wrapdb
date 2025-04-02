@@ -1,5 +1,5 @@
 option(
-    'tests',
-    type: 'feature',
-    value: 'disabled',
+  'tests',
+  type: 'feature',
+  value: 'disabled',
 )

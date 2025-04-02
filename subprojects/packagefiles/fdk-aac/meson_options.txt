@@ -1,10 +1,10 @@
 option(
-    'build-programs',
-    type: 'feature',
-    value: 'auto',
+  'build-programs',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'remove-date',
-    type: 'boolean',
-    value: false,
+  'remove-date',
+  type: 'boolean',
+  value: false,
 )

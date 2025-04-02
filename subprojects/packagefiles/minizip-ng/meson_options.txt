@@ -1,54 +1,54 @@
 option(
-    'bsd',
-    type: 'feature',
-    description: 'Build with libbsd arc4random',
+  'bsd',
+  type: 'feature',
+  description: 'Build with libbsd arc4random',
 )
 
 option(
-    'iconv',
-    type: 'feature',
-    description: 'Build with iconv support',
+  'iconv',
+  type: 'feature',
+  description: 'Build with iconv support',
 )
 
 option(
-    'tests',
-    type: 'feature',
-    description: 'Build tests. Requires GTest.',
+  'tests',
+  type: 'feature',
+  description: 'Build tests. Requires GTest.',
 )
 
 option(
-    'ng',
-    type: 'boolean',
-    description: 'Build without compatibility support for traditional minizip',
-    value: false,
+  'ng',
+  type: 'boolean',
+  description: 'Build without compatibility support for traditional minizip',
+  value: false,
 )
 
 option(
-    'bzip2',
-    type: 'feature',
-    description: 'Build with bzip2 support',
+  'bzip2',
+  type: 'feature',
+  description: 'Build with bzip2 support',
 )
 
 option(
-    'lzma',
-    type: 'feature',
-    description: 'Build with lzma support',
+  'lzma',
+  type: 'feature',
+  description: 'Build with lzma support',
 )
 
 option(
-    'wzaes',
-    type: 'feature',
-    description: 'Buid with WinZip AES support',
+  'wzaes',
+  type: 'feature',
+  description: 'Buid with WinZip AES support',
 )
 
 option(
-    'zlib',
-    type: 'feature',
-    description: 'Build with zlib/zlib-ng support',
+  'zlib',
+  type: 'feature',
+  description: 'Build with zlib/zlib-ng support',
 )
 
 option(
-    'zstd',
-    type: 'feature',
-    description: 'Build with zstd support',
+  'zstd',
+  type: 'feature',
+  description: 'Build with zstd support',
 )

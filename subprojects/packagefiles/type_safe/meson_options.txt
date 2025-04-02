@@ -1,25 +1,25 @@
 option(
-    'assertions',
-    type: 'feature',
-    value: 'auto',
-    description: 'enable internal assertions. `auto` is based on NDEBUG.',
+  'assertions',
+  type: 'feature',
+  value: 'auto',
+  description: 'enable internal assertions. `auto` is based on NDEBUG.',
 )
 option(
-    'preconditions',
-    type: 'boolean',
-    value: true,
-    description: 'enable precondition checks',
+  'preconditions',
+  type: 'boolean',
+  value: true,
+  description: 'enable precondition checks',
 )
 option(
-    'wrappers',
-    type: 'boolean',
-    value: true,
-    description: 'enable wrappers in types.hpp',
+  'wrappers',
+  type: 'boolean',
+  value: true,
+  description: 'enable wrappers in types.hpp',
 )
 option(
-    'arithmetic-policy',
-    type: 'combo',
-    choices: ['default', 'ub', 'checked'],
-    value: 'default',
-    description: 'default arithmetic policy to use',
+  'arithmetic-policy',
+  type: 'combo',
+  choices: ['default', 'ub', 'checked'],
+  value: 'default',
+  description: 'default arithmetic policy to use',
 )

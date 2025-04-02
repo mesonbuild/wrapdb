@@ -1,10 +1,10 @@
 option(
-    'unused_tests',
-    type: 'boolean',
-    value: false,
+  'unused_tests',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'timeout_tests',
-    type: 'boolean',
-    value: false,
+  'timeout_tests',
+  type: 'boolean',
+  value: false,
 )

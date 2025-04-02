@@ -1,67 +1,67 @@
 # Build libraries.
 option(
-    'libsharpyuv'   ,
-    type: 'feature',
+  'libsharpyuv'   ,
+  type: 'feature',
 )
 option(
-    'libwebp'       ,
-    type: 'feature',
+  'libwebp'       ,
+  type: 'feature',
 )
 option(
-    'libwebpmux'    ,
-    type: 'feature',
+  'libwebpmux'    ,
+  type: 'feature',
 )
 option(
-    'libwebpdemux'  ,
-    type: 'feature',
+  'libwebpdemux'  ,
+  type: 'feature',
 )
 option(
-    'libwebpdecoder',
-    type: 'feature',
+  'libwebpdecoder',
+  type: 'feature',
 )
 # Build programs.
 option(
-    'cwebp'   ,
-    type: 'feature',
+  'cwebp'   ,
+  type: 'feature',
 )
 option(
-    'dwebp'   ,
-    type: 'feature',
+  'dwebp'   ,
+  type: 'feature',
 )
 option(
-    'webpinfo',
-    type: 'feature',
+  'webpinfo',
+  type: 'feature',
 )
 option(
-    'webpmux' ,
-    type: 'feature',
+  'webpmux' ,
+  type: 'feature',
 )
 # Features.
 option(
-    'simd'   ,
-    type: 'feature',
+  'simd'   ,
+  type: 'feature',
 )
 option(
-    'threads',
-    type: 'feature',
+  'threads',
+  type: 'feature',
 )
 # Advanced.
 option(
-    'disable-stats',
-    type: 'boolean',
-    value: false,
+  'disable-stats',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'near-lossless',
-    type: 'boolean',
+  'near-lossless',
+  type: 'boolean',
 )
 option(
-    'reduce-csp'   ,
-    type: 'boolean',
-    value: false,
+  'reduce-csp'   ,
+  type: 'boolean',
+  value: false,
 )
 option(
-    'reduce-size'  ,
-    type: 'boolean',
-    value: false,
+  'reduce-size'  ,
+  type: 'boolean',
+  value: false,
 )
