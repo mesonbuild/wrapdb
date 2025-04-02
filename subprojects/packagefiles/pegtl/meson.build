@@ -1,7 +1,7 @@
 project(
   'pegtl',
   'cpp',
-  version: '3.2.7',
+  version: '3.2.8',
   meson_version: '>=1.2.0',
   default_options: {
     'cpp_std': 'c++17',
