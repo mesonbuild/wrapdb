@@ -81,5 +81,4 @@ option(
     'winmm',
     type: 'feature',
     description: 'Windows Multimedia backend backend',
-) \
-    
+)
