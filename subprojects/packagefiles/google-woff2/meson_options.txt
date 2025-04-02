@@ -1,11 +1,11 @@
 option(
-    'canonical_prefixes',
-    type: 'boolean',
-    value: false,
-    description: 'Canonical prefixes',
+  'canonical_prefixes',
+  type: 'boolean',
+  value: false,
+  description: 'Canonical prefixes',
 )
 option(
-    'noisy_logging',
-    type: 'boolean',
-    value: false,
+  'noisy_logging',
+  type: 'boolean',
+  value: false,
 )

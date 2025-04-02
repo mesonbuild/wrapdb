@@ -1,8 +1,8 @@
 option(
-    'progs',
-    type: 'feature',
+  'progs',
+  type: 'feature',
 )
 option(
-    'tests',
-    type: 'feature',
+  'tests',
+  type: 'feature',
 )

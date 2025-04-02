@@ -1,59 +1,59 @@
 option(
-    'WITHOUT_OPTIMIZATION',
-    type: 'boolean',
-    value: false,
-    description: 'Disable optimization',
+  'WITHOUT_OPTIMIZATION',
+  type: 'boolean',
+  value: false,
+  description: 'Disable optimization',
 )
 option(
-    'ENABLE_DEVEL',
-    type: 'boolean',
-    value: false,
-    description: 'Enable development asserts, checks, etc',
+  'ENABLE_DEVEL',
+  type: 'boolean',
+  value: false,
+  description: 'Enable development asserts, checks, etc',
 )
 option(
-    'ENABLE_REFCNT_DEBUG',
-    type: 'boolean',
-    value: false,
-    description: 'Enable refcnt debugging',
+  'ENABLE_REFCNT_DEBUG',
+  type: 'boolean',
+  value: false,
+  description: 'Enable refcnt debugging',
 )
 option(
-    'ENABLE_HDRHISTOGRAM',
-    type: 'boolean',
-    value: false,
-    description: 'Enable HDR histogram',
+  'ENABLE_HDRHISTOGRAM',
+  type: 'boolean',
+  value: false,
+  description: 'Enable HDR histogram',
 )
 option(
-    'WITH_LIBDL',
-    type: 'feature',
-    description: 'With libdl',
+  'WITH_LIBDL',
+  type: 'feature',
+  description: 'With libdl',
 )
 option(
-    'WITH_ZLIB',
-    type: 'feature',
-    description: 'With ZLIB',
+  'WITH_ZLIB',
+  type: 'feature',
+  description: 'With ZLIB',
 )
 option(
-    'WITH_ZSTD',
-    type: 'feature',
-    description: 'With ZSTD',
+  'WITH_ZSTD',
+  type: 'feature',
+  description: 'With ZSTD',
 )
 option(
-    'WITH_SSL',
-    type: 'feature',
-    description: 'With SSL',
+  'WITH_SSL',
+  type: 'feature',
+  description: 'With SSL',
 )
 option(
-    'WITH_SASL',
-    type: 'feature',
-    description: 'With SASL',
+  'WITH_SASL',
+  type: 'feature',
+  description: 'With SASL',
 )
 option(
-    'WITH_CURL',
-    type: 'feature',
-    description: 'With CURL',
+  'WITH_CURL',
+  type: 'feature',
+  description: 'With CURL',
 )
 option(
-    'WITH_LZ4_EXT',
-    type: 'feature',
-    description: 'Enable external LZ4 library support',
+  'WITH_LZ4_EXT',
+  type: 'feature',
+  description: 'Enable external LZ4 library support',
 )

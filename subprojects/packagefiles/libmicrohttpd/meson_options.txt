@@ -1,24 +1,24 @@
 option(
-    'curl',
-    type: 'feature',
-    description: 'Use curl for testcases',
+  'curl',
+  type: 'feature',
+  description: 'Use curl for testcases',
 )
 
 option(
-    'expat',
-    type: 'feature',
-    description: 'Use curl for testcases',
+  'expat',
+  type: 'feature',
+  description: 'Use curl for testcases',
 )
 
 option(
-    'gcrypt',
-    type: 'feature',
-    description: 'Use curl for testcases',
+  'gcrypt',
+  type: 'feature',
+  description: 'Use curl for testcases',
 )
 
 option(
-    'gnutls',
-    type: 'feature',
-    description: 'Use curl for testcases',
+  'gnutls',
+  type: 'feature',
+  description: 'Use curl for testcases',
 )
 

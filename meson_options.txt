@@ -1,15 +1,15 @@
 option(
-    'wraps',
-    type: 'array',
-    value: [],
+  'wraps',
+  type: 'array',
+  value: [],
 )
 option(
-    'depnames',
-    type: 'array',
-    value: [],
+  'depnames',
+  type: 'array',
+  value: [],
 )
 option(
-    'prognames',
-    type: 'array',
-    value: [],
+  'prognames',
+  type: 'array',
+  value: [],
 )

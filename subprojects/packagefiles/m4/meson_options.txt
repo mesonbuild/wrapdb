@@ -1,18 +1,18 @@
 option(
-    'enable_changeword',
-    type: 'boolean',
-    value: false,
-    description: 'experimental feature which allows for changing the syntax of what is a "word" in m4',
+  'enable_changeword',
+  type: 'boolean',
+  value: false,
+  description: 'experimental feature which allows for changing the syntax of what is a "word" in m4',
 )
 option(
-    'with_syscmd_shell',
-    type: 'string',
-    value: 'default',
-    description: '''By default, the 'syscmd' and 'esyscmd' macros try to use the first of 'bash', 'sh', or 'cmd' found by find_program().  If that default is inappropriate, you can set this option.''',
+  'with_syscmd_shell',
+  type: 'string',
+  value: 'default',
+  description: '''By default, the 'syscmd' and 'esyscmd' macros try to use the first of 'bash', 'sh', or 'cmd' found by find_program().  If that default is inappropriate, you can set this option.''',
 )
 option(
-    'enable_tests',
-    type: 'boolean',
-    value: true,
-    description: 'Enable m4 tests',
+  'enable_tests',
+  type: 'boolean',
+  value: true,
+  description: 'Enable m4 tests',
 )

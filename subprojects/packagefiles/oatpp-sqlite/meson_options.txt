@@ -1,28 +1,28 @@
 option(
-    'shared_libs',
-    type: 'boolean',
-    value: false,
-    description: 'Build shared libraries',
+  'shared_libs',
+  type: 'boolean',
+  value: false,
+  description: 'Build shared libraries',
 )
 option(
-    'tests',
-    type: 'feature',
-    value: 'auto',
-    description: 'Build tests for this module',
-    deprecated: {
-        'true': 'enabled',
-        'false': 'disabled',
-    },
+  'tests',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build tests for this module',
+  deprecated: {
+    'true': 'enabled',
+    'false': 'disabled',
+  },
 )
 option(
-    'install',
-    type: 'boolean',
-    value: true,
-    description: 'Install module binaries',
+  'install',
+  type: 'boolean',
+  value: true,
+  description: 'Install module binaries',
 )
 option(
-    'sqlite_amalgamation',
-    type: 'feature',
-    value: 'auto',
-    description: 'Use SQLite amalgamation. SQLite amalgamation will be installed together with this module. SQLite amalgamation is the SQLite implemenation cramped into one file, it is a optional fallback for the sqlite dependency',
+  'sqlite_amalgamation',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use SQLite amalgamation. SQLite amalgamation will be installed together with this module. SQLite amalgamation is the SQLite implemenation cramped into one file, it is a optional fallback for the sqlite dependency',
 )

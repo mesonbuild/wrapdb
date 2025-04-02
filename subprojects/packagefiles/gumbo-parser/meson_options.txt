@@ -1,9 +1,9 @@
 option(
-    'examples',
-    type: 'feature',
-    value: 'disabled',
+  'examples',
+  type: 'feature',
+  value: 'disabled',
 )
 option(
-    'tests',
-    type: 'feature',
+  'tests',
+  type: 'feature',
 )

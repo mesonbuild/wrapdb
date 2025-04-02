@@ -1,20 +1,20 @@
 option(
-    'sse2',
-    type: 'feature',
-    value: 'auto',
+  'sse2',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'avx2',
-    type: 'feature',
-    value: 'auto',
+  'avx2',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'avx512bw',
-    type: 'feature',
-    value: 'auto',
+  'avx512bw',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'neon',
-    type: 'feature',
-    value: 'auto',
+  'neon',
+  type: 'feature',
+  value: 'auto',
 )

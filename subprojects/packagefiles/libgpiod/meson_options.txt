@@ -2,26 +2,26 @@
 # Copyright 2021 IBM Corp.
 
 option(
-    'tools',
-    type: 'boolean',
-    description: 'enable libgpiod command-line tools',
-    value: false,
+  'tools',
+  type: 'boolean',
+  description: 'enable libgpiod command-line tools',
+  value: false,
 )
 option(
-    'tests',
-    type: 'boolean',
-    description: 'enable libgpiod tests',
-    value: false,
+  'tests',
+  type: 'boolean',
+  description: 'enable libgpiod tests',
+  value: false,
 )
 option(
-    'docs',
-    type: 'boolean',
-    description: 'enable libgpiod documentation',
-    value: false,
+  'docs',
+  type: 'boolean',
+  description: 'enable libgpiod documentation',
+  value: false,
 )
 option(
-    'bindings',
-    type: 'array',
-    choices: ['cxx', 'python'],
-    value: [],
+  'bindings',
+  type: 'array',
+  choices: ['cxx', 'python'],
+  value: [],
 )

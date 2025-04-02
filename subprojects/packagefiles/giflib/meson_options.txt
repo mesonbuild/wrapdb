@@ -1,10 +1,10 @@
 option(
-    'progs',
-    type: 'feature',
-    value: 'auto',
+  'progs',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'tests',
-    type: 'feature',
-    value: 'auto',
+  'tests',
+  type: 'feature',
+  value: 'auto',
 )

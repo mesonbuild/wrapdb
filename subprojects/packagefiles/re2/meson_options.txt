@@ -1,6 +1,6 @@
 option(
-    'bigtests',
-    type: 'boolean',
-    value: false,
-    description: 'build big tests',
+  'bigtests',
+  type: 'boolean',
+  value: false,
+  description: 'build big tests',
 )

@@ -1,41 +1,41 @@
 option(
-    'LV_CONF_BUILD_DISABLE_DEMOS',
-    description: 'Do not build demos',
-    type: 'boolean',
-    value: false,
+  'LV_CONF_BUILD_DISABLE_DEMOS',
+  description: 'Do not build demos',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'LV_CONF_BUILD_DISABLE_EXAMPLES',
-    description: 'Do not build examples',
-    type: 'boolean',
-    value: false,
+  'LV_CONF_BUILD_DISABLE_EXAMPLES',
+  description: 'Do not build examples',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'LV_CONF_INCLUDE_SIMPLE',
-    description: 'Use #include "lv_conf.h" instead of #include "../../lv_conf.h"',
-    type: 'boolean',
-    value: true,
+  'LV_CONF_INCLUDE_SIMPLE',
+  description: 'Use #include "lv_conf.h" instead of #include "../../lv_conf.h"',
+  type: 'boolean',
+  value: true,
 )
 option(
-    'LV_CONF_PATH',
-    description: 'Path of the lv_conf.h file',
-    type: 'string',
+  'LV_CONF_PATH',
+  description: 'Path of the lv_conf.h file',
+  type: 'string',
 )
 option(
-    'LV_CONF_SKIP',
-    description: 'Do not require lv_conf.h to build',
-    type: 'boolean',
-    value: false,
+  'LV_CONF_SKIP',
+  description: 'Do not require lv_conf.h to build',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'LV_CONF_BUILD_DISABLE_THORVG_INTERNAL',
-    description: 'Do not build the internal thorvg library',
-    type: 'boolean',
-    value: false,
+  'LV_CONF_BUILD_DISABLE_THORVG_INTERNAL',
+  description: 'Do not build the internal thorvg library',
+  type: 'boolean',
+  value: false,
 )
 option(
-    'LV_LVGL_H_INCLUDE_SIMPLE',
-    description: 'Use #include "lvgl.h" instead of #include "../../lvgl.h"',
-    type: 'boolean',
-    value: true,
+  'LV_LVGL_H_INCLUDE_SIMPLE',
+  description: 'Use #include "lvgl.h" instead of #include "../../lvgl.h"',
+  type: 'boolean',
+  value: true,
 )

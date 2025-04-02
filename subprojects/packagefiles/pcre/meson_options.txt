@@ -1,11 +1,11 @@
 option(
-    'libedit',
-    type: 'feature',
-    description: 'Build with libedit support',
+  'libedit',
+  type: 'feature',
+  description: 'Build with libedit support',
 )
 
 option(
-    'libreadline',
-    type: 'feature',
-    description: 'Build with libreadline support',
+  'libreadline',
+  type: 'feature',
+  description: 'Build with libreadline support',
 )

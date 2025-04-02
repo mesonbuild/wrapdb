@@ -1,5 +1,5 @@
 option(
-    'tests',
-    type: 'feature',
-    description: 'Build tests',
+  'tests',
+  type: 'feature',
+  description: 'Build tests',
 )

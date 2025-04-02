@@ -1,13 +1,13 @@
 option(
-    'with-gmp',
-    type: 'feature',
-    description: 'Enable using the GNU MP bignum library',
+  'with-gmp',
+  type: 'feature',
+  description: 'Enable using the GNU MP bignum library',
 )
 
 option(
-    'enable-dl',
-    type: 'combo',
-    choices: ['ltdl', 'dlfcn', 'no'],
-    value: 'no',
-    description: 'Enable shared library support',
+  'enable-dl',
+  type: 'combo',
+  choices: ['ltdl', 'dlfcn', 'no'],
+  value: 'no',
+  description: 'Enable shared library support',
 )

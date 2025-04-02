@@ -20,38 +20,38 @@
 # SOFTWARE.
 
 option(
-    'use_libbsd',
-    type: 'feature',
-    description: 'Use libbsd for arc4random_buf',
+  'use_libbsd',
+  type: 'feature',
+  description: 'Use libbsd for arc4random_buf',
 )
 option(
-    'xml_dtd',
-    type: 'boolean',
-    value: true,
-    description: 'If true make parameter entity parsing functionality available',
+  'xml_dtd',
+  type: 'boolean',
+  value: true,
+  description: 'If true make parameter entity parsing functionality available',
 )
 option(
-    'xml_ge',
-    type: 'boolean',
-    value: true,
-    description: 'If true make general entity parsing functionality available',
+  'xml_ge',
+  type: 'boolean',
+  value: true,
+  description: 'If true make general entity parsing functionality available',
 )
 option(
-    'xml_ns',
-    type: 'boolean',
-    value: true,
-    description: 'If true make XML Namespaces functionality available',
+  'xml_ns',
+  type: 'boolean',
+  value: true,
+  description: 'If true make XML Namespaces functionality available',
 )
 option(
-    'use_dev_urandom',
-    type: 'boolean',
-    value: true,
-    description: 'If true use /dev/urandom for entropy. Has no affect on platforms without /dev/urandom',
+  'use_dev_urandom',
+  type: 'boolean',
+  value: true,
+  description: 'If true use /dev/urandom for entropy. Has no affect on platforms without /dev/urandom',
 )
 option(
-    'build_tests',
-    type: 'boolean',
-    value: false,
-    description: 'Build unit tests',
+  'build_tests',
+  type: 'boolean',
+  value: false,
+  description: 'Build unit tests',
 )
 # TODO: tools, examples, tests, docs

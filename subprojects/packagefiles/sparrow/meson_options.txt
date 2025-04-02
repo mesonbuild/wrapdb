@@ -1,5 +1,5 @@
 option(
-    'use_date_polyfill',
-    type: 'boolean',
-    value: true,
+  'use_date_polyfill',
+  type: 'boolean',
+  value: true,
 )

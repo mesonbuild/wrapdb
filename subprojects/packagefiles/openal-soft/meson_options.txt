@@ -1,85 +1,86 @@
 option(
-    'alsa',
-    type: 'feature',
-    description: 'ALSA backend',
+  'alsa',
+  type: 'feature',
+  description: 'ALSA backend',
 )
 
 option(
-    'jack',
-    type: 'feature',
-    description: 'JACK backend',
+  'jack',
+  type: 'feature',
+  description: 'JACK backend',
 )
 
 option(
-    'oboe',
-    type: 'feature',
-    description: 'Oboe backend',
+  'oboe',
+  type: 'feature',
+  description: 'Oboe backend',
 )
 
 option(
-    'opensl',
-    type: 'feature',
-    description: 'OpenSL backend',
+  'opensl',
+  type: 'feature',
+  description: 'OpenSL backend',
 )
 
 option(
-    'oss',
-    type: 'feature',
-    description: 'OSS backend',
+  'oss',
+  type: 'feature',
+  description: 'OSS backend',
 )
 
 option(
-    'pipewire',
-    type: 'feature',
-    description: 'PipeWire backend',
+  'pipewire',
+  type: 'feature',
+  description: 'PipeWire backend',
 )
 
 option(
-    'portaudio',
-    type: 'feature',
-    description: 'PortAudio backend',
+  'portaudio',
+  type: 'feature',
+  description: 'PortAudio backend',
 )
 
 option(
-    'pulseaudio',
-    type: 'feature',
-    description: 'PulseAudio backend',
+  'pulseaudio',
+  type: 'feature',
+  description: 'PulseAudio backend',
 )
 
 option(
-    'rtkit',
-    type: 'feature',
-    description: 'RTKit/D-Bus support',
+  'rtkit',
+  type: 'feature',
+  description: 'RTKit/D-Bus support',
 )
 
 option(
-    'sdl2',
-    type: 'feature',
-    description: 'SDL2 backend',
+  'sdl2',
+  type: 'feature',
+  description: 'SDL2 backend',
 )
 
 option(
-    'sndio',
-    type: 'feature',
-    description: 'SoundIO backend',
+  'sndio',
+  type: 'feature',
+  description: 'SoundIO backend',
 )
 
 option(
-    'solaris',
-    type: 'feature',
-    description: 'Solaris backend',
+  'solaris',
+  type: 'feature',
+  description: 'Solaris backend',
 )
 
 option(
-    'utils',
-    type: 'boolean',
-    value: true,
-    description: 'Install utility programs (openal-info, alsoft-config, ...)',
+  'utils',
+  type: 'boolean',
+  value: true,
+  description: 'Install utility programs (openal-info, alsoft-config, ...)',
 )
 
 option(
-    'winmm',
-    type: 'feature',
-    description: 'Windows Multimedia backend backend',
+  'winmm',
+  type: 'feature',
+  description: 'Windows Multimedia backend backend',
 ) \
-    
+
+  

@@ -1,17 +1,17 @@
 option(
-    'flac',
-    type: 'feature',
-    description: 'FLAC support',
+  'flac',
+  type: 'feature',
+  description: 'FLAC support',
 )
 
 option(
-    'mpg123',
-    type: 'feature',
-    description: 'mpg123 support',
+  'mpg123',
+  type: 'feature',
+  description: 'mpg123 support',
 )
 option(
-    'opus',
-    type: 'feature',
-    description: 'Opus support',
+  'opus',
+  type: 'feature',
+  description: 'Opus support',
 )
 

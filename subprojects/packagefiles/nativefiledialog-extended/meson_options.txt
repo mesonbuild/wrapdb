@@ -1,28 +1,28 @@
 
 option(
-    'tests',
-    type: 'boolean',
-    value: false,
-    description: 'whether or not tests should be built',
+  'tests',
+  type: 'boolean',
+  value: false,
+  description: 'whether or not tests should be built',
 )
 
 option(
-    'xdg-desktop-portal',
-    type: 'feature',
-    value: 'auto',
-    description: 'Use xdg-desktop-portal instead of GTK (linux only)',
+  'xdg-desktop-portal',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use xdg-desktop-portal instead of GTK (linux only)',
 )
 
 option(
-    'append_extension_linux',
-    type: 'boolean',
-    value: false,
-    description: 'Automatically append file extension to an extensionless selection in SaveDialog() (linux only)',
+  'append_extension_linux',
+  type: 'boolean',
+  value: false,
+  description: 'Automatically append file extension to an extensionless selection in SaveDialog() (linux only)',
 )
 
 option(
-    'use_allowed_content_types',
-    type: 'feature',
-    value: 'auto',
-    description: 'Use allowedContentTypes for filter lists on macOS >= 11.0',
+  'use_allowed_content_types',
+  type: 'feature',
+  value: 'auto',
+  description: 'Use allowedContentTypes for filter lists on macOS >= 11.0',
 )

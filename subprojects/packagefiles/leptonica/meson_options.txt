@@ -1,50 +1,50 @@
 option(
-    'libgif'      ,
-    type: 'feature',
-    value: 'auto',
+  'libgif'      ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libjp2k'     ,
-    type: 'feature',
-    value: 'auto',
+  'libjp2k'     ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libjpeg'     ,
-    type: 'feature',
-    value: 'auto',
+  'libjpeg'     ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libpng'      ,
-    type: 'feature',
-    value: 'auto',
+  'libpng'      ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libtiff'     ,
-    type: 'feature',
-    value: 'auto',
+  'libtiff'     ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libwebp'     ,
-    type: 'feature',
-    value: 'auto',
+  'libwebp'     ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libwebp-anim',
-    type: 'feature',
-    value: 'auto',
+  'libwebp-anim',
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'libz'        ,
-    type: 'feature',
-    value: 'auto',
+  'libz'        ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'progs'       ,
-    type: 'feature',
-    value: 'auto',
+  'progs'       ,
+  type: 'feature',
+  value: 'auto',
 )
 option(
-    'tests'       ,
-    type: 'feature',
-    value: 'auto',
+  'tests'       ,
+  type: 'feature',
+  value: 'auto',
 )

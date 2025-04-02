@@ -1,20 +1,20 @@
 option(
-    'force_inline',
-    type: 'boolean',
+  'force_inline',
+  type: 'boolean',
 )
 option(
-    'jpeg-turbo',
-    type: 'feature',
+  'jpeg-turbo',
+  type: 'feature',
 )
 option(
-    'simd',
-    type: 'feature',
+  'simd',
+  type: 'feature',
 )
 option(
-    'tests',
-    type: 'feature',
+  'tests',
+  type: 'feature',
 )
 option(
-    'neon-intrinsics',
-    type: 'feature',
+  'neon-intrinsics',
+  type: 'feature',
 )

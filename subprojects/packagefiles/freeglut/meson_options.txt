@@ -1,6 +1,6 @@
 option(
-    'wayland',
-    type: 'boolean',
-    value: false,
-    description: 'Use Wayland (no X11)',
+  'wayland',
+  type: 'boolean',
+  value: false,
+  description: 'Use Wayland (no X11)',
 )
