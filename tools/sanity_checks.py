@@ -145,6 +145,11 @@ FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 
+class ExpectedError(Exception):
+    pass
+
+class UnexpectedSuccess(Exception):
+    pass
 
 class TestReleases(unittest.TestCase):
     @classmethod
@@ -303,6 +308,7 @@ class TestReleases(unittest.TestCase):
         skipped = []
         failed = []
         errored = []
+        succeed = []
         for name, info in self.releases.items():
             if name in self.skip:
                 skipped.append(name)
@@ -315,14 +321,17 @@ class TestReleases(unittest.TestCase):
                 passed.append(name)
             except subprocess.CalledProcessError:
                 failed.append(name)
-            except Exception:
+            except ExpectedError:
                 errored.append(name)
+            except UnexpectedSuccess:
+                succeed.append(name)
         print(f'{len(passed)} passed:', ', '.join(passed))
         print(f'{len(skipped)} skipped:', ', '.join(skipped))
         print(f'{len(failed)} failed:', ', '.join(failed))
-        print(f'{len(errored)} errored:', ', '.join(errored))
+        print(f'{len(errored)} expected errored:', ', '.join(errored))
+        print(f'{len(succeed)} unexpected succeed:', ', '.join(succeed))
         self.assertFalse(failed)
-        self.assertFalse(errored)
+        self.assertFalse(succeed)
 
     def check_has_no_path_separators(self, value: str) -> None:
         self.assertNotIn('/', value)
@@ -424,11 +433,13 @@ class TestReleases(unittest.TestCase):
                 print(logs)
         if res.returncode == 0:
             if not expect_working:
-                raise Exception(f'Wrap {name} successfully configured but was expected to fail')
+                raise UnexpectedSuccess(f'Wrap {name} successfully configured but was expected to fail')
         else:
             if expect_working:
                 res.check_returncode()
             else:
+                # It failed as expected, still raise an exception if it's not an explicit
+                # error message about unsupported platform.
                 loglines = logs.splitlines()
                 lasterror = [i for i, j in enumerate(loglines) if 'ERROR: ' in j][-1]
                 error = ' '.join(loglines[lasterror:])
@@ -445,7 +456,7 @@ class TestReleases(unittest.TestCase):
                     if 'not found' in error:
                         print('cannot verify in wrapdb due to missing dependency')
                         return
-            raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
+                raise ExpectedError(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
         subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)
         if not ci.get('skip_tests', False):
             test_options = ci.get('test_options', [])
