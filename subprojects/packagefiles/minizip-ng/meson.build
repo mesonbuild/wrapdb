@@ -251,11 +251,11 @@ minizip_ng_dep = declare_dependency(
   link_with: minizip_ng,
 )
 
-gtest_dep = dependency(
-  'gtest',
+gtestmain_dep = dependency(
+  'gtest_main',
   required: get_option('tests'),
 )
-if gtest_dep.found()
+if gtestmain_dep.found()
   testdir = meson.current_source_dir()
   subdir('test')
 endif
