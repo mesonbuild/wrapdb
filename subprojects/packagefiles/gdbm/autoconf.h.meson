@@ -112,10 +112,13 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #mesondefine HAVE_SYS_TYPES_H
 
+/* Define to 1 if you have the `timer_settime' function. */
+#mesondefine HAVE_TIMER_SETTIME
+
 /* Define to 1 if you have the <unistd.h> header file. */
 #mesondefine HAVE_UNISTD_H
 
-/* Define to 1 if the system has the type `unsigned long long int'. */
+/* Define to 1 if the system has the type 'unsigned long long int'. */
 #mesondefine HAVE_UNSIGNED_LONG_LONG_INT
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
