@@ -34,8 +34,6 @@ test_srcs = files(
   'test_stream_crypt.cc',
 )
 
-test_srcs += files('test_main.cc')
-
 if cpp.get_id() == 'msvc'
   test_srcs += 'test_file.cc'
 endif
@@ -46,7 +44,7 @@ test(
     'gtest_minizip',
     test_srcs,
     cpp_args: margs,
-    dependencies: [gtest_dep, testlib_dep],
+    dependencies: [gtestmain_dep, testlib_dep],
   ),
   workdir: testdir,
   timeout: 300,
