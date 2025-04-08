@@ -1660,6 +1660,14 @@
       "3.6.2-1"
     ]
   },
+  "libcap": {
+    "dependency_names": [
+      "libcap"
+    ],
+    "versions": [
+      "2.76-1"
+    ]
+  },
   "libccp4c": {
     "dependency_names": [
       "libccp4c"
