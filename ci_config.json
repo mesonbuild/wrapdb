@@ -514,6 +514,17 @@
       "windows": false
     }
   },
+  "libcap": {
+    "_comment": "- relies on Linux specific APIs",
+    "build_on": {
+      "darwin": false,
+      "msys2": false,
+      "windows": false
+    },
+    "debian_packages": [
+      "libattr1-dev"
+    ]
+  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
