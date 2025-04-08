@@ -116,6 +116,9 @@ PER_PROJECT_PERMITTED_FILES = {
         'arm2gnu-wrapper.py',
         'generate_windows_rc.py',
     ],
+    'libcap': [
+        'gen_cap_names.py',
+    ],
     'libffi': [
         'test-cc-supports-hidden-visibility.py',
         'test-ro-eh-frame.py',
