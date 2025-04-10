@@ -7,7 +7,7 @@ option(
 option(
     'compile_library',
     type: 'boolean',
-    value: false,
+    value: true,
     description: 'Builds a static/shared lib for faster compile times',
 )
 option(
