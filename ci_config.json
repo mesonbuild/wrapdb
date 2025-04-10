@@ -478,11 +478,12 @@
     ]
   },
   "inih": {
-    "_comment": "https://github.com/benhoyt/inih/pull/191",
     "alpine_packages": [
       "bash"
     ],
-    "fatal_warnings": false
+    "msys_packages": [
+      "diffutils"
+    ]
   },
   "lcms2": {
     "_comment": "https://github.com/mm2/Little-CMS/pull/473",
