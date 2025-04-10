@@ -11,11 +11,6 @@ option(
     description: 'Builds a static/shared lib for faster compile times',
 )
 option(
-    'external_fmt',
-    type: 'feature',
-    description: 'Builds with external fmt lib instead of internal',
-)
-option(
     'std_format',
     type: 'feature',
     description: 'Use std::format instead of internal fmt lib',
