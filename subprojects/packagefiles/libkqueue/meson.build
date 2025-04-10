@@ -144,7 +144,8 @@ libkqueue = library(
   dependencies: kqueue_deps,
 )
 
+dep_inc = include_directories('include')
 libkqueue_dep = declare_dependency(
   link_with: libkqueue,
-  include_directories: kqueue_inc,
+  include_directories: dep_inc,
 )
