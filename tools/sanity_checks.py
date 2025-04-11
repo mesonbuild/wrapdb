@@ -505,7 +505,7 @@ class TestReleases(unittest.TestCase):
             self.fail(
                 f'''Not formatted files found: {unformatted_str}
 Run the following command to format these files:
-meson format --inplace {unformatted_files_for_command}''')
+meson format --configuration meson.format --inplace {unformatted_files_for_command}''')
 
 
 if __name__ == '__main__':
