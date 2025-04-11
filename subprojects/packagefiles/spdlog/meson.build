@@ -27,12 +27,9 @@ else
   fmt_dep = dependency(
     'fmt',
     version: '>=8.1',
-    required: get_option('external_fmt'),
   )
-  if fmt_dep.found()
-    spdlog_dependencies += fmt_dep
-    spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
-  endif
+  spdlog_dependencies += fmt_dep
+  spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
 endif
 
 if get_option('compile_library')
