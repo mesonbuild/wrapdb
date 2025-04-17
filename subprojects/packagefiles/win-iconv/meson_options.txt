@@ -1,0 +1,13 @@
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'build tests',
+)
+
+option(
+    'default_libiconv_dll',
+    type: 'string',
+    value: '',
+    description: 'comma-separated list of iconv DLLs to try loading at runtime, e.g. "iconv.dll,libiconv.dll"',
+)

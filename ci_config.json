@@ -1308,6 +1308,14 @@
       "wayland:dtd_validation=false"
     ]
   },
+  "win-iconv": {
+    "_comment": "- Requires Windows",
+    "build_on": {
+      "alpine": false,
+      "darwin": false,
+      "linux": false
+    }
+  },
   "x-plane-sdk": {
     "build_options": [
       "x-plane-sdk:cpp=enabled"
