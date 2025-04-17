@@ -1,0 +1,10 @@
+[wrap-file]
+directory = win-iconv-0.0.8
+source_url = https://github.com/win-iconv/win-iconv/archive/refs/tags/v0.0.8.tar.gz
+source_filename = win-iconv-0.0.8.tar.gz
+source_hash = 23adea990a8303c6e69e32a64a30171efcb1b73824a1c2da1bbf576b0ae7c520
+patch_directory = win-iconv
+
+[provide]
+dependency_names = iconv
+program_names = win_iconv

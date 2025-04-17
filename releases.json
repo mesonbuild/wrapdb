@@ -4066,6 +4066,17 @@
       "0.8.2-1"
     ]
   },
+  "win-iconv": {
+    "dependency_names": [
+      "iconv"
+    ],
+    "program_names": [
+      "win_iconv"
+    ],
+    "versions": [
+      "0.0.8-1"
+    ]
+  },
   "wren": {
     "dependency_names": [
       "wren"
