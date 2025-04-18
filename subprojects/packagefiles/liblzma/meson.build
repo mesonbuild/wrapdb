@@ -225,20 +225,12 @@ else
 endif
 if nls_dep.found()
   cdata.set10('ENABLE_NLS', true)
-  cdata.set10(
-    'HAVE_DCGETTEXT',
-    cc.has_function(
-      'dcgettext',
-      dependencies: nls_dep,
-    ),
+  has_dcgettext = nls_dep.type_name() == 'internal' or cc.has_function(
+    'dcgettext',
+    dependencies: nls_dep,
   )
-  cdata.set10(
-    'HAVE_GETTEXT',
-    cc.has_function(
-      'dcgettext',
-      dependencies: nls_dep,
-    ),
-  )
+  cdata.set10('HAVE_DCGETTEXT', has_dcgettext)
+  cdata.set10('HAVE_GETTEXT', has_dcgettext)
   add_project_arguments(
     '-DLOCALEDIR="@0@"'.format(get_option('prefix') / get_option('localedir')),
     language: 'c',
