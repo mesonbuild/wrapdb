@@ -145,6 +145,7 @@ PER_PROJECT_PERMITTED_FILES = {
 FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
+IGNORE_SETUP_WARNINGS = re.compile(r"CMake reported that the package [^ ]+ was not found, even though Meson's preliminary check succeeded.")
 
 
 class TestReleases(unittest.TestCase):
@@ -375,7 +376,8 @@ class TestReleases(unittest.TestCase):
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options.append('-Ddepnames={}'.format(','.join(deps or [])))
         options.append('-Dprognames={}'.format(','.join(progs or [])))
-        if ci.get('fatal_warnings', expect_working) and self.fatal_warnings:
+        fatal_warnings = ci.get('fatal_warnings', expect_working) and self.fatal_warnings
+        if fatal_warnings:
             options.append('--fatal-meson-warnings')
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
@@ -418,12 +420,23 @@ class TestReleases(unittest.TestCase):
         if python_packages:
             install_packages('Python', [sys.executable, '-m', 'pip', 'install'], python_packages)
 
-        res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
-        log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
-        logs = log_file.read_text(encoding='utf-8')
-        if is_ci():
-            with ci_group('==== meson-log.txt ===='):
-                print(logs)
+        def do_setup(builddir, options, meson_env):
+            res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
+            log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
+            logs = log_file.read_text(encoding='utf-8')
+            if is_ci():
+                with ci_group('==== meson-log.txt ===='):
+                    print(logs)
+            return res, logs
+        res, logs = do_setup(builddir, options, meson_env)
+        if res.returncode != 0 and fatal_warnings and IGNORE_SETUP_WARNINGS:
+            match = IGNORE_SETUP_WARNINGS.search(logs)
+            if match:
+                print(f'\nFound spurious warning: "{match.group(0)}"')
+                print('Rerunning setup without --fatal-meson-warnings.\n')
+                options.remove('--fatal-meson-warnings')
+                res, logs = do_setup(builddir, options, meson_env)
+
         if res.returncode == 0:
             if not expect_working:
                 raise Exception(f'Wrap {name} successfully configured but was expected to fail')
