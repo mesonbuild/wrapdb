@@ -1,7 +1,7 @@
 project(
   'win-iconv',
   'c',
-  version: '0.0.8',
+  version: '0.0.9',
   meson_version: '>=0.54.0',
 )
 
@@ -52,7 +52,7 @@ win_iconv = executable(
 )
 meson.override_find_program('win_iconv', win_iconv)
 
-install_headers('iconv.h')
+install_headers('iconv.h', 'localcharset.h')
 
 if get_option('tests')
   win_iconv_test_exe = executable('win_iconv_test', files('win_iconv_test.c'))
