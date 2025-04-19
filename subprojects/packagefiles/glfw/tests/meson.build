@@ -1,7 +1,5 @@
 
 tst_include = include_directories('../include', '../src', '../deps')
-glad_gl = '../deps/glad_gl.c'
-glad_vulkan = '../deps/glad_vulkan.c'
 getopt = '../deps/getopt.c'
 tinycthread = '../deps/tinycthread.c'
 
@@ -20,26 +18,26 @@ endif
 
 #@ Test executables
 tests = {
-  'clipboard': [getopt, glad_gl],
-  'events': [getopt, glad_gl],
-  'msaa': [getopt, glad_gl],
-  'glfwinfo': [getopt, glad_gl, glad_vulkan],
-  'iconify': [getopt, glad_gl],
-  'monitors': [getopt, glad_gl],
-  'reopen': glad_gl,
-  'cursor': glad_gl,
-  'empty': [tinycthread, glad_gl],
-  'gamma': glad_gl,
-  'icon': glad_gl,
-  'inputlag': [getopt, glad_gl],
-  'joysticks': glad_gl,
-  'opacity': glad_gl,
-  'tearing': glad_gl,
-  'threads': [tinycthread, glad_gl],
-  'timeout': glad_gl,
-  'title': glad_gl,
-  'triangle-vulkan': glad_vulkan,
-  'windows': [getopt, glad_gl],
+  'allocator': [],
+  'clipboard': [getopt],
+  'events': [getopt],
+  'msaa': [getopt],
+  'glfwinfo': [getopt],
+  'iconify': [getopt],
+  'monitors': [getopt],
+  'reopen': [],
+  'cursor': [],
+  'empty': [tinycthread],
+  'gamma': [],
+  'icon': [],
+  'inputlag': [getopt],
+  'joysticks': [],
+  'tearing': [],
+  'threads': [tinycthread],
+  'timeout': [],
+  'title': [],
+  'triangle-vulkan': [],
+  'window': [getopt],
 }
 foreach name, dep : tests
   src = [name + '.c', dep]

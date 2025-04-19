@@ -3,7 +3,7 @@
 project(
   'glfw',
   'c',
-  version: '3.3.10',
+  version: '3.4',
   license: 'Zlib',
   default_options: ['b_ndebug=if-release', 'c_std=c99', 'warning_level=0'],
   meson_version: '>=0.58.0',
@@ -21,6 +21,11 @@ if get_option('default_library') != 'static'
     language: 'c',
   )
 endif
+
+add_project_arguments(
+  '-D_DEFAULT_SOURCE',
+  language: 'c',
+)
 
 if opt_display == 'auto'
   if sys_os == 'windows'
@@ -40,7 +45,7 @@ if opt_display == 'osmesa'
   deps += dependency('osmesa')
   #  X11
 elif opt_display == 'x11'
-  foreach x : ['x11', 'xrandr', 'xinerama', 'xcursor', 'xi', 'xkbcommon']
+  foreach x : ['x11', 'xrandr', 'xinerama', 'xcursor', 'xi']
     deps += dependency(
       x,
       required: true,
@@ -125,7 +130,7 @@ elif opt_display == 'wayland'
   #  Win32
 elif opt_display == 'win32'
   if sys_os != 'windows'
-    error('Non Windows is unsupportred')
+    error('Non Windows is unsupported')
   endif
   #  Cocoa
 elif opt_display == 'cocoa'
@@ -158,13 +163,9 @@ endif
 deps += dependency('threads')
 
 ### Configuration ###
-cfg_data = configuration_data()
-foreach d : ['osmesa', 'x11', 'wayland', 'win32', 'cocoa']
-  cfg_data.set('_GLFW_' + d.to_upper(), opt_display == d)
-endforeach
-cfg_file = configure_file(
-  configuration: cfg_data,
-  output: 'glfw_config.h',
+add_project_arguments(
+  '-D_GLFW_' + opt_display.to_upper(),
+  language: 'c',
 )
 
 ### Targets ###
@@ -173,13 +174,27 @@ cfg_file = configure_file(
 #  Common files
 s_common = files(
   'src/context.c',
+  'src/egl_context.c',
   'src/init.c',
   'src/input.c',
   'src/monitor.c',
+  'src/null_init.c',
+  'src/null_joystick.c',
+  'src/null_monitor.c',
+  'src/null_window.c',
+  'src/osmesa_context.c',
+  'src/platform.c',
   'src/vulkan.c',
   'src/window.c',
 )
-s_common += cfg_file
+#  OS files
+if sys_os == 'darwin'
+  s_os = files('src/cocoa_time.c', 'src/posix_module.c', 'src/posix_thread.c')
+elif sys_os == 'windows'
+  s_os = files('src/win32_module.c', 'src/win32_thread.c', 'src/win32_time.c')
+else
+  s_os = files('src/posix_module.c', 'src/posix_thread.c', 'src/posix_time.c')
+endif
 #  Backend files
 if opt_display == 'osmesa'
   s_display = files(
@@ -193,12 +208,9 @@ if opt_display == 'osmesa'
   )
 elif opt_display == 'x11'
   s_display = files(
-    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
-    'src/egl_context.c',
     'src/glx_context.c',
-    'src/osmesa_context.c',
-    'src/posix_thread.c',
-    'src/posix_time.c',
+    'src/linux_joystick.c',
+    'src/posix_poll.c',
     'src/x11_init.c',
     'src/x11_monitor.c',
     'src/x11_window.c',
@@ -206,11 +218,8 @@ elif opt_display == 'x11'
   )
 elif opt_display == 'wayland'
   s_display = files(
-    'src/@0@_joystick.c'.format(sys_os == 'linux' ? 'linux' : 'null'),
-    'src/egl_context.c',
-    'src/osmesa_context.c',
-    'src/posix_thread.c',
-    'src/posix_time.c',
+    'src/linux_joystick.c',
+    'src/posix_poll.c',
     'src/wl_init.c',
     'src/wl_monitor.c',
     'src/wl_window.c',
@@ -218,14 +227,10 @@ elif opt_display == 'wayland'
   )
 elif opt_display == 'win32'
   s_display = files(
-    'src/egl_context.c',
-    'src/osmesa_context.c',
     'src/wgl_context.c',
     'src/win32_init.c',
     'src/win32_joystick.c',
     'src/win32_monitor.c',
-    'src/win32_thread.c',
-    'src/win32_time.c',
     'src/win32_window.c',
   )
 elif opt_display == 'cocoa'
@@ -237,34 +242,23 @@ elif opt_display == 'cocoa'
     'src/cocoa_init.m',
     'src/cocoa_joystick.m',
     'src/cocoa_monitor.m',
-    'src/cocoa_time.c',
     'src/cocoa_window.m',
-    'src/egl_context.c',
     'src/nsgl_context.m',
-    'src/osmesa_context.c',
-    'src/posix_thread.c',
-  )
-  add_project_arguments(
-    '-D_GLFW_USE_CONFIG_H',
-    language: 'objc',
   )
   if host_machine.system() == 'darwin'
     add_project_arguments(
       '-D_DARWIN_C_SOURCE',
+      '-D_GLFW_COCOA',
       language: 'objc',
     )
   endif
 endif
-srcfiles = [s_common, s_display]
+srcfiles = [s_common, s_os, s_display]
 if opt_display == 'wayland'
   srcfiles += s_wayland
 endif
 incdirs = include_directories('include', 'src')
 #@ Flags
-add_project_arguments(
-  '-D_GLFW_USE_CONFIG_H',
-  language: 'c',
-)
 if host_machine.system() == 'darwin'
   add_project_arguments(
     '-D_DARWIN_C_SOURCE',
