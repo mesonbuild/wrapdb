@@ -4,7 +4,6 @@ project(
   default_options: ['default_library=static', 'cpp_std=c++11'],
   version: '1.3.1',
   license: 'Apache-2.0',
-  meson_version: '>=1.3.0',
 )
 
 oatpp_version = meson.project_version()
