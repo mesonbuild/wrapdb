@@ -47,5 +47,4 @@ test(
     dependencies: [gtestmain_dep, testlib_dep],
   ),
   workdir: testdir,
-  timeout: 300,
 )
