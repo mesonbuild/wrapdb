@@ -60,6 +60,10 @@ jobs:
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
           python -m pip install --pre meson
+          if grep -q qemu /proc/$$/cmdline; then
+              export TEST_TIMEOUT_MULTIPLIER=10
+              echo "CPU emulation detected; increasing test timeouts by ${TEST_TIMEOUT_MULTIPLIER}x"
+          fi
           ./tools/fake_tty.py ./tools/sanity_checks.py
         shell: alpine.sh {0}
 
