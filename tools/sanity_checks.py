@@ -167,6 +167,7 @@ class TestReleases(unittest.TestCase):
         system = platform.system().lower()
         cls.skip = cls.ci_config[f'broken_{system}']
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
+        cls.timeout_multiplier = float(os.environ.get('TEST_TIMEOUT_MULTIPLIER', 1))
 
     def test_releases_json(self):
         # All tags must be in the releases file
@@ -450,6 +451,18 @@ class TestReleases(unittest.TestCase):
         subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)
         if not ci.get('skip_tests', False):
             test_options = ci.get('test_options', [])
+            if self.timeout_multiplier != 1:
+                print(f'TEST_TIMEOUT_MULTIPLIER env var set; extending test timeout by {self.timeout_multiplier}x')
+                for i, o in enumerate(test_options):
+                    match = re.match(r'--timeout-multiplier=([-\d.e]+)$', o)
+                    if match:
+                        test_options[i] = f'--timeout-multiplier={self.timeout_multiplier * float(match.group(1))}'
+                        break
+                    elif i > 0 and test_options[i - 1] in ('-t', '--timeout-multiplier'):
+                        test_options[i] = str(self.timeout_multiplier * float(o))
+                        break
+                else:
+                    test_options.append(f'--timeout-multiplier={self.timeout_multiplier}')
             try:
                 subprocess.check_call(['meson', 'test', '-C', builddir, '--suite', name, '--print-errorlogs'] + test_options)
             except subprocess.CalledProcessError:
