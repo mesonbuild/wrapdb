@@ -42,12 +42,22 @@ lame_def = configure_file(
   command: [find_program('fix_def.py'), '@INPUT@', '@OUTPUT@'],
 )
 
+lame_ver = configure_file(
+  input: '../include/libmp3lame.sym',
+  output: 'libmp3lame.ver',
+  command: [find_program('sym2ver.py'), '@INPUT@', '@OUTPUT@'],
+)
+lame_ver_arg = cc.get_supported_link_arguments(
+  '-Wl,--version-script=' + meson.current_build_dir() / 'libmp3lame.ver',
+)
+
 lamelib = library(
   'mp3lame',
   lame_sources,
   version: '0.0.0',
   include_directories: mp3lame_includes,
   c_args: common_args,
+  link_args: lame_ver_arg,
   vs_module_defs: lame_def,
   dependencies: lame_deps,
   install: true,

@@ -63,6 +63,7 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
     'lame': [
         'fix_def.py',
+        'sym2ver.py',
     ],
     'libexif': [
         'def.py',
