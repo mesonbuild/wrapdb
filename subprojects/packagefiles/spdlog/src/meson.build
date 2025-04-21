@@ -21,4 +21,5 @@ spdlog_lib = library(
   cpp_args: spdlog_compile_args,
   soversion: version_parts[0] + '.' + version_parts[1],
   version: meson.project_version(),
+  install: true,
 )
