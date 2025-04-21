@@ -230,16 +230,6 @@ if iconv_dep.found() and cc.has_header('langinfo.h')
   )
 endif
 
-if cc.get_argument_syntax() == 'msvc' and get_option('default_library') != 'static'
-  export_define = '__declspec(dllexport) extern'
-elif cc.has_argument('-fvisibility=hidden')
-  export_define = 'extern __attribute__ ((visibility ("default")))'
-else
-  export_define = 'extern'
-endif
-
-cdata.set('LAME_EXPORT', export_define)
-
 cdata.set_quoted('PACKAGE', meson.project_name())
 cdata.set_quoted('PACKAGE_NAME', meson.project_name())
 cdata.set_quoted('PACKAGE_TARNAME', meson.project_name())
