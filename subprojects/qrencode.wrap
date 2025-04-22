@@ -1,8 +1,8 @@
 [wrap-file]
-directory = qrencode-4.1.1
-source_url = https://fukuchi.org/works/qrencode/qrencode-4.1.1.tar.gz
+directory = libqrencode-4.1.1
+source_url = https://github.com/fukuchi/libqrencode/archive/refs/tags/v4.1.1.tar.gz
 source_filename = qrencode-4.1.1.tar.gz
-source_hash = da448ed4f52aba6bcb0cd48cac0dd51b8692bccc4cd127431402fca6f8171e8e
+source_hash = 5385bc1b8c2f20f3b91d258bf8ccc8cf62023935df2d2676b5b67049f31a049c
 patch_directory = qrencode
 
 [provide]
