@@ -61,7 +61,7 @@ jobs:
         run: |
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
-          python -m pip install --pre meson
+          python -m pip install meson
           ./tools/fake_tty.py ./tools/sanity_checks.py
         shell: alpine.sh {0}
 
