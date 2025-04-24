@@ -145,7 +145,7 @@ PER_PROJECT_PERMITTED_FILES = {
 FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
-IGNORE_SETUP_WARNINGS = re.compile(r"CMake reported that the package [^ ]+ was not found, even though Meson's preliminary check succeeded.")
+IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
 
 class TestReleases(unittest.TestCase):
