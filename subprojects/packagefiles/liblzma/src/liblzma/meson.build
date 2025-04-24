@@ -149,6 +149,7 @@ liblzma = library(
   dependencies: [nls_dep, thread_dep],
   c_args: api,
   link_args: largs,
+  install: true,
 )
 
 api = []
