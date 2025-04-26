@@ -17,7 +17,7 @@ if target_platform == 'GLFW'
     endif
   endif
 
-  if host_machine.system() == 'linux' or host_is_msys2
+  if host_machine.system() == 'linux'
     using_x11_glfw = glfw_build_x11.enabled()
 
     if glfw_build_x11.allowed()
