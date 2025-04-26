@@ -170,13 +170,21 @@ examples_list = {
   ],
 }
 
-example_compile_args = compile_args
+uses_raygui_incorrectly = [
+  'shapes/shapes_draw_circle_sector',
+  'shapes/shapes_draw_rectangle_rounded',
+  'shapes/shapes_draw_ring',
+  'shapes/shapes_splines_drawing',
+]
+
+example_compile_args = []
 
 if target_platform == 'GLFW' or target_platform == 'SDL' or target_platform == 'RGFW'
   example_compile_args += '-DPLATFORM_DESKTOP'
 endif
 
 fs = import('fs')
+
 
 foreach category, files : examples_list
 
@@ -186,25 +194,83 @@ foreach category, files : examples_list
     example_inc_dirs += include_directories('others/external/include')
   endif
 
+
   foreach file : files
     basename = fs.name(file)
+
+    example_deps = [raylib_dep]
+    specific_compile_args = []
+    specific_inc_dirs = []
+    specific_deps = []
+    additional_files = []
+
+    if host_machine.system() == 'windows' and not host_is_msys2
+      # detect wrong dllimport / dllexport declarations and therefore wrong build or public compile arguments
+      if file in uses_raygui_incorrectly
+        #some files use ragui, and that also uses the same defines (USE_LIBTYPE_SHARED and BUILD_LIBTYPE_SHARED) as raylib, so it clashes here, this needs to be removed, after upstream fixes this!
+        specific_compile_args += '/wd4273'
+      else
+        specific_compile_args += '/we4273'
+      endif
+    endif
+
 
     # this example is not supported on windows
     if file == 'core/core_loading_thread' and host_machine.system() == 'windows' and not host_is_msys2
       continue
     endif
 
-    # only avaibale if target_platform == GLFW
-    if file == 'others/rlgl_standalone' and target_platform != 'GLFW'
-      continue
+    if file == 'others/rlgl_standalone'
+      # only avaibale if target_platform == GLFW
+      if target_platform != 'GLFW'
+        continue
+      endif
+
+      # this doesn't link with raylib, and is special in other ways too
+      example_deps = []
+
+      # this needs glfw, so use the same mechanisms to get glfw, as with the main application
+      using_external_glfw = use_external_glfw.enabled()
+      if use_external_glfw.allowed()
+        glfw_dep = dependency(
+          'glfw3',
+          required: use_external_glfw,
+        )
+        if glfw_dep.found()
+          specific_deps += glfw_dep
+          using_external_glfw = true
+        else
+          using_external_glfw = false
+        endif
+      endif
+
+      if not using_external_glfw
+        specific_inc_dirs += include_directories(
+          '../src/external/glfw/include/',
+          '../src/',
+        )
+        additional_files += files('../src/rglfw.c')
+        specific_compile_args += '-D_GLFW_BUILD_DLL'
+      endif
     endif
+
+    if file == 'others/raylib_opengl_interop'
+      #this is needed, as this example doesn't include glad correctly
+      specific_compile_args += '-DGLAD_GLAPI_EXPORT'
+      #this is needed, as the hard copy of glad.h inside the examples/external folderincorrectly uses 'WIN32' instead of '_WIN32' as detection for windows
+      if host_machine.system() == 'windows'
+        specific_compile_args += '-DWIN32'
+      endif
+    endif
+
 
     executable(
       f'@category@ @basename@',
       files(f'@file@.c'),
-      include_directories: example_inc_dirs,
-      dependencies: [raylib_dep],
-      c_args: example_compile_args,
+      additional_files,
+      include_directories: example_inc_dirs + specific_inc_dirs,
+      dependencies: example_deps + specific_deps,
+      c_args: example_compile_args + specific_compile_args,
     )
   endforeach
 endforeach
