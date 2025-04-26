@@ -7,10 +7,15 @@ if target_platform == 'GLFW'
     glfw_dep = dependency(
       'glfw3',
       required: use_external_glfw,
+      #TODO: should this be enabled?!?!
+      allow_fallback: true,
     )
     if glfw_dep.found()
       deps += glfw_dep
       using_external_glfw = true
+    else
+      using_external_glfw = false
+      message('using internal glfw')
     endif
   endif
 
@@ -275,21 +280,17 @@ src_files += files(
 )
 
 if target_platform == 'GLFW' and not using_external_glfw
-  if glfw_compile_flags.length() == 0
-    src_files += files('rglfw.c')
-  else
-    glfw_external = static_library(
-      'glfw_external',
-      files('rglfw.c'),
-      include_directories: inc_dirs,
-      c_args: compile_args + glfw_compile_flags,
-      dependencies: deps,
-    )
+  glfw_external = static_library(
+    'glfw_external',
+    files('rglfw.c'),
+    include_directories: inc_dirs,
+    c_args: compile_args + glfw_compile_flags,
+    dependencies: deps,
+  )
 
-    deps += declare_dependency(
-      link_with: glfw_external,
-    )
-  endif
+  deps += declare_dependency(
+    link_with: glfw_external,
+  )
 endif
 
 inc_dirs += include_directories('.')
