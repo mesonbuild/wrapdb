@@ -33,6 +33,7 @@ elif target_platform == 'DRM' or target_platform == 'Web' or target_platform == 
   graphics = 'OpenGL ES 2.0'
 endif
 
+private_compile_args = []
 
 # define some flags based on OS
 if target_platform == 'GLFW'
@@ -41,6 +42,7 @@ if target_platform == 'GLFW'
       'objc',
       native: true,
     )
+    private_compile_args += ['-x', 'objective-c']
   endif
 endif
 
@@ -53,7 +55,7 @@ if target_platform == 'GLFW' or target_platform == 'SDL' or target_platform == '
 endif
 
 compile_args = [f'-D@target_platform_define@', f'-D@graphics_define@']
-private_compile_args = []
+
 
 cc = meson.get_compiler('c')
 
