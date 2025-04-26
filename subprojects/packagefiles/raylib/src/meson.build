@@ -7,8 +7,6 @@ if target_platform == 'GLFW'
     glfw_dep = dependency(
       'glfw3',
       required: use_external_glfw,
-      #TODO: should this be enabled?!?!
-      allow_fallback: true,
     )
     if glfw_dep.found()
       deps += glfw_dep
