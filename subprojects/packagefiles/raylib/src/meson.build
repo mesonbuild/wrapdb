@@ -278,17 +278,8 @@ src_files += files(
 )
 
 if target_platform == 'GLFW' and not using_external_glfw
-  glfw_external = static_library(
-    'glfw_external',
-    files('rglfw.c'),
-    include_directories: inc_dirs,
-    c_args: compile_args + glfw_compile_flags,
-    dependencies: deps,
-  )
-
-  deps += declare_dependency(
-    link_with: glfw_external,
-  )
+  src_files += files('rglfw.c')
+  private_compile_args += '-D_GLFW_BUILD_DLL'
 endif
 
 inc_dirs += include_directories('.')

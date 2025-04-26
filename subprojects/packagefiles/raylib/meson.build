@@ -33,7 +33,6 @@ elif target_platform == 'DRM' or target_platform == 'Web' or target_platform == 
   graphics = 'OpenGL ES 2.0'
 endif
 
-glfw_compile_flags = []
 
 # define some flags based on OS
 if target_platform == 'GLFW'
@@ -42,7 +41,6 @@ if target_platform == 'GLFW'
       'objc',
       native: true,
     )
-    glfw_compile_flags = ['-x', 'objective-c']
   endif
 endif
 
@@ -55,7 +53,7 @@ if target_platform == 'GLFW' or target_platform == 'SDL' or target_platform == '
 endif
 
 compile_args = [f'-D@target_platform_define@', f'-D@graphics_define@']
-public_compile_args = []
+private_compile_args = []
 
 cc = meson.get_compiler('c')
 
@@ -67,8 +65,8 @@ host_is_msys2 = host_machine.system() == 'windows' and cc.get_argument_syntax() 
 is_shared_lib = get_option('default_library') == 'shared'
 
 if is_shared_lib
-  compile_args += '-DBUILD_LIBTYPE_SHARED'
-  public_compile_args += '-DUSE_LIBTYPE_SHARED'
+  private_compile_args += '-DBUILD_LIBTYPE_SHARED'
+  compile_args += '-DUSE_LIBTYPE_SHARED'
 endif
 
 
@@ -88,7 +86,7 @@ raylib = library(
   'raylib',
   src_files,
   include_directories: inc_dirs,
-  c_args: compile_args,
+  c_args: private_compile_args + compile_args,
   dependencies: deps,
   install: true,
   version: meson.project_version(),
@@ -99,7 +97,7 @@ raylib_dep = declare_dependency(
   link_with: raylib,
   dependencies: deps,
   include_directories: inc_dirs,
-  compile_args: public_compile_args,
+  compile_args: compile_args,
 )
 
 meson.override_dependency('raylib', raylib_dep)
