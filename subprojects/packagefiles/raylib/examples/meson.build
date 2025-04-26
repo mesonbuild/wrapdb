@@ -166,7 +166,6 @@ examples_list = {
     'others/raylib_opengl_interop',
     'others/raymath_vector_angle',
     'others/rlgl_compute_shader',
-    'others/rlgl_standalone',
   ],
 }
 
@@ -198,11 +197,7 @@ foreach category, files : examples_list
   foreach file : files
     basename = fs.name(file)
 
-    example_deps = [raylib_dep]
     specific_compile_args = []
-    specific_inc_dirs = []
-    specific_deps = []
-    additional_files = []
 
     if host_machine.system() == 'windows' and not host_is_msys2
       # detect wrong dllimport / dllexport declarations and therefore wrong build or public compile arguments
@@ -220,40 +215,6 @@ foreach category, files : examples_list
       continue
     endif
 
-    if file == 'others/rlgl_standalone'
-      # only avaibale if target_platform == GLFW
-      if target_platform != 'GLFW'
-        continue
-      endif
-
-      # this doesn't link with raylib, and is special in other ways too
-      example_deps = []
-
-      # this needs glfw, so use the same mechanisms to get glfw, as with the main application
-      using_external_glfw = use_external_glfw.enabled()
-      if use_external_glfw.allowed()
-        glfw_dep = dependency(
-          'glfw3',
-          required: use_external_glfw,
-        )
-        if glfw_dep.found()
-          specific_deps += glfw_dep
-          using_external_glfw = true
-        else
-          using_external_glfw = false
-        endif
-      endif
-
-      if not using_external_glfw
-        specific_inc_dirs += include_directories(
-          '../src/external/glfw/include/',
-          '../src/',
-        )
-        additional_files += files('../src/rglfw.c')
-        specific_compile_args += '-D_GLFW_BUILD_DLL'
-      endif
-    endif
-
     if file == 'others/raylib_opengl_interop'
       #this is needed, as this example doesn't include glad correctly
       specific_compile_args += '-DGLAD_GLAPI_EXPORT'
@@ -267,10 +228,58 @@ foreach category, files : examples_list
     executable(
       f'@category@ @basename@',
       files(f'@file@.c'),
-      additional_files,
-      include_directories: example_inc_dirs + specific_inc_dirs,
-      dependencies: example_deps + specific_deps,
+      include_directories: example_inc_dirs,
+      dependencies: [raylib_dep],
       c_args: example_compile_args + specific_compile_args,
     )
   endforeach
 endforeach
+
+
+
+# this example is special, therefore it is outside of the loop
+
+#only avaibale if target_platform == GLFW
+if target_platform == 'GLFW'
+
+  specific_deps = []
+  specific_compile_args = ['/we4273']
+  specific_inc_dirs = [include_directories('others/external/include')]
+  additional_files = []
+
+  # this needs glfw, so use the same mechanisms to get glfw, as with the main application
+  # note: this is duplicate "code" atm
+  using_external_glfw = use_external_glfw.enabled()
+  if use_external_glfw.allowed()
+    glfw_dep = dependency(
+      'glfw3',
+      required: use_external_glfw,
+    )
+    if glfw_dep.found()
+      specific_deps += glfw_dep
+      using_external_glfw = true
+    else
+      using_external_glfw = false
+    endif
+  endif
+
+  if not using_external_glfw
+    specific_inc_dirs += include_directories(
+      '../src/external/glfw/include/',
+      '../src/',
+    )
+    additional_files += files('../src/rglfw.c')
+    specific_compile_args += '-D_GLFW_BUILD_DLL'
+  endif
+
+
+  executable(
+    'others rlgl_standalone',
+    files('others/rlgl_standalone.c'),
+    additional_files,
+    include_directories: specific_inc_dirs,
+    dependencies: specific_deps,
+    c_args: example_compile_args + specific_compile_args,
+  )
+
+endif
