@@ -222,6 +222,15 @@ if target_platform == 'GLFW'
     glfw_inc_dirs += include_directories('external/glfw/include')
     glfw_src_files += files('rglfw.c')
     glfw_private_c_args += '-D_GLFW_BUILD_DLL'
+
+    if host_machine.system() == 'darwin'
+      add_languages(
+        'objc',
+        native: true,
+      )
+      glfw_private_c_args += ['-x', 'objective-c']
+    endif
+
   endif
 
   deps += glfw_deps
