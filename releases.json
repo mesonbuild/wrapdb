@@ -180,6 +180,14 @@
       "1.24.0-1"
     ]
   },
+  "atomic_queue": {
+    "dependency_names": [
+      "atomic_queue"
+    ],
+    "versions": [
+      "1.6.6-1"
+    ]
+  },
   "backward-cpp": {
     "dependency_names": [
       "backward-cpp"
