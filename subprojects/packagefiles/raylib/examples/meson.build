@@ -184,6 +184,8 @@ endif
 
 fs = import('fs')
 
+# Detect if compiling in an MSYS2-based MinGW/Clang environment
+host_is_msys2 = host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
 
 foreach category, files : examples_list
 
@@ -211,7 +213,7 @@ foreach category, files : examples_list
 
 
     # this example is not supported on windows
-    if file == 'core/core_loading_thread' and host_machine.system() == 'windows' and not host_is_msys2
+    if file == 'core/core_loading_thread' and host_machine.system() == 'windows'
       continue
     endif
 

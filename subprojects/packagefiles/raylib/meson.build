@@ -49,9 +49,6 @@ cc = meson.get_compiler('c')
 
 compile_args += cc.get_supported_arguments('-fno-strict-aliasing')
 
-# Detect if compiling in an MSYS2-based MinGW/Clang environment
-host_is_msys2 = host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
-
 is_shared_lib = get_option('default_library') == 'shared'
 
 if is_shared_lib
