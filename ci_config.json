@@ -25,6 +25,26 @@
     "graphite2",
     "mocklibc"
   ],
+  "atomic_queue": {
+    "_comment": "Tests require Boost, which is not available on WrapDB",
+    "build_on": {
+      "windows": false,
+      "darwin": false
+    },
+    "_comment2": "TODO: add boost as brew package and enabe darwin after https://github.com/max0x7ba/atomic_queue/pull/80",
+    "alpine_packages": [
+      "boost-dev"
+    ],
+    "debian_packages": [
+      "libboost-test-dev"
+    ],
+    "msys_packages": [
+      "boost"
+    ],
+    "build_options": [
+      "atomic_queue:benchmarks=false"
+    ]
+  },
   "blueprint-compiler": {
     "_comment": "Tests require pygobject and Gtk4 typelib, and also they crash",
     "skip_tests": true
