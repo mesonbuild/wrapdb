@@ -1,5 +1,7 @@
 cc = meson.get_compiler('c')
 
+_do_not_use_internal_glfw_dep = disabler()
+
 if target_platform == 'GLFW'
 
   using_external_glfw = use_external_glfw.enabled()
@@ -11,11 +13,18 @@ if target_platform == 'GLFW'
     if glfw_dep.found()
       deps += glfw_dep
       using_external_glfw = true
+      _do_not_use_internal_glfw_dep = glfw_dep
     else
       using_external_glfw = false
       message('using internal glfw')
     endif
   endif
+
+  glfw_deps = []
+  glfw_inc_dirs = []
+  glfw_c_args = []
+  glfw_private_c_args = []
+  glfw_src_files = []
 
   if host_machine.system() == 'linux'
     using_x11_glfw = glfw_build_x11.enabled()
@@ -49,6 +58,10 @@ if target_platform == 'GLFW'
           break
         endif
       endforeach
+
+      if using_x11_glfw
+        glfw_deps += x11_deps_obj
+      endif
 
     endif
 
@@ -87,7 +100,7 @@ if target_platform == 'GLFW'
         if not wl_scanner.found()
           using_wayland_glfw = false
         else
-          deps += wayland_deps_obj
+          glfw_deps += wayland_deps_obj
         endif
 
       endif
@@ -99,11 +112,11 @@ if target_platform == 'GLFW'
     endif
 
     if using_x11_glfw
-      compile_args += '-D_GLFW_X11'
+      glfw_c_args += '-D_GLFW_X11'
     endif
 
     if using_wayland_glfw
-      compile_args += '-D_GLFW_WAYLAND'
+      glfw_c_args += '-D_GLFW_WAYLAND'
 
       wl_protocols_dir = meson.project_source_root() / 'src' / 'external' / 'glfw' / 'deps' / 'wayland'
 
@@ -155,14 +168,14 @@ if target_platform == 'GLFW'
         file = wl_generate_item.get('file')
         protocol = wl_generate_item.get('protocol')
 
-        src_files += custom_target(
+        glfw_src_files += custom_target(
           f'@protocol@ header',
           command: ['wayland-scanner', 'client-header', '@INPUT@', '@OUTPUT@'],
           input: file,
           output: f'@protocol@.h',
         )
 
-        src_files += custom_target(
+        glfw_src_files += custom_target(
           f'@protocol@ code',
           command: ['wayland-scanner', 'private-code', '@INPUT@', '@OUTPUT@'],
           input: file,
@@ -173,41 +186,71 @@ if target_platform == 'GLFW'
 
     endif
 
-    deps += cc.find_library('m')
-    deps += dependency('gl')
-    deps += dependency('threads')
-    deps += dependency('dl')
-    deps += cc.find_library('rt')
+    glfw_deps += cc.find_library('m')
+    glfw_deps += dependency('gl')
+    glfw_deps += dependency('threads')
+    glfw_deps += dependency('dl')
+    glfw_deps += cc.find_library('rt')
 
     need_atomic_lib = not cc.has_function(
       'atomic_flag_clear',
       prefix: '#include <stdatomic.h>',
       dependencies: [cc.find_library('c')],
     )
-    deps += cc.find_library(
+    glfw_deps += cc.find_library(
       'atomic',
       required: need_atomic_lib,
     )
 
   elif host_machine.system() == 'windows'
 
-    deps += cc.find_library('opengl32')
-    deps += cc.find_library('winmm')
-    deps += cc.find_library('gdi32')
+    glfw_deps += cc.find_library('opengl32')
+    glfw_deps += cc.find_library('winmm')
+    glfw_deps += cc.find_library('gdi32')
 
   elif host_machine.system() == 'darwin'
 
-    deps += dependency('OpenGL')
-    deps += dependency('Cocoa')
-    deps += dependency('IOKit')
-    deps += dependency('CoreAudio')
-    deps += dependency('CoreVideo')
+    glfw_deps += dependency('OpenGL')
+    glfw_deps += dependency('Cocoa')
+    glfw_deps += dependency('IOKit')
+    glfw_deps += dependency('CoreAudio')
+    glfw_deps += dependency('CoreVideo')
 
   endif
 
   if not using_external_glfw
-    inc_dirs += include_directories('external/glfw/include')
+    glfw_inc_dirs += include_directories('external/glfw/include')
+    glfw_src_files += files('rglfw.c')
+    glfw_private_c_args += '-D_GLFW_BUILD_DLL'
   endif
+
+  deps += glfw_deps
+  inc_dirs += glfw_inc_dirs
+  compile_args += glfw_c_args
+  private_compile_args += glfw_private_c_args
+  src_files += glfw_src_files
+
+  if not using_external_glfw and get_option('examples')
+    ## reuse this in the examples
+
+    glfw_inc_dirs += include_directories('.')
+
+    _do_not_use_internal_glfw_lib = library(
+      'rglfw',
+      glfw_src_files,
+      include_directories: glfw_inc_dirs,
+      c_args: glfw_private_c_args + glfw_c_args,
+      dependencies: glfw_deps,
+    )
+
+    _do_not_use_internal_glfw_dep = declare_dependency(
+      link_with: _do_not_use_internal_glfw_lib,
+      dependencies: glfw_deps,
+      include_directories: glfw_inc_dirs,
+      compile_args: glfw_c_args,
+    )
+  endif
+
 
 elif target_platform == 'SDL'
   deps += dependency('SDL2', 'sdl2')
@@ -276,10 +319,5 @@ src_files += files(
   'rtextures.c',
   'utils.c',
 )
-
-if target_platform == 'GLFW' and not using_external_glfw
-  src_files += files('rglfw.c')
-  private_compile_args += '-D_GLFW_BUILD_DLL'
-endif
 
 inc_dirs += include_directories('.')

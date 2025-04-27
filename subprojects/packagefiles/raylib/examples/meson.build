@@ -242,44 +242,12 @@ endforeach
 #only avaibale if target_platform == GLFW
 if target_platform == 'GLFW'
 
-  specific_deps = []
-  specific_compile_args = ['/we4273']
-  specific_inc_dirs = [include_directories('others/external/include')]
-  additional_files = []
-
-  # this needs glfw, so use the same mechanisms to get glfw, as with the main application
-  # note: this is duplicate "code" atm
-  using_external_glfw = use_external_glfw.enabled()
-  if use_external_glfw.allowed()
-    glfw_dep = dependency(
-      'glfw3',
-      required: use_external_glfw,
-    )
-    if glfw_dep.found()
-      specific_deps += glfw_dep
-      using_external_glfw = true
-    else
-      using_external_glfw = false
-    endif
-  endif
-
-  if not using_external_glfw
-    specific_inc_dirs += include_directories(
-      '../src/external/glfw/include/',
-      '../src/',
-    )
-    additional_files += files('../src/rglfw.c')
-    specific_compile_args += '-D_GLFW_BUILD_DLL'
-  endif
-
-
   executable(
     'others rlgl_standalone',
     files('others/rlgl_standalone.c'),
-    additional_files,
-    include_directories: specific_inc_dirs,
-    dependencies: specific_deps,
-    c_args: example_compile_args + specific_compile_args,
+    include_directories: include_directories('others/external/include'),
+    dependencies: _do_not_use_internal_glfw_dep,
+    c_args: example_compile_args + ['/we4273'],
   )
 
 endif
