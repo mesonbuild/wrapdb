@@ -8,3 +8,4 @@ patch_directory = backward-cpp
 
 [provide]
 backward-cpp = backward_dep
+backward-cpp-interface = backward_interface_dep

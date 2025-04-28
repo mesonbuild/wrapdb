@@ -25,35 +25,23 @@ dwarf = dependency(
 )
 
 deps = []
-
+args = []
 # stack walking
 if libunwind.found()
   deps += libunwind
-  add_project_arguments(
-    '-DBACKWARD_HAS_LIBUNWIND=1',
-    language: 'cpp',
-  )
+  args += ['-DBACKWARD_HAS_LIBUNWIND=1']
 endif
 
 # stack detail extraction
 if dw.found()
   deps += dw
-  add_project_arguments(
-    '-DBACKWARD_HAS_DW=1',
-    language: 'cpp',
-  )
+  args += ['-DBACKWARD_HAS_DW=1']
 elif dwarf.found()
   deps += dwarf
-  add_project_arguments(
-    '-DBACKWARD_HAS_DWARF=1',
-    language: 'cpp',
-  )
+  args += ['-DBACKWARD_HAS_DWARF=1']
 elif bfd.found()
   deps += bfd
-  add_project_arguments(
-    '-DBACKWARD_HAS_BFD=1',
-    language: 'cpp',
-  )
+  args += ['-DBACKWARD_HAS_BFD=1']
   if host_machine.system() != 'windows'
     if meson.version().version_compare('>= 0.62')
       deps += dependency('dl')
@@ -75,6 +63,7 @@ if host_machine.system() == 'windows'
     'backward.cpp',
     dependencies: deps,
     install: true,
+    cpp_args: args,
   )
 else
   backward = library(
@@ -82,11 +71,18 @@ else
     'backward.cpp',
     dependencies: deps,
     install: true,
+    cpp_args: args,
   )
 endif
 
-backward_dep = declare_dependency(
+backward_interface_dep = declare_dependency(
+  include_directories: include_directories('.'),
   dependencies: deps,
+  compile_args: args,
+)
+
+backward_dep = declare_dependency(
+  dependencies: backward_interface_dep,
   link_with: backward,
 )
 
@@ -118,6 +114,7 @@ if meson.project_version() != '1.6' or host_machine.cpu_family() not in [
         'testexe_' + test,
         'test/' + test + '.cpp',
         'test/_test_main.cpp',
+        cpp_args: args,
       ),
     )
   endforeach
