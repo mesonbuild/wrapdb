@@ -13,6 +13,9 @@ else
   subdir('linux')
 endif
 
+subdir('virtual')
+cdata.set('SDL_JOYSTICK_VIRTUAL', 1)
+
 sources += files(
   'SDL_gamepad.c',
   'SDL_joystick.c',

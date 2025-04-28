@@ -1,5 +1,6 @@
 sources += files(
   'SDL_waylandclipboard.c',
+  'SDL_waylandcolor.c',
   'SDL_waylanddatamanager.c',
   'SDL_waylanddyn.c',
   'SDL_waylandevents.c',

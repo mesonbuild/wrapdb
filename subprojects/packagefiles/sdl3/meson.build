@@ -1,7 +1,7 @@
 project(
   'sdl3',
   'c',
-  version: '3.2.4',
+  version: '3.2.10',
   license: 'zlib',
   meson_version: '>=1.6',
   default_options: ['c_std=none'],
@@ -256,7 +256,7 @@ if host_machine.system() == 'linux'
   sdl_deps += dependency('wayland-client')
   sdl_deps += dependency('wayland-egl')
   sdl_deps += dependency('wayland-cursor')
-  sdl_deps += dependency('xkbcommon')
+  # sdl_deps += dependency('xkbcommon')
   sdl_deps += dependency('xkbcommon')
   cdata.set('HAVE_DBUS_DBUS_H', 1)
   wayland_scanner = find_program('wayland-scanner')
