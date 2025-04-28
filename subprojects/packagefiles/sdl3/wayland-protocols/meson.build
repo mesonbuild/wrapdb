@@ -1,5 +1,6 @@
 files = [
   'alpha-modifier-v1.xml',
+  'color-management-v1.xml',
   'cursor-shape-v1.xml',
   'fractional-scale-v1.xml',
   'frog-color-management-v1.xml',

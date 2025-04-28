@@ -4,6 +4,7 @@ sources += files(
   'SDL_displayevents.c',
   'SDL_dropevents.c',
   'SDL_events.c',
+  'SDL_eventwatch.c',
   'SDL_keyboard.c',
   'SDL_keymap.c',
   'SDL_keysym_to_keycode.c',
@@ -16,4 +17,3 @@ sources += files(
   'SDL_windowevents.c',
   'imKStoUCS.c',
 )
-

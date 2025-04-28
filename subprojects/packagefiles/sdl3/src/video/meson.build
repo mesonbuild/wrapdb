@@ -26,6 +26,7 @@ sources += files(
   'SDL_fillrect.c',
   'SDL_pixels.c',
   'SDL_rect.c',
+  'SDL_stb.c',
   'SDL_stretch.c',
   'SDL_surface.c',
   'SDL_video.c',
