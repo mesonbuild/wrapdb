@@ -31,6 +31,7 @@ public_c_args = []
 c_args = ['-DBUILDING_NGHTTP2', '-DHAVE_CONFIG_H']
 if host_machine.system() == 'windows' and get_option('default_library') == 'static'
   c_args += ['-DNGHTTP2_STATICLIB']
+  public_c_args += ['-DNGHTTP2_STATICLIB']
 endif
 if host_machine.system() == 'windows'
   public_c_args += ['-Dssize_t=int']
