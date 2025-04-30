@@ -1,8 +1,8 @@
 [wrap-file]
-directory = simdjson-3.12.2
-source_url = https://github.com/simdjson/simdjson/archive/refs/tags/v3.12.2.tar.gz
-source_filename = simdjson-3.12.2.tar.gz
-source_hash = 8ac7c97073d5079f54ad66d04381ec75e1169c2e20bfe9b6500bc81304da3faf
+directory = simdjson-3.12.3
+source_url = https://github.com/simdjson/simdjson/archive/refs/tags/v3.12.3.tar.gz
+source_filename = simdjson-3.12.3.tar.gz
+source_hash = d0af071f2f4187d8b26b556e83ef832b634bd5feb4e2f537b9dabbd334d4e334
 patch_directory = simdjson
 
 [provide]
