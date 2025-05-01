@@ -177,14 +177,14 @@ class TestReleases(unittest.TestCase):
     fatal_warnings: bool
     releases: dict[str, ReleasesProject]
     skip: list[str]
-    tags: list[str]
+    tags: set[str]
     timeout_multiplier: float
 
     @classmethod
     def setUpClass(cls):
         # Take list of git tags
         stdout = subprocess.check_output(['git', 'tag'])
-        cls.tags = [t.strip() for t in stdout.decode().splitlines()]
+        cls.tags = {t.strip() for t in stdout.decode().splitlines()}
 
         try:
             fn = 'releases.json'
