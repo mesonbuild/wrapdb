@@ -1,8 +1,8 @@
 [wrap-file]
-directory = harfbuzz-11.1.0
-source_url = https://github.com/harfbuzz/harfbuzz/releases/download/11.1.0/harfbuzz-11.1.0.tar.xz
-source_filename = harfbuzz-11.1.0.tar.xz
-source_hash = 477f0d48c34dc32093b45304178eb9733361ca1832b5159879c99e6d40227969
+directory = harfbuzz-11.2.0
+source_url = https://github.com/harfbuzz/harfbuzz/releases/download/11.2.0/harfbuzz-11.2.0.tar.xz
+source_filename = harfbuzz-11.2.0.tar.xz
+source_hash = 50f7d0a208367e606dbf6eecc5cfbecc01a47be6ee837ae7aff2787e24b09b45
 
 [provide]
 dependency_names = harfbuzz, harfbuzz-cairo, harfbuzz-gobject, harfbuzz-icu, harfbuzz-subset
