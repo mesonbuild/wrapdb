@@ -182,9 +182,13 @@ class TestReleases(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Take list of git tags
-        stdout = subprocess.check_output(['git', 'tag'])
+        # Take list of git tags.  Ignore tags unreachable from HEAD so we
+        # don't fail on tags created after the branch was pushed.
+        stdout = subprocess.check_output(['git', 'tag', '--merged'])
         cls.tags = {t.strip() for t in stdout.decode().splitlines()}
+        stdout = subprocess.check_output(['git', 'tag', '--no-merged'])
+        if stdout.strip():
+            print(f'Ignoring unreachable tags: {stdout.decode().splitlines()}')
 
         try:
             fn = 'releases.json'
