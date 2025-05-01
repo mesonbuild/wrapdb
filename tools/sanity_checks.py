@@ -153,7 +153,7 @@ class TestReleases(unittest.TestCase):
     def setUpClass(cls):
         # Take list of git tags
         stdout = subprocess.check_output(['git', 'tag'])
-        cls.tags = [t.strip() for t in stdout.decode().splitlines()]
+        cls.tags = {t.strip() for t in stdout.decode().splitlines()}
 
         try:
             fn = 'releases.json'
