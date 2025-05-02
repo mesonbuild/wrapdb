@@ -1,15 +1,14 @@
 project(
   'c-ares',
   'c',
-  version: '1.34.4',
+  version: '1.34.5',
   license: 'MIT',
   default_options: 'cpp_std=c++17',
 )
 
 # don't forget to update mee too
 # see: https://github.com/c-ares/c-ares/blob/f1bf69c2d71a7e426ee967847173200a3ef1705a/CMakeLists.txt#L33
-libtool_version = '2.10.0'
-libtool_soversion = '2'
+library_version = '2.19.4'
 
 is_static = (get_option('default_library') == 'static')
 is_windows = (host_machine.system() == 'windows')
@@ -274,7 +273,14 @@ cares_args_map = {
     '-DRECVFROM_TYPE_RETV=ssize_t',
     '-DRECVFROM_TYPE_ARG3=size_t',
   ],
-  'windows': ['-DRECVFROM_TYPE_RETV=int', '-DRECVFROM_TYPE_ARG3=int'],
+  'windows': [
+    '-DWIN32_LEAN_AND_MEAN',
+    '-D_CRT_SECURE_NO_DEPRECATE',
+    '-D_CRT_NONSTDC_NO_DEPRECATE',
+    '-D_WIN32_WINNT=0x0602',
+    '-DRECVFROM_TYPE_RETV=int',
+    '-DRECVFROM_TYPE_ARG3=int',
+  ],
 }
 cares_args_map += {
   'darwin': cares_args_map['linux'],
@@ -328,8 +334,8 @@ libcares = library(
     is_static ? '-DCARES_STATICLIB' : [],
   ],
   install: true,
-  version: libtool_version,
-  soversion: libtool_soversion,
+  version: library_version,
+  soversion: library_version.split('.')[0],
   kwargs: libcares_kwargs,
 )
 
