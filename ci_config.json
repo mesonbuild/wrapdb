@@ -28,12 +28,13 @@
   "atomic_queue": {
     "_comment": "Tests require Boost, which is not available on WrapDB",
     "build_on": {
-      "windows": false,
-      "darwin": false
+      "windows": false
     },
-    "_comment2": "TODO: add boost as brew package and enabe darwin after https://github.com/max0x7ba/atomic_queue/pull/80",
     "alpine_packages": [
       "boost-dev"
+    ],
+    "brew_packages": [
+      "boost"
     ],
     "debian_packages": [
       "libboost-test-dev"
