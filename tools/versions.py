@@ -335,6 +335,13 @@ def do_list(args: Namespace) -> None:
             print(line)
 
 
+def do_libtool_ver(args: Namespace) -> None:
+    components = args.info.split(':', 2)
+    components += ['0'] * (3 - len(components))
+    current, revision, age = (int(c) for c in components)
+    print(f'{current - age}.{age}.{revision}')
+
+
 def main() -> None:
     parser = ArgumentParser(
         prog='versions.py',
@@ -405,6 +412,17 @@ def main() -> None:
         '-m', '--markdown', action='store_true', help='output Markdown table'
     )
     list.set_defaults(func=do_list)
+
+    libtool_ver = subparsers.add_parser(
+        'libtool-ver',
+        aliases=['ltv'],
+        help='calculate library version from libtool version-info',
+        description='Calculate library version number from libtool version-info.',
+    )
+    libtool_ver.add_argument(
+        'info', metavar='version-info', help='libtool current:revision:age'
+    )
+    libtool_ver.set_defaults(func=do_libtool_ver)
 
     args = parser.parse_args()
     args.func(args)
