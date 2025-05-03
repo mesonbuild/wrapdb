@@ -41,9 +41,6 @@
     ],
     "msys_packages": [
       "boost"
-    ],
-    "build_options": [
-      "atomic_queue:benchmarks=false"
     ]
   },
   "blueprint-compiler": {
