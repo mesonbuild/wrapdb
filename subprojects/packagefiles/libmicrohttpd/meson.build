@@ -181,10 +181,13 @@ else
   cdata.set('_MHD_ITC_PIPE', 1)
 endif
 
-ws2_dep = cc.find_library(
-  'ws2_32',
-  required: host_machine.system() == 'windows',
-)
+if host_machine.system() == 'windows'
+  net_dep = cc.find_library('ws2_32')
+elif host_machine.system() == 'sunos'
+  net_dep = cc.find_library('socket')
+else
+  net_dep = []
+endif
 
 if meson.version().version_compare('>= 0.62')
   dl_dep = dependency(
@@ -307,7 +310,7 @@ libmicrohttpd = library(
   'microhttpd',
   sources,
   gnu_symbol_visibility: 'hidden',
-  dependencies: [dl_dep, gnutls_dep, threads_dep, ws2_dep],
+  dependencies: [dl_dep, gnutls_dep, threads_dep, net_dep],
   include_directories: incdirs,
   install: true,
 )
