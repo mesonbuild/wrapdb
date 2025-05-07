@@ -1,7 +1,7 @@
 project(
   'minizip-ng',
   'c',
-  version: '4.0.9',
+  version: '4.0.10',
   license: 'BSD-3-Clause',
   default_options: ['warning_level=1'],
   meson_version: '>=0.49.0',
