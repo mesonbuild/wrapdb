@@ -353,6 +353,22 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
         return True
 
+    @classmethod
+    def get_cpu_family(cls, builddir: str = '_build'):
+        if not hasattr(cls, "_cpu_family"):
+            options = ['-Dwraps=[]']
+            if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
+                options.append('--wipe')
+            res = subprocess.run(['meson', 'setup', *options, builddir], check=True)
+            with Path(builddir, 'meson-logs', 'meson-log.txt').open() as log_f:
+                for line in log_f:
+                    if line.startswith('Host machine cpu family:'):
+                        cls._cpu_family = line.split(':', maxsplit=1)[1].strip()
+                        break
+                else:
+                    raise Exception('Unable to determine cpu family from Meson logs')
+        return cls._cpu_family
+
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
         print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
@@ -361,13 +377,18 @@ class TestReleases(unittest.TestCase):
             system = 'alpine'
         else:
             system = platform.system().lower()
+        cpu_family = self.get_cpu_family(builddir)
+        sys_cpu = f"{system}-{cpu_family}"
         ci = self.ci_config.get(name, {})
         # kept for backwards compatibility
         expect_working = True
+        build_on = ci.get('build_on', {})
         if ci.get('linux_only', False) and not is_linux():
             expect_working = False
-        elif not ci.get('build_on', {}).get(system, True):
-            expect_working = False
+        elif sys_cpu in build_on:
+            expect_working = bool(build_on[sys_cpu])
+        else:
+            expect_working = bool(build_on.get(system, True) and build_on.get(cpu_family, True))
 
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])
