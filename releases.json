@@ -179,6 +179,14 @@
       "0.1.0-1"
     ]
   },
+  "arrow-cpp": {
+    "dependency_names": [
+      "arrow-cpp"
+    ],
+    "versions": [
+      "21.0.0-1"
+    ]
+  },
   "asio": {
     "dependency_names": [
       "asio"
