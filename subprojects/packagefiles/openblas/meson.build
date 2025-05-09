@@ -15,12 +15,12 @@ project(
   ['c', 'fortran'],
   default_options: ['c_std=gnu11'],
   meson_version: '>=1.0.0',
-  version: '0.3.28',
+  version: '0.3.29',
 )
 
 openblas_major_version = 0  # soversion
 openblas_minor_version = 3
-openblas_patch_version = '28'
+openblas_patch_version = '29'
 openblas_version = f'@openblas_major_version@.@openblas_minor_version@.@openblas_patch_version@'
 
 supported_architectures = ['x86_64', 'aarch64']
