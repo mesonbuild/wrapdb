@@ -657,89 +657,11 @@ base_kops = [
   {
     'base': '?lsame',
     'modes': {
-        '': {'exts': {'': {'addl': ['-DF_INTERFACE']}
-                     }},
-    },
-  },
-  { 'base': '?cabs',
-    'modes': {
-        's': {'exts': {'1': {'addl': ['-DF_INTERFACE']}
-                      }},
-        'd': {'exts': {'1': {'addl': ['-DF_INTERFACE']}
-                      }},
-        # 'q': {'exts': {'': {}}},
-    },
-  },
-  { 'base': '?gemm3m',
-    'modes': {
-        'c': {'exts': {
-            '_kernel': {'addl': ['-DICOPY', '-UUSE_ALPHA']},
-            '_oncopyb': {'addl': ['-DUSE_ALPHA']},
-            '_otcopyb': {'addl': ['-DUSE_ALPHA']},
-            '_itcopyb': {'addl': ['-DICOPY', '-UUSE_ALPHA']},
-            '_itcopyr': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DREAL_ONLY']},
-            '_itcopyi': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_incopyb': {'addl': ['-DICOPY', '-UUSE_ALPHA']},
-            '_incopyr': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DREAL_ONLY']},
-            '_oncopyr': {'addl': ['-DUSE_ALPHA', '-DREAL_ONLY']},
-            '_otcopyr': {'addl': ['-DUSE_ALPHA', '-DREAL_ONLY']},
-            '_incopyi': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_oncopyi': {'addl': ['-DUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_otcopyi': {'addl': ['-DUSE_ALPHA', '-DIMAGE_ONLY']},
-        }},
-        'z': {'exts': {
-            '_kernel': {'addl': ['-DNN']},
-            '_oncopyb': {'addl': ['-DUSE_ALPHA']},
-            '_otcopyb': {'addl': ['-DUSE_ALPHA']},
-            '_itcopyb': {'addl': ['-DICOPY', '-UUSE_ALPHA']},
-            '_itcopyr': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DREAL_ONLY']},
-            '_itcopyi': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_incopyb': {'addl': ['-DICOPY', '-UUSE_ALPHA']},
-            '_incopyr': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DREAL_ONLY']},
-            '_oncopyr': {'addl': ['-DUSE_ALPHA', '-DREAL_ONLY']},
-            '_otcopyr': {'addl': ['-DUSE_ALPHA', '-DREAL_ONLY']},
-            '_incopyi': {'addl': ['-DICOPY', '-UUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_oncopyi': {'addl': ['-DUSE_ALPHA', '-DIMAGE_ONLY']},
-            '_otcopyi': {'addl': ['-DUSE_ALPHA', '-DIMAGE_ONLY']},
-        }},
-    },
-  },
-  { 'base': '?ger',
-    'modes': {
-        's': {'exts': {'_k': {}}},
-        'd': {'exts': {'_k': {}}},
-        # 'q': {'exts': {'_k': {}}},
-    },
-  },
-  { 'base': '?geru',
-    'modes': {
-        'c': {'exts': {'_k': {'addl': ['-UCONJ']}}},
-        'z': {'exts': {'_k': {'addl': ['-UCONJ']}}},
-        # 'x': {'exts': {'_k': {}}},
-    },
-  },
-  { 'base': '?gerc',
-    'modes': {
-        'c': {'exts': {'_k': {'addl': ['-DCONJ']}}},
-        'z': {'exts': {'_k': {'addl': ['-DCONJ']}}},
-        # 'x': {'exts': {'_k': {}}},
-    },
-  },
-  { 'base': '?gerv',
-    'modes': {
-        'c': {'exts': {'_k': {'addl': ['-UCONJ', '-DXCONJ']}}},
-        'z': {'exts': {'_k': {'addl': ['-UCONJ', '-DXCONJ']}}},
-    },
-  },
-  { 'base': '?hemv',
-    'modes': {
-        'c': {
-            'exts': {
-                '_U': {'addl': ['-DHEMV']},
-                '_L': {'addl': ['-DHEMV']},
-                '_V': {'addl': ['-DHEMV', '-DHEMVREV']},
-                '_M': {'addl': ['-DHEMV', '-DHEMVREV']},
-            }
+      '': {
+        'exts': {
+          '': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
     },
@@ -749,12 +671,16 @@ base_kops = [
     'modes': {
       's': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
       'd': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
       # 'q': {'exts': {'': {}}},
