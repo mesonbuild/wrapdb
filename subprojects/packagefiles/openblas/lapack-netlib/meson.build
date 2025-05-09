@@ -1,4 +1,7 @@
-add_languages('fortran', native: false)
+add_languages(
+  'fortran',
+  native: false,
+)
 # TODO(mtsokol): make it a local setting
 # if fc.has_argument('-Wno-conversion')
 #   add_project_arguments('-Wno-conversion', language: 'fortran')
