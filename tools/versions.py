@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2024 Benjamin Gilbert <bgilbert@backtick.net>
+# Copyright 2024-2025 Benjamin Gilbert <bgilbert@backtick.net>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ from itertools import count
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 from typing import TypedDict
@@ -104,10 +105,17 @@ def get_upstream_versions() -> dict[str, str]:
 
 
 @cache
-def get_releases() -> dict[str, WrapInfo]:
-    '''Parse and return releases.json.'''
-    with open('releases.json') as f:
-        return json.load(f)
+def get_releases(commit=None) -> dict[str, WrapInfo]:
+    '''Parse and return releases.json for the specified commit or the working
+    tree.'''
+    if commit is not None:
+        data = subprocess.check_output(
+            ['git', 'cat-file', 'blob', f'{commit}:releases.json'], text=True
+        )
+    else:
+        with open('releases.json') as f:
+            data = f.read()
+    return json.loads(data)
 
 
 def get_wrap_versions() -> dict[str, str]:
@@ -242,6 +250,52 @@ def do_autoupdate(args: Namespace) -> None:
         raise Exception(f"Couldn't update {failures} wraps")
 
 
+def do_commit(args: Namespace) -> None:
+    old_releases = get_releases('HEAD')
+    new_releases = get_releases()
+
+    # we don't validate any invariants checked by sanity_checks.py
+    changed_wraps = [
+        name for name in new_releases
+        if old_releases.get(name) != new_releases[name]
+    ]
+    if not changed_wraps:
+        raise ValueError('Found no changes to releases.json')
+    if len(changed_wraps) != 1:
+        raise ValueError(f'Can only commit one wrap at a time: {changed_wraps}')
+    name = changed_wraps[0]
+
+    if not args.message:
+        new_ver = new_releases[name]['versions'][0]
+        try:
+            old_ver = old_releases[name]['versions'][0]
+        except KeyError:
+            old_ver = None
+        if old_ver is None:
+            args.message = 'add'
+        elif old_ver != new_ver and new_ver.endswith('-1'):
+            args.message = f'update from {old_ver.split("-")[0]} to {new_ver.split("-")[0]}'
+        else:
+            raise ValueError("Can't autogenerate commit message; specify -m")
+
+    commit_files = [
+        'ci_config.json', 'releases.json', f'subprojects/{name}.wrap'
+    ]
+    patch_dir = get_wrap_contents(name).get(
+        'wrap-file', 'patch_directory', fallback=None
+    )
+    if patch_dir:
+        commit_files.append(f'subprojects/packagefiles/{patch_dir}')
+
+    # suppress Git summary output and recreate it ourselves so we can also
+    # show the diffstat, to confirm we've committed the right files
+    subprocess.check_call(
+        ['git', 'commit', '-m', f'{name}: {args.message}', '-q'] + commit_files
+    )
+    subprocess.check_call(['git', 'log', '-1', '--format=[%h] %s'])
+    subprocess.check_call(['git', 'diff', '--stat', 'HEAD^..HEAD'])
+
+
 def do_libtool_ver(args: Namespace) -> None:
     components = args.info.split(':', 2)
     components += ['0'] * (3 - len(components))
@@ -367,6 +421,18 @@ def main() -> None:
         help="update port's revision if version is current"
     )
     autoupdate.set_defaults(func=do_autoupdate)
+
+    commit = subparsers.add_parser(
+        'commit',
+        aliases=['com'],
+        help='commit a wrap update to Git',
+        description='Commit a wrap update to Git.',
+    )
+    commit.add_argument(
+        '-m', '--message', metavar='text',
+        help='commit message, without wrap name prefix'
+    )
+    commit.set_defaults(func=do_commit)
 
     libtool_ver = subparsers.add_parser(
         'libtool-ver',
