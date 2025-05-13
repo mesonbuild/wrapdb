@@ -187,7 +187,41 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
         f.write(''.join(lines))
 
 
+def write_releases(releases: dict[str, WrapInfo]) -> None:
+    '''Write modified releases.json.'''
+    with open('releases.json.new', 'w') as f:
+        json.dump(releases, f, indent=2, sort_keys=True)
+        f.write('\n')
+    os.rename('releases.json.new', 'releases.json')
+
+
+def update_revisions(args: Namespace) -> None:
+    # run queries
+    releases = get_releases()
+    cur_vers = get_wrap_versions()
+
+    # decide what to update
+    names: list[str] = args.names
+    if names:
+        for name in names:
+            if name not in cur_vers:
+                raise ValueError(f'{name} is not a valid wrap in releases.json')
+    else:
+        names = [name for name in cur_vers]
+
+    # update
+    for name in names:
+        print(f'Updating {name} revision...')
+        cur_rev = int(releases[name]['versions'][0].split('-')[1])
+        releases[name]['versions'].insert(0, f'{cur_vers[name]}-{cur_rev + 1}')
+    write_releases(releases)
+
+
 def do_autoupdate(args: Namespace) -> None:
+    # --revision is distinct functionality; handle it separately
+    if args.revision:
+        return update_revisions(args)
+
     # run queries
     releases = get_releases()
     cur_vers = get_wrap_versions()
@@ -195,7 +229,7 @@ def do_autoupdate(args: Namespace) -> None:
     ports = get_port_wraps()
 
     # decide what to update
-    names = args.names
+    names: list[str] = args.names
     if names:
         for name in names:
             if name not in upstream_vers:
@@ -220,21 +254,7 @@ def do_autoupdate(args: Namespace) -> None:
                     print(f'Updating {name}...')
                 update_wrap(name, cur_ver, upstream_ver)
                 releases[name]['versions'].insert(0, f'{upstream_ver}-1')
-            elif name in ports and args.revision:
-                # only allow for ports, since official wraps can't have
-                # downstream changes
-                print(f'Updating {name} revision...')
-                cur_rev = int(releases[name]['versions'][0].split('-')[1])
-                releases[name]['versions'].insert(
-                    0, f'{cur_vers[name]}-{cur_rev + 1}'
-                )
-            else:
-                continue
-
-            with open('releases.json.new', 'w') as f:
-                json.dump(releases, f, indent=2, sort_keys=True)
-                f.write('\n')
-            os.rename('releases.json.new', 'releases.json')
+                write_releases(releases)
         except Exception as e:
             print(e, file=sys.stderr)
             failures += 1
@@ -352,19 +372,19 @@ def main() -> None:
     autoupdate = subparsers.add_parser(
         'autoupdate',
         aliases=['au'],
-        help='automatically update non-port wraps',
-        description='Attempt to automatically update wraps that support Meson upstream.'
+        help='automatically update wraps',
+        description="Automatically update wraps that support Meson upstream, update metadata only (releases.json and *.wrap) for wraps that don't, or increment wrap revision in releases.json."
     )
     autoupdate.add_argument(
         'names', metavar='name', nargs='*', help='wrap to update'
     )
     autoupdate.add_argument(
         '-p', '--port', action='store_true',
-        help='allow updating wraps with Meson support added in wrapdb'
+        help='allow updating metadata for wraps without upstream Meson support',
     )
     autoupdate.add_argument(
         '-r', '--revision', action='store_true',
-        help="update port's revision if version is current"
+        help='increment wrap revision and do nothing else'
     )
     autoupdate.set_defaults(func=do_autoupdate)
 
