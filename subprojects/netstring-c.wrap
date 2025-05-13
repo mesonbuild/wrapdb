@@ -1,7 +1,7 @@
 [wrap-file]
 directory = netstring-c-92104d314ad885fd444b70bffd12a2963ef37a2f
 source_url = https://github.com/PeterScott/netstring-c/archive/92104d314ad885fd444b70bffd12a2963ef37a2f.tar.gz
-source_filename = 92104d314ad885fd444b70bffd12a2963ef37a2f.tar.gz
+source_filename = netstring-c-92104d314ad885fd444b70bffd12a2963ef37a2f.tar.gz
 source_hash = 233bf6c0a9c8516139bb3b4c80ab4345e47e423c28039f3c85aeefd69d3a8fbf
 patch_directory = netstring-c
 

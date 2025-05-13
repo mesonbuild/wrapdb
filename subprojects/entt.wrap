@@ -1,7 +1,7 @@
 [wrap-file]
 directory = entt-3.11.0
 source_url = https://github.com/skypjack/entt/archive/refs/tags/v3.11.0.tar.gz
-source_filename = v3.11.0.tar.gz
+source_filename = entt-3.11.0.tar.gz
 source_hash = 7cca2bd4d4aeef6c5bdbe06b9e047e7f2519ebaff901207cc81ac71a2bbe185e
 patch_directory = entt
 

@@ -1,7 +1,7 @@
 [wrap-file]
 directory = lvgl-9.2.2
 source_url = https://github.com/lvgl/lvgl/archive/refs/tags/v9.2.2.tar.gz
-source_filename = v9.2.2.tar.gz
+source_filename = lvgl-9.2.2.tar.gz
 source_hash = 129b4e00e06639fa79d7e8a6cab3c1ecce2445b1a246652ccd34f22e7b17ad6f
 patch_directory = lvgl
 

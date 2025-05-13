@@ -1,7 +1,7 @@
 [wrap-file]
 directory = cwalk-1.2.9
 source_url = https://github.com/likle/cwalk/archive/refs/tags/v1.2.9.tar.gz
-source_filename = v1.2.9.tar.gz
+source_filename = cwalk-1.2.9.tar.gz
 source_hash = 54f160031687ec90a414e0656cf6266445207cb91b720dacf7a7c415d6bc7108
 patch_directory = cwalk
 

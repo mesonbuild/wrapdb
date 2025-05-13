@@ -1,10 +1,9 @@
 [wrap-file]
 directory = wren-0.4.0
 source_url = https://github.com/wren-lang/wren/archive/0.4.0.tar.gz
-source_filename = 0.4.0.tar.gz
+source_filename = wren-0.4.0.tar.gz
 source_hash = 23c0ddeb6c67a4ed9285bded49f7c91714922c2e7bb88f42428386bf1cf7b339
 patch_directory = wren
 
 [provide]
 wren = wren_dep
-
