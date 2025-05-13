@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 import unittest
 import json
 import subprocess
@@ -212,7 +213,7 @@ class TestReleases(unittest.TestCase):
                 # We do extra checks in the case a new release is being made. This
                 # is because some wraps are not passing all tests but we force making
                 # them compliant next time we do a release.
-                versions: T.List[str] = info['versions']
+                versions: list[str] = info['versions']
                 latest_tag = f'{name}_{versions[0]}'
                 extra_checks = latest_tag not in self.tags
 
@@ -503,9 +504,9 @@ class TestReleases(unittest.TestCase):
         return res.returncode == 0
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
-        tabs: T.List[Path] = []
-        not_permitted: T.List[Path] = []
-        unformatted: T.List[Path] = []
+        tabs: list[Path] = []
+        not_permitted: list[Path] = []
+        unformatted: list[Path] = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
