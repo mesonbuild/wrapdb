@@ -117,9 +117,6 @@ def is_alpinelike() -> bool:
 def is_debianlike() -> bool:
     return os.path.isfile('/etc/debian_version')
 
-def is_linux() -> bool:
-    return platform.system().lower() == 'linux'
-
 def is_windows() -> bool:
     return platform.system().lower() == 'windows' and not "MSYSTEM" in os.environ
 
