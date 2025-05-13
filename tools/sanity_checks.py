@@ -149,7 +149,37 @@ PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
 
+if T.TYPE_CHECKING:
+    class CiConfigProject(T.TypedDict, total=False):
+        build_options: list[str]
+        build_on: dict[str, bool]
+        alpine_packages: list[str]
+        brew_packages: list[str]
+        choco_packages: list[str]
+        debian_packages: list[str]
+        msys_packages: list[str]
+        python_packages: list[str]
+        fatal_warnings: bool
+        skip_dependency_check: list[str]
+        test_options: list[str]
+        skip_tests: bool
+
+
+    class ReleasesProject(T.TypedDict, total=False):
+        dependency_names: list[str]
+        program_names: list[str]
+        versions: T.Required[list[str]]
+
+
 class TestReleases(unittest.TestCase):
+    # requires casts for special keys e.g. broken_*
+    ci_config: dict[str, CiConfigProject]
+    fatal_warnings: bool
+    releases: dict[str, ReleasesProject]
+    skip: list[str]
+    tags: list[str]
+    timeout_multiplier: float
+
     @classmethod
     def setUpClass(cls):
         # Take list of git tags
@@ -167,7 +197,7 @@ class TestReleases(unittest.TestCase):
             raise RuntimeError(f'file {fn} is malformed')
 
         system = platform.system().lower()
-        cls.skip = cls.ci_config[f'broken_{system}']
+        cls.skip = T.cast(T.List[str], cls.ci_config[f'broken_{system}'])
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
         cls.timeout_multiplier = float(os.environ.get('TEST_TIMEOUT_MULTIPLIER', 1))
 
@@ -206,7 +236,7 @@ class TestReleases(unittest.TestCase):
                     if subproject['version'] != 'undefined' and patch_path:
                         self.assertEqual(subproject['version'], version)
 
-    def test_releases(self):
+    def test_releases(self) -> None:
         has_new_releases = False
         for name, info in self.releases.items():
             with self.subTest(name=name):
@@ -267,7 +297,7 @@ class TestReleases(unittest.TestCase):
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
-                    versions: T.List[str] = info['versions']
+                    versions = info['versions']
                     self.assertGreater(len(versions), 0)
                     versions_obj = [Version(v) for v in versions]
                     self.assertEqual(sorted(versions_obj, reverse=True), versions_obj)
