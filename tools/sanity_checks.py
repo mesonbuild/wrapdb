@@ -28,7 +28,7 @@ import sys
 import shlex
 
 from pathlib import Path
-from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_linux, is_macos, is_windows, is_msys
+from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys
 
 PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build']
 PER_PROJECT_PERMITTED_FILES = {
@@ -362,12 +362,7 @@ class TestReleases(unittest.TestCase):
         else:
             system = platform.system().lower()
         ci = self.ci_config.get(name, {})
-        # kept for backwards compatibility
-        expect_working = True
-        if ci.get('linux_only', False) and not is_linux():
-            expect_working = False
-        elif not ci.get('build_on', {}).get(system, True):
-            expect_working = False
+        expect_working = ci.get('build_on', {}).get(system, True)
 
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])
