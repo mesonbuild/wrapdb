@@ -1,7 +1,7 @@
 [wrap-file]
 directory = facil.io-0.7.6
 source_url = https://github.com/boazsegev/facil.io/archive/0.7.6.tar.gz
-source_filename = 0.7.6.tar.gz
+source_filename = facil.io-0.7.6.tar.gz
 source_hash = dc004017093e1ae3838b8c2a281d77d7cc94a84e0f157d93740838fb61e26d47
 patch_directory = facil
 

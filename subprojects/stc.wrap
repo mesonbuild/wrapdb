@@ -1,7 +1,7 @@
 [wrap-file]
 directory = STC-4a76ff9bc961750b5d1932496f6b861e794f8178
 source_url = https://github.com/stclib/STC/archive/4a76ff9bc961750b5d1932496f6b861e794f8178/v5.0.tar.gz
-source_filename = v5.0.tar.gz
+source_filename = STC-4a76ff9bc961750b5d1932496f6b861e794f8178.tar.gz
 source_hash = 9c8cd0a2e99c82d584cc106376b027183331ad07a5f602422ece95dcea35c2dd
 
 [provide]

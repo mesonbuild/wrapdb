@@ -1,7 +1,7 @@
 [wrap-file]
 directory = imgui-sfml-2.6
 source_url = https://github.com/eliasdaler/imgui-sfml/archive/refs/tags/v2.6.tar.gz
-source_filename = v2.6.tar.gz
+source_filename = imgui-sfml-2.6.tar.gz
 source_hash = b1195ca1210dd46c8049cfc8cae7f31cd34f1591da7de1c56297b277ac9c5cc0
 patch_directory = imgui-sfml
 

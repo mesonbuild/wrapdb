@@ -1,7 +1,7 @@
 [wrap-file]
 directory = DirectXMath-feb2024
 source_url = https://github.com/microsoft/DirectXMath/archive/refs/tags/feb2024.tar.gz
-source_filename = feb2024.tar.gz
+source_filename = DirectXMath-feb2024.tar.gz
 source_hash = f78bb400dcbedd987f2876b2fb6fe12199d795cd6a912f965ef3a2141c78303d
 patch_directory = directxmath
 
