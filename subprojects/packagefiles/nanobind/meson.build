@@ -17,7 +17,7 @@ robin_map_dep = dependency('robin-map')
 
 incdir = include_directories('include')
 
-# Arguments are derived from nanobind_build_library function in CMake configuration
+# Arguments are derived from nanobind_build_library() in CMake configuration.
 dep_compile_args = []
 dep_link_args = []
 
@@ -29,26 +29,23 @@ if get_option('buildtype') == 'shared'
         else
             resp_file = meson.project_source_root() / 'cmake/darwin-ld-cpython.sym'
         endif
-        add_project_link_arguments(
-            '-Wl,-dead_strip',
-            '-Wl,x',
-            '-Wl,-S',
-            '-Wl,@' + resp_file,
-        )
         dep_link_args += [
             '-Wl,-dead_strip',
             '-Wl,x',
             '-Wl,-S',
             '-Wl,@' + resp_file,
         ]
-    elif host_machine.system() != 'windows'
         add_project_link_arguments(
-            '-Wl,-s',
+            dep_link_args,
             language: 'cpp',
         )
+    elif host_machine.system() != 'windows'
         dep_link_args += ['-Wl,-s']
+        add_project_link_arguments(
+            dep_link_args,
+            language: 'cpp',
+        )
     endif
-
     add_project_arguments(
         '-DNB_BUILD',
         language: 'cpp',
@@ -56,6 +53,10 @@ if get_option('buildtype') == 'shared'
     dep_compile_args += ['-DNB_SHARED']
 elif host_machine.system() != 'windows' and host_machine.system() != 'darwin'
     dep_compile_args += ['-ffunction-sections', '-fdata-sections']
+    add_project_arguments(
+        dep_compile_args,
+        language: 'cpp',
+    )
     dep_link_args += ['-Wl,--gc-sections']
 endif
 
@@ -68,7 +69,7 @@ if host_machine.system() == 'windows'
     )
 endif
 
-# Discussion in WrapDB PR #1556 as to whether or not this is necessary
+# Discussion in WrapDB PR #1556 as to whether or not the following is necessary:
 # add_project_arguments('-fno-strict-aliasing', language: 'cpp')
 
 if get_option('buildtype') == 'release'
@@ -90,18 +91,7 @@ endif
 
 nanobind_lib = static_library(
     'nanobind',
-    sources: [
-        'src/nb_internals.cpp',
-        'src/nb_func.cpp',
-        'src/nb_type.cpp',
-        'src/nb_enum.cpp',
-        'src/nb_ndarray.cpp',
-        'src/nb_static_property.cpp',
-        'src/common.cpp',
-        'src/error.cpp',
-        'src/trampoline.cpp',
-        'src/implicit.cpp',
-    ],
+    sources: 'src/nb_combined.cpp',
     include_directories: [incdir],
     dependencies: [py_dep, robin_map_dep],
     gnu_symbol_visibility: 'hidden',
