@@ -6,6 +6,7 @@ project(
         check: true,
     ).stdout().strip(),
     meson_version: '>=1.0.0',
+    default_options: ['cpp_std=c++17', 'b_ndebug=if-release'],
     license: 'BSD-3-Clause',
 )
 
@@ -62,9 +63,9 @@ endif
 
 compiler = meson.get_compiler('cpp')
 
-if host_machine.system() == 'windows'
+if compiler.get_argument_syntax() == 'msvc'
     add_project_arguments(
-        compiler.get_supported_arguments('/D_CRT_SECURE_NO_WARNINGS'),
+        '/D_CRT_SECURE_NO_WARNINGS',
         language: 'cpp',
     )
 endif
