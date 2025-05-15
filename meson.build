@@ -7,7 +7,7 @@ project(
 wraps = get_option('wraps')
 
 foreach w : wraps
-  sub = subproject(w)
+  subproject(w)
 endforeach
 
 foreach name : get_option('depnames')
