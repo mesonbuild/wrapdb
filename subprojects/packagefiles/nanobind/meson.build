@@ -46,11 +46,11 @@ endif
 # library (if it's built) and to the developer's extension:
 dep_link_args = []
 if host_machine.system() == 'darwin'
-  is_pypy = py_dep.get_variable('implementation_lower') == 'pypy'
-  if is_pypy
-    resp_file = meson.project_source_root() / 'cmake/darwin-ld-pypy.sym'
-  else
+  py_soabi = py.get_variable('SOABI')
+  if py_soabi.startswith('cp')
     resp_file = meson.project_source_root() / 'cmake/darwin-ld-cpython.sym'
+  else
+    resp_file = meson.project_source_root() / 'cmake/darwin-ld-pypy.sym'
   endif
   dep_link_args += ['-Wl,-dead_strip', '-Wl,x', '-Wl,-S', '-Wl,@' + resp_file]
 elif host_machine.system() != 'windows'
