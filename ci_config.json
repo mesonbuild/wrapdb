@@ -13,6 +13,7 @@
   ],
   "broken_windows": [
     "arduinocore-avr",
+    "arrow-cpp",
     "google-woff2",
     "mocklibc",
     "termbox",
@@ -26,11 +27,7 @@
     "mocklibc"
   ],
   "arrow-cpp": {
-    "_comment": "20.0.0 has a bug that always requires boost (Fixed by Arrow PR 45824)",
-      "build_on": {
-      "msys2": false,
-      "windows": false
-    },
+    "_comment": "Windows symbol visibility broken; no upstream Windows CI to fix yet",
     "alpine_packages": [
       "boost-dev"
     ],
