@@ -1,0 +1,10 @@
+[wrap-file]
+directory = yaml-cpp-0.8.0
+source_url = https://github.com/jbeder/yaml-cpp/archive/refs/tags/0.8.0.tar.gz
+source_filename = yaml-cpp-0.8.0.tar.gz
+source_hash = fbe74bbdcee21d656715688706da3c8becfd946d92cd44705cc6098bb23b3a16
+patch_directory = yaml-cpp
+diff_files = yaml-cpp/0001-emitterutils-Explicitly-include-cstdint.patch
+
+[provide]
+yaml-cpp = yamlcpp_dep
