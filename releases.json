@@ -1032,6 +1032,14 @@
       "0.20.6-1"
     ]
   },
+  "gflags": {
+    "dependency_names": [
+      "gflags"
+    ],
+    "versions": [
+      "2.2.2-1"
+    ]
+  },
   "giflib": {
     "dependency_names": [
       "giflib"
