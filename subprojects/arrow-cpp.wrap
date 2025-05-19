@@ -1,9 +1,8 @@
 [wrap-file]
-directory = apache-arrow-20.0.0
-source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=arrow/arrow-20.0.0/apache-arrow-20.0.0.tar.gz
-source_fallback_url = https://github.com/apache/arrow/releases/download/apache-arrow-20.0.0/apache-arrow-20.0.0.tar.gz
-source_filename = apache-arrow-20.0.0.tar.gz
-source_hash = 89efbbf852f5a1f79e9c99ab4c217e2eb7f991837c005cba2d4a2fbd35fad212
+directory = arrow-4d527748aa74517ea40fb44fd81908b393fa2aa1
+source_url = https://github.com/apache/arrow/archive/4d527748aa74517ea40fb44fd81908b393fa2aa1.tar.gz
+source_filename = arrow-4d527748aa74517ea40fb44fd81908b393fa2aa1.tar.gz
+source_hash = 0e840e645d695015a52d4ab870504783ad19524a2c4180274cf0c58e0489e9b8
 patch_directory = arrow-cpp
 
 [provide]
