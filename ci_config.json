@@ -43,6 +43,19 @@
       "boost"
     ]
   },
+  "azure-sdk-for-cpp": {
+    "_comment": "Has some symbol visibility issues on Windows, may require extra deps",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    },
+    "build_options": [
+      "libxml2:python=disabled"
+    ],
+    "alpine_packages": [
+      "openssl-dev"
+    ]
+  },
   "blueprint-compiler": {
     "_comment": "Tests require pygobject and Gtk4 typelib, and also they crash",
     "skip_tests": true
