@@ -30,10 +30,12 @@ if bfd.found()
     '-DBACKWARD_HAS_BFD=1',
     language: 'cpp',
   )
-  if meson.version().version_compare('>= 0.62')
-    deps += dependency('dl')
-  else
-    deps += cpp.find_library('dl')
+  if host_machine.system() != 'windows'
+    if meson.version().version_compare('>= 0.62')
+      deps += dependency('dl')
+    else
+      deps += cpp.find_library('dl')
+    endif
   endif
 endif
 
