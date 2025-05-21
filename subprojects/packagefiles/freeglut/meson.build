@@ -67,12 +67,30 @@ freeglut_sources = files(
   'src/fg_window.c',
 )
 
+dep_glu = dependency(
+  'glu',
+  required: false,
+)
+# GLU is part of OpenGL.Framework, which is available through
+# dependency('gl') below.
+if not dep_glu.found() and host_machine.system() != 'darwin'
+  _glu_name = 'GLU'
+  if host_machine.system() == 'windows'
+    _glu_name = 'glu32'
+  endif
+  dep_glu = cc.find_library(
+    _glu_name,
+    has_headers: 'GL/glu.h',
+  )
+endif
+
 freeglut_deps = [
   cc.find_library(
     'm',
     required: false,
   ),
   dependency('gl'),
+  dep_glu,
 ]
 
 if host_system == 'windows'
