@@ -748,7 +748,7 @@
       "bison"
     ],
     "choco_packages": [
-      "winflexbison"
+      "winflexbison3"
     ]
   },
   "libxrandr": {
