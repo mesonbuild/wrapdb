@@ -25,11 +25,10 @@ dwarf = dependency(
 
 deps = [bfd, dw, dwarf, unwind]
 
+backward_project_args = []
+
 if bfd.found()
-  add_project_arguments(
-    '-DBACKWARD_HAS_BFD=1',
-    language: 'cpp',
-  )
+  backward_project_args += ['-DBACKWARD_HAS_BFD=1']
   if meson.version().version_compare('>= 0.62')
     deps += dependency('dl')
   else
@@ -38,18 +37,26 @@ if bfd.found()
 endif
 
 if dw.found()
-  add_project_arguments(
-    '-DBACKWARD_HAS_DW=1',
-    language: 'cpp',
-  )
+  backward_project_args += ['-DBACKWARD_HAS_DW=1']
 endif
 
 if dwarf.found()
-  add_project_arguments(
-    '-DBACKWARD_HAS_DWARF=1',
-    language: 'cpp',
-  )
+  backward_project_args += ['-DBACKWARD_HAS_DWARF=1']
 endif
+
+has_backtrace = cpp.has_header('execinfo.h') and cpp.has_header_symbol(
+  'execinfo.h',
+  'backtrace',
+)
+backward_project_args += [
+  '-DBACKWARD_HAS_BACKTRACE=@0@'.format(has_backtrace.to_int()),
+  '-DBACKWARD_HAS_BACKTRACE_SYMBOL=@0@'.format(has_backtrace.to_int()),
+]
+
+add_project_arguments(
+  backward_project_args,
+  language: 'cpp',
+)
 
 install_headers(
   'backward.hpp',
@@ -73,8 +80,13 @@ else
   )
 endif
 
-backward_dep = declare_dependency(
+backward_cpp_interface_dep = declare_dependency(
+  include_directories: '.',
   dependencies: deps,
+)
+
+backward_dep = declare_dependency(
+  dependencies: backward_cpp_interface_dep,
   link_with: backward,
 )
 
