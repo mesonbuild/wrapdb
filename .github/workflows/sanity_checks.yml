@@ -196,6 +196,10 @@ jobs:
           python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
+      - name: Work around runner-images issue 9966
+        run: |
+          brew list -1 | grep python | while read formula; do brew unlink $formula; brew link --overwrite $formula; done
+
       - name: Sanity Checks
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
