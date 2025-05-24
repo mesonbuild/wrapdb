@@ -1,7 +1,7 @@
 [wrap-file]
 directory = libxkbcommon-xkbcommon-1.10.0
 source_url = https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-1.10.0.tar.gz
-source_filename = xkbcommon-1.10.0.tar.xz
+source_filename = libxkbcommon-1.10.0.tar.xz
 source_hash = 0427585a4d6ca17c9fc1ac4b539bf303348e9080af70c5ea402503bc370a9631
 
 [provide]

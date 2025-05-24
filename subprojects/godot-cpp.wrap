@@ -1,10 +1,9 @@
 [wrap-file]
 directory = godot-cpp-godot-4.3-stable
 source_url = https://github.com/godotengine/godot-cpp/archive/refs/tags/godot-4.3-stable.tar.gz
-source_filename = godot-4.3-stable.tar.gz
+source_filename = godot-cpp-4.3.tar.gz
 source_hash = e6dfe8ee1ab3eeaadc9dba2dcb5ef39c4a99635986148fa893ce5c414153743f
 patch_directory=godot-cpp
-
 
 [provide]
 godot_cpp = godot_cpp_dep
