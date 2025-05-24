@@ -1,8 +1,8 @@
 [wrap-file]
-directory = quill-9.0.2
-source_url = https://github.com/odygrd/quill/archive/refs/tags/v9.0.2.tar.gz
-source_filename = quill-9.0.2.tar.gz
-source_hash = 7f5c6fbcc779d7d47a473b209a18908aadd691b2e3c82c4264ea015f6fbe4859
+directory = quill-9.0.3
+source_url = https://github.com/odygrd/quill/archive/refs/tags/v9.0.3.tar.gz
+source_filename = quill-9.0.3.tar.gz
+source_hash = 209b9a3fed9b44f61a50acc34fdc9f5f22338c03644728466e2f4a4b83036476
 
 [provide]
 quill = quill_dep
