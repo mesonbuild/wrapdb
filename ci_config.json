@@ -823,6 +823,12 @@
     ],
     "skip_tests": true
   },
+  "minifycpp": {
+    "build_options": [
+      "minifycpp:tests=true",
+      "minifycpp:examples=true"
+    ]
+  },
   "minizip-ng": {
     "build_options": [
       "minizip-ng:tests=enabled"
