@@ -1,7 +1,7 @@
 [wrap-file]
 directory = IREPEAT-0.6
 source_url = https://github.com/lemuriad/IREPEAT/archive/v0.6.tar.gz
-source_filename = irepeat-0.6.0.tar.gz
+source_filename = IREPEAT-0.6.tar.gz
 source_hash = ee128300512337ad5b9c5ec8c13138eb901fef61d3bf0aebb836d307bd2bbd14
 
 [provide]
