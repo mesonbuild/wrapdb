@@ -1,4 +1,5 @@
 img_src = files(
+  'IMG.c',
   'IMG_avif.c',
   'IMG_bmp.c',
   'IMG_gif.c',
