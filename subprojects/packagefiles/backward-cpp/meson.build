@@ -104,10 +104,21 @@ foreach test : tests
   )
 endforeach
 
-tests = ['suicide']
-foreach test : tests
-  test(
-    'test_' + test,
-    executable('testexe_' + test, 'test/' + test + '.cpp', 'test/_test_main.cpp'),
-  )
-endforeach
+# https://github.com/bombela/backward-cpp/pull/242
+if meson.project_version() != '1.6' or host_machine.cpu_family() not in [
+  'aarch64',
+  'mips',
+  'mips64',
+]
+  tests = ['suicide']
+  foreach test : tests
+    test(
+      'test_' + test,
+      executable(
+        'testexe_' + test,
+        'test/' + test + '.cpp',
+        'test/_test_main.cpp',
+      ),
+    )
+  endforeach
+endif
