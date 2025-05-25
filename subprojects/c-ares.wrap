@@ -1,8 +1,8 @@
 [wrap-file]
-directory = c-ares-1.34.4
-source_url = https://github.com/c-ares/c-ares/releases/download/v1.34.4/c-ares-1.34.4.tar.gz
-source_filename = c-ares-1.34.4.tar.gz
-source_hash = fa38dbed659ee4cc5a32df5e27deda575fa6852c79a72ba1af85de35a6ae222f
+directory = c-ares-1.34.5
+source_url = https://github.com/c-ares/c-ares/releases/download/v1.34.5/c-ares-1.34.5.tar.gz
+source_filename = c-ares-1.34.5.tar.gz
+source_hash = 7d935790e9af081c25c495fd13c2cfcda4792983418e96358ef6e7320ee06346
 patch_directory = c-ares
 
 [provide]
