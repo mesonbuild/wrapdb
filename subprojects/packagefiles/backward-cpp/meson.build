@@ -2,30 +2,54 @@ project(
   'backward-cpp',
   'cpp',
   version: '1.6',
+  meson_version: '>= 0.47',
 )
 
 cpp = meson.get_compiler('cpp')
 
 bfd = cpp.find_library(
   'bfd',
-  required: false,
+  required: get_option('bfd'),
 )
 dw = cpp.find_library(
   'dw',
-  required: false,
+  required: get_option('dw'),
 )
-unwind = dependency(
+libunwind = dependency(
   'libunwind',
-  required: false,
+  required: get_option('libunwind'),
 )
 dwarf = dependency(
   'libdwarf',
-  required: false,
+  required: get_option('dwarf'),
 )
 
-deps = [bfd, dw, dwarf, unwind]
+deps = []
 
-if bfd.found()
+# stack walking
+if libunwind.found()
+  deps += libunwind
+  add_project_arguments(
+    '-DBACKWARD_HAS_LIBUNWIND=1',
+    language: 'cpp',
+  )
+endif
+
+# stack detail extraction
+if dw.found()
+  deps += dw
+  add_project_arguments(
+    '-DBACKWARD_HAS_DW=1',
+    language: 'cpp',
+  )
+elif dwarf.found()
+  deps += dwarf
+  add_project_arguments(
+    '-DBACKWARD_HAS_DWARF=1',
+    language: 'cpp',
+  )
+elif bfd.found()
+  deps += bfd
   add_project_arguments(
     '-DBACKWARD_HAS_BFD=1',
     language: 'cpp',
@@ -37,20 +61,6 @@ if bfd.found()
       deps += cpp.find_library('dl')
     endif
   endif
-endif
-
-if dw.found()
-  add_project_arguments(
-    '-DBACKWARD_HAS_DW=1',
-    language: 'cpp',
-  )
-endif
-
-if dwarf.found()
-  add_project_arguments(
-    '-DBACKWARD_HAS_DWARF=1',
-    language: 'cpp',
-  )
 endif
 
 install_headers(
