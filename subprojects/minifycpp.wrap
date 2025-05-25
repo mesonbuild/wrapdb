@@ -1,0 +1,7 @@
+[wrap-file]
+directory = minifycpp
+source_url = https://codeberg.org/QWERTIOX/MinifyCpp/archive/v0.1.0.tar.gz
+source_filename = MinifyCpp-v0.1.0.tar.gz
+source_hash = a1285c058fdd0934c50ecc65b553e654ae172d463ee77fad6c2dd990202f2e38
+[provide]
+minifycpp=minifycpp_dep
