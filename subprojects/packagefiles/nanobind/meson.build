@@ -57,7 +57,7 @@ elif host_machine.system() != 'windows'
   dep_link_args += ['-Wl,-s']
 endif
 
-if get_option('buildtype') == 'shared'
+if get_option('default_library') == 'shared'
   dep_compile_args += ['-DNB_SHARED']
   add_project_arguments(
     [dep_compile_args, '-DNB_BUILD'],
