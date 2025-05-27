@@ -52,7 +52,7 @@ if host_machine.system() == 'darwin'
   else
     resp_file = meson.project_source_root() / 'cmake/darwin-ld-pypy.sym'
   endif
-  dep_link_args += ['-Wl,-dead_strip', '-Wl,x', '-Wl,-S', '-Wl,@' + resp_file]
+  dep_link_args += ['-Wl,-dead_strip', '-Wl,-x', '-Wl,-S', '-Wl,@' + resp_file]
 elif host_machine.system() != 'windows'
   dep_link_args += ['-Wl,-s']
 endif
