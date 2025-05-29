@@ -51,6 +51,7 @@ else
     files('src/gmock-all.cc'),
     #can't do the following because of dllimport
     #dependencies: gtest_dep,
+    dependencies: dependency('threads'),
     include_directories: [gtest_incdir, gmock_incdir],
     link_with: gtest_lib,
   )
