@@ -26,6 +26,7 @@ gtest_lib = library(
   sources: files('src/gtest-all.cc'),
   gnu_symbol_visibility: 'hidden',
   cpp_args: dllexp,
+  dependencies: dependency('threads'),
   include_directories: gtest_incdir,
 )
 
