@@ -1222,12 +1222,8 @@
   },
   "slirp": {
     "_comment": [
-      "- relies on lots of POSIX interfaces",
-      "- glib and proxy-libintl produce Meson warnings"
+      "- proxy-libintl produces Meson warnings"
     ],
-    "build_on": {
-      "windows": false
-    },
     "fatal_warnings": false
   },
   "sqlpp11": {
