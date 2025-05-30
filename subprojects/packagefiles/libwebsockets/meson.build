@@ -907,7 +907,9 @@ libwebsockets = library(
   ],
 )
 
-depinc = include_directories('include')
+depinc = []
+depinc += include_directories('include')
+depinc += include_directories('.')
 libwebsockets_dep = declare_dependency(
   include_directories: depinc,
   link_with: libwebsockets,
