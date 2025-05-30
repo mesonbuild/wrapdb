@@ -1,0 +1,9 @@
+[wrap-file]
+directory = arrow-4d527748aa74517ea40fb44fd81908b393fa2aa1
+source_url = https://github.com/apache/arrow/archive/4d527748aa74517ea40fb44fd81908b393fa2aa1.tar.gz
+source_filename = arrow-4d527748aa74517ea40fb44fd81908b393fa2aa1.tar.gz
+source_hash = 0e840e645d695015a52d4ab870504783ad19524a2c4180274cf0c58e0489e9b8
+patch_directory = arrow-cpp
+
+[provide]
+arrow-cpp = arrow_dep
