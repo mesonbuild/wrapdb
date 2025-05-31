@@ -2586,6 +2586,14 @@
       "0.11.21-1"
     ]
   },
+  "minifycpp": {
+    "dependency_names": [
+      "minifycpp"
+    ],
+    "versions": [
+      "0.1.2-1"
+    ]
+  },
   "miniz": {
     "dependency_names": [
       "miniz"
