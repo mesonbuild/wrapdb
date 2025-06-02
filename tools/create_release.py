@@ -70,6 +70,7 @@ class CreateRelease:
             debian_packages = ci.get(self.name, {}).get('debian_packages', [])
             if debian_packages and is_debianlike():
                 if is_ci():
+                    subprocess.check_call(['sudo', 'apt-get', 'update'])
                     subprocess.check_call(['sudo', 'apt-get', '-y', 'install'] + debian_packages)
                 else:
                     s = ', '.join(debian_packages)
