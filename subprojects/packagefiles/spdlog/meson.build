@@ -26,7 +26,7 @@ if meson.get_compiler('cpp').has_header_symbol(
 else
   fmt_dep = dependency(
     'fmt',
-    version: '>=8.1',
+    version: '>=11.0.0',
   )
   spdlog_dependencies += fmt_dep
   spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
