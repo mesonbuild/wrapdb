@@ -12,7 +12,7 @@ fs = import('fs')
 if not fs.exists('generated-config')
   message('Generating OpenSSL configs...')
 
-  if host_machine.system() != 'linux'
+  if host_machine.system() not in ['linux', 'android']
     error('Generator only works on Linux, other platforms are not supported')
   endif
 
