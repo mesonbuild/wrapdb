@@ -1,0 +1,9 @@
+[wrap-file]
+directory = libserialport-0.1.2
+source_url = https://sigrok.org/download/source/libserialport/libserialport-0.1.2.tar.gz
+source_filename = libserialport-0.1.2.tar.gz
+source_hash = 5deb92b5ca72c0347b07b786848350deca2dcfd975ce613b8e0e1d947a4b4ca9
+patch_directory = libserialport
+
+[provide]
+dependency_names = libserialport

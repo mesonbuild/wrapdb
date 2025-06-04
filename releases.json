@@ -2281,6 +2281,14 @@
       "3.6.4-1"
     ]
   },
+  "libserialport": {
+    "dependency_names": [
+      "libserialport"
+    ],
+    "versions": [
+      "0.1.2-1"
+    ]
+  },
   "libsigcplusplus-3": {
     "dependency_names": [
       "sigc++-3.0"
