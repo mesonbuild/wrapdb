@@ -2,7 +2,7 @@ project(
   'rdkafka',
   'c',
   'cpp',
-  version: '2.5.3',
+  version: '2.10.0',
   default_options: ['cpp_std=c++17', 'c_std=c11', 'warning_level=0'],
   meson_version: '>=0.57.0',
 )
@@ -303,7 +303,7 @@ if host_machine.system() == 'windows'
       language: 'c',
     )
   endforeach
-  if get_option('buildtype') != 'static'
+  if get_option('default_library') != 'static'
     add_project_arguments(
       '-DLIBRDKAFKA_EXPORTS',
       language: 'c',
