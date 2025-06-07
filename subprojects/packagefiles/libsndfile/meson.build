@@ -42,7 +42,7 @@ cdata.set10('OS_IS_WIN32', host_machine.system() == 'windows')
 cdata.set10('USE_WINDOWS_API', host_machine.system() == 'windows')
 cdata.set10(
   'WIN32_TARGET_DLL',
-  host_machine.system() == 'windows' and get_option('buildtype') != 'static',
+  host_machine.system() == 'windows' and get_option('default_library') != 'static',
 )
 
 # code errors if this is not 8

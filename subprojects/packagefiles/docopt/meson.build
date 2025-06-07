@@ -7,7 +7,7 @@ project(
 )
 
 cpp = meson.get_compiler('cpp')
-if cpp.get_argument_syntax() == 'msvc' and get_option('buildtype') != 'static'
+if cpp.get_argument_syntax() == 'msvc' and get_option('default_library') != 'static'
   add_project_arguments(
     '-DDOCOPT_DLL',
     '-DDOCOPT_EXPORTS',

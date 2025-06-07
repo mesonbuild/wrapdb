@@ -8,7 +8,7 @@ project(
 
 cc = meson.get_compiler('c')
 
-if get_option('buildtype') != 'static'
+if get_option('default_library') != 'static'
   add_project_arguments(
     '-DNNG_SHARED_LIB',
     language: 'c',
