@@ -894,15 +894,6 @@
     ]
   },
   "nanoarrow": {
-    "alpine_packages": [
-      "apache-arrow-dev"
-    ],
-    "brew_packages": [
-      "apache-arrow"
-    ],
-    "msys_packages": [
-      "arrow"
-    ],
     "build_options": [
       "nanoarrow:tests=enabled",
       "nanoarrow:ipc=enabled",
