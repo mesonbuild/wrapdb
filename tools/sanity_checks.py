@@ -69,6 +69,9 @@ PER_PROJECT_PERMITTED_FILES = {
     'libexif': [
         'def.py',
     ],
+    'libgrapheme': [
+        'chdir_wrapper.py',
+    ],
     'm4': [
         'm4_test_runner.py',
     ],

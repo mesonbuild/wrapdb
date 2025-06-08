@@ -1805,6 +1805,14 @@
       "1.6.3-1"
     ]
   },
+  "libgrapheme": {
+    "dependency_names": [
+      "libgrapheme"
+    ],
+    "versions": [
+      "2.0.2-1"
+    ]
+  },
   "libjpeg-turbo": {
     "dependency_names": [
       "libjpeg",
