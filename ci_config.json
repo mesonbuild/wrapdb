@@ -904,10 +904,10 @@
       "arrow"
     ],
     "build_options": [
-      "nanoarrow:tests=true",
-      "nanoarrow:ipc=true",
-      "nanoarrow:device=true",
-      "nanoarrow:testing=true"
+      "nanoarrow:tests=enabled",
+      "nanoarrow:ipc=enabled",
+      "nanoarrow:device=enabled",
+      "nanoarrow:testing=enabled"
     ]
   },
   "nanobind": {
