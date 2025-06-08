@@ -2,7 +2,7 @@
 directory = arrow-nanoarrow-3db7875cdea473c268b90dd0b033963953643ff6
 source_url = https://github.com/apache/arrow-nanoarrow/archive/3db7875cdea473c268b90dd0b033963953643ff6.zip
 source_filename = 3db7875cdea473c268b90dd0b033963953643ff6.zip
-source_hash = e4a02ac51002ad1875bf09317e70adb959005fad52b240ff59f73b970fa485d1
+
 
 [provide]
 nanoarrow = nanoarrow_dep
