@@ -1,0 +1,18 @@
+option(
+    'test',
+    type: 'boolean',
+    value: true,
+    description: 'Build tests',
+)
+option(
+    'benchmark',
+    type: 'boolean',
+    value: true,
+    description: 'Build benchmarks',
+)
+option(
+    'stdlib',
+    type: 'boolean',
+    value: true,
+    description: 'If set to false libgrapheme will not link against the standard library',
+)
