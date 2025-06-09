@@ -1,7 +1,7 @@
 project(
   'libxrandr',
   'c',
-  version: '1.5.2',
+  version: '1.5.4',
   default_options: ['warning_level=3'],
 )
 
