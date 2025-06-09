@@ -2707,9 +2707,9 @@
       "nanoarrow"
     ],
     "versions": [
-      "fd2263bbeb7c6d330fbfaf556fa1997aa1091179-1",
       "0.6.0-1",
-      "0.5.0-1"
+      "0.5.0-1",
+      "fd2263bbeb7c6d330fbfaf556fa1997aa1091179-1"
     ]
   },
   "nanobind": {
