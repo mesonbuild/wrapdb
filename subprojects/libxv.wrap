@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libXv-1.0.11
-source_url = https://xorg.freedesktop.org/releases/individual/lib/libXv-1.0.11.tar.bz2
-source_filename = libXrandr-1.0.11.tar.bz2
-source_hash = d26c13eac99ac4504c532e8e76a1c8e4bd526471eb8a0a4ff2a88db60cb0b088
+directory = libXv-1.0.13
+source_url = https://xorg.freedesktop.org/releases/individual/lib/libXv-1.0.13.tar.xz
+source_filename = libXv-1.0.13.tar.xz
+source_hash = 7d34910958e1c1f8d193d828fea1b7da192297280a35437af0692f003ba03755
 patch_directory = libXv
 
 [provide]

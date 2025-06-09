@@ -1,7 +1,7 @@
 project(
   'libxv',
   'c',
-  version: '1.0.11',
+  version: '1.0.13',
 )
 
 incdirs = include_directories('include')
