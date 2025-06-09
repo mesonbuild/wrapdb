@@ -1,6 +1,6 @@
 [wrap-file]
 directory = arrow-nanoarrow-4bfd77c82793eb91c804d6f893f7ab324e0105a0
-source_url = https://github.com/paleolimbot/arrow-nanoarrow/archive/4bfd77c82793eb91c804d6f893f7ab324e0105a0.zip
+source_url = https://github.com/apache/arrow-nanoarrow/archive/4bfd77c82793eb91c804d6f893f7ab324e0105a0.zip
 source_filename = 4bfd77c82793eb91c804d6f893f7ab324e0105a0.zip
 source_hash = 7cd772be4438e9699efab06d32c1ec817319ccdbe81a3495bfd6c9a80554c103
 
