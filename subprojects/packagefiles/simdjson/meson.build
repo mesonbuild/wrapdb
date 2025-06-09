@@ -2,7 +2,7 @@ project(
   'simdjson',
   'cpp',
   license: 'Apache-2.0',
-  version: '3.12.3',
+  version: '3.13.0',
 )
 
 simdjson_inc = include_directories('singleheader')
@@ -11,10 +11,10 @@ simdjson_args_public = []
 simdjson_args_private = []
 if meson.get_compiler('cpp').get_id() == 'msvc'
   simdjson_args_public += '-DSIMDJSON_VISUAL_STUDIO'
-  simdjson_args_private += [
-    '-DSIMDJSON_VISUAL_STUDIO',
-    '-DSIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY',
-  ]
+  simdjson_args_private += '-DSIMDJSON_VISUAL_STUDIO'
+endif
+if get_option('default_library') != 'static' and host_machine.system() == 'windows'
+  simdjson_args_private += '-DSIMDJSON_BUILDING_WINDOWS_DYNAMIC_LIBRARY'
 endif
 
 simdjson_lib = library(
