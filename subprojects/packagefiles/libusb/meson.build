@@ -1,7 +1,7 @@
 project(
   'libusb',
   'c',
-  version: '1.0.28',
+  version: '1.0.29',
   meson_version: '>=0.49.0',
   default_options: ['cpp_std=c++20'],
 )
