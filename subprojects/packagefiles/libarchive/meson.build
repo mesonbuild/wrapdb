@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.7.9',
+  version: '3.8.1',
   meson_version: '>=0.54.1',
 )
 
@@ -42,17 +42,17 @@ if host_machine.system() == 'windows'
   cdata.set(
     '_WIN32_WINNT',
     '0x0A00',
-    description: 'Windows Server 2003 APIs',
+    description: 'Windows 10 APIs',
   )
   cdata.set(
     'NTDDI_VERSION',
     '0x0A000000',
-    description: 'Windows Server 2003 APIs',
+    description: 'Windows 10 APIs',
   )
   cdata.set(
     'WINVER',
     '0x0A00',
-    description: 'Windows Server 2003 APIs',
+    description: 'Windows 10 APIs',
   )
 else
   add_project_arguments(
@@ -288,6 +288,9 @@ attr_dep = dependency(
 )
 if attr_dep.found()
   cdata.set('HAVE_LIBATTR', 1)
+  if attr_dep.version() != 'unknown'
+    cdata.set('LIBATTR_PKGCONFIG_VERSION', attr_dep.version())
+  endif
   deps += attr_dep
 endif
 
@@ -320,6 +323,9 @@ b2_dep = dependency(
 )
 if b2_dep.found()
   cdata.set('HAVE_LIBB2', 1)
+  if b2_dep.version() != 'unknown'
+    cdata.set('LIBB2_PKGCONFIG_VERSION', b2_dep.version())
+  endif
   deps += b2_dep
 endif
 
@@ -342,9 +348,15 @@ if zstd_dep.found()
   cdata.set('HAVE_LIBZSTD', 1)
   cdata.set('HAVE_ZSTD_H', 1)
   deps += zstd_dep
-  if zstd_dep.version().version_compare('>=0.8.1')
-    cdata.set('HAVE_ZSTD_compressStream', 1)
-  endif
+  foreach sym : ['ZSTD_compressStream', 'ZSTD_minCLevel']
+    if cc.has_header_symbol(
+      'zstd.h',
+      sym,
+      dependencies: zstd_dep,
+    )
+      cdata.set('HAVE_' + sym, 1)
+    endif
+  endforeach
 endif
 
 lzma_dep = dependency(
@@ -367,6 +379,18 @@ lzo2_dep = dependency(
 if lzo2_dep.found()
   cdata.set('HAVE_LIBLZO2', 1)
   deps += lzo2_dep
+endif
+
+bcrypt_dep = cc.find_library(
+  'bcrypt',
+  required: get_option('cng'),
+)
+if bcrypt_dep.found() and cc.has_header(
+  'bcrypt.h',
+  required: get_option('cng'),
+)
+  cdata.set('HAVE_BCRYPT_H', 1)
+  deps += bcrypt_dep
 endif
 
 crypto_dep = dependency(
@@ -424,6 +448,7 @@ else
 endif
 if iconv_dep.found()
   cdata.set('HAVE_ICONV', 1)
+  cdata.set10('HAVE_LIBICONV', iconv_dep.type_name() in ['system', 'internal'])
   cdata.set(
     'ICONV_CONST',
     cc.compiles(
@@ -519,6 +544,9 @@ libacl_dep = dependency(
 if libacl_dep.found()
   cdata.set('HAVE_LIBACL', 1)
   cdata.set('ARCHIVE_ACL_LIBACL', 1)
+  if libacl_dep.version() != 'unknown'
+    cdata.set('LIBACL_PKGCONFIG_VERSION', libacl_dep.version())
+  endif
   deps += libacl_dep
 endif
 
@@ -557,6 +585,10 @@ headers = {
     compile_args: true,
     includes: true,
   ),
+  'libxml/xmlversion.h': xml2_dep.partial_dependency(
+    compile_args: true,
+    includes: true,
+  ),
   'libxml/xmlwriter.h': xml2_dep.partial_dependency(
     compile_args: true,
     includes: true,
@@ -583,6 +615,10 @@ headers = {
   ),
   'membership.h': [],
   'memory.h': [],
+  'openssl/opensslv.h': crypto_dep.partial_dependency(
+    compile_args: true,
+    includes: true,
+  ),
   'paths.h': [],
   'poll.h': [],
   'process.h': [],
