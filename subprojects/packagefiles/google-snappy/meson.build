@@ -30,7 +30,7 @@
 project(
   'google-snappy',
   'cpp',
-  version: '1.1.9',
+  version: '1.2.2',
   license: 'BSD3',
   meson_version: '>= 0.50',
 )
@@ -87,7 +87,7 @@ if conf.get('HAVE_UNISTD_H', 0) == 1
     'sysconf',
     prefix: '#include <unistd.h>',
   )
-    conf.set('HAVE_FNC_SYSCONF', 1)
+    conf.set('HAVE_FUNC_SYSCONF', 1)
   endif
 endif
 
