@@ -1,12 +1,21 @@
 project(
   'libffi',
   'c',
-  version: '3.4.8',
+  version: '3.5.1',
   meson_version: '>= 0.56.0',
   default_options: ['debug=true', 'optimization=3', 'warning_level=1'],
 )
 
 fs = import('fs')
+
+project_version_parts = meson.project_version().split('.')
+project_version_number = ''.join(
+  project_version_parts[0],
+  project_version_parts[1].to_int() < 10 ? '0' : '',
+  project_version_parts[1],
+  project_version_parts[2].to_int() < 10 ? '0' : '',
+  project_version_parts[2],
+)
 
 libtool_version = run_command(
   'meson-scripts/extract-libtool-version.py',
@@ -348,7 +357,16 @@ endif
 
 # Assembly directive support
 if cc.compiles(
-  'asm (".cfi_sections\\n.cfi_startproc\\n.cfi_endproc");',
+  '''
+#ifdef _MSC_VER
+Nope.
+#endif
+int foo (void)
+{
+  __asm__ (".cfi_remember_state\n\t"
+           ".cfi_restore_state\n\t");
+  return 0;
+}''',
   name: 'ASM .cfi',
 )
   ffi_conf.set('HAVE_AS_CFI_PSEUDO_OP', 1)

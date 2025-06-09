@@ -15,6 +15,7 @@ tests = {
     'float4.c',
     'float.c',
     'float_va.c',
+    'longjmp.c',
     'many2.c',
     'many.c',
     'many_double.c',
