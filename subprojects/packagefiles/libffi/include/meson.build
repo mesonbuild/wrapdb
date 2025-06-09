@@ -1,5 +1,7 @@
 ffi_h_conf = configuration_data()
 ffi_h_conf.set('VERSION', meson.project_version())
+ffi_h_conf.set('FFI_VERSION_STRING', meson.project_version())
+ffi_h_conf.set('FFI_VERSION_NUMBER', project_version_number)
 ffi_h_conf.set(
   'FFI_EXEC_TRAMPOLINE_TABLE',
   ffi_conf.get('FFI_EXEC_TRAMPOLINE_TABLE', 0),
