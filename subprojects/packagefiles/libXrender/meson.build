@@ -1,7 +1,7 @@
 project(
   'libxrender',
   'c',
-  version: '0.9.10',
+  version: '0.9.12',
   default_options: ['warning_level=3'],
 )
 
