@@ -1,7 +1,7 @@
 project(
   'libXxf86vm',
   'c',
-  version: '1.1.4',
+  version: '1.1.6',
 )
 
 if host_machine.system() == 'windows'
