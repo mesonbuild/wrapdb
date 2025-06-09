@@ -1,7 +1,7 @@
 project(
   'libXcursor',
   'c',
-  version: '1.2.1',
+  version: '1.2.3',
   default_options: ['warning_level=3'],
 )
 

@@ -702,7 +702,13 @@
     "build_on": {
       "msys2": false,
       "windows": false
-    }
+    },
+    "alpine_packages": [
+      "libx11-dev"
+    ],
+    "debian_packages": [
+      "libx11-dev"
+    ]
   },
   "libxext": {
     "_comment": "X11 needs a POSIX system",
