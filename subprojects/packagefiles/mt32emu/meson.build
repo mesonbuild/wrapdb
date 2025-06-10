@@ -1,7 +1,7 @@
 project(
   'mt32emu',
   'cpp',
-  version: '2.7.1',
+  version: '2.7.2',
   license: 'LGPL-2.1-or-later',
   default_options: 'b_ndebug=if-release',
   meson_version: '>=0.49.0',
