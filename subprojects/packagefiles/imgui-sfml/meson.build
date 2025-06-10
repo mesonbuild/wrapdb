@@ -1,7 +1,7 @@
 project(
   'imgui-sfml',
   'cpp',
-  version: '2.6',
+  version: '2.6.1',
   license: 'MIT',
   meson_version: '>=0.49.0',
 )
