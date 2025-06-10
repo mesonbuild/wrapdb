@@ -828,10 +828,9 @@
     ]
   },
   "lmdb": {
-    "_comment": "Tests and programs disabled by default",
+    "_comment": "Tests are disabled by default",
     "build_options": [
-      "lmdb:tests=true",
-      "lmdb:programs=true"
+      "lmdb:tests=true"
     ]
   },
   "luajit": {

@@ -1,8 +1,8 @@
 [wrap-file]
-directory = openldap-LMDB_0.9.29
-source_url = https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.29/openldap-LMDB_0.9.29.tar.gz
-source_filename = openldap-LMDB_0.9.29.tar.gz
-source_hash = d4c668167a2d703ef91db733b4069b8b74dbc374405855be6626b45e2a7e2dd3
+directory = openldap-LMDB_0.9.33
+source_url = https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.33/openldap-LMDB_0.9.33.tar.bz2
+source_filename = openldap-LMDB_0.9.33.tar.bz2
+source_hash = d19d52725800177b89d235161c0af8ae8b2932207e3c9eb87e95b61f1925206d
 patch_directory = lmdb
 
 [provide]
