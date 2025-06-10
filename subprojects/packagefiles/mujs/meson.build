@@ -1,7 +1,7 @@
 project(
   'mujs',
   'c',
-  version: '1.3.5',
+  version: '1.3.6',
   default_options: 'c_std=c99',
   meson_version: '>=0.59.0',
 )
