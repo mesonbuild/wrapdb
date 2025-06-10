@@ -1,8 +1,8 @@
 [wrap-file]
-directory = glbinding-3.3.0
-source_url = https://github.com/cginternals/glbinding/archive/refs/tags/v3.3.0.zip
-source_filename = glbinding-3.3.0.zip
-source_hash = e035385dab8e9e687229e6b95b36c00bc0407669691913de5b63ca734e82b617
+directory = glbinding-3.5.0
+source_url = https://github.com/cginternals/glbinding/archive/refs/tags/v3.5.0.zip
+source_filename = glbinding-3.5.0.zip
+source_hash = 79c743ba396d4b43799c16c99f0d2b27eeaedbff673464c2d028ec3dbb932d6c
 patch_directory = glbinding
 
 [provide]
