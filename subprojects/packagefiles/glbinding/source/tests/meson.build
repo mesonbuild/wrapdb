@@ -5,13 +5,9 @@ glfw3_dep = dependency(
   required: build_tests_opt,
   disabler: true,
 )
-gtest_dep = dependency(
-  'gtest',
-  required: build_tests_opt,
-  disabler: true,
-)
+
 gmock_dep = dependency(
-  'gmock',
+  'gmock_main',
   required: build_tests_opt,
   disabler: true,
 )
@@ -27,21 +23,13 @@ glbinding_test_sources = files(
   'glbinding-test/Regression_test_82.cpp',
   'glbinding-test/RingBuffer_test.cpp',
   'glbinding-test/SharedBitfield_test.cpp',
-  'glbinding-test/main.cpp',
 )
 
 glbinding_test_exe = executable(
   'glbinding-test',
   glbinding_test_sources,
   cpp_args: [system_name_arg],
-  override_options: ['cpp_std=c++14'],
-  dependencies: [
-    glbinding_dep,
-    glbinding_aux_dep,
-    glfw3_dep,
-    gtest_dep,
-    gmock_dep,
-  ],
+  dependencies: [glbinding_dep, glbinding_aux_dep, glfw3_dep, gmock_dep],
 )
 
 if get_option('run_tests')
