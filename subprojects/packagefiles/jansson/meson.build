@@ -1,7 +1,7 @@
 project(
   'jansson',
   'c',
-  version: '2.14',
+  version: '2.14.1',
   license: 'MIT',
 )
 
@@ -63,8 +63,10 @@ pdata.set('JSON_UINT16', 'uint16_t')
 pdata.set('JSON_UINT8', 'uint8_t')
 pdata.set('JSON_SSIZE', 'long')
 
+pdata.set('USE_DTOA', 1)
 pdata.set('USE_URANDOM', host_machine.system() != 'windows')
 pdata.set('USE_WINDOWS_CRYPTOAPI', host_machine.system() == 'windows')
+pdata.set('WORDS_BIGENDIAN', host_machine.endian() == 'big')
 
 cdata = configuration_data()
 
@@ -79,6 +81,7 @@ foreach f : ['inline', '__inline', '']
   endif
 endforeach
 
+cdata.set('JSON_INTEGER_IS_LONG_LONG', 1)
 cdata.set('JSON_INT_T', 'int64_t')
 cdata.set('JSON_STRTOINT', 'strtoll')
 if cc.sizeof('long') == 4
@@ -92,7 +95,6 @@ endif
 # by 'json_'. Also these are used by an extra 'src/jansson_config.h.in' file.
 # This means we may miss out on some platform specific performance improvemnts.
 cdata.set('var', 'var')  # avoid warning; bogus variable found in comment.
-cdata.set('JSON_HAVE_LOCALECONV', 0)
 cdata.set('JSON_HAVE_ATOMIC_BUILTINS', 0)
 cdata.set('JSON_HAVE_SYNC_BUILTINS', 0)
 
@@ -113,8 +115,11 @@ configure_file(
   install_tag: 'devel',
 )
 
+cflags = cc.get_supported_arguments('-Wno-format-truncation')
+
 jansson_lib = library(
   'jansson',
+  'src/dtoa.c',
   'src/dump.c',
   'src/error.c',
   'src/hashtable.c',
@@ -127,9 +132,10 @@ jansson_lib = library(
   'src/utf.c',
   'src/value.c',
   'src/version.c',
-  c_args: '-DHAVE_CONFIG_H',
+  c_args: cflags + '-DHAVE_CONFIG_H',
   vs_module_defs: 'src/jansson.def',
   install: true,
+  version: '4.14.1',
 )
 
 install_headers('src/jansson.h')

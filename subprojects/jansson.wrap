@@ -1,8 +1,8 @@
 [wrap-file]
-directory = jansson-2.14
-source_url = https://github.com/akheron/jansson/releases/download/v2.14/jansson-2.14.tar.bz2
-source_filename = jansson-2.14.tar.bz2
-source_hash = fba956f27c6ae56ce6dfd52fbf9d20254aad42821f74fa52f83957625294afb9
+directory = jansson-2.14.1
+source_url = https://github.com/akheron/jansson/releases/download/v2.14.1/jansson-2.14.1.tar.bz2
+source_filename = jansson-2.14.1.tar.bz2
+source_hash = 6bd82d3043dadbcd58daaf903d974891128d22aab7dada5d399cb39094af49ce
 patch_directory = jansson
 
 [provide]
