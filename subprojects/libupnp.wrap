@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libupnp-1.14.20
-source_url = https://github.com/pupnp/pupnp/releases/download/release-1.14.20/libupnp-1.14.20.tar.bz2
-source_filename = libupnp-1.14.20.tar.bz2
-source_hash = ee4b4f85aa00ce38b782cf480fa569a90c7ccb23b0a9a076073a2d0bd6227335
+directory = libupnp-1.14.23
+source_url = https://github.com/pupnp/pupnp/releases/download/release-1.14.23/libupnp-1.14.23.tar.bz2
+source_filename = libupnp-1.14.23.tar.bz2
+source_hash = 8c5946432124cf69928edf049b6ac16a861c35fa70a8bf7aa8fad65359945218
 patch_directory = libupnp
 
 [provide]

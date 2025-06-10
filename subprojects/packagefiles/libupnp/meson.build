@@ -2,13 +2,21 @@ project(
   'pupnp',
   'c',
   license: 'BSD-3-Clause',
-  version: '1.14.20',
+  version: '1.14.23',
   meson_version: '>=0.54.1',
 )
 
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
   error('MSVC is unsupported. Requires custom pthread library')
+endif
+
+if meson.project_version() == '1.14.23'
+  # https://github.com/pupnp/pupnp/pull/487
+  add_project_arguments(
+    cc.get_supported_arguments('-Wno-incompatible-pointer-types'),
+    language: 'c',
+  )
 endif
 
 libupnp_incdir = include_directories(
@@ -193,6 +201,7 @@ libupnp = library(
   dependencies: [deps, threads_dep],
   link_with: libixml,
   install: true,
+  version: '17.2.3',
 )
 
 pkg = import('pkgconfig')
