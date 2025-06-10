@@ -1,7 +1,7 @@
 project(
   'libwebsockets',
   'c',
-  version: '4.3.3',
+  version: '4.3.5',
   meson_version: '>=0.54.1',
 )
 
