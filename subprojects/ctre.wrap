@@ -1,8 +1,8 @@
 [wrap-file]
-directory = compile-time-regular-expressions-3.9.0
-source_url = https://github.com/hanickadot/compile-time-regular-expressions/archive/refs/tags/v3.9.0.tar.gz
-source_filename = compile-time-regular-expressions-3.9.0.tar.gz
-source_hash = 55778712968d4f3ad00e9d20fc4d2149d14d96b4ff3dab086613797cd2ccd2b2
+directory = compile-time-regular-expressions-3.10.0
+source_url = https://github.com/hanickadot/compile-time-regular-expressions/archive/refs/tags/v3.10.0.tar.gz
+source_filename = compile-time-regular-expressions-3.10.0.tar.gz
+source_hash = b17e6c9a6cc0cea65132f62a6c699cefed952721063569d6339eb3ca471045e6
 patch_directory = ctre
 
 [provide]

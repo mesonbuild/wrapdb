@@ -1,7 +1,7 @@
 project(
   'ctre',
   'cpp',
-  version: '3.9.0',
+  version: '3.10.0',
   license: 'Apache-2.0',
   default_options: ['cpp_std=gnu++20,gnu++17,vc++latest,c++20,c++17'],
 )
