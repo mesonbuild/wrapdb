@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libuv-v1.49.1
-source_url = https://dist.libuv.org/dist/v1.49.1/libuv-v1.49.1.tar.gz
-source_filename = libuv-v1.49.1.tar.gz
-source_hash = 8d84f714f4cfd167b1576a58b82430cc2166ef135463d0644964fd71c61a6766
+directory = libuv-v1.51.0
+source_url = https://dist.libuv.org/dist/v1.51.0/libuv-v1.51.0.tar.gz
+source_filename = libuv-v1.51.0.tar.gz
+source_hash = 5f0557b90b1106de71951a3c3931de5e0430d78da1d9a10287ebc7a3f78ef8eb
 patch_directory = libuv
 
 [provide]

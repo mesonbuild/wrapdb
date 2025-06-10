@@ -1,10 +1,10 @@
 project(
   'libuv',
   'c',
-  version: '1.49.1',
+  version: '1.51.0',
   license: 'libuv',
   default_options: [
-    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu11,c11' : 'c_std=gnu11',
   ],
   meson_version: '>=0.49.0',
 )
@@ -126,7 +126,7 @@ libuv_src = files(
 if win32
   libuv_cargs += [
     '-DWIN32_LEAN_AND_MEAN',
-    '-D_WIN32_WINNT=0x0602',
+    '-D_WIN32_WINNT=0x0A00',
     '-D_CRT_DECLARE_NONSTDC_NAMES=0',
   ]
   libuv_libs += [
@@ -339,16 +339,14 @@ if qnx
   )
 endif
 
-# test-depending config
-if (libuv_build_tests
-and (apple
+if (apple
 or dragonfly
 or freebsd
 or linux
 or netbsd
 or openbsd)
-)
   libuv_test_libs += 'util'
+  libuv_libs += 'm'
 endif
 
 # convert libs to dependencies
@@ -360,12 +358,14 @@ foreach lib : libuv_libs
   )
 endforeach
 libuv_test_deps = []
-foreach lib : libuv_test_libs
-  libuv_test_deps += cc.find_library(
-    lib,
-    required: true,
-  )
-endforeach
+if libuv_build_tests
+  foreach lib : libuv_test_libs
+    libuv_test_deps += cc.find_library(
+      lib,
+      required: true,
+    )
+  endforeach
+endif
 
 # include directories
 libuv_public_inc = include_directories('include')
@@ -514,6 +514,7 @@ if libuv_build_tests
     'test/test-loop-close.c',
     'test/test-loop-configure.c',
     'test/test-loop-handles.c',
+    'test/test-loop-oom.c',
     'test/test-loop-stop.c',
     'test/test-loop-time.c',
     'test/test-metrics.c',
@@ -597,6 +598,7 @@ if libuv_build_tests
     'test/test-test-macros.c',
     'test/test-thread-affinity.c',
     'test/test-thread-equal.c',
+    'test/test-thread-name.c',
     'test/test-thread-priority.c',
     'test/test-thread.c',
     'test/test-threadpool-cancel.c',
@@ -638,6 +640,8 @@ if libuv_build_tests
 
   libuv_test_cargs = cc.get_supported_arguments(
     '-Wno-int-conversion',
+    # TODO: pending https://github.com/libuv/libuv/pull/4673
+    '-Wno-incompatible-pointer-types',
     '-D_GNU_SOURCE',
   )
 
