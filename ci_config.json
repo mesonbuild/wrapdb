@@ -829,6 +829,12 @@
     "_comment": "Tests are disabled by default",
     "build_options": [
       "lmdb:tests=true"
+    ],
+    "skip_program_check": [
+      "mdb_stat",
+      "mdb_copy",
+      "mdb_dump",
+      "mdb_load"
     ]
   },
   "luajit": {
