@@ -3850,6 +3850,14 @@
       "1.2.3-1"
     ]
   },
+  "svtjpegxs": {
+    "dependency_names": [
+      "SvtJpegxs"
+    ],
+    "versions": [
+      "0.9.0-1"
+    ]
+  },
   "tabulate": {
     "dependency_names": [
       "tabulate"
