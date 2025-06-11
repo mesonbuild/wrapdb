@@ -146,7 +146,7 @@ elif host_cpu in ['arm', 'aarch64']
     #endif
     int main(void) { return 0; }"
     ''',
-    name: 'does not need softfp for NEON intrinsics',
+    name: 'does not need softfp for Neon intrinsics',
   )
   neon_flags = []
   if host_cpu == 'arm'
@@ -164,7 +164,7 @@ elif host_cpu in ['arm', 'aarch64']
         return (int)output[0];
       }''',
       args: neon_flags,
-      name: 'supports NEON',
+      name: 'supports Neon',
     )
     if not have_simd
       if simd_opt.enabled()
@@ -293,11 +293,13 @@ elif host_cpu in ['arm', 'aarch64']
       if not cc.compiles(
         f,
         args: ['-x', 'assembler-with-cpp'] + neon_flags,
-        name: 'can use the partial NEON SIMD intrinsics implementation',
+        name: 'can use the partial Neon SIMD intrinsics implementation',
       )
         neon_intrinsics = true
       endif
     endif
+
+    summary('Neon SIMD intrinsics', neon_intrinsics ? 'full' : 'partial')
 
     if neon_intrinsics
       simd_src_arm += files('arm/jccolor-neon.c', 'arm/jidctint-neon.c')
