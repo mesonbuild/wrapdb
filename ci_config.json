@@ -1334,6 +1334,23 @@
       "sqlite"
     ]
   },
+  "svtjpegxs": {
+    "alpine_packages": [
+      "nasm"
+    ],
+    "brew_packages": [
+      "nasm"
+    ],
+    "debian_packages": [
+      "nasm"
+    ],
+    "choco_packages": [
+      "nasm"
+    ],
+    "msys_packages": [
+      "nasm"
+    ]
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
