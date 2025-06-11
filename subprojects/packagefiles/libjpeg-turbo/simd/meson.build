@@ -292,7 +292,7 @@ elif host_cpu in ['arm', 'aarch64']
       )
       if not cc.compiles(
         f,
-        args: ['-x', 'assembler-with-cpp'] + neon_flags,
+        args: neon_flags,
         name: 'can use the partial Neon SIMD intrinsics implementation',
       )
         neon_intrinsics = true
