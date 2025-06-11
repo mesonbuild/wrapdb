@@ -171,7 +171,6 @@ elif host_cpu in ['arm', 'aarch64']
         error('SIMD extensions not available for this architecture')
       else
         warning('SIMD extensions not available for this architecture')
-        subdir_done()
       endif
     endif
   else
@@ -255,7 +254,11 @@ elif host_cpu in ['arm', 'aarch64']
       not default_neon_intrinsics,
     ).enabled()
 
-    if not neon_intrinsics
+    # It is possible to run compile checks on generated files, however,
+    # Meson versions earlier than 1.2.0 do not set the lookup path
+    # correctly, causing Python to fail opening it.
+    # https://github.com/mesonbuild/meson/issues/11983
+    if meson.version().version_compare('>= 1.2.0') and not neon_intrinsics
       if (host_cpu == 'armv7')
         gastest = '''
         .text
@@ -275,6 +278,8 @@ elif host_cpu in ['arm', 'aarch64']
         .unreq MYVAR
         '''
       endif
+      # cc.compiles() can't pass inline assembly to the C compiler
+      # https://github.com/mesonbuild/meson/issues/12395
       f = configure_file(
         command: [
           python,
@@ -282,25 +287,16 @@ elif host_cpu in ['arm', 'aarch64']
           'import sys; print(sys.argv[1])',
           '@0@'.format(gastest),
         ],
-        input: 'CMakeLists.txt',
         output: 'gastest.S',
         capture: true,
       )
-      # It is possible to run compile checks on generated files, however,
-      # Meson versions earlier than 1.2.0 do not set the lookup path
-      # correctly, causing Python to fail opening it.
-      # https://github.com/mesonbuild/meson/issues/11983
-      if meson.version().version_compare('>= 1.2.0')
-        if not cc.compiles(
-          f,
-          args: ['-x', 'assembler-with-cpp'] + neon_flags,
-          name: 'can use the partial NEON SIMD intrinsics implementation',
-        )
-          neon_intrinsics = true
-        endif
+      if not cc.compiles(
+        f,
+        args: ['-x', 'assembler-with-cpp'] + neon_flags,
+        name: 'can use the partial NEON SIMD intrinsics implementation',
+      )
+        neon_intrinsics = true
       endif
-    else
-      neon_intrinsics = true
     endif
 
     if neon_intrinsics
