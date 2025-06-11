@@ -6,7 +6,7 @@ source_hash = add272bb09e6384a4833ffca4896350fdb16e0ca22df68c0384773c67a175594
 patch_directory = google-woff2
 
 [provide]
-libwoff2common = woff2_common_dep4
+libwoff2common = woff2_common_dep
 libwoff2dec = woff2_decoder_dep
 libwoff2enc = woff2_encoder_dep
 program_names = woff2_decompress, woff2_compress, woff2_info

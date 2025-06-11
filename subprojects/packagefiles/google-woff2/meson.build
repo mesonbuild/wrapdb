@@ -27,7 +27,12 @@ project(
   license: 'MIT',
   version: '1.0.2',
   meson_version: '>= 0.55',
+  default_options: ['cpp_std=c++11'],
 )
+
+cpp = meson.get_compiler('cpp')
+# no dllexport support upstream
+library_tgt = host_machine.system() == 'windows' ? 'static_library' : 'library'
 
 inc = include_directories('include')
 
@@ -48,12 +53,20 @@ add_project_arguments(
   language: 'cpp',
 )
 add_project_arguments(
-  '-fno-omit-frame-pointer',
+  cpp.get_supported_arguments('-fno-omit-frame-pointer'),
   language: 'cpp',
 )
 if host_machine.system() == 'darwin'
   add_project_arguments(
     '-DOS_MACOSX',
+    language: 'cpp',
+  )
+endif
+# https://github.com/google/woff2/pull/176
+if cpp.has_multi_arguments('-include', 'cstdint')
+  add_project_arguments(
+    '-include',
+    'cstdint',
     language: 'cpp',
   )
 endif
@@ -67,9 +80,10 @@ if 'undefined' in get_option('b_sanitize').split(',')
   )
 endif
 
-libwoff2_common = library(
+libwoff2_common = build_target(
   'woff2_common',
-  ['src/table_tags.cc', 'src/variable_length.cc', 'src/woff2_common.cc'],
+  files('src/table_tags.cc', 'src/variable_length.cc', 'src/woff2_common.cc'),
+  target_type: library_tgt,
   include_directories: inc,
   version: meson.project_version(),
 )
@@ -82,7 +96,7 @@ woff2_common_dep = declare_dependency(
 
 woff2_info = executable(
   'woff2_info',
-  ['src/woff2_info.cc'],
+  files('src/woff2_info.cc'),
   include_directories: inc,
   link_with: libwoff2_common,
 )
@@ -90,17 +104,13 @@ if meson.version().version_compare('>=0.46.0')
   meson.override_find_program('woff2_info', woff2_info)
 endif
 
-libwoff2_decoder = library(
+libwoff2_decoder = build_target(
   'woff2_decoder',
-  ['src/woff2_dec.cc', 'src/woff2_out.cc'],
+  files('src/woff2_dec.cc', 'src/woff2_out.cc'),
+  target_type: library_tgt,
   include_directories: inc,
   link_with: libwoff2_common,
-  dependencies: [
-    dependency(
-      'libbrotlidec',
-      fallback: ['google-brotli', 'brotli_decoder_dep'],
-    ),
-  ],
+  dependencies: dependency('libbrotlidec'),
   version: meson.project_version(),
 )
 
@@ -112,7 +122,7 @@ woff2_decoder_dep = declare_dependency(
 
 woff2_decompress = executable(
   'woff2_decompress',
-  ['src/woff2_decompress.cc'],
+  files('src/woff2_decompress.cc'),
   include_directories: inc,
   link_with: [libwoff2_common, libwoff2_decoder],
 )
@@ -120,23 +130,19 @@ if meson.version().version_compare('>=0.46.0')
   meson.override_find_program('woff2_decompress', woff2_decompress)
 endif
 
-libwoff2_encoder = library(
+libwoff2_encoder = build_target(
   'woff2_encoder',
-  [
+  files(
     'src/font.cc',
     'src/glyph.cc',
     'src/normalize.cc',
     'src/transform.cc',
     'src/woff2_enc.cc',
-  ],
+  ),
+  target_type: library_tgt,
   include_directories: inc,
   link_with: libwoff2_common,
-  dependencies: [
-    dependency(
-      'libbrotlienc',
-      fallback: ['google-brotli', 'brotli_encoder_dep'],
-    ),
-  ],
+  dependencies: dependency('libbrotlienc'),
   version: meson.project_version(),
 )
 
@@ -148,7 +154,7 @@ woff2_encoder_dep = declare_dependency(
 
 woff2_compress = executable(
   'woff2_compress',
-  ['src/woff2_compress.cc'],
+  files('src/woff2_compress.cc'),
   include_directories: inc,
   link_with: [libwoff2_common, libwoff2_encoder],
 )
