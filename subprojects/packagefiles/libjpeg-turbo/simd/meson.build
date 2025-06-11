@@ -252,7 +252,7 @@ elif host_cpu in ['arm', 'aarch64']
 
     neon_intrinsics = get_option('neon-intrinsics').disable_auto_if(
       not default_neon_intrinsics,
-    ).enabled()
+    ).allowed()
 
     # It is possible to run compile checks on generated files, however,
     # Meson versions earlier than 1.2.0 do not set the lookup path
@@ -302,6 +302,10 @@ elif host_cpu in ['arm', 'aarch64']
     summary('Neon SIMD intrinsics', neon_intrinsics ? 'full' : 'partial')
 
     if neon_intrinsics
+      add_project_arguments(
+        '-DNEON_INTRINSICS',
+        language: 'c',
+      )
       simd_src_arm += files('arm/jccolor-neon.c', 'arm/jidctint-neon.c')
     endif
 
@@ -321,10 +325,6 @@ elif host_cpu in ['arm', 'aarch64']
       simd_src_arm += files(dir / 'jsimd_neon.S')
     endif
 
-    add_project_arguments(
-      '-DNEON_INTRINSICS',
-      language: 'c',
-    )
     simd = static_library(
       'simd',
       simd_src_arm + files(dir / 'jsimd.c'),
