@@ -13,7 +13,6 @@
   ],
   "broken_windows": [
     "arduinocore-avr",
-    "google-woff2",
     "mocklibc",
     "termbox",
     "m4",
@@ -21,7 +20,6 @@
   ],
   "broken_darwin": [
     "arduinocore-avr",
-    "google-woff2",
     "graphite2",
     "mocklibc"
   ],
