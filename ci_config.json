@@ -1351,6 +1351,12 @@
       "nasm"
     ]
   },
+  "termbox2": {
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
