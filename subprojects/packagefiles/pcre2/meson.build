@@ -126,7 +126,6 @@ foreach h : check_headers
 endforeach
 
 check_funs = [
-  '__builtin_mul_overflow',
   '__builtin_unreachable',
   'bcopy',
   'memfd_create',
@@ -141,6 +140,20 @@ foreach f : check_funs
     cdata.set10('HAVE_@0@'.format(f.to_upper().strip('_')), true)
   endif
 endforeach
+
+if c_compiler.links(
+  '''
+  #include <stddef.h>
+  int main() {
+    int a, b;
+    size_t res;
+    __builtin_mul_overflow(a, b, &res);
+  }
+''',
+  name: '__builtin_mul_overflow',
+)
+  cdata.set10('HAVE_BUILTIN_MUL_OVERFLOW', true)
+endif
 
 if c_compiler.links(
   '''
