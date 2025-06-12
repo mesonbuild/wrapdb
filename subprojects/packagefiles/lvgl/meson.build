@@ -5,7 +5,7 @@ project(
   default_options: ['default_library=static'],
   license: 'MIT',
   meson_version: '>= 0.52.0',
-  version: '9.2.2',
+  version: '9.3.0',
 )
 
 subdir('src')
