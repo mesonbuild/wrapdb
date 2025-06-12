@@ -498,12 +498,19 @@ class TestReleases(unittest.TestCase):
             if not expect_working:
                 raise Exception(f'Wrap {name} successfully configured but was expected to fail')
         else:
+            loglines = logs.splitlines()
+            lasterror = [i for i, j in enumerate(loglines) if 'ERROR: ' in j][-1]
+            error = ' '.join(loglines[lasterror:])
+            if 'unsupported architecture' in error:
+                # Architecture is hard to detect here, we can't just use python's
+                # platform.machine(). Meson has to make compiler checks to get it
+                # right. Just assume that if a project does this error it knows
+                # what it is doing.
+                print('unsupported architecture')
+                return
             if expect_working:
                 res.check_returncode()
             else:
-                loglines = logs.splitlines()
-                lasterror = [i for i, j in enumerate(loglines) if 'ERROR: ' in j][-1]
-                error = ' '.join(loglines[lasterror:])
                 if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
                     print('unsupported, as expected')
                     return
