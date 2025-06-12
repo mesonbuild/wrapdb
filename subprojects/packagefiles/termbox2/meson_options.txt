@@ -1,0 +1,31 @@
+option(
+    'attr_width',
+    type: 'combo',
+    choices: ['16', '32', '64'],
+    value: '16',
+    description: 'Sets the attribute width (TB_OPT_ATTR_W)',
+)
+option(
+    'egc',
+    type: 'boolean',
+    value: false,
+    description: 'enable extended grapheme cluster support (TB_OPT_EGC)',
+)
+option(
+    'printf_buf',
+    type: 'integer',
+    value: 4096,
+    description: 'Write buffer size for printf operations (TB_OPT_PRINTF_BUF)',
+)
+option(
+    'read_buf',
+    type: 'integer',
+    value: 64,
+    description: 'Read buffer size for tty reads (TB_OPT_READ_BUF)',
+)
+option(
+    'libc_wchar',
+    type: 'boolean',
+    value: false,
+    description: 'use libc\'s `wcwidth(3)`, `iswprint(3)`, etc instead of the built-in Unicode-aware versions (TB_OPT_LIBC_WCHAR)',
+)
