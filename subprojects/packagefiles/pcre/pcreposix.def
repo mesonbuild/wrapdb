@@ -1,0 +1,6 @@
+EXPORTS
+;
+regcomp
+regerror
+regexec
+regfree

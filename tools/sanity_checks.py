@@ -98,6 +98,10 @@ PER_PROJECT_PERMITTED_FILES = {
         'test_runner.c',
         'run_fortran.c',
     ],
+    'pcre': [
+        'pcre.def',
+        'pcreposix.def'
+    ],
     'protobuf': [
         'symlink.py',
     ],

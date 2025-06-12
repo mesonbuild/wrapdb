@@ -7,3 +7,4 @@ patch_directory = pcre
 
 [provide]
 libpcre = pcre_dep
+libpcreposix = pcreposix_dep
