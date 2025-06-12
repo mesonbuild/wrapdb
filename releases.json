@@ -3122,9 +3122,11 @@
   },
   "pcre": {
     "dependency_names": [
-      "libpcre"
+      "libpcre",
+      "libpcreposix"
     ],
     "versions": [
+      "8.45-5",
       "8.45-4",
       "8.45-3",
       "8.45-2",
