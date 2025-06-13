@@ -188,6 +188,11 @@ jobs:
           brew install ninja
           python3 -m pip install --pre meson
 
+      - name: Work around runner-images issue 9966
+        run: |
+          brew unlink python@3.11
+          brew link --overwrite python@3.11
+
       - name: Sanity Checks
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
