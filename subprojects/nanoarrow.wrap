@@ -1,8 +1,8 @@
 [wrap-file]
-directory = arrow-nanoarrow-4bfd77c82793eb91c804d6f893f7ab324e0105a0
-source_url = https://github.com/apache/arrow-nanoarrow/archive/4bfd77c82793eb91c804d6f893f7ab324e0105a0.zip
-source_filename = 4bfd77c82793eb91c804d6f893f7ab324e0105a0.zip
-source_hash = 7cd772be4438e9699efab06d32c1ec817319ccdbe81a3495bfd6c9a80554c103
+directory = arrow-nanoarrow-d4a7b8c1fffcd034c056dbd8c45641104a7134cd
+source_url = https://github.com/apache/arrow-nanoarrow/archive/d4a7b8c1fffcd034c056dbd8c45641104a7134cd.zip
+source_filename = d4a7b8c1fffcd034c056dbd8c45641104a7134cd.zip
+source_hash = 71db2ae4c66286ad86d489f25be0d0fb6789368b47aafff6f8c0d60288e8eb69
 
 [provide]
 nanoarrow = nanoarrow_dep
