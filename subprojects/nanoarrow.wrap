@@ -1,9 +1,8 @@
 [wrap-file]
-directory = apache-arrow-nanoarrow-0.6.0
-source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=arrow/apache-arrow-nanoarrow-0.6.0/apache-arrow-nanoarrow-0.6.0.tar.gz
-source_fallback_url = https://github.com/apache/arrow-nanoarrow/releases/download/apache-arrow-nanoarrow-0.6.0/apache-arrow-nanoarrow-0.6.0.tar.gz
-source_filename = apache-arrow-nanoarrow-0.6.0.tar.gz
-source_hash = e4a02ac51002ad1875bf09317e70adb959005fad52b240ff59f73b970fa485d1
+directory = arrow-nanoarrow-14904f7933fbd31b5cd1761a33f12ae148aaaeac
+source_url = https://github.com/paleolimbot/arrow-nanoarrow/archive/14904f7933fbd31b5cd1761a33f12ae148aaaeac.zip
+source_filename = arrow-nanoarrow-14904f7933fbd31b5cd1761a33f12ae148aaaeac.zip
+source_hash = 56fe777ee05b3fef9adaf29e172706fbc001a25782a53805d7f3e495fcbb704e
 
 [provide]
 nanoarrow = nanoarrow_dep
