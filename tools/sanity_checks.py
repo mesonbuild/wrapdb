@@ -404,7 +404,7 @@ class TestReleases(unittest.TestCase):
             segs = version.split('.')
             self.assertEqual(len(segs), 3)
             version = segs[0] + segs[1] + segs[2]
-        elif name in {'netstring-c', 'directxmath', 'luajit'}:
+        elif name in {'netstring-c', 'directxmath', 'luajit', 'arrow-cpp'}:
             # There is no specific version for netstring-c
             # DirectXMath source url contains only tag name without version
             # LuaJIT source URL does not contain the version number.
