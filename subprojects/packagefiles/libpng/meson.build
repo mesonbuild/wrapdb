@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.48',
+  version: '1.6.49',
   license: 'libpng',
   meson_version: '>=0.50.0',
 )
@@ -73,6 +73,15 @@ elif host_machine.cpu_family() in ['x86', 'x86_64']
 elif host_machine.cpu_family() in ['ppc64', 'ppc64le', 'powerpc64le'] and host_machine.endian() == 'little'
   png_src += files('powerpc/filter_vsx_intrinsics.c', 'powerpc/powerpc_init.c')
   c_args += '-DPNG_POWERPC_VSX_OPT=2'
+elif host_machine.cpu_family() in ['riscv32', 'riscv64']
+  # As of 1.6.49, upstream CMake defaults RVV to off, while Autotools
+  # defaults to on if the compiler supports it.  libpng also supports
+  # autodetection at runtime (on Linux only, with substantial skepticism in
+  # comments and documentation) and runtime enablement via the libpng API
+  # (only on Autotools, which doesn't compile it in by default).  It's not
+  # clear that RVV is widely supported by hardware.  Avoid the whole mess
+  # for now.
+  c_args += '-DPNG_RISCV_RVV_OPT=0'
 endif
 
 libpng = library(
