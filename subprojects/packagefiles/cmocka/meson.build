@@ -188,7 +188,7 @@ if machine.endian() == 'big'
   config.set('WORDS_BIGENDIAN', 1)
 endif
 
-cfile = configure_file(
+configure_file(
   input: 'config.h.cmake',
   output: 'config.h',
   format: 'cmake',
