@@ -53,46 +53,13 @@ config = configuration_data()
 
 if compiler.get_argument_syntax() == 'gcc'
   add_project_arguments(
-# I've explicitly skipped the duplicated -W versions when they also test
-# for the -Werror version
-    compiler.get_supported_arguments(
-      '-Wshadow',
-      '-Wmissing-prototypes',
-      '-Wcast-align',
-      '-Werror=address',
-      '-Werror=strict-prototypes',
-      '-Werror=write-strings',
-      '-Werror=implicit-function-declaration',
-      '-Werror=pointer-arith',
-      '-Werror=declaration-after-statement',
-      '-Werror=return-type',
-      '-Werror=uninitialized',
-      '-Wimplicit-fallthrough',
-      '-Werror=strict-overflow',
-      '-Wstrict-overflow=2',
-      '-Wno-format-zero-length',
-      '-Wformat',
-      '-Werror=format-security',
-      '-Wno-gnu-zero-variadic-macro-arguments',
-      '-D_GNU_SOURCE',
-    ),
+    '-D_GNU_SOURCE',
     language: 'c',
     native: is_native,
   )
-  # We can't test the build type, so we can' add -D_FORTIFY_SOURCE=2 here
-  if machine.system() == 'darwin'
-    add_project_arguments(
-      compiler.get_supported_arguments('-Wno-deprecated-declarations'),
-      language: 'c',
-      native: is_native,
-    )
-  endif
 else
   add_project_arguments(
-    '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1',
-    '/D_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1',
-    '/D_CRT_NONSTDC_NO_WARNINGS=1',
-    '/D_CRT_SECURE_NO_WARNINGS=1',
+    compiler.get_supported_arguments('-Wno-deprecated-declarations'),
     language: 'c',
     native: is_native,
   )
@@ -126,10 +93,10 @@ foreach h : [
   endif
 endforeach
 
-if compiler.has_member(
+if compiler.has_header_symbol(
+  'time.h',
   'struct timespec',
-  'tv_sec',
-  prefix: '#include <time.h>',
+  prefix: '#define _GNU_SOURCE',
 )
   config.set('HAVE_STRUCT_TIMESPEC', 1)
 endif
@@ -166,9 +133,21 @@ if not config.has('HAVE_CLOCK_GETTIME')
     'clock_gettime',
     dependencies: dependency('threads'),
   )
-    config.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+    config.set('HAVE_CLOCK_GETTIME', 1)
     threads_dep = dependency('threads')
   endif
+endif
+
+if compiler.has_header_symbol(
+  'time.h',
+  'CLOCK_REALTIME',
+  prefix: '#define _GNU_SOURCE',
+)
+  config.set('HAVE_CLOCK_REALTIME', 1)
+endif
+
+if compiler.has_header_symbol('stdint.h', 'uintptr_t')
+  config.set('HAVE_UINTPTR_T', 1)
 endif
 
 if compiler.get_argument_syntax() == 'msvc'
