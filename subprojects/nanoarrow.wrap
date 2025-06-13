@@ -1,7 +1,7 @@
 [wrap-file]
-directory = arrow-nanoarrow-d4a7b8c1fffcd034c056dbd8c45641104a7134cd
-source_url = https://github.com/apache/arrow-nanoarrow/archive/d4a7b8c1fffcd034c056dbd8c45641104a7134cd.zip
-source_filename = d4a7b8c1fffcd034c056dbd8c45641104a7134cd.zip
+directory = arrow-nanoarrow-86b8c39e3bdc51c481e52f85f65326cee2c037f5
+source_url = https://github.com/paleolimbot/arrow-nanoarrow/archive/86b8c39e3bdc51c481e52f85f65326cee2c037f5.zip
+source_filename = 86b8c39e3bdc51c481e52f85f65326cee2c037f5.zip
 source_hash = 71db2ae4c66286ad86d489f25be0d0fb6789368b47aafff6f8c0d60288e8eb69
 
 [provide]
