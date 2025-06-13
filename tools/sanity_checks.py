@@ -520,9 +520,16 @@ class TestReleases(unittest.TestCase):
             if expect_working:
                 res.check_returncode()
             else:
-                if 'unsupported' in error or 'not supported' in error or 'does not support' in error:
-                    print('unsupported, as expected')
-                    return
+                for msg in [
+                    'unsupported',
+                    'not supported',
+                    'does not support',
+                    # wayland-protocols upstream
+                    'SFD_CLOEXEC is needed to compile Wayland libraries',
+                ]:
+                    if msg in error:
+                        print('unsupported, as expected')
+                        return
                 if 'ERROR: Could not execute Vala compiler: valac' in error:
                     print('cannot verify in wrapdb due to missing dependency')
                     return
