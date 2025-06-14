@@ -6,7 +6,7 @@ add_languages(
 lapack_deps = [
   fc.find_library(
     'quadmath',
-    required: true,
+    required: false,
   ),
 ]
 

@@ -979,8 +979,7 @@
   "openblas": {
     "_comment": "Doesn't work with windows native compilers",
     "alpine_packages": [
-      "gfortran",
-      "libquadmath"
+      "gfortran"
     ],
     "brew_packages": [
       "coreutils",
