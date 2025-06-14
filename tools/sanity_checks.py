@@ -233,7 +233,7 @@ class TestReleases(unittest.TestCase):
 
         return None
 
-    def check_meson_version(self, name: str, version: str, patch_path: str, builddir: str = '_build'):
+    def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
         with self.subTest(step="check_meson_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
             # don't check if the build was skipped
