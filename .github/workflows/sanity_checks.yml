@@ -25,6 +25,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install build-essential python3-pip ninja-build
+          python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
       - name: Sanity Checks
@@ -62,6 +63,7 @@ jobs:
         run: |
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
+          python -m pip install license-expression
           python -m pip install --pre meson
           if grep -q qemu /proc/$$/cmdline; then
               export TEST_TIMEOUT_MULTIPLIER=10
@@ -95,6 +97,7 @@ jobs:
 
       - name: Install packages
         run: |
+          python -m pip install license-expression
           python -m pip install --pre meson
 
       - uses: ilammy/msvc-dev-cmd@v1
@@ -117,6 +120,7 @@ jobs:
 
       - name: Install packages
         run: |
+          python -m pip install license-expression
           python -m pip install --pre meson
 
       - uses: ilammy/msvc-dev-cmd@v1
@@ -159,6 +163,7 @@ jobs:
       - name: Install packages
         shell: msys2 {0}
         run: |
+          python -m pip install license-expression
           python -m pip install --pre meson
 
       - name: Sanity Checks
@@ -186,6 +191,7 @@ jobs:
       - name: Install packages
         run: |
           brew install ninja
+          python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
       - name: Sanity Checks
