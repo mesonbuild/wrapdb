@@ -146,6 +146,7 @@ PER_PROJECT_PERMITTED_FILES = {
 SOURCE_FILENAME_PREFIXES = {
     'icu': 'icu4c',
     'libtomcrypt': 'crypt',
+    'godot-cpp' : 'godot',
 }
 FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
