@@ -233,7 +233,7 @@ class TestReleases(unittest.TestCase):
 
         return None
 
-    def check_meson_version(self, name: str, version: str, patch_path: str, builddir: str = '_build'):
+    def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
         with self.subTest(step="check_meson_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
             # don't check if the build was skipped
@@ -286,6 +286,7 @@ class TestReleases(unittest.TestCase):
                         self.assertTrue(patch_path.is_dir())
                         # FIXME: Not all wraps currently complies, only check for wraps we modify.
                         if extra_checks:
+                            self.check_license(patch_path)
                             self.check_files(name, patch_path)
 
                 # Make sure it has the same deps/progs provided
@@ -570,6 +571,34 @@ class TestReleases(unittest.TestCase):
             ]
         )
         return res.returncode == 0
+
+    def check_license(self, patch_path: str) -> None:
+        with self.subTest(step='check_license'):
+            try:
+                project_json = subprocess.check_output(
+                    ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
+                    cwd=patch_path, text=True, stderr=subprocess.DEVNULL
+                )
+            except subprocess.CalledProcessError:
+                # rewriter fails if any compilers are missing; ignore
+                return
+            project = json.loads(project_json)['kwargs']['project#/']
+            self.assertIn('license', project)  # project must specify license
+            self.assertIs(type(project['license']), str)  # license must not use legacy list syntax
+
+            try:
+                import license_expression  # type: ignore[import-untyped]
+            except ImportError:
+                print('\nno license_expression library; skipping SPDX validation')
+                return
+            try:
+                license_expression.get_spdx_licensing().parse(
+                    project['license'], validate=True, strict=True
+                )
+            except license_expression.ExpressionParseError as exc:
+                raise Exception('Invalid license expression; see https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/') from exc
+            except license_expression.ExpressionError as exc:
+                raise Exception('Invalid license; see https://spdx.org/licenses/') from exc
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
         tabs: list[Path] = []
