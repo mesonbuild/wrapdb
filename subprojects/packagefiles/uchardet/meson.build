@@ -2,7 +2,7 @@ project(
   'uchardet',
   ['c', 'cpp'],
   version: '0.0.8',
-  license: ['MPL-1.1', 'GPL-2.0-or-later', '  LGPL-2.1-or-later'],
+  license: 'MPL-1.1 OR GPL-2.0-or-later OR LGPL-2.1-or-later',
   meson_version: '>=0.53.0',
   default_options: ['cpp_std=c++14', 'warning_level=1'],
 )

@@ -3,7 +3,7 @@ project(
   'c',
   version: '8.2.8',
   meson_version: '>=0.47.0',
-  license: 'custom',
+  license: 'Boehm-GC',
 )
 
 add_project_arguments(

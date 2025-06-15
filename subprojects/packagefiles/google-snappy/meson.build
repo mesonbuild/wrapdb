@@ -31,7 +31,7 @@ project(
   'google-snappy',
   'cpp',
   version: '1.2.2',
-  license: 'BSD3',
+  license: 'BSD-3-Clause',
   meson_version: '>= 0.50',
 )
 
