@@ -2,6 +2,7 @@ project(
   'tiff',
   'c',
   version: files('VERSION'),
+  license: 'libtiff',
   meson_version: '>=0.57.0',
 )
 # calculate library version from configure.ac values
