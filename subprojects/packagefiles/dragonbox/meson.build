@@ -2,7 +2,7 @@ project(
   'dragonbox',
   'cpp',
   version: '1.1.2',
-  license: 'Boost',
+  license: 'BSL-1.0',
   default_options: ['cpp_std=c++17'],
 )
 

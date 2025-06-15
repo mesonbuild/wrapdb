@@ -2,7 +2,7 @@ project(
   'mocklibc',
   'c',
   version: '1.0',
-  license: 'Apache',
+  license: 'Apache-2.0',
   default_options: 'c_std=none',
   meson_version: '>= 0.36.0',
 )

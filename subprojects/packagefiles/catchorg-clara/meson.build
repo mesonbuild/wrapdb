@@ -2,7 +2,7 @@ project(
   'catchorg-clara',
   'cpp',
   version: '1.1.5',
-  license: 'Boost',
+  license: 'BSL-1.0',
 )
 
 catchorg_clara_dep = declare_dependency(

@@ -2,7 +2,7 @@ project(
   'liburing',
   ['c', 'cpp'],
   version: '2.5',
-  license: ['MIT', 'LGPL-2.1-only', 'GPL-2.0-only WITH Linux-syscall-note'],
+  license: '(MIT OR LGPL-2.1-only) AND (MIT OR GPL-2.0-only WITH Linux-syscall-note)',
   meson_version: '>=0.57.0',
   default_options: [
     'default_library=both',

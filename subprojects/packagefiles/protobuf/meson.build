@@ -2,7 +2,7 @@ project(
   'protobuf',
   ['cpp', 'c'],
   version: '25.2',
-  license: 'protobuf',
+  license: 'BSD-3-Clause',
   default_options: [
     'warning_level=0',
     #   I was unable to get libprotoc linking as shared library on MINGW, for whatever reason

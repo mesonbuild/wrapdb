@@ -2,7 +2,7 @@ project(
   'libuv',
   'c',
   version: '1.51.0',
-  license: 'libuv',
+  license: 'MIT AND BSD-2-Clause AND ISC',
   default_options: [
     meson.version().version_compare('>=1.3.0') ? 'c_std=gnu11,c11' : 'c_std=gnu11',
   ],

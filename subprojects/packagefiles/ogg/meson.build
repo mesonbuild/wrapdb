@@ -2,7 +2,7 @@ project(
   'libogg',
   'c',
   version: '1.3.5',
-  license: 'bsd-like',
+  license: 'BSD-3-Clause',
 )
 
 # See configure.ac and CMakeLists.txt

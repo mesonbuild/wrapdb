@@ -2,7 +2,7 @@ project(
   'tclap',
   'cpp',
   version: '1.2.4',
-  license: 'MIT License',
+  license: 'MIT',
 )
 
 # This is a minimum meson.build to use TCLAP.

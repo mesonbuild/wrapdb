@@ -16,7 +16,7 @@ project(
   'cmocka',
   'c',
   version: '1.1.7',
-  license: 'APLv2',
+  license: 'Apache-2.0',
   meson_version: '>= 0.54.1',
   default_options: ['c_std=c99', 'buildtype=debugoptimized'],
 )

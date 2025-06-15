@@ -1,7 +1,7 @@
 project(
   'pcre2',
   'c',
-  license: 'BSD-3',
+  license: 'BSD-3-Clause WITH PCRE2-exception',
   meson_version: '>=0.49.0',
   version: '10.45',
 )

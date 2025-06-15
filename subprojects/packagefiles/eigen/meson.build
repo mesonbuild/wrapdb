@@ -2,7 +2,7 @@ project(
   'eigen',
   'cpp',
   version: '3.4.0',
-  license: 'MPL2',
+  license: 'MPL-2.0 AND Apache-2.0 AND BSD-3-Clause AND LGPL-2.1-only AND Minpack',
 )
 
 install_headers(

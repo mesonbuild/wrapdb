@@ -2,7 +2,7 @@ project(
   'docopt.cpp',
   'cpp',
   version: '0.6.3',
-  license: 'Boost',
+  license: 'BSL-1.0',
   default_options: 'cpp_std=c++11',
 )
 

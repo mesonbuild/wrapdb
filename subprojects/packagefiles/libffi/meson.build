@@ -2,6 +2,7 @@ project(
   'libffi',
   'c',
   version: '3.5.1',
+  license: 'MIT',
   meson_version: '>= 0.56.0',
   default_options: ['debug=true', 'optimization=3', 'warning_level=1'],
 )
