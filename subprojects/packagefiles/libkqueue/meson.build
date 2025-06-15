@@ -2,7 +2,7 @@ project(
   'libkqueue',
   'c',
   version: '2.6.2',
-  license: 'BSD',
+  license: 'ISC AND BSD-2-Clause',
   meson_version: '>=0.54.1',
   default_options: ['c_std=c11'],
 )

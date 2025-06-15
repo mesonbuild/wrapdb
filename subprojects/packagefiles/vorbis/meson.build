@@ -2,7 +2,7 @@ project(
   'vorbis',
   'c',
   version: '1.3.7',
-  license: 'bsd-style',
+  license: 'BSD-3-Clause',
 )
 
 ogg_dep = dependency('ogg')

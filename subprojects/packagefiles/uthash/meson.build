@@ -2,7 +2,7 @@ project(
   'uthash',
   'c',
   version: '2.3.0',
-  license: 'BSD-3-Clause',
+  license: 'BSD-1-Clause',
 )
 
 uthash_dep = declare_dependency(

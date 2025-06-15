@@ -1,7 +1,7 @@
 project(
   'cpputest',
   'cpp',
-  license: 'BSD-3',
+  license: 'BSD-3-Clause',
   version: '4.0',
 )
 

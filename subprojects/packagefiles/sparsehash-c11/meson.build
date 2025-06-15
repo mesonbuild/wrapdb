@@ -2,7 +2,7 @@ project(
   'sparsehash-c11',
   'cpp',
   version: '2.11.1',
-  license: 'bsd',
+  license: 'BSD-3-Clause',
 )
 
 sparsehash_c11_include = include_directories('.')

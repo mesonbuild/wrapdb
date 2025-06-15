@@ -2,8 +2,7 @@ project(
 # moodycamel::ConcurrentQueue
   'concurrentqueue',
   ['cpp'],
-  # Dual licensing
-  license: ['BSD-2-Clause', 'BSL-1.0'],
+  license: 'BSD-2-Clause OR BSL-1.0',
   version: '1.0.4',
 )
 

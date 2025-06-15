@@ -2,7 +2,7 @@ project(
   'libssh2',
   'c',
   version: '1.11.1',
-  license: 'BSD-3',
+  license: 'BSD-3-Clause',
   meson_version: '>=0.54.1',
 )
 
