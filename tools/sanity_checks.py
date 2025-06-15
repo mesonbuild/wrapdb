@@ -165,6 +165,7 @@ if T.TYPE_CHECKING:
         python_packages: list[str]
         fatal_warnings: bool
         skip_dependency_check: list[str]
+        skip_program_check: list[str]
         test_options: list[str]
         skip_tests: bool
 
@@ -429,6 +430,9 @@ class TestReleases(unittest.TestCase):
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])
             deps = [d for d in deps if d not in skip_deps]
+        if progs:
+            skip_progs = ci.get('skip_program_check', [])
+            progs = [p for p in progs if p not in skip_progs]
 
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options.append('-Ddepnames={}'.format(','.join(deps or [])))
