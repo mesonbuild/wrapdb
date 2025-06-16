@@ -75,7 +75,7 @@ option(
 option(
     'regex_provider',
     type: 'array',
-    choices: ['libc', 'libregex', 'libpcreposix', 'libpcre2posix'],
+    choices: ['libc', 'libregex', 'libpcre2posix'],
     description: 'Regex implementation to check for in preferred order',
 )
 

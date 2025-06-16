@@ -496,24 +496,6 @@ and cc.has_function(
         cdata.set('HAVE_REGEX_H', 1)
         break
       endif
-    elif rx_support == 'libpcreposix'
-      pcre_dep = dependency(
-        'libpcreposix',
-        disabler: true,
-        required: false,
-      )
-      # Note: on macOS, Apple provides a system pcre with pkg-config but without headers…
-      if cc.has_header(
-        'pcreposix.h',
-        dependencies: pcre_dep.partial_dependency(
-          compile_args: true,
-          includes: true,
-        ),
-      )
-        rx_dep = pcre_dep
-        cdata.set('HAVE_PCREPOSIX_H', 1)
-        break
-      endif
     elif rx_support == 'libpcre2posix'
       pcre2_dep = dependency(
         'libpcre2-posix',
