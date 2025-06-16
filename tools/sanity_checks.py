@@ -520,13 +520,12 @@ class TestReleases(unittest.TestCase):
             if expect_working:
                 res.check_returncode()
             else:
-                for msg in [
-                    'unsupported',
-                    'not supported',
-                    'does not support',
-                    # wayland-protocols upstream
-                    'SFD_CLOEXEC is needed to compile Wayland libraries',
-                ]:
+                for msg in ['unsupported',
+                            'not supported',
+                            'does not support',
+                            # wayland-protocols upstream
+                            'SFD_CLOEXEC is needed to compile Wayland libraries',
+                            ]:
                     if msg in error:
                         print('unsupported, as expected')
                         return
