@@ -191,6 +191,14 @@
       "1.6.6-1"
     ]
   },
+  "au": {
+    "dependency_names" : [
+      "au"
+    ],
+    "versions": [
+      "0.4.1-1"
+    ]
+  },
   "backward-cpp": {
     "dependency_names": [
       "backward-cpp",
