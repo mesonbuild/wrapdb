@@ -34,6 +34,14 @@ jobs:
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
 
+      - name: Report Meson version dependencies
+        if: matrix.platform == 'x86_64'
+        continue-on-error: true
+        env:
+          TEST_MESON_VERSION_DEPS: 1
+        run: |
+          ./tools/fake_tty.py ./tools/sanity_checks.py TestReleases.test_meson_version_deps
+
   Alpine:
     runs-on: ${{ startsWith(matrix.platform, 'x86') && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
     strategy:
