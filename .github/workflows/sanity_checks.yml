@@ -190,7 +190,7 @@ jobs:
 
       - name: Install packages
         run: |
-          brew install ninja
+          brew install --quiet ninja
           python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
