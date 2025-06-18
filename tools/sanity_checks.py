@@ -187,6 +187,7 @@ class TestReleases(unittest.TestCase):
     # requires casts for special keys e.g. broken_*
     ci_config: dict[str, CiConfigProject]
     fatal_warnings: bool
+    annotate_context: bool
     releases: dict[str, ReleasesProject]
     skip: list[str]
     tags: set[str]
@@ -215,6 +216,7 @@ class TestReleases(unittest.TestCase):
         system = platform.system().lower()
         cls.skip = T.cast(T.List[str], cls.ci_config[f'broken_{system}'])
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
+        cls.annotate_context = os.environ.get('TEST_ANNOTATE_CONTEXT') == 'yes'
         cls.timeout_multiplier = float(os.environ.get('TEST_TIMEOUT_MULTIPLIER', 1))
 
     def test_releases_json(self):
@@ -435,6 +437,9 @@ class TestReleases(unittest.TestCase):
             system = platform.system().lower()
         ci = self.ci_config.get(name, {})
         expect_working = ci.get('build_on', {}).get(system, True)
+
+        if ci and self.annotate_context:
+            print(f'::notice title={name} config::' + json.dumps(ci, indent=2).replace('\n', '%0A'))
 
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])

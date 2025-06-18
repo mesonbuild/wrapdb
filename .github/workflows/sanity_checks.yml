@@ -29,6 +29,8 @@ jobs:
           python3 -m pip install --pre meson
 
       - name: Sanity Checks
+        env:
+          TEST_ANNOTATE_CONTEXT: ${{ matrix.platform == 'x86_64' && 'yes' || 'no' }}
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
 
