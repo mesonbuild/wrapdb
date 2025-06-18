@@ -27,6 +27,7 @@ import platform
 import io
 import sys
 import shlex
+import shutil
 
 from pathlib import Path
 from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys
@@ -430,7 +431,7 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
         return True
 
-    def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None):
+    def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None) -> None:
         print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
             system = 'msys2'
@@ -681,6 +682,120 @@ class TestReleases(unittest.TestCase):
                 f'''Not formatted files found: {unformatted_str}
 Run the following command to format these files:
 meson format --configuration meson.format --inplace {unformatted_files_for_command}''')
+
+    @unittest.skipUnless('TEST_MESON_VERSION_DEPS' in os.environ, 'Run manually only')
+    def test_meson_version_deps(self) -> None:
+        for name, info in self.releases.items():
+            with self.subTest(name=name):
+                if f'{name}_{info["versions"][0]}' not in self.tags:
+                    self.report_meson_version_deps(name)
+
+    def report_meson_version_deps(self, name: str, builddir: str = '_build') -> None:
+        wrap = configparser.ConfigParser(interpolation=None)
+        wrap.read(f'subprojects/{name}.wrap', encoding='utf-8')
+        patch_dir = self.get_patch_path(wrap['wrap-file'])
+        if not patch_dir:
+            # only check projects maintained downstream
+            return
+
+        meson_file = patch_dir / 'meson.build'
+        meson_file_line = None
+        # find first 'meson_version', or else first 'project(', or use line 0
+        for i, line in enumerate(meson_file.read_text(encoding='utf-8').splitlines()):
+            if 'project(' in line and meson_file_line is None:
+                meson_file_line = i
+            if 'meson_version' in line:
+                meson_file_line = i
+                break
+        meson_file_line = meson_file_line or 0
+
+        try:
+            severity, title, message = self.get_meson_version_deps(name, builddir, wrap)
+        except Exception:
+            severity = 'error'
+            title = 'Minimum Meson version'
+            message = 'Could not verify minimum Meson version'
+            raise
+        finally:
+            message = message.replace('\n', '%0A')
+            print(f'\n::{severity} file={meson_file},line={meson_file_line + 1},title={title}::{message}\n')
+
+    def get_meson_version_deps(self, name: str, builddir: str, wrap: configparser.ConfigParser) -> tuple[str, str, str]:
+        print() # Ensure output starts from an empty line (we're running under unittest).
+
+        # purge any extra options from a previous test_releases() run
+        if Path(builddir).exists():
+            shutil.rmtree(builddir)
+        # ensure we have an unpacked source tree
+        subprocess.check_call(
+            ['meson', 'subprojects', 'download', name]
+        )
+        # install packages and set PATH
+        ci = self.ci_config.get(name, {})
+        meson_env = self.install_packages(ci)
+
+        source_dir = Path('subprojects', wrap['wrap-file']['directory'])
+        source_meson_file = source_dir / 'meson.build'
+        source_meson_contents = source_meson_file.read_bytes()
+        try:
+            project_args = json.loads(
+                subprocess.check_output(
+                    ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
+                    cwd=source_dir, env=meson_env
+                )
+            )['kwargs']['project#/']
+        except subprocess.CalledProcessError:
+            project_args = {}
+        version_request = project_args.get('meson_version')
+        if version_request:
+            version_request = version_request.replace(' ', '')
+
+        options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
+        options += [f'-D{o}' for o in ci.get('build_options', [])]
+        try:
+            subprocess.check_call(
+                ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', '>=0'],
+                cwd=source_dir, env=meson_env
+            )
+            subprocess.check_call(
+                ['meson', 'setup', builddir] + options, env=meson_env
+            )
+        finally:
+            source_meson_file.write_bytes(source_meson_contents)
+
+        log_file = Path(builddir, 'meson-logs', 'meson-log.txt')
+        log_it = iter(enumerate(log_file.read_text(encoding='utf-8').splitlines()))
+        features: dict[str, list[str]] = {}
+        for i, line in log_it:
+            if 'uses features which were added in newer versions' in line:
+                for i, line in log_it:
+                    match = re.match(r" \* ([0-9.]+): {'(.*)'}$", line)
+                    if match:
+                        features[match[1]] = match[2].split("', '")
+                    elif 'finished.' in line:
+                        break
+                    else:
+                        raise Exception(f'Could not parse feature version report line: {line}')
+                else:
+                    raise Exception('Did not find end of feature version report')
+                break
+
+        versions = sorted(
+            features, key=lambda ver: tuple(int(c) for c in ver.split('.'))
+        )
+        if versions:
+            message = '\n'.join(
+                f'{ver}: {", ".join(features[ver])}' for ver in versions
+            )
+            min_version = versions[-1]
+        else:
+            message = 'No versioned features found.'
+            min_version = '0'
+        return (
+            'warning' if (version_request or '>=0') != f'>={min_version}' else 'notice',
+            f'Minimum Meson version is {min_version}',
+            message
+        )
 
 
 if __name__ == '__main__':
