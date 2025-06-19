@@ -192,6 +192,7 @@ class TestReleases(unittest.TestCase):
     ci_config: dict[str, CiConfigProject]
     fatal_warnings: bool
     annotate_context: bool
+    skip_build: bool
     releases: dict[str, ReleasesProject]
     skip: list[str]
     tags: set[str]
@@ -221,6 +222,7 @@ class TestReleases(unittest.TestCase):
         cls.skip = T.cast(T.List[str], cls.ci_config[f'broken_{system}'])
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
         cls.annotate_context = os.environ.get('TEST_ANNOTATE_CONTEXT') == 'yes'
+        cls.skip_build = os.environ.get('TEST_SKIP_BUILD') == 'yes'
         cls.timeout_multiplier = float(os.environ.get('TEST_TIMEOUT_MULTIPLIER', 1))
 
     def test_releases_json(self):
@@ -339,12 +341,14 @@ class TestReleases(unittest.TestCase):
                     if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
                             has_new_releases = True
-                            self.check_new_release(name, deps=deps, progs=progs)
-                            with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
-                                self.assertNotIn(name, self.skip)
-                            self.check_meson_version(name, ver, patch_path)
-                            if patch_path:
-                                self.check_project_args(Path('subprojects') / wrap_section['directory'])
+                            self.log_context(name)
+                            if not self.skip_build:
+                                self.check_new_release(name, deps=deps, progs=progs)
+                                with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
+                                    self.assertNotIn(name, self.skip)
+                                self.check_meson_version(name, ver, patch_path)
+                        if patch_path:
+                            self.check_project_args(name, Path('subprojects') / wrap_section['directory'])
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -435,6 +439,10 @@ class TestReleases(unittest.TestCase):
                         f'Version {version} not found in {source_url}')
         return
 
+    def log_context(self, name: str) -> None:
+        if self.annotate_context and name in self.ci_config:
+            print(f'\n::notice title={name} config::' + json.dumps(self.ci_config[name], indent=2).replace('\n', '%0A') + '\n')
+
     def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None) -> None:
         print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
@@ -445,9 +453,6 @@ class TestReleases(unittest.TestCase):
             system = platform.system().lower()
         ci = self.ci_config.get(name, {})
         expect_working = ci.get('build_on', {}).get(system, True)
-
-        if ci and self.annotate_context:
-            print(f'::notice title={name} config::' + json.dumps(ci, indent=2).replace('\n', '%0A'))
 
         if deps:
             skip_deps = ci.get('skip_dependency_check', [])
@@ -607,7 +612,12 @@ class TestReleases(unittest.TestCase):
         )
         return res.returncode == 0
 
-    def check_project_args(self, dir: Path) -> None:
+    def check_project_args(self, name: str, dir: Path) -> None:
+        if not dir.exists():
+            # build has not run and unpacked the source; do that
+            subprocess.check_call(
+                ['meson', 'subprojects', 'download', name]
+            )
         try:
             project_json = subprocess.check_output(
                 ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
