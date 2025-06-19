@@ -3068,6 +3068,14 @@
       "1.4-1"
     ]
   },
+  "orc": {
+    "dependency_names": [
+      "orc"
+    ],
+    "versions": [
+      "45b4014b61912dcd22eae69a0528a8b8888377d6-1"
+    ]
+  },
   "orcus": {
     "dependency_names": [
       "liborcus-0.19"
