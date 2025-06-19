@@ -132,6 +132,14 @@
       "20200225.2-1"
     ]
   },
+  "apache-orc": {
+    "dependency_names": [
+      "orc"
+    ],
+    "versions": [
+      "2.2.0-1"
+    ]
+  },
   "arduinocore-avr": {
     "versions": [
       "1.8.2-2",
