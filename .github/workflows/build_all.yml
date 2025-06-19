@@ -15,9 +15,51 @@ env:
   TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
 
 jobs:
+  sources:
+    name: Download sources
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.cache-key }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install packages
+        run: python3 -m pip install git+https://github.com/mesonbuild/meson
+
+      - name: Calculate cache key
+        id: cache-key
+        run: echo "cache-key=packagecache-$(tools/internalize_sources.py cache-key --all)" >> $GITHUB_OUTPUT
+
+      - name: Check for cache
+        id: lookup
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ steps.cache-key.outputs.cache-key }}
+          # don't restore from older cache keys; it would bloat the cache
+          # over time and we want to recheck hashes on every run
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          lookup-only: true
+
+      - name: Download sources
+        if: steps.lookup.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: tools/internalize_sources.py download --all
+
+      - name: Save sources
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.cache-key.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+
   Ubuntu:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    needs: sources
     strategy:
       matrix:
         platform: ['x86_64', 'aarch64']
@@ -32,6 +74,14 @@ jobs:
           sudo apt-get -y install build-essential python3-pip ninja-build
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
@@ -39,6 +89,7 @@ jobs:
   Alpine:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    needs: sources
     strategy:
       matrix:
         platform: ['x86_64', 'aarch64']
@@ -55,6 +106,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
           # Work around PEP 668 nonsense…
@@ -66,6 +125,7 @@ jobs:
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
+    needs: sources
     strategy:
       matrix:
         platform: ['x64', 'x86']
@@ -89,6 +149,15 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{matrix.platform}}
+
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
           python tools/sanity_checks.py
@@ -96,6 +165,7 @@ jobs:
   VisualStudio-clang-cl:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
+    needs: sources
     env:
       CC: clang-cl
       CXX: clang-cl
@@ -109,6 +179,15 @@ jobs:
           python -m pip install git+https://github.com/mesonbuild/meson
 
       - uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
           python tools/sanity_checks.py
@@ -116,6 +195,7 @@ jobs:
   MSYS2:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
+    needs: sources
     strategy:
       matrix:
         platform: ['UCRT64', 'CLANG64']
@@ -147,6 +227,14 @@ jobs:
         run: |
           python -m pip install git+https://github.com/mesonbuild/meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         shell: msys2 {0}
         run: |
@@ -155,6 +243,7 @@ jobs:
   MacOS:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
+    needs: sources
     strategy:
       matrix:
         platform: ['arm64', 'x86_64']
@@ -173,6 +262,14 @@ jobs:
         run: |
           brew install --quiet ninja
           python3 -m pip install git+https://github.com/mesonbuild/meson
+
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.sources.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
 
       - name: Sanity Checks
         run: |
