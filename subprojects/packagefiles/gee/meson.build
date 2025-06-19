@@ -2,7 +2,9 @@ project(
   'libgee',
   'c',
   'vala',
-  version: '0.20.6',
+  version: '0.20.8',
+  meson_version: '>=0.54.0',
+  license: 'LGPL-2.1-or-later',
 )
 api_version = '0.8'
 
