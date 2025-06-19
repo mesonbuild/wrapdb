@@ -10,8 +10,47 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prelude:
+    name: Initial checks
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.cache-key }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install packages
+        run: |
+          python3 -m pip install --pre meson
+
+      - name: Calculate cache key
+        id: cache-key
+        run: echo "cache-key=packagecache-$(tools/internalize_sources.py cache-key)" >> $GITHUB_OUTPUT
+
+      - name: Restore sources
+        id: restore
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ steps.cache-key.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+
+      - name: Download sources
+        if: steps.restore.outputs.cache-hit != 'true'
+        run: tools/internalize_sources.py download
+
+      - name: Save sources
+        uses: actions/cache/save@v4
+        if: steps.restore.outputs.cache-hit != 'true'
+        with:
+          key: ${{ steps.cache-key.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+
   Ubuntu:
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    needs: prelude
     strategy:
       fail-fast: false
       matrix:
@@ -28,10 +67,19 @@ jobs:
           python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         env:
           TEST_ANNOTATE_CONTEXT: ${{ matrix.platform == 'x86_64' && 'yes' || 'no' }}
         run: |
+          ./tools/internalize_sources.py rewrite
           ./tools/fake_tty.py ./tools/sanity_checks.py
 
       - name: Report Meson version dependencies
@@ -44,6 +92,7 @@ jobs:
 
   Alpine:
     runs-on: ${{ startsWith(matrix.platform, 'x86') && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
+    needs: prelude
     strategy:
       fail-fast: false
       matrix:
@@ -66,6 +115,14 @@ jobs:
         if: matrix.platform == 'armv7'
         run: sudo update-binfmts --disable qemu-arm
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         env:
           CC: clang
@@ -79,11 +136,13 @@ jobs:
               export TEST_TIMEOUT_MULTIPLIER=10
               echo "CPU emulation detected; increasing test timeouts by ${TEST_TIMEOUT_MULTIPLIER}x"
           fi
+          ./tools/internalize_sources.py rewrite
           ./tools/fake_tty.py ./tools/sanity_checks.py
         shell: alpine.sh {0}
 
   VisualStudio:
     runs-on: windows-latest
+    needs: prelude
     strategy:
       fail-fast: false
       matrix:
@@ -113,12 +172,23 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{matrix.platform}}
+
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
+          python tools/internalize_sources.py rewrite
           python tools/sanity_checks.py
 
   VisualStudio-clang-cl:
     runs-on: windows-latest
+    needs: prelude
     steps:
       - uses: actions/checkout@v4
         with:
@@ -133,16 +203,26 @@ jobs:
           python -m pip install license-expression
           python -m pip install --pre meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Sanity Checks
         env:
           CC: clang-cl
           CXX: clang-cl
         run: |
+          python tools/internalize_sources.py rewrite
           python tools/sanity_checks.py
 
   MSYS2:
     runs-on: windows-latest
+    needs: prelude
     strategy:
       fail-fast: false
       matrix:
@@ -176,13 +256,23 @@ jobs:
           python -m pip install license-expression
           python -m pip install --pre meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         shell: msys2 {0}
         run: |
+          python tools/internalize_sources.py rewrite
           python tools/sanity_checks.py
 
   MacOS:
     runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
+    needs: prelude
     strategy:
       fail-fast: false
       matrix:
@@ -204,6 +294,15 @@ jobs:
           python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
+      - name: Restore sources
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ needs.prelude.outputs.cache-key }}
+          path: subprojects/packagecache
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
       - name: Sanity Checks
         run: |
+          ./tools/internalize_sources.py rewrite
           ./tools/fake_tty.py ./tools/sanity_checks.py

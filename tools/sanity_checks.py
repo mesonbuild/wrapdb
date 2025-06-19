@@ -417,6 +417,10 @@ class TestReleases(unittest.TestCase):
         elif name == 're2':
             version = f'{version[:4]}-{version[4:6]}-{version[6:8]}'
         elif name == 'x-plane-sdk':
+            if version in wrap_section['source_url']:
+                # internalize_sources.py replaced the source URL with one
+                # that contains the version
+                return
             segs = version.split('.')
             self.assertEqual(len(segs), 3)
             version = segs[0] + segs[1] + segs[2]
