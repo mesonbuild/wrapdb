@@ -10,13 +10,14 @@ on:
     # Run every Sunday at midnight
     - cron: '0 0 * * 0'
 
+env:
+  TEST_BUILD_ALL: 1
+  TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
+
 jobs:
   Ubuntu:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
-    env:
-      TEST_BUILD_ALL: 1
-      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     strategy:
       matrix:
         platform: ['x86_64', 'aarch64']
@@ -55,9 +56,6 @@ jobs:
           fetch-depth: 0
 
       - name: Sanity Checks
-        env:
-          TEST_BUILD_ALL: 1
-          TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
         run: |
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
@@ -71,9 +69,6 @@ jobs:
     strategy:
       matrix:
         platform: ['x64', 'x86']
-    env:
-      TEST_BUILD_ALL: 1
-      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -104,8 +99,6 @@ jobs:
     env:
       CC: clang-cl
       CXX: clang-cl
-      TEST_BUILD_ALL: 1
-      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -123,9 +116,6 @@ jobs:
   MSYS2:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    env:
-      TEST_BUILD_ALL: 1
-      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     strategy:
       matrix:
         platform: ['UCRT64', 'CLANG64']
@@ -165,9 +155,6 @@ jobs:
   MacOS:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
-    env:
-      TEST_BUILD_ALL: 1
-      TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
     strategy:
       matrix:
         platform: ['arm64', 'x86_64']
