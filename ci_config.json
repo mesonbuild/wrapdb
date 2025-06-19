@@ -23,6 +23,17 @@
     "graphite2",
     "mocklibc"
   ],
+  "apache-orc": {
+    "_comment": "Tests fail on Alpine. Windows symbol visibility broken",
+    "build_on": {
+      "alpine": false,
+      "msys2": false,
+      "windows": false
+    },
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "atomic_queue": {
     "_comment": "Tests require Boost, which is not available on WrapDB",
     "build_on": {
