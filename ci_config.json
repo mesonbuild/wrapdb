@@ -23,6 +23,14 @@
     "graphite2",
     "mocklibc"
   ],
+  "apache-orc": {
+    "test_options": [
+      "--timeout-multiplier=2"
+    ],
+    "alpine_packages": [
+      "tzdata"
+    ]
+  },
   "atomic_queue": {
     "_comment": "Tests require Boost, which is not available on WrapDB",
     "build_on": {
