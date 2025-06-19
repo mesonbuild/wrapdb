@@ -22,6 +22,7 @@ jobs:
 
       - name: Install packages
         run: |
+          python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
       - name: Calculate cache key
@@ -47,6 +48,13 @@ jobs:
           key: ${{ steps.cache-key.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
+
+      - name: Quick checks
+        env:
+          TEST_ANNOTATE_CONTEXT: yes
+          TEST_SKIP_BUILD: yes
+        run: |
+          ./tools/fake_tty.py ./tools/sanity_checks.py
 
   Ubuntu:
     runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
@@ -76,8 +84,6 @@ jobs:
           fail-on-cache-miss: true
 
       - name: Sanity Checks
-        env:
-          TEST_ANNOTATE_CONTEXT: ${{ matrix.platform == 'x86_64' && 'yes' || 'no' }}
         run: |
           ./tools/internalize_sources.py rewrite
           ./tools/fake_tty.py ./tools/sanity_checks.py
