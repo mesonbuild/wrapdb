@@ -225,6 +225,14 @@
       "0.10.0-1"
     ]
   },
+  "boost-mp11": {
+    "dependency_names": [
+      "boost-mp11"
+    ],
+    "versions": [
+      "1.83.0-1"
+    ]
+  },
   "box2d": {
     "dependency_names": [
       "box2d"
