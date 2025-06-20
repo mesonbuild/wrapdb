@@ -1,8 +1,8 @@
 [wrap-file]
-directory = arrow-nanoarrow-5284a6c73ded1b94d4d2586023546e6edad1db7a
-source_url = https://github.com/paleolimbot/arrow-nanoarrow/archive/5284a6c73ded1b94d4d2586023546e6edad1db7a.zip
-source_filename = arrow-nanoarrow-5284a6c73ded1b94d4d2586023546e6edad1db7a.zip
-source_hash = 63c226c9818dfd562dc67526ac433933be29d4877ab995a98a7f918d513e7441
+directory = arrow-nanoarrow-666067952382ee604ce472010a7e72c745c451b2
+source_url = https://github.com/paleolimbot/arrow-nanoarrow/archive/666067952382ee604ce472010a7e72c745c451b2.zip
+source_filename = arrow-nanoarrow-666067952382ee604ce472010a7e72c745c451b2.zip
+source_hash = ff4dc5e58c4cb2e2e1cecf55cde38f017c37d3058e93d2010c4bbb5196b4ce86
 
 [provide]
 nanoarrow = nanoarrow_dep
