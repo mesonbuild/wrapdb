@@ -4,8 +4,6 @@ test_inc_dirs = inc_dirs
 test_inc_dirs += include_directories('../catch')
 
 test_flags = flags
-test_override_options = override_options
-
 
 if host_machine.system() == 'windows'
   test_flags += [
@@ -15,7 +13,6 @@ if host_machine.system() == 'windows'
   ]
 else
   test_flags += ['-fexceptions']
-  test_override_options = ['buildtype=debugoptimized']
 endif
 
 
@@ -24,7 +21,7 @@ all_tests = executable(
   test_src_files,
   include_directories: test_inc_dirs,
   cpp_args: flags,
-  override_options: test_override_options,
+  override_options: override_options,
   dependencies: stduuid_dep,
 )
 

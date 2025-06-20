@@ -99,7 +99,7 @@ decoder_res = files()
 encoder_res = files()
 
 if host_machine.system() == 'windows'
-  if get_option('buildtype') == 'debug'
+  if get_option('debug')
     decoder_rc = '../win32/xmingw32/libtheoradecd.rc'
     encoder_rc = '../win32/xmingw32/libtheoraencd.rc'
   else

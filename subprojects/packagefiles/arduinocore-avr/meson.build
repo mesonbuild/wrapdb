@@ -5,7 +5,6 @@ project(
   version: '1.8.2',
   license: 'LGPL-2.1-or-later',
   default_options: [
-    'buildtype=minsize',
     'b_lto=true',
     'c_std=gnu11',
     'cpp_std=gnu++11',

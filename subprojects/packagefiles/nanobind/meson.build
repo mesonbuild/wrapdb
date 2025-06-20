@@ -25,7 +25,7 @@ incdir = include_directories('include')
 # Arguments are derived from nanobind_build_library() in CMake configuration.
 dep_compile_args = []
 
-if get_option('buildtype') == 'release'
+if not get_option('debug')
   dep_compile_args += ['-DNB_COMPACT_ASSERTIONS']
 endif
 

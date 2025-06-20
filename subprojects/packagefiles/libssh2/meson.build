@@ -217,7 +217,7 @@ foreach f : [
 endforeach
 
 libssh2_config.set('HAVE_LONGLONG', 1)
-libssh2_config.set('LIBSSH2DEBUG', get_option('buildtype') == 'debug')
+libssh2_config.set('LIBSSH2DEBUG', get_option('debug'))
 
 add_project_arguments(
   '-DHAVE_CONFIG_H',

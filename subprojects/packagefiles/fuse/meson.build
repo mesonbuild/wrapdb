@@ -2,7 +2,6 @@ project(
   'libfuse',
   'c',
   version: '2.9.9',
-  default_options: ['buildtype=debugoptimized'],
   meson_version: '>=0.49.0',
 )
 
