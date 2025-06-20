@@ -18,7 +18,6 @@ project(
     # 'c_std=gnu99',
     # c++11 standard is useful for pzstd
     'cpp_std=c++11',
-    'buildtype=release',
     'warning_level=3',
     # -Wdocumentation does not actually pass, nor do the test binaries,
     # so this isn't safe
@@ -65,7 +64,6 @@ zstd_docdir = join_paths(zstd_datadir, 'doc', meson.project_name())
 
 # Built-in options
 use_debug = get_option('debug')
-buildtype = get_option('buildtype')
 default_library_type = get_option('default_library')
 
 # Custom options

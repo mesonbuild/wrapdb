@@ -5,7 +5,7 @@ project(
   version: '2.5.3',
   license: 'BSD-2-Clause',
   meson_version: '>= 0.55.0',
-  default_options: ['buildtype=debugoptimized', 'c_std=c99'],
+  default_options: ['c_std=c99'],
 )
 
 cc = meson.get_compiler('c')

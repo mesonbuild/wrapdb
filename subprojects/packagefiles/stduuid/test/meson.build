@@ -15,7 +15,6 @@ if host_machine.system() == 'windows'
   ]
 else
   test_flags += ['-fexceptions']
-  test_override_options = ['buildtype=debugoptimized']
 endif
 
 
