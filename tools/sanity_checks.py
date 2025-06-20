@@ -618,6 +618,22 @@ class TestReleases(unittest.TestCase):
                 except license_expression.ExpressionError as exc:
                     raise Exception('Invalid license; see https://spdx.org/licenses/') from exc
 
+        with self.subTest(step='check_default_options'):
+            for opt in project.get('default_options', []):
+                name, _ = opt.split('=', 1)
+                # Before Meson 1.8 these were ignored in subproject
+                # default_options, and in any case it's not clear that wraps
+                # should have an opinion about them.  We don't check for all
+                # non-per-subproject options, just the ones that seem likely
+                # to show up in a wrap.
+                if name in {'buildtype',
+                            'debug',
+                            'optimization',
+                            'prefer_static',
+                            'strip',
+                            'unity'}:
+                    raise Exception(f'{name} is not permitted in default_options')
+
     def check_files(self, subproject: str, patch_path: Path) -> None:
         tabs: list[Path] = []
         not_permitted: list[Path] = []
