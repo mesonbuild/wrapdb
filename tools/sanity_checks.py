@@ -544,7 +544,7 @@ class TestReleases(unittest.TestCase):
                         print('cannot verify in wrapdb due to missing dependency')
                         return
             raise Exception(f'Wrap {name} failed to configure due to bugs in the wrap, rather than due to being unsupported')
-        subprocess.check_call(['meson', 'compile', '-C', builddir], env=meson_env)
+        subprocess.check_call(['meson', 'compile', '-C', builddir, '--verbose'], env=meson_env)
         if not ci.get('skip_tests', False):
             test_options = ci.get('test_options', [])
             if self.timeout_multiplier != 1:
