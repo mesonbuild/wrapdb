@@ -1,10 +1,10 @@
 option(
-  'meta',
-  type: 'feature',
-  description: 'build the meta module',
+    'meta',
+    type: 'feature',
+    description: 'build the meta module',
 )
 option(
-  'random',
-  type: 'feature',
-  description: 'build the random module',
+    'random',
+    type: 'feature',
+    description: 'build the random module',
 )
