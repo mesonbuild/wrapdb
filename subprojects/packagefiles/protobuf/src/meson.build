@@ -2,9 +2,13 @@
 python = find_program('python3')
 proto_includes_link = custom_target(
   'proto_includes_link',
-  input: files('symlink.py'),
   output: 'include',  # directory adjacent to protoc binary
-  command: [python, '@INPUT@', meson.current_source_dir(), '@OUTPUT@'],
+  command: [
+    python,
+    files('symlink_or_copy.py'),
+    meson.current_source_dir(),
+    '@OUTPUT@',
+  ],
 )
 proto_includes_link_dep = declare_dependency(
   sources: proto_includes_link,
