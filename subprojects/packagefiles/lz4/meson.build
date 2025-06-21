@@ -11,7 +11,7 @@ project(
   'lz4',
   'c',
   license: 'BSD-2-Clause-Patent AND GPL-2.0-or-later',
-  default_options: ['c_std=c99', 'buildtype=release', 'warning_level=3'],
+  default_options: ['c_std=c99', 'warning_level=3'],
   version: run_command(
     find_program('build/meson/GetLz4LibraryVersion.py'),
     'lib/lz4.h',

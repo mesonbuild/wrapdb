@@ -3,7 +3,7 @@ project(
   'c',
   version: '3.6.2',
   meson_version: '>= 0.48.0',
-  default_options: ['c_std=c99', 'buildtype=debugoptimized'],
+  default_options: ['c_std=c99'],
 )
 
 version_conf_data = configuration_data()

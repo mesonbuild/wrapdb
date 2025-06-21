@@ -8,16 +8,7 @@ project(
 
 da_dep = dependency('debug_assert')
 
-b_ndebug = get_option('b_ndebug')
-if (b_ndebug == 'true'
-or (b_ndebug == 'if-release'
-and get_option('buildtype') in ['release', 'plain']
-)
-)
-  ndebug = true
-else
-  ndebug = false
-endif
+ndebug = get_option('debug')
 
 assertions_opt = get_option('assertions')
 enable_assertions = assertions_opt.disable_auto_if(ndebug).allowed() ? 1 : 0

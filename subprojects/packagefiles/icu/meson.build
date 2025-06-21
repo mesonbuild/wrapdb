@@ -109,7 +109,7 @@ if get_option('default_library') == 'static'
     library_suffix = ''
   else
     library_prefix = 's'
-    if get_option('buildtype') == 'debug'
+    if get_option('debug')
       library_suffix = 'd'
     else
       library_suffix = ''

@@ -40,7 +40,7 @@ add_project_arguments(
   language: 'c',
 )
 
-if get_option('buildtype').contains('debug')
+if get_option('debug')
   add_project_arguments(
     '-DCONFIG_PFMLIB_DEBUG',
     language: 'c',
