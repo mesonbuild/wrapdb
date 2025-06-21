@@ -19,6 +19,16 @@ sources = [
   'src/optional/wren_opt_random.c',
 ]
 
+c_args = []
+
+if get_option('meta').disabled()
+  c_args += '-DWREN_OPT_META=0'
+endif
+
+if get_option('random').disabled()
+  c_args += '-DWREN_OPT_RANDOM=0'
+endif
+
 system_deps = [
   cc.find_library(
     'm',
@@ -33,6 +43,7 @@ wrenlib = library(
   sources,
   dependencies: system_deps,
   include_directories: incdir,
+  c_args: c_args,
 )
 
 headerdir = include_directories('src/include')
