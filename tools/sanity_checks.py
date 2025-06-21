@@ -106,7 +106,7 @@ PER_PROJECT_PERMITTED_FILES = {
         'pcreposix.def'
     ],
     'protobuf': [
-        'symlink.py',
+        'recursive_copy.py',
     ],
     'sdl2': [
         'find-dylib-name.py'
