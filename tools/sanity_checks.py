@@ -125,7 +125,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'pcreposix.def'
     },
     'protobuf': {
-        'symlink.py',
+        'symlink_or_copy.py',
     },
     'sdl2': {
         'find-dylib-name.py'
