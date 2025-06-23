@@ -18,7 +18,7 @@ project(
   version: '1.1.7',
   license: 'Apache-2.0',
   meson_version: '>= 0.54.1',
-  default_options: ['c_std=c99', 'buildtype=debugoptimized'],
+  default_options: ['c_std=c99'],
 )
 
 lib_version = '0.8.0'

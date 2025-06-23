@@ -9,7 +9,7 @@ project(
   ).stdout().strip(),
   license: 'Zlib',
   meson_version: '>=0.60.0',
-  default_options: ['c_std=c11', 'optimization=2'],
+  default_options: ['c_std=c11'],
 )
 
 if get_option('b_lto')
