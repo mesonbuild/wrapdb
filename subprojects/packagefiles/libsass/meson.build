@@ -3,8 +3,9 @@ project(
   'c',
   'cpp',
   version: '3.6.4',
+  license: 'MIT',
   meson_version: '>= 0.48.0',
-  default_options: ['c_std=c99', 'cpp_std=c++11', 'buildtype=debugoptimized'],
+  default_options: ['c_std=c99', 'cpp_std=c++11'],
 )
 
 add_project_arguments(

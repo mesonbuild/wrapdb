@@ -5,8 +5,6 @@ project(
   version: '2.3.2',
   license: 'LGPL-2.1-or-later',
   default_options: [
-    'debug=true',
-    'optimization=3',
     'c_std=c11',
     # to avoid Meson's warning under MSVC
     'cpp_std=c++14',
