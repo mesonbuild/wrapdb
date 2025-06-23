@@ -460,43 +460,7 @@ class TestReleases(unittest.TestCase):
         options += [f'-D{o}' for o in ci.get('build_options', [])]
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
-        debian_packages = ci.get('debian_packages', [])
-        brew_packages = ci.get('brew_packages', [])
-        choco_packages = ci.get('choco_packages', [])
-        msys_packages = ci.get('msys_packages', [])
-        alpine_packages = ci.get('alpine_packages', [])
-        python_packages = ci.get('python_packages', [])
-        meson_env = os.environ.copy()
-        def install_packages(kind, cmd, packages):
-            if is_ci():
-                with ci_group(f'install {kind} packages'):
-                    subprocess.check_call(cmd + packages)
-            else:
-                s = ', '.join(packages)
-                print(f'The following packages could be required: {s}')
-        if debian_packages and is_debianlike():
-            install_packages('Debian', ['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
-        elif brew_packages and is_macos():
-            install_packages('Homebrew', ['brew', 'install', '--quiet'], brew_packages)
-            if is_ci():
-                # Ensure binaries from keg-only formulas are available (e.g. bison).
-                out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
-                for prefix in out.decode().split('\n'):
-                    bindir = Path(prefix) / 'bin'
-                    if bindir.exists():
-                        meson_env['PATH'] = str(bindir) + ':' + meson_env['PATH']
-        elif choco_packages and is_windows():
-            install_packages('Chocolatey', ['choco', 'install', '-y'], choco_packages)
-            if is_ci() and 'nasm' in choco_packages:
-                # nasm is not added into PATH by default:
-                # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
-                meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
-        elif msys_packages and is_msys():
-            install_packages('MSYS2', ['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
-        elif alpine_packages and is_alpinelike():
-            install_packages('Alpine', ['sudo', 'apk', 'add'], alpine_packages)
-        if python_packages:
-            install_packages('Python', [sys.executable, '-m', 'pip', 'install'], python_packages)
+        meson_env = self.install_packages(ci)
 
         def do_setup(builddir, options, meson_env):
             res = subprocess.run(['meson', 'setup', builddir] + options, env=meson_env)
@@ -576,7 +540,47 @@ class TestReleases(unittest.TestCase):
                 raise
         subprocess.check_call(['meson', 'install', '-C', builddir, '--destdir', 'pkg'])
 
-    def is_permitted_file(self, subproject: str, filename: str):
+    def install_packages(self, ci: CiConfigProject) -> dict[str, str]:
+        debian_packages = ci.get('debian_packages', [])
+        brew_packages = ci.get('brew_packages', [])
+        choco_packages = ci.get('choco_packages', [])
+        msys_packages = ci.get('msys_packages', [])
+        alpine_packages = ci.get('alpine_packages', [])
+        python_packages = ci.get('python_packages', [])
+        meson_env = os.environ.copy()
+        def do_install(kind, cmd, packages):
+            if is_ci():
+                with ci_group(f'install {kind} packages'):
+                    subprocess.check_call(cmd + packages)
+            else:
+                s = ', '.join(packages)
+                print(f'The following packages could be required: {s}')
+        if debian_packages and is_debianlike():
+            do_install('Debian', ['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
+        elif brew_packages and is_macos():
+            do_install('Homebrew', ['brew', 'install', '--quiet'], brew_packages)
+            if is_ci():
+                # Ensure binaries from keg-only formulas are available (e.g. bison).
+                out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
+                for prefix in out.decode().split('\n'):
+                    bindir = Path(prefix) / 'bin'
+                    if bindir.exists():
+                        meson_env['PATH'] = str(bindir) + ':' + meson_env['PATH']
+        elif choco_packages and is_windows():
+            do_install('Chocolatey', ['choco', 'install', '-y'], choco_packages)
+            if is_ci() and 'nasm' in choco_packages:
+                # nasm is not added into PATH by default:
+                # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
+                meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
+        elif msys_packages and is_msys():
+            do_install('MSYS2', ['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
+        elif alpine_packages and is_alpinelike():
+            do_install('Alpine', ['sudo', 'apk', 'add'], alpine_packages)
+        if python_packages:
+            do_install('Python', [sys.executable, '-m', 'pip', 'install'], python_packages)
+        return meson_env
+
+    def is_permitted_file(self, subproject: str, filename: str) -> bool:
         if filename in PERMITTED_FILES:
             return True
         if filename.endswith('.h.meson') or filename.endswith('.def'):
