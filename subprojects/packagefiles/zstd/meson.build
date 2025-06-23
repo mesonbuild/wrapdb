@@ -11,7 +11,7 @@
 project(
   'zstd',
   ['c', 'cpp'],
-  license: ['BSD', 'GPLv2'],
+  license: 'BSD-3-Clause OR GPL-2.0-only',
   default_options: [
     # There shouldn't be any need to force a C standard convention for zstd
     # but in case one would want that anyway, this can be done here.
