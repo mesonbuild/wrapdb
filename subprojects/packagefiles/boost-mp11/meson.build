@@ -1,7 +1,7 @@
 project(
   'boost-mp11',
   'cpp',
-  version: '1.83.0',
+  version: '1.88.0',
   license: 'BSL-1.0',
   default_options: ['cpp_std=c++11'],
 )
