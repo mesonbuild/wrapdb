@@ -2697,6 +2697,14 @@
       "2.0.0-1"
     ]
   },
+  "mimalloc": {
+    "dependency_names": [
+      "mimalloc"
+    ],
+    "versions": [
+      "3.1.5-1"
+    ]
+  },
   "miniaudio": {
     "dependency_names": [
       "miniaudio"
