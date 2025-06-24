@@ -631,8 +631,7 @@ class TestReleases(unittest.TestCase):
                     raise Exception('Invalid license; see https://spdx.org/licenses/') from exc
 
         with self.subTest(step='check_default_options'):
-            for opt in project.get('default_options', []):
-                name, _ = opt.split('=', 1)
+            for name in self.get_default_options(project):
                 # Before Meson 1.8 these were ignored in subproject
                 # default_options, and in any case it's not clear that wraps
                 # should have an opinion about them.  We don't check for all
@@ -645,6 +644,16 @@ class TestReleases(unittest.TestCase):
                             'strip',
                             'unity'}:
                     raise Exception(f'{name} is not permitted in default_options')
+
+    def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str]:
+        opts = project.get('default_options')
+        if not opts:
+            return {}
+        elif isinstance(opts, dict):
+            return opts
+        elif isinstance(opts, str):
+            opts = [opts]
+        return dict(opt.split('=', 1) for opt in opts)
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
         tabs: list[Path] = []
