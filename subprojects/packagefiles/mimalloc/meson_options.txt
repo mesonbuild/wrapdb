@@ -1,0 +1,18 @@
+option(
+    'override',
+    type: 'boolean',
+    value: true,
+    description: 'Override the standard malloc interface (i.e. define entry points for malloc, free, etc)',
+)
+option(
+    'win_redirect',
+    type: 'boolean',
+    value: false,
+    description: 'Use redirection module (mimalloc-redirect) on Windows if compiling mimalloc as a DLL',
+)
+option(
+    'local_dynamic_tls',
+    type: 'boolean',
+    value: false,
+    description: 'Use local-dynamic-tls on Unix, a slightly slower but dlopen-compatible thread local storage mechanism',
+)
