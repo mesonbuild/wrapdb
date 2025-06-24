@@ -780,6 +780,11 @@ meson format --configuration meson.format --inplace {unformatted_files_for_comma
                     raise Exception('Did not find end of feature version report')
                 break
 
+        default_options = self.get_default_options(project_args)
+        for opt in 'c_std', 'cpp_std':
+            if opt in default_options:
+                features.setdefault('0.63.0', []).append(f'{opt} in subproject default_options')
+
         versions = sorted(
             features, key=lambda ver: tuple(int(c) for c in ver.split('.'))
         )
