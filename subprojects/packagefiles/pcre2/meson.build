@@ -255,7 +255,7 @@ pcre2_posix_lib = library(
 libpcre2_posix = declare_dependency(
   link_with: pcre2_posix_lib,
   include_directories: includes,
-  compile_args: [static_defs, pcre2_posix_defs],
+  compile_args: static_defs + pcre2_posix_defs,
 )
 
 pcre2_16_lib = library(
