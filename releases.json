@@ -193,7 +193,7 @@
     ]
   },
   "au": {
-    "dependency_names" : [
+    "dependency_names": [
       "au"
     ],
     "versions": [
@@ -4079,6 +4079,7 @@
       "tracy"
     ],
     "versions": [
+      "0.12.2-1",
       "0.10-1",
       "0.9.1-1",
       "0.9-1",
