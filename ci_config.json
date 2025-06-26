@@ -1065,6 +1065,11 @@
       "--timeout-multiplier=2"
     ]
   },
+  "orc": {
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "pango": {
     "_comment": [
       "- Avoid sysprof build errors on Windows",

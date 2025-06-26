@@ -1,0 +1,8 @@
+[wrap-file]
+directory = orc-15d86dfcad6fc80ee24cf785419a820a55db103b
+source_url = https://github.com/apache/orc/archive/15d86dfcad6fc80ee24cf785419a820a55db103b.tar.gz
+source_filename = orc-15d86dfcad6fc80ee24cf785419a820a55db103b.tar.gz
+source_hash = 8276a736c86f9eb7ceca13f62f2135a8a32c019aeab98226a305abaebfdbbfc9
+
+[provide]
+orc = orc_dep
