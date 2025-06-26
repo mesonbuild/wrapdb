@@ -193,7 +193,7 @@
     ]
   },
   "au": {
-    "dependency_names" : [
+    "dependency_names": [
       "au"
     ],
     "versions": [
@@ -3244,6 +3244,7 @@
       "libpkgconf"
     ],
     "versions": [
+      "2.5.1-1",
       "2.5.0-1",
       "2.4.3-1",
       "2.3.0-1",
