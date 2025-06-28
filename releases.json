@@ -4052,6 +4052,19 @@
       "7.0.1-1"
     ]
   },
+  "tkrzw": {
+    "dependency_names": [
+      "tkrzw"
+    ],
+    "program_names": [
+      "tkrzw_dbm_perf",
+      "tkrzw_dbm_util",
+      "tkrzw_ulog_util"
+    ],
+    "versions": [
+      "1.0.32-1"
+    ]
+  },
   "tl-expected": {
     "dependency_names": [
       "tl-expected"
