@@ -154,7 +154,10 @@ class CreateRelease:
         response.raise_for_status()
 
     def create_source_fallback(self):
-        response = requests.get(self.wrap_section['source_url'])
+        response = requests.get(
+            self.wrap_section['source_url'],
+            headers={'User-Agent': 'wrapdb/0'},
+        )
         response.raise_for_status()
         filename = Path(self.wrap_section['source_filename'])
         filename.write_bytes(response.content)
