@@ -2967,6 +2967,14 @@
       "1.3.0-1"
     ]
   },
+  "oatpp-libressl": {
+    "dependency_names": [
+      "oatpp-libressl"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "oatpp-openssl": {
     "dependency_names": [
       "oatpp-openssl"
@@ -2996,9 +3004,9 @@
     "dependency_names": [
       "oatpp-websocket"
     ],
-    "versions": [
-      "1.3.0-1"
-    ]
+      "versions": [
+        "1.3.0-1"
+      ]
   },
   "oatpp-zlib": {
     "dependency_names": [
