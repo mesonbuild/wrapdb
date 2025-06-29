@@ -2,7 +2,9 @@ project(
   'benchmark',
   'cpp',
   version: '1.8.4',
-  default_options: ['cpp_std=c++14'],
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'cpp_std=gnu++14,c++14' : 'cpp_std=gnu++14',
+  ],
   license: 'Apache-2.0',
 )
 
