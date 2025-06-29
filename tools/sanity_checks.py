@@ -646,7 +646,7 @@ class TestReleases(unittest.TestCase):
                             'unity'}:
                     raise Exception(f'{name} is not permitted in default_options')
 
-    def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str]:
+    def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str | None]:
         opts = project.get('default_options')
         if not opts:
             return {}
@@ -654,7 +654,7 @@ class TestReleases(unittest.TestCase):
             return opts
         elif isinstance(opts, str):
             opts = [opts]
-        return dict(opt.split('=', 1) for opt in opts)
+        return dict(opt.split('=', 1) for opt in opts if opt is not None)
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
         tabs: list[Path] = []
