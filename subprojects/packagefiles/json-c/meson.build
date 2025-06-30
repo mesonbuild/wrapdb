@@ -13,7 +13,8 @@ cc = meson.get_compiler('c')
 
 if cc.get_argument_syntax() == 'msvc'
   add_project_arguments(
-    '-D_CRT_SECURE_NO_WARNINGS',
+    '/D_CRT_SECURE_NO_WARNINGS',
+    '/wd4996',
     language: 'c',
   )
 else
@@ -33,15 +34,6 @@ endif
 add_project_arguments(
   cc.get_supported_arguments('-Wno-deprecated-declarations'),
   language: 'c',
-)
-
-threads = dependency(
-  'threads',
-  required: false,
-)
-math = cc.find_library(
-  'm',
-  required: false,
 )
 
 subdir('config')
@@ -109,7 +101,6 @@ libjson_c = library(
 json_c_dep = declare_dependency(
   link_with: libjson_c,
   include_directories: include_directories('.'),
-  dependencies: [math, threads],
   sources: json_config_h,
 )
 
