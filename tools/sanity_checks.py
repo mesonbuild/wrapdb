@@ -763,6 +763,8 @@ meson format --configuration meson.format --inplace {unformatted_files_for_comma
         version_request = project_args.get('meson_version')
         if version_request:
             version_request = version_request.replace(' ', '')
+            while version_request.count('.') < 2:
+                version_request += '.0'
 
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
         options += [f'-D{o}' for o in ci.get('build_options', [])]
@@ -809,9 +811,9 @@ meson format --configuration meson.format --inplace {unformatted_files_for_comma
             min_version = versions[-1]
         else:
             message = 'No versioned features found.'
-            min_version = '0'
+            min_version = '0.0.0'
         return (
-            'warning' if (version_request or '>=0') != f'>={min_version}' else 'notice',
+            'warning' if (version_request or '>=0.0.0') != f'>={min_version}' else 'notice',
             f'Minimum Meson version is {min_version}',
             message
         )
