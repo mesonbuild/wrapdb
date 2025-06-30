@@ -511,6 +511,23 @@
     "_comment": "https://github.com/mm2/Little-CMS/pull/473",
     "fatal_warnings": false
   },
+  "kafel": {
+    "_comment": "Linux only",
+    "build_on": {
+      "darwin": false,
+      "msys2": false,
+      "windows": false
+    },
+    "alpine_packages": [
+      "bison",
+      "bsd-compat-headers",
+      "flex"
+    ],
+    "debian_packages": [
+      "bison",
+      "flex"
+    ]
+  },
   "leptonica": {
     "debian_packages": [
       "gnuplot",

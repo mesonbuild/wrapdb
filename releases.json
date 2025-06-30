@@ -1687,6 +1687,17 @@
       "1.8.4-1"
     ]
   },
+  "kafel": {
+    "dependency_names": [
+      "kafel"
+    ],
+    "program_names": [
+      "dump_policy_bpf"
+    ],
+    "versions": [
+      "20231004-1"
+    ]
+  },
   "kraken-engine": {
     "dependency_names": [
       "kraken-engine"
