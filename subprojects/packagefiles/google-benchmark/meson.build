@@ -11,7 +11,6 @@ project(
 benchmark_sources = files(
   'src/benchmark.cc',
   'src/benchmark_api_internal.cc',
-  'src/benchmark_main.cc',
   'src/benchmark_name.cc',
   'src/benchmark_register.cc',
   'src/benchmark_runner.cc',
