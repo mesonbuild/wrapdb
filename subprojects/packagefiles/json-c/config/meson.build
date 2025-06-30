@@ -2,15 +2,11 @@ conf = configuration_data()
 if get_option('rdrand')
   conf.set('ENABLE_RDRAND', 1)
 endif
-if threads.found()
-  conf.set('ENABLE_THREADING', 1)
-endif
 
 check_headers = [
   'dlfcn.h',
   'endian.h',
   'fcntl.h',
-  'float.h',
   'inttypes.h',
   'limits.h',
   'locale.h',
@@ -18,11 +14,13 @@ check_headers = [
   'stdarg.h',
   'stdint.h',
   'stdlib.h',
-  'strings.h',
   'string.h',
+  'strings.h',
   'syslog.h',
   'sys/cdefs.h',
   'sys/param.h',
+  'sys/random.h',
+  'sys/resource.h',
   'sys/stat.h',
   'sys/types.h',
   'unistd.h',
@@ -66,6 +64,7 @@ check_function = [
   'vsyslog',
   'open',
   'strtoll',
+  'arc4random',
 ]
 
 if conf.has('HAVE_STRINGS_H')
@@ -117,6 +116,7 @@ if cc.links(
   name: 'atomic builtins',
 )
   conf.set('HAVE_ATOMIC_BUILTINS', 1)
+  conf.set('ENABLE_THREADING', 1)
 endif
 
 if cc.compiles(
