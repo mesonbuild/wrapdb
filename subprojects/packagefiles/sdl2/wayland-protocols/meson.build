@@ -1,5 +1,6 @@
 
 protocols = [
+  'cursor-shape-v1',
   'fractional-scale-v1',
   'idle-inhibit-unstable-v1',
   'keyboard-shortcuts-inhibit-unstable-v1',
@@ -14,6 +15,7 @@ protocols = [
   'xdg-decoration-unstable-v1',
   'xdg-output-unstable-v1',
   'xdg-shell',
+  'xdg-toplevel-icon-v1',
 ]
 
 if wayland_scanner.found() and wayland_found

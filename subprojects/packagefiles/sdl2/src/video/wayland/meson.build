@@ -7,6 +7,7 @@ c_sources += files(
   'SDL_waylandmessagebox.c',
   'SDL_waylandmouse.c',
   'SDL_waylandopengles.c',
+  'SDL_waylandshmbuffer.c',
   'SDL_waylandtouch.c',
   'SDL_waylandvideo.c',
   'SDL_waylandvulkan.c',
