@@ -10,7 +10,7 @@ if host_machine.system() != 'linux'
   error('libcap is not supported on this platform.')
 endif
 
-incdir = include_directories('libcap/include')
+incdir = include_directories('libcap/include', 'psx')
 
 cap_names_list_h = custom_target(
   'cap_names.list.h',
@@ -36,6 +36,13 @@ cap_names_h = custom_target(
   install: false,
 )
 
+libpsx = library(
+  'psx',
+  sources: ['psx/psx.c', 'psx/psx_calls.c'],
+  include_directories: incdir,
+  install: true,
+)
+
 libcap = library(
   'cap',
   sources: [
@@ -54,5 +61,5 @@ libcap = library(
 
 libcap_dep = declare_dependency(
   include_directories: incdir,
-  link_with: libcap,
+  link_with: [libcap, libpsx],
 )
