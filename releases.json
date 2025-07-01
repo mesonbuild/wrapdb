@@ -4368,6 +4368,14 @@
       "4.0.1-1"
     ]
   },
+  "xdelta3": {
+    "program_names": [
+      "xdelta3"
+    ],
+    "versions": [
+      "3.1.0-1"
+    ]
+  },
   "xtensor": {
     "dependency_names": [
       "xtensor"

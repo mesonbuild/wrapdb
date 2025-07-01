@@ -1,0 +1,10 @@
+#include "config-generated.h"
+
+#ifdef _WIN32
+// must set these before including Windows headers; use values from xdelta3.h
+#define WINVER          0x0500
+#define _WIN32_WINNT    0x0500
+
+// missing include for getpid()
+#include <process.h>
+#endif
