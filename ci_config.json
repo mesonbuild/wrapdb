@@ -1436,6 +1436,17 @@
       "x-plane-sdk:cpp=enabled"
     ]
   },
+  "xdelta3": {
+    "build_options": [
+      "xdelta3:lzma=enabled"
+    ],
+    "alpine_packages": [
+      "xz-dev"
+    ],
+    "debian_packages": [
+      "liblzma-dev"
+    ]
+  },
   "zycore": {
     "build_options": [
       "zycore:examples=enabled",
