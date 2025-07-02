@@ -1068,12 +1068,14 @@
   "pango": {
     "_comment": [
       "- Avoid sysprof build errors on Windows",
+      "- Prevent libxml2 from requiring Python",
       "- skip dependency checks for optionally provided dependencies",
       "- harfbuzz triggers warnings",
       "- Known test failure: https://gitlab.gnome.org/GNOME/pango/-/issues/682"
     ],
     "build_options": [
-      "glib:sysprof=disabled"
+      "glib:sysprof=disabled",
+      "libxml2:python=disabled"
     ],
     "fatal_warnings": false,
     "skip_dependency_check": [
