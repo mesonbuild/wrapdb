@@ -244,10 +244,12 @@
       "bash"
     ],
     "build_options": [
-      "libxml2:iconv=disabled",
       "libxml2:python=disabled"
     ],
-    "fatal_warnings": false
+    "fatal_warnings": false,
+    "msys_packages": [
+      "gperf"
+    ]
   },
   "freeglut": {
     "alpine_packages": [
