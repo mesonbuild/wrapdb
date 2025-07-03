@@ -1,11 +1,11 @@
 [wrap-file]
-directory = cppzmq-4.10.0
+directory = cppzmq-4.11.0
 
-source_url = https://github.com/zeromq/cppzmq/archive/refs/tags/v4.10.0.tar.gz
-source_filename = cppzmq-4.10.0.tar.gz
-source_hash = c81c81bba8a7644c84932225f018b5088743a22999c6d82a2b5f5cd1e6942b74
+source_url = https://github.com/zeromq/cppzmq/archive/refs/tags/v4.11.0.tar.gz
+source_filename = cppzmq-4.11.0.tar.gz
+source_hash = 0fff4ff311a7c88fdb76fceefba0e180232d56984f577db371d505e4d4c91afd
 
 patch_directory = cppzmq
 
 [provide]
-cppzmq = cppzmq_dep
+dependency_names = cppzmq
