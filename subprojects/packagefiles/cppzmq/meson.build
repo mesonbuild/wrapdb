@@ -1,7 +1,7 @@
 project(
   'cppzmq',
   'cpp',
-  version: '4.10.0',
+  version: '4.11.0',
   license: 'MIT',
   meson_version: '>=0.49.0',
 )
@@ -58,10 +58,8 @@ if get_option('examples')
 endif
 
 # unit tests
-# NOTE: update to v3 in https://github.com/zeromq/cppzmq/pull/632 (enable tests in ci_config.json)
 catch2_dep = dependency(
-  'catch2',
-  version: '<3.0.0',
+  'catch2-with-main',
   required: get_option('tests'),
 )
 if catch2_dep.found()
