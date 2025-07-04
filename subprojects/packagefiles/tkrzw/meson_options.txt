@@ -1,0 +1,20 @@
+option(
+    'lz4',
+    type: 'feature',
+    description: 'Build with lz4 compression support',
+)
+option(
+    'lzma',
+    type: 'feature',
+    description: 'Build with lzma compression support',
+)
+option(
+    'zlib',
+    type: 'feature',
+    description: 'Build with zlib compression support',
+)
+option(
+    'zstd',
+    type: 'feature',
+    description: 'Build with zstd compression support',
+)
