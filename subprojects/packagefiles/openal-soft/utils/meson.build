@@ -4,7 +4,7 @@ add_languages(
 )
 
 utils = {
-  'openal-info.c': openal_dep,
+  'openal-info.c': [common_dep, openal_dep],
 }
 
 sndfile_dep = dependency(
@@ -13,8 +13,8 @@ sndfile_dep = dependency(
 )
 if sndfile_dep.found()
   utils += {
-    'uhjdecoder.cpp': [openal_dep, sndfile_dep],
-    'uhjencoder.cpp': [openal_dep, sndfile_dep],
+    'uhjdecoder.cpp': [common_dep, openal_dep, sndfile_dep],
+    'uhjencoder.cpp': [common_dep, openal_dep, sndfile_dep],
   }
 endif
 

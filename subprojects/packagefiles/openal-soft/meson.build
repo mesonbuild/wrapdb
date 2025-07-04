@@ -1,7 +1,8 @@
 project(
   'openal-soft',
   'cpp',
-  version: '1.24.2',
+  license: 'LGPL-2.1-or-later',
+  version: '1.24.3',
   meson_version: '>=0.58',
   default_options: ['cpp_std=c++17', 'c_std=c11'],
 )
@@ -517,7 +518,7 @@ openal_lib = library(
 openal_dep = declare_dependency(
   link_with: openal_lib,
   include_directories: openal_inc,
-  dependencies: common_dep,
+  dependencies: [atomic_dep, fmt_dep],
   compile_args: get_option('default_library') == 'static' ? '-DAL_LIBTYPE_STATIC' : [],
 )
 
