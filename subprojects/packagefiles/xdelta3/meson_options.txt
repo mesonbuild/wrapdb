@@ -1,0 +1,5 @@
+option(
+    'lzma',
+    type: 'feature',
+    description: 'LZMA compression support',
+)

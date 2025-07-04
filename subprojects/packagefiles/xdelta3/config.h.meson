@@ -1,0 +1,6 @@
+#include "config-generated.h"
+
+#ifdef _WIN32
+// missing include for getpid()
+#include <process.h>
+#endif
