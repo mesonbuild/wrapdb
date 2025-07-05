@@ -243,6 +243,14 @@
       "1.83.0-1"
     ]
   },
+  "boost-pfr": {
+    "dependency_names": [
+      "boost-pfr"
+    ],
+    "versions": [
+      "1.88.0-1"
+    ]
+  },
   "box2d": {
     "dependency_names": [
       "box2d"
