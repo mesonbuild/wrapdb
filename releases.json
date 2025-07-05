@@ -3705,6 +3705,14 @@
       "3.2.4-1"
     ]
   },
+  "sdl3_ttf": {
+    "dependency_names": [
+      "sdl3_ttf"
+    ],
+    "versions": [
+      "3.2.2-2"
+    ]
+  },
   "sds": {
     "dependency_names": [
       "sds"
