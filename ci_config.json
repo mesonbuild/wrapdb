@@ -13,6 +13,8 @@
   ],
   "broken_windows": [
     "arduinocore-avr",
+    "arrow-cpp",
+    "google-woff2",
     "mocklibc",
     "termbox",
     "m4",
@@ -23,6 +25,22 @@
     "graphite2",
     "mocklibc"
   ],
+  "arrow-cpp": {
+    "_comment": "Windows symbol visibility broken; no upstream Windows CI to fix yet",
+    "alpine_packages": [
+      "boost-dev"
+    ],
+    "brew_packages": [
+      "boost"
+    ],
+    "debian_packages": [
+      "libboost-filesystem-dev",
+      "libboost-system-dev"
+    ],
+    "msys_packages": [
+      "boost"
+    ]
+  },
   "atomic_queue": {
     "_comment": "Tests require Boost, which is not available on WrapDB",
     "build_on": {
