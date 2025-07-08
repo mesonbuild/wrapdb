@@ -1,0 +1,15 @@
+option(
+    'contrib',
+    type: 'boolean',
+    description: 'Enable yaml-cpp contrib in library',
+)
+option(
+    'tools',
+    type: 'boolean',
+    description: 'Enable parse tools',
+)
+option(
+    'tests',
+    type: 'feature',
+    description: 'build and run tests',
+)
