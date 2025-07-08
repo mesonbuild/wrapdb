@@ -4409,6 +4409,14 @@
       "2.1.0-1"
     ]
   },
+  "yaml-cpp": {
+    "dependency_names": [
+      "yaml-cpp"
+    ],
+    "versions": [
+      "0.8.0-1"
+    ]
+  },
   "zlib": {
     "dependency_names": [
       "zlib"
