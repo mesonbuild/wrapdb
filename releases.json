@@ -171,6 +171,14 @@
       "0.0.1-1"
     ]
   },
+  "argus": {
+    "dependency_names": [
+      "argus"
+    ],
+    "versions": [
+      "0.1.0-1"
+    ]
+  },
   "asio": {
     "dependency_names": [
       "asio"
