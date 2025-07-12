@@ -839,6 +839,14 @@
       "2.2.5-1"
     ]
   },
+  "eyalroz-printf": {
+    "dependency_names": [
+      "eyalroz-printf"
+    ],
+    "versions": [
+      "6.2.0-1"
+    ]
+  },
   "facil": {
     "dependency_names": [
       "facil"
