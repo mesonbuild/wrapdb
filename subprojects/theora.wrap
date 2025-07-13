@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libtheora-1.1.1
-source_url = https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2
-source_filename = libtheora-1.1.1.tar.bz2
-source_hash = b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc
+directory = libtheora-1.2.0
+source_url = https://downloads.xiph.org/releases/theora/libtheora-1.2.0.tar.xz
+source_filename = libtheora-1.2.0.tar.xz
+source_hash = ebdf77a8f5c0a8f7a9e42323844fa09502b34eb1d1fece7b5f54da41fe2122ec
 patch_directory = theora
 
 [provide]

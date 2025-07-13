@@ -2,7 +2,7 @@ project(
   'theora',
   'c',
   'cpp',
-  version: '1.1.1',
+  version: '1.2.0',
   meson_version: '>= 0.49.0',
   license: 'BSD-3-Clause',
   default_options: ['c_std=c11'],
