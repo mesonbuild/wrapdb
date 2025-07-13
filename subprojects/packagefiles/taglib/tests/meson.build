@@ -42,6 +42,7 @@ test_src = files(
   'test_propertymap.cpp',
   'test_riff.cpp',
   'test_s3m.cpp',
+  'test_shorten.cpp',
   'test_sizes.cpp',
   'test_speex.cpp',
   'test_string.cpp',
@@ -59,6 +60,7 @@ test_runner = executable(
   'test_runner',
   test_src,
   cpp_args: '-DTESTS_DIR="@0@/"'.format(meson.current_source_dir()),
+  include_directories: '..',
   dependencies: [cppunit_dep, taglib_dep],
 )
 
