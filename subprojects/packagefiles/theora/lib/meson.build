@@ -38,60 +38,72 @@ decoder_sources = files(
   'state.c',
 )
 
-if asm
-  if conf.get('CPU_x86_64', false)
-    if cc.get_argument_syntax() != 'msvc'
-      encoder_sources += files(
-        'x86/mmxencfrag.c',
-        'x86/mmxfdct.c',
-        'x86/mmxfrag.c',
-        'x86/mmxidct.c',
-        'x86/mmxstate.c',
-        'x86/sse2fdct.c',
-        'x86/x86enc.c',
-        'x86/x86state.c',
-      )
-      decoder_sources += files(
-        'x86/mmxfrag.c',
-        'x86/mmxidct.c',
-        'x86/mmxstate.c',
-        'x86/x86state.c',
-      )
-    endif
-  elif conf.get('CPU_x86_32', false)
-    if cc.get_argument_syntax() != 'msvc'
-      decoder_sources += files(
-        'x86/mmxfrag.c',
-        'x86/mmxidct.c',
-        'x86/mmxstate.c',
-        'x86/x86state.c',
-      )
-      encoder_sources += files(
-        'x86/mmxencfrag.c',
-        'x86/mmxfdct.c',
-        'x86/mmxfrag.c',
-        'x86/mmxidct.c',
-        'x86/mmxstate.c',
-        'x86/x86enc.c',
-        'x86/x86state.c',
-      )
-    else
-      encoder_sources += files(
-        'x86_vc/mmxencfrag.c',
-        'x86_vc/mmxfdct.c',
-        'x86_vc/mmxfrag.c',
-        'x86_vc/mmxidct.c',
-        'x86_vc/mmxstate.c',
-        'x86_vc/x86enc.c',
-        'x86_vc/x86state.c',
-      )
-      decoder_sources += files(
-        'x86_vc/mmxfrag.c',
-        'x86_vc/mmxidct.c',
-        'x86_vc/mmxstate.c',
-        'x86_vc/x86state.c',
-      )
-    endif
+if conf.get('CPU_x86_64', false)
+  if cc.get_argument_syntax() != 'msvc'
+    encoder_sources += files(
+      'x86/mmxencfrag.c',
+      'x86/mmxfdct.c',
+      'x86/mmxfrag.c',
+      'x86/mmxidct.c',
+      'x86/mmxstate.c',
+      'x86/sse2encfrag.c',
+      'x86/sse2fdct.c',
+      'x86/sse2idct.c',
+      'x86/x86cpu.c',
+      'x86/x86enc.c',
+      'x86/x86enquant.c',
+      'x86/x86state.c',
+    )
+    decoder_sources += files(
+      'x86/mmxfrag.c',
+      'x86/mmxidct.c',
+      'x86/mmxstate.c',
+      'x86/sse2idct.c',
+      'x86/x86cpu.c',
+      'x86/x86state.c',
+    )
+  endif
+elif conf.get('CPU_x86_32', false)
+  if cc.get_argument_syntax() != 'msvc'
+    decoder_sources += files(
+      'x86/mmxfrag.c',
+      'x86/mmxidct.c',
+      'x86/mmxstate.c',
+      'x86/sse2idct.c',
+      'x86/x86cpu.c',
+      'x86/x86state.c',
+    )
+    encoder_sources += files(
+      'x86/mmxencfrag.c',
+      'x86/mmxfdct.c',
+      'x86/mmxfrag.c',
+      'x86/mmxidct.c',
+      'x86/mmxstate.c',
+      'x86/sse2encfrag.c',
+      'x86/sse2idct.c',
+      'x86/x86cpu.c',
+      'x86/x86enc.c',
+      'x86/x86enquant.c',
+      'x86/x86state.c',
+    )
+  else
+    encoder_sources += files(
+      'x86_vc/mmxencfrag.c',
+      'x86_vc/mmxfdct.c',
+      'x86_vc/mmxfrag.c',
+      'x86_vc/mmxidct.c',
+      'x86_vc/mmxstate.c',
+      'x86_vc/x86cpu.c',
+      'x86_vc/x86enc.c',
+      'x86_vc/x86state.c',
+    )
+    decoder_sources += files(
+      'x86_vc/mmxfrag.c',
+      'x86_vc/mmxidct.c',
+      'x86_vc/mmxstate.c',
+      'x86_vc/x86cpu.c',
+      'x86_vc/x86state.c',
+    )
   endif
 endif
 
