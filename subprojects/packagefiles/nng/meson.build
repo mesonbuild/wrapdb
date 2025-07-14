@@ -2,7 +2,7 @@ project(
   'nng',
   'c',
   license: 'MIT',
-  version: '1.5.2',
+  version: '1.11',
   meson_version: '>=0.47.0',
 )
 
@@ -20,7 +20,7 @@ else
   )
 endif
 
-deps = [dependency('threads')]
+deps = []
 if host_machine.system() == 'windows'
   deps += cc.find_library('ws2_32')
   deps += cc.find_library('iphlpapi')
@@ -29,6 +29,23 @@ if host_machine.system() == 'windows'
     '-D_WIN32_WINNT=0x0600',
     cc.get_supported_arguments('-Wno-incompatible-function-pointer-types'),
     language: 'c',
+  )
+else
+  deps += dependency('threads')
+  # The following is an attempt to check if libatomic is needed
+  # Unfortunately, it doesn't work right, so just find the library
+  #  atest = '''
+  #    int main(void) {
+  #      long long x;
+  #      return __atomic_load_n(&x, __ATOMIC_SEQ_CST);
+  #    }
+  #  '''
+  #  if not cc.links(atest)
+  #    deps += cc.find_library('atomic')
+  #  endif
+  deps += cc.find_library(
+    'atomic',
+    required: false,
   )
 endif
 
@@ -43,14 +60,15 @@ nng_src = files(
   'src/core/list.c',
   'src/core/listener.c',
   'src/core/lmq.c',
+  'src/core/log.c',
   'src/core/message.c',
   'src/core/msgqueue.c',
   'src/core/options.c',
   'src/core/panic.c',
   'src/core/pipe.c',
   'src/core/pollable.c',
-  'src/core/protocol.c',
   'src/core/reap.c',
+  'src/core/sockaddr.c',
   'src/core/socket.c',
   'src/core/stats.c',
   'src/core/stream.c',
@@ -58,9 +76,9 @@ nng_src = files(
   'src/core/taskq.c',
   'src/core/tcp.c',
   'src/core/thread.c',
-  'src/core/timer.c',
   'src/core/url.c',
   'src/nng.c',
+  'src/sp/protocol.c',
   'src/sp/protocol/bus0/bus.c',
   'src/sp/protocol/pair0/pair.c',
   'src/sp/protocol/pipeline0/pull.c',
@@ -91,8 +109,8 @@ nng_src = files(
   'src/supplemental/http/http_server.c',
   'src/supplemental/sha1/sha1.c',
   'src/supplemental/tls/tls_common.c',
+  'src/supplemental/util/idhash.c',
   'src/supplemental/util/options.c',
-  'src/supplemental/util/platform.c',
   'src/supplemental/websocket/websocket.c',
   # Do not build with TLS support (using mbedtls)
   #'src/supplemental/tls/mbedtls/tls.c',
@@ -116,6 +134,7 @@ if target_machine.system() == 'windows'
     'src/platform/windows/win_rand.c',
     'src/platform/windows/win_resolv.c',
     'src/platform/windows/win_sockaddr.c',
+    'src/platform/windows/win_socketpair.c',
     'src/platform/windows/win_tcp.c',
     'src/platform/windows/win_tcpconn.c',
     'src/platform/windows/win_tcpdial.c',
@@ -139,11 +158,13 @@ else
     'src/platform/posix/posix_ipcconn.c',
     'src/platform/posix/posix_ipcdial.c',
     'src/platform/posix/posix_ipclisten.c',
+    'src/platform/posix/posix_peerid.c',
     'src/platform/posix/posix_pipe.c',
     'src/platform/posix/posix_pollq_poll.c',
     'src/platform/posix/posix_rand_urandom.c',
     'src/platform/posix/posix_resolv_gai.c',
     'src/platform/posix/posix_sockaddr.c',
+    'src/platform/posix/posix_socketpair.c',
     'src/platform/posix/posix_tcpconn.c',
     'src/platform/posix/posix_tcpdial.c',
     'src/platform/posix/posix_tcplisten.c',

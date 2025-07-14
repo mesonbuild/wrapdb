@@ -1,8 +1,8 @@
 [wrap-file]
-directory = nng-1.5.2
-source_url = https://github.com/nanomsg/nng/archive/v1.5.2.tar.gz
-source_filename = nng-1.5.2.tar.gz
-source_hash = f8b25ab86738864b1f2e3128e8badab581510fa8085ff5ca9bb980d317334c46
+directory = nng-1.11
+source_url = https://github.com/nanomsg/nng/archive/v1.11.tar.gz
+source_filename = nng-1.11.tar.gz
+source_hash = 12aaff6f8f183ba0fec378af8620c47cf4be6da975d016ec6cdec2fbac0d3534
 patch_directory = nng
 
 [provide]
