@@ -1,14 +1,14 @@
 project(
   'c-ares',
   'c',
-  version: '1.34.4',
+  version: '1.34.5',
   license: 'MIT',
-  default_options: 'cpp_std=c++17',
+  meson_version: '>=0.54.0',
 )
 
 # don't forget to update mee too
 # see: https://github.com/c-ares/c-ares/blob/f1bf69c2d71a7e426ee967847173200a3ef1705a/CMakeLists.txt#L33
-libtool_version = '2.10.0'
+libtool_version = '2.19.4'
 libtool_soversion = '2'
 
 is_static = (get_option('default_library') == 'static')
@@ -434,12 +434,8 @@ if get_option('tests')
       '-Wno-deprecated-declarations',
       '/wd4996',
     ),
-    dependencies: [
-      cares_static_dep,
-      cares_dependencies,
-      dependency('gtest'),
-      dependency('gmock'),
-    ],
+    override_options: 'cpp_std=c++17',
+    dependencies: [cares_static_dep, cares_dependencies, dependency('gmock')],
   )
 
   test('c-ares-tests', cares_test)
