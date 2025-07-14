@@ -1,7 +1,7 @@
 project(
   'zpp_bits',
   'cpp',
-  version: '4.5',
+  version: '4.5.1',
   license: 'MIT',
   meson_version: '>=0.64.0',
   default_options: ['cpp_std=c++20'],
