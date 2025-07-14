@@ -2,7 +2,7 @@ project(
   'soundtouch',
   'c',
   'cpp',
-  version: '2.3.2',
+  version: '2.4.0',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'c_std=c11',
