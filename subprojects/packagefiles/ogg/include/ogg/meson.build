@@ -14,16 +14,16 @@ cdata.set('USIZE32', 'uint32_t')
 cdata.set('SIZE64', 'int64_t')
 cdata.set('USIZE64', 'uint64_t')
 
-configure_file(
+cfile = configure_file(
   input: 'config_types.h.in',
   output: 'config_types.h',
   format: 'cmake@',
-  install_dir: join_paths(get_option('includedir'), 'ogg'),
   configuration: cdata,
 )
 
 headers = files('ogg.h', 'os_types.h')
 install_headers(
+  cfile,
   headers,
   subdir: 'ogg',
 )

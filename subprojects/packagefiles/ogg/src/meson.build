@@ -1,4 +1,4 @@
-sources = ['bitwise.c', 'framing.c']
+sources = files('bitwise.c', 'framing.c')
 
 libogg = library(
   'ogg',
