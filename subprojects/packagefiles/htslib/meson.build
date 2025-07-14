@@ -1,7 +1,7 @@
 project(
   'htslib',
   'c',
-  version: '1.21',
+  version: '1.22',
   default_options: ['warning_level=0', 'c_std=c99', 'b_ndebug=if-release'],
   license: 'MIT',
   meson_version: '>= 0.50.0',
