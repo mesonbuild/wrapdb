@@ -1,0 +1,10 @@
+[wrap-file]
+directory = avro-82a2bc8b034de34626e2ab8bf091234122474d50
+source_url = https://github.com/apache/avro/archive/82a2bc8b034de34626e2ab8bf091234122474d50.tar.gz
+source_filename = arrow-82a2bc8b034de34626e2ab8bf091234122474d50.tar.gz
+source_hash = 1731c8aa96953caaa222ada25f8173a80d39d9ed7ffd181e62c25bf75076016d
+patch_directory = avro-cpp
+
+[provide]
+program_names = avrogencpp
+avro-cpp = avro_dep
