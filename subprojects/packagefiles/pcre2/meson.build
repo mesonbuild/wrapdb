@@ -166,8 +166,9 @@ endif
 
 if c_compiler.links(
   '''
-  int main() {
-    __assume(0);
+  int main(void) {
+    __assume(1);
+    return 0;
   }
 ''',
   name: '__assume',
@@ -177,9 +178,10 @@ endif
 
 if c_compiler.compiles(
   '''
-  int main() {
+  int main(void) {
     char buf[128] __attribute__((uninitialized));
     (void)buf;
+    return 0;
   }
 ''',
   name: '__attribute__((uninitialized))',
