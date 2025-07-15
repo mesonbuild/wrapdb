@@ -13,7 +13,7 @@ option(
 option(
     'jit_sealloc',
     type: 'feature',
-    value: 'auto',
+    value: 'disabled',
     description: 'SELinux compatible execmem allocator in JIT (experimental)',
 )
 option(
