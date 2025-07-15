@@ -153,7 +153,7 @@ endif
 if c_compiler.links(
   '''
   #include <stddef.h>
-  int main() {
+  int main(void) {
     int a, b;
     size_t res;
     __builtin_mul_overflow(a, b, &res);
