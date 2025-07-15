@@ -62,11 +62,17 @@ if not get_option('jit').disabled() and platform_is_unixlike
 endif
 
 if not get_option('jit_sealloc').disabled()
-  if c_compiler.has_function(
-    'mkostemp',
-    prefix: '#include <stdlib.h>',
-    args: ['-D_GNU_SOURCE'],
-  )
+  foreach f : ['mkostemp', 'memfd_create', 'secure_getenv']
+    if c_compiler.has_function(
+      f,
+      prefix: '#include <stdlib.h>',
+      args: ['-D_GNU_SOURCE'],
+    )
+      cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
+    endif
+  endforeach
+
+  if cdata.has('HAVE_MKOSTEMP') and cdata.has('HAVE_SECURE_GETENV')
     if platform_supports_sealloc
       cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
     elif get_option('jit_sealloc').enabled()
@@ -128,10 +134,8 @@ endforeach
 check_funs = [
   '__builtin_unreachable',
   'bcopy',
-  'memfd_create',
   'memmove',
   'realpath',
-  'secure_getenv',
   'strerror',
 ]
 
