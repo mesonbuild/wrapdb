@@ -131,19 +131,24 @@ foreach h : check_headers
   endif
 endforeach
 
-check_funs = [
-  '__builtin_unreachable',
-  'bcopy',
-  'memmove',
-  'realpath',
-  'strerror',
-]
-
-foreach f : check_funs
+foreach f : ['bcopy', 'memmove', 'realpath', 'strerror']
   if c_compiler.has_function(f)
-    cdata.set10('HAVE_@0@'.format(f.to_upper().strip('_')), true)
+    cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
   endif
 endforeach
+
+if c_compiler.links(
+  '''
+  int main(int c, char *v[]) {
+    if (c)
+      __builtin_unreachable();
+    return (int)(*v[0]);
+  }
+''',
+  name: '__builtin_unreachable',
+)
+  cdata.set10('HAVE_BUILTIN_UNREACHABLE', true)
+endif
 
 if c_compiler.links(
   '''
