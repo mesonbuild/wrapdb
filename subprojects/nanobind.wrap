@@ -1,8 +1,8 @@
 [wrap-file]
-directory = nanobind-2.7.0
-source_url = https://github.com/wjakob/nanobind/archive/refs/tags/v2.7.0.tar.gz
-source_filename = nanobind-2.7.0.tar.gz
-source_hash = 6c8c6bf0435b9d8da9312801686affcf34b6dbba142db60feec8d8e220830499
+directory = nanobind-2.8.0
+source_url = https://github.com/wjakob/nanobind/archive/refs/tags/v2.8.0.tar.gz
+source_filename = nanobind-2.8.0.tar.gz
+source_hash = 17506f1ef5c92491183ab28242fa4f658d9625fe4f91ccd1d1358cb6e5f5acb6
 patch_directory = nanobind
 
 [provide]

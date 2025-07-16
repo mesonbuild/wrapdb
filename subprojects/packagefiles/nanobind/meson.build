@@ -18,16 +18,16 @@ py_mod = import('python')
 py = py_mod.find_installation()
 py_dep = py.dependency()
 
-robin_map_dep = dependency('robin-map')
+robin_map_dep = dependency(
+  'robin-map',
+  version: '>=1.4.0',
+)
 
 incdir = include_directories('include')
 
 # Arguments are derived from nanobind_build_library() in CMake configuration.
 dep_compile_args = []
-
-if not get_option('debug')
-  dep_compile_args += ['-DNB_COMPACT_ASSERTIONS']
-endif
+dep_link_args = []
 
 compiler = meson.get_compiler('cpp')
 if compiler.get_argument_syntax() == 'msvc'
@@ -42,9 +42,18 @@ if freethreaded
   dep_compile_args += ['-DNB_FREE_THREADED']
 endif
 
-# The following, from nanobind_strip(), applies both to the nanobind shared
-# library (if it's built) and to the developer's extension:
-dep_link_args = []
+if not get_option('debug')
+  dep_compile_args += ['-DNB_COMPACT_ASSERTIONS']
+
+  # The following, from nanobind_strip(), applies both to the nanobind shared
+  # library (if it's built) and to the developer's extension:
+  if host_machine.system() == 'darwin'
+    dep_link_args += ['-Wl,-dead_strip', '-Wl,-x', '-Wl,-S']
+  elif host_machine.system() != 'windows'
+    dep_link_args += ['-Wl,-s']
+  endif
+endif
+
 if host_machine.system() == 'darwin'
   py_soabi = py.get_variable('SOABI')
   if py_soabi.startswith('cp')
@@ -52,9 +61,7 @@ if host_machine.system() == 'darwin'
   else
     resp_file = meson.project_source_root() / 'cmake/darwin-ld-pypy.sym'
   endif
-  dep_link_args += ['-Wl,-dead_strip', '-Wl,-x', '-Wl,-S', '-Wl,@' + resp_file]
-elif host_machine.system() != 'windows'
-  dep_link_args += ['-Wl,-s']
+  dep_link_args += ['-Wl,@' + resp_file]
 endif
 
 if get_option('default_library') == 'shared'
@@ -89,4 +96,7 @@ nanobind_dep = declare_dependency(
   dependencies: [py_dep, robin_map_dep],
   compile_args: dep_compile_args,
   link_args: dep_link_args,
+  variables: {
+    'stubgen': meson.current_source_dir() / 'src/stubgen.py',
+  },
 )
