@@ -26,7 +26,6 @@ import tempfile
 import platform
 import io
 import sys
-import shlex
 import shutil
 
 from pathlib import Path
@@ -691,11 +690,9 @@ class TestReleases(unittest.TestCase):
             self.fail(f'Not permitted files found: {not_permitted_str}')
         if unformatted:
             unformatted_str = ', '.join([str(f) for f in unformatted])
-            unformatted_files_for_command = ' '.join([shlex.quote(str(f)) for f in unformatted])
             self.fail(
                 f'''Not formatted files found: {unformatted_str}
-Run the following command to format these files:
-meson format --configuration meson.format --inplace {unformatted_files_for_command}''')
+Run tools/format.py to format these files.''')
 
     @unittest.skipUnless('TEST_MESON_VERSION_DEPS' in os.environ, 'Run manually only')
     def test_meson_version_deps(self) -> None:
