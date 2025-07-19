@@ -1402,6 +1402,13 @@
       "windows": false
     }
   },
+  "tinycdb": {
+    "_comment": "Unix only",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    }
+  },
   "tinyfsm": {
     "build_options": [
       "tinyfsm:build_examples=true"
