@@ -10,8 +10,8 @@ conf.set('GDBM_VERSION_MAJOR', version[0])
 conf.set('GDBM_VERSION_MINOR', version[1])
 conf.set('GDBM_VERSION_PATCH', 0)
 configure_file(
-  output: 'gdbm.h',
   input: 'gdbm.h.in',
+  output: 'gdbm.h',
   configuration: conf,
 )
 
