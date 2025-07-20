@@ -93,6 +93,10 @@
       "cpp_std=c++14"
     ]
   },
+  "cpp-httplib": {
+    "_comment": "Upstream doesn't officially support 32-bit platforms and warns about it",
+    "fatal_warnings": false
+  },
   "cpputest": {
     "build_options": [
       "cpputest:enable_cpputest_extensions=true",
