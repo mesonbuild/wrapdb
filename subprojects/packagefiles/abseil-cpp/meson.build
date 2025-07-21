@@ -1,9 +1,9 @@
 project(
   'abseil-cpp',
   'cpp',
-  version: '20240722.0',
+  version: '20250127.1',
   license: 'Apache-2.0',
-  default_options: ['cpp_std=c++17'],
+  default_options: ['cpp_std=c++20,c++17'],
 )
 
 cpp = meson.get_compiler('cpp')
@@ -54,18 +54,23 @@ endif
 absl_include_dir = include_directories('.')
 
 # Group files by the containing library
+absl_algorithm_headers = files(
+  'absl/algorithm/algorithm.h',
+  'absl/algorithm/container.h',
+)
+
 absl_base_sources = files(
   'absl/base/internal/cycleclock.cc',
   'absl/base/internal/low_level_alloc.cc',
   'absl/base/internal/poison.cc',
   'absl/base/internal/raw_logging.cc',
-  'absl/base/internal/scoped_set_env.cc',
   'absl/base/internal/spinlock.cc',
   'absl/base/internal/spinlock_wait.cc',
   'absl/base/internal/strerror.cc',
   'absl/base/internal/sysinfo.cc',
   'absl/base/internal/thread_identity.cc',
   'absl/base/internal/throw_delegate.cc',
+  'absl/base/internal/tracing.cc',
   'absl/base/internal/unscaledcycleclock.cc',
   'absl/base/log_severity.cc',
 )
@@ -77,20 +82,16 @@ absl_base_headers = files(
   'absl/base/const_init.h',
   'absl/base/dynamic_annotations.h',
   'absl/base/internal/atomic_hook.h',
-  'absl/base/internal/atomic_hook_test_helper.h',
   'absl/base/internal/cycleclock.h',
   'absl/base/internal/cycleclock_config.h',
   'absl/base/internal/direct_mmap.h',
   'absl/base/internal/dynamic_annotations.h',
   'absl/base/internal/endian.h',
   'absl/base/internal/errno_saver.h',
-  'absl/base/internal/exception_safety_testing.h',
-  'absl/base/internal/exception_testing.h',
   'absl/base/internal/fast_type_id.h',
   'absl/base/internal/hide_ptr.h',
   'absl/base/internal/identity.h',
   'absl/base/internal/inline_variable.h',
-  'absl/base/internal/inline_variable_testing.h',
   'absl/base/internal/invoke.h',
   'absl/base/internal/low_level_alloc.h',
   'absl/base/internal/low_level_scheduling.h',
@@ -100,7 +101,6 @@ absl_base_headers = files(
   'absl/base/internal/pretty_function.h',
   'absl/base/internal/raw_logging.h',
   'absl/base/internal/scheduling_mode.h',
-  'absl/base/internal/scoped_set_env.h',
   'absl/base/internal/spinlock.h',
   'absl/base/internal/spinlock_akaros.inc',
   'absl/base/internal/spinlock_linux.inc',
@@ -111,6 +111,7 @@ absl_base_headers = files(
   'absl/base/internal/sysinfo.h',
   'absl/base/internal/thread_identity.h',
   'absl/base/internal/throw_delegate.h',
+  'absl/base/internal/tracing.h',
   'absl/base/internal/tsan_mutex_interface.h',
   'absl/base/internal/unaligned_access.h',
   'absl/base/internal/unscaledcycleclock.h',
@@ -123,13 +124,13 @@ absl_base_headers = files(
   'absl/base/options.h',
   'absl/base/policy_checks.h',
   'absl/base/port.h',
+  'absl/base/prefetch.h',
   'absl/base/thread_annotations.h',
-  'absl/functional/any_invocable.h',
-  'absl/functional/internal/any_invocable.h',
-  'absl/memory/memory.h',
-  'absl/meta/type_traits.h',
-  'absl/utility/utility.h',
-  # Dependent headers of absl_base
+)
+
+absl_cleanup_headers = files(
+  'absl/cleanup/cleanup.h',
+  'absl/cleanup/internal/cleanup.h',
 )
 
 absl_container_sources = files(
@@ -140,7 +141,6 @@ absl_container_sources = files(
 absl_container_headers = files(
   'absl/container/btree_map.h',
   'absl/container/btree_set.h',
-  'absl/container/btree_test.h',
   'absl/container/fixed_array.h',
   'absl/container/flat_hash_map.h',
   'absl/container/flat_hash_set.h',
@@ -153,8 +153,6 @@ absl_container_headers = files(
   'absl/container/internal/compressed_tuple.h',
   'absl/container/internal/container_memory.h',
   'absl/container/internal/hash_function_defaults.h',
-  'absl/container/internal/hash_generator_testing.h',
-  'absl/container/internal/hash_policy_testing.h',
   'absl/container/internal/hash_policy_traits.h',
   'absl/container/internal/hashtable_debug.h',
   'absl/container/internal/hashtable_debug_hooks.h',
@@ -164,16 +162,6 @@ absl_container_headers = files(
   'absl/container/internal/node_slot_policy.h',
   'absl/container/internal/raw_hash_map.h',
   'absl/container/internal/raw_hash_set.h',
-  'absl/container/internal/test_instance_tracker.h',
-  'absl/container/internal/tracked.h',
-  'absl/container/internal/unordered_map_constructor_test.h',
-  'absl/container/internal/unordered_map_lookup_test.h',
-  'absl/container/internal/unordered_map_members_test.h',
-  'absl/container/internal/unordered_map_modifiers_test.h',
-  'absl/container/internal/unordered_set_constructor_test.h',
-  'absl/container/internal/unordered_set_lookup_test.h',
-  'absl/container/internal/unordered_set_members_test.h',
-  'absl/container/internal/unordered_set_modifiers_test.h',
   'absl/container/node_hash_map.h',
   'absl/container/node_hash_set.h',
 )
@@ -210,7 +198,6 @@ absl_debugging_sources = files(
   'absl/debugging/internal/demangle_rust.cc',
   'absl/debugging/internal/elf_mem_image.cc',
   'absl/debugging/internal/examine_stack.cc',
-  'absl/debugging/internal/stack_consumption.cc',
   'absl/debugging/internal/utf8_for_code_point.cc',
   'absl/debugging/internal/vdso_support.cc',
   'absl/debugging/leak_check.cc',
@@ -226,7 +213,6 @@ absl_debugging_headers = files(
   'absl/debugging/internal/demangle_rust.h',
   'absl/debugging/internal/elf_mem_image.h',
   'absl/debugging/internal/examine_stack.h',
-  'absl/debugging/internal/stack_consumption.h',
   'absl/debugging/internal/stacktrace_aarch64-inl.inc',
   'absl/debugging/internal/stacktrace_arm-inl.inc',
   'absl/debugging/internal/stacktrace_config.h',
@@ -254,7 +240,6 @@ absl_flags_sources = files(
   'absl/flags/commandlineflag.cc',
   'absl/flags/internal/commandlineflag.cc',
   'absl/flags/internal/flag.cc',
-  'absl/flags/internal/flag.cc',
   'absl/flags/internal/private_handle_accessor.cc',
   'absl/flags/internal/program_name.cc',
   'absl/flags/internal/usage.cc',
@@ -268,8 +253,8 @@ absl_flags_headers = files(
   'absl/flags/commandlineflag.h',
   'absl/flags/config.h',
   'absl/flags/declare.h',
+  'absl/flags/flag.h',
   'absl/flags/internal/commandlineflag.h',
-  'absl/flags/internal/flag.h',
   'absl/flags/internal/flag.h',
   'absl/flags/internal/parse.h',
   'absl/flags/internal/path_util.h',
@@ -285,6 +270,16 @@ absl_flags_headers = files(
   'absl/flags/usage_config.h',
 )
 
+absl_functional_headers = files(
+  'absl/functional/any_invocable.h',
+  'absl/functional/bind_front.h',
+  'absl/functional/function_ref.h',
+  'absl/functional/internal/any_invocable.h',
+  'absl/functional/internal/front_binder.h',
+  'absl/functional/internal/function_ref.h',
+  'absl/functional/overload.h',
+)
+
 absl_hash_sources = files(
   'absl/hash/internal/city.cc',
   'absl/hash/internal/hash.cc',
@@ -292,11 +287,9 @@ absl_hash_sources = files(
 )
 absl_hash_headers = files(
   'absl/hash/hash.h',
-  'absl/hash/hash_testing.h',
   'absl/hash/internal/city.h',
   'absl/hash/internal/hash.h',
   'absl/hash/internal/low_level_hash.h',
-  'absl/hash/internal/spy_hash_state.h',
 )
 
 absl_log_sources = files(
@@ -313,6 +306,7 @@ absl_log_sources = files(
   'absl/log/internal/log_sink_set.cc',
   'absl/log/internal/nullguard.cc',
   'absl/log/internal/proto.cc',
+  'absl/log/internal/structured_proto.cc',
   'absl/log/internal/vlog_config.cc',
   'absl/log/log_entry.cc',
   'absl/log/log_sink.cc',
@@ -320,6 +314,7 @@ absl_log_sources = files(
 absl_log_headers = files(
   'absl/log/absl_check.h',
   'absl/log/absl_log.h',
+  'absl/log/absl_vlog_is_on.h',
   'absl/log/check.h',
   'absl/log/die_if_null.h',
   'absl/log/flags.h',
@@ -342,9 +337,7 @@ absl_log_headers = files(
   'absl/log/internal/proto.h',
   'absl/log/internal/strip.h',
   'absl/log/internal/structured.h',
-  'absl/log/internal/test_actions.h',
-  'absl/log/internal/test_helpers.h',
-  'absl/log/internal/test_matchers.h',
+  'absl/log/internal/structured_proto.h',
   'absl/log/internal/vlog_config.h',
   'absl/log/internal/voidify.h',
   'absl/log/log.h',
@@ -352,9 +345,13 @@ absl_log_headers = files(
   'absl/log/log_sink.h',
   'absl/log/log_sink_registry.h',
   'absl/log/log_streamer.h',
-  'absl/log/scoped_mock_log.h',
   'absl/log/structured.h',
+  'absl/log/vlog_is_on.h',
 )
+
+absl_memory_headers = files('absl/memory/memory.h')
+
+absl_meta_headers = files('absl/meta/type_traits.h')
 
 absl_numeric_sources = files('absl/numeric/int128.cc')
 absl_numeric_headers = files(
@@ -379,7 +376,6 @@ absl_profiling_headers = files(
 absl_random_sources = files(
   'absl/random/discrete_distribution.cc',
   'absl/random/gaussian_distribution.cc',
-  'absl/random/internal/chi_square.cc',
   'absl/random/internal/pool_urbg.cc',
   'absl/random/internal/randen.cc',
   'absl/random/internal/randen_detect.cc',
@@ -398,20 +394,15 @@ absl_random_headers = files(
   'absl/random/distributions.h',
   'absl/random/exponential_distribution.h',
   'absl/random/gaussian_distribution.h',
-  'absl/random/internal/chi_square.h',
   'absl/random/internal/distribution_caller.h',
-  'absl/random/internal/distribution_test_util.h',
-  'absl/random/internal/explicit_seed_seq.h',
   'absl/random/internal/fast_uniform_bits.h',
   'absl/random/internal/fastmath.h',
   'absl/random/internal/generate_real.h',
   'absl/random/internal/iostream_state_saver.h',
   'absl/random/internal/mock_helpers.h',
-  'absl/random/internal/mock_overload_set.h',
-  'absl/random/internal/nanobenchmark.h',
+  'absl/random/internal/mock_validators.h',
   'absl/random/internal/nonsecure_base.h',
   'absl/random/internal/pcg_engine.h',
-  'absl/random/internal/platform.h',
   'absl/random/internal/pool_urbg.h',
   'absl/random/internal/randen.h',
   'absl/random/internal/randen_detect.h',
@@ -421,13 +412,10 @@ absl_random_headers = files(
   'absl/random/internal/randen_traits.h',
   'absl/random/internal/salted_seed_seq.h',
   'absl/random/internal/seed_material.h',
-  'absl/random/internal/sequence_urbg.h',
   'absl/random/internal/traits.h',
   'absl/random/internal/uniform_helper.h',
   'absl/random/internal/wide_multiply.h',
   'absl/random/log_uniform_int_distribution.h',
-  'absl/random/mock_distributions.h',
-  'absl/random/mocking_bit_gen.h',
   'absl/random/poisson_distribution.h',
   'absl/random/random.h',
   'absl/random/seed_gen_exception.h',
@@ -474,7 +462,6 @@ absl_strings_sources = files(
   'absl/strings/internal/escaping.cc',
   'absl/strings/internal/memutil.cc',
   'absl/strings/internal/ostringstream.cc',
-  'absl/strings/internal/pow10_helper.cc',
   'absl/strings/internal/str_format/arg.cc',
   'absl/strings/internal/str_format/bind.cc',
   'absl/strings/internal/str_format/extension.cc',
@@ -494,13 +481,13 @@ absl_strings_sources = files(
 absl_strings_headers = files(
   'absl/strings/ascii.h',
   'absl/strings/charconv.h',
+  'absl/strings/charset.h',
   'absl/strings/cord.h',
   'absl/strings/cord_analysis.h',
   'absl/strings/cord_buffer.h',
-  'absl/strings/cord_test_helpers.h',
-  'absl/strings/cordz_test_helpers.h',
   'absl/strings/escaping.h',
   'absl/strings/has_absl_stringify.h',
+  'absl/strings/has_ostream_operator.h',
   'absl/strings/internal/charconv_bigint.h',
   'absl/strings/internal/charconv_parse.h',
   'absl/strings/internal/cord_data_edge.h',
@@ -511,7 +498,6 @@ absl_strings_headers = files(
   'absl/strings/internal/cord_rep_consume.h',
   'absl/strings/internal/cord_rep_crc.h',
   'absl/strings/internal/cord_rep_flat.h',
-  'absl/strings/internal/cord_rep_test_util.h',
   'absl/strings/internal/cordz_functions.h',
   'absl/strings/internal/cordz_handle.h',
   'absl/strings/internal/cordz_info.h',
@@ -521,11 +507,8 @@ absl_strings_headers = files(
   'absl/strings/internal/cordz_update_tracker.h',
   'absl/strings/internal/damerau_levenshtein_distance.h',
   'absl/strings/internal/escaping.h',
-  'absl/strings/internal/escaping_test_common.h',
   'absl/strings/internal/memutil.h',
-  'absl/strings/internal/numbers_test_common.h',
   'absl/strings/internal/ostringstream.h',
-  'absl/strings/internal/pow10_helper.h',
   'absl/strings/internal/resize_uninitialized.h',
   'absl/strings/internal/stl_type_traits.h',
   'absl/strings/internal/str_format/arg.h',
@@ -574,11 +557,16 @@ absl_synchronization_headers = files(
   'absl/synchronization/blocking_counter.h',
   'absl/synchronization/internal/create_thread_identity.h',
   'absl/synchronization/internal/futex.h',
+  'absl/synchronization/internal/futex_waiter.h',
   'absl/synchronization/internal/graphcycles.h',
   'absl/synchronization/internal/kernel_timeout.h',
   'absl/synchronization/internal/per_thread_sem.h',
-  'absl/synchronization/internal/thread_pool.h',
+  'absl/synchronization/internal/pthread_waiter.h',
+  'absl/synchronization/internal/sem_waiter.h',
+  'absl/synchronization/internal/stdcpp_waiter.h',
   'absl/synchronization/internal/waiter.h',
+  'absl/synchronization/internal/waiter_base.h',
+  'absl/synchronization/internal/win32_waiter.h',
   'absl/synchronization/mutex.h',
   'absl/synchronization/notification.h',
 )
@@ -604,7 +592,6 @@ absl_time_headers = files(
   'absl/time/civil_time.h',
   'absl/time/clock.h',
   'absl/time/internal/cctz/include/cctz/civil_time.h',
-  'absl/time/internal/cctz/include/cctz/civil_time_detail.h',
   'absl/time/internal/cctz/include/cctz/time_zone.h',
   'absl/time/internal/cctz/include/cctz/zone_info_source.h',
   'absl/time/internal/cctz/src/time_zone_fixed.h',
@@ -616,8 +603,10 @@ absl_time_headers = files(
   'absl/time/internal/cctz/src/tzfile.h',
   'absl/time/internal/get_current_time_chrono.inc',
   'absl/time/internal/get_current_time_posix.inc',
-  'absl/time/internal/test_util.h',
   'absl/time/time.h',
+)
+absl_time_extra_files = files(
+  'absl/time/internal/cctz/include/cctz/civil_time_detail.h',
 )
 
 absl_types_sources = files(
@@ -637,6 +626,11 @@ absl_types_headers = files(
   'absl/types/optional.h',
   'absl/types/span.h',
   'absl/types/variant.h',
+)
+
+absl_utility_headers = files(
+  'absl/utility/internal/if_constexpr.h',
+  'absl/utility/utility.h',
 )
 
 # Libraries
@@ -702,6 +696,7 @@ absl_time_lib = static_library(
   'absl_time',
   absl_time_sources,
   include_directories: absl_include_dir,
+  extra_files: absl_time_extra_files,
   link_with: [absl_base_lib, absl_numeric_lib, absl_strings_lib],
   # macOS only, upstream: https://github.com/abseil/abseil-cpp/pull/280
   dependencies: dependency(
@@ -767,6 +762,36 @@ absl_log_lib = static_library(
 )
 
 # Dependencies
+absl_meta_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_meta_headers,
+)
+
+absl_utility_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_utility_headers,
+)
+
+absl_algorithm_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_algorithm_headers,
+)
+
+absl_cleanup_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_cleanup_headers,
+)
+
+absl_memory_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_memory_headers,
+)
+
+absl_functional_dep = declare_dependency(
+  include_directories: absl_include_dir,
+  sources: absl_functional_headers,
+)
+
 absl_base_dep = declare_dependency(
   include_directories: absl_include_dir,
   link_with: absl_base_lib,

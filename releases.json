@@ -16,6 +16,7 @@
       "absl_synchronization",
       "absl_time",
       "absl_types",
+      "absl_algorithm",
       "absl_algorithm_container",
       "absl_any_invocable",
       "absl_bad_any_cast_impl",
@@ -52,6 +53,7 @@
       "absl_flags_usage_internal",
       "absl_flat_hash_map",
       "absl_flat_hash_set",
+      "absl_functional",
       "absl_function_ref",
       "absl_graphcycles_internal",
       "absl_hashtablez_sampler",
@@ -63,6 +65,7 @@
       "absl_log_internal_message",
       "absl_log_severity",
       "absl_low_level_hash",
+      "absl_meta",
       "absl_memory",
       "absl_optional",
       "absl_periodic_sampler",
@@ -99,6 +102,7 @@
       "absl_variant"
     ],
     "versions": [
+      "20250127.1-1",
       "20240722.0-3",
       "20240722.0-2",
       "20240722.0-1",
