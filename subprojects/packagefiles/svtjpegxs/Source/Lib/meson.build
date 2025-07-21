@@ -36,6 +36,8 @@ libcommon_sse2 = static_library(
   c_args: msse2,
 )
 
+threads_dep = dependency('threads')
+
 common_dep = declare_dependency(
   sources: [
     'Common/Codec/common_dsp_rtcd.c',
@@ -49,7 +51,7 @@ common_dep = declare_dependency(
     'Common/Codec/SvtLog.c',
   ],
   include_directories: [api_incdirs, 'Common/Codec'],
-  dependencies: cpuinfo_dep,
+  dependencies: [cpuinfo_dep, threads_dep],
   link_with: [libcommon_avx2, libcommon_sse2],
 )
 
