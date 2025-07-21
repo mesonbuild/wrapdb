@@ -66,13 +66,24 @@ libutf8_range_src = files(
   'third_party/utf8_range/naive.c',
   'third_party/utf8_range/range-avx2.c',
   'third_party/utf8_range/range-neon.c',
-  'third_party/utf8_range/range-sse.c',
   'third_party/utf8_range/utf8_validity.cc',
 )
+libutf8_range_args = []
+if host_machine.cpu_family() == 'x86_64'
+  # range-sse.c is wrapped in #ifdef __x86_64__
+  libutf8_range_src += files('third_party/utf8_range/range-sse.c')
+  if meson.get_compiler('cpp').get_argument_syntax() == 'gcc' or meson.get_compiler(
+    'cpp',
+  ).get_id() == 'clang-cl'
+    libutf8_range_args += '-msse4.1'
+  elif meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
+    libutf8_range_args += '/arch:SSE4.2'
+  endif
+endif
 libutf8_range = static_library(
   'utf8-range',
   sources: libutf8_range_src,
-  c_args: ['-march=native'],
+  c_args: libutf8_range_args,
   dependencies: absl_string_view_dep,
 )
 utf8_range_dep = declare_dependency(
@@ -206,9 +217,10 @@ libprotobuf_src = files(
   'src/google/protobuf/wire_format_lite.cc',
   'src/google/protobuf/wrappers.pb.cc',
 )
-libprotobuf_linker_args = is_msvc ? [
+libprotobuf_linker_args = (is_msvc ? [
   '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
 ] : []
+)
 libprotobuf = library(
   'protobuf',
   sources: libprotobuf_src,
