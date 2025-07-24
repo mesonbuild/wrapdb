@@ -425,6 +425,7 @@
     ],
     "fatal_warnings": false,
     "build_options": [
+      "glib:tests=false",
       "harfbuzz:glib=enabled",
       "harfbuzz:gobject=enabled",
       "harfbuzz:freetype=enabled",
