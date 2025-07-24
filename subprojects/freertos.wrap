@@ -1,0 +1,9 @@
+[wrap-file]
+directory = FreeRTOS-Kernel-11.2.0
+source_url = https://github.com/FreeRTOS/FreeRTOS-Kernel/archive/refs/tags/V11.2.0.zip
+source_filename = freertos-11.2.0.zip
+source_hash = faeabe1e7443208d83232870a6072ec72982ddd219a8dfa74eda8c1eadb97819
+patch_directory = freertos 
+
+[provide]
+dependency_names = freertos

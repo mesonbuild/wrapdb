@@ -985,6 +985,14 @@
       "3.4.0-1"
     ]
   },
+  "freertos": {
+    "dependency_names": [
+      "freertos"
+    ],
+    "versions": [
+      "11.2.0-1"
+    ]
+  },
   "freetype2": {
     "dependency_names": [
       "freetype2",
