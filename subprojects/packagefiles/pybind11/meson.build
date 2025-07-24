@@ -1,7 +1,7 @@
 project(
   'pybind11',
   'cpp',
-  version: '2.13.5',
+  version: '3.0.0',
   license: 'BSD-3-Clause',
 )
 
