@@ -109,34 +109,6 @@ install_headers(
   subdir: pngincsubdir,
 )
 
-cdata = configuration_data()
-cdata.set('prefix', get_option('prefix'))
-cdata.set('exec_prefix', get_option('prefix'))
-cdata.set('libdir', '${prefix}/' + get_option('libdir'))
-cdata.set('includedir', '${prefix}/' + get_option('includedir'))
-cdata.set('PNGLIB_MAJOR', png_major_version)
-cdata.set('PNGLIB_MINOR', png_minor_version)
-cdata.set('PNGLIB_VERSION', meson.project_version())
-# FIXME: should auto-generate pkg-config file to get this right
-cdata.set('LIBS', '-lz')
-
-configure_file(
-  input: 'libpng.pc.in',
-  output: 'libpng16.pc',
-  configuration: cdata,
-  install_dir: get_option('libdir') / 'pkgconfig',
-  install: true,
-)
-
-# FIXME: this should be a symlink to libpng16.pc
-configure_file(
-  input: 'libpng.pc.in',
-  output: 'libpng.pc',
-  configuration: cdata,
-  install_dir: get_option('libdir') / 'pkgconfig',
-  install: true,
-)
-
 libpng_dep = declare_dependency(
   include_directories: include,
   link_with: libpng,
@@ -145,6 +117,37 @@ libpng_dep = declare_dependency(
 # Keep the older dependency name for backwards-compat with old-style
 # dependency(..., fallback ['libpng': 'png_dep'])
 png_dep = libpng_dep
+
+pkgconfig = import('pkgconfig')
+pkgconfig.generate(
+  libpng,
+  name: 'libpng',
+  description: 'Loads and saves PNG files',
+  filebase: 'lib' + png_libname,
+  subdirs: pngincsubdir,
+)
+
+if meson.version().version_compare('>=0.61') and host_machine.system() != 'windows'
+  install_symlink(
+    'libpng.pc',
+    install_dir: get_option('libdir') / 'pkgconfig',
+    pointing_to: 'lib' + png_libname + '.pc',
+  )
+else
+  # With old Meson releases before 0.61,
+  # install_symlink() function is not available.
+  # On Windows, symlink generation requires privileged access
+  # which we want to avoid.
+
+  # Meson won't let us generate the same .pc file twice, so generate one
+  # which Requires: the other one.
+  pkgconfig.generate(
+    name: 'libpng',
+    description: 'Loads and saves PNG files',
+    requires: libpng,
+    subdirs: pngincsubdir,
+  )
+endif
 
 if get_option('tests')
   png_test = executable(
