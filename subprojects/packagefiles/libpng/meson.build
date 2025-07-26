@@ -146,13 +146,15 @@ libpng_dep = declare_dependency(
 # dependency(..., fallback ['libpng': 'png_dep'])
 png_dep = libpng_dep
 
-png_test = executable(
-  'pngtest',
-  'pngtest.c',
-  dependencies: libpng_dep,
-)
-test(
-  'pngtest',
-  png_test,
-  args: files('pngtest.png'),
-)
+if get_option('tests')
+  png_test = executable(
+    'pngtest',
+    'pngtest.c',
+    dependencies: libpng_dep,
+  )
+  test(
+    'pngtest',
+    png_test,
+    args: files('pngtest.png'),
+  )
+endif
