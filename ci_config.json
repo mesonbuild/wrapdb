@@ -903,7 +903,8 @@
   "minifycpp": {
     "build_options": [
       "minifycpp:tests=true",
-      "minifycpp:examples=true"
+      "minifycpp:examples=true",
+      "minifycpp:tests_examples_c=enabled"
     ]
   },
   "minizip-ng": {
