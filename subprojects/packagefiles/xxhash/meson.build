@@ -1,6 +1,6 @@
 project(
   'xxHash',
-  ['c'],
+  'c',
   # library files are BSD licensed. xxhsum utility is GPL licensed.
   license: 'BSD-2-Clause and GPL-2.0',
   version: '0.8.3',
@@ -64,14 +64,7 @@ if get_option('prefetch-dist') > 0
   c_args += '-DXXH_PREFETCH_DIST=@0@'.format(get_option('prefetch-dist'))
 endif
 
-if cc.get_id() == 'gcc' and cc.version().version_compare('>=12.0.0') and get_option(
-  'optimization',
-) == 'g'
-  c_args += '-DXXH_NO_INLINE_HINTS=1'
-  message(
-    'Ignoring value of inline-hints, see https://github.com/Cyan4973/xxHash/pull/720',
-  )
-elif not get_option('inline-hints').auto()
+if not get_option('inline-hints').auto()
   c_args += '-DXXH_NO_INLINE_HINTS=@0@'.format(
     get_option('inline-hints').enabled() ? 0 : 1,
   )
@@ -101,43 +94,29 @@ if host_machine.system() == 'windows'
   endif
 endif
 
-pkgconfig_data = configuration_data(
-  {
-    'PREFIX': get_option('prefix'),
-    'EXECPREFIX': get_option('prefix'),
-    'INCLUDEDIR': get_option('includedir'),
-    'LIBDIR': get_option('libdir'),
-    'VERSION': meson.project_version(),
-  },
-)
-
-pkgconfig = configure_file(
-  input: 'libxxhash.pc.in',
-  output: 'libxxhash.pc',
-  configuration: pkgconfig_data,
-)
-
-install_data(
-  pkgconfig,
-  install_dir: get_option('prefix') / get_option('libdir') / 'pkgconfig',
-)
-
 inc = include_directories('.')
 
 xxhash = library(
-  'xxhash',
-  ['xxhash.c'],
+  'libxxhash',
+  'xxhash.c',
   version: meson.project_version(),
+  soversion: host_machine.system() == 'windows' ? '' : '0',
+  name_prefix: '',
   c_args: c_args + c_build_args,
-  include_directories: [inc],
   install: true,
+)
+
+pkg = import('pkgconfig')
+pkg.generate(
+  xxhash,
+  description: 'extremely fast hash algorithm',
 )
 
 # For use is xxhsum only
 xxhash_internal_dep = declare_dependency(
   link_with: xxhash,
   compile_args: c_args + c_use_args,
-  include_directories: [inc],
+  include_directories: inc,
 )
 
 if get_option('default_library') == 'static'
@@ -147,7 +126,7 @@ endif
 xxhash_dep = declare_dependency(
   link_with: xxhash,
   compile_args: c_args,
-  include_directories: [inc],
+  include_directories: inc,
 )
 
 meson.override_dependency('libxxhash', xxhash_dep)
