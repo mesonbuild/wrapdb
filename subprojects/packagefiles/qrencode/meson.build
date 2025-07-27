@@ -1,7 +1,7 @@
 project(
   'qrencode',
   'c',
-  license: 'mit',
+  license: 'MIT',
   version: '4.1.1',
 )
 cc = meson.get_compiler('c')
@@ -35,19 +35,19 @@ if cc.has_function(
 endif
 
 libqrencode = library(
-  'qrencode',
+  'libqrencode',
   sources,
+  name_prefix: '',
+  version: meson.project_version(),
+  soversion: host_machine.system() == 'windows' ? '' : '4',
   c_args: c_args,
-  dependencies: [dependency('threads')],
+  dependencies: dependency('threads'),
   vs_module_defs: 'qrencode.def',
   install: true,
-  version: meson.project_version(),
 )
 import('pkgconfig').generate(
   libqrencode,
-  name: 'libqrencode',
   description: 'A QR Code encoding library',
-  version: meson.project_version(),
 )
 libqrencode_dep = declare_dependency(
   link_with: libqrencode,
