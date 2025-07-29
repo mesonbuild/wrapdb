@@ -1,0 +1,105 @@
+option(
+    'extensions',
+    type: 'feature',
+    description: 'This library contains additional functions not defined in the C11 specification. Disable to omit these.',
+    value: 'enabled',
+)
+
+option(
+    'float',
+    type: 'feature',
+    description: 'Enable float support in the printf functions.',
+    value: 'enabled',
+)
+
+option(
+    'float-exp',
+    type: 'feature',
+    description: 'Enable exponential floating point notation (%e/%g) in the printf functions.',
+    value: 'enabled',
+)
+
+option(
+    'long-long',
+    type: 'feature',
+    description: 'Enable exponential floating point notation (%e/%g) in the printf functions.',
+    value: 'enabled',
+)
+
+option(
+    'long-double',
+    type: 'feature',
+    description: 'Enable exponential floating point notation (%e/%g) in the printf functions.',
+    value: 'enabled',
+)
+
+option(
+    'printf-ptrdiff',
+    type: 'feature',
+    description: 'Enable ptrdiff_t type (%t) in the printf functions.',
+    value: 'enabled',
+)
+
+option(
+    'memmax',
+    type: 'integer',
+    description: 'specify the largest object size allowed for the mem* functions',
+    value: 268435456,  # 256MiB
+)
+
+option(
+    'strmax',
+    type: 'integer',
+    description: 'specify the largest object size allowed for the str* functions',
+    value: 4096,  # 4KiB
+)
+
+option(
+    'nullslack',
+    type: 'feature',
+    description: 'Null out the remaining part of a string if it is not completely used',
+    value: 'enabled',
+)
+
+option(
+    'constraint-handler',
+    type: 'feature',
+    description: 'Enable C11 invoke_safe_{str,mem}_constraint_handler for performance, smaller size and less flexibility.',
+    value: 'enabled',
+)
+
+option(
+    'unsafe',
+    type: 'feature',
+    description: 'Include unsafe std C11 functions: tmpnam_s',
+    value: 'disabled',
+)
+
+option(
+    'warn-dmax',
+    type: 'feature',
+    description: 'Enable dmax checks against __builtin_object_size(dest).',
+    value: 'disabled',
+)
+
+option(
+    'error-dmax',
+    type: 'feature',
+    description: 'Make --enable-warn-dmax fatal.',
+    value: 'disabled',
+)
+
+option(
+    'default-handler',
+    type: 'combo',
+    choices: ['ignore', 'abort', 'no'],
+    description: 'enforce compile-time default-handler',
+    value: 'no',
+)
+
+option(
+    'wchar',
+    type: 'feature',
+    description: 'Enable multibyte and wchar support.',
+    value: 'enabled',
+)
