@@ -1,0 +1,9 @@
+[wrap-file]
+directory = lwip-STABLE-2_2_1_RELEASE
+source_url = https://cgit.git.savannah.gnu.org/cgit/lwip.git/snapshot/lwip-STABLE-2_2_1_RELEASE.tar.gz
+source_filename = lwip-2.2.1.tar.gz
+source_hash = ce0b7461c0ad9602c376f0bf07c5eb7253b48c7bf66f011c6bf3e2a96731c539
+patch_directory = lwip
+
+[provide]
+dependency_names = lwip-core, lwip-apps, lwip-mbedtls

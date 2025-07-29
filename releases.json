@@ -2639,6 +2639,16 @@
       "9.2.2-1"
     ]
   },
+  "lwip": {
+    "dependency_names": [
+      "lwip-core",
+      "lwip-apps",
+      "lwip-mbedtls"
+    ],
+    "versions": [
+      "2.2.1-1"
+    ]
+  },
   "lz4": {
     "dependency_names": [
       "liblz4"
