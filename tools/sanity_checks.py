@@ -203,6 +203,13 @@ class TestReleases(unittest.TestCase):
         # don't fail on tags created after the branch was pushed.
         stdout = subprocess.check_output(['git', 'tag', '--merged'])
         cls.tags = {t.strip() for t in stdout.decode().splitlines()}
+        # Ensure we have one of the oldest tags in the repo, and roughly
+        # the expected number of tags
+        if 'abseil-cpp_20200225.2-1' not in cls.tags or len(cls.tags) < 2000:
+            # Repo may have been cloned with --depth=N
+            # git fetch --tags is not enough because we ignore tags
+            # unreachable from HEAD
+            raise Exception("Missing Git tags; try 'git fetch --unshallow'")
         stdout = subprocess.check_output(['git', 'tag', '--no-merged'])
         if stdout.strip():
             print(f'Ignoring unreachable tags: {stdout.decode().splitlines()}')
