@@ -24,6 +24,13 @@ gen_headers_tgt = {
 }
 
 chdir_wrapper = files('chdir_wrapper.py')
+python_exe = find_program(
+  'python',
+  'python3',
+  required: true,
+  native: true,
+  version: '>=3',
+)
 gen_headers = []
 foreach exe_name, data_files : gen_headers_tgt
   src = exe_name + '.c'
@@ -37,7 +44,7 @@ foreach exe_name, data_files : gen_headers_tgt
     hdr,
     output: hdr,
     depend_files: data_files,
-    command: [chdir_wrapper, exe],
+    command: [python_exe, chdir_wrapper, exe],
     env: {
       'PROJECT_SOURCE_ROOT': meson.project_source_root(),
     },
