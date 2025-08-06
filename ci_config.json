@@ -1115,11 +1115,13 @@
       "nasm",
       "patch",
       "perl",
-      "perl-text-template"
+      "perl-text-template",
+      "rsync"
     ],
     "debian_packages": [
       "libtext-template-perl",
-      "nasm"
+      "nasm",
+      "rsync"
     ],
     "build_options": [
       "openssl:build_cli=true"

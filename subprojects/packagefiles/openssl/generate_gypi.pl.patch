@@ -1,10 +1,101 @@
 diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
+index be7d357f..aafdc73d 100755
 --- a/openssl/config/generate_gypi.pl
 +++ b/openssl/config/generate_gypi.pl
-@@ -361,7 +361,35 @@
+@@ -27,13 +27,31 @@ my $arch = shift @ARGV;
+ my $nasm_banner = `nasm -v`;
+ die "Error: nasm is not installed." if (!$nasm_banner);
+ 
+-# gas version check
+-my $gas_version_min = 2.30;
+-my $gas_banner = `gcc -Wa,-v -c -o /dev/null -x assembler /dev/null 2>&1`;
+-my ($gas_version) = ($gas_banner =~/GNU assembler version ([2-9]\.[0-9]+)/);
+-if ($gas_version < $gas_version_min) {
+-  die "Error: gas version $gas_version is too old." .
+-    "$gas_version_min or higher is required.";
++# gas/llvm-as version check
++my $gas_banner = `gcc -Wa,-v -c -o /dev/null -x assembler /dev/null 2>&1`;
++if ($gas_banner) {
++  my $gas_version_min = 2.30;
++  my ($gas_version) = ($gas_banner =~/GNU assembler version ([2-9]\.[0-9]+)/);
++  if ($gas_version < $gas_version_min) {
++    die "Error: gas version $gas_version is too old." .
++      "$gas_version_min or higher is required.";
++  }
++} else {
++  my $llvm_version_min = 9.0;
++  my $llvm_banner = `clang -Wa,--version -c -o /dev/null -x assembler /dev/null 2>&1`;
++  my ($llvm_as_version) = ($llvm_banner =~/clang version ([0-9]+\.[0-9]+)/);
++  if ($llvm_as_version < $llvm_version_min) {
++    die "Error: LLVM $llvm_as_version is too old." .
++      "$llvm_version_min or higher is required."
++  }
++}
++
++# Set the compiler
++my $compiler;
++if ($gas_banner) {
++  $compiler = 'cc';
++} else {
++  $compiler = 'clang';
+ }
+ 
+ our $src_dir = "../openssl";
+@@ -108,6 +126,11 @@ if ($fips_ld ne "" and not $is_win) {
+        "$base_dir/providers/fips.ld") or die "Copy failed: $!";
+ }
+ 
++# list headers following the Makefile glob
++my @openssl_arch_headers = ();
++foreach my $obj (glob("$base_dir/include/openssl/*.{h,H}")) {
++  push(@openssl_arch_headers, substr($obj, length($base_dir) + 1));
++}
+ 
+ # read openssl source lists from configdata.pm
+ my @libapps_srcs = ();
+@@ -265,10 +288,36 @@ foreach my $obj (@{$unified_info{sources}->{'apps/openssl'}}) {
+   push(@apps_openssl_srcs, ${$unified_info{sources}->{$obj}}[0]);
+ }
+ 
++# msvc and mingw requires the .rc but none appears in
++# sources; we need to pluck them out of generate
++# (in 1.x this also included the .def but now it's Makefile generated)
++my @win_resources = grep {/(.rc$)/} (keys %{$unified_info{generate}});
++foreach my $src (@win_resources) {
++  # VC makefiles are intended for static files
++  # Execute the rules straight out of configdata
++  my $generation_cmd = join(" ", @{$unified_info{generate}->{$src}});
++  my $cmd = "cd ../openssl && $generation_cmd > $src && " .
++    "rsync -R $src ../config/archs/$arch/$asm && cd ../config";
++  system("$cmd") == 0 or die "Error in system($cmd)";
++}
++
++my $libssl_rc;
++if (exists $unified_info{generate}->{'libssl.rc'}) {
++  $libssl_rc = 'libssl.rc';
++} else {
++  $libssl_rc = '';
++}
++my $libcrypto_rc;
++if (exists $unified_info{generate}->{'libcrypto.rc'}) {
++  $libcrypto_rc = 'libcrypto.rc';
++} else {
++  $libcrypto_rc = '';
++}
++
+ # Generate all asm files and copy into config/archs
+ foreach my $src (@generated_srcs) {
+-  my $cmd = "cd ../openssl; CC=gcc ASM=nasm make -f $makefile $src;" .
+-    "cp --parents $src ../config/archs/$arch/$asm; cd ../config";
++  my $cmd = "cd ../openssl; CC=$compiler ASM=nasm make -f $makefile $src;" .
++    "rsync -R $src ../config/archs/$arch/$asm; cd ../config";
+   system("$cmd") == 0 or die "Error in system($cmd)";
+ }
+ 
+@@ -361,9 +410,40 @@ open(CLGYPI, "> ./archs/$arch/$asm/openssl-cl.gypi");
  print CLGYPI "$clgypi";
  close(CLGYPI);
-
+ 
 +# Create meson.build
 +my $mtemplate =
 +    Text::Template->new(TYPE => 'FILE',
@@ -15,11 +106,14 @@ diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
 +my $meson = $mtemplate->fill_in(
 +    HASH => {
 +        libssl_srcs => \@libssl_srcs,
++        libssl_rc => \$libssl_rc,
 +        libcrypto_srcs => \@libcrypto_srcs,
 +        lib_defines => \@lib_defines,
++        libcrypto_rc => \$libcrypto_rc,
 +        generated_srcs => \@generated_srcs,
 +        apps_openssl_srcs => \@apps_openssl_srcs,
 +        libapps_srcs => \@libapps_srcs,
++        openssl_arch_headers => \@openssl_arch_headers,
 +        config => \%config,
 +        target => \%target,
 +        cflags => \@cflags,
@@ -38,3 +132,5 @@ diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
 -    "git clean -f $src_dir/crypto";
 +    "git clean -f crypto";
  system($cmd2) == 0 or die "Error in system($cmd2)";
+ 
+ 
