@@ -1,0 +1,6 @@
+option(
+    'build_executable',
+    type: 'boolean',
+    value: true,
+    description: 'Build avrogencpp exectuable',
+)
