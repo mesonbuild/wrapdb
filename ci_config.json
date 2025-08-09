@@ -83,6 +83,19 @@
       "cexception:werror=false"
     ]
   },
+  "cfitsio": {
+    "alpine_packages": [
+      "gfortran",
+      "libcurl"
+    ],
+    "debian_packages": [
+      "gfortran",
+      "libcurl4-openssl-dev"
+    ],
+    "build_on": {
+      "windows": false
+    }
+  },
   "cglm": {
     "build_options": [
       "cglm:build_tests=true"
