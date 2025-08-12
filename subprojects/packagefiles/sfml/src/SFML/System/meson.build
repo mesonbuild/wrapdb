@@ -2,32 +2,18 @@ system_sources = files(
   'Clock.cpp',
   'Err.cpp',
   'FileInputStream.cpp',
-  'Lock.cpp',
   'MemoryInputStream.cpp',
-  'Mutex.cpp',
   'Sleep.cpp',
   'String.cpp',
-  'Thread.cpp',
-  'ThreadLocal.cpp',
-  'Time.cpp',
+  'Utils.cpp',
+  'Vector2.cpp',
+  'Vector3.cpp',
 )
 
 if host_machine.system() == 'windows'
-  system_sources += files(
-    'Win32/ClockImpl.cpp',
-    'Win32/MutexImpl.cpp',
-    'Win32/SleepImpl.cpp',
-    'Win32/ThreadImpl.cpp',
-    'Win32/ThreadLocalImpl.cpp',
-  )
+  system_sources += files('Win32/SleepImpl.cpp')
 else
-  system_sources += files(
-    'Unix/ClockImpl.cpp',
-    'Unix/MutexImpl.cpp',
-    'Unix/SleepImpl.cpp',
-    'Unix/ThreadImpl.cpp',
-    'Unix/ThreadLocalImpl.cpp',
-  )
+  system_sources += files('Unix/SleepImpl.cpp')
 endif
 
 system_lib = library(

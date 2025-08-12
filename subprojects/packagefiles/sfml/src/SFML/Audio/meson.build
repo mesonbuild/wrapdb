@@ -1,11 +1,13 @@
 audio_sources = files(
-  'ALCheck.cpp',
-  'AlResource.cpp',
   'AudioDevice.cpp',
+  'AudioResource.cpp',
   'InputSoundFile.cpp',
   'Listener.cpp',
+  'Miniaudio.cpp',
+  'MiniaudioUtils.cpp',
   'Music.cpp',
   'OutputSoundFile.cpp',
+  'PlaybackDevice.cpp',
   'Sound.cpp',
   'SoundBuffer.cpp',
   'SoundBufferRecorder.cpp',
@@ -22,14 +24,33 @@ audio_sources = files(
   'SoundStream.cpp',
 )
 
+audio_cpp_args = []
+
+audio_cpp_args += get_option('default_library') != 'static' ? '-DSFML_AUDIO_EXPORTS' : '-DSFML_STATIC'
+
+# avoids warnings in vorbisfile.h
+audio_cpp_args += ['-DPRIVATE OV_EXCLUDE_STATIC_CALLBACKS', '-DFLAC__NO_DLL']
+
+# disable miniaudio features we do not use
+audio_cpp_args += [
+  '-DMA_NO_MP3',
+  '-DMA_NO_FLAC',
+  '-DMA_NO_ENCODING',
+  '-DMA_NO_RESOURCE_MANAGER',
+  '-DMA_NO_GENERATION',
+]
+
+# use standard fixed-width integer types
+audio_cpp_args += '-DMA_USE_STDINT'
+
 audio_lib = library(
   'sfml-audio',
   audio_sources,
-  cpp_args: get_option('default_library') != 'static' ? '-DSFML_AUDIO_EXPORTS' : '-DSFML_STATIC',
+  cpp_args: audio_cpp_args,
   link_with: system_lib,
   include_directories: [pub_inc, priv_inc, mp3_inc],
   dependencies: [
-    openal_dep,
+    miniaudio_dep,
     flac_dep,
     vorbis_dep,
     vorbisenc_dep,

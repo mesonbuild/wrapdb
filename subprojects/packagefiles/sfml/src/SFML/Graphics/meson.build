@@ -1,22 +1,20 @@
 graphics_sources = files(
   'BlendMode.cpp',
-  'Color.cpp',
   'Font.cpp',
   'GLCheck.cpp',
   'GLExtensions.cpp',
   'Glsl.cpp',
   'Image.cpp',
-  'ImageLoader.cpp',
   'RenderStates.cpp',
   'RenderTarget.cpp',
   'RenderTexture.cpp',
   'RenderWindow.cpp',
   'Shader.cpp',
+  'StencilMode.cpp',
   'Texture.cpp',
   'TextureSaver.cpp',
   'Transform.cpp',
   'Transformable.cpp',
-  'Vertex.cpp',
   'View.cpp',
 )
 
@@ -32,7 +30,7 @@ graphics_sources += files(
 )
 
 graphics_sources += files(
-  'RenderTextureImpl.cpp',
+  'RenderTexture.cpp',
   'RenderTextureImplDefault.cpp',
   'RenderTextureImplFBO.cpp',
 )

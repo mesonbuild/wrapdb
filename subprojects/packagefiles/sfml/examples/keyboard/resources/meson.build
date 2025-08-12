@@ -1,0 +1,5 @@
+fs = import('fs')
+fs.copyfile('Tuffy.ttf')
+fs.copyfile('error_005.ogg')
+fs.copyfile('mouseclick1.ogg')
+fs.copyfile('mouserelease1.ogg')
