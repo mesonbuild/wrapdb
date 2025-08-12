@@ -1,14 +1,15 @@
 project(
   'sfml',
   'cpp',
-  version: '2.6.2',
+  license: 'Zlib',
+  version: '3.0.1',
   default_options: ['cpp_std=c++17', 'wrap_mode=forcefallback'],
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.64.0',
 )
 
 cpp = meson.get_compiler('cpp')
 
-openal_dep = dependency('openal')
+miniaudio_dep = dependency('miniaudio')
 thread_dep = dependency('threads')
 gl_dep = dependency('gl')
 winmm_dep = cpp.find_library(
@@ -32,6 +33,18 @@ vulkan_inc = include_directories('extlibs/headers/vulkan')
 mp3_inc = include_directories('extlibs/headers/minimp3')
 pub_inc = include_directories('include')
 priv_inc = include_directories('src')
+
+if build_machine.endian() == 'big'
+  add_project_arguments(
+    '-DSFML_IS_BIG_ENDIAN=1',
+    language: 'cpp',
+  )
+else
+  add_project_arguments(
+    '-DSFML_IS_BIG_ENDIAN=0',
+    language: 'cpp',
+  )
+endif
 
 subdir('src/SFML')
 
