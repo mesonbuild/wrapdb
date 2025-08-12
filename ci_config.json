@@ -1343,13 +1343,15 @@
   "sfml": {
     "alpine_packages": [
       "libudev-zero-dev",
+      "libxi-dev",
       "mesa-dev"
     ],
     "debian_packages": [
       "libgl-dev",
-      "libopenal-dev",
+      "libminiaudio-dev",
       "libudev-dev",
-      "libxrandr-dev"
+      "libxrandr-dev",
+      "libxi-dev"
     ]
   },
   "slirp": {

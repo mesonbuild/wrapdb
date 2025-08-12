@@ -1,0 +1,6 @@
+fs = import('fs')
+fs.copyfile('shader.frag')
+fs.copyfile('logo.png')
+fs.copyfile('shader.frag.spv')
+fs.copyfile('shader.vert.spv')
+fs.copyfile('shader.vert')
