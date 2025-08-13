@@ -1,7 +1,8 @@
 project(
   'pv',
   'c',
-  version: '1.9.31',
+  license: 'GPL-3.0-or-later',
+  version: '1.9.34',
   meson_version: '>=0.59.0',
 )
 
