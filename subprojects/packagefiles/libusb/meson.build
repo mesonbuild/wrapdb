@@ -3,7 +3,6 @@ project(
   'c',
   version: '1.0.29',
   meson_version: '>=0.49.0',
-  default_options: ['cpp_std=c++20'],
 )
 
 cc = meson.get_compiler('c')
@@ -166,6 +165,7 @@ config_inc = include_directories('.')
 libusb = library(
   'libusb-1.0',
   sources,
+  override_options: host_machine.system() == 'emscripten' ? 'cpp_std=c++20' : [],
   dependencies: [thread_dep, macos_dep, udev_dep],
   include_directories: incdirs,
   version: '0.5.0',
