@@ -692,7 +692,7 @@ class TestReleases(unittest.TestCase):
             unformatted_str = ', '.join([str(f) for f in unformatted])
             self.fail(
                 f'''Not formatted files found: {unformatted_str}
-Run tools/format.py to format these files.''')
+Run tools/format.py to format these files. A recent enough version of Meson may be required.''')
 
     @unittest.skipUnless('TEST_MESON_VERSION_DEPS' in os.environ, 'Run manually only')
     def test_meson_version_deps(self) -> None:
