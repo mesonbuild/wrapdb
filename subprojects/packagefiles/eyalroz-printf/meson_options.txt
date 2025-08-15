@@ -1,0 +1,91 @@
+option(
+    'tests',
+    description: 'Build test programs for the library',
+    type: 'boolean',
+    value: false,
+)
+option(
+    'test_with_non_standard_format_strings',
+    description: 'Include tests using non-standard-compliant format strings',
+    type: 'boolean',
+)
+
+option(
+    'support_decimal_specifiers',
+    description: 'Support decimal notation floating-point conversion specifiers (%f,%F)',
+    type: 'boolean',
+)
+option(
+    'support_exponential_specifiers',
+    description: 'Support exponential floating point format conversion specifiers (%e,%E,%g,%G)',
+    type: 'boolean',
+)
+option(
+    'support_writeback_specifier',
+    description: 'Support the length write-back specifier (%n)',
+    type: 'boolean',
+)
+option(
+    'support_msvc_style_integer_specifiers',
+    description: 'Support the I + bit size integer specifiers (%I8, %I16, %I32, %I64) as in Microsoft Visual C++',
+    type: 'boolean',
+)
+option(
+    'support_long_long',
+    description: 'Support long long integral types (allows for the ll length modifier and affects %p)',
+    type: 'boolean',
+)
+option(
+    'use_double_internally',
+    description: 'Use the C `double` type - typically 64-bit in size - for internal floating-point arithmetic',
+    type: 'boolean',
+)
+option(
+    'check_for_nul_in_format_specifier',
+    description: 'Be defensive in the undefined-behavior case of a format specifier not ending before the string ends',
+    type: 'boolean',
+)
+
+option(
+    'integer_buffer_size',
+    description: 'Integer to string conversion buffer size',
+    type: 'integer',
+    min: 0,
+    value: 32,
+)
+option(
+    'decimal_buffer_size',
+    description: 'Floating-point to decimal conversion buffer size',
+    type: 'integer',
+    min: 0,
+    value: 32,
+)
+option(
+    'default_float_precision',
+    description: 'Default precision when printing floating-point values',
+    type: 'integer',
+    min: 0,
+    value: 6,
+)
+option(
+    'max_integral_digits_for_decimal',
+    description: 'Maximum number of integral-part digits of a floating-point value for which printing with %f uses decimal (non-exponential) notation',
+    type: 'integer',
+    min: 0,
+    value: 9,
+)
+option(
+    'log10_taylor_terms',
+    description: 'The number of terms in a Taylor series expansion of log_10(x) to use for approximation',
+    type: 'integer',
+    min: 0,
+    value: 4,
+)
+
+option(
+    'alias_standard_function_names',
+    description: 'Alias the standard library function names (printf, sprintf etc.) to the library\'s functions - concretely, via a macro, or not at all',
+    type: 'combo',
+    choices: ['none', 'hard', 'soft'],
+    value: 'none',
+)
