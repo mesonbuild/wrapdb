@@ -17,7 +17,8 @@ cpputest_ext_sources = files(
 )
 
 cpputest_ext_lib = library(
-  'CppUTest',
+  'CppUTestExt',
   cpputest_ext_sources,
   include_directories: cpputest_includes,
+  link_with: cpputest_lib,
 )
