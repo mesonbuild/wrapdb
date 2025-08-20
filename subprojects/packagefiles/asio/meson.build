@@ -1,7 +1,7 @@
 project(
   'asio',
   'cpp',
-  version: '1.30.2',
+  version: '1.36.0',
   license: 'BSL-1.0',
   meson_version: '>=0.60.0',
 )
