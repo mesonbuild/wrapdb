@@ -58,3 +58,9 @@ option(
     type: 'array',
     value: [],
 )
+# Toggle this if you want to build with -sMEMORY64=2 on wasm64
+option(
+    'wasm64_compat32',
+    type: 'boolean',
+    value: false,
+)
