@@ -1,7 +1,7 @@
 project(
   'libffi',
   'c',
-  version: '3.5.1',
+  version: '3.5.2',
   license: 'MIT',
   meson_version: '>= 0.56.0',
   default_options: ['warning_level=1'],
@@ -90,6 +90,7 @@ endforeach
 # Default values
 c_sources = ['ffi.c']
 asm_sources = ['sysv.S']
+private_c_args = []
 masm_args = []
 targetdir = ''
 have_long_double = ''
@@ -315,9 +316,15 @@ elif host_cpu_family == 'vax'
   # FIXME: vax family is missing in Meson
   target = 'VAX'
   asm_sources = ['elfbsd.S']
-elif host_cpu_family == 'wasm32'
-  target = 'wasm32'  # lowercase
+elif host_cpu_family in ['wasm32', 'wasm64']
+  target = host_cpu_family  # lowercase
+  targetdir = 'wasm'
   asm_sources = []
+  if host_cpu_family == 'wasm64'
+    private_c_args += cc.get_supported_arguments(
+      '-sMEMORY64=' + (get_option('wasm64_compat32') ? '2' : '1'),
+    )
+  endif
 elif host_cpu_family == 'xtensa'
   # FIXME: xtensa family is missing in Meson
   target = 'XTENSA'
@@ -435,6 +442,7 @@ if host_cpu_family in ['arm', 'aarch64'] and host_system == 'darwin'
 elif host_system in [
   'android',
   'darwin',
+  'dragonfly',
   'openbsd',
   'freebsd',
   'solaris',

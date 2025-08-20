@@ -385,8 +385,13 @@ foreach suite, sources : tests
             exe_name,
             src,
             dependencies: ffi_dep,
-            c_args: [common_c_args, suite_c_args, matrix_c_args],
-            cpp_args: [common_c_args, suite_c_args, matrix_c_args],
+            c_args: [common_c_args, private_c_args, suite_c_args, matrix_c_args],
+            cpp_args: [
+              common_c_args,
+              private_c_args,
+              suite_c_args,
+              matrix_c_args,
+            ],
             # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
             #override_options: ['optimization=plain'],
           )
