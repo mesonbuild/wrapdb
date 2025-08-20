@@ -8,7 +8,7 @@ project(
     check: true,
   ).stdout().strip(),
   license: 'Zlib',
-  meson_version: '>=0.60.0',
+  meson_version: '>=0.63.0',
   default_options: ['c_std=c11'],
 )
 
@@ -106,13 +106,13 @@ foreach s : [
   [
     'stdlib.h',
     'aligned_alloc',
-    ['-D_ISOC11_SOURCE=1'],
+    ['-D_POSIX_C_SOURCE=200112L', '-D_ISOC11_SOURCE=1'],
     ['-DHAVE_ALIGNED_ALLOC'],
   ],
   [
     'stdlib.h',
     'posix_memalign',
-    ['-D_POSIX_C_SOURCE=200112L'],
+    ['-D_POSIX_C_SOURCE=200112L', '-D_ISOC11_SOURCE=1'],
     ['-DHAVE_POSIX_MEMALIGN'],
   ],
 ]
@@ -1057,11 +1057,15 @@ elif cpu_family in ['x86', 'x86_64']
   want_avx512vnni = get_option('avx512vnni').require(have_avx2)
   have_avx512vnni = want_avx512vnni.allowed() and cc.compiles(
     '''#include <immintrin.h>
-    __m512i f(__m512i x, __m512i y) {
-        __m512i z = _mm512_setzero_epi32();
-        return _mm512_dpbusd_epi32(z, x, y);
-    }
-    int main(void) { return 0; }''',
+    int main(void) {
+        const __m512i z512 = _mm512_setzero_si512();
+        const __m256i z256 = _mm256_setzero_si256();
+        volatile __m512i r512 = _mm512_dpbusd_epi32(z512, z512, z512);
+        volatile __m256i r256 = _mm256_dpbusd_epi32(z256, z256, z256);
+        (void)r512;
+        (void)r256;
+        return 0;
+    }''',
     args: avx512vnniflags,
   )
   if have_avx512vnni
