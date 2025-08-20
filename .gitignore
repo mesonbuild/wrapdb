@@ -5,3 +5,5 @@ __pycache__
 
 subprojects/packagecache
 subprojects/packagefiles/openssl/generated-config
+
+tools/mesonenv
