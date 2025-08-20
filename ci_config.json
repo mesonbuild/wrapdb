@@ -1236,8 +1236,10 @@
     ]
   },
   "s2n-tls": {
+    "_comment": "- No upstream windows support",
     "build_on": {
-      "windows": false
+      "windows": false,
+      "msys2": false
     },
     "alpine_packages": [
       "openssl-dev"
