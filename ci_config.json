@@ -1474,19 +1474,11 @@
     "_comment" : [
       "Requires following XDG standards"
     ],
-<<<<<<< HEAD
-    "build_on" : [
-      "darwin": false,
-      "windows" : false,
-      "msys2" : false
-    ]
-=======
     "build_on" : {
       "darwin": false,
       "windows" : false,
       "msys2" : false
     }
->>>>>>> 3f42dd07 (New Wrap: xdgmime)
   },
   "zycore": {
     "build_options": [
