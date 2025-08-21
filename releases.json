@@ -4461,7 +4461,11 @@
     ]
   },
   "xdgmime": {
+<<<<<<< HEAD
     program_names: [
+=======
+    "program_names": [
+>>>>>>> 3f42dd07 (New Wrap: xdgmime)
       "xdgmime"
     ],
     "versions": [
