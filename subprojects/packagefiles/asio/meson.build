@@ -3,7 +3,7 @@ project(
   'cpp',
   version: '1.36.0',
   license: 'BSL-1.0',
-  meson_version: '>=0.60.0',
+  meson_version: '>=0.49.0',
 )
 
 asio_deps = []
@@ -25,17 +25,8 @@ install_subdir(
   'include/asio',
   install_dir: get_option('includedir'),
 )
-conf_data = configuration_data()
-conf_data.set('prefix', get_option('prefix'))
-conf_data.set('exec_prefix', '${prefix}')
-conf_data.set('includedir', '${prefix}/' + get_option('includedir'))
-conf_data.set('PACKAGE_NAME', meson.project_name())
-conf_data.set('PACKAGE_VERSION', meson.project_version())
-configure_file(
-  input: 'asio.pc.in',
-  output: 'asio.pc',
-  configuration: conf_data,
-  install: true,
-  install_tag: 'devel',
+import('pkgconfig').generate(
+  name: meson.project_name(),
+  description: 'A cross-platform C++ library for network and low-level I/O programming that provides developers with a consistent asynchronous model using a modern C++ approach.',
   install_dir: get_option('datadir') / 'pkgconfig',
 )
