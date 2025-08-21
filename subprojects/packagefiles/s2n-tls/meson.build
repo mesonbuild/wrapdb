@@ -7,7 +7,7 @@ project(
   license: 'Apache-2.0',
 )
 
-if host_machine.system() in [ 'cygwin', 'windows' ]
+if host_machine.system() in ['cygwin', 'windows']
   error('s2n-tls does not support windows or msys2')
 endif
 
