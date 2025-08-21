@@ -1,8 +1,8 @@
 [wrap-file]
-directory = au-0.4.1
-source_url = https://github.com/aurora-opensource/au/releases/download/0.4.1/au-0.4.1.tar.gz
-source_filename = au-0.4.1.tar.gz
-source_hash = 5e88a0ffcb0a0843f4bd4d4ea4429c793f85dfcb8c1e7f7978de6fecab739b84
+directory = au-0.5.0
+source_url = https://github.com/aurora-opensource/au/releases/download/0.5.0/au-0.5.0.tar.gz
+source_filename = au-0.5.0.tar.gz
+source_hash = 69d3510df7880dc5a109d751b8afc38b2adbf4af2e829b569b19cbdd970fee5e
 patch_directory = au
 
 [provide]
