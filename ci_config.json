@@ -1470,6 +1470,16 @@
       "liblzma-dev"
     ]
   },
+  "xdgmime": {
+    "_comment" : [
+      "Requires following XDG standards"
+    ],
+    "build_on" : [
+      "darwin": false,
+      "windows" : false,
+      "msys2" : false
+    ]
+  },
   "zycore": {
     "build_options": [
       "zycore:examples=enabled",

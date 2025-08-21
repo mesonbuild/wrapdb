@@ -4460,6 +4460,14 @@
       "3.1.0-1"
     ]
   },
+  "xdgmime": {
+    program_names: [
+      "xdgmime"
+    ],
+    "versions": [
+      "20250725.0-1"
+    ]
+  },
   "xtensor": {
     "dependency_names": [
       "xtensor"

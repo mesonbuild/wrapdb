@@ -1,0 +1,8 @@
+[wrap-git]
+directory = xdgmime
+url = https://gitlab.freedesktop.org/xdg/xdgmime.git
+revision = HEAD
+depth = 1
+
+[provide]
+xdgmime = xdgmime_dep
