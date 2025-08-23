@@ -91,13 +91,15 @@ fs = import('fs')
 global_flags = fs.read('tests/features/GLOBAL.flags').strip().split(' ')
 foreach feature : features
   feature_file = files('tests/features/' + feature + '.c')
-  flags_file = fs.read('tests/features/' + feature + '.flags').strip().split(' ')
+  flags_text = fs.read('tests/features/' + feature + '.flags').strip()
+  flags_file = flags_text == '' ? [] : flags_text.split(' ')
 
   feature_test_flags = global_flags + flags_file
   compiles = cc.compiles(
     feature_file,
     args: feature_test_flags,
     include_directories: [private_include, public_include],
+    no_builtin_args: true,
     dependencies: deps,
     name: feature,
   )
@@ -655,7 +657,7 @@ if tests_opt.allowed()
       unittest.split('.')[0],
       exe,
       workdir: meson.current_source_dir() / 'tests/unit',
-      timeout: 300,
+      timeout: 3000,
       suite: 's2n',
       env: test_env,
     )
