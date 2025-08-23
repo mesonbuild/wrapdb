@@ -4,6 +4,19 @@ project(
   default_options: ['cpp_std=c++17'],
 )
 
+if (
+  meson.version().version_compare('<1.9.1') and
+  meson.version().version_compare('>=1.8.4')
+)
+  # ensure c_std= and cpp_std= are not ignored in subprojects
+  # https://github.com/mesonbuild/meson/issues/14939
+  add_languages(
+    'c',
+    'cpp',
+    native: false,
+  )
+endif
+
 wraps = get_option('wraps')
 
 foreach w : wraps
