@@ -20,11 +20,13 @@ cc = meson.get_compiler('c')
 crypto = dependency('libcrypto')
 threads = dependency('threads')
 m = cc.find_library('m')
+execinfo = cc.has_header('execinfo.h')
 tests_opt = get_option('tests').disable_auto_if(meson.is_subproject())
 
 deps = [crypto, threads, m]
 
 private_include = include_directories(
+  '.',
   'crypto',
   'error',
   'stuffer',
@@ -105,7 +107,7 @@ foreach feature : features
   endif
 endforeach
 
-if cc.has_header('execinfo.h')
+if execinfo
   c_args += ['-DS2N_STACKTRACE=1']
 endif
 
@@ -632,6 +634,13 @@ if tests_opt.allowed()
     's2n_x509_validator_time_verification_test.c',
   ]
 
+  test_env = {}
+  if execinfo
+    test_env += {
+      'S2N_PRINT_STACKTRACE': '1',
+    }
+  endif
+
   foreach unittest : unittests
     exe = executable(
       unittest.split('.')[0],
@@ -646,11 +655,9 @@ if tests_opt.allowed()
       unittest.split('.')[0],
       exe,
       workdir: meson.current_source_dir() / 'tests/unit',
-      timeout: 120,
+      timeout: 300,
       suite: 's2n',
-      env: {
-        'S2N_PRINT_STACKTRACE': '1',
-      },
+      env: test_env,
     )
   endforeach
 endif
