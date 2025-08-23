@@ -296,6 +296,7 @@ libs2n = library(
   dependencies: deps,
   c_args: c_args,
   install: true,
+  version: meson.project_version(),
 )
 
 s2n_tls_dep = declare_dependency(
