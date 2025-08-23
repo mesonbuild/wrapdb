@@ -1243,6 +1243,9 @@
     },
     "alpine_packages": [
       "openssl-dev"
+    ],
+    "build_options": [
+      "s2n-tls:tests=enabled"
     ]
   },
   "sdl3": {

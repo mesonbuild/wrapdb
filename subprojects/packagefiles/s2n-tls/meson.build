@@ -13,9 +13,14 @@ endif
 
 cc = meson.get_compiler('c')
 
+#
+# Find external dependencies
+#
+
 crypto = dependency('libcrypto')
 threads = dependency('threads')
 m = cc.find_library('m')
+tests_opt = get_option('tests').disable_auto_if(meson.is_subproject())
 
 deps = [crypto, threads, m]
 
@@ -36,6 +41,73 @@ c_args = cc.get_supported_arguments(
 
 # This is required
 c_args += ['-include', meson.current_source_dir() / 'utils/s2n_prelude.h']
+
+#
+# Feature detection
+#
+
+# (cd tests/features && for f in *.c; do
+#     echo "    '${f%.*}',"
+# done)
+features = [
+  'S2N_ATOMIC_SUPPORTED',
+  'S2N_CLOEXEC_SUPPORTED',
+  'S2N_CLOEXEC_XOPEN_SUPPORTED',
+  'S2N_CLONE_SUPPORTED',
+  'S2N_COMPILER_SUPPORTS_BRANCH_ALIGN',
+  'S2N_CPUID_AVAILABLE',
+  'S2N_DIAGNOSTICS_POP_SUPPORTED',
+  'S2N_DIAGNOSTICS_PUSH_SUPPORTED',
+  'S2N_EXECINFO_AVAILABLE',
+  'S2N_FALL_THROUGH_SUPPORTED',
+  'S2N_FEATURES_AVAILABLE',
+  'S2N_KTLS_SUPPORTED',
+  'S2N_LIBCRYPTO_SUPPORTS_CUSTOM_OID',
+  'S2N_LIBCRYPTO_SUPPORTS_EC_KEY_CHECK_FIPS',
+  'S2N_LIBCRYPTO_SUPPORTS_ENGINE',
+  'S2N_LIBCRYPTO_SUPPORTS_EVP_AEAD_TLS',
+  'S2N_LIBCRYPTO_SUPPORTS_EVP_KEM',
+  'S2N_LIBCRYPTO_SUPPORTS_EVP_MD5_SHA1_HASH',
+  'S2N_LIBCRYPTO_SUPPORTS_EVP_MD_CTX_SET_PKEY_CTX',
+  'S2N_LIBCRYPTO_SUPPORTS_EVP_RC4',
+  'S2N_LIBCRYPTO_SUPPORTS_FLAG_NO_CHECK_TIME',
+  'S2N_LIBCRYPTO_SUPPORTS_HKDF',
+  'S2N_LIBCRYPTO_SUPPORTS_MLDSA',
+  'S2N_LIBCRYPTO_SUPPORTS_MLKEM',
+  'S2N_LIBCRYPTO_SUPPORTS_PRIVATE_RAND',
+  'S2N_LIBCRYPTO_SUPPORTS_PROVIDERS',
+  'S2N_LIBCRYPTO_SUPPORTS_RSA_PSS_SIGNING',
+  'S2N_LIBCRYPTO_SUPPORTS_SHAKE',
+  'S2N_LIBCRYPTO_SUPPORTS_X509_STORE_LIST',
+  'S2N_LINUX_SENDFILE',
+  'S2N_MADVISE_SUPPORTED',
+  'S2N_MINHERIT_SUPPORTED',
+]
+
+fs = import('fs')
+
+global_flags = fs.read('tests/features/GLOBAL.flags').strip().split(' ')
+foreach feature : features
+  feature_file = files('tests/features/' + feature + '.c')
+  flags_file = fs.read('tests/features/' + feature + '.flags').strip().split(' ')
+
+  feature_test_flags = global_flags + flags_file
+  compiles = cc.compiles(
+    feature_file,
+    args: feature_test_flags,
+    include_directories: [private_include, public_include],
+    dependencies: deps,
+    name: feature,
+  )
+
+  if compiles
+    c_args += ['-D' + feature + '=1']
+  endif
+endforeach
+
+if cc.has_header('execinfo.h')
+  c_args += ['-DS2N_STACKTRACE=1']
+endif
 
 # shopt -s globstar
 # for f in crypto/**/*.c error/**/*.c stuffer/**/*.c tls/**/*.c utils/**/*.c; do
@@ -233,3 +305,351 @@ s2n_tls_dep = declare_dependency(
 )
 
 meson.override_dependency('s2n-tls', s2n_tls_dep)
+
+if tests_opt.allowed()
+  test_c_args = c_args + [
+    '-Wno-sign-compare',
+    '-Wno-enum-compare',
+    '-Wno-missing-field-initializers',
+    '-Wno-overlength-strings',
+  ]
+  # for f in docs/examples/*.c; do
+  #     echo "    '$f',"
+  # done
+  examples_src = [
+    'docs/examples/s2n_negotiate.c',
+    'docs/examples/s2n_recv.c',
+    'docs/examples/s2n_send.c',
+  ]
+
+  # for f in tests/testlib/*.c; do
+  #     echo "    '$f',"
+  # done
+  testlib_src = [
+    'tests/testlib/s2n_connection_test_utils.c',
+    'tests/testlib/s2n_extension_test_utils.c',
+    'tests/testlib/s2n_hex_testlib.c',
+    'tests/testlib/s2n_io_testlib.c',
+    'tests/testlib/s2n_kem_fuzz_testlib.c',
+    'tests/testlib/s2n_key_schedule_testlib.c',
+    'tests/testlib/s2n_ktls_test_utils.c',
+    'tests/testlib/s2n_mem_testlib.c',
+    'tests/testlib/s2n_psk_testlib.c',
+    'tests/testlib/s2n_resumption_testlib.c',
+    'tests/testlib/s2n_seccomp.c',
+    'tests/testlib/s2n_security_policy_testlib.c',
+    'tests/testlib/s2n_test_certs.c',
+    'tests/testlib/s2n_test_server_client.c',
+    'tests/testlib/s2n_testlib_ecc_keys.c',
+  ]
+  testlib_inc = include_directories('tests', 'tests/testlib')
+  testlib = static_library(
+    'testss2n',
+    testlib_src,
+    examples_src,
+    include_directories: [private_include, testlib_inc],
+    dependencies: [s2n_tls_dep, deps],
+    c_args: test_c_args,
+  )
+
+  # (cd tests/unit && for f in *.c; do
+  #     echo "    '$f',"
+  # done)
+  unittests = [
+    's2n_3des_test.c',
+    's2n_aead_aes_test.c',
+    's2n_aead_chacha20_poly1305_test.c',
+    's2n_aes_sha_composite_test.c',
+    's2n_aes_test.c',
+    's2n_alerts_protocol_test.c',
+    's2n_alerts_test.c',
+    's2n_array_test.c',
+    's2n_async_pkey_test.c',
+    's2n_auth_selection_test.c',
+    's2n_blob_test.c',
+    's2n_build_test.c',
+    's2n_cbc_test.c',
+    's2n_cert_authorities_test.c',
+    's2n_cert_chain_and_key_load_test.c',
+    's2n_cert_chain_and_key_test.c',
+    's2n_cert_status_extension_test.c',
+    's2n_cert_status_response_extension_test.c',
+    's2n_cert_validation_callback_test.c',
+    's2n_certificate_extensions_test.c',
+    's2n_certificate_parsing_test.c',
+    's2n_certificate_test.c',
+    's2n_change_cipher_spec_test.c',
+    's2n_choose_supported_group_test.c',
+    's2n_cipher_info_test.c',
+    's2n_cipher_suite_match_test.c',
+    's2n_cipher_suites_test.c',
+    's2n_cleanup_test.c',
+    's2n_cleanup_with_no_init_test.c',
+    's2n_client_alpn_extension_test.c',
+    's2n_client_auth_handshake_test.c',
+    's2n_client_cert_request_context_test.c',
+    's2n_client_cert_status_request_extension_test.c',
+    's2n_client_cert_verify_test.c',
+    's2n_client_early_data_indication_test.c',
+    's2n_client_empty_cert_test.c',
+    's2n_client_extensions_test.c',
+    's2n_client_finished_test.c',
+    's2n_client_hello_get_supported_groups_test.c',
+    's2n_client_hello_recv_test.c',
+    's2n_client_hello_request_test.c',
+    's2n_client_hello_retry_test.c',
+    's2n_client_hello_test.c',
+    's2n_client_key_exchange_test.c',
+    's2n_client_key_share_extension_pq_test.c',
+    's2n_client_key_share_extension_test.c',
+    's2n_client_max_frag_len_extension_test.c',
+    's2n_client_psk_extension_test.c',
+    's2n_client_record_version_test.c',
+    's2n_client_renegotiation_info_extension_test.c',
+    's2n_client_sct_list_extension_test.c',
+    's2n_client_secure_renegotiation_test.c',
+    's2n_client_server_name_extension_test.c',
+    's2n_client_session_ticket_extension_test.c',
+    's2n_client_signature_algorithms_extension_test.c',
+    's2n_client_supported_groups_extension_test.c',
+    's2n_client_supported_versions_extension_test.c',
+    's2n_config_test.c',
+    's2n_connection_blinding_test.c',
+    's2n_connection_context_test.c',
+    's2n_connection_preferences_test.c',
+    's2n_connection_protocol_versions_test.c',
+    's2n_connection_serialize_test.c',
+    's2n_connection_size_test.c',
+    's2n_connection_test.c',
+    's2n_cookie_test.c',
+    's2n_crl_test.c',
+    's2n_crypto_test.c',
+    's2n_drain_alert_test.c',
+    's2n_drbg_test.c',
+    's2n_early_data_io_api_test.c',
+    's2n_early_data_io_test.c',
+    's2n_early_data_test.c',
+    's2n_ecc_evp_test.c',
+    's2n_ecc_point_format_extension_test.c',
+    's2n_ecc_preferences_test.c',
+    's2n_ems_extension_test.c',
+    's2n_encrypted_extensions_test.c',
+    's2n_error_lookup_test.c',
+    's2n_error_type_test.c',
+    's2n_examples_test.c',
+    's2n_extended_master_secret_test.c',
+    's2n_extension_list_parse_test.c',
+    's2n_extension_list_process_test.c',
+    's2n_extension_list_send_test.c',
+    's2n_extension_type_lists_test.c',
+    's2n_extension_type_test.c',
+    's2n_extensions_server_key_share_select_test.c',
+    's2n_fingerprint_ja3_test.c',
+    's2n_fingerprint_ja4_test.c',
+    's2n_fingerprint_test.c',
+    's2n_fips_rules_test.c',
+    's2n_fips_test.c',
+    's2n_fork_generation_number_test.c',
+    's2n_fragmentation_coalescing_test.c',
+    's2n_handshake_errno_test.c',
+    's2n_handshake_fragment_test.c',
+    's2n_handshake_hashes_test.c',
+    's2n_handshake_invariant_test.c',
+    's2n_handshake_io_async_test.c',
+    's2n_handshake_io_early_data_test.c',
+    's2n_handshake_io_errors_test.c',
+    's2n_handshake_io_test.c',
+    's2n_handshake_misc_test.c',
+    's2n_handshake_partial_test.c',
+    's2n_handshake_test.c',
+    's2n_handshake_type_test.c',
+    's2n_hash_all_algs_test.c',
+    's2n_hash_test.c',
+    's2n_hkdf_test.c',
+    's2n_hmac_test.c',
+    's2n_init_test.c',
+    's2n_io_test.c',
+    's2n_kem_preferences_test.c',
+    's2n_kem_test.c',
+    's2n_kex_test.c',
+    's2n_key_share_extension_test.c',
+    's2n_key_update_test.c',
+    's2n_key_update_threads_test.c',
+    's2n_ktls_io_sendfile_test.c',
+    's2n_ktls_io_test.c',
+    's2n_ktls_mode_test.c',
+    's2n_ktls_test.c',
+    's2n_ktls_test_utils_test.c',
+    's2n_libcrypto_test.c',
+    's2n_locking_test.c',
+    's2n_malformed_handshake_test.c',
+    's2n_map_iterator_test.c',
+    's2n_map_test.c',
+    's2n_mem_allocator_test.c',
+    's2n_mem_test.c',
+    's2n_mem_testlib_test.c',
+    's2n_mem_usage_test.c',
+    's2n_mldsa_test.c',
+    's2n_mutual_auth_test.c',
+    's2n_next_protocol_test.c',
+    's2n_npn_extension_test.c',
+    's2n_nst_early_data_indication_test.c',
+    's2n_openssl_x509_test.c',
+    's2n_optional_client_auth_test.c',
+    's2n_override_openssl_random_test.c',
+    's2n_pem_rsa_dhe_test.c',
+    's2n_pem_test.c',
+    's2n_pkey_signing_test.c',
+    's2n_pkey_test.c',
+    's2n_post_handshake_recv_test.c',
+    's2n_post_handshake_send_test.c',
+    's2n_post_handshake_test.c',
+    's2n_pq_kem_test.c',
+    's2n_pq_mlkem_policies_test.c',
+    's2n_pq_mlkem_test.c',
+    's2n_prf_key_material_test.c',
+    's2n_protocol_preferences_test.c',
+    's2n_psk_key_exchange_modes_extension_test.c',
+    's2n_psk_offered_test.c',
+    's2n_psk_test.c',
+    's2n_quic_support_io_test.c',
+    's2n_quic_support_test.c',
+    's2n_quic_transport_params_extension_test.c',
+    's2n_random_test.c',
+    's2n_rc4_test.c',
+    's2n_record_read_test.c',
+    's2n_record_size_test.c',
+    's2n_record_test.c',
+    's2n_record_write_test.c',
+    's2n_recv_buffering_test.c',
+    's2n_recv_test.c',
+    's2n_release_non_empty_buffers_test.c',
+    's2n_renegotiate_io_test.c',
+    's2n_renegotiate_test.c',
+    's2n_resume_test.c',
+    's2n_rfc5952_test.c',
+    's2n_rsa_pss_rsae_test.c',
+    's2n_rsa_pss_test.c',
+    's2n_safety_blinding_test.c',
+    's2n_safety_macros_test.c',
+    's2n_safety_test.c',
+    's2n_seccomp_failure_test.c',
+    's2n_seccomp_handshake_test.c',
+    's2n_security_policies_rules_test.c',
+    's2n_security_policies_test.c',
+    's2n_security_policy_cert_preferences_test.c',
+    's2n_security_rules_test.c',
+    's2n_self_talk_alerts_test.c',
+    's2n_self_talk_alpn_test.c',
+    's2n_self_talk_broken_pipe_test.c',
+    's2n_self_talk_certificates_test.c',
+    's2n_self_talk_client_hello_cb_test.c',
+    's2n_self_talk_custom_io_test.c',
+    's2n_self_talk_io_mem_test.c',
+    's2n_self_talk_key_log_test.c',
+    's2n_self_talk_ktls_test.c',
+    's2n_self_talk_min_protocol_version_test.c',
+    's2n_self_talk_nonblocking_test.c',
+    's2n_self_talk_npn_test.c',
+    's2n_self_talk_offload_signing_test.c',
+    's2n_self_talk_psk_test.c',
+    's2n_self_talk_quic_support_test.c',
+    's2n_self_talk_session_id_test.c',
+    's2n_self_talk_session_resumption_test.c',
+    's2n_self_talk_shutdown_test.c',
+    's2n_self_talk_tls12_test.c',
+    's2n_self_talk_tls13_test.c',
+    's2n_send_key_update_test.c',
+    's2n_send_multirecord_test.c',
+    's2n_send_test.c',
+    's2n_sequence_number_test.c',
+    's2n_server_alpn_extension_test.c',
+    's2n_server_cert_request_test.c',
+    's2n_server_cert_status_request_extension_test.c',
+    's2n_server_early_data_indication_test.c',
+    's2n_server_extensions_test.c',
+    's2n_server_finished_test.c',
+    's2n_server_hello_retry_test.c',
+    's2n_server_hello_test.c',
+    's2n_server_key_share_extension_test.c',
+    's2n_server_max_frag_len_extension_test.c',
+    's2n_server_new_session_ticket_test.c',
+    's2n_server_psk_extension_test.c',
+    's2n_server_renegotiation_info_test.c',
+    's2n_server_sct_list_extension_test.c',
+    's2n_server_server_name_extension_test.c',
+    's2n_server_session_ticket_extension_test.c',
+    's2n_server_signature_algorithms_extension_test.c',
+    's2n_server_supported_versions_extension_test.c',
+    's2n_session_ticket_test.c',
+    's2n_shutdown_test.c',
+    's2n_signature_algorithms_test.c',
+    's2n_signature_scheme_test.c',
+    's2n_ssl_prf_test.c',
+    's2n_sslv3_test.c',
+    's2n_stacktrace_test.c',
+    's2n_stream_cipher_null_test.c',
+    's2n_stuffer_base64_test.c',
+    's2n_stuffer_hex_test.c',
+    's2n_stuffer_network_order_test.c',
+    's2n_stuffer_test.c',
+    's2n_stuffer_text_test.c',
+    's2n_testlib_test.c',
+    's2n_timer_test.c',
+    's2n_tls12_handshake_test.c',
+    's2n_tls13_cert_request_extensions_test.c',
+    's2n_tls13_cert_request_test.c',
+    's2n_tls13_cert_verify_test.c',
+    's2n_tls13_client_finished_test.c',
+    's2n_tls13_compute_shared_secret_test.c',
+    's2n_tls13_handshake_early_data_test.c',
+    's2n_tls13_handshake_state_machine_test.c',
+    's2n_tls13_handshake_test.c',
+    's2n_tls13_hybrid_shared_secret_test.c',
+    's2n_tls13_key_schedule_rfc8448_test.c',
+    's2n_tls13_key_schedule_test.c',
+    's2n_tls13_keys_test.c',
+    's2n_tls13_new_session_ticket_test.c',
+    's2n_tls13_parse_record_type_test.c',
+    's2n_tls13_pq_handshake_test.c',
+    's2n_tls13_prf_test.c',
+    's2n_tls13_record_aead_test.c',
+    's2n_tls13_secrets_rfc8448_test.c',
+    's2n_tls13_secrets_test.c',
+    's2n_tls13_server_cert_test.c',
+    's2n_tls13_server_finished_test.c',
+    's2n_tls13_support_test.c',
+    's2n_tls13_zero_length_payload_test.c',
+    's2n_tls_hybrid_prf_test.c',
+    's2n_tls_prf_test.c',
+    's2n_tls_record_stuffer_test.c',
+    's2n_utils_test.c',
+    's2n_wildcard_hostname_test.c',
+    's2n_x509_validator_certificate_signatures_test.c',
+    's2n_x509_validator_custom_oids_test.c',
+    's2n_x509_validator_test.c',
+    's2n_x509_validator_time_verification_test.c',
+  ]
+
+  foreach unittest : unittests
+    exe = executable(
+      unittest.split('.')[0],
+      'tests/unit' / unittest,
+      link_with: testlib,
+      include_directories: [private_include, testlib_inc],
+      dependencies: [deps, s2n_tls_dep],
+      c_args: test_c_args,
+    )
+
+    test(
+      unittest.split('.')[0],
+      exe,
+      workdir: meson.current_source_dir() / 'tests/unit',
+      timeout: 120,
+      suite: 's2n',
+      env: {
+        'S2N_PRINT_STACKTRACE': '1',
+      },
+    )
+  endforeach
+endif
