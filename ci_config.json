@@ -253,6 +253,11 @@
     ],
     "fatal_warnings": false
   },
+  "fossil_test": {
+    "build_options": [
+      "fossil-test:with_test=enabled"
+    ]
+  },
   "freeglut": {
     "alpine_packages": [
       "glu-dev",
