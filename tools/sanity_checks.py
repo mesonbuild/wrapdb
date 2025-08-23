@@ -159,6 +159,7 @@ SOURCE_FILENAME_PREFIXES = {
 }
 FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
 NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
+SUBPROJECTS_METADATA_FILES = {'subprojects/.gitignore'}
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
@@ -363,7 +364,7 @@ class TestReleases(unittest.TestCase):
             if not has_new_releases:
                 last_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], text=True, encoding='utf-8').strip()
                 changed_files = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD', last_tag], text=True, encoding='utf-8').splitlines()
-                if any(f.startswith('subprojects') for f in changed_files):
+                if any(f.startswith('subprojects') and f not in SUBPROJECTS_METADATA_FILES for f in changed_files):
                     self.fail('Subprojects files changed but no new release added into releases.json')
 
     @unittest.skipUnless('TEST_BUILD_ALL' in os.environ, 'Run manually only')
