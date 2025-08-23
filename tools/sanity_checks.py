@@ -31,20 +31,20 @@ import shutil
 from pathlib import Path
 from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys
 
-PERMITTED_FILES = ['generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build']
-PER_PROJECT_PERMITTED_FILES = {
-    'box2d': [
+PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
+PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
+    'box2d': {
         'doctest.h'
-    ],
-    'bzip2': [
+    },
+    'bzip2': {
         'test.py',
-    ],
-    'curl': [
+    },
+    'curl': {
         'buildinfo.txt.meson',
         'extract.mk',
         'rewrite.mk',
-    ],
-    'glbinding': [
+    },
+    'glbinding': {
         'pch.h',
         'glbinding_api.h',
         'glbinding_features.h',
@@ -52,66 +52,66 @@ PER_PROJECT_PERMITTED_FILES = {
         'glbinding-aux_api.h',
         'glbinding-aux_features.h',
         'glbinding-aux_export.h'
-    ],
-    'godot-cpp' : [
+    },
+    'godot-cpp' : {
          'meson-bindings-generator.py',
-     ],
-    'gumbo-parser': [
+     },
+    'gumbo-parser': {
         'tokenizer.cc',
-    ],
-    'icu': [
+    },
+    'icu': {
         'export_module.py'
-    ],
-    'lame': [
+    },
+    'lame': {
         'fix_def.py',
         'sym2ver.py',
-    ],
-    'leptonica': [
+    },
+    'leptonica': {
         '_skipped_test.c',
-    ],
-    'libcap': [
+    },
+    'libcap': {
         'gen_cap_names.py',
-    ],
-    'libexif': [
+    },
+    'libexif': {
         'def.py',
-    ],
-    'libffi': [
+    },
+    'libffi': {
         'test-cc-supports-hidden-visibility.py',
         'test-ro-eh-frame.py',
         'test-cc-uses-zarch.py',
         'test-unwind-section.py',
         'extract-libtool-version.py',
-    ],
-    'libgrapheme': [
+    },
+    'libgrapheme': {
         'chdir_wrapper.py',
-    ],
-    'libuv': [
+    },
+    'libuv': {
         'link_file_in_build_dir.py',
-    ],
-    'luajit': [
+    },
+    'luajit': {
         'unwind_check.sh',
-    ],
-    'm4': [
+    },
+    'm4': {
         'm4_test_runner.py',
-    ],
-    'mpdecimal': [
+    },
+    'mpdecimal': {
         'gettests.py',
-    ],
-    'nowide': [
+    },
+    'nowide': {
         'test_iostream_interactive.py',
-    ],
-    'openal-soft': [
+    },
+    'openal-soft': {
         'hexify.py'
-    ],
-    'openblas': [
+    },
+    'openblas': {
         'gen_install_headers.py',
         'prepare_config_last.py',
         'read_config.py',
         'write_to_file.py',
         'test_runner.c',
         'run_fortran.c',
-    ],
-    'openssl': [
+    },
+    'openssl': {
         'bn_conf.h',
         'dso_conf.h',
         'buildinf.h',
@@ -119,46 +119,46 @@ PER_PROJECT_PERMITTED_FILES = {
         'generate_gypi.pl.patch',
         'meson.build.tmpl',
         'README.md',
-    ],
-    'pcre': [
+    },
+    'pcre': {
         'pcre.def',
         'pcreposix.def'
-    ],
-    'protobuf': [
+    },
+    'protobuf': {
         'symlink.py',
-    ],
-    'sdl2': [
+    },
+    'sdl2': {
         'find-dylib-name.py'
-    ],
-    'soundtouch': [
+    },
+    'soundtouch': {
         'afxres.h'
-    ],
-    'taglib': [
+    },
+    'taglib': {
         'checked.h'
-    ],
-    'theora': [
+    },
+    'theora': {
         'check-needed-tex-packages.py',
         'latexmk-wrapper.py',
         'test-tex-packages.py',
         'doxyfile-patcher.py',
         'arm2gnu-wrapper.py',
         'generate_windows_rc.py',
-    ],
-    'vo-aacenc': [
+    },
+    'vo-aacenc': {
         'makedef.py',
         'stddef.h.in',
-    ],
-    'zlib-ng': [
+    },
+    'zlib-ng': {
         'get-version.py',
         'process-zconf.py',
-    ],
+    },
 }
 SOURCE_FILENAME_PREFIXES = {
     'icu': 'icu4c',
     'libtomcrypt': 'crypt',
 }
-FORMAT_CHECK_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
-NO_TABS_FILES = ['meson.build', 'meson_options.txt', 'meson.options']
+FORMAT_CHECK_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
+NO_TABS_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 SUBPROJECTS_METADATA_FILES = {'subprojects/.gitignore'}
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
