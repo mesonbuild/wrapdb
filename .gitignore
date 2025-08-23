@@ -2,6 +2,3 @@ __pycache__
 .idea
 .vscode
 *~
-
-subprojects/packagecache
-subprojects/packagefiles/openssl/generated-config
