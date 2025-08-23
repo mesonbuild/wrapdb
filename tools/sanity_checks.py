@@ -66,11 +66,30 @@ PER_PROJECT_PERMITTED_FILES = {
         'fix_def.py',
         'sym2ver.py',
     ],
+    'leptonica': [
+        '_skipped_test.c',
+    ],
+    'libcap': [
+        'gen_cap_names.py',
+    ],
     'libexif': [
         'def.py',
     ],
+    'libffi': [
+        'test-cc-supports-hidden-visibility.py',
+        'test-ro-eh-frame.py',
+        'test-cc-uses-zarch.py',
+        'test-unwind-section.py',
+        'extract-libtool-version.py',
+    ],
     'libgrapheme': [
         'chdir_wrapper.py',
+    ],
+    'libuv': [
+        'link_file_in_build_dir.py',
+    ],
+    'luajit': [
+        'unwind_check.sh',
     ],
     'm4': [
         'm4_test_runner.py',
@@ -80,15 +99,6 @@ PER_PROJECT_PERMITTED_FILES = {
     ],
     'nowide': [
         'test_iostream_interactive.py',
-    ],
-    'openssl': [
-        'bn_conf.h',
-        'dso_conf.h',
-        'buildinf.h',
-        'generate_def.py',
-        'generate_gypi.pl.patch',
-        'meson.build.tmpl',
-        'README.md',
     ],
     'openal-soft': [
         'hexify.py'
@@ -100,6 +110,15 @@ PER_PROJECT_PERMITTED_FILES = {
         'write_to_file.py',
         'test_runner.c',
         'run_fortran.c',
+    ],
+    'openssl': [
+        'bn_conf.h',
+        'dso_conf.h',
+        'buildinf.h',
+        'generate_def.py',
+        'generate_gypi.pl.patch',
+        'meson.build.tmpl',
+        'README.md',
     ],
     'pcre': [
         'pcre.def',
@@ -124,25 +143,6 @@ PER_PROJECT_PERMITTED_FILES = {
         'doxyfile-patcher.py',
         'arm2gnu-wrapper.py',
         'generate_windows_rc.py',
-    ],
-    'libcap': [
-        'gen_cap_names.py',
-    ],
-    'libffi': [
-        'test-cc-supports-hidden-visibility.py',
-        'test-ro-eh-frame.py',
-        'test-cc-uses-zarch.py',
-        'test-unwind-section.py',
-        'extract-libtool-version.py',
-    ],
-    'leptonica': [
-        '_skipped_test.c',
-    ],
-    'libuv': [
-        'link_file_in_build_dir.py',
-    ],
-    'luajit': [
-        'unwind_check.sh',
     ],
     'vo-aacenc': [
         'makedef.py',
