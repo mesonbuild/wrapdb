@@ -994,6 +994,14 @@
       "2.14.2-1"
     ]
   },
+  "fossil_test": {
+    "dependency_names": [
+      "fossil-test"
+    ],
+    "versions": [
+      "1.2.8"
+    ]
+  },
   "freeglut": {
     "dependency_names": [
       "freeglut",
