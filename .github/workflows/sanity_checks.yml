@@ -166,10 +166,6 @@ jobs:
           architecture: 'x86'
           python-version: '3.12'
 
-      # https://github.com/actions/runner-images/issues/5459#issuecomment-1532856844
-      - name: Remove bad Strawberry Perl patch binary in search path
-        run: del C:\Strawberry\c\bin\patch.EXE
-
       - name: Install packages
         run: |
           python -m pip install license-expression
@@ -199,10 +195,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # https://github.com/actions/runner-images/issues/5459#issuecomment-1532856844
-      - name: Remove bad Strawberry Perl patch binary in search path
-        run: del C:\Strawberry\c\bin\patch.EXE
 
       - name: Install packages
         run: |
