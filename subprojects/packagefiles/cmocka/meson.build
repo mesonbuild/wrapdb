@@ -15,13 +15,12 @@
 project(
   'cmocka',
   'c',
-  version: '1.1.7',
+  version: '1.1.8',
   license: 'Apache-2.0',
   meson_version: '>= 0.54.1',
-  default_options: ['c_std=c99'],
 )
 
-lib_version = '0.8.0'
+lib_version = '0.8.1'
 
 inc_include = include_directories('include')
 
@@ -187,6 +186,7 @@ libcmocka = library(
   vs_module_defs: 'src/cmocka.def',
   soversion: host_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version: lib_version,
+  override_options: 'c_std=c99',
   dependencies: threads_dep,
   install: true,
 )
@@ -200,6 +200,7 @@ libcmocka_native = library(
   vs_module_defs: 'src/cmocka.def',
   soversion: build_machine.system() != 'windows' ? lib_version.split('.')[0] : '',
   version: lib_version,
+  override_options: 'c_std=c99',
   dependencies: threads_dep,
   install: false,  # Cannot install native targets in cross builds
   native: true,
