@@ -3848,6 +3848,14 @@
       "4.6.1-1"
     ]
   },
+  "snitch": {
+    "dependency_names": [
+      "snitch"
+    ],
+    "versions": [
+      "1.3.2-1"
+    ]
+  },
   "soundtouch": {
     "dependency_names": [
       "soundtouch"
