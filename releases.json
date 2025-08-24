@@ -996,7 +996,8 @@
   },
   "fossil_test": {
     "dependency_names": [
-      "fossil-test"
+      "fossil-test",
+      "pizza-test"
     ],
     "versions": [
       "1.2.8-1"
