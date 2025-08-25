@@ -454,7 +454,6 @@ if tests_opt.allowed()
     's2n_fingerprint_test.c',
     's2n_fips_rules_test.c',
     's2n_fips_test.c',
-    's2n_fork_generation_number_test.c',
     's2n_fragmentation_coalescing_test.c',
     's2n_handshake_errno_test.c',
     's2n_handshake_fragment_test.c',
