@@ -23,6 +23,29 @@
     "graphite2",
     "mocklibc"
   ],
+  "arrow-cpp": {
+    "_comment": "Windows symbol visibility broken; no upstream Windows CI to fix yet",
+    "build_on": {
+      "msys2": false,
+      "windows": false
+    },
+    "build_options": [
+      "arrow-cpp:compute=enabled"
+    ],
+    "alpine_packages": [
+      "boost-dev"
+    ],
+    "brew_packages": [
+      "boost"
+    ],
+    "debian_packages": [
+      "libboost-filesystem-dev",
+      "libboost-system-dev"
+    ],
+    "msys_packages": [
+      "boost"
+    ]
+  },
   "atomic_queue": {
     "_comment": "Tests require Boost, which is not available on WrapDB",
     "build_on": {
