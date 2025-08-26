@@ -1006,6 +1006,15 @@
       "2.14.2-1"
     ]
   },
+  "fossil_test": {
+    "dependency_names": [
+      "fossil-test",
+      "pizza-test"
+    ],
+    "versions": [
+      "1.2.8-1"
+    ]
+  },
   "freeglut": {
     "dependency_names": [
       "freeglut",
