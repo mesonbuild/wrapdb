@@ -3,7 +3,7 @@ project(
   'c',
   license: 'BSD-3-Clause WITH PCRE2-exception',
   meson_version: '>=0.49.0',
-  version: '10.45',
+  version: '10.46',
 )
 
 pcre2_8_lib_version = '0.14.0'
@@ -33,7 +33,7 @@ varr = meson.project_version().split('.')
 pcredata.set('PCRE2_MAJOR', varr[0])
 pcredata.set('PCRE2_MINOR', varr[1])
 pcredata.set('PCRE2_PRERELEASE', '')
-pcredata.set('PCRE2_DATE', '2025-02-05')
+pcredata.set('PCRE2_DATE', '2025-08-27')
 
 # config.h
 cdata = configuration_data()
@@ -332,7 +332,7 @@ pkg.generate(
 #### tests
 
 if (get_option('test')
-and not meson.is_cross_build()  # wine wrappers are not bat-friendly, this would need better testing
+  and not meson.is_cross_build()  # wine wrappers are not bat-friendly, this would need better testing
 )
   link_args = []
   if c_compiler.get_argument_syntax() == 'msvc'
