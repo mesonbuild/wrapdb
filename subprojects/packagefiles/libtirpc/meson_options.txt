@@ -10,10 +10,3 @@ option(
     type: 'feature',
     description: 'Use GSSAPI',
 )
-
-option(
-    'ipv6',
-    type: 'boolean',
-    value: true,
-    description: 'Enable IPv6',
-)

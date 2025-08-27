@@ -729,7 +729,10 @@
     ]
   },
   "libtirpc": {
-    "_comment": "Linux only",
+    "_comment": "Linux only and libobsd is broken",
+    "alpine_packages": [
+      "bsd-compat-headers"
+    ],
     "build_on": {
       "darwin": false,
       "msys2": false,
