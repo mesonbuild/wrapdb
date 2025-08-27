@@ -6,4 +6,4 @@ source_hash = 7d6fab70cf844bf6769077bd5d7a74893f8ffd4dfb42861745750c63c2a5c92c
 patch_directory = libwebp
 
 [provide]
-dependency_names = libsharyuv, libwebp, libwebpdecoder, libwebpdemux, libwebpmux
+dependency_names = libsharyuv, libwebpdecoder, libwebpdemux, libwebpmux

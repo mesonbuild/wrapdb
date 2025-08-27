@@ -6,5 +6,4 @@ source_hash = d3404dfac6898632b69780c0f0994c5f6ba962191a61c9b0f4b53ba8bb27731c
 patch_directory = tkrzw
 
 [provide]
-dependency_names = tkrzw
 program_names = tkrzw_dbm_perf, tkrzw_dbm_util, tkrzw_ulog_util

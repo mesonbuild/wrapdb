@@ -6,5 +6,4 @@ source_hash = 346b028d9ba85e04b7e23a43cc51ec076574d2efc0d271d4355141b0145cd6e0
 patch_directory = luajit
 
 [provide]
-dependency_names = luajit
 program_names = luajit

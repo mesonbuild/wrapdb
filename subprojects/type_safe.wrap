@@ -5,6 +5,3 @@ source_filename = type_safe-0.2.4.tar.gz
 source_hash = a631d03c18c65726b3d1b7d41ac5806e9121367afe10dd2f408a2d75e144b734
 method = meson
 patch_directory = type_safe
-
-[provide]
-dependency_names = type_safe

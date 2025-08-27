@@ -5,6 +5,3 @@ source_fallback_url = https://mujs.com/downloads/mujs-1.3.6.tar.gz
 source_filename = mujs-1.3.6.tar.gz
 source_hash = 7cf3a5e622cff41903efff0334518fc94af063256752c38ba4618a5191e44f18
 patch_directory = mujs
-
-[provide]
-dependency_names = mujs

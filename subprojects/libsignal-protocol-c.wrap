@@ -4,6 +4,3 @@ source_url = https://github.com/WhisperSystems/libsignal-protocol-c/archive/v2.3
 source_filename = libsignal-protocol-c-2.3.3.tar.gz
 source_hash = c22e7690546e24d46210ca92dd808f17c3102e1344cd2f9a370136a96d22319d
 patch_directory = libsignal-protocol-c
-
-[provide]
-dependency_names = libsignal-protocol-c

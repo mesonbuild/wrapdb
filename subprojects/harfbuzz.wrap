@@ -5,4 +5,4 @@ source_filename = harfbuzz-11.4.3.tar.xz
 source_hash = 6660415ad48fa1a46e4fa75fcdb70ff819c452153f08677d34ffb29eda66415d
 
 [provide]
-dependency_names = harfbuzz, harfbuzz-cairo, harfbuzz-gobject, harfbuzz-icu, harfbuzz-subset
+dependency_names = harfbuzz-cairo, harfbuzz-gobject, harfbuzz-icu, harfbuzz-subset

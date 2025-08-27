@@ -4,6 +4,3 @@ source_url = https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.5.tar.gz
 source_filename = zlib-ng-2.2.5.tar.gz
 source_hash = 5b3b022489f3ced82384f06db1e13ba148cbce38c7941e424d6cb414416acd18
 patch_directory = zlib-ng
-
-[provide]
-dependency_names = zlib-ng

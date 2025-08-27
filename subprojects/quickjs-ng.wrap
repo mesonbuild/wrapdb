@@ -5,5 +5,4 @@ source_filename = quickjs-ng-0.10.1.tar.gz
 source_hash = 4e917eea3bb6051a0551fdd3aac45199ff705fa08920c15b824a08c5fbb032e4
 
 [provide]
-dependency_names = quickjs-ng
 program_names = qjsc, qjs

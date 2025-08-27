@@ -4,6 +4,3 @@ source_url = https://github.com/adah1972/libunibreak/releases/download/libunibre
 source_filename = libunibreak-6.1.tar.gz
 source_hash = cc4de0099cf7ff05005ceabff4afed4c582a736abc38033e70fdac86335ce93f
 patch_directory = libunibreak
-
-[provide]
-dependency_names = libunibreak

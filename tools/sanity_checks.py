@@ -335,6 +335,12 @@ class TestReleases(unittest.TestCase):
                         # may or may not mention it
                         self.assertEqual([d for d in deps if d != name], wrap_deps)
 
+                # 'dependency_names = <wrap-name>' in wrap files is harmless
+                # but redundant; forbid it
+                with self.subTest(step="forbid redundant 'dependency_names = <wrap-name>'"):
+                    dependency_names = [i.strip() for i in config.get('provide', 'dependency_names', fallback='').split(',')]
+                    self.assertNotIn(name, dependency_names)
+
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
                     versions = info['versions']

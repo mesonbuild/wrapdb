@@ -4,6 +4,3 @@ source_url = https://github.com/boostorg/pfr/archive/refs/tags/boost-1.88.0.zip
 source_filename = boost-pfr-1.88.0.zip
 source_hash = fbb253ac789a668867fea9cb2dc75354a86c9c1cb68deaf4a49a23385fff372a
 patch_directory = boost-pfr
-
-[provide]
-dependency_names = boost-pfr

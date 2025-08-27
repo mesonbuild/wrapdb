@@ -4,6 +4,3 @@ source_url = https://github.com/termbox/termbox2/archive/refs/tags/v2.5.0.tar.gz
 source_filename = termbox2-2.5.0.tar.gz
 source_hash = 1d7a9811060e3673be417019007acbf4e2575734b6f95baaf6e8aed27f06c65a
 patch_directory = termbox2
-
-[provide]
-dependency_names = termbox2

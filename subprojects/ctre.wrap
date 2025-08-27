@@ -4,6 +4,3 @@ source_url = https://github.com/hanickadot/compile-time-regular-expressions/arch
 source_filename = compile-time-regular-expressions-3.10.0.tar.gz
 source_hash = b17e6c9a6cc0cea65132f62a6c699cefed952721063569d6339eb3ca471045e6
 patch_directory = ctre
-
-[provide]
-dependency_names = ctre

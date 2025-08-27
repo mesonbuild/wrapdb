@@ -4,6 +4,3 @@ source_url = https://github.com/aurora-opensource/au/releases/download/0.5.0/au-
 source_filename = au-0.5.0.tar.gz
 source_hash = 69d3510df7880dc5a109d751b8afc38b2adbf4af2e829b569b19cbdd970fee5e
 patch_directory = au
-
-[provide]
-dependency_names = au
