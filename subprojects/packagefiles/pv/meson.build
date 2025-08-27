@@ -313,6 +313,7 @@ pv = executable(
   include_directories: 'src/include',
   install: true,
 )
+meson.override_find_program('pv', pv)
 
 tests_opt = get_option('tests').disable_auto_if(
 # Tests are way to flaky on macOS.
