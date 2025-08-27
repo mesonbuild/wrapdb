@@ -300,9 +300,8 @@ class TestReleases(unittest.TestCase):
 
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks and self.ci_config.get(name, {}).get('has_provides', True):
-                    with self.subTest(step='provide'):
-                        self.assertIn('provide', config.sections())
-                        self.assertTrue(config.items('provide'))
+                    with self.subTest(step='dependency_names or program_names in releases.json'):
+                        self.assertTrue(info.get('dependency_names', []) or info.get('program_names', []))
 
                 patch_path = self.get_patch_path(wrap_section)
                 if patch_path:
@@ -314,19 +313,19 @@ class TestReleases(unittest.TestCase):
 
                 # Make sure it has the same deps/progs provided
                 with self.subTest(step='have_same_provides'):
-                    progs = []
-                    deps = []
+                    progs = sorted(info.get('program_names', []))
+                    deps = sorted(info.get('dependency_names', []))
+                    wrap_progs = []
+                    wrap_deps = []
                     if 'provide' in config.sections():
                         provide = config['provide']
-                        progs = [i.strip() for i in provide.get('program_names', '').split(',')]
-                        deps = [i.strip() for i in provide.get('dependency_names', '').split(',')]
-                        for k in provide:
-                            if k not in {'dependency_names', 'program_names'}:
-                                deps.append(k.strip())
-                    progs = [i for i in progs if i]
-                    deps = [i for i in deps if i]
-                    self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
-                    self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+                        wrap_progs.extend(provide.get('program_names', '').split(','))
+                        wrap_deps.extend(provide.get('dependency_names', '').split(','))
+                        wrap_deps.extend(set(provide).difference({'dependency_names', 'program_names'}))
+                    wrap_progs = sorted(i.strip() for i in wrap_progs if i.strip())
+                    wrap_deps = sorted(i.strip() for i in wrap_deps if i.strip())
+                    self.assertEqual(progs, wrap_progs)
+                    self.assertEqual(deps, wrap_deps)
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
@@ -451,7 +450,7 @@ class TestReleases(unittest.TestCase):
         if self.annotate_context and name in self.ci_config:
             print(f'\n::notice title={name} config::' + json.dumps(self.ci_config[name], indent=2).replace('\n', '%0A') + '\n')
 
-    def check_new_release(self, name: str, builddir: str = '_build', deps=None, progs=None) -> None:
+    def check_new_release(self, name: str, builddir: str = '_build', deps: list[str] | None = None, progs: list[str] | None = None) -> None:
         print() # Ensure output starts from an empty line (we're running under unittest).
         if is_msys():
             system = 'msys2'
