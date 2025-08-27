@@ -325,7 +325,15 @@ class TestReleases(unittest.TestCase):
                     wrap_progs = sorted(i.strip() for i in wrap_progs if i.strip())
                     wrap_deps = sorted(i.strip() for i in wrap_deps if i.strip())
                     self.assertEqual(progs, wrap_progs)
-                    self.assertEqual(deps, wrap_deps)
+                    if name in wrap_deps:
+                        # the wrap file explicitly provides the wrap's name;
+                        # releases.json must mention it
+                        self.assertEqual(deps, wrap_deps)
+                    else:
+                        # the project may or may not take advantage of the
+                        # implicit provide of its own name, so releases.json
+                        # may or may not mention it
+                        self.assertEqual([d for d in deps if d != name], wrap_deps)
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
