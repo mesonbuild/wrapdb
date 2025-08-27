@@ -6,4 +6,4 @@ source_filename = pv-1.9.34.tar.gz
 patch_directory = pv
 
 [provide]
-program_names =
+program_names = pv
