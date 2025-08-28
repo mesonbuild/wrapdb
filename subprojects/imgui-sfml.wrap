@@ -1,8 +1,8 @@
 [wrap-file]
-directory = imgui-sfml-2.6.1
-source_url = https://github.com/eliasdaler/imgui-sfml/archive/refs/tags/v2.6.1.tar.gz
-source_filename = imgui-sfml-2.6.1.tar.gz
-source_hash = b250df2ee308b614f0bb061a49a61c3796d0f7224a9539099e6b479fed2d451b
+directory = imgui-sfml-3.0
+source_url = https://github.com/eliasdaler/imgui-sfml/archive/refs/tags/v3.0.tar.gz
+source_filename = imgui-sfml-3.0.tar.gz
+source_hash = 561a04407dcc913b8f1c25a164ad4907852b51fb4f11907d1ab9db6351af911b
 patch_directory = imgui-sfml
 
 [provide]

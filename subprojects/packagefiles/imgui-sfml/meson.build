@@ -1,7 +1,7 @@
 project(
   'imgui-sfml',
   'cpp',
-  version: '2.6.1',
+  version: '3.0',
   license: 'MIT',
   meson_version: '>=0.49.0',
 )
@@ -25,11 +25,16 @@ if get_option('default_library') != 'static'
   exp += '-DIMGUI_SFML_EXPORTS'
 endif
 
+# workaround issue (#14939) in Meson 1.8.4 - 1.9.0, where
+# default_options:['cpp_std=c++17'] doesn't work under certain circumstances
+override_opts = ['cpp_std=c++17']
+
 is_lib = library(
   'imgui-sfml',
   'imgui-SFML.cpp',
   cpp_args: [api, exp],
   dependencies: [sfml_dep, imgui_dep, opengl_dep],
+  override_options: override_opts,
 )
 
 depinc = include_directories('.')
