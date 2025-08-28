@@ -175,6 +175,7 @@ if T.TYPE_CHECKING:
         msys_packages: list[str]
         python_packages: list[str]
         fatal_warnings: bool
+        has_provides: bool
         skip_dependency_check: list[str]
         skip_program_check: list[str]
         test_options: list[str]
