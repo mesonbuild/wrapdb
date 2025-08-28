@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
+from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -649,6 +649,7 @@ class TestReleases(unittest.TestCase):
             self.fail(f'Not permitted files found: {not_permitted_str}')
         try:
             format_meson(check_format, check=True)
+            format_wrap(subproject, check=True)
         except FormattingError:
             self.fail('Unformatted files found.  Run tools/format.py to format these files.')
 

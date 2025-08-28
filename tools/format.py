@@ -18,7 +18,7 @@ from __future__ import annotations
 from pathlib import Path
 import subprocess
 
-from utils import Releases, format_meson, read_wrap
+from utils import Releases, format_meson, format_wrap, read_wrap
 
 FORMAT_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 
@@ -29,6 +29,7 @@ def main() -> None:
     files = []
     for name, info in releases.items():
         if f'{name}_{info["versions"][0]}' not in tags:
+            format_wrap(name)
             config = read_wrap(name)
             patch_dir_name = config['wrap-file'].get('patch_directory')
             if patch_dir_name:
