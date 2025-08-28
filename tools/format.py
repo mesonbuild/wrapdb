@@ -17,10 +17,37 @@
 from __future__ import annotations
 from configparser import ConfigParser
 import json
+import os
 from pathlib import Path
+import platform
 import subprocess
+import time
+import venv
 
 FORMAT_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
+
+def meson_path() -> Path:
+    env_dir = Path(__file__).parent / 'mesonenv'
+    if platform.system() == 'Windows':
+        meson = env_dir / 'Scripts/meson.exe'
+    else:
+        meson = env_dir / 'bin/meson'
+
+    try:
+        if meson.stat().st_mtime + 86400 >= time.time():
+            return meson
+    except FileNotFoundError:
+        pass
+
+    if not env_dir.exists():
+        venv.create(env_dir, with_pip=True)
+    subprocess.run([
+        meson.with_stem('pip'), 'install', '--disable-pip-version-check',
+        '-qU', '--pre', 'meson'
+    ], check=True)
+    os.utime(meson)
+    return meson
+
 
 def main() -> None:
     with open('releases.json', 'r', encoding='utf-8') as f:
@@ -39,8 +66,9 @@ def main() -> None:
                 files += [f for f in patch_dir.rglob('*') if f.name in FORMAT_FILES]
 
     if files:
-        cmd = ['meson', 'format', '--configuration', './meson.format', '--inplace']
-        subprocess.run(cmd + files, check=True)
+        cmd: list[Path | str] = [meson_path(), 'format', '--configuration', './meson.format', '--inplace']
+        args = cmd + files
+        subprocess.run(args, check=True)
 
 
 if __name__ == '__main__':
