@@ -72,9 +72,9 @@ libutf8_range_args = []
 if host_machine.cpu_family() == 'x86_64'
   # range-sse.c is wrapped in #ifdef __x86_64__
   libutf8_range_src += files('third_party/utf8_range/range-sse.c')
-  if meson.get_compiler('cpp').get_argument_syntax() == 'gcc' or meson.get_compiler(
-    'cpp',
-  ).get_id() == 'clang-cl'
+  if (meson.get_compiler('cpp').get_argument_syntax() == 'gcc'
+  or meson.get_compiler('cpp').get_id() == 'clang-cl'
+)
     libutf8_range_args += '-msse4.1'
   elif meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
     libutf8_range_args += '/arch:SSE4.2'
@@ -218,8 +218,8 @@ libprotobuf_src = files(
   'src/google/protobuf/wrappers.pb.cc',
 )
 libprotobuf_linker_args = (is_msvc ? [
-  '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
-] : []
+    '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
+  ] : []
 )
 libprotobuf = library(
   'protobuf',
