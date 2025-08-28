@@ -57,6 +57,8 @@ if __name__ == '__main__':
         for src_path in new_files:
             if not src_path.is_file():
                 continue
+            if src_path.name == '.meson-subproject-wrap-hash.txt':
+                continue
             rel_path = src_path.relative_to(directory)
             dst_path = packagefiles / rel_path
             print(f'Copy {rel_path}')
