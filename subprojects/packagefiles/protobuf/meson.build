@@ -37,6 +37,39 @@ absl_string_view_dep = dependency(
   default_options: ['cpp_std=c++17'],
 )
 
+if meson.version().version_compare('>=1.7.0')
+  atomic_dep = dependency(
+    'atomic',
+    required: false,
+  )
+else
+  atomic_dep = cc.find_library(
+    'atomic',
+    required: false,
+  )
+endif
+
+# Make reasonable effort (volatile) to prevent the compiler from optimizing the atomic away without using tested
+# functionality.
+if not cc.links(
+  '''
+#include <atomic>
+#include <cstdint>
+
+int main() {
+    volatile std::atomic<std::uint64_t> testvar;
+    // The line below will lead to
+    // undefined reference to `__atomic_fetch_add_8'
+    // on armv6l to give an example.
+    volatile auto unused = testvar.fetch_add(0);
+}
+  ''',
+  name: 'Check if libatomic is required',
+  dependencies: atomic_dep,
+)
+  error('Host machine cannot handle atomics!')
+endif
+
 deps = [
   dependency('absl_base'),
   dependency('absl_cord'),
@@ -58,6 +91,7 @@ deps = [
     'dbghelp',
     required: host_machine.system() == 'windows',
   ),
+  atomic_dep,
 ]
 
 incdir = include_directories('src')
@@ -136,6 +170,7 @@ protobuf_lite_dep = declare_dependency(
   compile_args: imp,
   link_with: libprotobuf_lite,
   include_directories: incdir,
+  dependencies: atomic_dep,
 )
 
 libprotobuf_src = files(
@@ -218,8 +253,8 @@ libprotobuf_src = files(
   'src/google/protobuf/wrappers.pb.cc',
 )
 libprotobuf_linker_args = (is_msvc ? [
-  '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
-] : []
+    '/export:??$MergeFrom@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@RepeatedPtrFieldBase@internal@protobuf@google@@QEAAXAEBV0123@@Z',
+  ] : []
 )
 libprotobuf = library(
   'protobuf',
