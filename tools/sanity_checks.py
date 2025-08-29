@@ -239,6 +239,12 @@ class TestReleases(unittest.TestCase):
                     if subproject['version'] != 'undefined' and patch_path:
                         self.assertEqual(subproject['version'], version)
 
+    def get_transitional_provides(self, wrap: configparser.ConfigParser) -> set[str]:
+        if 'provide' not in wrap.sections():
+            return set()
+        keys = set(k.strip() for k in wrap['provide'])
+        return keys - {'dependency_names', 'program_names'}
+
     def test_releases(self) -> None:
         has_new_releases = False
         for name, info in self.releases.items():
@@ -291,14 +297,20 @@ class TestReleases(unittest.TestCase):
                     if 'provide' in config.sections():
                         provide = config['provide']
                         progs = [i.strip() for i in provide.get('program_names', '').split(',')]
-                        deps = [i.strip() for i in provide.get('dependency_names', '').split(',')]
-                        for k in provide:
-                            if k not in {'dependency_names', 'program_names'}:
-                                deps.append(k.strip())
+                        deps = (
+                            [i.strip() for i in provide.get('dependency_names', '').split(',')] +
+                            list(self.get_transitional_provides(config))
+                        )
                     progs = [i for i in progs if i]
                     deps = [i for i in deps if i]
                     self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
                     self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+
+                # Downstream ports shouldn't use transitional provides syntax
+                # FIXME: Not all wraps currently comply, only check for wraps we modify.
+                if extra_checks and patch_path:
+                    with self.subTest(step="Ports must not use 'foo = foo_dep' provide syntax; use meson.override_dependency('foo', foo_dep) and 'dependency_names = foo'.  https://mesonbuild.com/Adding-new-projects-to-wrapdb.html#overriding-dependencies-in-the-submitted-project"):
+                        self.assertEqual(self.get_transitional_provides(config), set())
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
