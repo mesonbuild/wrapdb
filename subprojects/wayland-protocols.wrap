@@ -5,4 +5,4 @@ source_filename = wayland-protocols-1.45.tar.xz
 source_hash = 4d2b2a9e3e099d017dc8107bf1c334d27bb87d9e4aff19a0c8d856d17cd41ef0
 
 [provide]
-wayland-protocols = wayland_protocols
+dependency_names = wayland-protocols

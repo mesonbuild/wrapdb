@@ -5,13 +5,4 @@ source_filename = libdrm-2.4.125.tar.xz
 source_hash = d4bae92797a50f81a93524762e0410a49cd84cfa0f997795bc0172ac8fb1d96a
 
 [provide]
-libdrm = ext_libdrm
-libdrm_amdgpu = ext_libdrm_amdgpu
-libdrm_etnaviv = ext_libdrm_etnaviv
-libdrm_exynos = ext_libdrm_exynos
-libdrm_freedreno = ext_libdrm_freedreno
-libdrm_intel = ext_libdrm_intel
-libdrm_nouveau = ext_libdrm_nouveau
-libdrm_omap = ext_libdrm_omap
-libdrm_radeon = ext_libdrm_radeon
-libdrm_tegra = ext_libdrm_tegra
+dependency_names = libdrm, libdrm_amdgpu, libdrm_etnaviv, libdrm_exynos, libdrm_freedreno, libdrm_intel, libdrm_nouveau, libdrm_omap, libdrm_radeon, libdrm_tegra

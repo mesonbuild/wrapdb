@@ -5,4 +5,4 @@ source_filename = libpciaccess-0.18.1.tar.xz
 source_hash = 4af43444b38adb5545d0ed1c2ce46d9608cc47b31c2387fc5181656765a6fa76
 
 [provide]
-pciaccess = dep_pciaccess
+dependency_names = pciaccess
