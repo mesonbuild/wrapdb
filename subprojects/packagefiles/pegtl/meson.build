@@ -2,6 +2,7 @@ project(
   'pegtl',
   'cpp',
   version: '3.2.8',
+  license: 'MIT',
   meson_version: '>=1.2.0',
   default_options: {
     'cpp_std': 'c++17',
