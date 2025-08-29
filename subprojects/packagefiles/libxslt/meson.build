@@ -133,6 +133,14 @@ configure_file(
   configuration: config,
 )
 
+if host_machine.system() == 'windows'
+  configure_file(
+    input: 'libxslt/win32config.h',
+    output: 'win32config.h',
+    copy: true,
+  )
+endif
+
 incdir = include_directories('.')
 subdir('libxslt')
 subdir('libexslt')

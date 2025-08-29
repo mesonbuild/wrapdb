@@ -11,7 +11,6 @@ sources = [
   'strings.c',
   'date.c',
   'saxon.c',
-  'libexslt.h',
   'dynamic.c',
 ]
 
