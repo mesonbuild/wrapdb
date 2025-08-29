@@ -2475,9 +2475,12 @@
   },
   "libxkbcommon": {
     "dependency_names": [
-      "xkbcommon"
+      "xkbcommon",
+      "xkbcommon-x11",
+      "xkbregistry"
     ],
     "versions": [
+      "1.11.0-2",
       "1.11.0-1",
       "1.10.0-1",
       "1.9.2-1",
