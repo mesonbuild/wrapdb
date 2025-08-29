@@ -6,5 +6,4 @@ source_hash = 05d59da347b5b5b4f34670d32704a54219657c9856a7af6645f06064006c6c68
 patch_directory = cpp-semver
 
 [provide]
-cpp-semver = cpp_semver_dep
-
+dependency_names = cpp-semver

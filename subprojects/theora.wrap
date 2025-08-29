@@ -6,6 +6,4 @@ source_hash = ebdf77a8f5c0a8f7a9e42323844fa09502b34eb1d1fece7b5f54da41fe2122ec
 patch_directory = theora
 
 [provide]
-theoradec = theoradec_dep
-theoraenc = theoraenc_dep
-theora = theora_dep
+dependency_names = theora, theoradec, theoraenc
