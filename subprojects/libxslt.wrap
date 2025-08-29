@@ -7,6 +7,5 @@ source_hash = 5a3d6b383ca5afc235b171118e90f5ff6aa27e9fea3303065231a6d403f0183a
 patch_directory = libxslt
 
 [provide]
-libxslt = libxslt_dep
-libexslt = libexslt_dep
+dependency_names = libexslt, libxslt
 program_names = xsltproc
