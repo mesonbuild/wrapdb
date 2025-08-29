@@ -228,6 +228,15 @@ class TestReleases(unittest.TestCase):
 
         return None
 
+    def ensure_source_dir(self, name: str, wrap: configparser.ConfigParser) -> Path:
+        dir = Path('subprojects', wrap['wrap-file']['directory'])
+        if not dir.exists():
+            # build has not run and unpacked the source; do that
+            subprocess.check_call(
+                ['meson', 'subprojects', 'download', name]
+            )
+        return dir
+
     def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
         with self.subTest(step="check_meson_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
@@ -340,7 +349,7 @@ class TestReleases(unittest.TestCase):
                                     self.assertNotIn(name, self.ci_config.broken)
                                 self.check_meson_version(name, ver, patch_path)
                         if patch_path:
-                            self.check_project_args(name, Path('subprojects') / wrap_section['directory'])
+                            self.check_project_args(name, config)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -592,12 +601,8 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
-    def check_project_args(self, name: str, dir: Path) -> None:
-        if not dir.exists():
-            # build has not run and unpacked the source; do that
-            subprocess.check_call(
-                ['meson', 'subprojects', 'download', name]
-            )
+    def check_project_args(self, name: str, wrap: configparser.ConfigParser) -> None:
+        dir = self.ensure_source_dir(name, wrap)
         try:
             project_json = subprocess.check_output(
                 ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
@@ -732,14 +737,11 @@ class TestReleases(unittest.TestCase):
         if Path(builddir).exists():
             shutil.rmtree(builddir)
         # ensure we have an unpacked source tree
-        subprocess.check_call(
-            ['meson', 'subprojects', 'download', name]
-        )
+        source_dir = self.ensure_source_dir(name, wrap)
         # install packages and set PATH
         ci = self.ci_config.get(name, {})
         meson_env = self.install_packages(ci)
 
-        source_dir = Path('subprojects', wrap['wrap-file']['directory'])
         source_meson_file = source_dir / 'meson.build'
         source_meson_contents = source_meson_file.read_bytes()
         try:
