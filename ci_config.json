@@ -147,7 +147,7 @@
       "windows": false
     },
     "build_options": [
-      "cppzmq:tests=disabled",
+      "cppzmq:tests=enabled",
       "cppzmq:examples=true"
     ]
   },
