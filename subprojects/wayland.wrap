@@ -5,7 +5,5 @@ source_filename = wayland-1.24.0.tar.xz
 source_hash = 82892487a01ad67b334eca83b54317a7c86a03a89cfadacfef5211f11a5d0536
 
 [provide]
-wayland-cursor = wayland_cursor_dep
-wayland-egl = wayland_egl_dep
-wayland-server = wayland_server_dep
-wayland-client = wayland_client_dep
+dependency_names = wayland-client, wayland-cursor, wayland-egl, wayland-server
+program_names = wayland-scanner
