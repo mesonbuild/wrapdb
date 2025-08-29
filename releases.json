@@ -2542,9 +2542,10 @@
   },
   "libxmlpp": {
     "dependency_names": [
-      "libxml++"
+      "libxml++-5.0"
     ],
     "versions": [
+      "5.4.0-2",
       "5.4.0-1",
       "5.2.0-1",
       "5.0.3-1",

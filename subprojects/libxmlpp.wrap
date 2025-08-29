@@ -6,4 +6,4 @@ source_filename = libxml++-5.4.0.tar.xz
 source_hash = e9a23c436686a94698d2138e6bcbaf849121d63bfa0f50dc34fefbfd79566848
 
 [provide]
-libxml++ = xmlxx_dep
+dependency_names = libxml++-5.0
