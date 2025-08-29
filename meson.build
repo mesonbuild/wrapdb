@@ -1,7 +1,6 @@
 project(
   'wrapdb',
   meson_version: '>=0.58.0',
-  default_options: ['cpp_std=c++17'],
 )
 
 if (
