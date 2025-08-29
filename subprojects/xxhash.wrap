@@ -6,4 +6,4 @@ source_hash = aae608dfe8213dfd05d909a57718ef82f30722c392344583d3f39050c7f29a80
 patch_directory = xxhash
 
 [provide]
-libxxhash = xxhash_dep
+dependency_names = libxxhash
