@@ -6,8 +6,5 @@ source_hash = 588e431f77327c39031ffbb8843c0e3bc122c211374485fa87dc5f3faff24061
 patch_directory = icu
 
 [provide]
-icu-uc = icuuc_dep
-icu-io = icuio_dep
-icu-i18n = icui18n_dep
-
+dependency_names = icu-data, icu-i18n, icu-io, icu-uc
 program_names = genbrk, genccode, gencmn

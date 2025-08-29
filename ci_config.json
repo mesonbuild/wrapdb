@@ -481,6 +481,11 @@
       "htslib:tests=true"
     ]
   },
+  "icu": {
+    "skip_dependency_check": [
+      "icu-data"
+    ]
+  },
   "jbig2dec": {
     "msys_packages": [
       "libpng"

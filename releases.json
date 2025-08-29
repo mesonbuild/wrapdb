@@ -1491,9 +1491,10 @@
   },
   "icu": {
     "dependency_names": [
-      "icu-uc",
+      "icu-data",
+      "icu-i18n",
       "icu-io",
-      "icu-i18n"
+      "icu-uc"
     ],
     "program_names": [
       "genbrk",
@@ -1501,6 +1502,7 @@
       "gencmn"
     ],
     "versions": [
+      "77.1-3",
       "77.1-2",
       "77.1-1",
       "76.1-2",
