@@ -350,6 +350,8 @@ class TestReleases(unittest.TestCase):
                                 self.check_meson_version(name, ver, patch_path)
                         if patch_path:
                             self.check_project_args(name, config)
+                        else:
+                            self.check_nonport_source(name, config)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -643,6 +645,17 @@ class TestReleases(unittest.TestCase):
                             'strip',
                             'unity'}:
                     raise Exception(f'{name} is not permitted in default_options')
+
+    def check_nonport_source(self, name: str, wrap: configparser.ConfigParser) -> None:
+        with self.subTest(step='check for meson.override_dependency()'):
+            provides = self.get_transitional_provides(wrap)
+            if provides:
+                dir = self.ensure_source_dir(name, wrap)
+                for path in dir.rglob('meson.build'):
+                    if 'meson.override_dependency' in path.read_text(encoding='utf-8'):
+                        # assume if an upstream converts to
+                        # override_dependency it converts completely
+                        raise Exception(f"{path.relative_to(dir)} contains meson.override_dependency(); wrap provides should be converted to e.g. 'dependency_names = {', '.join(sorted(provides))}'")
 
     def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str | None]:
         opts = project.get('default_options')
