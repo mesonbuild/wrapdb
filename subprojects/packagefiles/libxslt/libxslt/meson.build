@@ -90,4 +90,4 @@ libxslt_dep = declare_dependency(
   dependencies: libxml2_dep,
 )
 
-meson.override_dependency('xslt', libxslt_dep)
+meson.override_dependency('libxslt', libxslt_dep)
