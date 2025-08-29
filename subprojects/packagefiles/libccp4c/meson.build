@@ -13,6 +13,10 @@ mdep = cc.find_library(
   required: false,
 )
 
+if host_machine.system() == 'windows'
+  error('Building libccp4c is unsupported on Windows')
+endif
+
 # Note that the source code assumes that datadir='share'.
 # If it is not, programs using the library will not be able
 # to find 'environ.def'.
