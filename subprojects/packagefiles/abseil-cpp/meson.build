@@ -1,10 +1,12 @@
 project(
   'abseil-cpp',
   'cpp',
-  version: '20240722.0',
+  meson_version: '>=0.49.0',
+  version: '20250127.1',
   license: 'Apache-2.0',
-  default_options: ['cpp_std=c++17'],
 )
+
+override_cpp = 'cpp_std=c++17'
 
 cpp = meson.get_compiler('cpp')
 
@@ -645,6 +647,7 @@ absl_base_lib = static_library(
   'absl_base',
   absl_base_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   cpp_args: arch_flags,
   dependencies: [dependency('threads'), libatomic],
 )
@@ -653,24 +656,28 @@ absl_hash_lib = static_library(
   'absl_hash',
   absl_hash_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
 )
 
 absl_numeric_lib = static_library(
   'absl_numeric',
   absl_numeric_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
 )
 
 absl_profiling_lib = static_library(
   'absl_profiling',
   absl_profiling_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
 )
 
 absl_crc_lib = static_library(
   'absl_crc',
   absl_crc_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib],
   dependencies: libatomic,
 )
@@ -679,6 +686,7 @@ absl_strings_lib = static_library(
   'absl_strings',
   absl_strings_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_crc_lib, absl_numeric_lib, absl_profiling_lib],
 )
 
@@ -686,6 +694,7 @@ absl_debugging_lib = static_library(
   'absl_debugging',
   absl_debugging_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_strings_lib],
   dependencies: libatomic,
 )
@@ -694,6 +703,7 @@ absl_random_lib = static_library(
   'absl_random',
   absl_random_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   cpp_args: hw_flags,
   link_with: [absl_base_lib, absl_strings_lib],
   dependencies: libatomic,
@@ -703,6 +713,7 @@ absl_time_lib = static_library(
   'absl_time',
   absl_time_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_numeric_lib, absl_strings_lib],
   # macOS only, upstream: https://github.com/abseil/abseil-cpp/pull/280
   dependencies: dependency(
@@ -716,6 +727,7 @@ absl_types_lib = static_library(
   'absl_types',
   absl_types_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
 )
 
 absl_synchronization_lib = static_library(
@@ -723,6 +735,7 @@ absl_synchronization_lib = static_library(
   absl_synchronization_sources,
   cpp_args: unscaled_cycleclock_flag,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_debugging_lib, absl_time_lib],
 )
 
@@ -730,6 +743,7 @@ absl_container_lib = static_library(
   'absl_container',
   absl_container_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [
     absl_base_lib,
     absl_debugging_lib,
@@ -743,6 +757,7 @@ absl_flags_lib = static_library(
   'absl_flags',
   absl_flags_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [
     absl_base_lib,
     absl_container_lib,
@@ -757,6 +772,7 @@ absl_status_lib = static_library(
   'absl_status',
   absl_status_sources,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_strings_lib],
 )
 
@@ -765,6 +781,7 @@ absl_log_lib = static_library(
   absl_log_sources,
   cpp_args: unscaled_cycleclock_flag,
   include_directories: absl_include_dir,
+  override_options: override_cpp,
   link_with: [absl_base_lib, absl_strings_lib, absl_flags_lib],
   dependencies: libatomic,
 )
