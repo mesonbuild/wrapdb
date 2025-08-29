@@ -6,4 +6,4 @@ source_filename = CLI11-2.5.0.tar.gz
 source_hash = 17e02b4cddc2fa348e5dbdbb582c59a3486fa2b2433e70a0c3bacb871334fd55
 
 [provide]
-cli11 = CLI11_dep
+dependency_names = CLI11
