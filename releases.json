@@ -1271,9 +1271,10 @@
   },
   "godot-cpp": {
     "dependency_names": [
-      "godot_cpp"
+      "godot-cpp"
     ],
     "versions": [
+      "4.4.1-2",
       "4.4.1-1",
       "4.3-1",
       "4.2-1"
