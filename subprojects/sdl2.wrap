@@ -6,6 +6,4 @@ source_hash = 0ca83e9c9b31e18288c7ec811108e58bac1f1bb5ec6577ad386830eac51c787e
 patch_directory = sdl2
 
 [provide]
-sdl2 = sdl2_dep
-sdl2main = sdl2main_dep
-sdl2_test = sdl2_test_dep
+dependency_names = sdl2, sdl2main, sdl2_test

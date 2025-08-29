@@ -3,6 +3,7 @@ project(
   'c',
   'cpp',
   version: '77.1',
+  license: 'BSD-2-Clause AND BSD-3-Clause AND ICU AND NAIST-2003 AND Unicode-3.0',
   meson_version: '>=0.57.0',
   default_options: 'cpp_std=c++17',
 )

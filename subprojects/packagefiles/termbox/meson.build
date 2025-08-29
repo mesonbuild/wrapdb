@@ -2,6 +2,7 @@ project(
   'termbox',
   'c',
   version: '1.1.2',
+  license: 'MIT',
 )
 
 src = ['src/utf8.c', 'src/termbox.c']

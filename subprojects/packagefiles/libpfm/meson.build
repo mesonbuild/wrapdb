@@ -2,6 +2,7 @@ project(
   'libpfm',
   'c',
   version: '4.13.0',
+  license: 'MIT',
   meson_version: '>=1.0.0',
 )
 

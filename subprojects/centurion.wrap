@@ -6,4 +6,4 @@ source_hash = b607a27d17c25d412ef1a6e1db32c527b0cfef1712f0128361abb18624c7d03e
 patch_directory = centurion
 
 [provide]
-centurion = centurion_dep
+dependency_names = centurion

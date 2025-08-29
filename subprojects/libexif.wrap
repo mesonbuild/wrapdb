@@ -6,5 +6,4 @@ source_hash = 7c9eba99aed3e6594d8c3e85861f1c6aaf450c218621528bc989d3b3e7a26307
 patch_directory = libexif
 
 [provide]
-libexif = exif_dep
-
+dependency_names = libexif

@@ -6,4 +6,4 @@ source_hash = 1db357f46dd2b24447156aaf970c4c40a793ef12a8a9c2ad9e096d9801368df6
 patch_directory = tl-expected
 
 [provide]
-tl-expected = tl_expected_dep
+dependency_names = tl-expected

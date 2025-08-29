@@ -6,4 +6,4 @@ source_hash = 7fccd0ec9299dced91c2772c58b84d35d5b1e544fd7a2bcfd2b0bb02e407aa0c
 patch_directory=godot-cpp
 
 [provide]
-godot_cpp = godot_cpp_dep
+dependency_names = godot-cpp

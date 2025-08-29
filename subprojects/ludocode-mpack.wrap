@@ -6,5 +6,4 @@ source_hash = 7e8dfc95266ac3e1a1a87383c01eb3bf66a61ae06374cf040b3383644bc8d2e6
 patch_directory = ludocode-mpack
 
 [provide]
-ludocode-mpack = ludocode_mpack_dep
-
+dependency_names = ludocode-mpack

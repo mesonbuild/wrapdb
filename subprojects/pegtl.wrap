@@ -6,4 +6,4 @@ source_hash = 319e8238daebc3a163f60c88c78922a8012772076fdd64a8dafaf5619cd64773
 patch_directory = pegtl
 
 [provide]
-pegtl = pegtl_dep
+dependency_names = pegtl

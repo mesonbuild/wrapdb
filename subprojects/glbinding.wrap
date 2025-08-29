@@ -6,5 +6,4 @@ source_hash = 79c743ba396d4b43799c16c99f0d2b27eeaedbff673464c2d028ec3dbb932d6c
 patch_directory = glbinding
 
 [provide]
-glbinding = glbinding_dep
-glbinding-aux = glbinding_aux_dep
+dependency_names = glbinding, glbinding-aux

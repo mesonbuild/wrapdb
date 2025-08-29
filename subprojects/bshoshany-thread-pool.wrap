@@ -6,4 +6,4 @@ source_hash = d3e4be162c45ac784ac6fb2096f9494469571a3473a18829c2adae1aab67cfbc
 patch_directory = bshoshany-thread-pool
 
 [provide]
-bshoshany-thread-pool = bshoshany_thread_pool_dep
+dependency_names = bshoshany-thread-pool

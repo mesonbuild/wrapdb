@@ -6,4 +6,4 @@ source_hash = e18941da05bca12a796ebbeacb83993bc0f10e817fa10bb45124a421c2384690
 patch_directory = tl-optional
 
 [provide]
-tl-optional = tl_optional_dep
+dependency_names = tl-optional
