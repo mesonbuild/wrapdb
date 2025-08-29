@@ -826,6 +826,10 @@
       "libxkbcommon:enable-x11=false",
       "libxkbcommon:enable-xkbregistry=false"
     ],
+    "skip_dependency_check": [
+      "xkbcommon-x11",
+      "xkbregistry"
+    ],
     "alpine_packages": [
       "bison"
     ],
