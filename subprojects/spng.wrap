@@ -6,4 +6,4 @@ source_filename = libspng-0.7.4.tar.gz
 source_hash = 47ec02be6c0a6323044600a9221b049f63e1953faf816903e7383d4dc4234487
 
 [provide]
-spng = spng_dep
+dependency_names = spng

@@ -5,4 +5,4 @@ source_filename = libliftoff-v0.5.0.tar.gz
 source_hash = 3309218c3137a70faada653690802b514e4e46d9b38e7d9d5948ffcc4831f3b1
 
 [provide]
-libliftoff = liftoff
+dependency_names = libliftoff

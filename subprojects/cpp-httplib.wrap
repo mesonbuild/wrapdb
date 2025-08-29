@@ -5,4 +5,4 @@ source_filename = cpp-httplib-0.25.0.tar.gz
 source_hash = ac7c59fa72325d4cb9f73af266312d82632ac35a5c4c8a1be620c1f946ec9cea
 
 [provide]
-cpp-httplib = cpp_httplib_dep
+dependency_names = cpp-httplib

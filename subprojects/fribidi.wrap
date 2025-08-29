@@ -6,4 +6,4 @@ source_filename = fribidi-1.0.16.tar.xz
 source_hash = 1b1cde5b235d40479e91be2f0e88a309e3214c8ab470ec8a2744d82a5a9ea05c
 
 [provide]
-fribidi = libfribidi_dep
+dependency_names = fribidi
