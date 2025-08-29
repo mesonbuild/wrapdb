@@ -5,4 +5,4 @@ source_filename = Kraken-Engine-0.0.11.tar.gz
 source_hash = 1c2d84ebaa6c04d0e22d76fccbbb10f09a2849813949d4cba4527c4e0c06bbbb
 
 [provide]
-kraken-engine = kraken_engine_dep
+dependency_names = kraken-engine

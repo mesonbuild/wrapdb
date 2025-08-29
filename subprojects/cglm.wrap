@@ -5,4 +5,4 @@ source_filename = cglm-0.9.6.tar.gz
 source_hash = be5e7d384561eb0fca59724a92b7fb44bf03e588a7eae5123a7d796002928184
 
 [provide]
-cglm = cglm_dep
+dependency_names = cglm

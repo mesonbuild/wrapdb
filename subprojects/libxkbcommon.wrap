@@ -5,4 +5,4 @@ source_filename = libxkbcommon-1.11.0.tar.xz
 source_hash = 78a6b14f16e9a55025978c252e53ce9e16a02bfdb929550b9a0db5af87db7e02
 
 [provide]
-xkbcommon = dep_libxkbcommon
+dependency_names = xkbcommon, xkbcommon-x11, xkbregistry

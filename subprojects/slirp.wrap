@@ -5,6 +5,5 @@ source_fallback_url = https://mirror.rackspace.com/gentoo/distfiles/libslirp-4.9
 source_filename = libslirp-v4.9.1.tar.gz
 source_hash = 3970542143b7c11e6a09a4d2b50f30a133473c41f15ed0bdcc3b7a1c450d9a5c
 
-# the libslirp project uses a pkg-config name of slirp instead of libslirp
 [provide]
-slirp = libslirp_libdep
+dependency_names = slirp
