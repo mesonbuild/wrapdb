@@ -4567,6 +4567,14 @@
       "0.8.0-1"
     ]
   },
+  "yyjson": {
+    "dependency_names": [
+      "yyjson"
+    ],
+    "versions": [
+      "0.12.0-1"
+    ]
+  },
   "zlib": {
     "dependency_names": [
       "zlib"
