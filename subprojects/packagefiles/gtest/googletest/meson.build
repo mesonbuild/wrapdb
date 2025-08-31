@@ -26,6 +26,7 @@ gtest_lib = library(
   sources: files('src/gtest-all.cc'),
   gnu_symbol_visibility: 'hidden',
   cpp_args: dllexp,
+  override_options: override_cpp,
   dependencies: dependency('threads'),
   include_directories: gtest_incdir,
 )
@@ -35,6 +36,7 @@ gtest_main_lib = library(
   sources: files('src/gtest_main.cc'),
   gnu_symbol_visibility: 'hidden',
   cpp_args: dllexp,
+  override_options: override_cpp,
   include_directories: gtest_incdir,
   link_with: gtest_lib,
 )
