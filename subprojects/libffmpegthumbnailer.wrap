@@ -6,5 +6,4 @@ source_hash = 8c9b9057c6cc8bce9d11701af224c8139c940f734c439a595525e073b09d19b8
 patch_directory = libffmpegthumbnailer
 
 [provide]
-libffmpegthumbnailer = libffmpegthumbnailer_dep
-
+dependency_names = libffmpegthumbnailer

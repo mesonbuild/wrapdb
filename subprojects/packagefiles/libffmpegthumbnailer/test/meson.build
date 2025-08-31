@@ -15,9 +15,8 @@ testlib = static_library(
   dependencies: [ffmpegthumbnailer_deps, libffmpegthumbnailer_dep],
 )
 
-tdepinc = [include_directories('.'), depinc]
 testdep = declare_dependency(
-  include_directories: tdepinc,
+  include_directories: ['.', depinc],
   link_with: testlib,
 )
 
@@ -28,6 +27,7 @@ ffmpegthumbnailertest = executable(
   'videothumbnailertest.cpp',
   'videothumbnailerctest.cpp',
   cpp_args: '-DTEST_DATADIR="@0@"'.format(meson.current_source_dir()),
+  override_options: 'cpp_std=c++11',
   dependencies: [catch_dep, testdep],
 )
 
