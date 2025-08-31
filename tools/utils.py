@@ -13,8 +13,10 @@
 # limitations under the License.
 
 from __future__ import annotations
+import configparser
 from contextlib import contextmanager
 import functools
+import io
 import operator
 import os
 from pathlib import Path
@@ -103,6 +105,21 @@ class Version:
 
         # versions are equal, so compare revisions
         return comparator(self._r, other._r)
+
+def wrap_path(name: str) -> Path:
+    return Path('subprojects', f'{name}.wrap')
+
+def read_wrap(name: str) -> configparser.ConfigParser:
+    config = configparser.ConfigParser(interpolation=None)
+    config.read(wrap_path(name), encoding='utf-8')
+    return config
+
+def write_wrap(path: Path, config: configparser.ConfigParser) -> None:
+    # configparser write() adds multiple trailing newlines, collapse them
+    buf = io.StringIO()
+    config.write(buf)
+    with path.open('w', encoding='utf-8') as f:
+        f.write(buf.getvalue().rstrip('\n') + '\n')
 
 @contextmanager
 def ci_group(title):

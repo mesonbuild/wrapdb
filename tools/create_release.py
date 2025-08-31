@@ -17,7 +17,6 @@
 from __future__ import annotations
 import io
 import sys
-import configparser
 import shutil
 import hashlib
 import requests
@@ -27,7 +26,7 @@ import subprocess
 import json
 
 from pathlib import Path
-from utils import is_ci, is_debianlike
+from utils import is_ci, is_debianlike, read_wrap, write_wrap
 
 class CreateRelease:
     def __init__(self, repo: T.Optional[str], token: T.Optional[str], tag: str):
@@ -45,9 +44,7 @@ class CreateRelease:
             self.create_wrap_file()
 
     def read_wrap(self) -> None:
-        filename = Path('subprojects', f'{self.name}.wrap')
-        self.wrap = configparser.ConfigParser(interpolation=None)
-        self.wrap.read(filename)
+        self.wrap = read_wrap(self.name)
         self.wrap_section = self.wrap[self.wrap.sections()[0]]
 
     def create_patch_zip(self) -> None:
@@ -104,15 +101,7 @@ class CreateRelease:
         self.wrap_section['wrapdb_version'] = self.version
 
         filename = Path(self.tempdir, f'{self.name}.wrap')
-
-        # configparser write() adds multiple trailing newlines, collapse them
-        buf = io.StringIO()
-        self.wrap.write(buf)
-        buf.seek(0)
-        newbuf = buf.read().rstrip('\n') + '\n'
-
-        with open(filename, 'w') as f:
-            f.write(newbuf)
+        write_wrap(filename, self.wrap)
 
         print('Generated wrap file:')
         print(filename.read_text())
