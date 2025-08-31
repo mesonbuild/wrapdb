@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 from contextlib import contextmanager
+import functools
 import operator
 import re
 import os
@@ -22,6 +23,8 @@ import typing as T
 from pathlib import Path
 import platform
 import subprocess
+import time
+import venv
 
 # a helper class which implements the same version ordering as RPM
 class Version:
@@ -129,13 +132,46 @@ def is_msys() -> bool:
 def is_macos():
     return any(platform.mac_ver()[0])
 
+@functools.cache
+def venv_meson_path() -> Path:
+    if os.getenv('CI', 'false') == 'true':
+        # assume CI already has a current Meson
+        return Path('meson')
+
+    env_dir = Path(__file__).parent / 'mesonenv'
+    if not env_dir.exists():
+        venv.create(env_dir, with_pip=True)
+
+    if platform.system() == 'Windows':
+        for subdir in 'Scripts', 'bin':
+            if (env_dir / subdir).exists():
+                meson = env_dir / subdir / 'meson.exe'
+                break
+        else:
+            raise Exception("Couldn't find venv bin dir")
+    else:
+        meson = env_dir / 'bin/meson'
+
+    try:
+        if meson.stat().st_mtime + 86400 >= time.time():
+            return meson
+    except FileNotFoundError:
+        pass
+
+    subprocess.run([
+        meson.with_stem('pip'), 'install', '--disable-pip-version-check',
+        '-qU', '--pre', 'meson'
+    ], check=True)
+    os.utime(meson)
+    return meson
+
 class FormattingError(Exception):
     pass
 
 def format_meson(files: T.Iterable[Path], *, check: bool = False) -> None:
     if not files:
         return
-    cmd: list[str | Path] = ['meson', 'format', '--configuration', './meson.format']
+    cmd: list[str | Path] = [venv_meson_path(), 'format', '--configuration', './meson.format']
     if check:
         cmd.append('--check-only')
     else:
