@@ -83,6 +83,7 @@ libmatroska = library(
   'src/KaxTracks.cpp',
   'src/KaxVersion.cpp',
   cpp_args: dllapi,
+  override_options: 'cpp_std=c++14',
   name_prefix: '',
   version: '7.0.0',
   soversion: host_machine.system() == 'windows' ? '' : '7',
