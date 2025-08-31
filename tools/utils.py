@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 from contextlib import contextmanager
 import operator
 import re
 import os
 import sys
 import typing as T
+from pathlib import Path
 import platform
+import subprocess
 
 # a helper class which implements the same version ordering as RPM
 class Version:
@@ -125,3 +128,20 @@ def is_msys() -> bool:
 
 def is_macos():
     return any(platform.mac_ver()[0])
+
+class FormattingError(Exception):
+    pass
+
+def format_meson(files: T.Iterable[Path], *, check: bool = False) -> None:
+    if not files:
+        return
+    cmd: list[str | Path] = ['meson', 'format', '--configuration', './meson.format']
+    if check:
+        cmd.append('--check-only')
+    else:
+        cmd.append('--inplace')
+    cmd.extend(files)
+    try:
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError as ex:
+        raise FormattingError from ex

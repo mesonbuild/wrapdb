@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys
+from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, FormattingError, format_meson
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -606,19 +606,6 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
-    def is_formatted_correctly(self, file: Path) -> bool:
-        res = subprocess.run(
-            [
-                "meson",
-                "format",
-                "--check-only",
-                "--configuration",
-                "./meson.format",
-                file.absolute(),
-            ]
-        )
-        return res.returncode == 0
-
     def check_project_args(self, name: str, dir: Path) -> None:
         if not dir.exists():
             # build has not run and unpacked the source; do that
@@ -684,8 +671,11 @@ class TestReleases(unittest.TestCase):
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
-            if f.name in FORMAT_CHECK_FILES and not self.is_formatted_correctly(f):
-                unformatted.append(f)
+            if f.name in FORMAT_CHECK_FILES:
+                try:
+                    format_meson([f], check=True)
+                except FormattingError:
+                    unformatted.append(f)
             if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
             elif f.name in NO_TABS_FILES and '\t' in f.read_text(encoding='utf-8'):
