@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, FormattingError, format_meson
+from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -279,8 +279,7 @@ class TestReleases(unittest.TestCase):
                 extra_checks = latest_tag not in self.tags
 
                 # Make sure we can load wrap file
-                config = configparser.ConfigParser(interpolation=None)
-                config.read(f'subprojects/{name}.wrap', encoding='utf-8')
+                config = read_wrap(name)
 
                 # Basic checks
                 with self.subTest(step='basic'):
@@ -692,8 +691,7 @@ class TestReleases(unittest.TestCase):
                     self.report_meson_version_deps(name)
 
     def report_meson_version_deps(self, name: str, builddir: str = '_build') -> None:
-        wrap = configparser.ConfigParser(interpolation=None)
-        wrap.read(f'subprojects/{name}.wrap', encoding='utf-8')
+        wrap = read_wrap(name)
         patch_dir = self.get_patch_path(wrap['wrap-file'])
         if not patch_dir:
             # only check projects maintained downstream

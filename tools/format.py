@@ -15,12 +15,11 @@
 # limitations under the License.
 
 from __future__ import annotations
-from configparser import ConfigParser
 import json
 from pathlib import Path
 import subprocess
 
-from utils import format_meson
+from utils import format_meson, read_wrap
 
 FORMAT_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 
@@ -33,8 +32,7 @@ def main() -> None:
     files = []
     for name, info in releases.items():
         if f'{name}_{info["versions"][0]}' not in tags:
-            config = ConfigParser(interpolation=None)
-            config.read(f'subprojects/{name}.wrap', encoding='utf-8')
+            config = read_wrap(name)
             patch_dir_name = config['wrap-file'].get('patch_directory')
             if patch_dir_name:
                 patch_dir = Path('subprojects', 'packagefiles', patch_dir_name)

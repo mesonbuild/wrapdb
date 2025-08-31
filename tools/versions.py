@@ -16,12 +16,12 @@
 
 from __future__ import annotations
 from argparse import ArgumentParser, Namespace
-from configparser import ConfigParser
 from functools import cache
 from hashlib import sha256
 from itertools import count
 import json
 import os
+from pathlib import Path
 import re
 import subprocess
 import sys
@@ -29,6 +29,8 @@ import time
 import typing as T
 
 import requests
+
+from utils import read_wrap, wrap_path
 
 WRAP_URL_TEMPLATE = (
     'https://github.com/mesonbuild/wrapdb/blob/master/subprojects/{0}.wrap'
@@ -127,18 +129,11 @@ def get_wrap_versions() -> dict[str, str]:
     }
 
 
-def get_wrap_contents(name: str) -> ConfigParser:
-    '''Return a ConfigParser loaded with the specified wrap.'''
-    wrap = ConfigParser(interpolation=None)
-    wrap.read(f'subprojects/{name}.wrap', encoding='utf-8')
-    return wrap
-
-
 def get_port_wraps() -> set[str]:
     '''Return the names of wraps that have a patch directory.'''
     ports = set()
     for name, info in get_releases().items():
-        wrap = get_wrap_contents(name)
+        wrap = read_wrap(name)
         if wrap.has_option('wrap-file', 'patch_directory'):
             ports.add(name)
     return ports
@@ -148,8 +143,8 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
     '''Try to update the specified wrap file from old_ver to new_ver.'''
 
     # read wrap file
-    filename = f'subprojects/{name}.wrap'
-    with open(filename) as f:
+    path = wrap_path(name)
+    with path.open(encoding='utf-8') as f:
         lines = f.readlines()
 
     # update versions
@@ -191,7 +186,7 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
                 break
 
     # write
-    with open(filename, 'w') as f:
+    with path.open('w', encoding='utf-8') as f:
         f.write(''.join(lines))
 
 
@@ -298,10 +293,10 @@ def do_commit(args: Namespace) -> None:
         else:
             raise ValueError("Can't autogenerate commit message; specify -m")
 
-    commit_files = [
-        'ci_config.json', 'releases.json', f'subprojects/{name}.wrap'
+    commit_files: list[str | Path] = [
+        'ci_config.json', 'releases.json', wrap_path(name)
     ]
-    patch_dir = get_wrap_contents(name).get(
+    patch_dir = read_wrap(name).get(
         'wrap-file', 'patch_directory', fallback=None
     )
     if patch_dir:
@@ -309,9 +304,10 @@ def do_commit(args: Namespace) -> None:
 
     # suppress Git summary output and recreate it ourselves so we can also
     # show the diffstat, to confirm we've committed the right files
-    subprocess.check_call(
-        ['git', 'commit', '-m', f'{name}: {args.message}', '-q'] + commit_files
-    )
+    cmd: list[str | Path] = [
+        'git', 'commit', '-m', f'{name}: {args.message}', '-q'
+    ]
+    subprocess.check_call(cmd + commit_files)
     subprocess.check_call(['git', 'log', '-1', '--format=[%h] %s'])
     subprocess.check_call(['git', 'diff', '--stat', 'HEAD^..HEAD'])
 
@@ -381,7 +377,7 @@ def do_list(args: Namespace) -> None:
                     'wrapdb': cur_vers[name],
                     'upstream': upstream_vers.get(name),
                     'port': name in ports,
-                    'source': get_wrap_contents(name).get(
+                    'source': read_wrap(name).get(
                         'wrap-file', 'source_url'
                     )
                 } for name in wraps

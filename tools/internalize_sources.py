@@ -16,22 +16,12 @@
 
 from __future__ import annotations
 from argparse import ArgumentParser
-import configparser
 from hashlib import sha256
-from io import StringIO
 import json
 from pathlib import Path
 import subprocess
 
-def wrap_path(name: str) -> Path:
-    return Path('subprojects', f'{name}.wrap')
-
-
-def read_wrap(name: str) -> configparser.ConfigParser:
-    wrap = configparser.ConfigParser(interpolation=None)
-    wrap.read(wrap_path(name), encoding='utf-8')
-    return wrap
-
+from utils import read_wrap, write_wrap, wrap_path
 
 class Internalizer:
     def __init__(self, all=False):
@@ -81,10 +71,7 @@ class Internalizer:
             wf = wrap['wrap-file']
             wf['source_fallback_url'] = wf['source_url']
             wf['source_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{tag}/{wf["source_filename"]}'
-            buf = StringIO()
-            wrap.write(buf)
-            with wrap_path(name).open('w') as fh:
-                fh.write(buf.getvalue().strip() + '\n')
+            write_wrap(wrap_path(name), wrap)
         print(f'Rewrote source_url for {len(self.rewrite)} projects.')
 
 

@@ -20,10 +20,7 @@ import zipfile
 import shutil
 from pathlib import Path
 
-def read_wrap(filename: Path) -> configparser.SectionProxy:
-    wrap = configparser.ConfigParser(interpolation=None)
-    wrap.read(filename)
-    return wrap[wrap.sections()[0]]
+from utils import read_wrap
 
 def read_archive_files(path: Path, base_path: Path) -> set[Path]:
     if path.suffix == '.zip':
@@ -36,7 +33,8 @@ def read_archive_files(path: Path, base_path: Path) -> set[Path]:
 
 if __name__ == '__main__':
     for f in Path('subprojects').glob('*.wrap'):
-        wrap_section = read_wrap(f)
+        wrap = read_wrap(f.stem)
+        wrap_section = wrap[wrap.sections()[0]]
         patch_directory = wrap_section.get('patch_directory')
         if not patch_directory:
             continue
