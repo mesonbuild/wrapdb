@@ -23,6 +23,7 @@ if cpp.get_argument_syntax() == 'msvc'
   gmock_lib = static_library(
     'gmock-all',
     files('../googletest/src/gtest-all.cc', 'src/gmock-all.cc'),
+    override_options: override_cpp,
     include_directories: [gtest_incdir, gmock_incdir],
   )
 
@@ -33,6 +34,7 @@ if cpp.get_argument_syntax() == 'msvc'
       'src/gmock-all.cc',
       'src/gmock_main.cc',
     ),
+    override_options: override_cpp,
     include_directories: [gtest_incdir, gmock_incdir],
   )
 
@@ -51,6 +53,7 @@ else
     files('src/gmock-all.cc'),
     #can't do the following because of dllimport
     #dependencies: gtest_dep,
+    override_options: override_cpp,
     dependencies: dependency('threads'),
     include_directories: [gtest_incdir, gmock_incdir],
     link_with: gtest_lib,
@@ -61,6 +64,7 @@ else
     files('src/gmock_main.cc'),
     #can't do the following because of dllimport
     #dependencies: gmock_dep,
+    override_options: override_cpp,
     include_directories: [gtest_incdir, gmock_incdir],
     link_with: [gtest_lib, gmock_lib],
   )
