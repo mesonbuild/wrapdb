@@ -19,6 +19,7 @@ spdlog_lib = library(
   include_directories: inc,
   dependencies: spdlog_dependencies,
   cpp_args: spdlog_compile_args,
+  override_options: 'cpp_std=c++17',
   soversion: version_parts[0] + '.' + version_parts[1],
   version: meson.project_version(),
   install: true,
