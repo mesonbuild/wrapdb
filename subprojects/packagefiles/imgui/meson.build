@@ -178,6 +178,10 @@ if host_machine.system() == 'windows'
   )
 endif
 
+# workaround issue (#14939) in Meson 1.8.4 - 1.9.0, where
+# default_options:['cpp_std=c++17'] doesn't work under certain circumstances
+override_opts = ['cpp_std=c++17']
+
 imgui = library(
   'imgui',
   sources,
@@ -186,6 +190,7 @@ imgui = library(
   dependencies: dependencies,
   include_directories: include_dirs,
   install: true,
+  override_options: override_opts,
 )
 
 if host_machine.system() == 'windows'
