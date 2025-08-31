@@ -20,6 +20,8 @@ import json
 from pathlib import Path
 import subprocess
 
+from utils import format_meson
+
 FORMAT_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 
 def main() -> None:
@@ -38,9 +40,7 @@ def main() -> None:
                 patch_dir = Path('subprojects', 'packagefiles', patch_dir_name)
                 files += [f for f in patch_dir.rglob('*') if f.name in FORMAT_FILES]
 
-    if files:
-        cmd = ['meson', 'format', '--configuration', './meson.format', '--inplace']
-        subprocess.run(cmd + files, check=True)
+    format_meson(files)
 
 
 if __name__ == '__main__':
