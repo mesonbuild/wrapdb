@@ -3,7 +3,7 @@ project(
   'cpp',
   license: 'Zlib',
   version: '3.0.1',
-  default_options: ['cpp_std=c++17', 'wrap_mode=forcefallback'],
+  default_options: ['wrap_mode=forcefallback'],
   meson_version: '>=0.64.0',
 )
 
@@ -45,6 +45,10 @@ else
     language: 'cpp',
   )
 endif
+
+# workaround issue (#14939) in Meson 1.8.4 - 1.9.0, where
+# default_options:['cpp_std=c++17'] doesn't work under certain circumstances
+override_opts = ['cpp_std=c++17']
 
 subdir('src/SFML')
 

@@ -42,4 +42,5 @@ graphics_lib = library(
   include_directories: [glad_inc, pub_inc, priv_inc, stb_inc],
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
+  override_options: override_opts,
 )

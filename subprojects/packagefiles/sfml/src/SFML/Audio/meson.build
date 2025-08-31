@@ -49,6 +49,7 @@ audio_lib = library(
   cpp_args: audio_cpp_args,
   link_with: system_lib,
   include_directories: [pub_inc, priv_inc, mp3_inc],
+  override_options: override_opts,
   dependencies: [
     miniaudio_dep,
     flac_dep,
