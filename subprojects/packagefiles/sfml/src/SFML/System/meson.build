@@ -22,4 +22,5 @@ system_lib = library(
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_SYSTEM_EXPORTS' : '-DSFML_STATIC',
   include_directories: [pub_inc, priv_inc],
   dependencies: [thread_dep, winmm_dep],
+  override_options: override_opts,
 )

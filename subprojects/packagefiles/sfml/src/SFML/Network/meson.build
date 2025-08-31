@@ -20,4 +20,5 @@ network_lib = library(
   include_directories: [pub_inc, priv_inc],
   link_with: system_lib,
   dependencies: w32_dep,
+  override_options: override_opts,
 )
