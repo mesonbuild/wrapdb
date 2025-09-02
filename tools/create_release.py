@@ -26,7 +26,7 @@ import subprocess
 import json
 
 from pathlib import Path
-from utils import is_ci, is_debianlike, read_wrap, write_wrap
+from utils import Releases, is_ci, is_debianlike, read_wrap, write_wrap
 
 class CreateRelease:
     def __init__(self, repo: T.Optional[str], token: T.Optional[str], tag: str):
@@ -155,8 +155,7 @@ class CreateRelease:
         self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
 
 def run(repo: T.Optional[str], token: T.Optional[str]) -> None:
-    with open('releases.json', 'r') as f:
-        releases = json.load(f)
+    releases = Releases.load()
     stdout = subprocess.check_output(['git', 'tag'])
     tags = [t.strip() for t in stdout.decode().splitlines()]
     for name, info in releases.items():

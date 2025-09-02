@@ -17,16 +17,14 @@
 from __future__ import annotations
 from argparse import ArgumentParser
 from hashlib import sha256
-import json
 from pathlib import Path
 import subprocess
 
-from utils import read_wrap, write_wrap, wrap_path
+from utils import Releases, read_wrap, write_wrap, wrap_path
 
 class Internalizer:
     def __init__(self, all=False):
-        with open('releases.json') as fh:
-            releases = json.load(fh)
+        releases = Releases.load()
         tags = set(
             subprocess.check_output(['git', 'tag'], text=True).splitlines()
         )

@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
+from utils import Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -181,19 +181,13 @@ if T.TYPE_CHECKING:
         skip_tests: bool
 
 
-    class ReleasesProject(T.TypedDict, total=False):
-        dependency_names: list[str]
-        program_names: list[str]
-        versions: T.Required[list[str]]
-
-
 class TestReleases(unittest.TestCase):
     # requires casts for special keys e.g. broken_*
     ci_config: dict[str, CiConfigProject]
     fatal_warnings: bool
     annotate_context: bool
     skip_build: bool
-    releases: dict[str, ReleasesProject]
+    releases: Releases
     skip: list[str]
     tags: set[str]
     timeout_multiplier: float
@@ -216,14 +210,12 @@ class TestReleases(unittest.TestCase):
             print(f'Ignoring unreachable tags: {stdout.decode().splitlines()}')
 
         try:
-            fn = 'releases.json'
-            with open(fn, 'r', encoding='utf-8') as f:
-                cls.releases = json.load(f)
+            cls.releases = Releases.load()
             fn = 'ci_config.json'
             with open(fn, 'r', encoding='utf-8') as f:
                 cls.ci_config = json.load(f)
-        except json.decoder.JSONDecodeError:
-            raise RuntimeError(f'file {fn} is malformed')
+        except json.decoder.JSONDecodeError as ex:
+            raise RuntimeError('metadata is malformed') from ex
 
         system = platform.system().lower()
         cls.skip = T.cast(T.List[str], cls.ci_config[f'broken_{system}'])
