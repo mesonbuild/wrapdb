@@ -30,7 +30,7 @@ import typing as T
 
 import requests
 
-from utils import read_wrap, wrap_path
+from utils import Releases, read_wrap, wrap_path
 
 WRAP_URL_TEMPLATE = (
     'https://github.com/mesonbuild/wrapdb/blob/master/subprojects/{0}.wrap'
@@ -58,12 +58,6 @@ class AnityaPackage(T.TypedDict):
     project: str
     stable_version: str
     version: str
-
-
-class WrapInfo(T.TypedDict):
-    versions: list[str]
-    dependency_names: list[str]
-    program_names: list[str]
 
 
 @cache
@@ -107,24 +101,19 @@ def get_upstream_versions() -> dict[str, str]:
 
 
 @cache
-def get_releases(commit=None) -> dict[str, WrapInfo]:
-    '''Parse and return releases.json for the specified commit or the working
-    tree.'''
-    if commit is not None:
-        data = subprocess.check_output(
-            ['git', 'cat-file', 'blob', f'{commit}:releases.json'], text=True
-        )
-    else:
-        with open('releases.json') as f:
-            data = f.read()
-    return json.loads(data)
+def get_commit_releases(commit: str) -> Releases:
+    '''Parse and return releases.json for the specified commit.'''
+    data = subprocess.check_output(
+        ['git', 'cat-file', 'blob', f'{commit}:releases.json'], text=True
+    )
+    return Releases(json.loads(data))
 
 
 def get_wrap_versions() -> dict[str, str]:
     '''Return a dict: wrap_name -> wrapdb_version.'''
     return {
         name: info['versions'][0].split('-')[0]
-        for name, info in get_releases().items()
+        for name, info in Releases.load().items()
         if name not in DEPRECATED_WRAPS
     }
 
@@ -132,7 +121,7 @@ def get_wrap_versions() -> dict[str, str]:
 def get_port_wraps() -> set[str]:
     '''Return the names of wraps that have a patch directory.'''
     ports = set()
-    for name, info in get_releases().items():
+    for name, info in Releases.load().items():
         wrap = read_wrap(name)
         if wrap.has_option('wrap-file', 'patch_directory'):
             ports.add(name)
@@ -190,17 +179,9 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
         f.write(''.join(lines))
 
 
-def write_releases(releases: dict[str, WrapInfo]) -> None:
-    '''Write modified releases.json.'''
-    with open('releases.json.new', 'w') as f:
-        json.dump(releases, f, indent=2, sort_keys=True)
-        f.write('\n')
-    os.rename('releases.json.new', 'releases.json')
-
-
 def update_revisions(args: Namespace) -> None:
     # run queries
-    releases = get_releases()
+    releases = Releases.load()
     cur_vers = get_wrap_versions()
 
     # decide what to update
@@ -217,7 +198,7 @@ def update_revisions(args: Namespace) -> None:
         print(f'Updating {name} revision...')
         cur_rev = int(releases[name]['versions'][0].split('-')[1])
         releases[name]['versions'].insert(0, f'{cur_vers[name]}-{cur_rev + 1}')
-    write_releases(releases)
+    releases.save()
 
 
 def do_autoupdate(args: Namespace) -> None:
@@ -226,7 +207,7 @@ def do_autoupdate(args: Namespace) -> None:
         return update_revisions(args)
 
     # run queries
-    releases = get_releases()
+    releases = Releases.load()
     cur_vers = get_wrap_versions()
     upstream_vers = get_upstream_versions()
     ports = get_port_wraps()
@@ -257,7 +238,7 @@ def do_autoupdate(args: Namespace) -> None:
                     print(f'Updating {name}...')
                 update_wrap(name, cur_ver, upstream_ver)
                 releases[name]['versions'].insert(0, f'{upstream_ver}-1')
-                write_releases(releases)
+                releases.save()
         except Exception as e:
             print(e, file=sys.stderr)
             failures += 1
@@ -266,8 +247,8 @@ def do_autoupdate(args: Namespace) -> None:
 
 
 def do_commit(args: Namespace) -> None:
-    old_releases = get_releases('HEAD')
-    new_releases = get_releases()
+    old_releases = get_commit_releases('HEAD')
+    new_releases = Releases.load()
 
     # we don't validate any invariants checked by sanity_checks.py
     changed_wraps = [

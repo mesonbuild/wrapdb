@@ -15,18 +15,15 @@
 # limitations under the License.
 
 from __future__ import annotations
-import json
 from pathlib import Path
 import subprocess
 
-from utils import format_meson, read_wrap
+from utils import Releases, format_meson, read_wrap
 
 FORMAT_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 
 def main() -> None:
-    with open('releases.json', 'r', encoding='utf-8') as f:
-        releases = json.load(f)
-
+    releases = Releases.load()
     tags = set(subprocess.check_output(['git', 'tag', '--merged'], text=True).splitlines())
 
     files = []

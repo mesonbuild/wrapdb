@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from __future__ import annotations
+import abc
 import configparser
 from contextlib import contextmanager
 import functools
 import io
+import json
 import operator
 import os
 from pathlib import Path
@@ -105,6 +107,32 @@ class Version:
 
         # versions are equal, so compare revisions
         return comparator(self._r, other._r)
+
+class _JSONFile(abc.ABC):
+    FILENAME: str
+
+    def __init__(self, _: T.Any): ...
+
+    @classmethod
+    def load(cls) -> T.Self:
+        with open(cls.FILENAME, encoding='utf-8') as f:
+            return cls(json.load(f))
+
+    def encode(self) -> str:
+        return json.dumps(self, indent=2, sort_keys=True) + '\n'
+
+    def save(self) -> None:
+        with open(f'{self.FILENAME}.new', 'w', encoding='utf-8') as f:
+            f.write(self.encode())
+        os.rename(f'{self.FILENAME}.new', self.FILENAME)
+
+class ProjectReleases(T.TypedDict):
+    dependency_names: T.NotRequired[list[str]]
+    program_names: T.NotRequired[list[str]]
+    versions: list[str]
+
+class Releases(dict[str, ProjectReleases], _JSONFile):
+    FILENAME = 'releases.json'
 
 def wrap_path(name: str) -> Path:
     return Path('subprojects', f'{name}.wrap')
