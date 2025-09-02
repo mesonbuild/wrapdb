@@ -16,15 +16,15 @@ from __future__ import annotations
 from contextlib import contextmanager
 import functools
 import operator
-import re
 import os
-import sys
-import typing as T
 from pathlib import Path
 import platform
+import re
 import subprocess
+import sys
 import time
 import venv
+import typing as T
 
 # a helper class which implements the same version ordering as RPM
 class Version:
