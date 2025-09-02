@@ -307,7 +307,9 @@ class TestReleases(unittest.TestCase):
                 if patch_path:
                     with self.subTest(step='patch_directory'):
                         self.assertTrue(patch_path.is_dir())
-                        # FIXME: Not all wraps currently complies, only check for wraps we modify.
+                        # Don't recheck unchanged projects that may have
+                        # been formatted with an older Meson.  Also, format
+                        # checks are slow.
                         if extra_checks:
                             self.check_files(name, patch_path)
 
@@ -666,25 +668,21 @@ class TestReleases(unittest.TestCase):
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
         not_permitted: list[Path] = []
-        unformatted: list[Path] = []
+        check_format: list[Path] = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
             if f.name in FORMAT_CHECK_FILES:
-                try:
-                    format_meson([f], check=True)
-                except FormattingError:
-                    unformatted.append(f)
+                check_format.append(f)
             if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
             self.fail(f'Not permitted files found: {not_permitted_str}')
-        if unformatted:
-            unformatted_str = ', '.join([str(f) for f in unformatted])
-            self.fail(
-                f'''Not formatted files found: {unformatted_str}
-Run tools/format.py to format these files.''')
+        try:
+            format_meson(check_format, check=True)
+        except FormattingError:
+            self.fail('Unformatted files found.  Run tools/format.py to format these files.')
 
     @unittest.skipUnless('TEST_MESON_VERSION_DEPS' in os.environ, 'Run manually only')
     def test_meson_version_deps(self) -> None:
