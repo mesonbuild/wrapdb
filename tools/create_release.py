@@ -26,7 +26,7 @@ import subprocess
 import json
 
 from pathlib import Path
-from utils import Releases, is_ci, is_debianlike, read_wrap, write_wrap
+from utils import CIConfig, Releases, is_ci, is_debianlike, read_wrap, write_wrap
 
 class CreateRelease:
     def __init__(self, repo: T.Optional[str], token: T.Optional[str], tag: str):
@@ -59,11 +59,9 @@ class CreateRelease:
         generator = Path(srcdir, 'generator.sh')
         if generator.exists():
             try:
-                fn = 'ci_config.json'
-                with open(fn, 'r') as f:
-                    ci = json.load(f)
-            except json.decoder.JSONDecodeError:
-                raise RuntimeError(f'file {fn} is malformed')
+                ci = CIConfig.load()
+            except json.decoder.JSONDecodeError as ex:
+                raise RuntimeError(f'CI config is malformed') from ex
 
             debian_packages = ci.get(self.name, {}).get('debian_packages', [])
             if debian_packages and is_debianlike():
