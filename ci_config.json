@@ -93,7 +93,7 @@
     "_comment": [
       "- Force-enable fontconfig to avoid https://gitlab.freedesktop.org/cairo/cairo/-/issues/862",
       "- Prevent libxml2 from requiring iconv or Python",
-      "- Don't fail on proxy-libintl Meson warning - https://github.com/frida/proxy-libintl/pull/6",
+      "- fontconfig warns on v1 wraps; fixed in next release",
       "- Some tests fails and they are still run despite -Dtests=disabled"
     ],
     "build_options": [
@@ -270,6 +270,9 @@
     }
   },
   "fontconfig": {
+    "_comment": [
+      "- fontconfig warns on v1 wraps; fixed in next release"
+    ],
     "alpine_packages": [
       "bash"
     ],
@@ -400,7 +403,7 @@
   "glib": {
     "_comment": [
       "- Disable unit tests because upstream does not run them on Windows and some are flaky on Linux.",
-      "- Don't fail on proxy-libintl Meson warning - https://github.com/frida/proxy-libintl/pull/6"
+      "- Uses c_std=gnu99 on Windows"
     ],
     "alpine_packages": [
       "gettext-tiny-dev"
@@ -1123,8 +1126,8 @@
     "_comment": [
       "- Avoid sysprof build errors on Windows",
       "- Prevent libxml2 from requiring Python",
+      "- fontconfig warns on v1 wraps; fixed in next release",
       "- skip dependency checks for optionally provided dependencies",
-      "- harfbuzz triggers warnings",
       "- Known test failure: https://gitlab.gnome.org/GNOME/pango/-/issues/682"
     ],
     "build_options": [
@@ -1166,7 +1169,10 @@
     ]
   },
   "pkgconf": {
-    "_comment": "Tests cannot be run without kyua, which is difficult to install when not packaged.",
+    "_comment": [
+      "test_env.sh.in has missing substitutions",
+      "Tests cannot be run without kyua, which is difficult to install when not packaged."
+    ],
     "fatal_warnings": false,
     "build_options": [
       "pkgconf:tests=disabled"
@@ -1361,7 +1367,7 @@
   },
   "slirp": {
     "_comment": [
-      "- proxy-libintl produces Meson warnings"
+      "- Uses c_std=gnu99 on Windows"
     ],
     "fatal_warnings": false
   },
