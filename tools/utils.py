@@ -134,6 +134,31 @@ class ProjectReleases(T.TypedDict):
 class Releases(dict[str, ProjectReleases], _JSONFile):
     FILENAME = 'releases.json'
 
+class ProjectCIConfig(T.TypedDict):
+    build_on: T.NotRequired[dict[str, bool]]
+    build_options: T.NotRequired[list[str]]
+    fatal_warnings: T.NotRequired[bool]
+    has_provides: T.NotRequired[bool]
+    skip_dependency_check: T.NotRequired[list[str]]
+    skip_program_check: T.NotRequired[list[str]]
+    skip_tests: T.NotRequired[bool]
+    test_options: T.NotRequired[list[str]]
+
+    alpine_packages: T.NotRequired[list[str]]
+    brew_packages: T.NotRequired[list[str]]
+    choco_packages: T.NotRequired[list[str]]
+    debian_packages: T.NotRequired[list[str]]
+    msys_packages: T.NotRequired[list[str]]
+    python_packages: T.NotRequired[list[str]]
+
+class CIConfig(dict[str, ProjectCIConfig], _JSONFile):
+    FILENAME = 'ci_config.json'
+
+    @property
+    def broken(self) -> list[str]:
+        system = platform.system().lower()
+        return T.cast('list[str]', self.get(f'broken_{system}', []))
+
 def wrap_path(name: str) -> Path:
     return Path('subprojects', f'{name}.wrap')
 

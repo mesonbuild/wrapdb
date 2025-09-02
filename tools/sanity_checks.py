@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
+from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -163,27 +163,8 @@ PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
 
-if T.TYPE_CHECKING:
-    class CiConfigProject(T.TypedDict, total=False):
-        build_options: list[str]
-        build_on: dict[str, bool]
-        alpine_packages: list[str]
-        brew_packages: list[str]
-        choco_packages: list[str]
-        debian_packages: list[str]
-        msys_packages: list[str]
-        python_packages: list[str]
-        fatal_warnings: bool
-        has_provides: bool
-        skip_dependency_check: list[str]
-        skip_program_check: list[str]
-        test_options: list[str]
-        skip_tests: bool
-
-
 class TestReleases(unittest.TestCase):
-    # requires casts for special keys e.g. broken_*
-    ci_config: dict[str, CiConfigProject]
+    ci_config: CIConfig
     fatal_warnings: bool
     annotate_context: bool
     skip_build: bool
@@ -211,14 +192,10 @@ class TestReleases(unittest.TestCase):
 
         try:
             cls.releases = Releases.load()
-            fn = 'ci_config.json'
-            with open(fn, 'r', encoding='utf-8') as f:
-                cls.ci_config = json.load(f)
+            cls.ci_config = CIConfig.load()
         except json.decoder.JSONDecodeError as ex:
             raise RuntimeError('metadata is malformed') from ex
 
-        system = platform.system().lower()
-        cls.skip = T.cast(T.List[str], cls.ci_config[f'broken_{system}'])
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
         cls.annotate_context = os.environ.get('TEST_ANNOTATE_CONTEXT') == 'yes'
         cls.skip_build = os.environ.get('TEST_SKIP_BUILD') == 'yes'
@@ -345,7 +322,7 @@ class TestReleases(unittest.TestCase):
                             if not self.skip_build:
                                 self.check_new_release(name, deps=deps, progs=progs)
                                 with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
-                                    self.assertNotIn(name, self.skip)
+                                    self.assertNotIn(name, self.ci_config.broken)
                                 self.check_meson_version(name, ver, patch_path)
                         if patch_path:
                             self.check_project_args(name, Path('subprojects') / wrap_section['directory'])
@@ -367,7 +344,7 @@ class TestReleases(unittest.TestCase):
         failed = []
         errored = []
         for name, info in self.releases.items():
-            if name in self.skip:
+            if name in self.ci_config.broken:
                 skipped.append(name)
                 continue
             try:
@@ -550,7 +527,7 @@ class TestReleases(unittest.TestCase):
                 raise
         subprocess.check_call(['meson', 'install', '-C', builddir, '--destdir', 'pkg'])
 
-    def install_packages(self, ci: CiConfigProject) -> dict[str, str]:
+    def install_packages(self, ci: ProjectCIConfig) -> dict[str, str]:
         debian_packages = ci.get('debian_packages', [])
         brew_packages = ci.get('brew_packages', [])
         choco_packages = ci.get('choco_packages', [])

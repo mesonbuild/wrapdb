@@ -2,7 +2,7 @@
   "_comment": [
     "This is intentionally undocumented in README.md, do not use it.",
     "Using it is an automatic CI error.",
-    "broken_linux, broken_windows and broken_macos are lists of wraps that are known",
+    "broken_linux, broken_windows and broken_darwin are lists of wraps that are known",
     "to be broken on the CI and ***MUST*** get repaired before updates",
     "will be accepted. If upstream does not support an Operating System,",
     "explicitly disable that Operating System in build_on.",
