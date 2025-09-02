@@ -211,12 +211,14 @@ class TestReleases(unittest.TestCase):
             self.assertIn(name, self.releases)
             self.assertIn(version, self.releases[name]['versions'], f'for {name}')
 
-        # Verify keys are sorted
-        self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
-
         for name, info in self.releases.items():
             for k in info.keys():
                 self.assertIn(k, PERMITTED_KEYS)
+
+        try:
+            Releases.format(check=True)
+        except FormattingError:
+            self.fail('releases.json is not formatted.  Run tools/format.py to format it.')
 
     def get_patch_path(self, wrap_section):
         patch_directory = wrap_section.get('patch_directory')
