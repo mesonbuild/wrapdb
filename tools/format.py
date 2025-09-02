@@ -37,6 +37,7 @@ def main() -> None:
                 files += [f for f in patch_dir.rglob('*') if f.name in FORMAT_FILES]
 
     format_meson(files)
+    Releases.format()
 
 
 if __name__ == '__main__':

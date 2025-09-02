@@ -126,6 +126,16 @@ class _JSONFile(abc.ABC):
             f.write(self.encode())
         os.rename(f'{self.FILENAME}.new', self.FILENAME)
 
+    @classmethod
+    def format(cls, *, check: bool = False) -> None:
+        contents = Path(cls.FILENAME).read_text(encoding='utf-8')
+        parsed = cls.load()
+        if contents != parsed.encode():
+            if check:
+                raise FormattingError
+            else:
+                parsed.save()
+
 class ProjectReleases(T.TypedDict):
     dependency_names: T.NotRequired[list[str]]
     program_names: T.NotRequired[list[str]]
