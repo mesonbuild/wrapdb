@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 import io
 import sys
 import configparser
@@ -43,13 +44,13 @@ class CreateRelease:
             self.create_source_fallback()
             self.create_wrap_file()
 
-    def read_wrap(self):
+    def read_wrap(self) -> None:
         filename = Path('subprojects', f'{self.name}.wrap')
         self.wrap = configparser.ConfigParser(interpolation=None)
         self.wrap.read(filename)
         self.wrap_section = self.wrap[self.wrap.sections()[0]]
 
-    def create_patch_zip(self):
+    def create_patch_zip(self) -> None:
         patch_directory = self.wrap_section.get('patch_directory')
         if patch_directory is None:
             return
@@ -99,7 +100,7 @@ class CreateRelease:
         self.wrap_section['patch_url'] = f'https://wrapdb.mesonbuild.com/v2/{self.tag}/get_patch'
         self.wrap_section['patch_hash'] = patch_hash
 
-    def create_wrap_file(self):
+    def create_wrap_file(self) -> None:
         self.wrap_section['wrapdb_version'] = self.version
 
         filename = Path(self.tempdir, f'{self.name}.wrap')
@@ -117,7 +118,7 @@ class CreateRelease:
         print(filename.read_text())
         self.upload(filename, 'text/plain')
 
-    def find_upload_url(self):
+    def find_upload_url(self) -> None:
         if not self.repo or not self.token:
             return
         api = f'https://api.github.com/repos/{self.repo}/releases'
@@ -139,7 +140,7 @@ class CreateRelease:
         self.upload_url = response.json()['upload_url'].replace('{?name,label}','')
         print('Created release:', self.upload_url)
 
-    def upload(self, path: Path, mimetype: str):
+    def upload(self, path: Path, mimetype: str) -> None:
         if not self.repo or not self.token:
             # Write files locally when not run on CI
             with Path('subprojects', 'packagecache', path.name).open('wb') as f:
@@ -153,7 +154,7 @@ class CreateRelease:
         response = requests.post(self.upload_url, headers=headers, params=params, data=path.read_bytes())
         response.raise_for_status()
 
-    def create_source_fallback(self):
+    def create_source_fallback(self) -> None:
         response = requests.get(
             self.wrap_section['source_url'],
             headers={'User-Agent': 'wrapdb/0'},
@@ -164,7 +165,7 @@ class CreateRelease:
         self.upload(filename, 'application/zip')
         self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
 
-def run(repo: T.Optional[str], token: T.Optional[str]):
+def run(repo: T.Optional[str], token: T.Optional[str]) -> None:
     with open('releases.json', 'r') as f:
         releases = json.load(f)
     stdout = subprocess.check_output(['git', 'tag'])

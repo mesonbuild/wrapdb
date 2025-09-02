@@ -20,12 +20,12 @@ import zipfile
 import shutil
 from pathlib import Path
 
-def read_wrap(filename: Path):
+def read_wrap(filename: Path) -> configparser.SectionProxy:
     wrap = configparser.ConfigParser(interpolation=None)
     wrap.read(filename)
     return wrap[wrap.sections()[0]]
 
-def read_archive_files(path: Path, base_path: Path):
+def read_archive_files(path: Path, base_path: Path) -> set[Path]:
     if path.suffix == '.zip':
         with zipfile.ZipFile(path, 'r') as archive:
             archive_files = set(base_path / i for i in archive.namelist())

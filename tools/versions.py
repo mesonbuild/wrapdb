@@ -94,7 +94,7 @@ def get_upstream_versions() -> dict[str, str]:
         if len(packages['items']) < items_per_page:
             break
 
-    def sub(name, old, new):
+    def sub(name: str, old: str, new: str) -> None:
         if name in versions:
             versions[name] = re.sub(old, new, versions[name])
     sub('icu', '-', '.')
