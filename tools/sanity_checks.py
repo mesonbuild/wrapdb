@@ -158,7 +158,6 @@ SOURCE_FILENAME_PREFIXES = {
     'libtomcrypt': 'crypt',
 }
 FORMAT_CHECK_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
-NO_TABS_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 SUBPROJECTS_METADATA_FILES = {'subprojects/.gitignore'}
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
@@ -666,7 +665,6 @@ class TestReleases(unittest.TestCase):
         return dict(opt.split('=', 1) for opt in opts if opt is not None)
 
     def check_files(self, subproject: str, patch_path: Path) -> None:
-        tabs: list[Path] = []
         not_permitted: list[Path] = []
         unformatted: list[Path] = []
         for f in patch_path.rglob('*'):
@@ -679,11 +677,6 @@ class TestReleases(unittest.TestCase):
                     unformatted.append(f)
             if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
-            elif f.name in NO_TABS_FILES and '\t' in f.read_text(encoding='utf-8'):
-                tabs.append(f)
-        if tabs:
-            tabs_str = ', '.join([str(f) for f in tabs])
-            self.fail(f'Tabs in meson files are not allowed: {tabs_str}')
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
             self.fail(f'Not permitted files found: {not_permitted_str}')
