@@ -53,7 +53,7 @@ test(
   executable(
     'tests_exe',
     test_src,
-    override_options: 'cpp_std=c++17',
+    override_options: override_cpp,
     dependencies: [catch2_dep, spdlog_dep],
   ),
 )
