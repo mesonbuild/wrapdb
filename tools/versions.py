@@ -26,7 +26,7 @@ import re
 import subprocess
 import sys
 import time
-from typing import TypedDict
+import typing as T
 
 import requests
 
@@ -42,14 +42,14 @@ DEPRECATED_WRAPS = set([
 ])
 
 
-class AnityaPackageList(TypedDict):
+class AnityaPackageList(T.TypedDict):
     items: list[AnityaPackage]
     items_per_page: int
     page: int
     total_items: int
 
 
-class AnityaPackage(TypedDict):
+class AnityaPackage(T.TypedDict):
     distribution: str
     ecosystem: str
     name: str
@@ -58,7 +58,7 @@ class AnityaPackage(TypedDict):
     version: str
 
 
-class WrapInfo(TypedDict):
+class WrapInfo(T.TypedDict):
     versions: list[str]
     dependency_names: list[str]
     program_names: list[str]
