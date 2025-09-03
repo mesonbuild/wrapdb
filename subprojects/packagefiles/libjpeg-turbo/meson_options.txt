@@ -3,7 +3,7 @@ option(
     type: 'boolean',
 )
 option(
-    'jpeg-turbo',
+    'turbojpeg',
     type: 'feature',
 )
 option(
