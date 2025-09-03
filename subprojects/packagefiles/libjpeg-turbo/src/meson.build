@@ -125,8 +125,7 @@ jpeg_dep = declare_dependency(
 
 meson.override_dependency('libjpeg', jpeg_dep)
 
-if get_option('jpeg-turbo').allowed()
-
+if get_option('turbojpeg').allowed()
   install_headers('turbojpeg.h')
 
   turbojpeg12 = static_library(
@@ -177,8 +176,8 @@ if get_option('jpeg-turbo').allowed()
 endif
 
 if get_option('tests').require(
-  get_option('jpeg-turbo').allowed(),
-  error_message: 'jpeg-turbo feature needed',
+  get_option('turbojpeg').allowed(),
+  error_message: 'turbojpeg feature needed',
 ).allowed()
 
   tjunittest = executable(
