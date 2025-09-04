@@ -21,41 +21,7 @@ configure_file(
 
 install_headers('jmorecfg.h', 'jerror.h', 'jpeglib.h', jconfig_h)
 
-jpeg16_sources = [
-  'jcapistd.c',
-  'jccolor.c',
-  'jcdiffct.c',
-  'jclossls.c',
-  'jcmainct.c',
-  'jcprepct.c',
-  'jcsample.c',
-  'jdapistd.c',
-  'jdcolor.c',
-  'jddiffct.c',
-  'jdlossls.c',
-  'jdmainct.c',
-  'jdpostct.c',
-  'jdsample.c',
-  'jutils.c',
-]
-jpeg12_sources = [
-  jpeg16_sources,
-  'jccoefct.c',
-  'jcdctmgr.c',
-  'jdcoefct.c',
-  'jddctmgr.c',
-  'jdmerge.c',
-  'jfdctfst.c',
-  'jfdctint.c',
-  'jidctflt.c',
-  'jidctfst.c',
-  'jidctint.c',
-  'jidctred.c',
-  'jquant1.c',
-  'jquant2.c',
-]
-sources = [
-  jpeg12_sources,
+sources = files(
   'jcapimin.c',
   'jchuff.c',
   'jcicc.c',
@@ -83,30 +49,92 @@ sources = [
   'jmemmgr.c',
   'jmemnobs.c',
   'jpeg_nbits.c',
-  # TODO: `with_arith_dec` / `with_arith_enc` only.
+  'wrapper/jcapistd-12.c',
+  'wrapper/jcapistd-16.c',
+  'wrapper/jcapistd-8.c',
+  'wrapper/jccoefct-12.c',
+  'wrapper/jccoefct-8.c',
+  'wrapper/jccolor-12.c',
+  'wrapper/jccolor-16.c',
+  'wrapper/jccolor-8.c',
+  'wrapper/jcdctmgr-12.c',
+  'wrapper/jcdctmgr-8.c',
+  'wrapper/jcdiffct-12.c',
+  'wrapper/jcdiffct-16.c',
+  'wrapper/jcdiffct-8.c',
+  'wrapper/jclossls-12.c',
+  'wrapper/jclossls-16.c',
+  'wrapper/jclossls-8.c',
+  'wrapper/jcmainct-12.c',
+  'wrapper/jcmainct-16.c',
+  'wrapper/jcmainct-8.c',
+  'wrapper/jcprepct-12.c',
+  'wrapper/jcprepct-16.c',
+  'wrapper/jcprepct-8.c',
+  'wrapper/jcsample-12.c',
+  'wrapper/jcsample-16.c',
+  'wrapper/jcsample-8.c',
+  'wrapper/jdapistd-12.c',
+  'wrapper/jdapistd-16.c',
+  'wrapper/jdapistd-8.c',
+  'wrapper/jdcoefct-12.c',
+  'wrapper/jdcoefct-8.c',
+  'wrapper/jdcolor-12.c',
+  'wrapper/jdcolor-16.c',
+  'wrapper/jdcolor-8.c',
+  'wrapper/jddctmgr-12.c',
+  'wrapper/jddctmgr-8.c',
+  'wrapper/jddiffct-12.c',
+  'wrapper/jddiffct-16.c',
+  'wrapper/jddiffct-8.c',
+  'wrapper/jdlossls-12.c',
+  'wrapper/jdlossls-16.c',
+  'wrapper/jdlossls-8.c',
+  'wrapper/jdmainct-12.c',
+  'wrapper/jdmainct-16.c',
+  'wrapper/jdmainct-8.c',
+  'wrapper/jdmerge-12.c',
+  'wrapper/jdmerge-8.c',
+  'wrapper/jdpostct-12.c',
+  'wrapper/jdpostct-16.c',
+  'wrapper/jdpostct-8.c',
+  'wrapper/jdsample-12.c',
+  'wrapper/jdsample-16.c',
+  'wrapper/jdsample-8.c',
+  'wrapper/jfdctfst-12.c',
+  'wrapper/jfdctfst-8.c',
+  'wrapper/jfdctint-12.c',
+  'wrapper/jfdctint-8.c',
+  'wrapper/jidctflt-12.c',
+  'wrapper/jidctflt-8.c',
+  'wrapper/jidctfst-12.c',
+  'wrapper/jidctfst-8.c',
+  'wrapper/jidctint-12.c',
+  'wrapper/jidctint-8.c',
+  'wrapper/jidctred-12.c',
+  'wrapper/jidctred-8.c',
+  'wrapper/jquant1-12.c',
+  'wrapper/jquant1-8.c',
+  'wrapper/jquant2-12.c',
+  'wrapper/jquant2-8.c',
+  'wrapper/jutils-12.c',
+  'wrapper/jutils-16.c',
+  'wrapper/jutils-8.c',
+)
+
+sources += files(
+# TODO: `with_arith_dec` / `with_arith_enc` only.
   'jaricom.c',
   # TODO: `with_arith_enc` only
   'jcarith.c',
   # TODO: `with_arith_dec` only
   'jdarith.c',
-]
+)
 
-jpeg12 = static_library(
-  'jpeg12',
-  jpeg12_sources,
-  c_args: ['-DBITS_IN_JSAMPLE=12'],
-  pic: get_option('default_library') != 'static',
-)
-jpeg16 = static_library(
-  'jpeg16',
-  jpeg16_sources,
-  c_args: ['-DBITS_IN_JSAMPLE=16'],
-  pic: get_option('default_library') != 'static',
-)
 jpeg = library(
   'jpeg',
   sources,
-  link_whole: [jpeg12, jpeg16, simd],
+  link_whole: simd,
   soversion: so_version,
   vs_module_defs: vs_defs,
   install: true,
@@ -122,41 +150,31 @@ jpeg_dep = declare_dependency(
   include_directories: incdir,
   link_with: jpeg,
 )
-
 meson.override_dependency('libjpeg', jpeg_dep)
 
 if get_option('turbojpeg').allowed()
   install_headers('turbojpeg.h')
 
-  turbojpeg12 = static_library(
-    'turbojpeg12',
-    ['rdppm.c', 'wrppm.c'],
-    c_args: ['-DBITS_IN_JSAMPLE=12', '-DPPM_SUPPORTED'],
-    pic: get_option('default_library') != 'static',
-  )
-
-  turbojpeg16 = static_library(
-    'turbojpeg16',
-    ['rdppm.c', 'wrppm.c'],
-    c_args: ['-DBITS_IN_JSAMPLE=16', '-DPPM_SUPPORTED'],
-    pic: get_option('default_library') != 'static',
-  )
-
   turbojpeg = library(
     'turbojpeg',
-    sources + [
-      'turbojpeg.c',
-      'transupp.c',
+    sources,
+    files(
       'jdatadst-tj.c',
       'jdatasrc-tj.c',
       'rdbmp.c',
-      'rdppm.c',
+      'transupp.c',
+      'turbojpeg.c',
+      'wrapper/rdppm-12.c',
+      'wrapper/rdppm-16.c',
+      'wrapper/rdppm-8.c',
+      'wrapper/wrppm-12.c',
+      'wrapper/wrppm-16.c',
+      'wrapper/wrppm-8.c',
       'wrbmp.c',
-      'wrppm.c',
-    ],
+    ),
     c_args: ['-DBMP_SUPPORTED', '-DPPM_SUPPORTED'],
     install: true,
-    link_with: [jpeg12, jpeg16, simd, turbojpeg12, turbojpeg16],
+    link_whole: simd,
     soversion: '0.4.0',
   )
 
@@ -170,16 +188,13 @@ if get_option('turbojpeg').allowed()
     include_directories: incdir,
     link_with: turbojpeg,
   )
-
   meson.override_dependency('libturbojpeg', turbojpeg_dep)
-
 endif
 
 if get_option('tests').require(
   get_option('turbojpeg').allowed(),
   error_message: 'turbojpeg feature needed',
 ).allowed()
-
   tjunittest = executable(
     'tjunittest',
     ['tjunittest.c', 'tjutil.c', 'md5/md5.c', 'md5/md5hl.c'],
@@ -247,5 +262,4 @@ if get_option('tests').require(
       timeout: 120,
     )
   endforeach
-
 endif

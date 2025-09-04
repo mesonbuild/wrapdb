@@ -246,9 +246,9 @@ elif host_cpu in ['arm', 'aarch64']
       'HAVE_VLD1_U16_X2',
     ) and cdata_neon.get(
       'HAVE_VLD1Q_U8_X4',
-    ) and (cc.get_id() != 'gcc' or cc.version().version_compare(
-      '>= 12.0.0',
-    ))
+    ) and (
+      cc.get_id() != 'gcc' or cc.version().version_compare('>= 12.0.0')
+    )
 
     neon_intrinsics = get_option('neon-intrinsics').disable_auto_if(
       not default_neon_intrinsics,
