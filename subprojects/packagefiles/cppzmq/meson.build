@@ -14,13 +14,19 @@ cppzmq_dep = declare_dependency(
 )
 meson.override_dependency('cppzmq', cppzmq_dep)
 
-# install
+# install headers
 install_headers('zmq.hpp', 'zmq_addon.hpp')
+
+# install pkg-config file
+requires = []
+foreach dep : deps
+  requires += dep.name()
+endforeach
 import('pkgconfig').generate(
   name: meson.project_name(),
   description: 'C++ binding for libzmq',
   url: 'https://github.com/zeromq/cppzmq',
-  requires: deps,
+  requires: requires,
   install_dir: get_option('datadir') / 'pkgconfig',
 )
 
