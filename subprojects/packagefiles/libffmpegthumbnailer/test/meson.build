@@ -28,6 +28,7 @@ ffmpegthumbnailertest = executable(
   'videothumbnailertest.cpp',
   'videothumbnailerctest.cpp',
   cpp_args: '-DTEST_DATADIR="@0@"'.format(meson.current_source_dir()),
+  override_options: 'cpp_std=c++11',
   dependencies: [catch_dep, testdep],
 )
 
