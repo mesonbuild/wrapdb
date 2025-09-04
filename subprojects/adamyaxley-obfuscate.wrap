@@ -1,0 +1,9 @@
+[wrap-file]
+directory = Obfuscate-1.0.0
+source_url = https://github.com/adamyaxley/Obfuscate/archive/refs/tags/v1.0.0.tar.gz
+source_filename = Obfuscate-1.0.0.tar.gz
+source_hash = 7238e4cb757354e6c526562f12775a53344b3f8271ed4eebe31ca87502f1fc81
+patch_directory = adamyaxley-obfuscate
+
+[provide]
+dependency_names = Obfuscate
