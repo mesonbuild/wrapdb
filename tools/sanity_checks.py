@@ -157,6 +157,7 @@ SOURCE_FILENAME_PREFIXES = {
     'icu': 'icu4c',
     'libtomcrypt': 'crypt',
 }
+MIT_LICENSE_BLOCKS = {'expat', 'freeglut', 'glew', 'google-brotli'}
 FORMAT_CHECK_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 SUBPROJECTS_METADATA_FILES = {'subprojects/.gitignore'}
 PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
@@ -639,6 +640,7 @@ class TestReleases(unittest.TestCase):
     def check_files(self, subproject: str, patch_path: Path) -> None:
         not_permitted: list[Path] = []
         check_format: list[Path] = []
+        license_blocks: list[Path] = []
         for f in patch_path.rglob('*'):
             if f.is_dir():
                 continue
@@ -646,6 +648,8 @@ class TestReleases(unittest.TestCase):
                 check_format.append(f)
             if not self.is_permitted_file(subproject, f.name):
                 not_permitted.append(f)
+            if self.has_license_block(f):
+                license_blocks.append(f)
         if not_permitted:
             not_permitted_str = ', '.join([str(f) for f in not_permitted])
             self.fail(f'Not permitted files found: {not_permitted_str}')
@@ -654,6 +658,23 @@ class TestReleases(unittest.TestCase):
             format_wrap(subproject, check=True)
         except FormattingError:
             self.fail('Unformatted files found.  Run tools/format.py to format these files.')
+        if license_blocks and subproject not in MIT_LICENSE_BLOCKS and not (patch_path / 'LICENSE.build').exists():
+            license_blocks_str = ', '.join(str(f) for f in license_blocks)
+            self.fail(f"Found files {license_blocks_str} with license headers in a project without a LICENSE.build.  The LICENSE.build file in the patch ZIP defaults to MIT unless the patch directory has its own LICENSE.build, which should state the license for the wrap's build files.")
+
+    def has_license_block(self, path: Path) -> bool:
+        for line in path.read_text(encoding='utf-8').splitlines():
+            lower = line.strip().lower()
+            if lower and not lower.startswith('#'):
+                # first non-comment line
+                return False
+            if 'spdx-license-identifier:' in lower:
+                # allow pure MIT, matching the repo default
+                if not lower.endswith('spdx-license-identifier: mit'):
+                    return True
+            elif 'license' in lower:
+                return True
+        return False
 
     @unittest.skipUnless('TEST_MESON_VERSION_DEPS' in os.environ, 'Run manually only')
     def test_meson_version_deps(self) -> None:
