@@ -29,7 +29,7 @@ import sys
 import shutil
 
 from pathlib import Path
-from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson
+from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
@@ -211,12 +211,14 @@ class TestReleases(unittest.TestCase):
             self.assertIn(name, self.releases)
             self.assertIn(version, self.releases[name]['versions'], f'for {name}')
 
-        # Verify keys are sorted
-        self.assertEqual(sorted(self.releases.keys()), list(self.releases.keys()))
-
         for name, info in self.releases.items():
             for k in info.keys():
                 self.assertIn(k, PERMITTED_KEYS)
+
+        try:
+            Releases.format(check=True)
+        except FormattingError:
+            self.fail('releases.json is not formatted.  Run tools/format.py to format it.')
 
     def get_patch_path(self, wrap_section):
         patch_directory = wrap_section.get('patch_directory')
@@ -649,6 +651,7 @@ class TestReleases(unittest.TestCase):
             self.fail(f'Not permitted files found: {not_permitted_str}')
         try:
             format_meson(check_format, check=True)
+            format_wrap(subproject, check=True)
         except FormattingError:
             self.fail('Unformatted files found.  Run tools/format.py to format these files.')
 

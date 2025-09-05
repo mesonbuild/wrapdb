@@ -126,6 +126,16 @@ class _JSONFile(abc.ABC):
             f.write(self.encode())
         os.rename(f'{self.FILENAME}.new', self.FILENAME)
 
+    @classmethod
+    def format(cls, *, check: bool = False) -> None:
+        contents = Path(cls.FILENAME).read_text(encoding='utf-8')
+        parsed = cls.load()
+        if contents != parsed.encode():
+            if check:
+                raise FormattingError
+            else:
+                parsed.save()
+
 class ProjectReleases(T.TypedDict):
     dependency_names: T.NotRequired[list[str]]
     program_names: T.NotRequired[list[str]]
@@ -251,3 +261,38 @@ def format_meson(files: T.Iterable[Path], *, check: bool = False) -> None:
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as ex:
         raise FormattingError from ex
+
+def format_wrap(name: str, *, check: bool = False) -> None:
+    '''Simple format cleanups:
+       - Strip leading/trailing whitespace from lines
+       - Fix line endings
+       - Ensure key and value are separated by ' = '
+       - Ensure file ends in a newline
+       - Ensure sections are separated by blank lines and there are no other
+         blank lines
+       Does not understand continuation lines.
+    '''
+    path = wrap_path(name)
+    old_contents = path.read_text(encoding='utf-8')
+    new = []
+    for line in old_contents.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        elif line[0] in {'#', ';'}:
+            new.append(line)
+        elif line[0] == '[':
+            if new:
+                new.append('')
+            new.append(line)
+        else:
+            k, v = line.split('=', 1)
+            new.append(f'{k.strip()} = {v.strip()}')
+    new_contents = '\n'.join(new) + '\n'
+
+    if old_contents != new_contents:
+        if check:
+            raise FormattingError
+        else:
+            with path.open('w', encoding='utf-8') as f:
+                f.write(new_contents)
