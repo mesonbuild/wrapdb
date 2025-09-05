@@ -1,0 +1,9 @@
+[wrap-file]
+directory = printf-6.2.0
+source_url = https://github.com/eyalroz/printf/archive/refs/tags/v6.2.0.zip
+source_filename = eyalroz-printf-6.2.0.zip
+source_hash = 42f40b07cf1012d7a69e2c34d44b118dc3a70530f3e2b591962cfe7a7c133fc7
+patch_directory = eyalroz-printf
+
+[provide]
+dependency_names = eyalroz-printf
