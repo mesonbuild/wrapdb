@@ -133,14 +133,14 @@
       "20200225.2-1"
     ]
   },
-	"adamyaxley-obfuscate": {
-		"dependency_names": [
-			"Obfuscate"
-		],
-		"versions": [
-			"1.0.0-1"
-		]
-	},
+  "adamyaxley-obfuscate": {
+    "dependency_names": [
+      "Obfuscate"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
   "apache-orc": {
     "dependency_names": [
       "orc"
@@ -1219,6 +1219,7 @@
       "gdbus-codegen"
     ],
     "versions": [
+      "2.86.0-1",
       "2.84.4-1",
       "2.84.3-1",
       "2.84.2-1",
