@@ -133,14 +133,14 @@
       "20200225.2-1"
     ]
   },
-	"adamyaxley-obfuscate": {
-		"dependency_names": [
-			"Obfuscate"
-		],
-		"versions": [
-			"1.0.0-1"
-		]
-	},
+  "adamyaxley-obfuscate": {
+    "dependency_names": [
+      "Obfuscate"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
   "apache-orc": {
     "dependency_names": [
       "orc"
@@ -3556,6 +3556,7 @@
       "quill"
     ],
     "versions": [
+      "10.1.0-1",
       "10.0.1-1",
       "10.0.0-1",
       "9.0.3-1",
