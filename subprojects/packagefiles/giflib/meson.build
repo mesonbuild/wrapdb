@@ -2,11 +2,15 @@ project(
   'giflib',
   'c',
   version: '5.2.2',
-  default_options: [
-    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
-  ],
   meson_version: '>=0.59.0',
+  license: 'MIT',
 )
+
+if meson.version().version_compare('>=1.3.0')
+  override_std = 'c_std=gnu99,c99'
+else
+  override_std = 'c_std=gnu99'
+endif
 
 cc = meson.get_compiler('c')
 cc_is_msvc = cc.get_id() in ['clang-cl', 'msvc']
@@ -43,8 +47,8 @@ endforeach
 
 # No `strtok_r` when building with MSVC, use `strtok_s` instead.
 if (host_machine.system() == 'windows'
-and not cc.has_header_symbol('string.h', 'strtok_r')
-and cc.has_header_symbol('string.h', 'strtok_s')
+  and not cc.has_header_symbol('string.h', 'strtok_r')
+  and cc.has_header_symbol('string.h', 'strtok_s')
 )
   add_project_arguments(
     '-Dstrtok_r=strtok_s',
@@ -67,6 +71,7 @@ gif_lib = library(
   install: true,
   version: '7.2.0',
   vs_module_defs: 'giflib.def',
+  override_options: override_std,
 )
 
 gif_dep = declare_dependency(
@@ -85,7 +90,13 @@ if enable_progs or enable_tests
     required: false,
   )
 
-  util_lib = static_library('util', ['getarg.c', 'qprintf.c', 'quantize.c'])
+  util_lib = static_library(
+    'util',
+    'getarg.c',
+    'qprintf.c',
+    'quantize.c',
+    override_options: override_std,
+  )
 
   # NOTE: `gifcolor` & `gifecho` are not built on Windows
   # when using Visual Studio because of an issue exporting
@@ -144,6 +155,7 @@ if enable_progs or enable_tests
         dependencies: [gif_dep, m_dep],
         install: _install,
         link_with: util_lib,
+        override_options: override_std,
       )
       set_variable(_name, _exe)
     endif
