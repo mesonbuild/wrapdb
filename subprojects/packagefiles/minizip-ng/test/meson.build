@@ -44,6 +44,7 @@ test(
     'gtest_minizip',
     test_srcs,
     cpp_args: margs,
+    override_options: 'cpp_std=c++17',
     dependencies: [gtestmain_dep, testlib_dep],
   ),
   workdir: testdir,
