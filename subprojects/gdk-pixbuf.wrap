@@ -1,8 +1,8 @@
 [wrap-file]
-directory = gdk-pixbuf-2.42.12
-source_url = https://download.gnome.org/sources/gdk-pixbuf/2.42/gdk-pixbuf-2.42.12.tar.xz
-source_filename = gdk-pixbuf-2.42.12.tar.xz
-source_hash = b9505b3445b9a7e48ced34760c3bcb73e966df3ac94c95a148cb669ab748e3c7
+directory = gdk-pixbuf-2.44.0
+source_url = https://download.gnome.org/sources/gdk-pixbuf/2.44/gdk-pixbuf-2.44.0.tar.xz
+source_filename = gdk-pixbuf-2.44.0.tar.xz
+source_hash = 31d65c2db14d321b9d862a323fc63002179cf3cc0b10d04db6ed55ffaed00db3
 
 [provide]
 dependency_names = gdk-pixbuf-2.0
