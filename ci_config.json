@@ -322,16 +322,20 @@
   },
   "gdk-pixbuf": {
     "_comment": [
+      "- By default Glycin is mandatory on Linux",
       "- Disable man because it requires rst2man",
       "- Enable miscellaneous built-in loaders",
-      "- Disable fatal warnings because of CMake Toolchain: Failed to determine CMake compilers state",
+      "- glib tests don't build on clang-cl",
+      "- Disable fatal warnings because of v1 wraps",
       "- Disable fatal warnings because of https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/merge_requests/156",
       "- Disable tests because one is broken: https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/issues/215",
       "- Disable tests because they fail on macOS"
     ],
     "build_options": [
+      "gdk-pixbuf:glycin=disabled",
       "gdk-pixbuf:man=false",
-      "gdk-pixbuf:others=enabled"
+      "gdk-pixbuf:others=enabled",
+      "glib:tests=false"
     ],
     "alpine_packages": [
       "shared-mime-info"
