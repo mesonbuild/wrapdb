@@ -1300,9 +1300,10 @@
   "google-benchmark": {
     "dependency_names": [
       "benchmark",
-      "benchmark-main"
+      "benchmark_main"
     ],
     "versions": [
+      "1.8.4-4",
       "1.8.4-3",
       "1.8.4-2",
       "1.8.4-1",
