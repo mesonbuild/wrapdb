@@ -35,10 +35,28 @@ struct open_how {
 '''
 endif
 
+has_block_uring_cmd_discard = cc.has_header_symbol(
+  'linux/blkdev.h',
+  'BLOCK_URING_CMD_DISCARD',
+)
+
+if has_block_uring_cmd_discard
+  block_uring_cmd_discard_compat = '#include <linux/blkdev.h>'
+else
+  block_uring_cmd_discard_compat = '''
+#include <linux/ioctl.h>
+
+#ifndef BLOCK_URING_CMD_DISCARD
+#define BLOCK_URING_CMD_DISCARD                        _IO(0x12, 0)
+#endif
+'''
+endif
+
 conf_data = configuration_data()
 conf_data.set('__kernel_rwf_t_compat', __kernel_rwf_t_compat)
 conf_data.set('__kernel_timespec_compat', __kernel_timespec_compat)
 conf_data.set('open_how_compat', open_how_compat)
+conf_data.set('block_uring_cmd_discard_compat', block_uring_cmd_discard_compat)
 
 if not glibc_statx and has_statx
   conf_data.set('no_glibc_statx', '#include <sys/stat.h>')

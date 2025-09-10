@@ -767,7 +767,14 @@
       "darwin": false,
       "windows": false,
       "msys2": false
-    }
+    },
+    "alpine_packages": [
+      "bash"
+    ],
+    "build_options": [
+      "liburing:examples=enabled",
+      "liburing:tests=enabled"
+    ]
   },
   "libusb": {
     "_comment": "non udev backend fails at running in a container.",

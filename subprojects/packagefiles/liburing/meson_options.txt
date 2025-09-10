@@ -1,13 +1,11 @@
 option(
     'examples',
-    type: 'boolean',
-    value: false,
+    type: 'feature',
     description: 'Build example programs',
 )
 
 option(
     'tests',
-    type: 'boolean',
-    value: false,
+    type: 'feature',
     description: 'Build test programs',
 )
