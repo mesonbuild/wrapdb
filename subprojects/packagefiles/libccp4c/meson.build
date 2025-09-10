@@ -13,8 +13,20 @@ mdep = cc.find_library(
   required: false,
 )
 
-if host_machine.system() == 'windows'
-  error('Building libccp4c is unsupported on Windows')
+if cc.get_id() == 'msvc'
+  if host_machine.endian() == 'little'
+    cargs = ['-D__BYTE_ORDER=__LITTLE_ENDIAN']
+  elif host_machine.endian() == 'big'
+    cargs = ['-D__BYTE_ORDER=__BIG_ENDIAN']
+  endif
+  cstd = 'c89'
+else
+  cargs = []
+  cstd = 'gnu89'
+endif
+
+if host_machine.system() == 'windows' and cc.get_argument_syntax() == 'gcc'
+  cargs += ['-includestdint.h']
 endif
 
 # Note that the source code assumes that datadir='share'.
@@ -64,7 +76,8 @@ libccp4c = library(
   'ccp4/cmtzlib.c',
   'ccp4/library_utils.c',
   dependencies: mdep,
-  override_options: ['c_std=gnu89,c89'],
+  override_options: ['c_std=' + cstd],
+  c_args: cargs,
   install: true,
 )
 
