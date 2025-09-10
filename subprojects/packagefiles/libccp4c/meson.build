@@ -47,6 +47,7 @@ add_project_arguments(
     '-Wno-format-overflow',
     '-Wno-misleading-indentation',
     '-Wno-pointer-compare',
+    '-Wno-array-parameter',
   ),
   language: 'c',
 )
