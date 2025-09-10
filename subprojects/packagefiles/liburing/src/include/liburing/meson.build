@@ -36,7 +36,7 @@ struct open_how {
 endif
 
 has_block_uring_cmd_discard = cc.has_header_symbol(
-  '<linux/blkdev.h>',
+  'linux/blkdev.h',
   'BLOCK_URING_CMD_DISCARD',
 )
 
