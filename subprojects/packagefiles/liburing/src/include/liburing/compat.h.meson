@@ -5,4 +5,5 @@
 @__kernel_timespec_compat@
 @open_how_compat@
 @no_glibc_statx@
+@block_uring_cmd_discard_compat@
 #endif

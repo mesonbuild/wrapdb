@@ -1,9 +1,9 @@
 project(
   'liburing',
   ['c', 'cpp'],
-  version: '2.5',
+  version: '2.12',
   license: '(MIT OR LGPL-2.1-only) AND (MIT OR GPL-2.0-only WITH Linux-syscall-note)',
-  meson_version: '>=0.57.0',
+  meson_version: '>=0.63.0',
   default_options: [
     'default_library=both',
     'c_std=c11',
@@ -19,6 +19,9 @@ endif
 project_version = meson.project_version().split('.')
 major_version = project_version[0]
 minor_version = project_version[1]
+
+opt_examples = get_option('examples').disable_auto_if(meson.is_subproject())
+opt_tests = get_option('tests').disable_auto_if(meson.is_subproject())
 
 add_project_arguments(
   '-D_GNU_SOURCE',
@@ -116,18 +119,34 @@ has_cxx = cpp.compiles(
   name: 'C++',
 )
 
-has_ucontext = (cc.has_type(
+has_ucontext = cc.has_type(
   'ucontext_t',
   prefix: '#include <ucontext.h>',
-)
-and cc.has_function(
+) and cc.has_function(
   'makecontext',
   prefix: '#include <ucontext.h>',
-))
+)
 
 has_nvme_uring_cmd = cc.has_type(
   'struct nvme_uring_cmd',
   prefix: '#include <linux/nvme_ioctl.h>',
+)
+
+has_futexv = cc.compiles(
+  '''
+#include <linux/futex.h>
+#include <unistd.h>
+#include <string.h>
+int main(void)
+{
+  struct futex_waitv fw;
+
+  memset(&fw, FUTEX_32, sizeof(fw));
+
+  return sizeof(struct futex_waitv);
+}
+''',
+  name: 'Has futexv',
 )
 
 conf_data = configuration_data()
@@ -139,6 +158,7 @@ conf_data.set('CONFIG_HAVE_GLIBC_STATX', glibc_statx)
 conf_data.set('CONFIG_HAVE_CXX', has_cxx)
 conf_data.set('CONFIG_HAVE_UCONTEXT', has_ucontext)
 conf_data.set('CONFIG_HAVE_NVME_URING', has_nvme_uring_cmd)
+conf_data.set('CONFIG_HAVE_FUTEXV', has_futexv)
 conf_data.set('CONFIG_HAVE_FANOTIFY', cc.has_header('sys/fanotify.h'))
 configure_file(
   output: 'config-host.h',
@@ -148,11 +168,11 @@ configure_file(
 subdir('src')
 subdir('man')
 
-if get_option('examples')
+if opt_examples.allowed()
   subdir('examples')
 endif
 
-if get_option('tests')
+if opt_tests.allowed()
   if get_option('default_library') != 'both'
     error('default_library=both required to build tests')
   endif
