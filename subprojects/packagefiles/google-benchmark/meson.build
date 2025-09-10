@@ -2,6 +2,7 @@ project(
   'benchmark',
   'cpp',
   version: '1.8.4',
+  meson_version: '>=0.49.0',
   default_options: [
     meson.version().version_compare('>=1.3.0') ? 'cpp_std=gnu++14,c++14' : 'cpp_std=gnu++14',
   ],
@@ -74,6 +75,9 @@ google_benchmark_dep = declare_dependency(
   link_with: lib_benchmark,
   include_directories: inc,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('benchmark', google_benchmark_dep)
+endif
 
 lib_benchmark_main = library(
   'benchmark-main',
@@ -88,6 +92,9 @@ google_benchmark_main_dep = declare_dependency(
   link_with: lib_benchmark_main,
   dependencies: google_benchmark_dep,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('benchmark_main', google_benchmark_main_dep)
+endif
 
 if not get_option('tests').disabled()
   subdir('test')
