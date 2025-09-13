@@ -356,9 +356,11 @@
   "cairo": {
     "dependency_names": [
       "cairo",
-      "cairo-gobject"
+      "cairo-gobject",
+      "cairo-script-interpreter"
     ],
     "versions": [
+      "1.18.4-2",
       "1.18.4-1",
       "1.18.2-1",
       "1.18.0-1",

@@ -6,4 +6,4 @@ source_filename = cairo-1.18.4.tar.xz
 source_hash = 445ed8208a6e4823de1226a74ca319d3600e83f6369f99b14265006599c32ccb
 
 [provide]
-dependency_names = cairo, cairo-gobject
+dependency_names = cairo, cairo-gobject, cairo-script-interpreter
