@@ -228,6 +228,15 @@ class TestReleases(unittest.TestCase):
 
         return None
 
+    def ensure_source_dir(self, name: str, wrap: configparser.ConfigParser) -> Path:
+        dir = Path('subprojects', wrap['wrap-file']['directory'])
+        if not dir.exists():
+            # build has not run and unpacked the source; do that
+            subprocess.check_call(
+                ['meson', 'subprojects', 'download', name]
+            )
+        return dir
+
     def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
         with self.subTest(step="check_meson_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
@@ -238,6 +247,12 @@ class TestReleases(unittest.TestCase):
                     subproject, = [subproj for subproj in project_info["subprojects"] if subproj["name"] == name]
                     if subproject['version'] != 'undefined' and patch_path:
                         self.assertEqual(subproject['version'], version)
+
+    def get_transitional_provides(self, wrap: configparser.ConfigParser) -> set[str]:
+        if 'provide' not in wrap.sections():
+            return set()
+        keys = set(k.strip() for k in wrap['provide'])
+        return keys - {'dependency_names', 'program_names'}
 
     def test_releases(self) -> None:
         has_new_releases = False
@@ -291,14 +306,20 @@ class TestReleases(unittest.TestCase):
                     if 'provide' in config.sections():
                         provide = config['provide']
                         progs = [i.strip() for i in provide.get('program_names', '').split(',')]
-                        deps = [i.strip() for i in provide.get('dependency_names', '').split(',')]
-                        for k in provide:
-                            if k not in {'dependency_names', 'program_names'}:
-                                deps.append(k.strip())
+                        deps = (
+                            [i.strip() for i in provide.get('dependency_names', '').split(',')] +
+                            list(self.get_transitional_provides(config))
+                        )
                     progs = [i for i in progs if i]
                     deps = [i for i in deps if i]
                     self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
                     self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+
+                # Downstream ports shouldn't use transitional provides syntax
+                # FIXME: Not all wraps currently comply, only check for wraps we modify.
+                if extra_checks and patch_path:
+                    with self.subTest(step="Ports must not use 'foo = foo_dep' provide syntax; use meson.override_dependency('foo', foo_dep) and 'dependency_names = foo'.  https://mesonbuild.com/Adding-new-projects-to-wrapdb.html#overriding-dependencies-in-the-submitted-project"):
+                        self.assertEqual(self.get_transitional_provides(config), set())
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
@@ -328,7 +349,9 @@ class TestReleases(unittest.TestCase):
                                     self.assertNotIn(name, self.ci_config.broken)
                                 self.check_meson_version(name, ver, patch_path)
                         if patch_path:
-                            self.check_project_args(name, Path('subprojects') / wrap_section['directory'])
+                            self.check_project_args(name, config)
+                        else:
+                            self.check_nonport_source(name, config)
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -579,12 +602,8 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
-    def check_project_args(self, name: str, dir: Path) -> None:
-        if not dir.exists():
-            # build has not run and unpacked the source; do that
-            subprocess.check_call(
-                ['meson', 'subprojects', 'download', name]
-            )
+    def check_project_args(self, name: str, wrap: configparser.ConfigParser) -> None:
+        dir = self.ensure_source_dir(name, wrap)
         try:
             project_json = subprocess.check_output(
                 ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
@@ -626,6 +645,17 @@ class TestReleases(unittest.TestCase):
                             'strip',
                             'unity'}:
                     raise Exception(f'{name} is not permitted in default_options')
+
+    def check_nonport_source(self, name: str, wrap: configparser.ConfigParser) -> None:
+        with self.subTest(step='check for meson.override_dependency()'):
+            provides = self.get_transitional_provides(wrap)
+            if provides:
+                dir = self.ensure_source_dir(name, wrap)
+                for path in dir.rglob('meson.build'):
+                    if 'meson.override_dependency' in path.read_text(encoding='utf-8'):
+                        # assume if an upstream converts to
+                        # override_dependency it converts completely
+                        raise Exception(f"{path.relative_to(dir)} contains meson.override_dependency(); wrap provides should be converted to e.g. 'dependency_names = {', '.join(sorted(provides))}'")
 
     def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str | None]:
         opts = project.get('default_options')
@@ -719,14 +749,11 @@ class TestReleases(unittest.TestCase):
         if Path(builddir).exists():
             shutil.rmtree(builddir)
         # ensure we have an unpacked source tree
-        subprocess.check_call(
-            ['meson', 'subprojects', 'download', name]
-        )
+        source_dir = self.ensure_source_dir(name, wrap)
         # install packages and set PATH
         ci = self.ci_config.get(name, {})
         meson_env = self.install_packages(ci)
 
-        source_dir = Path('subprojects', wrap['wrap-file']['directory'])
         source_meson_file = source_dir / 'meson.build'
         source_meson_contents = source_meson_file.read_bytes()
         try:
