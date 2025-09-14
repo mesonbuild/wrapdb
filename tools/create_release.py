@@ -39,8 +39,8 @@ class CreateRelease:
         with tempfile.TemporaryDirectory() as self.tempdir:
             self.read_wrap()
             self.find_upload_url()
-            self.create_patch_zip()
             self.create_source_fallback()
+            self.create_patch_zip()
             self.create_wrap_file()
 
     def read_wrap(self) -> None:
