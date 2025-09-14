@@ -45,7 +45,7 @@ gcc_asm_for_x87 = cc.compiles(
 )
 
 # _FORTIFY_SOURCE wrappers for memmove and bcopy are incorrect:
-# http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
+# https://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
 if cc.run(
   '''
   #include <stdio.h>
@@ -72,7 +72,7 @@ if cc.run(
 
 Detected glibc _FORTIFY_SOURCE/memmove bug. See:
 
-    http://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
+    https://sourceware.org/ml/libc-alpha/2010-12/msg00009.html
 
 Enabling -U_FORTIFY_SOURCE workaround. If -D_FORTIFY_SOURCE is also
 present in the command line, make sure that the order of the two
@@ -314,8 +314,8 @@ elif machine == 'ppro'
   endif
 
   # Some versions of gcc miscompile inline asm:
-  # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46491
-  # http://gcc.gnu.org/ml/gcc/2010-11/msg00366.html
+  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=46491
+  # https://gcc.gnu.org/ml/gcc/2010-11/msg00366.html
   if cc.get_id() == 'gcc' and cc.run(
     '''
     __attribute__((noinline)) int

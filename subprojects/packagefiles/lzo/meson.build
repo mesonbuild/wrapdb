@@ -55,7 +55,7 @@ pconf = import('pkgconfig')
 pconf.generate(
   liblzo2,
   description: 'LZO - a real-time data compression library',
-  url: 'http://www.oberhumer.com/opensource/lzo/',
+  url: 'https://www.oberhumer.com/opensource/lzo/',
   subdirs: 'lzo',
 )
 

@@ -162,7 +162,7 @@ dftables = executable(
   c_args: native_compile_args,
   # For cross-compilation this target needs to run on the build machine. It is
   # only used for the custom_target below. See:
-  # http://mesonbuild.com/Cross-compilation.html#mixing-host-and-build-targets
+  # https://mesonbuild.com/Cross-compilation.html#mixing-host-and-build-targets
   native: true,
 )
 

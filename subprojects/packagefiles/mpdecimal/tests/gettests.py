@@ -17,7 +17,7 @@ if not os.path.isfile(os.path.join(dst, 'baseconv.decTest')):
     shutil.copytree(src, dst, copy_function=shutil.copyfile, dirs_exist_ok=True)
 
 if download and not os.path.isfile(os.path.join(dst, 'add.decTest')):
-    with urllib.request.urlopen('http://speleotrove.com/decimal/dectest.zip') as f:
+    with urllib.request.urlopen('https://speleotrove.com/decimal/dectest.zip') as f:
         data = io.BytesIO(f.read())
         if hashlib.sha256(data.getbuffer()).hexdigest() != SHA256:
             raise AssertionError('downloaded "dectest.zip" hash mismatch')

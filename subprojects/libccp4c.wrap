@@ -1,6 +1,6 @@
 [wrap-file]
 directory = libccp4-8.0.0
-source_url = http://ftp.ccp4.ac.uk/opensource/libccp4-8.0.0.tar.gz
+source_url = https://ftp.ccp4.ac.uk/opensource/libccp4-8.0.0.tar.gz
 source_fallback_url = https://www.desy.de/~twhite/crystfel/libccp4-8.0.0.tar.gz
 source_filename = libccp4-8.0.0.tar.gz
 source_hash = cb813ae86612a0866329deab7cee96eac573d81be5b240341d40f9ad5322ff2d

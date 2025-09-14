@@ -185,7 +185,7 @@ pkg_mod.generate(
   name: 'liburing',
   version: meson.project_version(),
   description: 'io_uring library',
-  url: 'http://git.kernel.dk/cgit/liburing/',
+  url: 'https://git.kernel.dk/cgit/liburing/',
 )
 
 summary(

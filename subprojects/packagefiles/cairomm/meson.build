@@ -18,7 +18,7 @@ cairomm_major_version = cairomm_version_array[0].to_int()
 cairomm_minor_version = cairomm_version_array[1].to_int()
 cairomm_micro_version = cairomm_version_array[2].to_int()
 
-# http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+# https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 # The relation between libtool's current:revison:age interface versioning
 # and the .so filename, .so.x.y.z, is
 # x = current - age
@@ -391,7 +391,7 @@ endif
 if meson.is_subproject()
   pkgconfig_vars = {
     'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
-    'htmlrefpub': 'http://www.cairographics.org/documentation/cairomm/reference',
+    'htmlrefpub': 'https://www.cairographics.org/documentation/cairomm/reference',
   }
   if build_documentation
     pkgconfig_vars += {

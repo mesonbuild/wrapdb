@@ -20,7 +20,7 @@ conf.set_quoted(
   'PACKAGE_STRING',
   '@0@ @1@'.format(meson.project_name(), meson.project_version()),
 )
-conf.set_quoted('PACKAGE_URL', 'http://www.gnu.org/software/gdbm')
+conf.set_quoted('PACKAGE_URL', 'https://www.gnu.org.ua/software/gdbm/')
 conf.set_quoted('PACKAGE_BUGREPORT', 'bug-gdbm@gnu.org')
 conf.set_quoted('LT_OBJDIR', '.libs/')
 conf.set('STDC_HEADERS', 1)
