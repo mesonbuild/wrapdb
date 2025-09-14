@@ -10,7 +10,7 @@ project(
 
 U_ICU_VERSION = meson.project_version()
 PACKAGE_ICU_DESCRIPTION = 'International Components for Unicode'
-PACKAGE_ICU_URL = 'http://icu-project.org'
+PACKAGE_ICU_URL = 'https://icu.unicode.org/'
 
 cpp = meson.get_compiler('cpp')
 cpp_native = meson.get_compiler(

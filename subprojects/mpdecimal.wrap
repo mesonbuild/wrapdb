@@ -1,6 +1,6 @@
 [wrap-file]
 directory = mpdecimal-2.5.1
-source_url = http://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz
+source_url = https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz
 source_filename = mpdecimal-2.5.1.tar.gz
 source_hash = 9f9cd4c041f99b5c49ffb7b59d9f12d95b683d88585608aa56a6307667b2b21f
 patch_directory = mpdecimal
@@ -8,4 +8,3 @@ patch_directory = mpdecimal
 [provide]
 mpdec = mpdec_dep
 mpdecpp = mpdecpp_dep
-

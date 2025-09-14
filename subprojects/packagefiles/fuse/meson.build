@@ -8,11 +8,11 @@ project(
 platform = host_machine.system()
 if platform == 'darwin'
   error(
-    'libfuse does not support OS-X.\n' + 'Take a look at http://osxfuse.github.io/ instead',
+    'libfuse does not support OS-X.\n' + 'Take a look at https://osxfuse.github.io/ instead',
   )
 elif platform == 'cygwin' or platform == 'windows'
   error(
-    'libfuse does not support Windows.\n' + 'Take a look at http://www.secfs.net/winfsp/ instead',
+    'libfuse does not support Windows.\n' + 'Take a look at https://winfsp.dev/ instead',
   )
 endif
 

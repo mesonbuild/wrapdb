@@ -404,7 +404,7 @@ import('pkgconfig').generate(
   libuv,
   name: 'libuv',
   description: 'multi-platform support library with a focus on asynchronous I/O.',
-  url: 'http://libuv.org/',
+  url: 'https://libuv.org/',
 )
 
 install_headers('include/uv.h')

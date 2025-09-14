@@ -1,6 +1,6 @@
 [wrap-file]
 directory = freeglut-3.4.0
-source_url = http://downloads.sourceforge.net/freeglut/3.4.0/freeglut-3.4.0.tar.gz
+source_url = https://downloads.sourceforge.net/freeglut/3.4.0/freeglut-3.4.0.tar.gz
 source_filename = freeglut-3.4.0.tar.gz
 source_hash = 3c0bcb915d9b180a97edaebd011b7a1de54583a838644dcd42bb0ea0c6f3eaec
 patch_directory = freeglut
