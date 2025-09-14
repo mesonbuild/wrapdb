@@ -1,9 +1,9 @@
 [wrap-file]
-directory = inih-r61
+directory = inih-r62
 
-source_url = https://github.com/benhoyt/inih/archive/r61.tar.gz
-source_filename = inih-r61.tar.gz
-source_hash = 7caf26a2202a4ca689df3fe4175dfa74e0faa18fcca07331bba934fd0ecb8f12
+source_url = https://github.com/benhoyt/inih/archive/r62.tar.gz
+source_filename = inih-r62.tar.gz
+source_hash = 9c15fa751bb8093d042dae1b9f125eb45198c32c6704cd5481ccde460d4f8151
 
 [provide]
 inih = inih_dep
