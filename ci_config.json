@@ -1,5 +1,5 @@
 {
-  "_comment": [
+  "_comment_broken": [
     "This is intentionally undocumented in README.md, do not use it.",
     "Using it is an automatic CI error.",
     "broken_linux, broken_windows and broken_darwin are lists of wraps that are known",
@@ -22,6 +22,15 @@
     "arduinocore-avr",
     "graphite2",
     "mocklibc"
+  ],
+  "_comment_global": [
+    "global_build_options are passed to every build except for the project",
+    "they control; for example glib:tests=false is passed to every project",
+    "except glib.  This helps avoid irrelevant CI failures in dependencies."
+  ],
+  "global_build_options": [
+    "glib:tests=false",
+    "libxml2:iconv=disabled"
   ],
   "apache-orc": {
     "test_options": [
@@ -92,13 +101,11 @@
   "cairo": {
     "_comment": [
       "- Force-enable fontconfig to avoid https://gitlab.freedesktop.org/cairo/cairo/-/issues/862",
-      "- Prevent libxml2 from requiring iconv",
       "- fontconfig warns on v1 wraps; fixed in next release",
       "- Some tests fails and they are still run despite -Dtests=disabled"
     ],
     "build_options": [
-      "cairo:fontconfig=enabled",
-      "libxml2:iconv=disabled"
+      "cairo:fontconfig=enabled"
     ],
     "fatal_warnings": false,
     "skip_tests": true
@@ -275,9 +282,6 @@
     "alpine_packages": [
       "bash"
     ],
-    "build_options": [
-      "libxml2:iconv=disabled"
-    ],
     "fatal_warnings": false
   },
   "freeglut": {
@@ -323,7 +327,6 @@
       "- By default Glycin is mandatory on Linux",
       "- Disable man because it requires rst2man",
       "- Enable miscellaneous built-in loaders",
-      "- glib tests don't build on clang-cl",
       "- Disable fatal warnings because of v1 wraps",
       "- Disable fatal warnings because of https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/merge_requests/156",
       "- Disable tests because one is broken: https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/issues/215",
@@ -332,8 +335,7 @@
     "build_options": [
       "gdk-pixbuf:glycin=disabled",
       "gdk-pixbuf:man=false",
-      "gdk-pixbuf:others=enabled",
-      "glib:tests=false"
+      "gdk-pixbuf:others=enabled"
     ],
     "alpine_packages": [
       "shared-mime-info"
@@ -456,7 +458,6 @@
     ],
     "fatal_warnings": false,
     "build_options": [
-      "glib:tests=false",
       "harfbuzz:glib=enabled",
       "harfbuzz:gobject=enabled",
       "harfbuzz:freetype=enabled",
@@ -831,11 +832,6 @@
       "diffutils"
     ]
   },
-  "libxmlpp": {
-    "build_options": [
-      "libxml2:iconv=disabled"
-    ]
-  },
   "libxkbcommon": {
     "build_options": [
       "libxkbcommon:enable-docs=false",
@@ -876,11 +872,6 @@
     ],
     "debian_packages": [
       "libx11-dev"
-    ]
-  },
-  "libxslt": {
-    "build_options": [
-      "libxml2:iconv=disabled"
     ]
   },
   "libxv": {
@@ -1132,13 +1123,9 @@
   },
   "pango": {
     "_comment": [
-      "- Avoid sysprof build errors on Windows",
       "- fontconfig warns on v1 wraps; fixed in next release",
       "- skip dependency checks for optionally provided dependencies",
       "- Known test failure: https://gitlab.gnome.org/GNOME/pango/-/issues/682"
-    ],
-    "build_options": [
-      "glib:sysprof=disabled"
     ],
     "fatal_warnings": false,
     "skip_dependency_check": [
