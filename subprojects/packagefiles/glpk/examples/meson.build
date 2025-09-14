@@ -6,6 +6,7 @@ glpsol = executable(
   include_directories: inc,
   dependencies: [glpk_dep, libm_dep],
   install: true,
+  override_options: override_opts,
 )
 
 test(

@@ -24,4 +24,6 @@ m4 = executable(
   nononnull_h,
   dependencies: m4_dep,
   install: true,
+  override_options: override_opts,
 )
+meson.override_find_program('m4', m4)

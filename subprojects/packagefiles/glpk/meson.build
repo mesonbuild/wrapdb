@@ -3,7 +3,10 @@ project(
   'c',
   license: 'GPL-3.0-or-later',
   version: '5.0',
+  meson_version: '>=0.50.0',
 )
+
+override_opts = ['c_std=c89']
 
 cc = meson.get_compiler('c')
 
