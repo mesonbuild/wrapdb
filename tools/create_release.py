@@ -142,11 +142,25 @@ class CreateRelease:
         response.raise_for_status()
 
     def create_source_fallback(self) -> None:
-        response = requests.get(
-            self.wrap_section['source_url'],
-            headers={'User-Agent': 'wrapdb/0'},
-        )
-        response.raise_for_status()
+        for url in (self.wrap_section['source_url'],
+                    self.wrap_section.get('source_fallback_url')):
+            if url is None:
+                continue
+            try:
+                response = requests.get(url, headers={'User-Agent': 'wrapdb/0'})
+                response.raise_for_status()
+                digest = hashlib.sha256(response.content).hexdigest()
+                if digest != self.wrap_section['source_hash']:
+                    raise Exception(f'Hash mismatch for {url} ({len(response.content)} bytes): expected {self.wrap_section["source_hash"]}, found {digest}')
+                # we don't rewrite the wrap's source_url, even if we had to
+                # use the source_fallback_url instead
+                break
+            except Exception as ex:
+                print(ex)
+        else:
+            print("Couldn't download source archive; skipping creation of source fallback")
+            return
+
         filename = Path(self.wrap_section['source_filename'])
         filename.write_bytes(response.content)
         self.upload(filename, 'application/zip')
