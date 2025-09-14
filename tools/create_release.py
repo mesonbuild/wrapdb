@@ -80,12 +80,12 @@ class CreateRelease:
 
             subprocess.check_call([generator])
 
+        shutil.copytree(srcdir, destdir)
         # If no specific license is specified, copy wrapdb's
-        license_file = srcdir / 'LICENSE.build'
+        license_file = destdir / 'LICENSE.build'
         if not license_file.exists():
             shutil.copyfile('COPYING', license_file)
 
-        shutil.copytree(srcdir, destdir)
         base_name = Path(self.tempdir, f'{self.tag}_patch')
         shutil.make_archive(base_name.as_posix(), 'zip', root_dir=self.tempdir, base_dir=directory)
 
@@ -167,7 +167,7 @@ class CreateRelease:
             self.warn("Couldn't download source archive; skipping creation of source fallback")
             return
 
-        filename = Path(self.wrap_section['source_filename'])
+        filename = Path(self.tempdir, self.wrap_section['source_filename'])
         filename.write_bytes(response.content)
         self.upload(filename, 'application/zip')
         self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
