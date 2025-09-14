@@ -448,7 +448,7 @@ class TestReleases(unittest.TestCase):
         fatal_warnings = ci.get('fatal_warnings', expect_working) and self.fatal_warnings
         if fatal_warnings:
             options.append('--fatal-meson-warnings')
-        options += [f'-D{o}' for o in ci.get('build_options', [])]
+        options += self.ci_config.get_option_arguments(name)
         if Path(builddir, 'meson-private', 'cmd_line.txt').exists():
             options.append('--wipe')
         meson_env = self.install_packages(ci)
@@ -746,7 +746,7 @@ class TestReleases(unittest.TestCase):
                 version_request += '.0'
 
         options = ['-Dpython.install_env=auto', f'-Dwraps={name}']
-        options += [f'-D{o}' for o in ci.get('build_options', [])]
+        options += self.ci_config.get_option_arguments(name)
         try:
             subprocess.check_call(
                 ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', '>=0'],

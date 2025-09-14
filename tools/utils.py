@@ -169,6 +169,12 @@ class CIConfig(T.Dict[str, ProjectCIConfig], _JSONFile):
         system = platform.system().lower()
         return T.cast('list[str]', self.get(f'broken_{system}', []))
 
+    def get_option_arguments(self, name: str) -> list[str]:
+        global_opts = T.cast('list[str]', self.get('global_build_options', []))
+        opts = [o for o in global_opts if not o.startswith(f'{name}:')]
+        opts += self.get(name, {}).get('build_options', [])
+        return [f'-D{o}' for o in opts]
+
 def wrap_path(name: str) -> Path:
     return Path('subprojects', f'{name}.wrap')
 
