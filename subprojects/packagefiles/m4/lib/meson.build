@@ -904,13 +904,13 @@ cdata.set_quoted('SYSCMD_SHELL', syscmd_shell)
 cdata.set_quoted('VERSION', '1.4.19')
 
 if (cc.get_define(
-  'O_BINARY',
+    'O_BINARY',
   prefix: '#include<fcntl.h>',
-) == '')
+  ) == '')
   if (cc.get_define(
-    '_O_BINARY',
+      '_O_BINARY',
     prefix: '#include<fcntl.h>',
-  ) != '')
+    ) != '')
     cdata.set('O_BINARY', '_O_BINARY')
     cdata.set('O_TEXT', '_O_TEXT')
   else
@@ -2149,6 +2149,7 @@ m4_lib = static_library(
   m4lib_src,
   m4_lib_nononnull_h,
   c_args: libm4_c_args,
+  override_options: override_opts,
 )
 if host_machine.system() == 'windows'
   m4_dep = declare_dependency(

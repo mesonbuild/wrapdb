@@ -2,6 +2,7 @@ project(
   'libmicrohttpd',
   'c',
   version: '0.9.77',
+  license: 'LGPL-2.1-or-later OR GPL-2.0-or-later WITH eCos-exception-2.0',
   meson_version: '>=0.49.0',
   default_options: ['warning_level=1'],
 )

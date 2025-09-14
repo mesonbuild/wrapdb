@@ -221,6 +221,7 @@ glpk = library(
   vs_module_defs: 'glpk.def',
   dependencies: deps,
   install: true,
+  override_options: override_opts,
 )
 
 install_headers('glpk.h')
