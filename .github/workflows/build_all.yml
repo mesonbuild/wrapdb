@@ -18,8 +18,8 @@ env:
   TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
 
 jobs:
-  sources:
-    name: Download sources
+  prelude:
+    name: Initial setup
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
@@ -63,7 +63,7 @@ jobs:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     name: Ubuntu (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         include:
@@ -85,7 +85,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -98,7 +98,7 @@ jobs:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     name: Alpine (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         include:
@@ -124,7 +124,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -140,7 +140,7 @@ jobs:
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         platform: ['x64', 'x86']
@@ -168,7 +168,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -180,7 +180,7 @@ jobs:
   VisualStudio-clang-cl:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     env:
       CC: clang-cl
       CXX: clang-cl
@@ -198,7 +198,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -210,7 +210,7 @@ jobs:
   MSYS2:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         platform: ['UCRT64', 'CLANG64']
@@ -245,7 +245,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -259,7 +259,7 @@ jobs:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     name: MacOS (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         include:
@@ -286,7 +286,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
