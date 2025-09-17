@@ -73,6 +73,10 @@ jobs:
           - platform: aarch64
             runner: ubuntu-24.04-arm
             python: 3.8
+          - platform: ppc64le
+            runner: ubuntu-24.04-ppc64le
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
           - platform: x86_64
             runner: ubuntu-latest
             python: 3.13
@@ -83,6 +87,7 @@ jobs:
 
       - name: Install Python ${{ matrix.python }}
         uses: actions/setup-python@v6
+        if: matrix.python
         with:
           python-version: ${{ matrix.python }}
 
@@ -137,11 +142,14 @@ jobs:
             runner: ubuntu-24.04-arm
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
           - platform: ppc64le
-            runner: ubuntu-24.04-arm
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+            runner: ubuntu-24.04-ppc64le
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/ppc64le/apk.static#!sha256!fb576913fe730e039c9ca55f78c0686053aa2c3d9c4c593822a6e70ae36f0472'
           - platform: riscv64
             runner: ubuntu-24.04-arm
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/s390x/apk.static#!sha256!6880a5f5e7f62e1f4c47ad3a75d699f9b1f99f3f20f9f8be01637bef1012b8e7'
           - platform: x86
             runner: ubuntu-latest
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/x86_64/apk.static#!sha256!34bb1a96f0258982377a289392d4ea9f3f4b767a4bb5806b1b87179b79ad8a1c'
