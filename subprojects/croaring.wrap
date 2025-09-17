@@ -1,9 +1,9 @@
 [wrap-file]
-directory = CRoaring-1.3.0
-source_url = https://github.com/RoaringBitmap/CRoaring/archive/refs/tags/v1.3.0.tar.gz
-source_filename = CRoaring-1.3.0.tar.gz
-source_hash = c4fccf6a8cfa6f15f47d0e6f6b202940c2305e3078eb745d25fe9e2739ae5278
+directory = CRoaring-4.3.11
+source_url = https://github.com/RoaringBitmap/CRoaring/archive/refs/tags/v4.3.11.tar.gz
+source_filename = CRoaring-4.3.11.tar.gz
+source_hash = acd3a17e6c95acf3154d60c38c90e927e6c531805bc740a040fa111819af380e
 patch_directory = croaring
 
 [provide]
-croaring = croaring_dep
+dependency_names = croaring
