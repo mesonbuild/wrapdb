@@ -6,4 +6,4 @@ source_hash = C78A11730F6E3F4911E151F96F2AA43E96ED77119599D8E7302F8294DFDB40D1
 patch_directory = imgui-docking
 
 [provide]
-imgui_docking = imgui_dep
+imgui-docking = imgui_dep

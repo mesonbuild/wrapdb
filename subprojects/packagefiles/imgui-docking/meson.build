@@ -61,17 +61,9 @@ if dx12_dep.found() and cpp.get_argument_syntax() == 'msvc'
   sources += 'backends/imgui_impl_dx12.cpp'
   dependencies += dx12_dep
 endif
-dxgi_dep = cpp.find_library(
-  'dxgi',
-  required: get_option('dx12'),
-)
-if dxgi_dep.found() and cpp.get_argument_syntax() == 'msvc'
-  dependencies += dxgi_dep
-endif
-
 metal_dep = dependency(
   'appleframeworks',
-  modules: ['Foundation', 'AppKit', 'GameController', 'Metal', 'QuartzCore'],
+  modules: ['Foundation', 'AppKit', 'GameController', 'Metal'],
   required: get_option('metal'),
 )
 if metal_dep.found()
@@ -93,11 +85,20 @@ endif
 sdl2_renderer_dep = dependency(
   'sdl2',
   version: '>=2.0.17',
-  required: get_option('sdl_renderer'),
+  required: get_option('sdl2_renderer'),
 )
 if sdl2_renderer_dep.found()
   sources += 'backends/imgui_impl_sdlrenderer2.cpp'
   dependencies += sdl2_renderer_dep
+endif
+sdl3_renderer_dep = dependency(
+  'sdl3',
+  version: '>=3.1.3',
+  required: get_option('sdl3_renderer'),
+)
+if sdl3_renderer_dep.found()
+  sources += 'backends/imgui_impl_sdlrenderer3.cpp'
+  dependencies += sdl3_renderer_dep
 endif
 vulkan_dep = dependency(
   'vulkan',
@@ -130,6 +131,14 @@ sdl2_dep = dependency(
 if sdl2_dep.found()
   sources += 'backends/imgui_impl_sdl2.cpp'
   dependencies += sdl2_dep
+endif
+sdl3_dep = dependency(
+  'sdl3',
+  required: get_option('sdl3'),
+)
+if sdl3_dep.found()
+  sources += 'backends/imgui_impl_sdl3.cpp'
+  dependencies += sdl3_dep
 endif
 osx_dep = dependency(
   'appleframeworks',
@@ -169,6 +178,10 @@ if host_machine.system() == 'windows'
   )
 endif
 
+# workaround issue (#14939) in Meson 1.8.4 - 1.9.0, where
+# default_options:['cpp_std=c++17'] doesn't work under certain circumstances
+override_opts = ['cpp_std=c++17']
+
 imgui = library(
   'imgui',
   sources,
@@ -177,6 +190,7 @@ imgui = library(
   dependencies: dependencies,
   include_directories: include_dirs,
   install: true,
+  override_options: override_opts,
 )
 
 if host_machine.system() == 'windows'
