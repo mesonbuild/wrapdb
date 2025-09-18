@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}
   # We do NOT want `cancel-in-progress` here since only one website job
@@ -13,6 +16,8 @@ concurrency:
 jobs:
   create_release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,6 +25,7 @@ jobs:
       - name: Upload release assets
         run: |
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+
   # Ideally we should trigger Meson's CI to update the website, but unfortunately
   # it requires a Personal Access Token. Instead clone meson and do it ourself.
   # This job is copied from Meson's workflows.
