@@ -3727,6 +3727,14 @@
       "4.1.0-1"
     ]
   },
+  "safeclib": {
+    "dependency_names": [
+      "libsafec"
+    ],
+    "versions": [
+      "3.9.1-1"
+    ]
+  },
   "sassc": {
     "program_names": [
       "sassc"

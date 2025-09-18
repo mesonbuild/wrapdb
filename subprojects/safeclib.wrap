@@ -1,0 +1,9 @@
+[wrap-file]
+directory = safeclib-3.9.1
+source_url = https://github.com/rurban/safeclib/releases/download/v3.9.1/safeclib-3.9.1.tar.xz
+source_filename = safeclib-3.9.1.tar.xz
+source_hash = 771b8de483c4f48c90c12bc2c0326571d3d094440ca29008e4cf70562c631c67
+patch_directory = safeclib
+
+[provide]
+libsafec = libsafec_dep
