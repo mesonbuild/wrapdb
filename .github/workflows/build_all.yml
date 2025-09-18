@@ -15,18 +15,20 @@ env:
   TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
 
 jobs:
-  sources:
-    name: Download sources
+  prelude:
+    name: Initial setup
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
+      matrix-alpine: ${{ steps.alpine.outputs.matrix }}
+      matrix-ubuntu: ${{ steps.ubuntu.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install packages
-        run: python3 -m pip install git+https://github.com/mesonbuild/meson
+        run: python3 -m pip install PyYAML git+https://github.com/mesonbuild/meson
 
       - name: Calculate cache key
         id: cache-key
@@ -56,13 +58,48 @@ jobs:
           path: subprojects/packagecache
           enableCrossOsArchive: true
 
+      - name: Build Ubuntu matrix
+        id: ubuntu
+        shell: python tools/filter_matrix.py {0}
+        run: |
+          - platform: aarch64
+            runner: ubuntu-24.04-arm
+          - platform: ppc64le
+            runner: ubuntu-24.04-ppc64le
+            selfhosted: true
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
+            selfhosted: true
+          - platform: x86_64
+            runner: ubuntu-latest
+
+      - name: Build Alpine matrix
+        id: alpine
+        shell: python tools/filter_matrix.py {0}
+        run: |
+          - platform: aarch64
+            runner: ubuntu-24.04-arm
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878'
+          - platform: ppc64le
+            runner: ubuntu-24.04-ppc64le
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/ppc64le/apk.static#!sha256!96ba92b49c8cc97fad06f0dfe3c50ec25c3344890e479999ded8752bf9e80d7f'
+            selfhosted: true
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/s390x/apk.static#!sha256!368996f2908ec8f10f1de500bc97a9bd1c3b0b46ce0bd44983ac09862cbab6d5'
+            selfhosted: true
+          - platform: x86_64
+            runner: ubuntu-latest
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/x86_64/apk.static#!sha256!bdd044e0fd6cc388c5e571e1093efa5f35f7767cc5aa338b0a2576a429009a62'
+
   Ubuntu:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
-    runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
-    needs: sources
+    name: Ubuntu (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
+    needs: prelude
     strategy:
       matrix:
-        platform: ['x86_64', 'aarch64']
+        include: ${{ fromJson(needs.prelude.outputs.matrix-ubuntu) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -77,7 +114,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -88,17 +125,17 @@ jobs:
 
   Alpine:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
-    runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
-    needs: sources
+    name: Alpine (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
+    needs: prelude
     strategy:
       matrix:
-        platform: ['x86_64', 'aarch64']
+        include: ${{ fromJson(needs.prelude.outputs.matrix-alpine) }}
     steps:
       - uses: jirutka/setup-alpine@v1
         with:
-          # next two lines: https://github.com/jirutka/setup-alpine/pull/22
           arch: ${{ matrix.platform }}
-          apk-tools-url: ${{ matrix.platform == 'aarch64' && 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878' || 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/x86_64/apk.static#!sha256!bdd044e0fd6cc388c5e571e1093efa5f35f7767cc5aa338b0a2576a429009a62' }}
+          apk-tools-url: ${{ matrix.apk-tools-url }}
           packages: >
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
@@ -109,7 +146,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -125,7 +162,7 @@ jobs:
   VisualStudio:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         platform: ['x64', 'x86']
@@ -153,7 +190,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -165,7 +202,7 @@ jobs:
   VisualStudio-clang-cl:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     env:
       CC: clang-cl
       CXX: clang-cl
@@ -183,7 +220,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -195,7 +232,7 @@ jobs:
   MSYS2:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
     runs-on: windows-latest
-    needs: sources
+    needs: prelude
     strategy:
       matrix:
         platform: ['UCRT64', 'CLANG64']
@@ -230,7 +267,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true
@@ -242,11 +279,15 @@ jobs:
 
   MacOS:
     if: github.event_name != 'schedule' || github.repository == 'mesonbuild/wrapdb'
-    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
-    needs: sources
+    name: MacOS (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
+    needs: prelude
     strategy:
-      matrix:
-        platform: ['arm64', 'x86_64']
+      include:
+        - platform: arm64
+          runner: macos-14
+        - platform: x86_64
+          runner: macos-13
     steps:
       - uses: actions/checkout@v4
         with:
@@ -266,7 +307,7 @@ jobs:
       - name: Restore sources
         uses: actions/cache/restore@v4
         with:
-          key: ${{ needs.sources.outputs.cache-key }}
+          key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
           fail-on-cache-miss: true

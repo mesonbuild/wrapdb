@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
+      matrix-alpine: ${{ steps.alpine.outputs.matrix }}
+      matrix-ubuntu: ${{ steps.ubuntu.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,7 +24,7 @@ jobs:
 
       - name: Install packages
         run: |
-          python3 -m pip install license-expression
+          python3 -m pip install license-expression PyYAML
           python3 -m pip install --pre meson
 
       - name: Calculate cache key
@@ -56,13 +58,57 @@ jobs:
         run: |
           ./tools/fake_tty.py ./tools/sanity_checks.py
 
+      - name: Build Ubuntu matrix
+        id: ubuntu
+        shell: python tools/filter_matrix.py {0}
+        run: |
+          - platform: aarch64
+            runner: ubuntu-24.04-arm
+          - platform: ppc64le
+            runner: ubuntu-24.04-ppc64le
+            selfhosted: true
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
+            selfhosted: true
+          - platform: x86_64
+            runner: ubuntu-latest
+
+      - name: Build Alpine matrix
+        id: alpine
+        shell: python tools/filter_matrix.py {0}
+        run: |
+          - platform: aarch64
+            runner: ubuntu-24.04-arm
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878'
+          - platform: armv7
+            runner: ubuntu-24.04-arm
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878'
+          - platform: ppc64le
+            runner: ubuntu-24.04-ppc64le
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/ppc64le/apk.static#!sha256!96ba92b49c8cc97fad06f0dfe3c50ec25c3344890e479999ded8752bf9e80d7f'
+            selfhosted: true
+          - platform: riscv64
+            runner: ubuntu-24.04-arm
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878'
+          - platform: s390x
+            runner: ubuntu-24.04-s390x
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/s390x/apk.static#!sha256!368996f2908ec8f10f1de500bc97a9bd1c3b0b46ce0bd44983ac09862cbab6d5'
+            selfhosted: true
+          - platform: x86
+            runner: ubuntu-latest
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/x86_64/apk.static#!sha256!bdd044e0fd6cc388c5e571e1093efa5f35f7767cc5aa338b0a2576a429009a62'
+          - platform: x86_64
+            runner: ubuntu-latest
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/x86_64/apk.static#!sha256!bdd044e0fd6cc388c5e571e1093efa5f35f7767cc5aa338b0a2576a429009a62'
+
   Ubuntu:
-    runs-on: ${{ matrix.platform == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    name: Ubuntu (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
       fail-fast: false
       matrix:
-        platform: ['x86_64', 'aarch64']
+        include: ${{ fromJson(needs.prelude.outputs.matrix-ubuntu) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -97,12 +143,13 @@ jobs:
           ./tools/fake_tty.py ./tools/sanity_checks.py TestReleases.test_meson_version_deps
 
   Alpine:
-    runs-on: ${{ startsWith(matrix.platform, 'x86') && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
+    name: Alpine (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
       fail-fast: false
       matrix:
-        platform: ['x86_64', 'x86', 'aarch64', 'armv7', 'riscv64', 'ppc64le']
+        include: ${{ fromJson(needs.prelude.outputs.matrix-alpine) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -111,8 +158,7 @@ jobs:
       - uses: jirutka/setup-alpine@v1
         with:
           arch: ${{ matrix.platform }}
-          # https://github.com/jirutka/setup-alpine/pull/22
-          apk-tools-url: ${{ startsWith(matrix.platform, 'x86') && 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/x86_64/apk.static#!sha256!bdd044e0fd6cc388c5e571e1093efa5f35f7767cc5aa338b0a2576a429009a62' || 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.7/aarch64/apk.static#!sha256!27a975638ddc95a411c9f17c63383e335da9edf6bb7de2281d950c291a11f878' }}
+          apk-tools-url: ${{ matrix.apk-tools-url }}
           packages: >
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
@@ -269,12 +315,17 @@ jobs:
           python tools/sanity_checks.py
 
   MacOS:
-    runs-on: ${{ matrix.platform == 'arm64' && 'macos-14' || 'macos-13' }}
+    name: MacOS (${{ matrix.platform }})
+    runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
       fail-fast: false
       matrix:
-        platform: ['arm64', 'x86_64']
+        include:
+          - platform: arm64
+            runner: macos-14
+          - platform: x86_64
+            runner: macos-13
     steps:
       - uses: actions/checkout@v4
         with:
