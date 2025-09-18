@@ -10,6 +10,9 @@ on:
     # Run every Sunday at midnight
     - cron: '0 0 * * 0'
 
+permissions:
+  contents: read
+
 env:
   TEST_BUILD_ALL: 1
   TEST_FATAL_WARNINGS: ${{ github.event.inputs.fatal_warnings }}
