@@ -2,7 +2,7 @@ project(
   'openjp2',
   'c',
   'cpp',
-  version: '2.5.3',
+  version: '2.5.4',
   license: 'BSD-2-Clause',
   meson_version: '>= 0.55.0',
   default_options: ['c_std=c99'],
