@@ -29,7 +29,7 @@ endif
 foreach exe : ['opj_dec_server', 'opj_jpip_transcode', 'opj_jpip_test']
   exe_c = exe + '.c'
   exe_c_args = []
-  exe_src = exe_c + common_srcs
+  exe_src = [exe_c] + common_srcs
   exe_deps = [libopenjpip_dep, rt_dep, m_dep]
   exe_exe = executable(
     exe,
