@@ -71,6 +71,7 @@ libopenjpip_dep = declare_dependency(
   link_with: openjpip_lib,
   include_directories: inc_dirs,
 )
+meson.override_dependency('libopenjpip', libopenjpip_dep)
 
 # Install library
 if get_option('build_jpip_server')

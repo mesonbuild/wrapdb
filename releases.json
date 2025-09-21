@@ -2180,7 +2180,8 @@
   },
   "libopenjp2": {
     "dependency_names": [
-      "libopenjp2"
+      "libopenjp2",
+      "libopenjpip"
     ],
     "versions": [
       "2.5.4-1",
