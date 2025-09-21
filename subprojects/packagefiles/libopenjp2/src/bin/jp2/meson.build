@@ -10,11 +10,11 @@ common_srcs = files(
 )
 
 if libtiff_dep.found()
-  common_srcs += 'converttif.c'
+  common_srcs += files('converttif.c')
 endif
 
 if libpng_dep.found()
-  common_srcs += 'convertpng.c'
+  common_srcs += files('convertpng.c')
 endif
 
 # Headers file are located here:
