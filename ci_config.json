@@ -711,6 +711,11 @@
       "libpciaccess-dev"
     ]
   },
+  "libopenjp2": {
+    "skip_dependency_check": [
+      "libopenjpip"
+    ]
+  },
   "libpfm": {
     "_comment": "Wrap only supports Linux",
     "build_on": {

@@ -231,6 +231,7 @@ libopenjp2_dep = declare_dependency(
   include_directories: inc_dirs,
   compile_args: opj_static_args,
 )
+meson.override_dependency('libopenjp2', libopenjp2_dep)
 
 install_headers(
   ['openjpeg.h'],

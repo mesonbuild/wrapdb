@@ -6,4 +6,4 @@ source_hash = a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a
 patch_directory = libopenjp2
 
 [provide]
-libopenjp2 = libopenjp2_dep
+dependency_names = libopenjp2, libopenjpip
