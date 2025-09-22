@@ -241,6 +241,17 @@
       "0.4.1-1"
     ]
   },
+  "avro-cpp": {
+    "dependency_names": [
+      "avro-cpp"
+    ],
+    "program_names": [
+      "avrogencpp"
+    ],
+    "versions": [
+      "c53857b8c9694c2f9b8cb071dd2ef617d5cda8b7-1"
+    ]
+  },
   "backward-cpp": {
     "dependency_names": [
       "backward-cpp",
