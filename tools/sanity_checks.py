@@ -72,6 +72,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'libcap': {
         'gen_cap_names.py',
     },
+    'libcbor': {
+        'cbor_export.h',
+    },
     'libexif': {
         'def.py',
     },
