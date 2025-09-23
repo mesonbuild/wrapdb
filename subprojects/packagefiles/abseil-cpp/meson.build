@@ -12,9 +12,32 @@ cpp = meson.get_compiler('cpp')
 
 flags = cpp.get_supported_arguments(
   '/DNOMINMAX',
-  '-Wno-sign-compare',
+  '-Wcast-qual',
+  '-Wconversion-null',
+  '-Wmissing-declarations',
+  '-Wno-comma',
+  '-Wno-conversion',
+  '-Wno-double-promotion',
+  '-Wno-float-promotion',
+  '-Wno-format-literal',
   '-Wno-gcc-compat',
+  '-Wno-gcc-compat',
+  '-Wno-old-style-cast',
+  '-Wno-packed',
+  '-Wno-padded',
+  '-Wno-pedantic',
+  '-Wno-range-loop-analysis',
+  '-Wno-sign-compare',
+  '-Woverlength-strings',
+  '-Wpointer-arith',
+  '-Wswitch-enums',
+  '-Wunused-local-typedefs',
+  '-Wunused-result',
+  '-Wvarargs',
+  '-Wvla',
+  '-Wwrite-strings',
 )
+
 add_project_arguments(
   flags,
   language: 'cpp',
