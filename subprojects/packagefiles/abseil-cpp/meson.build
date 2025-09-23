@@ -21,7 +21,6 @@ flags = cpp.get_supported_arguments(
   '-Wno-float-promotion',
   '-Wno-format-literal',
   '-Wno-gcc-compat',
-  '-Wno-gcc-compat',
   '-Wno-old-style-cast',
   '-Wno-packed',
   '-Wno-padded',
