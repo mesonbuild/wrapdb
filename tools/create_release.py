@@ -39,8 +39,8 @@ class CreateRelease:
         with tempfile.TemporaryDirectory() as self.tempdir:
             self.read_wrap()
             self.find_upload_url()
-            self.create_patch_zip()
             self.create_source_fallback()
+            self.create_patch_zip()
             self.create_wrap_file()
 
     def read_wrap(self) -> None:
@@ -74,12 +74,12 @@ class CreateRelease:
 
             subprocess.check_call([generator])
 
+        shutil.copytree(srcdir, destdir)
         # If no specific license is specified, copy wrapdb's
-        license_file = srcdir / 'LICENSE.build'
+        license_file = destdir / 'LICENSE.build'
         if not license_file.exists():
             shutil.copyfile('COPYING', license_file)
 
-        shutil.copytree(srcdir, destdir)
         base_name = Path(self.tempdir, f'{self.tag}_patch')
         shutil.make_archive(base_name.as_posix(), 'zip', root_dir=self.tempdir, base_dir=directory)
 
@@ -142,12 +142,26 @@ class CreateRelease:
         response.raise_for_status()
 
     def create_source_fallback(self) -> None:
-        response = requests.get(
-            self.wrap_section['source_url'],
-            headers={'User-Agent': 'wrapdb/0'},
-        )
-        response.raise_for_status()
-        filename = Path(self.wrap_section['source_filename'])
+        for url in (self.wrap_section['source_url'],
+                    self.wrap_section.get('source_fallback_url')):
+            if url is None:
+                continue
+            try:
+                response = requests.get(url, headers={'User-Agent': 'wrapdb/0'})
+                response.raise_for_status()
+                digest = hashlib.sha256(response.content).hexdigest()
+                if digest != self.wrap_section['source_hash']:
+                    raise Exception(f'Hash mismatch for {url} ({len(response.content)} bytes): expected {self.wrap_section["source_hash"]}, found {digest}')
+                # we don't rewrite the wrap's source_url, even if we had to
+                # use the source_fallback_url instead
+                break
+            except Exception as ex:
+                print(ex)
+        else:
+            print("Couldn't download source archive; skipping creation of source fallback")
+            return
+
+        filename = Path(self.tempdir, self.wrap_section['source_filename'])
         filename.write_bytes(response.content)
         self.upload(filename, 'application/zip')
         self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
