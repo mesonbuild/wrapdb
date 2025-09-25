@@ -2,13 +2,14 @@
 project(
   'croaring',
   'c',
-  'cpp',
-  version: '1.3.0',
+  version: '4.3.11',
+  meson_version: '>=0.49.0',
   license: 'MIT',
 )
 
 croaring_sources = files(
   'src/array_util.c',
+  'src/art/art.c',
   'src/bitset.c',
   'src/bitset_util.c',
   'src/containers/array.c',
@@ -26,6 +27,7 @@ croaring_sources = files(
   'src/isadetection.c',
   'src/memory.c',
   'src/roaring.c',
+  'src/roaring64.c',
   'src/roaring_array.c',
   'src/roaring_priority_queue.c',
 )
@@ -36,9 +38,13 @@ croaring_lib = library(
   'croaring',
   croaring_sources,
   include_directories: croaring_headers,
+  override_options: ['c_std=c11'],
 )
 
 croaring_dep = declare_dependency(
   include_directories: croaring_headers,
   link_with: croaring_lib,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('croaring', croaring_dep)
+endif
