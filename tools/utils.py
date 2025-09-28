@@ -141,7 +141,7 @@ class ProjectReleases(T.TypedDict):
     program_names: T.NotRequired[list[str]]
     versions: list[str]
 
-class Releases(dict[str, ProjectReleases], _JSONFile):
+class Releases(T.Dict[str, ProjectReleases], _JSONFile):
     FILENAME = 'releases.json'
 
 class ProjectCIConfig(T.TypedDict):
@@ -161,7 +161,7 @@ class ProjectCIConfig(T.TypedDict):
     msys_packages: T.NotRequired[list[str]]
     python_packages: T.NotRequired[list[str]]
 
-class CIConfig(dict[str, ProjectCIConfig], _JSONFile):
+class CIConfig(T.Dict[str, ProjectCIConfig], _JSONFile):
     FILENAME = 'ci_config.json'
 
     @property
@@ -212,7 +212,7 @@ def is_msys() -> bool:
 def is_macos():
     return any(platform.mac_ver()[0])
 
-@functools.cache
+@functools.lru_cache
 def venv_meson_path() -> Path:
     if os.getenv('CI', 'false') == 'true':
         # assume CI already has a current Meson
@@ -239,8 +239,8 @@ def venv_meson_path() -> Path:
         pass
 
     subprocess.run([
-        meson.with_stem('pip'), 'install', '--disable-pip-version-check',
-        '-qU', '--pre', 'meson'
+        meson.with_name('pip' + meson.suffix),
+        'install', '--disable-pip-version-check', '-qU', '--pre', 'meson'
     ], check=True)
     os.utime(meson)
     return meson
