@@ -23,9 +23,11 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.7.1',
+  version: '2.7.3',
   meson_version: '>= 0.54.1',
 )
+
+dllver = '1.11.1'
 
 config = configuration_data()
 cc = meson.get_compiler('c')
@@ -66,6 +68,7 @@ else
   )
 endif
 
+config.set('XML_ATTR_INFO', get_option('xml_attr_info'))
 config.set('XML_DTD', get_option('xml_dtd'))
 config.set10('XML_GE', get_option('xml_ge'))
 config.set('XML_NS', get_option('xml_ns'))
@@ -186,7 +189,7 @@ libexpat = library(
   'lib/xmltok.c',
   include_directories: incdir,
   dependencies: dep_libbsd,
-  version: '1.10.2',
+  version: dllver,
   soversion: host_machine.system() != 'windows' ? '1' : '',
   install: true,
   gnu_symbol_visibility: 'hidden',
