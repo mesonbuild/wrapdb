@@ -25,6 +25,12 @@ option(
     description: 'Use libbsd for arc4random_buf',
 )
 option(
+    'xml_attr_info',
+    type: 'boolean',
+    value: false,
+    description: 'If true allow retrieving the byte offsets for attribute names and values',
+)
+option(
     'xml_dtd',
     type: 'boolean',
     value: true,
