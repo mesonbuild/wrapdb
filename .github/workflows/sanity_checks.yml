@@ -65,16 +65,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['x86_64', 'aarch64']
+        include:
+          - platform: x86_64
+            python: 3.13
+          - platform: aarch64
+            python: 3.8
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Install Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
       - name: Install packages
         run: |
           sudo apt-get update
-          sudo apt-get -y install build-essential python3-pip ninja-build
+          sudo apt-get -y install build-essential ninja-build
           python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
