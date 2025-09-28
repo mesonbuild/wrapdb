@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       fatal_warnings:
-        description: 'Build with --fatal-meson-warning (yes/no)'
+        description: 'Build with --fatal-meson-warnings (yes/no)'
         default: 'no'
         required: false
   schedule:
