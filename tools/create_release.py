@@ -129,9 +129,12 @@ class CreateRelease:
                 else:
                     raise Exception('Refusing to recreate existing release')
 
+        cmd = ['git', 'rev-parse', 'HEAD']
+        commit = subprocess.check_output(cmd, text=True).strip()
         content = {
             'tag_name': self.tag,
             'name': self.tag,
+            'target_commitish': commit,
             'draft': True,
         }
         response = requests.post(api, headers=headers, json=content)
