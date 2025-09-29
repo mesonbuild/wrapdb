@@ -1,8 +1,8 @@
 project(
   'ffmpegthumbnailer',
   'cpp',
+  license: 'LGPL-2.1-or-later',
   version: '2.2.3',
-  default_options: ['warning_level=0', 'cpp_std=c++11'],
   meson_version: '>=0.54.1',
 )
 
@@ -81,6 +81,7 @@ endif
 libffmpegthumbnailer = library(
   'ffmpegthumbnailer',
   compfiles,
+  override_options: 'cpp_std=c++11',
   dependencies: ffmpegthumbnailer_deps,
   install: true,
   version: '4.15.1',
