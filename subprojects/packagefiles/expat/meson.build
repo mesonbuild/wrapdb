@@ -24,7 +24,7 @@ project(
   'c',
   license: 'MIT',
   version: '2.7.3',
-  meson_version: '>= 0.54.1',
+  meson_version: '>= 0.58',
 )
 
 dllver = '1.11.1'
@@ -167,6 +167,15 @@ if host_machine.system() == 'windows'
     )
     expat_static_args += '-DXML_STATIC'
   endif
+
+  vard = configuration_data()
+  vard.set('PROJECT_VERSION', meson.project_version())
+  verf = configure_file(
+    configuration: vard,
+    format: 'cmake',
+    input: 'win32/version.rc.cmake',
+    output: 'version.rc',
+  )
 else
   add_project_arguments(
     '-DXMLIMPORT=__attribute__ ((visibility("default")))',
@@ -200,11 +209,20 @@ dfile = configure_file(
 
 incdir = include_directories('lib')
 
+sources = files('lib/xmlparse.c', 'lib/xmlrole.c', 'lib/xmltok.c')
+
+if host_machine.system() == 'windows'
+  sources += import('windows').compile_resources(
+    verf,
+    args: '-DVER_FILEVERSION=@0@,0'.format(
+      meson.project_version().replace('.', ','),
+    ),
+  )
+endif
+
 libexpat = library(
   'expat',
-  'lib/xmlparse.c',
-  'lib/xmlrole.c',
-  'lib/xmltok.c',
+  sources,
   include_directories: incdir,
   dependencies: dep_libbsd,
   version: dllver,
