@@ -121,10 +121,13 @@ class CreateRelease:
         response.raise_for_status()
         for r in response.json():
             if r['tag_name'] == self.tag:
-                self.release_id = r['id']
-                self.upload_url = r['upload_url'].replace('{?name,label}','')
-                print('Found release:', self.upload_url)
-                return
+                if r['draft']:
+                    delete_api = f'https://api.github.com/repos/{self.repo}/releases/{r["id"]}'
+                    response = requests.delete(delete_api, headers=headers)
+                    response.raise_for_status()
+                    print('Deleted stale release draft:', r['id'])
+                else:
+                    raise Exception('Refusing to recreate existing release')
 
         content = {
             'tag_name': self.tag,
