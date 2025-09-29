@@ -180,6 +180,24 @@ else
   endif
 endif
 
+defs = configuration_data()
+if get_option('xml_dtd') or get_option('xml_ge')
+  defs.set('_EXPAT_COMMENT_DTD_OR_GE', ' ')
+else
+  defs.set('_EXPAT_COMMENT_DTD_OR_GE', ';')
+endif
+if get_option('xml_attr_info')
+  defs.set('_EXPAT_COMMENT_ATTR_INFO', ' ')
+else
+  defs.set('_EXPAT_COMMENT_ATTR_INFO', ';')
+endif
+dfile = configure_file(
+  configuration: defs,
+  format: 'cmake@',
+  input: 'lib/libexpat.def.cmake',
+  output: 'libexpat.def',
+)
+
 incdir = include_directories('lib')
 
 libexpat = library(
@@ -191,6 +209,7 @@ libexpat = library(
   dependencies: dep_libbsd,
   version: dllver,
   soversion: host_machine.system() != 'windows' ? '1' : '',
+  vs_module_defs: dfile,
   install: true,
   gnu_symbol_visibility: 'hidden',
 )
