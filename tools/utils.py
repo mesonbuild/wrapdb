@@ -220,7 +220,7 @@ def is_macos():
 
 @functools.lru_cache
 def venv_meson_path() -> Path:
-    if os.getenv('CI', 'false') == 'true':
+    if is_ci():
         # assume CI already has a current Meson
         return Path('meson')
 
