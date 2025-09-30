@@ -10,7 +10,7 @@
 
 server {
   location /v2 {
-    rewrite ^.*/v2/releases.json$ https://raw.githubusercontent.com/mesonbuild/wrapdb/master/releases.json permanent;
+    rewrite ^.*/v2/releases.json$ https://mesonbuild.com/wrapdb/releases.json permanent;
     rewrite ^.*/v2/([^/]+)/get_source/([^/]+)$ https://github.com/mesonbuild/wrapdb/releases/download/$1/$2 permanent;
     rewrite ^.*/v2/([^/]+)/get_patch$ https://github.com/mesonbuild/wrapdb/releases/download/$1/$1_patch.zip permanent;
     rewrite ^.*/v2/([^/]+)/([^/]+).wrap$ https://github.com/mesonbuild/wrapdb/releases/download/$1/$2.wrap permanent;
