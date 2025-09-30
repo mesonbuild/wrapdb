@@ -8,7 +8,7 @@ project(
   ],
   license: 'Apache-2.0',
   version: '0.1.3',
-  meson_version: '>= 0.52.0',
+  meson_version: '>= 0.59.0',
 )
 
 armv7neon = false
