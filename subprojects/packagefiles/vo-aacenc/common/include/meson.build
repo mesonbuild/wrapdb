@@ -20,3 +20,5 @@ if cc.get_define('_MSC_VER') != '' and cc.get_define('__clang__') != ''
     ),
   ]
 endif
+
+subdir('vo-aacenc')
