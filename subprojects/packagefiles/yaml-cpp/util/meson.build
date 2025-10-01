@@ -1,3 +1,7 @@
+if not get_option('tools')
+  subdir_done()
+endif
+
 executable(
   'yaml-cpp-sandbox',
   'sandbox.cpp',
