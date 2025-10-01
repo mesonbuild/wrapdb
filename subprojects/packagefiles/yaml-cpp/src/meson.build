@@ -31,5 +31,5 @@ src = files(
 )
 
 if get_option('contrib')
-  subdir('contrib')
+  src += files('contrib/graphbuilder.cpp', 'contrib/graphbuilderadapter.cpp')
 endif
