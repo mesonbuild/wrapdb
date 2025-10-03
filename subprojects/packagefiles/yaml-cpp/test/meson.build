@@ -54,16 +54,10 @@ tests_src = files(
   'regex_test.cpp',
 )
 
-test_exe = executable(
+yaml_cpp_tests_exe = executable(
   'yaml-cpp-tests',
   tests_src,
-  cpp_args: cc.get_supported_arguments(
-    '-Wno-variadic-macros',
-    '-Wno-sign-compare',
-    '-Wno-c99-extensions',
-  ),
-  link_with: yaml_cpp_lib,
   include_directories: yaml_cpp_private_inc,
-  dependencies: [gmock_dep],
+  dependencies: [yaml_cpp_dep, gmock_dep],
 )
-test('tests', test_exe)
+test('yaml-cpp-tests', yaml_cpp_tests_exe)
