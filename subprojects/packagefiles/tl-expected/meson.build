@@ -2,7 +2,7 @@ project(
   'tl-expected',
   'cpp',
   license: 'CC0-1.0',
-  version: '1.1.0',
+  version: '1.3.1',
 )
 
 tl_expected_dep = declare_dependency(
