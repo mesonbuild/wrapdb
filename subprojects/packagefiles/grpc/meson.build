@@ -70,7 +70,12 @@ protoc_dep = dependency(
   required: false,
 )
 if not protoc_dep.found()
-  protoc_dep = cpp.find_library('protoc')  # pkgconfig version does not provide protoc.pc
+  # pkgconfig version does not provide protoc.pc
+  if host_machine.system() == 'windows'
+    protoc_dep = cpp.find_library('libprotoc')
+  else
+    protoc_dep = cpp.find_library('protoc')
+  endif
 endif
 re2_dep = dependency('re2')
 winsock_dep = is_windows ? [
@@ -1013,6 +1018,7 @@ grpc_unsecure_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [gpr_dep, libcares_dep],
 )
+meson.override_dependency('grpc_unsecure', grpc_unsecure_dep)
 
 libupb_json_lib = library(
   'upb_json_lib',
@@ -1913,6 +1919,7 @@ grpc_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [gpr_dep, libcares_dep],
 )
+meson.override_dependency('grpc', grpc_dep)
 
 libgrpcpp_unsecure = library(
   'grpc++_unsecure',
@@ -1973,6 +1980,7 @@ grpcpp_unsecure_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [grpc_unsecure_dep],
 )
+meson.override_dependency('grpc++_unsecure', grpcpp_unsecure_dep)
 
 libgrpcpp = library(
   'grpc++',
@@ -2067,6 +2075,7 @@ grpcpp_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [grpc_dep],
 )
+meson.override_dependency('grpc++', grpcpp_dep)
 
 libgrpcpp_alts = library(
   'grpc++_alts',
