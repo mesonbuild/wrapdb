@@ -1,7 +1,7 @@
 project(
   'ftxui',
   'cpp',
-  version: '5.0.0',
+  version: '6.1.9',
   meson_version: '>=0.49.0',
   default_options: ['cpp_std=c++17'],
 )
@@ -29,6 +29,7 @@ screen_lib = static_library(
   'src/ftxui/screen/box.cpp',
   'src/ftxui/screen/color.cpp',
   'src/ftxui/screen/color_info.cpp',
+  'src/ftxui/screen/image.cpp',
   'src/ftxui/screen/screen.cpp',
   'src/ftxui/screen/string.cpp',
   'src/ftxui/screen/terminal.cpp',
@@ -44,6 +45,7 @@ screen_dep = declare_dependency(
 dom_lib = static_library(
   'dom',
   'src/ftxui/dom/automerge.cpp',
+  'src/ftxui/dom/selection_style.cpp',
   'src/ftxui/dom/blink.cpp',
   'src/ftxui/dom/bold.cpp',
   'src/ftxui/dom/border.cpp',
@@ -66,12 +68,14 @@ dom_lib = static_library(
   'src/ftxui/dom/hbox.cpp',
   'src/ftxui/dom/hyperlink.cpp',
   'src/ftxui/dom/inverted.cpp',
+  'src/ftxui/dom/italic.cpp',
   'src/ftxui/dom/linear_gradient.cpp',
   'src/ftxui/dom/node.cpp',
   'src/ftxui/dom/node_decorator.cpp',
   'src/ftxui/dom/paragraph.cpp',
   'src/ftxui/dom/reflect.cpp',
   'src/ftxui/dom/scroll_indicator.cpp',
+  'src/ftxui/dom/selection.cpp',
   'src/ftxui/dom/separator.cpp',
   'src/ftxui/dom/size.cpp',
   'src/ftxui/dom/spinner.cpp',
@@ -116,6 +120,7 @@ component_lib = static_library(
   'src/ftxui/component/slider.cpp',
   'src/ftxui/component/terminal_input_parser.cpp',
   'src/ftxui/component/util.cpp',
+  'src/ftxui/component/window.cpp',
   include_directories: srcinc,
   dependencies: [dom_dep, screen_dep, thread_dep],
 )
