@@ -1,8 +1,8 @@
 [wrap-file]
-directory = FTXUI-5.0.0
-source_url = https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v5.0.0.tar.gz
-source_filename = FTXUI-5.0.0.tar.gz
-source_hash = a2991cb222c944aee14397965d9f6b050245da849d8c5da7c72d112de2786b5b
+directory = FTXUI-6.1.9
+source_url = https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v6.1.9.tar.gz
+source_filename = FTXUI-6.1.9.tar.gz
+source_hash = 45819c1e54914783d4a1ca5633885035d74146778a1f74e1213cdb7b76340e71
 patch_directory = ftxui
 
 [provide]
