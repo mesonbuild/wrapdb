@@ -130,4 +130,10 @@ component_dep = declare_dependency(
   include_directories: depinc,
 )
 
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('ftxui-screen', screen_dep)
+  meson.override_dependency('ftxui-dom', dom_dep)
+  meson.override_dependency('ftxui-component', component_dep)
+endif
+
 subdir('examples')
