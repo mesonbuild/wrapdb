@@ -6,6 +6,4 @@ source_hash = 45819c1e54914783d4a1ca5633885035d74146778a1f74e1213cdb7b76340e71
 patch_directory = ftxui
 
 [provide]
-ftxui-screen = screen_dep
-ftxui-dom = dom_dep
-ftxui-component = component_dep
+dependency_names = ftxui-screen, ftxui-dom, ftxui-component
