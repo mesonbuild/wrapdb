@@ -2,6 +2,7 @@ project(
   'ftxui',
   'cpp',
   version: '6.1.9',
+  license: 'MIT',
   meson_version: '>=0.49.0',
   default_options: ['cpp_std=c++17'],
 )
