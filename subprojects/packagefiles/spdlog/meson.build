@@ -12,7 +12,7 @@ thread_dep = dependency('threads')
 
 spdlog_dependencies = [thread_dep]
 spdlog_compile_args = []
-override_cpp = 'cpp_std=c++17'
+override_cpp = meson.version().version_compare('>=1.3.0') ? 'cpp_std=gnu++17,c++17' : 'cpp_std=gnu++17'
 
 if meson.get_compiler('cpp').has_header_symbol(
   'format',
@@ -24,7 +24,7 @@ if meson.get_compiler('cpp').has_header_symbol(
     '',
     required: false,
   )
-  override_cpp = 'cpp_std=c++20'
+  override_cpp = meson.version().version_compare('>=1.3.0') ? 'cpp_std=gnu++20,c++20' : 'cpp_std=gnu++20'
 else
   fmt_dep = dependency(
     'fmt',
