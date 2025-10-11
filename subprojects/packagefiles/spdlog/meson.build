@@ -76,3 +76,7 @@ pkg.generate(
 )
 
 subdir('tests')
+
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('spdlog', spdlog_dep)
+endif
