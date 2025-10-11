@@ -497,6 +497,13 @@
       "libpng"
     ]
   },
+  "joltphysics": {
+    "_comment": "Very math-y library so enable optimizations to make tests run faster",
+    "build_options": [
+      "joltphysics:tests=enabled",
+      "buildtype=debugoptimized"
+    ]
+  },
   "json-glib": {
     "_comment": [
       "- gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
