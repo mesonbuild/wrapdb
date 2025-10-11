@@ -42,5 +42,6 @@ foreach d : doms
     d,
     '@0@.cpp'.format(d),
     dependencies: [screen_dep, component_dep, thread_dep],
+    override_options: 'cpp_std=c++20',
   )
 endforeach

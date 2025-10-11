@@ -4,7 +4,6 @@ project(
   version: '6.1.9',
   license: 'MIT',
   meson_version: '>=0.49.0',
-  default_options: ['cpp_std=c++17'],
 )
 
 cpp = meson.get_compiler('cpp')
@@ -36,6 +35,7 @@ screen_lib = static_library(
   'src/ftxui/screen/terminal.cpp',
   include_directories: [depinc, srcinc],
   dependencies: thread_dep,
+  override_options: 'cpp_std=c++17',
 )
 
 screen_dep = declare_dependency(
@@ -89,6 +89,7 @@ dom_lib = static_library(
   'src/ftxui/dom/vbox.cpp',
   include_directories: srcinc,
   dependencies: [screen_dep, thread_dep],
+  override_options: 'cpp_std=c++17',
 )
 
 dom_dep = declare_dependency(
@@ -124,6 +125,7 @@ component_lib = static_library(
   'src/ftxui/component/window.cpp',
   include_directories: srcinc,
   dependencies: [dom_dep, screen_dep, thread_dep],
+  override_options: 'cpp_std=c++17',
 )
 
 component_dep = declare_dependency(

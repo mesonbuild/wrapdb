@@ -56,5 +56,6 @@ foreach c : components
     c,
     '@0@.cpp'.format(c),
     dependencies: [screen_dep, component_dep, thread_dep],
+    override_options: 'cpp_std=c++20',
   )
 endforeach
