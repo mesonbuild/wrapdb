@@ -3,7 +3,7 @@ project(
   'cpp',
   version: '6.1.9',
   license: 'MIT',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.50.0',
 )
 
 cpp = meson.get_compiler('cpp')
