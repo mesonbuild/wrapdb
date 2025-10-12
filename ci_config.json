@@ -1274,6 +1274,19 @@
       "libjack-dev"
     ]
   },
+  "s2n-tls": {
+    "_comment": "- No upstream windows support",
+    "build_on": {
+      "windows": false,
+      "msys2": false
+    },
+    "alpine_packages": [
+      "openssl-dev"
+    ],
+    "build_options": [
+      "s2n-tls:tests=enabled"
+    ]
+  },
   "sdl3": {
     "alpine_packages": [
       "libudev-zero-dev",
