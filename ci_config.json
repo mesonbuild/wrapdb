@@ -610,6 +610,11 @@
       "libattr1-dev"
     ]
   },
+  "libcbor": {
+    "build_options": [
+      "libcbor:tests=enabled"
+    ]
+  },
   "libdrm": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
