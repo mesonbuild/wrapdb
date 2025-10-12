@@ -1,0 +1,26 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build libcbor tests',
+)
+
+option(
+    'buffer_growth',
+    type: 'integer',
+    description: 'Growth factor for buffer resizing',
+    value: 2,
+)
+
+option(
+    'max_stack_size',
+    type: 'integer',
+    description: 'Maximum stack size for nested structures',
+    value: 2048,
+)
+
+option(
+    'pretty_printer',
+    type: 'boolean',
+    description: 'Enable the pretty printer',
+    value: true,
+)

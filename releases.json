@@ -1923,6 +1923,14 @@
       "2.76-1"
     ]
   },
+  "libcbor": {
+    "dependency_names": [
+      "libcbor"
+    ],
+    "versions": [
+      "0.13.0-1"
+    ]
+  },
   "libccp4c": {
     "dependency_names": [
       "libccp4c"
