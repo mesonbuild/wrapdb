@@ -3633,6 +3633,14 @@
       "4.1.0-1"
     ]
   },
+  "s2n-tls": {
+    "dependency_names": [
+      "s2n-tls"
+    ],
+    "versions": [
+      "1.5.27-1"
+    ]
+  },
   "sassc": {
     "program_names": [
       "sassc"
