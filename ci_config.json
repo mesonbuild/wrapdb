@@ -72,6 +72,11 @@
       "binutils-dev"
     ]
   },
+  "base64": {
+    "build_options": [
+      "base64:tests=enabled"
+    ]
+  },
   "blueprint-compiler": {
     "_comment": "Tests require pygobject and Gtk4 typelib, and also they crash",
     "skip_tests": true
