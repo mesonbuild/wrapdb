@@ -6,4 +6,4 @@ source_hash = f808b26d8c3a59def27fea207182ece77a8930bd121a69f80d328ecf3cfef925
 patch_directory = utfcpp
 
 [provide]
-utf8cpp = utfcpp_dep
+dependency_names = utf8cpp
