@@ -1,7 +1,7 @@
 project(
   'utfcpp',
   'cpp',
-  version: '4.0.6',
+  version: '4.0.8',
   license: 'MIT',
   meson_version: '>=0.49.0',
 )
