@@ -4229,6 +4229,14 @@
       "1.1.1-1"
     ]
   },
+  "tinycdb": {
+    "dependency_names": [
+      "libcdb"
+    ],
+    "versions": [
+      "0.81-1"
+    ]
+  },
   "tinyfsm": {
     "dependency_names": [
       "tinyfsm"
