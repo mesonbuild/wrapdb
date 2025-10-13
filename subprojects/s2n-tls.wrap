@@ -1,0 +1,9 @@
+[wrap-file]
+directory = s2n-tls-1.5.27
+source_url = https://github.com/aws/s2n-tls/archive/refs/tags/v1.5.27.tar.gz
+source_filename = s2n-tls-1.5.27.tar.gz
+source_hash = 95d6e5ada2d66108653e91de3ceea800987fde9eb190ef219034ab4fd06b114c
+patch_directory = s2n-tls
+
+[provide]
+dependency_names = s2n-tls
