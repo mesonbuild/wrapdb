@@ -2,12 +2,15 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.91.6',
-  meson_version: '>=0.50.0',
+  version: '1.92.3',
+  meson_version: '>=0.54.0',
 )
 
 if host_machine.system() == 'darwin'
-  add_languages('objcpp')
+  add_languages(
+    'objcpp',
+    native: false,
+  )
 endif
 
 include_dirs = include_directories('.', 'backends')
@@ -93,11 +96,20 @@ endif
 sdl2_renderer_dep = dependency(
   'sdl2',
   version: '>=2.0.17',
-  required: get_option('sdl_renderer'),
+  required: get_option('sdl2_renderer'),
 )
 if sdl2_renderer_dep.found()
   sources += 'backends/imgui_impl_sdlrenderer2.cpp'
   dependencies += sdl2_renderer_dep
+endif
+sdl3_renderer_dep = dependency(
+  'sdl3',
+  version: '>=3.1.3',
+  required: get_option('sdl3_renderer'),
+)
+if sdl3_renderer_dep.found()
+  sources += 'backends/imgui_impl_sdlrenderer3.cpp'
+  dependencies += sdl3_renderer_dep
 endif
 vulkan_dep = dependency(
   'vulkan',
@@ -130,6 +142,14 @@ sdl2_dep = dependency(
 if sdl2_dep.found()
   sources += 'backends/imgui_impl_sdl2.cpp'
   dependencies += sdl2_dep
+endif
+sdl3_dep = dependency(
+  'sdl3',
+  required: get_option('sdl3'),
+)
+if sdl3_dep.found()
+  sources += 'backends/imgui_impl_sdl3.cpp'
+  dependencies += sdl3_dep
 endif
 osx_dep = dependency(
   'appleframeworks',
@@ -190,3 +210,5 @@ imgui_dep = declare_dependency(
   include_directories: include_dirs,
   link_with: imgui,
 )
+
+meson.override_dependency('imgui-docking', imgui_dep)
