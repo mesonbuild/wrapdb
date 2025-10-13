@@ -1,10 +1,9 @@
 project(
   'libkqueue',
   'c',
-  version: '2.6.2',
+  version: '2.6.3',
   license: 'ISC AND BSD-2-Clause',
   meson_version: '>=0.54.1',
-  default_options: ['c_std=c11'],
 )
 
 varr = meson.project_version().split('.')
@@ -140,6 +139,7 @@ libkqueue = library(
   kqueue_sources,
   include_directories: kqueue_inc,
   c_args: kqueue_args,
+  override_options: 'c_std=c11',
   gnu_symbol_visibility: 'hidden',
   dependencies: kqueue_deps,
 )
@@ -149,3 +149,7 @@ libkqueue_dep = declare_dependency(
   link_with: libkqueue,
   include_directories: dep_inc,
 )
+
+meson.override_dependency('libkqueue', libkqueue_dep)
+
+subdir('test')
