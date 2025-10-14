@@ -30,7 +30,12 @@ option(
     value: 'auto',
 )
 option(
-    'sdl_renderer',
+    'sdl2_renderer',
+    type: 'feature',
+    value: 'auto',
+)
+option(
+    'sdl3_renderer',
     type: 'feature',
     value: 'auto',
 )
@@ -53,6 +58,11 @@ option(
 )
 option(
     'sdl2',
+    type: 'feature',
+    value: 'auto',
+)
+option(
+    'sdl3',
     type: 'feature',
     value: 'auto',
 )
