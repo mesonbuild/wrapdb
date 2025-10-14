@@ -111,6 +111,15 @@ if sdl3_renderer_dep.found()
   sources += 'backends/imgui_impl_sdlrenderer3.cpp'
   dependencies += sdl3_renderer_dep
 endif
+sdl3_gpu_dep = dependency(
+  'sdl3',
+  version: '>=3.1.3',
+  required: get_option('sdl3_gpu'),
+)
+if sdl3_renderer_dep.found()
+  sources += 'backends/imgui_impl_sdlgpu3.cpp'
+  dependencies += sdl3_renderer_dep
+endif
 vulkan_dep = dependency(
   'vulkan',
   required: get_option('vulkan'),
