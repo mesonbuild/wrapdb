@@ -4,8 +4,9 @@ project(
   license: 'LGPL-2.1-or-later',
   version: '1.24.3',
   meson_version: '>=0.58',
-  default_options: ['cpp_std=c++17', 'c_std=c11'],
 )
+
+cpp_std = 'cpp_std=c++17'
 
 cpp = meson.get_compiler('cpp')
 if meson.version().version_compare('>= 0.62')
@@ -19,8 +20,15 @@ else
     required: false,
   )
 endif
+
 fmt_dep = dependency('fmt')
-thread_dep = dependency('threads')
+
+if host_machine.system() != 'windows'
+  thread_dep = dependency('threads')
+else
+  thread_dep = declare_dependency()
+endif
+
 alsa_dep = dependency(
   'alsa',
   required: get_option('alsa'),
@@ -355,45 +363,39 @@ if cdata.get('HAVE_RTKIT')
   alc_sources += files('core/dbus_wrap.cpp', 'core/rtkit.cpp')
 endif
 
-foreach h : ['guiddef.h', 'pthread_np.h']
-  cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), cpp.has_header(h))
+headers = {
+  'dlfcn.h': dl_dep,
+  'guiddef.h': [],
+  'pthread_np.h': [],
+}
+foreach h, d : headers
+  if cpp.has_header(
+    h,
+    dependencies: d,
+  )
+    cdata.set('HAVE_@0@'.format(h.underscorify().to_upper()), 1)
+  endif
 endforeach
-
-cdata.set(
-  'HAVE_DLFCN_H',
-  cpp.has_header(
-    'dlfcn.h',
-    dependencies: dl_dep,
-  ),
-)
 
 #needs to be check_header for LLVM as well as MinGW
 cdata.set('HAVE_CPUID_H', cpp.check_header('cpuid.h'))
 cdata.set('HAVE_INTRIN_H', cpp.check_header('intrin.h'))
 
-#need to check for non windows because meson wrongly detects its presence under MinGW
-cdata.set('HAVE_PROC_PIDPATH', cpp.has_function('proc_pidpath'))
-cdata.set(
-  'HAVE_PTHREAD_SETSCHEDPARAM',
-  cpp.has_function(
-    'pthread_setschedparam',
-    dependencies: thread_dep,
-  ),
-)
-cdata.set(
-  'HAVE_PTHREAD_SETNAME_NP',
-  cpp.has_function(
-    'pthread_setname_np',
-    dependencies: thread_dep,
-  ),
-)
-cdata.set(
-  'HAVE_PTHREAD_SET_NAME_NP',
-  cpp.has_function(
-    'pthread_set_name_np',
-    dependencies: thread_dep,
-  ),
-)
+functions = {
+  #need to check for non windows because meson wrongly detects its presence under MinGW
+  'proc_pidpath': [],
+  'pthread_setschedparam': thread_dep,
+  'pthread_setname_np': thread_dep,
+  'pthread_set_name_np': thread_dep,
+}
+foreach f, d : functions
+  if cpp.has_function(
+    f,
+    dependencies: d,
+  )
+    cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
+endforeach
 
 cdata.set('HAVE_CPUID_INTRINSIC', cpp.get_argument_syntax() == 'msvc')
 cdata.set(
@@ -469,6 +471,7 @@ endif
 common_lib = static_library(
   'common',
   common_sources,
+  override_options: cpp_std,
   pic: true,
   dependencies: fmt_dep,
 )
@@ -490,6 +493,7 @@ openal_lib = library(
   alc_sources,
   hrtf_h,
   cpp_args: openal_args,
+  override_options: cpp_std,
   dependencies: [
     common_dep,
     dl_dep,
@@ -522,9 +526,7 @@ openal_dep = declare_dependency(
   compile_args: get_option('default_library') == 'static' ? '-DAL_LIBTYPE_STATIC' : [],
 )
 
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('openal', openal_dep)
-endif
+meson.override_dependency('openal', openal_dep)
 
 install_headers(
   'include/AL/al.h',
