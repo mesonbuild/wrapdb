@@ -6,4 +6,4 @@ source_hash = f64b501de66e163d6a278fbb6a95f395ee873b7a66c905dd785eae107266a709
 patch_directory = cpr
 
 [provide]
-cpr = cpr_dep
+dependency_names = cpr
