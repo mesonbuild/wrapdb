@@ -1,4 +1,10 @@
 option(
+    'raf-cache',
+    type: 'feature',
+    description: 'raf-cache utility',
+)
+
+option(
     'tests',
     type: 'boolean',
     value: false,

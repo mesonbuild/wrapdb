@@ -1,10 +1,9 @@
 project(
   'htslib',
   'c',
-  version: '1.22',
-  default_options: ['warning_level=0', 'c_std=c99', 'b_ndebug=if-release'],
+  version: '1.22.1',
   license: 'MIT',
-  meson_version: '>= 0.50.0',
+  meson_version: '>= 0.54.0',
 )
 
 cc = meson.get_compiler('c')
@@ -12,34 +11,36 @@ if cc.get_argument_syntax() == 'msvc'
   error('MSVC is unsupported. Only MinGW.')
 endif
 
-# htslib uses
-#   - usleep()
-#   - strdup()
-#   - M_LN10/M_LN2
-add_project_arguments(
-  '-D_XOPEN_SOURCE=600',
-  language: 'c',
-)
+thread_dep = dependency('threads')
+zlib_dep = dependency('zlib')
 
 if meson.version().version_compare('>= 0.62')
   dl_dep = dependency('dl')
 else
   dl_dep = cc.find_library('dl')
 endif
-libm_dep = cc.find_library(
-  'm',
-  required: false,
-)
-regex_dep = dependency(
-  'regex',
-  required: host_machine.system() == 'windows',
-)
-thread_dep = dependency('threads')
-ws_dep = cc.find_library(
-  'ws2_32',
-  required: host_machine.system() == 'windows',
-)
-zlib_dep = dependency('zlib')
+
+if cc.links('#include <math.h>\nint main(){log(0);}')
+  libm_dep = declare_dependency()
+else
+  libm_dep = cc.find_library('m')
+endif
+
+if cc.links('#include <regex.h>\nint main(){regfree(0);}')
+  regex_dep = declare_dependency()
+else
+  regex_dep = dependency('regex')
+endif
+
+if host_machine.system() == 'windows'
+  ws_dep = cc.find_library('ws2_32')
+else
+  if cc.has_function('recv')
+    ws_dep = declare_dependency()
+  else
+    ws_dep = cc.find_library('socket')
+  endif
+endif
 
 htslib_sources = files(
   'bcf_sr_sort.c',
@@ -130,22 +131,23 @@ configure_file(
   configuration: htslib_version_h_config,
 )
 
-# install library if
-# - either running as a proper project
-# - or linking to shared libraries
-htslib_lib_install = (not meson.is_subproject()) or (get_option(
-  'default_library',
-) != 'static')
-
 htslib_lib = library(
   'hts',
   htslib_sources,
+  c_args: '-D_XOPEN_SOURCE=600',
   soversion: 3,
   version: meson.project_version(),
-  install: htslib_lib_install,
+  install: true,
   dependencies: [dl_dep, libm_dep, regex_dep, thread_dep, ws_dep, zlib_dep],
   gnu_symbol_visibility: 'hidden',
-  override_options: ['warning_level=0', 'c_std=c99'],
+  override_options: 'c_std=c99',
+)
+
+pc = import('pkgconfig')
+pc.generate(
+  htslib_lib,
+  name: 'htslib',
+  description: 'C library for high-throughput sequencing data format',
 )
 
 ###################
@@ -155,14 +157,28 @@ htslib_lib = library(
 htslib_dep = declare_dependency(
   include_directories: '.',
   link_with: htslib_lib,
-  version: meson.project_version(),
 )
+
+meson.override_dependency('htslib', htslib_dep)
+
+subdir('htslib')
+
+foreach e : ['annot-tsv', 'bgzip', 'htsfile', 'tabix']
+  executable(
+    e,
+    '@0@.c'.format(e),
+    dependencies: htslib_dep,
+    install: true,
+  )
+endforeach
+
+subdir('ref_cache')
+
+#mangix/usr/local/bin/ref-cache
 
 #########
 # tests #
 #########
 
-if get_option('tests')
-  htslib_source_root = meson.current_source_dir()
-  subdir('test')
-endif
+htslib_source_root = meson.current_source_dir()
+subdir('test')

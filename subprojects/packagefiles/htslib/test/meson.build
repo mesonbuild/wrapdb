@@ -1,3 +1,7 @@
+if not get_option('tests')
+  subdir_done()
+endif
+
 # tests rely on -fvisibility=hidden symbols
 htslib_test_lib = static_library(
   'statichts',
