@@ -1511,6 +1511,11 @@
       "liblzma-dev"
     ]
   },
+  "yaml-cpp": {
+    "build_options": [
+      "yaml-cpp:tests=enabled"
+    ]
+  },
   "zycore": {
     "build_options": [
       "zycore:examples=enabled",
