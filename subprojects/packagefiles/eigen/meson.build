@@ -1,2147 +1,628 @@
 project(
   'eigen',
   'cpp',
-  version: '3.4.0',
-  license: 'MPL-2.0 AND Apache-2.0 AND BSD-3-Clause AND LGPL-2.1-only AND Minpack',
+  version: '5.0.0',
+  license: 'MPL-2.0 AND Apache-2.0 AND BSD-3-Clause AND Minpack',
+  meson_version: '>=0.63.0',
 )
 
 install_headers(
-  files('Eigen/PardisoSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/MetisSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/QtAlignedMalloc'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Core'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/CholmodSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/OrderingMethods'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Geometry'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SVD'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/PaStiXSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/src/PardisoSupport/PardisoSupport.h'),
-  subdir: 'eigen3/Eigen/src/PardisoSupport',
-)
-install_headers(
-  files('Eigen/src/MetisSupport/MetisSupport.h'),
-  subdir: 'eigen3/Eigen/src/MetisSupport',
-)
-install_headers(
-  files('Eigen/src/Core/IO.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Redux.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Transpositions.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/EigenBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/util/Meta.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/IntegralConstant.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/IndexedViewHelper.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/ReshapedHelper.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/XprHelper.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/Constants.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/Macros.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/BlasUtil.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/MKL_support.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/SymbolicIndex.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/NonMPL2.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/StaticAssert.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/ForwardDeclarations.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/DisableStupidWarnings.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/ReenableStupidWarnings.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/Memory.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/util/ConfigureVectorization.h'),
-  subdir: 'eigen3/Eigen/src/Core/util',
-)
-install_headers(
-  files('Eigen/src/Core/CoreEvaluators.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/StableNorm.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/NumTraits.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/SelfCwiseBinaryOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/GlobalFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CwiseTernaryOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Ref.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Select.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/DenseCoeffsBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointRank2Update.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointMatrixMatrix_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixVector.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularMatrixMatrix_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralBlockPanelKernel.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointProduct.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularMatrixVector_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixMatrixTriangular_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularMatrixVector.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointMatrixVector.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointMatrixVector_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularSolverMatrix_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixVector_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularSolverVector.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/SelfadjointMatrixMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixMatrix_BLAS.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularMatrixMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/TriangularSolverMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/Parallelizer.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/products/GeneralMatrixMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core/products',
-)
-install_headers(
-  files('Eigen/src/Core/IndexedView.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Product.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Matrix.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Array.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Dot.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/StlIterators.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/MatrixBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CommaInitializer.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/PlainObjectBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Block.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CwiseUnaryView.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CoreIterators.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Diagonal.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ArithmeticSequence.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Assign_MKL.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/VectorBlock.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/AssignEvaluator.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ArrayWrapper.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Random.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/BooleanRedux.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/SolveTriangular.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/PartialReduxEvaluator.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/MathFunctionsImpl.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Solve.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CwiseUnaryOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX512/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX512',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX512/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX512',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX512/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX512',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX512/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX512',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SYCL/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SYCL',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SYCL/InteropHeaders.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SYCL',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SYCL/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SYCL',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SYCL/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SYCL',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SYCL/SyclMemoryModel.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SYCL',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/BFloat16.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/ConjHelper.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/Settings.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/Default/Half.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/Default',
-)
-install_headers(
-  files('Eigen/src/Core/arch/HIP/hcc/math_constants.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/HIP/hcc',
-)
-install_headers(
-  files('Eigen/src/Core/arch/NEON/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/NEON',
-)
-install_headers(
-  files('Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/NEON',
-)
-install_headers(
-  files('Eigen/src/Core/arch/NEON/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/NEON',
-)
-install_headers(
-  files('Eigen/src/Core/arch/NEON/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/NEON',
-)
-install_headers(
-  files('Eigen/src/Core/arch/NEON/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/NEON',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/MatrixProduct.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/MatrixProductCommon.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/MatrixProductMMA.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AltiVec/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AltiVec',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SSE/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SSE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SSE/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SSE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SSE/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SSE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SSE/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SSE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/ZVector/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/ZVector',
-)
-install_headers(
-  files('Eigen/src/Core/arch/ZVector/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/ZVector',
-)
-install_headers(
-  files('Eigen/src/Core/arch/ZVector/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/ZVector',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SVE/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SVE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SVE/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SVE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/SVE/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/SVE',
-)
-install_headers(
-  files('Eigen/src/Core/arch/MSA/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/MSA',
-)
-install_headers(
-  files('Eigen/src/Core/arch/MSA/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/MSA',
-)
-install_headers(
-  files('Eigen/src/Core/arch/MSA/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/MSA',
-)
-install_headers(
-  files('Eigen/src/Core/arch/GPU/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/GPU',
-)
-install_headers(
-  files('Eigen/src/Core/arch/GPU/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/GPU',
-)
-install_headers(
-  files('Eigen/src/Core/arch/GPU/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/GPU',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX/TypeCasting.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX/MathFunctions.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX/PacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX',
-)
-install_headers(
-  files('Eigen/src/Core/arch/AVX/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/AVX',
-)
-install_headers(
-  files('Eigen/src/Core/arch/CUDA/Complex.h'),
-  subdir: 'eigen3/Eigen/src/Core/arch/CUDA',
-)
-install_headers(
-  files('Eigen/src/Core/ProductEvaluators.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/SelfAdjointView.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Transpose.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CwiseNullaryOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/TriangularMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/GeneralProduct.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ReturnByValue.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Fuzzy.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ForceAlignedAccess.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/BandMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/NoAlias.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Reshaped.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/SolverBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/functors/BinaryFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/functors/AssignmentFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/functors/StlFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/functors/UnaryFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/functors/TernaryFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/functors/NullaryFunctors.h'),
-  subdir: 'eigen3/Eigen/src/Core/functors',
-)
-install_headers(
-  files('Eigen/src/Core/Map.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/CwiseBinaryOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/MapBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/GenericPacketMath.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Reverse.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Inverse.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/VectorwiseOp.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/DiagonalProduct.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/NestByValue.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Visitor.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Swap.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/DenseBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/DiagonalMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/DenseStorage.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ArrayBase.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/ConditionEstimator.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Assign.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Stride.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/Replicate.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/Core/PermutationMatrix.h'),
-  subdir: 'eigen3/Eigen/src/Core',
-)
-install_headers(
-  files('Eigen/src/CholmodSupport/CholmodSupport.h'),
-  subdir: 'eigen3/Eigen/src/CholmodSupport',
-)
-install_headers(
-  files('Eigen/src/OrderingMethods/Eigen_Colamd.h'),
-  subdir: 'eigen3/Eigen/src/OrderingMethods',
-)
-install_headers(
-  files('Eigen/src/OrderingMethods/Ordering.h'),
-  subdir: 'eigen3/Eigen/src/OrderingMethods',
-)
-install_headers(
-  files('Eigen/src/OrderingMethods/Amd.h'),
-  subdir: 'eigen3/Eigen/src/OrderingMethods',
-)
-install_headers(
-  files('Eigen/src/misc/lapack.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/blas.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/Kernel.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/RealSvd2x2.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/lapacke.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/Image.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/misc/lapacke_mangling.h'),
-  subdir: 'eigen3/Eigen/src/misc',
-)
-install_headers(
-  files('Eigen/src/Geometry/Scaling.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Hyperplane.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Homogeneous.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Transform.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Translation.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/RotationBase.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Umeyama.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/AngleAxis.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/arch/Geometry_SIMD.h'),
-  subdir: 'eigen3/Eigen/src/Geometry/arch',
-)
-install_headers(
-  files('Eigen/src/Geometry/AlignedBox.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/ParametrizedLine.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Quaternion.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/Rotation2D.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/EulerAngles.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/Geometry/OrthoMethods.h'),
-  subdir: 'eigen3/Eigen/src/Geometry',
-)
-install_headers(
-  files('Eigen/src/SVD/JacobiSVD.h'),
-  subdir: 'eigen3/Eigen/src/SVD',
-)
-install_headers(
-  files('Eigen/src/SVD/SVDBase.h'),
-  subdir: 'eigen3/Eigen/src/SVD',
-)
-install_headers(
-  files('Eigen/src/SVD/JacobiSVD_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/SVD',
-)
-install_headers(
-  files('Eigen/src/SVD/UpperBidiagonalization.h'),
-  subdir: 'eigen3/Eigen/src/SVD',
-)
-install_headers(
-  files('Eigen/src/SVD/BDCSVD.h'),
-  subdir: 'eigen3/Eigen/src/SVD',
-)
-install_headers(
-  files('Eigen/src/PaStiXSupport/PaStiXSupport.h'),
-  subdir: 'eigen3/Eigen/src/PaStiXSupport',
-)
-install_headers(
-  files('Eigen/src/SparseCore/CompressedStorage.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseUtil.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/ConservativeSparseSparseProduct.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparsePermutation.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseCompressedBase.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseMatrix.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseDot.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseMatrixBase.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseMap.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/AmbiVector.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseSolverBase.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseBlock.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseRef.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseDiagonalProduct.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseCwiseUnaryOp.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseTranspose.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseVector.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseView.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/TriangularSolver.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseSelfAdjointView.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseColEtree.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseTriangularView.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseAssign.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseFuzzy.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseDenseProduct.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseSparseProductWithPruning.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseCwiseBinaryOp.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseProduct.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/MappedSparseMatrix.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SparseCore/SparseRedux.h'),
-  subdir: 'eigen3/Eigen/src/SparseCore',
-)
-install_headers(
-  files('Eigen/src/SuperLUSupport/SuperLUSupport.h'),
-  subdir: 'eigen3/Eigen/src/SuperLUSupport',
-)
-install_headers(
-  files('Eigen/src/StlSupport/StdDeque.h'),
-  subdir: 'eigen3/Eigen/src/StlSupport',
-)
-install_headers(
-  files('Eigen/src/StlSupport/details.h'),
-  subdir: 'eigen3/Eigen/src/StlSupport',
-)
-install_headers(
-  files('Eigen/src/StlSupport/StdList.h'),
-  subdir: 'eigen3/Eigen/src/StlSupport',
-)
-install_headers(
-  files('Eigen/src/StlSupport/StdVector.h'),
-  subdir: 'eigen3/Eigen/src/StlSupport',
-)
-install_headers(
-  files('Eigen/src/SPQRSupport/SuiteSparseQRSupport.h'),
-  subdir: 'eigen3/Eigen/src/SPQRSupport',
-)
-install_headers(
-  files('Eigen/src/UmfPackSupport/UmfPackSupport.h'),
-  subdir: 'eigen3/Eigen/src/UmfPackSupport',
-)
-install_headers(
-  files('Eigen/src/Householder/HouseholderSequence.h'),
-  subdir: 'eigen3/Eigen/src/Householder',
-)
-install_headers(
-  files('Eigen/src/Householder/BlockHouseholder.h'),
-  subdir: 'eigen3/Eigen/src/Householder',
-)
-install_headers(
-  files('Eigen/src/Householder/Householder.h'),
-  subdir: 'eigen3/Eigen/src/Householder',
-)
-install_headers(
-  files('Eigen/src/SparseCholesky/SimplicialCholesky.h'),
-  subdir: 'eigen3/Eigen/src/SparseCholesky',
-)
-install_headers(
-  files('Eigen/src/SparseCholesky/SimplicialCholesky_impl.h'),
-  subdir: 'eigen3/Eigen/src/SparseCholesky',
-)
-install_headers(
-  files('Eigen/src/plugins/ArrayCwiseUnaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/ArrayCwiseBinaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/MatrixCwiseBinaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/IndexedViewMethods.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/CommonCwiseUnaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/CommonCwiseBinaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/BlockMethods.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/ReshapedMethods.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/plugins/MatrixCwiseUnaryOps.h'),
-  subdir: 'eigen3/Eigen/src/plugins',
-)
-install_headers(
-  files('Eigen/src/KLUSupport/KLUSupport.h'),
-  subdir: 'eigen3/Eigen/src/KLUSupport',
-)
-install_headers(
-  files('Eigen/src/QR/CompleteOrthogonalDecomposition.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/QR/HouseholderQR.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/QR/HouseholderQR_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/QR/FullPivHouseholderQR.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/QR/ColPivHouseholderQR.h'),
-  subdir: 'eigen3/Eigen/src/QR',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_pruneL.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_pivotL.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_column_bmod.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_column_dfs.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_copy_to_ucol.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_Utils.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_Structs.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_kernel_bmod.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_relax_snode.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_panel_dfs.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_gemm_kernel.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_panel_bmod.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLUImpl.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_Memory.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU_heap_relax_snode.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/SparseLU/SparseLU.h'),
-  subdir: 'eigen3/Eigen/src/SparseLU',
-)
-install_headers(
-  files('Eigen/src/LU/PartialPivLU_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/LU',
-)
-install_headers(
-  files('Eigen/src/LU/arch/InverseSize4.h'),
-  subdir: 'eigen3/Eigen/src/LU/arch',
-)
-install_headers(
-  files('Eigen/src/LU/FullPivLU.h'),
-  subdir: 'eigen3/Eigen/src/LU',
-)
-install_headers(
-  files('Eigen/src/LU/InverseImpl.h'),
-  subdir: 'eigen3/Eigen/src/LU',
-)
-install_headers(
-  files('Eigen/src/LU/PartialPivLU.h'),
-  subdir: 'eigen3/Eigen/src/LU',
-)
-install_headers(
-  files('Eigen/src/LU/Determinant.h'),
-  subdir: 'eigen3/Eigen/src/LU',
-)
-install_headers(
-  files('Eigen/src/Jacobi/Jacobi.h'),
-  subdir: 'eigen3/Eigen/src/Jacobi',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/GeneralizedEigenSolver.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/Tridiagonalization.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/EigenSolver.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/ComplexEigenSolver.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/ComplexSchur.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/HessenbergDecomposition.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/SelfAdjointEigenSolver_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/RealSchur.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/RealQZ.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/RealSchur_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/Eigenvalues/ComplexSchur_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('Eigen/src/SparseQR/SparseQR.h'),
-  subdir: 'eigen3/Eigen/src/SparseQR',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/BiCGSTAB.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/ConjugateGradient.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/SolveWithGuess.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/IterativeLinearSolvers/IncompleteLUT.h'),
-  subdir: 'eigen3/Eigen/src/IterativeLinearSolvers',
-)
-install_headers(
-  files('Eigen/src/Cholesky/LDLT.h'),
-  subdir: 'eigen3/Eigen/src/Cholesky',
-)
-install_headers(
-  files('Eigen/src/Cholesky/LLT_LAPACKE.h'),
-  subdir: 'eigen3/Eigen/src/Cholesky',
-)
-install_headers(
-  files('Eigen/src/Cholesky/LLT.h'),
-  subdir: 'eigen3/Eigen/src/Cholesky',
-)
-install_headers(
-  files('Eigen/Dense'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SparseCore'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/StdList'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SuperLUSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SPQRSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/StdDeque'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/UmfPackSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Householder'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SparseCholesky'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/KLUSupport'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/StdVector'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/QR'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SparseLU'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Sparse'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/LU'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Jacobi'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Eigenvalues'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Eigen'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/SparseQR'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/IterativeLinearSolvers'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('Eigen/Cholesky'),
-  subdir: 'eigen3/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/TensorSymmetry'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/util/CXX11Workarounds.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/util',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/util/EmulateArray.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/util',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/util/CXX11Meta.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/util',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/util/MaxSizeVector.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/util',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/TensorSymmetry/util/TemplateGroupTheory.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/TensorSymmetry/util',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/TensorSymmetry/DynamicSymmetry.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/TensorSymmetry',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/TensorSymmetry/StaticSymmetry.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/TensorSymmetry',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/TensorSymmetry/Symmetry.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/TensorSymmetry',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorFunctors.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorGlobalFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorTraits.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDeviceDefault.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorBroadcasting.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorIndexList.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorReverse.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorShuffling.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorArgMax.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorIntDiv.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorVolumePatch.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorMap.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionGpu.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorReductionSycl.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorReductionGpu.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDeviceGpu.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorGenerator.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorScan.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorBlock.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorUInt128.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorReduction.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDeviceSycl.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/README.md'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorInitializer.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionBlocking.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorExecutor.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDeviceThreadPool.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorEvaluator.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorForwardDeclarations.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDevice.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorPadding.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorConvolution.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorLayoutSwap.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorScanSycl.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDeviceCuda.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContraction.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorMorphing.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorImagePatch.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorMacros.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorReductionCuda.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorRandom.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorConcatenation.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorGpuHipCudaDefines.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorFFT.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorIO.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorStriding.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorChipping.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorStorage.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorExpr.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorConversion.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorCostModel.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorGpuHipCudaUndefines.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorRef.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionThreadPool.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorTrace.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorBase.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorMeta.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionMapper.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorEvalTo.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/Tensor.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorConvolutionSycl.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDimensionList.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorPatch.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorAssign.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionSycl.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorDimensions.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorForcedEval.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorCustomOp.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorFixedSize.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorContractionCuda.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/Tensor/TensorInflation.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/Tensor',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/NonBlockingThreadPool.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/Barrier.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/EventCount.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/RunQueue.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/ThreadYield.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/ThreadEnvironment.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/ThreadPoolInterface.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/ThreadCancel.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/src/ThreadPool/ThreadLocal.h'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11/src/ThreadPool',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/Tensor'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11',
-)
-install_headers(
-  files('unsupported/Eigen/CXX11/ThreadPool'),
-  subdir: 'eigen3/unsupported/Eigen/CXX11',
-)
-install_headers(
-  files('unsupported/Eigen/EulerAngles'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/MPRealSupport'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/AutoDiff'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/ArpackSupport'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/BVH'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/src/EulerAngles/EulerSystem.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/EulerAngles',
-)
-install_headers(
-  files('unsupported/Eigen/src/EulerAngles/EulerAngles.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/EulerAngles',
-)
-install_headers(
-  files('unsupported/Eigen/src/AutoDiff/AutoDiffScalar.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/AutoDiff',
-)
-install_headers(
-  files('unsupported/Eigen/src/AutoDiff/AutoDiffVector.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/AutoDiff',
-)
-install_headers(
-  files('unsupported/Eigen/src/AutoDiff/AutoDiffJacobian.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/AutoDiff',
-)
-install_headers(
-  files('unsupported/Eigen/src/BVH/BVAlgorithms.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/BVH',
-)
-install_headers(
-  files('unsupported/Eigen/src/BVH/KdBVH.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/BVH',
-)
-install_headers(
-  files('unsupported/Eigen/src/KroneckerProduct/KroneckerTensorProduct.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/KroneckerProduct',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/MatrixPower.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/MatrixSquareRoot.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/StemFunction.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/MatrixFunction.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MatrixFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/covar.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/HybridNonLinearSolver.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/r1mpyq.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/chkder.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/LevenbergMarquardt.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/dogleg.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/r1updt.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/lmpar.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/rwupdt.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/qrsolv.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/NonLinearOptimization/fdjac1.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NonLinearOptimization',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/Scaling.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/ConstrainedConjGrad.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/MINRES.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/IncompleteLU.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/DGMRES.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/IDRS.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/GMRES.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/IterativeSolvers/IterationController.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/IterativeSolvers',
-)
-install_headers(
-  files('unsupported/Eigen/src/MoreVectorization/MathFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/MoreVectorization',
-)
-install_headers(
-  files('unsupported/Eigen/src/FFT/ei_kissfft_impl.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/FFT',
-)
-install_headers(
-  files('unsupported/Eigen/src/FFT/ei_fftw_impl.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/FFT',
-)
-install_headers(
-  files('unsupported/Eigen/src/NumericalDiff/NumericalDiff.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/NumericalDiff',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/BlockOfDynamicSparseMatrix.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/MarketIO.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/RandomSetter.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/MatrixMarketIterator.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/DynamicSparseMatrix.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/SparseExtra/BlockSparseMatrix.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SparseExtra',
-)
-install_headers(
-  files('unsupported/Eigen/src/Polynomials/Companion.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Polynomials',
-)
-install_headers(
-  files('unsupported/Eigen/src/Polynomials/PolynomialSolver.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Polynomials',
-)
-install_headers(
-  files('unsupported/Eigen/src/Polynomials/PolynomialUtils.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Polynomials',
-)
-install_headers(
-  files('unsupported/Eigen/src/Eigenvalues/ArpackSelfAdjointEigenSolver.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Eigenvalues',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/LMonestep.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/LevenbergMarquardt.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/LMpar.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/LMqrsolv.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/LevenbergMarquardt/LMcovar.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/LevenbergMarquardt',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineInplaceLU.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineStorage.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineProduct.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineMatrixBase.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineMatrix.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Skyline/SkylineUtil.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Skyline',
-)
-install_headers(
-  files('unsupported/Eigen/src/Splines/SplineFitting.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Splines',
-)
-install_headers(
-  files('unsupported/Eigen/src/Splines/Spline.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Splines',
-)
-install_headers(
-  files('unsupported/Eigen/src/Splines/SplineFwd.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/Splines',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsArrayAPI.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsArrayAPI.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsImpl.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsImpl.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsBFloat16.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsPacketMath.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/HipVectorCompatibility.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/AVX512/BesselFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/AVX512',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/AVX512/SpecialFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/AVX512',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/NEON/BesselFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/NEON',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/NEON/SpecialFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/NEON',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/GPU/SpecialFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/GPU',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/AVX/BesselFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/AVX',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/arch/AVX/SpecialFunctions.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions/arch/AVX',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsPacketMath.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsBFloat16.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsFunctors.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsHalf.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/BesselFunctionsFunctors.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsHalf.h'),
-  subdir: 'eigen3/unsupported/Eigen/src/SpecialFunctions',
-)
-install_headers(
-  files('unsupported/Eigen/AdolcForward'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/KroneckerProduct'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/MatrixFunctions'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/NonLinearOptimization'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/IterativeSolvers'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/MoreVectorization'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/FFT'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/NumericalDiff'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/SparseExtra'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/Polynomials'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/AlignedVector3'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/LevenbergMarquardt'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/Skyline'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/Splines'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/OpenGLSupport'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('unsupported/Eigen/SpecialFunctions'),
-  subdir: 'eigen3/unsupported/Eigen',
-)
-install_headers(
-  files('signature_of_eigen3_matrix_library'),
+  files(
+    'Eigen/AccelerateSupport',
+    'Eigen/Cholesky',
+    'Eigen/CholmodSupport',
+    'Eigen/Core',
+    'Eigen/Dense',
+    'Eigen/Eigen',
+    'Eigen/Eigenvalues',
+    'Eigen/Geometry',
+    'Eigen/Householder',
+    'Eigen/IterativeLinearSolvers',
+    'Eigen/Jacobi',
+    'Eigen/KLUSupport',
+    'Eigen/LU',
+    'Eigen/MetisSupport',
+    'Eigen/OrderingMethods',
+    'Eigen/PaStiXSupport',
+    'Eigen/PardisoSupport',
+    'Eigen/QR',
+    'Eigen/QtAlignedMalloc',
+    'Eigen/SPQRSupport',
+    'Eigen/SVD',
+    'Eigen/Sparse',
+    'Eigen/SparseCholesky',
+    'Eigen/SparseCore',
+    'Eigen/SparseLU',
+    'Eigen/SparseQR',
+    'Eigen/StdDeque',
+    'Eigen/StdList',
+    'Eigen/StdVector',
+    'Eigen/SuperLUSupport',
+    'Eigen/ThreadPool',
+    'Eigen/UmfPackSupport',
+    'Eigen/Version',
+    'Eigen/src/AccelerateSupport/AccelerateSupport.h',
+    'Eigen/src/AccelerateSupport/InternalHeaderCheck.h',
+    'Eigen/src/Cholesky/InternalHeaderCheck.h',
+    'Eigen/src/Cholesky/LDLT.h',
+    'Eigen/src/Cholesky/LLT.h',
+    'Eigen/src/Cholesky/LLT_LAPACKE.h',
+    'Eigen/src/CholmodSupport/CholmodSupport.h',
+    'Eigen/src/CholmodSupport/InternalHeaderCheck.h',
+    'Eigen/src/Core/ArithmeticSequence.h',
+    'Eigen/src/Core/Array.h',
+    'Eigen/src/Core/ArrayBase.h',
+    'Eigen/src/Core/ArrayWrapper.h',
+    'Eigen/src/Core/Assign.h',
+    'Eigen/src/Core/AssignEvaluator.h',
+    'Eigen/src/Core/Assign_MKL.h',
+    'Eigen/src/Core/BandMatrix.h',
+    'Eigen/src/Core/Block.h',
+    'Eigen/src/Core/CommaInitializer.h',
+    'Eigen/src/Core/ConditionEstimator.h',
+    'Eigen/src/Core/CoreEvaluators.h',
+    'Eigen/src/Core/CoreIterators.h',
+    'Eigen/src/Core/CwiseBinaryOp.h',
+    'Eigen/src/Core/CwiseNullaryOp.h',
+    'Eigen/src/Core/CwiseTernaryOp.h',
+    'Eigen/src/Core/CwiseUnaryOp.h',
+    'Eigen/src/Core/CwiseUnaryView.h',
+    'Eigen/src/Core/DenseBase.h',
+    'Eigen/src/Core/DenseCoeffsBase.h',
+    'Eigen/src/Core/DenseStorage.h',
+    'Eigen/src/Core/DeviceWrapper.h',
+    'Eigen/src/Core/Diagonal.h',
+    'Eigen/src/Core/DiagonalMatrix.h',
+    'Eigen/src/Core/DiagonalProduct.h',
+    'Eigen/src/Core/Dot.h',
+    'Eigen/src/Core/EigenBase.h',
+    'Eigen/src/Core/Fill.h',
+    'Eigen/src/Core/FindCoeff.h',
+    'Eigen/src/Core/ForceAlignedAccess.h',
+    'Eigen/src/Core/Fuzzy.h',
+    'Eigen/src/Core/GeneralProduct.h',
+    'Eigen/src/Core/GenericPacketMath.h',
+    'Eigen/src/Core/GlobalFunctions.h',
+    'Eigen/src/Core/IO.h',
+    'Eigen/src/Core/IndexedView.h',
+    'Eigen/src/Core/InnerProduct.h',
+    'Eigen/src/Core/InternalHeaderCheck.h',
+    'Eigen/src/Core/Inverse.h',
+    'Eigen/src/Core/Map.h',
+    'Eigen/src/Core/MapBase.h',
+    'Eigen/src/Core/MathFunctions.h',
+    'Eigen/src/Core/MathFunctionsImpl.h',
+    'Eigen/src/Core/Matrix.h',
+    'Eigen/src/Core/MatrixBase.h',
+    'Eigen/src/Core/NestByValue.h',
+    'Eigen/src/Core/NoAlias.h',
+    'Eigen/src/Core/NumTraits.h',
+    'Eigen/src/Core/PartialReduxEvaluator.h',
+    'Eigen/src/Core/PermutationMatrix.h',
+    'Eigen/src/Core/PlainObjectBase.h',
+    'Eigen/src/Core/Product.h',
+    'Eigen/src/Core/ProductEvaluators.h',
+    'Eigen/src/Core/Random.h',
+    'Eigen/src/Core/RandomImpl.h',
+    'Eigen/src/Core/RealView.h',
+    'Eigen/src/Core/Redux.h',
+    'Eigen/src/Core/Ref.h',
+    'Eigen/src/Core/Replicate.h',
+    'Eigen/src/Core/Reshaped.h',
+    'Eigen/src/Core/ReturnByValue.h',
+    'Eigen/src/Core/Reverse.h',
+    'Eigen/src/Core/Select.h',
+    'Eigen/src/Core/SelfAdjointView.h',
+    'Eigen/src/Core/SelfCwiseBinaryOp.h',
+    'Eigen/src/Core/SkewSymmetricMatrix3.h',
+    'Eigen/src/Core/Solve.h',
+    'Eigen/src/Core/SolveTriangular.h',
+    'Eigen/src/Core/SolverBase.h',
+    'Eigen/src/Core/StableNorm.h',
+    'Eigen/src/Core/StlIterators.h',
+    'Eigen/src/Core/Stride.h',
+    'Eigen/src/Core/Swap.h',
+    'Eigen/src/Core/Transpose.h',
+    'Eigen/src/Core/Transpositions.h',
+    'Eigen/src/Core/TriangularMatrix.h',
+    'Eigen/src/Core/VectorBlock.h',
+    'Eigen/src/Core/VectorwiseOp.h',
+    'Eigen/src/Core/Visitor.h',
+    'Eigen/src/Core/arch/AVX/Complex.h',
+    'Eigen/src/Core/arch/AVX/MathFunctions.h',
+    'Eigen/src/Core/arch/AVX/PacketMath.h',
+    'Eigen/src/Core/arch/AVX/Reductions.h',
+    'Eigen/src/Core/arch/AVX/TypeCasting.h',
+    'Eigen/src/Core/arch/AVX512/Complex.h',
+    'Eigen/src/Core/arch/AVX512/GemmKernel.h',
+    'Eigen/src/Core/arch/AVX512/MathFunctions.h',
+    'Eigen/src/Core/arch/AVX512/MathFunctionsFP16.h',
+    'Eigen/src/Core/arch/AVX512/PacketMath.h',
+    'Eigen/src/Core/arch/AVX512/PacketMathFP16.h',
+    'Eigen/src/Core/arch/AVX512/Reductions.h',
+    'Eigen/src/Core/arch/AVX512/TrsmKernel.h',
+    'Eigen/src/Core/arch/AVX512/TrsmUnrolls.inc',
+    'Eigen/src/Core/arch/AVX512/TypeCasting.h',
+    'Eigen/src/Core/arch/AVX512/TypeCastingFP16.h',
+    'Eigen/src/Core/arch/AltiVec/Complex.h',
+    'Eigen/src/Core/arch/AltiVec/MathFunctions.h',
+    'Eigen/src/Core/arch/AltiVec/MatrixProduct.h',
+    'Eigen/src/Core/arch/AltiVec/MatrixProductCommon.h',
+    'Eigen/src/Core/arch/AltiVec/MatrixProductMMA.h',
+    'Eigen/src/Core/arch/AltiVec/MatrixProductMMAbfloat16.h',
+    'Eigen/src/Core/arch/AltiVec/MatrixVectorProduct.inc',
+    'Eigen/src/Core/arch/AltiVec/PacketMath.h',
+    'Eigen/src/Core/arch/AltiVec/TypeCasting.h',
+    'Eigen/src/Core/arch/Default/BFloat16.h',
+    'Eigen/src/Core/arch/Default/ConjHelper.h',
+    'Eigen/src/Core/arch/Default/GenericPacketMathFunctions.h',
+    'Eigen/src/Core/arch/Default/GenericPacketMathFunctionsFwd.h',
+    'Eigen/src/Core/arch/Default/Half.h',
+    'Eigen/src/Core/arch/Default/Settings.h',
+    'Eigen/src/Core/arch/GPU/Complex.h',
+    'Eigen/src/Core/arch/GPU/MathFunctions.h',
+    'Eigen/src/Core/arch/GPU/PacketMath.h',
+    'Eigen/src/Core/arch/GPU/Tuple.h',
+    'Eigen/src/Core/arch/GPU/TypeCasting.h',
+    'Eigen/src/Core/arch/HIP/hcc/math_constants.h',
+    'Eigen/src/Core/arch/HVX/PacketMath.h',
+    'Eigen/src/Core/arch/LSX/Complex.h',
+    'Eigen/src/Core/arch/LSX/GeneralBlockPanelKernel.h',
+    'Eigen/src/Core/arch/LSX/MathFunctions.h',
+    'Eigen/src/Core/arch/LSX/PacketMath.h',
+    'Eigen/src/Core/arch/LSX/TypeCasting.h',
+    'Eigen/src/Core/arch/MSA/Complex.h',
+    'Eigen/src/Core/arch/MSA/MathFunctions.h',
+    'Eigen/src/Core/arch/MSA/PacketMath.h',
+    'Eigen/src/Core/arch/NEON/Complex.h',
+    'Eigen/src/Core/arch/NEON/GeneralBlockPanelKernel.h',
+    'Eigen/src/Core/arch/NEON/MathFunctions.h',
+    'Eigen/src/Core/arch/NEON/PacketMath.h',
+    'Eigen/src/Core/arch/NEON/TypeCasting.h',
+    'Eigen/src/Core/arch/NEON/UnaryFunctors.h',
+    'Eigen/src/Core/arch/SSE/Complex.h',
+    'Eigen/src/Core/arch/SSE/MathFunctions.h',
+    'Eigen/src/Core/arch/SSE/PacketMath.h',
+    'Eigen/src/Core/arch/SSE/Reductions.h',
+    'Eigen/src/Core/arch/SSE/TypeCasting.h',
+    'Eigen/src/Core/arch/SVE/MathFunctions.h',
+    'Eigen/src/Core/arch/SVE/PacketMath.h',
+    'Eigen/src/Core/arch/SVE/TypeCasting.h',
+    'Eigen/src/Core/arch/SYCL/InteropHeaders.h',
+    'Eigen/src/Core/arch/SYCL/MathFunctions.h',
+    'Eigen/src/Core/arch/SYCL/PacketMath.h',
+    'Eigen/src/Core/arch/SYCL/TypeCasting.h',
+    'Eigen/src/Core/arch/ZVector/Complex.h',
+    'Eigen/src/Core/arch/ZVector/MathFunctions.h',
+    'Eigen/src/Core/arch/ZVector/PacketMath.h',
+    'Eigen/src/Core/functors/AssignmentFunctors.h',
+    'Eigen/src/Core/functors/BinaryFunctors.h',
+    'Eigen/src/Core/functors/NullaryFunctors.h',
+    'Eigen/src/Core/functors/StlFunctors.h',
+    'Eigen/src/Core/functors/TernaryFunctors.h',
+    'Eigen/src/Core/functors/UnaryFunctors.h',
+    'Eigen/src/Core/products/GeneralBlockPanelKernel.h',
+    'Eigen/src/Core/products/GeneralMatrixMatrix.h',
+    'Eigen/src/Core/products/GeneralMatrixMatrixTriangular.h',
+    'Eigen/src/Core/products/GeneralMatrixMatrixTriangular_BLAS.h',
+    'Eigen/src/Core/products/GeneralMatrixMatrix_BLAS.h',
+    'Eigen/src/Core/products/GeneralMatrixVector.h',
+    'Eigen/src/Core/products/GeneralMatrixVector_BLAS.h',
+    'Eigen/src/Core/products/Parallelizer.h',
+    'Eigen/src/Core/products/SelfadjointMatrixMatrix.h',
+    'Eigen/src/Core/products/SelfadjointMatrixMatrix_BLAS.h',
+    'Eigen/src/Core/products/SelfadjointMatrixVector.h',
+    'Eigen/src/Core/products/SelfadjointMatrixVector_BLAS.h',
+    'Eigen/src/Core/products/SelfadjointProduct.h',
+    'Eigen/src/Core/products/SelfadjointRank2Update.h',
+    'Eigen/src/Core/products/TriangularMatrixMatrix.h',
+    'Eigen/src/Core/products/TriangularMatrixMatrix_BLAS.h',
+    'Eigen/src/Core/products/TriangularMatrixVector.h',
+    'Eigen/src/Core/products/TriangularMatrixVector_BLAS.h',
+    'Eigen/src/Core/products/TriangularSolverMatrix.h',
+    'Eigen/src/Core/products/TriangularSolverMatrix_BLAS.h',
+    'Eigen/src/Core/products/TriangularSolverVector.h',
+    'Eigen/src/Core/util/Assert.h',
+    'Eigen/src/Core/util/BlasUtil.h',
+    'Eigen/src/Core/util/ConfigureVectorization.h',
+    'Eigen/src/Core/util/Constants.h',
+    'Eigen/src/Core/util/DisableStupidWarnings.h',
+    'Eigen/src/Core/util/EmulateArray.h',
+    'Eigen/src/Core/util/ForwardDeclarations.h',
+    'Eigen/src/Core/util/GpuHipCudaDefines.inc',
+    'Eigen/src/Core/util/GpuHipCudaUndefines.inc',
+    'Eigen/src/Core/util/IndexedViewHelper.h',
+    'Eigen/src/Core/util/IntegralConstant.h',
+    'Eigen/src/Core/util/MKL_support.h',
+    'Eigen/src/Core/util/Macros.h',
+    'Eigen/src/Core/util/MaxSizeVector.h',
+    'Eigen/src/Core/util/Memory.h',
+    'Eigen/src/Core/util/Meta.h',
+    'Eigen/src/Core/util/MoreMeta.h',
+    'Eigen/src/Core/util/ReenableStupidWarnings.h',
+    'Eigen/src/Core/util/ReshapedHelper.h',
+    'Eigen/src/Core/util/Serializer.h',
+    'Eigen/src/Core/util/StaticAssert.h',
+    'Eigen/src/Core/util/SymbolicIndex.h',
+    'Eigen/src/Core/util/XprHelper.h',
+    'Eigen/src/Eigenvalues/ComplexEigenSolver.h',
+    'Eigen/src/Eigenvalues/ComplexSchur.h',
+    'Eigen/src/Eigenvalues/ComplexSchur_LAPACKE.h',
+    'Eigen/src/Eigenvalues/EigenSolver.h',
+    'Eigen/src/Eigenvalues/GeneralizedEigenSolver.h',
+    'Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h',
+    'Eigen/src/Eigenvalues/HessenbergDecomposition.h',
+    'Eigen/src/Eigenvalues/InternalHeaderCheck.h',
+    'Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h',
+    'Eigen/src/Eigenvalues/RealQZ.h',
+    'Eigen/src/Eigenvalues/RealSchur.h',
+    'Eigen/src/Eigenvalues/RealSchur_LAPACKE.h',
+    'Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h',
+    'Eigen/src/Eigenvalues/SelfAdjointEigenSolver_LAPACKE.h',
+    'Eigen/src/Eigenvalues/Tridiagonalization.h',
+    'Eigen/src/Geometry/AlignedBox.h',
+    'Eigen/src/Geometry/AngleAxis.h',
+    'Eigen/src/Geometry/EulerAngles.h',
+    'Eigen/src/Geometry/Homogeneous.h',
+    'Eigen/src/Geometry/Hyperplane.h',
+    'Eigen/src/Geometry/InternalHeaderCheck.h',
+    'Eigen/src/Geometry/OrthoMethods.h',
+    'Eigen/src/Geometry/ParametrizedLine.h',
+    'Eigen/src/Geometry/Quaternion.h',
+    'Eigen/src/Geometry/Rotation2D.h',
+    'Eigen/src/Geometry/RotationBase.h',
+    'Eigen/src/Geometry/Scaling.h',
+    'Eigen/src/Geometry/Transform.h',
+    'Eigen/src/Geometry/Translation.h',
+    'Eigen/src/Geometry/Umeyama.h',
+    'Eigen/src/Geometry/arch/Geometry_SIMD.h',
+    'Eigen/src/Householder/BlockHouseholder.h',
+    'Eigen/src/Householder/Householder.h',
+    'Eigen/src/Householder/HouseholderSequence.h',
+    'Eigen/src/Householder/InternalHeaderCheck.h',
+    'Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h',
+    'Eigen/src/IterativeLinearSolvers/BiCGSTAB.h',
+    'Eigen/src/IterativeLinearSolvers/ConjugateGradient.h',
+    'Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h',
+    'Eigen/src/IterativeLinearSolvers/IncompleteLUT.h',
+    'Eigen/src/IterativeLinearSolvers/InternalHeaderCheck.h',
+    'Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h',
+    'Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h',
+    'Eigen/src/IterativeLinearSolvers/SolveWithGuess.h',
+    'Eigen/src/Jacobi/InternalHeaderCheck.h',
+    'Eigen/src/Jacobi/Jacobi.h',
+    'Eigen/src/KLUSupport/InternalHeaderCheck.h',
+    'Eigen/src/KLUSupport/KLUSupport.h',
+    'Eigen/src/LU/Determinant.h',
+    'Eigen/src/LU/FullPivLU.h',
+    'Eigen/src/LU/InternalHeaderCheck.h',
+    'Eigen/src/LU/InverseImpl.h',
+    'Eigen/src/LU/PartialPivLU.h',
+    'Eigen/src/LU/PartialPivLU_LAPACKE.h',
+    'Eigen/src/LU/arch/InverseSize4.h',
+    'Eigen/src/MetisSupport/InternalHeaderCheck.h',
+    'Eigen/src/MetisSupport/MetisSupport.h',
+    'Eigen/src/OrderingMethods/Amd.h',
+    'Eigen/src/OrderingMethods/Eigen_Colamd.h',
+    'Eigen/src/OrderingMethods/InternalHeaderCheck.h',
+    'Eigen/src/OrderingMethods/Ordering.h',
+    'Eigen/src/PaStiXSupport/InternalHeaderCheck.h',
+    'Eigen/src/PaStiXSupport/PaStiXSupport.h',
+    'Eigen/src/PardisoSupport/InternalHeaderCheck.h',
+    'Eigen/src/PardisoSupport/PardisoSupport.h',
+    'Eigen/src/QR/ColPivHouseholderQR.h',
+    'Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h',
+    'Eigen/src/QR/CompleteOrthogonalDecomposition.h',
+    'Eigen/src/QR/FullPivHouseholderQR.h',
+    'Eigen/src/QR/HouseholderQR.h',
+    'Eigen/src/QR/HouseholderQR_LAPACKE.h',
+    'Eigen/src/QR/InternalHeaderCheck.h',
+    'Eigen/src/SPQRSupport/InternalHeaderCheck.h',
+    'Eigen/src/SPQRSupport/SuiteSparseQRSupport.h',
+    'Eigen/src/SVD/BDCSVD.h',
+    'Eigen/src/SVD/BDCSVD_LAPACKE.h',
+    'Eigen/src/SVD/InternalHeaderCheck.h',
+    'Eigen/src/SVD/JacobiSVD.h',
+    'Eigen/src/SVD/JacobiSVD_LAPACKE.h',
+    'Eigen/src/SVD/SVDBase.h',
+    'Eigen/src/SVD/UpperBidiagonalization.h',
+    'Eigen/src/SparseCholesky/InternalHeaderCheck.h',
+    'Eigen/src/SparseCholesky/SimplicialCholesky.h',
+    'Eigen/src/SparseCholesky/SimplicialCholesky_impl.h',
+    'Eigen/src/SparseCore/AmbiVector.h',
+    'Eigen/src/SparseCore/CompressedStorage.h',
+    'Eigen/src/SparseCore/ConservativeSparseSparseProduct.h',
+    'Eigen/src/SparseCore/InternalHeaderCheck.h',
+    'Eigen/src/SparseCore/SparseAssign.h',
+    'Eigen/src/SparseCore/SparseBlock.h',
+    'Eigen/src/SparseCore/SparseColEtree.h',
+    'Eigen/src/SparseCore/SparseCompressedBase.h',
+    'Eigen/src/SparseCore/SparseCwiseBinaryOp.h',
+    'Eigen/src/SparseCore/SparseCwiseUnaryOp.h',
+    'Eigen/src/SparseCore/SparseDenseProduct.h',
+    'Eigen/src/SparseCore/SparseDiagonalProduct.h',
+    'Eigen/src/SparseCore/SparseDot.h',
+    'Eigen/src/SparseCore/SparseFuzzy.h',
+    'Eigen/src/SparseCore/SparseMap.h',
+    'Eigen/src/SparseCore/SparseMatrix.h',
+    'Eigen/src/SparseCore/SparseMatrixBase.h',
+    'Eigen/src/SparseCore/SparsePermutation.h',
+    'Eigen/src/SparseCore/SparseProduct.h',
+    'Eigen/src/SparseCore/SparseRedux.h',
+    'Eigen/src/SparseCore/SparseRef.h',
+    'Eigen/src/SparseCore/SparseSelfAdjointView.h',
+    'Eigen/src/SparseCore/SparseSolverBase.h',
+    'Eigen/src/SparseCore/SparseSparseProductWithPruning.h',
+    'Eigen/src/SparseCore/SparseTranspose.h',
+    'Eigen/src/SparseCore/SparseTriangularView.h',
+    'Eigen/src/SparseCore/SparseUtil.h',
+    'Eigen/src/SparseCore/SparseVector.h',
+    'Eigen/src/SparseCore/SparseView.h',
+    'Eigen/src/SparseCore/TriangularSolver.h',
+    'Eigen/src/SparseLU/InternalHeaderCheck.h',
+    'Eigen/src/SparseLU/SparseLU.h',
+    'Eigen/src/SparseLU/SparseLUImpl.h',
+    'Eigen/src/SparseLU/SparseLU_Memory.h',
+    'Eigen/src/SparseLU/SparseLU_Structs.h',
+    'Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h',
+    'Eigen/src/SparseLU/SparseLU_Utils.h',
+    'Eigen/src/SparseLU/SparseLU_column_bmod.h',
+    'Eigen/src/SparseLU/SparseLU_column_dfs.h',
+    'Eigen/src/SparseLU/SparseLU_copy_to_ucol.h',
+    'Eigen/src/SparseLU/SparseLU_heap_relax_snode.h',
+    'Eigen/src/SparseLU/SparseLU_kernel_bmod.h',
+    'Eigen/src/SparseLU/SparseLU_panel_bmod.h',
+    'Eigen/src/SparseLU/SparseLU_panel_dfs.h',
+    'Eigen/src/SparseLU/SparseLU_pivotL.h',
+    'Eigen/src/SparseLU/SparseLU_pruneL.h',
+    'Eigen/src/SparseLU/SparseLU_relax_snode.h',
+    'Eigen/src/SparseQR/InternalHeaderCheck.h',
+    'Eigen/src/SparseQR/SparseQR.h',
+    'Eigen/src/StlSupport/StdDeque.h',
+    'Eigen/src/StlSupport/StdList.h',
+    'Eigen/src/StlSupport/StdVector.h',
+    'Eigen/src/StlSupport/details.h',
+    'Eigen/src/SuperLUSupport/InternalHeaderCheck.h',
+    'Eigen/src/SuperLUSupport/SuperLUSupport.h',
+    'Eigen/src/ThreadPool/Barrier.h',
+    'Eigen/src/ThreadPool/CoreThreadPoolDevice.h',
+    'Eigen/src/ThreadPool/EventCount.h',
+    'Eigen/src/ThreadPool/ForkJoin.h',
+    'Eigen/src/ThreadPool/InternalHeaderCheck.h',
+    'Eigen/src/ThreadPool/NonBlockingThreadPool.h',
+    'Eigen/src/ThreadPool/RunQueue.h',
+    'Eigen/src/ThreadPool/ThreadCancel.h',
+    'Eigen/src/ThreadPool/ThreadEnvironment.h',
+    'Eigen/src/ThreadPool/ThreadLocal.h',
+    'Eigen/src/ThreadPool/ThreadPoolInterface.h',
+    'Eigen/src/ThreadPool/ThreadYield.h',
+    'Eigen/src/UmfPackSupport/InternalHeaderCheck.h',
+    'Eigen/src/UmfPackSupport/UmfPackSupport.h',
+    'Eigen/src/misc/Image.h',
+    'Eigen/src/misc/InternalHeaderCheck.h',
+    'Eigen/src/misc/Kernel.h',
+    'Eigen/src/misc/RealSvd2x2.h',
+    'Eigen/src/misc/blas.h',
+    'Eigen/src/misc/lapacke.h',
+    'Eigen/src/misc/lapacke_helpers.h',
+    'Eigen/src/misc/lapacke_mangling.h',
+    'Eigen/src/plugins/ArrayCwiseBinaryOps.inc',
+    'Eigen/src/plugins/ArrayCwiseUnaryOps.inc',
+    'Eigen/src/plugins/BlockMethods.inc',
+    'Eigen/src/plugins/CommonCwiseBinaryOps.inc',
+    'Eigen/src/plugins/CommonCwiseUnaryOps.inc',
+    'Eigen/src/plugins/IndexedViewMethods.inc',
+    'Eigen/src/plugins/InternalHeaderCheck.inc',
+    'Eigen/src/plugins/MatrixCwiseBinaryOps.inc',
+    'Eigen/src/plugins/MatrixCwiseUnaryOps.inc',
+    'Eigen/src/plugins/ReshapedMethods.inc',
+    'signature_of_eigen3_matrix_library',
+    'unsupported/Eigen/AdolcForward',
+    'unsupported/Eigen/AlignedVector3',
+    'unsupported/Eigen/ArpackSupport',
+    'unsupported/Eigen/AutoDiff',
+    'unsupported/Eigen/BVH',
+    'unsupported/Eigen/CXX11/Tensor',
+    'unsupported/Eigen/CXX11/TensorSymmetry',
+    'unsupported/Eigen/CXX11/ThreadPool',
+    'unsupported/Eigen/CXX11/src/Tensor/InternalHeaderCheck.h',
+    'unsupported/Eigen/CXX11/src/Tensor/Tensor.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorArgMax.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorAssign.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorBase.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorBlock.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorBroadcasting.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorChipping.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorConcatenation.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContraction.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionBlocking.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionCuda.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionGpu.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionMapper.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionSycl.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorContractionThreadPool.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorConversion.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorConvolution.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorConvolutionSycl.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorCostModel.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorCustomOp.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDevice.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDeviceCuda.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDeviceDefault.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDeviceGpu.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDeviceSycl.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDeviceThreadPool.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDimensionList.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorDimensions.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorEvalTo.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorEvaluator.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorExecutor.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorExpr.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorFFT.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorFixedSize.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorForcedEval.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorForwardDeclarations.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorFunctors.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorGenerator.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorGlobalFunctions.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorIO.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorImagePatch.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorIndexList.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorInflation.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorInitializer.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorIntDiv.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorLayoutSwap.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorMacros.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorMap.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorMeta.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorMorphing.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorPadding.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorPatch.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorRandom.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorReduction.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorReductionGpu.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorReductionSycl.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorRef.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorReverse.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorRoll.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorScan.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorScanSycl.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorShuffling.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorStorage.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorStriding.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorTrace.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorTraits.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorUInt128.h',
+    'unsupported/Eigen/CXX11/src/Tensor/TensorVolumePatch.h',
+    'unsupported/Eigen/CXX11/src/TensorSymmetry/DynamicSymmetry.h',
+    'unsupported/Eigen/CXX11/src/TensorSymmetry/InternalHeaderCheck.h',
+    'unsupported/Eigen/CXX11/src/TensorSymmetry/StaticSymmetry.h',
+    'unsupported/Eigen/CXX11/src/TensorSymmetry/Symmetry.h',
+    'unsupported/Eigen/CXX11/src/TensorSymmetry/util/TemplateGroupTheory.h',
+    'unsupported/Eigen/CXX11/src/util/CXX11Meta.h',
+    'unsupported/Eigen/CXX11/src/util/CXX11Workarounds.h',
+    'unsupported/Eigen/EulerAngles',
+    'unsupported/Eigen/FFT',
+    'unsupported/Eigen/IterativeSolvers',
+    'unsupported/Eigen/KroneckerProduct',
+    'unsupported/Eigen/LevenbergMarquardt',
+    'unsupported/Eigen/MPRealSupport',
+    'unsupported/Eigen/MatrixFunctions',
+    'unsupported/Eigen/NNLS',
+    'unsupported/Eigen/NonLinearOptimization',
+    'unsupported/Eigen/NumericalDiff',
+    'unsupported/Eigen/OpenGLSupport',
+    'unsupported/Eigen/Polynomials',
+    'unsupported/Eigen/SparseExtra',
+    'unsupported/Eigen/SpecialFunctions',
+    'unsupported/Eigen/Splines',
+    'unsupported/Eigen/src/AutoDiff/AutoDiffJacobian.h',
+    'unsupported/Eigen/src/AutoDiff/AutoDiffScalar.h',
+    'unsupported/Eigen/src/AutoDiff/AutoDiffVector.h',
+    'unsupported/Eigen/src/AutoDiff/CoherentPadOp.h',
+    'unsupported/Eigen/src/AutoDiff/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/BVH/BVAlgorithms.h',
+    'unsupported/Eigen/src/BVH/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/BVH/KdBVH.h',
+    'unsupported/Eigen/src/Eigenvalues/ArpackSelfAdjointEigenSolver.h',
+    'unsupported/Eigen/src/Eigenvalues/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/EulerAngles/EulerAngles.h',
+    'unsupported/Eigen/src/EulerAngles/EulerSystem.h',
+    'unsupported/Eigen/src/EulerAngles/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/FFT/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/FFT/duccfft_impl.h',
+    'unsupported/Eigen/src/FFT/fftw_impl.h',
+    'unsupported/Eigen/src/FFT/imklfft_impl.h',
+    'unsupported/Eigen/src/FFT/kissfft_impl.h',
+    'unsupported/Eigen/src/FFT/pocketfft_impl.h',
+    'unsupported/Eigen/src/IterativeSolvers/BiCGSTABL.h',
+    'unsupported/Eigen/src/IterativeSolvers/DGMRES.h',
+    'unsupported/Eigen/src/IterativeSolvers/GMRES.h',
+    'unsupported/Eigen/src/IterativeSolvers/IDRS.h',
+    'unsupported/Eigen/src/IterativeSolvers/IDRSTABL.h',
+    'unsupported/Eigen/src/IterativeSolvers/IncompleteLU.h',
+    'unsupported/Eigen/src/IterativeSolvers/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/IterativeSolvers/MINRES.h',
+    'unsupported/Eigen/src/IterativeSolvers/Scaling.h',
+    'unsupported/Eigen/src/KroneckerProduct/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/KroneckerProduct/KroneckerTensorProduct.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/LMcovar.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/LMonestep.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/LMpar.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/LMqrsolv.h',
+    'unsupported/Eigen/src/LevenbergMarquardt/LevenbergMarquardt.h',
+    'unsupported/Eigen/src/MatrixFunctions/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/MatrixFunctions/MatrixExponential.h',
+    'unsupported/Eigen/src/MatrixFunctions/MatrixFunction.h',
+    'unsupported/Eigen/src/MatrixFunctions/MatrixLogarithm.h',
+    'unsupported/Eigen/src/MatrixFunctions/MatrixPower.h',
+    'unsupported/Eigen/src/MatrixFunctions/MatrixSquareRoot.h',
+    'unsupported/Eigen/src/MatrixFunctions/StemFunction.h',
+    'unsupported/Eigen/src/NonLinearOptimization/HybridNonLinearSolver.h',
+    'unsupported/Eigen/src/NonLinearOptimization/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/NonLinearOptimization/LevenbergMarquardt.h',
+    'unsupported/Eigen/src/NonLinearOptimization/chkder.h',
+    'unsupported/Eigen/src/NonLinearOptimization/covar.h',
+    'unsupported/Eigen/src/NonLinearOptimization/dogleg.h',
+    'unsupported/Eigen/src/NonLinearOptimization/fdjac1.h',
+    'unsupported/Eigen/src/NonLinearOptimization/lmpar.h',
+    'unsupported/Eigen/src/NonLinearOptimization/qrsolv.h',
+    'unsupported/Eigen/src/NonLinearOptimization/r1mpyq.h',
+    'unsupported/Eigen/src/NonLinearOptimization/r1updt.h',
+    'unsupported/Eigen/src/NonLinearOptimization/rwupdt.h',
+    'unsupported/Eigen/src/NumericalDiff/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/NumericalDiff/NumericalDiff.h',
+    'unsupported/Eigen/src/Polynomials/Companion.h',
+    'unsupported/Eigen/src/Polynomials/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/Polynomials/PolynomialSolver.h',
+    'unsupported/Eigen/src/Polynomials/PolynomialUtils.h',
+    'unsupported/Eigen/src/SparseExtra/BlockSparseMatrix.h',
+    'unsupported/Eigen/src/SparseExtra/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/SparseExtra/MarketIO.h',
+    'unsupported/Eigen/src/SparseExtra/MatrixMarketIterator.h',
+    'unsupported/Eigen/src/SparseExtra/RandomSetter.h',
+    'unsupported/Eigen/src/SparseExtra/SparseInverse.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsArrayAPI.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsBFloat16.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsFunctors.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsHalf.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsImpl.h',
+    'unsupported/Eigen/src/SpecialFunctions/BesselFunctionsPacketMath.h',
+    'unsupported/Eigen/src/SpecialFunctions/HipVectorCompatibility.h',
+    'unsupported/Eigen/src/SpecialFunctions/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsArrayAPI.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsBFloat16.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsFunctors.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsHalf.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsImpl.h',
+    'unsupported/Eigen/src/SpecialFunctions/SpecialFunctionsPacketMath.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/AVX/BesselFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/AVX/SpecialFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/AVX512/BesselFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/AVX512/SpecialFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/GPU/SpecialFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/NEON/BesselFunctions.h',
+    'unsupported/Eigen/src/SpecialFunctions/arch/NEON/SpecialFunctions.h',
+    'unsupported/Eigen/src/Splines/InternalHeaderCheck.h',
+    'unsupported/Eigen/src/Splines/Spline.h',
+    'unsupported/Eigen/src/Splines/SplineFitting.h',
+    'unsupported/Eigen/src/Splines/SplineFwd.h',
+  ),
+  preserve_path: true,
   subdir: 'eigen3',
 )
 
-pkgc = import('pkgconfig')
-pkgc.generate(
+import('pkgconfig').generate(
   name: 'eigen3',
   version: meson.project_version(),
   subdirs: 'eigen3',
-  description: 'A C++ template library for linear algebra: vectors, matrices, and related algorithms',
+  description: 'Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.',
 )
 
-eigen_dep = declare_dependency(
-  include_directories: include_directories('.'),
+meson.override_dependency(
+  'eigen3',
+  declare_dependency(
+    include_directories: include_directories('.'),
+  ),
 )
