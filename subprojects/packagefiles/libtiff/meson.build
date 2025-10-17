@@ -182,6 +182,8 @@ libtiff4_dep = declare_dependency(
   link_with: tiff4_lib,
 )
 
+meson.override_dependency('libtiff-4', libtiff4_dep)
+
 import('pkgconfig').generate(
   tiff4_lib,
   filebase: 'libtiff-4',
