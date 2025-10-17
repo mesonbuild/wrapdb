@@ -1,10 +1,9 @@
 project(
   'htslib',
   'c',
-  version: '1.22',
-  default_options: ['warning_level=0', 'c_std=c99', 'b_ndebug=if-release'],
+  version: '1.22.1',
   license: 'MIT',
-  meson_version: '>= 0.50.0',
+  meson_version: '>= 0.54.0',
 )
 
 cc = meson.get_compiler('c')
@@ -134,8 +133,8 @@ configure_file(
 # - either running as a proper project
 # - or linking to shared libraries
 htslib_lib_install = (not meson.is_subproject()) or (get_option(
-  'default_library',
-) != 'static')
+    'default_library',
+  ) != 'static')
 
 htslib_lib = library(
   'hts',
@@ -155,8 +154,9 @@ htslib_lib = library(
 htslib_dep = declare_dependency(
   include_directories: '.',
   link_with: htslib_lib,
-  version: meson.project_version(),
 )
+
+meson.override_dependency('htslib', htslib_dep)
 
 #########
 # tests #
