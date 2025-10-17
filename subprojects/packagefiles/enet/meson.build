@@ -1,8 +1,9 @@
 project(
   'enet',
   'c',
-  version: '1.3.17',
+  version: '1.3.18',
   license: 'mit',
+  meson_version: '>=0.54.0',
 )
 
 cc = meson.get_compiler('c')
@@ -78,9 +79,10 @@ src = [
 
 incdir = include_directories('include')
 enetlib = library(
-  'enet',
+  'libenet',
   sources: src,
   include_directories: incdir,
+  name_prefix: '',
   dependencies: deps,
   c_args: c_args,
 )
@@ -88,4 +90,12 @@ enetlib = library(
 enet_dep = declare_dependency(
   include_directories: incdir,
   link_with: enetlib,
+)
+
+meson.override_dependency('enet', enet_dep)
+
+pc = import('pkgconfig')
+pc.generate(
+  enetlib,
+  description: 'Low-latency UDP networking library supporting optional reliability',
 )
