@@ -157,6 +157,19 @@
       "cppzmq:examples=true"
     ]
   },
+  "crow": {
+    "build_options": [
+      "crow:examples=true",
+      "crow:tests=enabled",
+      "crow:ssl=auto",
+      "crow:compression=enabled",
+      "catch2:tests=false"
+    ],
+    "alpine_packages": [
+      "openssl-dev",
+      "openssl"
+    ]
+  },
   "curl": {
     "_comment": [
       "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
