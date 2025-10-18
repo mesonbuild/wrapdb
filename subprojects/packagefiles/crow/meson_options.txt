@@ -1,0 +1,38 @@
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build the examples in the project',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build the tests in the project',
+)
+# option('fuzzer', type: 'feature', value: 'false', description: 'Instrument and build Crow fuzzer')
+# option('amalgamate', type: 'boolean', value: false, 'Combine all headers into one')
+option(
+    'boost',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Use Boost.Asio for Crow',
+)
+option(
+    'ssl',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Enable Crow\'s SSL feature for supporting https',
+)
+option(
+    'compression',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Enable Crow\'s Compression feature for supporting compressed http content',
+)
+option(
+    'return_ok_on_http_options',
+    type: 'boolean',
+    value: false,
+    description: 'Returns HTTP status code OK (200) instead of 204 for OPTIONS request',
+)

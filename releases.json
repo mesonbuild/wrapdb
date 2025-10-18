@@ -667,6 +667,14 @@
       "1.3.0-1"
     ]
   },
+  "crow": {
+    "dependency_names": [
+      "Crow"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "ctre": {
     "dependency_names": [
       "ctre"
