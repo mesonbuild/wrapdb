@@ -236,26 +236,3 @@ foreach category, files : examples_list
     )
   endforeach
 endforeach
-
-
-
-# this example is special, therefore it is outside of the loop
-
-#only avaibale if target_platform == GLFW
-if target_platform == 'GLFW'
-  special_compile_args = example_compile_args
-
-  if host_machine.system() == 'windows' and not host_is_msys2
-    # detect wrong dllimport / dllexport declarations and therefore wrong build or public compile arguments
-    special_compile_args += '/we4273'
-  endif
-
-  executable(
-    'others rlgl_standalone',
-    files('others/rlgl_standalone.c'),
-    include_directories: include_directories('others/external/include'),
-    dependencies: _do_not_use_internal_glfw_dep,
-    c_args: special_compile_args,
-  )
-
-endif

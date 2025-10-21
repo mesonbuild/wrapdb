@@ -18,21 +18,3 @@ option(
     value: false,
     description: 'Build the examples',
 )
-option(
-    'use_external_glfw',
-    type: 'feature',
-    value: 'auto',
-    description: 'Link raylib against system GLFW instead of embedded one',
-)
-option(
-    'glfw_build_wayland',
-    type: 'feature',
-    value: 'auto',
-    description: 'Build the bundled GLFW with Wayland support',
-)
-option(
-    'glfw_build_x11',
-    type: 'feature',
-    value: 'auto',
-    description: 'Build the bundled GLFW with X11 support',
-)

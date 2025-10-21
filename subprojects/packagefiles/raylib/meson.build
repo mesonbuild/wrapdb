@@ -10,11 +10,7 @@ project(
 # get all available options
 platform = get_option('platform')
 
-glfw_build_wayland = get_option('glfw_build_wayland')
-glfw_build_x11 = get_option('glfw_build_x11')
-
 forced_opengl_version = get_option('opengl_version')
-use_external_glfw = get_option('use_external_glfw')
 
 # resolve target platform
 target_platform = platform
