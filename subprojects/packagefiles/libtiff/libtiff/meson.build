@@ -65,10 +65,7 @@ sources = files(
 )
 
 if host_machine.system() == 'windows'
-  sources += import('windows').compile_resources(
-    'tif_win32_versioninfo.rc',
-    include_directories: meson.current_build_dir(),
-  )
+  sources += import('windows').compile_resources('tif_win32_versioninfo.rc')
 endif
 
 tiff4_lib = library(
