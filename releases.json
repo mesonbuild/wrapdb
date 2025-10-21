@@ -3866,6 +3866,14 @@
       "1.1.0-1"
     ]
   },
+  "raylib": {
+    "dependency_names": [
+      "raylib"
+    ],
+    "versions": [
+      "5.5-1"
+    ]
+  },
   "rdkafka": {
     "dependency_names": [
       "rdkafka",
