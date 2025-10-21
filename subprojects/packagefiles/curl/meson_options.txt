@@ -156,7 +156,7 @@ option(
 option(
     'websockets'     ,
     type: 'feature',
-    value: 'disabled',
+    value: 'enabled',
 )
 option(
     'zstd'           ,
@@ -335,6 +335,10 @@ option(
 )
 option(
     'imap'  ,
+    type: 'feature',
+)
+option(
+    'ipfs'  ,
     type: 'feature',
 )
 option(

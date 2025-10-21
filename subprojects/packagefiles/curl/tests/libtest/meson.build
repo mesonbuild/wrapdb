@@ -3,13 +3,13 @@ subdir('.libs')
 _generated_srcs = {
   'lib1521.c': custom_target(
     'lib1521.c',
-    capture: true,
     command: [
       bash_exe,
       '-c',
       'exec perl "$@"',
       '--',
       meson.current_source_dir() / 'mk-lib1521.pl',
+      '@OUTPUT@',
     ],
     depend_files: 'mk-lib1521.pl',
     feed: true,
@@ -27,7 +27,10 @@ foreach _spec : makefile_extractions['libtest']
   _name = ''
   _args = []
   _deps = []
-  _incs = []
+
+  ## first.c, which is needed by all tests needs access to "tool_binmode.h" inside "src/", this was chnaged in 8.12.0
+  # upstream makefiles (.inc files), where we extract the test info seems to have a bug, or we don't extract that info correctly
+  _incs = [include_directories('../../src')]
   _srcs = []
   foreach _part : _spec.strip().split()
     if _name == ''
@@ -45,8 +48,8 @@ foreach _spec : makefile_extractions['libtest']
       _incs += include_directories(_part.substring(2))
     elif _part.endswith('.c')
       _srcs += (_part in _generated_srcs ? _generated_srcs.get(_part) : files(
-        _part,
-      )
+          _part,
+        )
 )
     endif
   endforeach
