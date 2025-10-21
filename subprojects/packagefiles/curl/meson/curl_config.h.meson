@@ -117,6 +117,9 @@
 /* to disable RTSP */
 #mesondefine CURL_DISABLE_RTSP
 
+/* to disable IPFS */
+#mesondefine CURL_DISABLE_IPFS
+
 /* disable SHA-512/256 hash algorithm */
 #mesondefine CURL_DISABLE_SHA512_256
 
@@ -140,6 +143,9 @@
 
 /* to disable verbose strings */
 #mesondefine CURL_DISABLE_VERBOSE_STRINGS
+
+/* to disable WebSockets */
+#mesondefine CURL_DISABLE_WEBSOCKETS
 
 /* Definition to make a library symbol externally visible. */
 #mesondefine CURL_EXTERN_SYMBOL
@@ -647,7 +653,7 @@
 #mesondefine NEED_THREAD_SAFE
 
 /* cpu-machine-OS */
-#mesondefine OS
+#mesondefine CURL_OS
 
 /* a suitable file to read random data from */
 #mesondefine RANDOM_FILE
@@ -698,9 +704,6 @@
 
 /* GSASL support enabled */
 #mesondefine USE_GSASL
-
-/* if hyper is in use */
-#mesondefine USE_HYPER
 
 /* Define if you want to enable IPv6 support */
 #mesondefine USE_IPV6
@@ -767,9 +770,6 @@
 
 /* Use Unix domain sockets */
 #mesondefine USE_UNIX_SOCKETS
-
-/* enable websockets support */
-#mesondefine USE_WEBSOCKETS
 
 /* Define to 1 if you are building a Windows target with crypto API support.
    */

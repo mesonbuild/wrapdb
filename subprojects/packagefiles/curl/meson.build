@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.10.1',
+  version: '8.12.1',
   meson_version: '>=0.60.0',
 )
 
@@ -257,7 +257,7 @@ foreach _header, _symlist : _headerlist
   foreach _symbol : _symlist
     _flag = 'HAVE_' + _symbol.underscorify().to_upper()
     _available = (cdata.get(_flag, false)
-or (_has_header and cc.has_header_symbol(_header, _symbol))
+  or (_has_header and cc.has_header_symbol(_header, _symbol))
 )
     cdata.set(_flag, _available)
   endforeach
@@ -356,11 +356,11 @@ cdata.set(
 # Windows. {{{
 
 use_win32_crypto = (host_machine.system() == 'windows'
-and cc.has_header_symbol(
-  'wincrypt.h',
+  and cc.has_header_symbol(
+    'wincrypt.h',
   'CryptAcquireContext',
   prefix: '#include<windows.h>',
-)
+  )
 )
 
 if use_win32_crypto
@@ -385,13 +385,13 @@ foreach _resolver : get_option('asynchdns-resolver')
   if _resolver == 'pthread'
     # Posix threaded resolver.
     _dep = (asynchdns_opt.allowed()
-and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
+  and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
 )
     _flag = 'USE_THREADS_POSIX'
   elif _resolver == 'win32'
     # Win32 threaded resolver.
     _dep = (asynchdns_opt.allowed()
-and host_machine.system() == 'windows' ? threads_dep : disabler()
+  and host_machine.system() == 'windows' ? threads_dep : disabler()
 )
     _flag = 'USE_THREADS_WIN32'
   elif _resolver == 'ares'
@@ -459,9 +459,9 @@ cdata.set('USE_IPV6', ipv6_opt.allowed())
 
 cdata.set('USE_WIN32_LARGE_FILES', host_machine.system() == 'windows')
 largefile_opt = (cdata.get('USE_WIN32_LARGE_FILES')
-or (cdata.get('SIZEOF_CURL_OFF_T') > 4
-and cdata.get('SIZEOF_OFF_T') > 4)
-? ENABLED_OPT : DISABLED_OPT
+  or (cdata.get('SIZEOF_CURL_OFF_T') > 4
+    and cdata.get('SIZEOF_OFF_T') > 4)
+  ? ENABLED_OPT : DISABLED_OPT
 )
 
 # }}}
@@ -765,8 +765,8 @@ https_proxy_opt = ssl_opt.allowed() ? proxy_opt : DISABLED_OPT
 # }}}
 
 # IPFS / IPNS.
-ipfs_opt = http_opt
-ipns_opt = http_opt
+ipfs_opt = get_option('ipfs')
+ipns_opt = ipfs_opt
 
 # LDAP. {{{
 
@@ -785,10 +785,10 @@ foreach _provider : get_option('ldap-provider')
     _flag = 'OPENLDAP'
   elif _provider == 'win32'
     _dep = (host_machine.system() == 'windows' ? cc.find_library(
-      'wldap32',
+        'wldap32',
       has_headers: 'winldap.h',
       required: _required,
-    ) : disabler()
+      ) : disabler()
 )
     _flag = 'WIN32_LDAP'
   else
@@ -930,10 +930,10 @@ foreach _provider : get_option('idn-provider')
   elif _provider == 'winidn'
     # Windows IDN.
     _dep = (host_vista_or_newer ? cc.find_library(
-      'normaliz',
+        'normaliz',
       disabler: true,
       required: _required,
-    ) : disabler()
+      ) : disabler()
 )
     if cc.has_function(
       'IdnToUnicode',
@@ -965,8 +965,6 @@ ws_opt = get_option('websockets').require(
   cdata.get('SIZEOF_CURL_OFF_T') > 4,
   error_message: 'curl_off_t is too small to enable WebSockets support',
 )
-
-cdata.set('USE_WEBSOCKETS', ws_opt.allowed())
 
 wss_opt = ws_opt.allowed() and ssl_opt.allowed() ? ws_opt : DISABLED_OPT
 
@@ -1079,15 +1077,15 @@ else
 endif
 
 threadsafe_opt = (host_vista_or_newer
-or cdata.get('HAVE_STDATOMIC_H')
-? ENABLED_OPT : DISABLED_OPT
+  or cdata.get('HAVE_STDATOMIC_H')
+  ? ENABLED_OPT : DISABLED_OPT
 )
 
 _have_clock_gettime = (cdata.get('HAVE_CLOCK_GETTIME')
-and cc.has_function(
-  'clock_gettime',
+  and cc.has_function(
+    'clock_gettime',
   dependencies: sys_deps,
-)
+  )
 )
 cdata.set(
   'HAVE_CLOCK_GETTIME_MONOTONIC',
@@ -1316,8 +1314,8 @@ _required = cdata.get('HAVE_GETHOSTNAME') ? true : disabler()
 foreach _arg1 : ['char *', 'unsigned char *', 'void *']
   foreach _arg2 : ['int', 'unsigned int', 'size_t']
     if (_required
-and cc.compiles(
-      _source_epilogue + '''
+  and cc.compiles(
+        _source_epilogue + '''
         #ifdef HAVE_WINDOWS_H
         #  ifndef WIN32_LEAN_AND_MEAN
         #    define WIN32_LEAN_AND_MEAN
@@ -1349,7 +1347,7 @@ and cc.compiles(
         '''.format(_arg1, _arg2),
       args: check_args,
       name: 'gethostname(@0@, @1@)'.format(_arg1, _arg2),
-    )
+      )
 )
       cdata.set('GETHOSTNAME_TYPE_ARG2', _arg2)
       _required = disabler()
@@ -1401,7 +1399,7 @@ else
   _os = '-'.join(host_machine.cpu(), host_machine.system())
 endif
 
-cdata.set_quoted('OS', _os)
+cdata.set_quoted('CURL_OS', _os)
 
 # }}}
 
@@ -1409,7 +1407,7 @@ cdata.set_quoted('OS', _os)
 
 # Symbols visibility.
 if (cc.has_argument('-fvisibility=hidden')
-and cc.has_function_attribute('visibility:default')
+  and cc.has_function_attribute('visibility:default')
 )
   cdata.set('CURL_EXTERN_SYMBOL', '__attribute__ ((__visibility__ ("default")))')
   curl_symbols_hiding_flags = ['-DCURL_HIDDEN_SYMBOLS']
@@ -1505,6 +1503,7 @@ foreach _proto : [
   'gopher',
   'http',
   'imap',
+  'ipfs',
   'ldap',
   'ldaps',
   'mqtt',
@@ -1514,6 +1513,8 @@ foreach _proto : [
   'smtp',
   'telnet',
   'tftp',
+  'ws',
+  'wss',
 ]
   cdata.set(
     'CURL_DISABLE_' + _proto.to_upper(),
@@ -1526,13 +1527,13 @@ endforeach
 # Features. {{{
 
 kerberos_opt = (kerberos_auth_opt.allowed()
-and (gss_api_opt.allowed() or sspi_opt.allowed())
-? ENABLED_OPT : DISABLED_OPT
+  and (gss_api_opt.allowed() or sspi_opt.allowed())
+  ? ENABLED_OPT : DISABLED_OPT
 )
 
 spnego_opt = (negotiate_auth_opt.allowed()
-and (gss_api_opt.allowed() or sspi_opt.allowed())
-? ENABLED_OPT : DISABLED_OPT
+  and (gss_api_opt.allowed() or sspi_opt.allowed())
+  ? ENABLED_OPT : DISABLED_OPT
 )
 
 # `CURL_DISABLE_ALTSVC` is used instead of `CURL_DISABLE_ALT_SVC`…
@@ -1675,8 +1676,8 @@ ssl_backends_summary += {
 _boolkeys = ['STDC_HEADERS']
 foreach _key : cdata.keys()
   if (_key.startswith('CURL_DISABLE_')
-or _key.endswith('_ENABLED')
-or _key.split('_')[0] in ['ENABLE', 'HAVE', 'NEED', 'USE']
+  or _key.endswith('_ENABLED')
+  or _key.split('_')[0] in ['ENABLE', 'HAVE', 'NEED', 'USE']
 )
     _boolkeys += _key
   endif
@@ -1721,6 +1722,7 @@ cdata.set_quoted(
   'LIBCURL_PC_CFLAGS',
   get_option('default_library') == 'static' ? '-DCURL_STATICLIB' : '',
 )
+cdata.set('LIBCURL_PC_LDFLAGS_PRIVATE', '')
 cdata.set('LIBCURL_PC_LIBS_PRIVATE', '')
 cdata.set_quoted(
   'ENABLE_SHARED',
@@ -1868,7 +1870,7 @@ endif
 
 summary(
   {
-    'OS': cdata.get_unquoted('OS'),
+    'OS': cdata.get_unquoted('CURL_OS'),
   },
   bool_yn: true,
   section: 'System',
