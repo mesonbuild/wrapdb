@@ -27,12 +27,12 @@ subdir('log')
 
 # Extract test targets info.
 makefile_extractions = ({
-  'libtest': '',
+    'libtest': '',
   'server': '',
-} + (build_unittests.found() ? {
-  'unit': '',
-} : {}
-)
+  } + (build_unittests.found() ? {
+      'unit': '',
+    } : {}
+  )
 )
 foreach _subdir : makefile_extractions.keys()
   makefile_extractions += {
