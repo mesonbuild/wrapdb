@@ -258,6 +258,14 @@
       "1.6-1"
     ]
   },
+  "base64": {
+    "dependency_names": [
+      "base64"
+    ],
+    "versions": [
+      "0.5.2-1"
+    ]
+  },
   "bdwgc": {
     "dependency_names": [
       "gc"
