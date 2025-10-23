@@ -22,6 +22,7 @@ foreach u, d : utils
   executable(
     u.split('.')[0],
     u,
+    override_options: cpp_std,
     dependencies: d,
     link_args: cpp.get_supported_arguments('-municode'),
   )
