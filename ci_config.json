@@ -42,7 +42,14 @@
   },
   "arrow-cpp": {
     "build_options": [
-      "arrow-cpp:compute=enabled"
+      "arrow-cpp:acero=enabled",
+      "arrow-cpp:compute=enabled",
+      "arrow-cpp:csv=enabled",
+      "arrow-cpp:dataset=enabled",
+      "arrow-cpp:filesystem=enabled",
+      "arrow-cpp:json=enabled",
+      "arrow-cpp:testing=enabled",
+      "arrow-cpp:tensorflow=enabled"
     ],
     "alpine_packages": [
       "boost-dev"

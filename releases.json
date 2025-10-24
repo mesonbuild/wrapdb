@@ -204,9 +204,17 @@
   "arrow-cpp": {
     "dependency_names": [
       "arrow",
-      "arrow-compute"
+      "arrow-acero",
+      "arrow-compute",
+      "arrow-csv",
+      "arrow-dataset",
+      "arrow-filesystem",
+      "arrow-json",
+      "arrow-testing",
+      "arrow-tensorflow"
     ],
     "versions": [
+      "22.0.0-1",
       "21.0.0-1"
     ]
   },
