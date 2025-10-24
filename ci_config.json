@@ -42,20 +42,30 @@
   },
   "arrow-cpp": {
     "build_options": [
-      "arrow-cpp:compute=enabled"
+      "arrow-cpp:acero=enabled",
+      "arrow-cpp:compute=enabled",
+      "arrow-cpp:csv=enabled",
+      "arrow-cpp:filesystem=enabled",
+      "arrow-cpp:json=enabled",
+      "arrow-cpp:testing=enabled",
+      "arrow-cpp:tensorflow=enabled"
     ],
     "alpine_packages": [
-      "boost-dev"
+      "boost-dev",
+      "rapidjson"
     ],
     "brew_packages": [
-      "boost"
+      "boost",
+      "rapidjson"
     ],
     "debian_packages": [
       "libboost-filesystem-dev",
-      "libboost-system-dev"
+      "libboost-system-dev",
+      "rapidjson-dev"
     ],
     "msys_packages": [
-      "boost"
+      "boost",
+      "rapidjson"
     ]
   },
   "atomic_queue": {
