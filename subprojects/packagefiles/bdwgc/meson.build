@@ -1,20 +1,20 @@
 project(
   'bdwgc',
   'c',
-  version: '8.2.8',
-  meson_version: '>=0.47.0',
+  version: '8.2.10',
+  meson_version: '>=0.54.0',
   license: 'Boehm-GC',
 )
 
-add_project_arguments(
-  '-D_GNU_SOURCE',
-  language: 'c',
-)
+cargs = ['-D_GNU_SOURCE']
+
 if host_machine.system() == 'windows'
-  add_project_arguments(
-    '-D_CRT_SECURE_NO_DEPRECATE',
-    language: 'c',
-  )
+  cargs += '-D_CRT_SECURE_NO_DEPRECATE'
+endif
+
+cc = meson.get_compiler('c')
+if not cc.has_function('getcontext')
+  cargs += '-DNO_GETCONTEXT'
 endif
 
 gc_src = files(
@@ -48,11 +48,14 @@ endif
 gclib = library(
   'gc',
   gc_src,
-  include_directories: include_directories('include'),
+  c_args: cargs,
+  include_directories: 'include',
   version: '1.5.4',
 )
 
 bdwgc_dep = declare_dependency(
-  include_directories: include_directories('include'),
+  include_directories: 'include',
   link_with: gclib,
 )
+
+meson.override_dependency('bdw-gc', bdwgc_dep)

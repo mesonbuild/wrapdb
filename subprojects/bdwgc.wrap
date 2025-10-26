@@ -1,9 +1,9 @@
 [wrap-file]
-directory = gc-8.2.8
-source_url = https://github.com/ivmai/bdwgc/releases/download/v8.2.8/gc-8.2.8.tar.gz
-source_filename = gc-8.2.8.tar.gz
-source_hash = 7649020621cb26325e1fb5c8742590d92fb48ce5c259b502faf7d9fb5dabb160
+directory = gc-8.2.10
+source_url = https://github.com/bdwgc/bdwgc/releases/download/v8.2.10/gc-8.2.10.tar.gz
+source_filename = gc-8.2.10.tar.gz
+source_hash = 832cf4f7cf676b59582ed3b1bbd90a8d0e0ddbc3b11cb3b2096c5177ce39cc47
 patch_directory = bdwgc
 
 [provide]
-gc = bdwgc_dep
+dependency_names = bdw-gc
