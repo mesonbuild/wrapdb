@@ -21,7 +21,7 @@
 project(
   'freeglut',
   'c',
-  version: '3.4.0',
+  version: '3.6.0',
   license: 'MIT',
   meson_version: '>= 0.58.0',
 )
@@ -291,6 +291,7 @@ libfreeglut = library(
   freeglut_sources,
   include_directories: [freeglut_includes, include_directories('src')],
   dependencies: freeglut_deps,
+  override_options: 'c_std=c11',
   soversion: host_system == 'windows' ? '' : version[0],
   version: meson.project_version(),
   vs_module_defs: freeglut_def,
@@ -311,3 +312,6 @@ freeglut_dep = declare_dependency(
   link_with: libfreeglut,
   include_directories: freeglut_includes,
 )
+
+meson.override_dependency('glut', freeglut_dep)
+meson.override_dependency('freeglut', freeglut_dep)
