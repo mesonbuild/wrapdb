@@ -1,8 +1,9 @@
 project(
   'libwebsockets',
   'c',
-  version: '4.3.5',
+  version: '4.3.6',
   meson_version: '>=0.54.1',
+  license: 'MIT',
 )
 
 cdata = configuration_data()
@@ -907,8 +908,9 @@ libwebsockets = library(
   ],
 )
 
-depinc = include_directories('include')
 libwebsockets_dep = declare_dependency(
-  include_directories: depinc,
+  include_directories: ['.', 'include'],
   link_with: libwebsockets,
 )
+
+meson.override_dependency('libwebsockets', libwebsockets_dep)
