@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libwebsockets-4.3.5
-source_url = https://github.com/warmcat/libwebsockets/archive/refs/tags/v4.3.5.tar.gz
-source_filename = libwebsockets-4.3.5.tar.gz
-source_hash = 87f99ad32803ed325fceac5327aae1f5c1b417d54ee61ad36cffc8df5f5ab276
+directory = libwebsockets-4.3.6
+source_url = https://github.com/warmcat/libwebsockets/archive/refs/tags/v4.3.6.tar.gz
+source_filename = libwebsockets-4.3.6.tar.gz
+source_hash = 298b1bd0549efd23c5b13e2054ffc7e216b739a1cbfffdbeff149a4a35af4d84
 patch_directory = libwebsockets
 
 [provide]
-libwebsockets = libwebsockets_dep
+dependency_names = libwebsockets
