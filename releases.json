@@ -1367,6 +1367,9 @@
       "libbrotlienc",
       "libbrotlidec"
     ],
+    "program_names": [
+      "brotli"
+    ],
     "versions": [
       "1.1.0-2",
       "1.1.0-1",
