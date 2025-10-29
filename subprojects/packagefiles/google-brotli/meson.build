@@ -26,7 +26,10 @@ project(
   meson_version: '>= 0.54',
 )
 
-c_args = []
+# Brotli relies on the default standard being used, which is gnuXX for Clang
+# and GCC on Linux-like systems. If it gets set to a cXX standard it breaks.
+# We can fix this even for cXX standards by adding `-D_POSIX_SOURCE`
+c_args = ['-D_POSIX_SOURCE']
 
 cc = meson.get_compiler('c')
 
