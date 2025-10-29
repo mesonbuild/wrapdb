@@ -1,4 +1,4 @@
-# Copyright © 2019-2020 Intel Corporation
+# Copyright © 2019-2025 Intel Corporation
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -92,6 +92,11 @@ libbrotli_common = library(
   install: install,
 )
 
+brotli_common_dep = declare_dependency(
+  link_with: libbrotli_common,
+  include_directories: inc,
+)
+
 dec_src = files(
   'c/dec/bit_reader.c',
   'c/dec/decode.c',
@@ -104,8 +109,7 @@ libbrotli_decoder = library(
   dec_src,
   gnu_symbol_visibility: 'hidden',
   c_args: [c_args, bds],
-  include_directories: inc,
-  link_with: libbrotli_common,
+  dependencies: brotli_common_dep,
   version: meson.project_version(),
   install: install,
 )
@@ -139,26 +143,19 @@ libbrotli_encoder = library(
   enc_src,
   c_args: [c_args, bes],
   gnu_symbol_visibility: 'hidden',
-  include_directories: inc,
-  link_with: libbrotli_common,
-  dependencies: dep_m,
+  dependencies: [dep_m, brotli_common_dep],
   version: meson.project_version(),
   install: install,
 )
 
-brotli_common_dep = declare_dependency(
-  link_with: libbrotli_common,
-  include_directories: inc,
-)
-
 brotli_encoder_dep = declare_dependency(
-  link_with: [libbrotli_common, libbrotli_encoder],
-  include_directories: inc,
+  link_with: libbrotli_encoder,
+  dependencies: brotli_common_dep,
 )
 
 brotli_decoder_dep = declare_dependency(
-  link_with: [libbrotli_common, libbrotli_decoder],
-  include_directories: inc,
+  link_with: libbrotli_decoder,
+  dependencies: brotli_common_dep,
 )
 
 executable(
