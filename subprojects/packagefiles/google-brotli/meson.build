@@ -23,7 +23,7 @@ project(
   'c',
   license: 'MIT',
   version: '1.1.0',
-  meson_version: '>= 0.49',
+  meson_version: '>= 0.54',
 )
 
 cc = meson.get_compiler('c')
@@ -148,15 +148,21 @@ libbrotli_encoder = library(
   install: install,
 )
 
+meson.override_dependency('libbrotlicommon', brotli_common_dep)
+
 brotli_encoder_dep = declare_dependency(
   link_with: libbrotli_encoder,
   dependencies: brotli_common_dep,
 )
 
+meson.override_dependency('libbrotlienc', brotli_encoder_dep)
+
 brotli_decoder_dep = declare_dependency(
   link_with: libbrotli_decoder,
   dependencies: brotli_common_dep,
 )
+
+meson.override_dependency('libbrotlidec', brotli_decoder_dep)
 
 brotli = executable(
   'brotli',
