@@ -158,8 +158,9 @@ brotli_decoder_dep = declare_dependency(
   dependencies: brotli_common_dep,
 )
 
-executable(
+brotli = executable(
   'brotli',
   'c/tools/brotli.c',
   dependencies: [brotli_decoder_dep, brotli_encoder_dep],
 )
+meson.override_find_program('brotli', brotli)
