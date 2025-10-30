@@ -1,4 +1,4 @@
-# Copyright © 2019-2020 Intel Corporation
+# Copyright © 2019-2025 Intel Corporation
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,13 @@ project(
   'c',
   license: 'MIT',
   version: '1.1.0',
-  meson_version: '>= 0.49',
+  meson_version: '>= 0.54',
 )
+
+# Brotli relies on the default standard being used, which is gnuXX for Clang
+# and GCC on Linux-like systems. If it gets set to a cXX standard it breaks.
+# We can fix this even for cXX standards by adding `-D_POSIX_SOURCE`
+c_args = ['-D_POSIX_SOURCE']
 
 cc = meson.get_compiler('c')
 
@@ -32,12 +37,11 @@ dep_m = cc.find_library(
   'm',
   required: false,
 )
-if not cc.has_function(
+has_log2 = cc.has_function(
   'log2',
   dependencies: dep_m,
 )
-  error('Cannot find required log2() function')
-endif
+c_args += ['-DBROTLI_HAVE_LOG2=@0@'.format(has_log2.to_int())]
 
 inc = include_directories('c/include')
 
@@ -58,13 +62,12 @@ elif host_machine.system() == 'darwin'
   )
 endif
 
-c_args = []
 bcs = []
 bds = []
 bes = []
 install = false
 if get_option('default_library') == 'shared'
-  c_args += ['-DBROTLI_SHARED_COMPILATION', '-DBROTLI_BUILD_PORTABLE']
+  c_args += ['-DBROTLI_SHARED_COMPILATION']
   install = true
   bcs = '-DBROTLICOMMON_SHARED_COMPILATION'
   bds = '-DBROTLIDEC_SHARED_COMPILATION'
@@ -92,6 +95,11 @@ libbrotli_common = library(
   install: install,
 )
 
+brotli_common_dep = declare_dependency(
+  link_with: libbrotli_common,
+  include_directories: inc,
+)
+
 dec_src = files(
   'c/dec/bit_reader.c',
   'c/dec/decode.c',
@@ -104,8 +112,7 @@ libbrotli_decoder = library(
   dec_src,
   gnu_symbol_visibility: 'hidden',
   c_args: [c_args, bds],
-  include_directories: inc,
-  link_with: libbrotli_common,
+  dependencies: brotli_common_dep,
   version: meson.project_version(),
   install: install,
 )
@@ -139,30 +146,30 @@ libbrotli_encoder = library(
   enc_src,
   c_args: [c_args, bes],
   gnu_symbol_visibility: 'hidden',
-  include_directories: inc,
-  link_with: libbrotli_common,
-  dependencies: dep_m,
+  dependencies: [dep_m, brotli_common_dep],
   version: meson.project_version(),
   install: install,
 )
 
-brotli_common_dep = declare_dependency(
-  link_with: libbrotli_common,
-  include_directories: inc,
-)
+meson.override_dependency('libbrotlicommon', brotli_common_dep)
 
 brotli_encoder_dep = declare_dependency(
-  link_with: [libbrotli_common, libbrotli_encoder],
-  include_directories: inc,
+  link_with: libbrotli_encoder,
+  dependencies: brotli_common_dep,
 )
+
+meson.override_dependency('libbrotlienc', brotli_encoder_dep)
 
 brotli_decoder_dep = declare_dependency(
-  link_with: [libbrotli_common, libbrotli_decoder],
-  include_directories: inc,
+  link_with: libbrotli_decoder,
+  dependencies: brotli_common_dep,
 )
 
-executable(
+meson.override_dependency('libbrotlidec', brotli_decoder_dep)
+
+brotli = executable(
   'brotli',
   'c/tools/brotli.c',
   dependencies: [brotli_decoder_dep, brotli_encoder_dep],
 )
+meson.override_find_program('brotli', brotli)

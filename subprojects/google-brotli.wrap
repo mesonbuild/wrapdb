@@ -6,6 +6,5 @@ source_hash = e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff
 patch_directory = google-brotli
 
 [provide]
-libbrotlicommon = brotli_common_dep
-libbrotlidec = brotli_decoder_dep
-libbrotlienc = brotli_encoder_dep
+program_names = brotli
+dependency_names = libbrotlicommon, libbrotlidec, libbrotlienc
