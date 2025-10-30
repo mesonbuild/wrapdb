@@ -1,12 +1,9 @@
 [wrap-file]
-directory = lvgl-9.3.0
-source_url = https://github.com/lvgl/lvgl/archive/refs/tags/v9.3.0.tar.gz
-source_filename = lvgl-9.3.0.tar.gz
-source_hash = 4933becfd3603b29158a5d04138139582836ef2bc17beb6c39dccda9cb0d32e7
+directory = lvgl-9.4.0
+source_url = https://github.com/lvgl/lvgl/archive/refs/tags/v9.4.0.tar.gz
+source_filename = lvgl-9.4.0.tar.gz
+source_hash = 932c864de98431b38c5758a87f1de12bbee7b76943b8312bcf13d2f29ac14627
 patch_directory = lvgl
 
 [provide]
-lvgl = lvgl_dep
-lvgl_demos = lvgl_demos_dep
-lvgl_examples = lvgl_examples_dep
-lvgl_thorvg = lvgl_thorvg_dep
+dependency_names = lvgl, lvgl_demos, lvgl_examples, lvgl_thorvg
