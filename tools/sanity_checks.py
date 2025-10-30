@@ -27,6 +27,7 @@ import platform
 import io
 import sys
 import shutil
+import textwrap
 
 from pathlib import Path
 from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
@@ -321,8 +322,20 @@ class TestReleases(unittest.TestCase):
                 # Downstream ports shouldn't use transitional provides syntax
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks and patch_path:
-                    with self.subTest(step="Ports must not use 'foo = foo_dep' provide syntax; use meson.override_dependency('foo', foo_dep) and 'dependency_names = foo'.  https://mesonbuild.com/Adding-new-projects-to-wrapdb.html#overriding-dependencies-in-the-submitted-project"):
-                        self.assertEqual(self.get_transitional_provides(config), set())
+                    # Intentional leading whitespace
+                    errmsg = textwrap.dedent('''
+
+                        In the meson.build file use `meson.override_dependenc('foo', foo_dep)`
+                        for each dependency.
+
+                        In subprojects/foo.wrap, replace `name = name_dep` entries with
+                        `dependency_names = foo`
+
+                        See https://mesonbuild.com/Adding-new-projects-to-wrapdb.html#overriding-dependencies-in-the-submitted-project
+                        for more information.
+                        ''')
+                    with self.subTest(step="Ports must not use 'foo = foo_dep' provide syntax"):
+                        self.assertEqual(self.get_transitional_provides(config), set(), errmsg)
 
                 # Verify versions are sorted
                 with self.subTest(step='sorted versions'):
