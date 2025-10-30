@@ -2,14 +2,14 @@ project(
   'pcre2',
   'c',
   license: 'BSD-3-Clause WITH PCRE2-exception',
-  meson_version: '>=0.49.0',
-  version: '10.46',
+  meson_version: '>=0.54.0',
+  version: '10.47',
 )
 
-pcre2_8_lib_version = '0.14.0'
-pcre2_16_lib_version = '0.14.0'
-pcre2_32_lib_version = '0.14.0'
-pcre2_posix_lib_version = '3.0.6'
+pcre2_8_lib_version = '0.15.0'
+pcre2_16_lib_version = '0.15.0'
+pcre2_32_lib_version = '0.15.0'
+pcre2_posix_lib_version = '3.0.7'
 
 c_compiler = meson.get_compiler('c')
 
@@ -87,6 +87,7 @@ sources = files(
   'src/pcre2_auto_possess.c',
   'src/pcre2_chkdint.c',
   'src/pcre2_compile.c',
+  'src/pcre2_compile_cgroup.c',
   'src/pcre2_compile_class.c',
   'src/pcre2_config.c',
   'src/pcre2_context.c',
@@ -99,6 +100,7 @@ sources = files(
   'src/pcre2_maketables.c',
   'src/pcre2_match.c',
   'src/pcre2_match_data.c',
+  'src/pcre2_match_next.c',
   'src/pcre2_newline.c',
   'src/pcre2_ord2utf.c',
   'src/pcre2_pattern_info.c',
@@ -242,6 +244,8 @@ libpcre2_8 = declare_dependency(
   compile_args: static_defs,
 )
 
+meson.override_dependency('libpcre2-8', libpcre2_8)
+
 pcre2_posix_lib = library(
   'pcre2-posix',
   'src/pcre2posix.c',
@@ -257,6 +261,8 @@ libpcre2_posix = declare_dependency(
   include_directories: includes,
   compile_args: static_defs + pcre2_posix_defs,
 )
+
+meson.override_dependency('libpcre2-posix', libpcre2_posix)
 
 pcre2_16_lib = library(
   'pcre2-16',
@@ -275,6 +281,8 @@ libpcre2_16 = declare_dependency(
   compile_args: static_defs,
 )
 
+meson.override_dependency('libpcre2-16', libpcre2_16)
+
 pcre2_32_lib = library(
   'pcre2-32',
   sources,
@@ -291,6 +299,8 @@ libpcre2_32 = declare_dependency(
   include_directories: includes,
   compile_args: static_defs,
 )
+
+meson.override_dependency('libpcre2-32', libpcre2_32)
 
 if get_option('grep')
   pcre2grep = executable(
