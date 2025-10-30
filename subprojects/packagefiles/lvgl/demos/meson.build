@@ -10,6 +10,7 @@ lvgl_demos_src = [
   'benchmark/assets/lv_font_benchmark_montserrat_24_aligned.c',
   'benchmark/assets/lv_font_benchmark_montserrat_26_aligned.c',
   'benchmark/lv_demo_benchmark.c',
+  'gltf/lv_demo_gltf.c',
   'keypad_encoder/lv_demo_keypad_encoder.c',
   'lv_demos.c',
   'music/assets/img_lv_demo_music_btn_corner_large.c',
@@ -64,9 +65,9 @@ lvgl_demos_src = [
   'render/assets/img_render_lvgl_logo_argb8888_premultiplied.c',
   'render/assets/img_render_lvgl_logo_i1.c',
   'render/assets/img_render_lvgl_logo_l8.c',
+  'render/assets/img_render_lvgl_logo_rgb565a8.c',
   'render/assets/img_render_lvgl_logo_rgb565.c',
   'render/assets/img_render_lvgl_logo_rgb565_swapped.c',
-  'render/assets/img_render_lvgl_logo_rgb565a8.c',
   'render/assets/img_render_lvgl_logo_rgb888.c',
   'render/assets/img_render_lvgl_logo_xrgb8888.c',
   'render/lv_demo_render.c',
@@ -77,7 +78,11 @@ lvgl_demos_src = [
   'widgets/assets/img_demo_widgets_avatar.c',
   'widgets/assets/img_demo_widgets_needle.c',
   'widgets/assets/img_lvgl_logo.c',
+  'widgets/lv_demo_widgets_analytics.c',
   'widgets/lv_demo_widgets.c',
+  'widgets/lv_demo_widgets_components.c',
+  'widgets/lv_demo_widgets_profile.c',
+  'widgets/lv_demo_widgets_shop.c',
 ]
 
 lvgl_demos = library(
@@ -93,3 +98,4 @@ lvgl_demos_dep = declare_dependency(
   include_directories: include_directories('../src', '.'),
   link_with: lvgl_demos,
 )
+meson.override_dependency('lvgl_demos', lvgl_demos_dep)
