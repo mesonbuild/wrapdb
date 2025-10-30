@@ -64,7 +64,7 @@ bds = []
 bes = []
 install = false
 if get_option('default_library') == 'shared'
-  c_args += ['-DBROTLI_SHARED_COMPILATION', '-DBROTLI_BUILD_PORTABLE']
+  c_args += ['-DBROTLI_SHARED_COMPILATION']
   install = true
   bcs = '-DBROTLICOMMON_SHARED_COMPILATION'
   bds = '-DBROTLIDEC_SHARED_COMPILATION'
