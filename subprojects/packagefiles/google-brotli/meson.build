@@ -26,18 +26,19 @@ project(
   meson_version: '>= 0.54',
 )
 
+c_args = []
+
 cc = meson.get_compiler('c')
 
 dep_m = cc.find_library(
   'm',
   required: false,
 )
-if not cc.has_function(
+has_log2 = cc.has_function(
   'log2',
   dependencies: dep_m,
 )
-  error('Cannot find required log2() function')
-endif
+c_args += ['-DBROTLI_HAVE_LOG2=@0@'.format(has_log2.to_int())]
 
 inc = include_directories('c/include')
 
@@ -58,7 +59,6 @@ elif host_machine.system() == 'darwin'
   )
 endif
 
-c_args = []
 bcs = []
 bds = []
 bes = []
