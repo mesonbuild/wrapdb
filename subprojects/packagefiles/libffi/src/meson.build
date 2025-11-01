@@ -26,7 +26,55 @@ ffiinc = include_directories('..', '../include', targetdir)
 if is_msvc
   # MSVC, cannot compile assembly files directly. They need to be preprocessed
   # with the C compiler first, then compiled with MASM.
-  if meson.version().version_compare('>=0.64.0')
+  if meson.version().version_compare('<0.64.0')
+    error('Meson >= 0.64 is required with MSVC')
+  elif meson.version().version_compare('<1.10.0') and host_cpu_family == 'aarch64'
+    # Custom logic to invoke armasm64 with Meson < 1.10.0.
+    # Works around an issue with depfile support:
+    # https://github.com/mesonbuild/wrapdb/issues/2469
+    cl = find_program('cl')
+    armasm64 = find_program('armasm64')
+
+    assembler_args = [armasm64, '-o', '@OUTPUT@', '@INPUT@']
+    if get_option('buildtype').startswith('debug')
+      assembler_args += ['-g']
+    endif
+
+    ffi_asm_objs = []
+    foreach asm_source : ffi_asm_sources
+      incflags = [
+        '/I' + join_paths(meson.current_source_dir(), '..'),
+        '/I' + join_paths(meson.current_build_dir(), '..'),
+        '/I' + join_paths(meson.current_source_dir(), '..', 'include'),
+        '/I' + join_paths(meson.current_build_dir(), '..', 'include'),
+        '/I' + join_paths(meson.current_source_dir(), targetdir),
+        '/I' + join_paths(meson.current_build_dir(), targetdir),
+      ]
+      preproc_name = asm_source.underscorify() + '.i'
+      obj_name = asm_source.underscorify() + '.obj'
+      preproc = custom_target(
+        preproc_name,
+        input: asm_source,
+        output: preproc_name,
+        command: [
+          cl,
+          '/nologo',
+          '/EP',
+          '/P',
+          '/Fi@OUTPUT@',
+          '-D' + target,
+          '@INPUT@',
+        ] + incflags,
+      )
+      ffi_asm_objs += custom_target(
+        obj_name,
+        input: preproc,
+        output: obj_name,
+        command: assembler_args,
+      )
+    endforeach
+    ffi_asm_sources = ffi_asm_objs
+  else
     ffi_asm_sources = cc.preprocess(
       ffi_asm_sources,
       output: '@BASENAME@.masm',
@@ -36,8 +84,6 @@ if is_msvc
       'masm',
       native: false,
     )
-  else
-    error('Meson >= 0.64 is required with MSVC')
   endif
 endif
 
