@@ -32,6 +32,11 @@
     "glib:tests=false",
     "libxml2:iconv=disabled"
   ],
+  "abseil-cpp": {
+    "build_options": [
+      "abseil-cpp:tests=enabled"
+    ]
+  },
   "apache-orc": {
     "test_options": [
       "--timeout-multiplier=2"
