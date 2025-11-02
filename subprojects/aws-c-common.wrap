@@ -1,0 +1,9 @@
+[wrap-file]
+directory = aws-c-common-0.12.4
+source_url = https://github.com/awslabs/aws-c-common/archive/refs/tags/v0.12.4.tar.gz
+source_filename = aws-c-common-0.12.4.tar.gz
+source_hash = 0b7705a4d115663c3f485d353a75ed86e37583157585e5825d851af634b57fe3
+patch_directory = aws-c-common
+
+[provide]
+dependency_names = aws-c-common

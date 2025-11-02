@@ -76,6 +76,14 @@
       "boost"
     ]
   },
+  "aws-c-common": {
+    "build_options": [
+      "aws-c-common:tests=enabled"
+    ],
+    "alpine_packages": [
+      "numactl-dev"
+    ]
+  },
   "backward-cpp": {
     "alpine_packages": [
       "binutils-dev"
