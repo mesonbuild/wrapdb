@@ -181,12 +181,19 @@ jobs:
         shell: alpine.sh {0}
 
   VisualStudio:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
       fail-fast: false
       matrix:
-        platform: ['x64', 'x86']
+        platform: ['arm64', 'x64', 'x86']
+        include:
+          - platform: arm64
+            runner: windows-11-arm
+          - platform: x64
+            runner: windows-latest
+          - platform: x86
+            runner: windows-latest
     steps:
       - uses: actions/checkout@v5
         with:
@@ -215,7 +222,7 @@ jobs:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
-          fail-on-cache-miss: true
+          fail-on-cache-miss: false
 
       - name: Sanity Checks
         run: |
@@ -223,8 +230,17 @@ jobs:
           python tools/sanity_checks.py
 
   VisualStudio-clang-cl:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runner }}
     needs: prelude
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ['arm64', 'x64']
+        include:
+          - platform: arm64
+            runner: windows-11-arm
+          - platform: x64
+            runner: windows-latest
     steps:
       - uses: actions/checkout@v5
         with:
@@ -241,7 +257,7 @@ jobs:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
-          fail-on-cache-miss: true
+          fail-on-cache-miss: false
 
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Sanity Checks
@@ -253,12 +269,19 @@ jobs:
           python tools/sanity_checks.py
 
   MSYS2:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
       fail-fast: false
       matrix:
-        platform: ['UCRT64', 'CLANG64']
+        platform: ['UCRT64', 'CLANG64', 'CLANGARM64']
+        include:
+          - platform: UCRT64
+            runner: windows-latest
+          - platform: CLANG64
+            runner: windows-latest
+          - platform: CLANGARM64
+            runner: windows-11-arm
     steps:
       - uses: actions/checkout@v5
         with:
@@ -294,7 +317,7 @@ jobs:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
           enableCrossOsArchive: true
-          fail-on-cache-miss: true
+          fail-on-cache-miss: false
 
       - name: Sanity Checks
         shell: msys2 {0}
