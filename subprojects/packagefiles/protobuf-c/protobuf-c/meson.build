@@ -28,6 +28,6 @@ pkgconfig.generate(
 depinc = include_directories('.')
 libprotobuf_c_dep = declare_dependency(
   compile_args: api,
-  include_directories: depinc,
+  include_directories: [depinc, include_directories('..')],
   link_with: libprotobuf_c,
 )
