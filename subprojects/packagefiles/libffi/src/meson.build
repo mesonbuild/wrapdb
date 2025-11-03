@@ -27,6 +27,9 @@ if is_msvc
   # MSVC, cannot compile assembly files directly. They need to be preprocessed
   # with the C compiler first, then compiled with MASM.
   if meson.version().version_compare('>=0.64.0')
+    if meson.version().version_compare('<1.9.2') and host_cpu_family == 'aarch64'
+      error('Windows aarch64 requires Meson >= 1.9.2')
+    endif
     ffi_asm_sources = cc.preprocess(
       ffi_asm_sources,
       output: '@BASENAME@.masm',
