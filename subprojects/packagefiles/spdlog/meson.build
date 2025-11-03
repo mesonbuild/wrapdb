@@ -60,6 +60,8 @@ else
   )
 endif
 
+meson.override_dependency('spdlog', spdlog_dep)
+
 # install header and pkg-config file
 install_subdir(
   'include/spdlog',
@@ -76,7 +78,3 @@ pkg.generate(
 )
 
 subdir('tests')
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('spdlog', spdlog_dep)
-endif
