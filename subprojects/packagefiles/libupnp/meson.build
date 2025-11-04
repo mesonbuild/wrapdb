@@ -6,107 +6,11 @@ project(
   meson_version: '>=0.54.1',
 )
 
+cstd = 'c_std=gnu99'
+
 cc = meson.get_compiler('c')
 if cc.get_argument_syntax() == 'msvc'
   error('MSVC is unsupported. Requires custom pthread library')
-endif
-
-libupnp_incdir = include_directories(
-  '.',
-  'upnp/inc',
-  'upnp/src/inc',
-  'upnp/src/threadutil',
-)
-libixml_incdir = include_directories('ixml/inc', 'ixml/src/inc')
-
-libixml = static_library(
-  'ixml',
-  'ixml/src/attr.c',
-  'ixml/src/document.c',
-  'ixml/src/element.c',
-  'ixml/src/ixml.c',
-  'ixml/src/ixmldebug.c',
-  'ixml/src/ixmlmembuf.c',
-  'ixml/src/ixmlparser.c',
-  'ixml/src/namedNodeMap.c',
-  'ixml/src/node.c',
-  'ixml/src/nodeList.c',
-  include_directories: [libixml_incdir, libupnp_incdir],
-  pic: true,
-)
-
-upnp_sources = files(
-  'upnp/src/api/UpnpActionComplete.c',
-  'upnp/src/api/UpnpActionRequest.c',
-  'upnp/src/api/UpnpDiscovery.c',
-  'upnp/src/api/UpnpEvent.c',
-  'upnp/src/api/UpnpEventSubscribe.c',
-  'upnp/src/api/UpnpExtraHeaders.c',
-  'upnp/src/api/UpnpFileInfo.c',
-  'upnp/src/api/UpnpStateVarComplete.c',
-  'upnp/src/api/UpnpStateVarRequest.c',
-  'upnp/src/api/UpnpString.c',
-  'upnp/src/api/UpnpSubscriptionRequest.c',
-  'upnp/src/api/upnpapi.c',
-  'upnp/src/api/upnpdebug.c',
-  'upnp/src/genlib/client_table/GenlibClientSubscription.c',
-  'upnp/src/genlib/client_table/client_table.c',
-  'upnp/src/genlib/miniserver/miniserver.c',
-  'upnp/src/genlib/net/http/httpparser.c',
-  'upnp/src/genlib/net/http/httpreadwrite.c',
-  'upnp/src/genlib/net/http/parsetools.c',
-  'upnp/src/genlib/net/http/statcodes.c',
-  'upnp/src/genlib/net/http/webserver.c',
-  'upnp/src/genlib/net/sock.c',
-  'upnp/src/genlib/net/uri/uri.c',
-  'upnp/src/genlib/service_table/service_table.c',
-  'upnp/src/genlib/util/list.c',
-  'upnp/src/genlib/util/membuffer.c',
-  'upnp/src/genlib/util/strintmap.c',
-  'upnp/src/genlib/util/util.c',
-  'upnp/src/threadutil/FreeList.c',
-  'upnp/src/threadutil/LinkedList.c',
-  'upnp/src/threadutil/ThreadPool.c',
-  'upnp/src/threadutil/TimerThread.c',
-  'upnp/src/urlconfig/urlconfig.c',
-)
-
-if get_option('gena') or get_option('optssdp')
-  upnp_sources += files(
-    'upnp/src/uuid/md5.c',
-    'upnp/src/uuid/sysdep.c',
-    'upnp/src/uuid/uuid.c',
-  )
-endif
-
-if get_option('gena')
-  upnp_sources += files(
-    'upnp/src/gena/gena_callback2.c',
-    'upnp/src/gena/gena_ctrlpt.c',
-    'upnp/src/gena/gena_device.c',
-  )
-endif
-
-if get_option('soap')
-  upnp_sources += files(
-    'upnp/src/soap/soap_common.c',
-    'upnp/src/soap/soap_ctrlpt.c',
-    'upnp/src/soap/soap_device.c',
-  )
-endif
-
-if get_option('ssdp')
-  upnp_sources += files(
-    'upnp/src/ssdp/SSDPResultData.c',
-    'upnp/src/ssdp/SSDPResultDataCallback.c',
-    'upnp/src/ssdp/ssdp_ctrlpt.c',
-    'upnp/src/ssdp/ssdp_device.c',
-    'upnp/src/ssdp/ssdp_server.c',
-  )
-endif
-
-if get_option('tools')
-  upnp_sources += files('upnp/src/api/upnptools.c')
 endif
 
 ver = meson.project_version().split('.')
@@ -184,24 +88,6 @@ deps += dependency(
   'libcrypto',
   required: get_option('open_ssl'),
 )
-threads_dep = dependency('threads')
-
-libupnp = library(
-  'upnp',
-  upnp_sources,
-  include_directories: [libixml_incdir, libupnp_incdir],
-  dependencies: [deps, threads_dep],
-  link_with: libixml,
-  install: true,
-  version: '17.2.4',
-)
-
-pkg = import('pkgconfig')
-pkg.generate(
-  libupnp,
-  name: 'libupnp',
-  subdirs: 'upnp',
-)
 
 headers = files(
   'ixml/inc/ixml.h',
@@ -238,10 +124,12 @@ install_headers(
   subdir: 'upnp',
 )
 
-libupnp_dep = declare_dependency(
-  include_directories: [libixml_incdir, libupnp_incdir],
-  link_with: libupnp,
-)
+libupnp_incdir = include_directories('.', 'ixml/inc', 'upnp/inc')
+depinc = include_directories('ixml/inc', 'upnp/inc')
+threads_dep = dependency('threads')
+
+subdir('ixml')
+subdir('upnp')
 
 if get_option('samples') and get_option('tools')
   sample_conf = configuration_data()
@@ -260,6 +148,7 @@ if get_option('samples') and get_option('tools')
       'upnp/sample/linux/tv_ctrlpt_main.c',
       include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
+      override_options: cstd,
       install: true,
     )
   endif
@@ -273,6 +162,7 @@ if get_option('samples') and get_option('tools')
       'upnp/sample/linux/tv_combo_main.c',
       include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
+      override_options: cstd,
       install: true,
     )
   endif
@@ -285,6 +175,7 @@ if get_option('samples') and get_option('tools')
       'upnp/sample/linux/tv_device_main.c',
       include_directories: toolinc,
       dependencies: [libupnp_dep, threads_dep],
+      override_options: cstd,
       install: true,
     )
 
