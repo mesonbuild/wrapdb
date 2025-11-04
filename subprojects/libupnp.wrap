@@ -6,4 +6,4 @@ source_hash = 36fdf15767573f4f92320f01b3fd3c1cb41732b91cfc24d10d1e6a55969c9f56
 patch_directory = libupnp
 
 [provide]
-libupnp = libupnp_dep
+dependency_names = libupnp
