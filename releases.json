@@ -4477,6 +4477,14 @@
       "2.5.2-1"
     ]
   },
+  "usbbluetooth": {
+    "dependency_names": [
+      "usbbluetooth"
+    ],
+    "versions": [
+      "0.0.9-1"
+    ]
+  },
   "utf8proc": {
     "dependency_names": [
       "libutf8proc"

@@ -1,0 +1,8 @@
+[wrap-file]
+directory = usbbluetooth-0.0.9
+source_url = https://github.com/usbbluetooth/usbbluetooth/archive/refs/tags/v0.0.9.tar.gz
+source_filename = usbbluetooth-0.0.9.tar.gz
+source_hash = 9be0b94d4002de485b0722c1121558da70ec735ee924c3818771d614fea2e832
+
+[provide]
+usbbluetooth = libusbbluetooth_dep
