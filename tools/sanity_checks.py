@@ -450,10 +450,11 @@ class TestReleases(unittest.TestCase):
             segs = version.split('.')
             self.assertEqual(len(segs), 3)
             version = segs[0] + segs[1] + segs[2]
-        elif name in {'netstring-c', 'directxmath', 'luajit'}:
+        elif name in {'netstring-c', 'directxmath', 'luajit', 's2n-bignum'}:
             # There is no specific version for netstring-c
             # DirectXMath source url contains only tag name without version
             # LuaJIT source URL does not contain the version number.
+            # s2n-bignum has no versioned releases.
             return
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,

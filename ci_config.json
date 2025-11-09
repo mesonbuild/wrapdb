@@ -1292,6 +1292,19 @@
       "libjack-dev"
     ]
   },
+  "s2n-bignum": {
+    "build_on": {
+      "windows": false,
+      "msys2": false
+    },
+    "build_options": [
+      "s2n-bignum:tests=enabled"
+    ],
+    "_comment": "Math heavy tests can take a long time to complete.",
+    "test_options": [
+      "--timeout-multiplier=2"
+    ]
+  },
   "s2n-tls": {
     "_comment": "- No upstream windows support",
     "build_on": {

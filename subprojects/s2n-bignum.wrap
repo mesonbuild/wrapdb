@@ -1,0 +1,9 @@
+[wrap-file]
+directory = s2n-bignum-34cc34d0e60ae7fd5e703434fe6c87b0fcdb607e
+source_url = https://github.com/awslabs/s2n-bignum/archive/34cc34d0e60ae7fd5e703434fe6c87b0fcdb607e.tar.gz
+source_filename = s2n-bignum-1.0.0.tar.gz
+source_hash = 8281652e582db9d503c101378b15dfe45f4aa846e98effd253b1ad9b758789fe
+patch_directory = s2n-bignum
+
+[provide]
+dependency_names = s2n-bignum

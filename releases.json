@@ -3806,6 +3806,14 @@
       "4.1.0-1"
     ]
   },
+  "s2n-bignum": {
+    "dependency_names": [
+      "s2n-bignum"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
   "s2n-tls": {
     "dependency_names": [
       "s2n-tls"
