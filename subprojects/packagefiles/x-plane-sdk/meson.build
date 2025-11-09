@@ -1,7 +1,7 @@
 project(
   'x-plane-sdk',
   'c',
-  version: '4.0.1',
+  version: '4.2.0',
   license: 'MIT',
   default_options: 'warning_level=0',
   meson_version: '>= 0.60.0',
@@ -38,6 +38,10 @@ endif
 
 if xplm_level >= 400
   ca += '-DXPLM400'
+endif
+
+if xplm_level >= 411
+  ca += '-DXPLM411'
 endif
 
 if target_machine.system() == 'windows'
@@ -133,3 +137,7 @@ else
     required: false,
   )
 endif
+
+meson.override_dependency('xplm', xplm_dep)
+meson.override_dependency('xpwidgets', xpwidgets_dep)
+meson.override_dependency('xpcpp', xpcpp_dep)

@@ -1,12 +1,10 @@
 [wrap-file]
-directory = x-plane-sdk-4.0.1
-source_url = https://developer.x-plane.com/wp-content/plugins/code-sample-generation/sample_templates/XPSDK401.zip
-source_filename = x-plane-sdk-4.0.1.zip
-source_hash = c1104e83d9b54b03d0084c1db52ee6491e5290994503e8dd2d4a0af637e2bdd7
+directory = x-plane-sdk-4.2.0
+source_url = https://developer.x-plane.com/wp-content/plugins/code-sample-generation/sdk_zip_files/XPSDK420.zip
+source_filename = x-plane-sdk-4.2.0.zip
+source_hash = 42aeb0d525f2a7f8fd55541c071319f08967b6ec216edde197c75034ef6bcf5a
 patch_directory = x-plane-sdk
 lead_directory_missing = true
 
 [provide]
-xplm = xplm_dep
-xpwidgets = xpwidgets_dep
-xpcpp = xpcpp_dep
+dependency_names = xplm, xpwidgets, xpcpp
