@@ -2,7 +2,7 @@ option(
     'xplm-level',
     type: 'integer',
     min: 0,
-    max: 400,
+    max: 411,
     value: 0,
     description: 'The XPLM compatibility level to use. See the documentation.',
 )
