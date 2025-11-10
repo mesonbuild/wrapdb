@@ -1,0 +1,17 @@
+install_headers(
+  'aws/cal/cal.h',
+  'aws/cal/ecc.h',
+  'aws/cal/ed25519.h',
+  'aws/cal/exports.h',
+  'aws/cal/hash.h',
+  'aws/cal/hkdf.h',
+  'aws/cal/hmac.h',
+  'aws/cal/rsa.h',
+  'aws/cal/symmetric_cipher.h',
+  'aws/cal/private/der.h',
+  'aws/cal/private/ecc.h',
+  'aws/cal/private/opensslcrypto_common.h',
+  'aws/cal/private/rsa.h',
+  'aws/cal/private/symmetric_cipher_priv.h',
+  preserve_path: true,
+)
