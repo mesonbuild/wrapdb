@@ -273,6 +273,17 @@
       "0.12.4-1"
     ]
   },
+  "aws-c-compression": {
+    "dependency_names": [
+      "aws-c-compression"
+    ],
+    "program_names": [
+      "aws-c-common-huffman-generator"
+    ],
+    "versions": [
+      "0.3.1-1"
+    ]
+  },
   "backward-cpp": {
     "dependency_names": [
       "backward-cpp",

@@ -1,0 +1,10 @@
+[wrap-file]
+directory = aws-c-compression-0.3.1
+source_url = https://github.com/awslabs/aws-c-compression/archive/refs/tags/v0.3.1.tar.gz
+source_filename = aws-c-compression-0.3.1.tar.gz
+source_hash = d89fca17a37de762dc34f332d2da402343078da8dbd2224c46a11a88adddf754
+patch_directory = aws-c-compression
+
+[provide]
+dependency_names = aws-c-compression
+program_names = aws-c-common-huffman-generator
