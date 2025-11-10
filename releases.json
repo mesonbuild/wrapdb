@@ -263,6 +263,14 @@
       "0.4.1-1"
     ]
   },
+  "aws-c-cal": {
+    "dependency_names": [
+      "aws-c-cal"
+    ],
+    "versions": [
+      "0.9.10-1"
+    ]
+  },
   "aws-c-common": {
     "dependency_names": [
       "aws-c-common"
