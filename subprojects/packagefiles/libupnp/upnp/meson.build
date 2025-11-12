@@ -1,3 +1,5 @@
+subdir('inc')
+
 upnp_sources = files(
   'src/api/UpnpActionComplete.c',
   'src/api/UpnpActionRequest.c',
@@ -92,3 +94,5 @@ pkg.generate(
   libupnp,
   subdirs: 'upnp',
 )
+
+subdir('sample')
