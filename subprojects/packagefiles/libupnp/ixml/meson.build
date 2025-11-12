@@ -1,3 +1,5 @@
+headers = files('inc/ixml.h', 'inc/ixmldebug.h')
+
 libixml = static_library(
   'ixml',
   'src/attr.c',
