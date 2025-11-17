@@ -87,7 +87,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install build-essential ninja-build
-          python3 -m pip install license-expression
+          if [ "${{ matrix.python }}" != 3.8 ]; then
+              # Older license-expression packages compatible with 3.8 also
+              # have bugs; just skip the license check there
+              python3 -m pip install license-expression
+          fi
           python3 -m pip install --pre meson
 
       - name: Restore sources
