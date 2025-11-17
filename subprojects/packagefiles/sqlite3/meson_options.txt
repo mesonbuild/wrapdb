@@ -13,6 +13,12 @@ option(
     value: 'auto',
 )
 option(
+    'carray',
+    description: 'Enable carray extension',
+    type: 'feature',
+    value: 'auto',
+)
+option(
     'fts34',
     description: 'Enable FTS3 and FTS4',
     type: 'feature',
@@ -27,6 +33,12 @@ option(
 option(
     'geopoly',
     description: 'Enable Geopoly extension',
+    type: 'feature',
+    value: 'auto',
+)
+option(
+    'percentile',
+    description: 'Enable percentile extension',
     type: 'feature',
     value: 'auto',
 )
