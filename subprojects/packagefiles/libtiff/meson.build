@@ -6,9 +6,9 @@ project(
   meson_version: '>=0.57.0',
 )
 # calculate library version from configure.ac values
-libtiff_current = 7
+libtiff_current = 8
 libtiff_revision = 0
-libtiff_age = 1
+libtiff_age = 2
 library_version = '@0@.@1@.@2@'.format(
   libtiff_current - libtiff_age,
   libtiff_age,
