@@ -128,8 +128,7 @@ libsqlite3 = library(
   dependencies: [libdl, libm, libthreads],
   install: true,
   gnu_symbol_visibility: 'hidden',
-  # ABI compatibility with autotools/libtool
-  version: '0.8.6',
+  version: meson.project_version(),
 )
 
 sqlite_args = []
