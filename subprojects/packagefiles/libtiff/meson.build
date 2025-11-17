@@ -152,6 +152,9 @@ cdata.set('STRIP_SIZE_DEFAULT', 8192)
 cdata.set('JBIG_SUPPORT', jbig_dep.found())
 cdata.set('JPEG_SUPPORT', jpeg_dep.found())
 cdata.set('LERC_SUPPORT', lerc_dep.found())
+if lerc_dep.found() and get_option('default_library') == 'static'
+  cdata.set10('LERC_STATIC', true)
+endif
 cdata.set('LZMA_SUPPORT', lzma_dep.found())
 cdata.set('WEBP_SUPPORT', webp_dep.found())
 cdata.set('ZSTD_SUPPORT', zstd_dep.found())
