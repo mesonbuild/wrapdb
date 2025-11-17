@@ -53,13 +53,7 @@ cdata = configuration_data()
 
 cdata.set10('HOST_BIG_ENDIAN', host_machine.endian() == 'big')
 if host_machine.endian() == 'big'
-  # missing cmakedefine in tif_config.h.cmake.in
-  # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
-  # this is how upstream handles it in cmake/ProcessorChecks.cmake
-  add_project_arguments(
-    '-DWORDS_BIGENDIAN',
-    language: 'c',
-  )
+  cdata.set10('WORDS_BIGENDIAN', true)
 endif
 
 cdata.set('TIFF_INT8_T', 'int8_t')
@@ -123,12 +117,7 @@ if jpeg_dep.found()
     )
   endif
   if have_jpeg12
-    # missing cmakedefine in tif_config.h.cmake.in
-    # https://gitlab.com/libtiff/libtiff/-/merge_requests/664
-    add_project_arguments(
-      '-DHAVE_JPEGTURBO_DUAL_MODE_8_12',
-      language: 'c',
-    )
+    cdata.set10('HAVE_JPEGTURBO_DUAL_MODE_8_12', true)
   endif
 endif
 
