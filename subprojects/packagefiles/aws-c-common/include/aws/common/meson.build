@@ -311,5 +311,5 @@ headers = [
 install_headers(
   headers,
   preserve_path: true,
-  install_dir: get_option('includedir') / 'aws/common',
+  subdir: 'aws/common',
 )
