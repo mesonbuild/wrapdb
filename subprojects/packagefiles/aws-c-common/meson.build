@@ -35,7 +35,6 @@ foundation = dependency(
 fs = import('fs')
 pkg = import('pkgconfig')
 
-subdir('include')
 subdir('include/aws/common')
 
 generic_src = files(
