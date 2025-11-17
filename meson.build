@@ -4,11 +4,14 @@ project(
 )
 
 if (
-  meson.version().version_compare('<1.9.1') and
+  meson.version().version_compare('<1.9.2') and
   meson.version().version_compare('>=1.8.4')
 )
-  # ensure c_std= and cpp_std= are not ignored in subprojects
+  # ensure c_std= and cpp_std= are not ignored in subprojects on < 1.9.1
   # https://github.com/mesonbuild/meson/issues/14939
+  # ensure subproject c_std= and cpp_std= comma-separated lists are not
+  # passed verbatim to the compiler on 1.9.1
+  # https://github.com/mesonbuild/meson/issues/15202
   add_languages(
     'c',
     'cpp',
