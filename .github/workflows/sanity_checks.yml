@@ -186,7 +186,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['arm64', 'x64', 'x86']
         include:
           - platform: arm64
             runner: windows-11-arm
@@ -235,7 +234,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['arm64', 'x64']
         include:
           - platform: arm64
             runner: windows-11-arm
@@ -274,7 +272,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: ['UCRT64', 'CLANG64', 'CLANGARM64']
         include:
           - platform: UCRT64
             runner: windows-latest
