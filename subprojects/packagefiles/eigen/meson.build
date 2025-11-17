@@ -1,7 +1,7 @@
 project(
   'eigen',
   'cpp',
-  version: '5.0.0',
+  version: '5.0.1',
   license: 'MPL-2.0 AND Apache-2.0 AND BSD-3-Clause AND Minpack',
   meson_version: '>=0.63.0',
 )
