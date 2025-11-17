@@ -1454,6 +1454,11 @@
       "--timeout-multiplier=2"
     ]
   },
+  "sqlite3": {
+    "build_options": [
+      "sqlite3:all-extensions=enabled"
+    ]
+  },
   "sqlitecpp": {
     "_comment": "required to not use the default sqlite3 in MacOS to avoid compilation errors/tests failures, also add pkgconfig path to find sqlite3(keg-only)",
     "build_options": [
