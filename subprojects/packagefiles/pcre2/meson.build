@@ -25,8 +25,6 @@ platform_is_unixlike = host_machine.system() in [
   'cygwin',
 ]
 
-platform_supports_sealloc = host_machine.system() in ['linux', 'netbsd']
-
 # pcre2.h
 pcredata = configuration_data()
 varr = meson.project_version().split('.')
@@ -61,27 +59,10 @@ if not get_option('jit').disabled() and platform_is_unixlike
   cdata.set10('SUPPORT_JIT', true)
 endif
 
-if not get_option('jit_sealloc').disabled()
-  foreach f : ['mkostemp', 'memfd_create', 'secure_getenv']
-    if c_compiler.has_function(
-      f,
-      prefix: '#include <stdlib.h>',
-      args: ['-D_GNU_SOURCE'],
-    )
-      cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
-    endif
-  endforeach
-
-  if cdata.has('HAVE_MKOSTEMP') and cdata.has('HAVE_SECURE_GETENV')
-    if platform_supports_sealloc
-      cdata.set10('SLJIT_PROT_EXECUTABLE_ALLOCATOR', true)
-    elif get_option('jit_sealloc').enabled()
-      error('Your configuration is not supported')
-    else
-      message('jit_sealloc is not supported on this platform')
-    endif
-  endif
-endif
+cdata.set10(
+  'SLJIT_PROT_EXECUTABLE_ALLOCATOR',
+  not get_option('jit_sealloc').disabled(),
+)
 
 sources = files(
   'src/pcre2_auto_possess.c',
@@ -133,7 +114,7 @@ foreach h : check_headers
   endif
 endforeach
 
-foreach f : ['bcopy', 'memmove', 'realpath', 'strerror']
+foreach f : ['memfd_create', 'mkostemp', 'realpath', 'secure_getenv']
   if c_compiler.has_function(f)
     cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
   endif
