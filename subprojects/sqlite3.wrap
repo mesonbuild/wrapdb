@@ -1,9 +1,9 @@
 [wrap-file]
-directory = sqlite-amalgamation-3500400
-source_url = https://www.sqlite.org/2025/sqlite-amalgamation-3500400.zip
-source_filename = sqlite-amalgamation-3500400.zip
-source_hash = 1d3049dd0f830a025a53105fc79fd2ab9431aea99e137809d064d8ee8356b032
+directory = sqlite-amalgamation-3510000
+source_url = https://www.sqlite.org/2025/sqlite-amalgamation-3510000.zip
+source_filename = sqlite-amalgamation-3510000.zip
+source_hash = 1caf7116f2910600d04473ad69d37ec538fa62fa36adccd37b5e0e43647c98be
 patch_directory = sqlite3
 
 [provide]
-sqlite3 = sqlite3_dep
+dependency_names = sqlite3

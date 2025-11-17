@@ -2,7 +2,7 @@ project(
   'sqlite3',
   'c',
   license: 'blessing',
-  version: '3.50.4',
+  version: '3.51.0',
   meson_version: '>=0.48.0',
 )
 
@@ -40,6 +40,7 @@ if get_option('strict')
 endif
 
 extensions = [
+  ['carray', false, '-DSQLITE_ENABLE_CARRAY'],
   [
     'fts34',
     true,
@@ -51,6 +52,7 @@ extensions = [
   ],
   ['fts5', true, '-DSQLITE_ENABLE_FTS5'],
   ['geopoly', false, '-DSQLITE_ENABLE_GEOPOLY'],
+  ['percentile', false, '-DSQLITE_ENABLE_PERCENTILE'],
   ['rbu', false, '-DSQLITE_ENABLE_RBU'],
   ['rtree', false, '-DSQLITE_ENABLE_RTREE'],
   [
@@ -141,6 +143,9 @@ sqlite3_dep = declare_dependency(
   include_directories: depinc,
   link_with: libsqlite3,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('sqlite3', sqlite3_dep)
+endif
 
 install_headers('sqlite3.h')
 
