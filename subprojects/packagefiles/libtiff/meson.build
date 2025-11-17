@@ -2,7 +2,7 @@ project(
   'tiff',
   'c',
   version: files('VERSION'),
-  license: 'libtiff',
+  license: 'libtiff AND BSD-4.3TAHOE',
   meson_version: '>=0.57.0',
 )
 # calculate library version from configure.ac values
