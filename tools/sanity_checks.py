@@ -328,13 +328,13 @@ class TestReleases(unittest.TestCase):
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
                 if extra_checks and patch_path:
                     # Intentional leading whitespace
-                    errmsg = textwrap.dedent('''
+                    errmsg = textwrap.dedent(f'''
+                        In the meson.build file use `meson.override_dependency('<name>', <name>_dep)`
+                        for each dependency. Ensure that the minimum `meson_version` in the `project()`
+                        call is at least `>= 0.54`.
 
-                        In the meson.build file use `meson.override_dependenc('foo', foo_dep)`
-                        for each dependency.
-
-                        In subprojects/foo.wrap, replace `name = name_dep` entries with
-                        `dependency_names = foo`
+                        In subprojects/{name}.wrap, replace `<name> = <name>_dep` entries with
+                        `dependency_names = <name>`.
 
                         See https://mesonbuild.com/Adding-new-projects-to-wrapdb.html#overriding-dependencies-in-the-submitted-project
                         for more information.
