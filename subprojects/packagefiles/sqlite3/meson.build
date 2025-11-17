@@ -76,6 +76,14 @@ foreach extension : extensions
   if enabled
     sqlite_args += extension[2]
   endif
+  if meson.version().version_compare('>=0.53.0')
+    summary(
+      extension[0],
+      enabled,
+      bool_yn: true,
+      section: 'Extensions',
+    )
+  endif
 endforeach
 
 if host_machine.system() == 'windows'
