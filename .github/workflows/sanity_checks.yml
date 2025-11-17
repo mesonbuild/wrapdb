@@ -181,6 +181,7 @@ jobs:
         shell: alpine.sh {0}
 
   VisualStudio:
+    name: Visual Studio (cl, ${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
@@ -235,6 +236,7 @@ jobs:
           python tools/sanity_checks.py
 
   VisualStudio-clang-cl:
+    name: Visual Studio (clang-cl, ${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
@@ -279,6 +281,7 @@ jobs:
           python tools/sanity_checks.py
 
   MSYS2:
+    name: MSYS2 (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
