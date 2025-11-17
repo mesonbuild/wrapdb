@@ -214,15 +214,17 @@ have_version_scripts = c_compiler.has_link_argument(
   ),
 )
 foreach lib : ['pcre2-8', 'pcre2-posix', 'pcre2-16', 'pcre2-32']
-  set_variable(
-    lib.underscorify() + '_link_args',
-    have_version_scripts ? [
+  if have_version_scripts
+    value = [
       '-Wl,--version-script,@0@/src/lib@1@.sym'.format(
         meson.current_source_dir(),
         lib,
       ),
-    ] : [],
-  )
+    ]
+  else
+    value = []
+  endif
+  set_variable(lib.underscorify() + '_link_args', value)
 endforeach
 
 pcre2_8_lib = library(
