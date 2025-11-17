@@ -208,12 +208,30 @@ if host_machine.system() == 'windows'
   general_c_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_SECURE_NO_WARNINGS']
 endif
 
+have_version_scripts = c_compiler.has_link_argument(
+  '-Wl,--version-script,@0@/src/libpcre2-8.sym'.format(
+    meson.current_source_dir(),
+  ),
+)
+foreach lib : ['pcre2-8', 'pcre2-posix', 'pcre2-16', 'pcre2-32']
+  set_variable(
+    lib.underscorify() + '_link_args',
+    have_version_scripts ? [
+      '-Wl,--version-script,@0@/src/lib@1@.sym'.format(
+        meson.current_source_dir(),
+        lib,
+      ),
+    ] : [],
+  )
+endforeach
+
 pcre2_8_lib = library(
   'pcre2-8',
   sources,
   dependencies: jit_deps,
   include_directories: includes,
   c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8'],
+  link_args: pcre2_8_link_args,
   version: pcre2_8_lib_version,
   install: true,
   gnu_symbol_visibility: 'hidden',
@@ -232,6 +250,7 @@ pcre2_posix_lib = library(
   'src/pcre2posix.c',
   dependencies: libpcre2_8,
   c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=8', pcre2_posix_defs],
+  link_args: pcre2_posix_link_args,
   version: pcre2_posix_lib_version,
   install: true,
   gnu_symbol_visibility: 'hidden',
@@ -251,6 +270,7 @@ pcre2_16_lib = library(
   dependencies: jit_deps,
   include_directories: includes,
   c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=16'],
+  link_args: pcre2_16_link_args,
   version: pcre2_16_lib_version,
   install: true,
   gnu_symbol_visibility: 'hidden',
@@ -270,6 +290,7 @@ pcre2_32_lib = library(
   dependencies: jit_deps,
   include_directories: includes,
   c_args: [general_c_args, '-DPCRE2_CODE_UNIT_WIDTH=32'],
+  link_args: pcre2_32_link_args,
   version: pcre2_32_lib_version,
   install: true,
   gnu_symbol_visibility: 'hidden',
