@@ -1574,6 +1574,14 @@
       "1.9-1"
     ]
   },
+  "iceberg-cpp": {
+    "dependency_names": [
+      "iceberg"
+    ],
+    "versions": [
+      "064d53bfe5f51d6a03fd14d15dbe95de1e2a0118-1"
+    ]
+  },
   "icu": {
     "dependency_names": [
       "icu-data",
