@@ -791,6 +791,7 @@ endif
 
 incdirs = include_directories('.')
 
+subdir('test_utils')
 subdir('libarchive')
 
 if get_option('progs').length() > 0
