@@ -1403,6 +1403,12 @@
     ],
     "fatal_warnings": false
   },
+  "sol2": {
+    "_comment": "luajit is required for sol2 to build",
+    "build_options": [
+        "sol2:use_luajit=true"
+    ]
+  },
   "sqlpp11": {
     "_comment": "hard to set up PostgreSQL via choco",
     "build_on": {

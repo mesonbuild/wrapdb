@@ -4045,6 +4045,14 @@
       "1.3.2-1"
     ]
   },
+  "sol2": {
+    "dependency_names": [
+      "sol2"
+    ],
+    "versions": [
+      "3.3.0-1"
+    ]
+  },
   "soundtouch": {
     "dependency_names": [
       "soundtouch"
