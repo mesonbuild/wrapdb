@@ -1,6 +1,6 @@
 libarchive_fe = static_library(
   'libarchive_fe',
-  ['err.c', 'line_reader.c', 'passphrase.c'],
+  ['lafe_err.c', 'line_reader.c', 'passphrase.c'],
   dependencies: libarchive_dep,
 )
 
