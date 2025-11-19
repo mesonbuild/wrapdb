@@ -1,7 +1,8 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.1',
+  version: '3.8.3',
+  license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
   meson_version: '>=0.54.1',
 )
 
@@ -473,10 +474,10 @@ rx_dep = dependency(
 if not get_option('regex').disabled()
   foreach rx_support : get_option('regex_provider')
     if (rx_support == 'libc'
-and cc.has_function(
-      'regcomp',
+  and cc.has_function(
+        'regcomp',
       prefix: '#include <regex.h>',
-    )
+      )
 )
       rx_dep = declare_dependency()
       cdata.set('HAVE_REGEX_H', 1)
@@ -680,6 +681,8 @@ functions = {
   'chflags': [],
   'chown': [],
   'chroot': [],
+  'closefrom': [],
+  'close_range': [],
   'ctime_r': [],
   'cygwin_conv_path': [],
   'dirfd': [],
@@ -702,15 +705,20 @@ functions = {
   'futimens': [],
   'futimes': [],
   'futimesat': [],
+  'getegid': [],
   'geteuid': [],
   'getgrgid_r': [],
   'getgrnam_r': [],
+  'getline': [],
+  'getpid': [],
   'getpwnam_r': [],
   'getpwuid_r': [],
-  'getpid': [],
+  'getresgid': [],
+  'getresuid': [],
   'getvfsbyname': [],
   'getxattr': [],
   'gmtime_r': [],
+  'issetugid': [],
   'lchflags': [],
   'lchmod': [],
   'lchown': [],
@@ -737,6 +745,7 @@ functions = {
   'openat': [],
   'pipe': [],
   'poll': [],
+  'posix_spawn': [],
   'posix_spawnp': [],
   'readdir_r': [],
   'readlink': [],
