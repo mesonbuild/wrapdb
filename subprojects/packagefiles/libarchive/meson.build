@@ -284,7 +284,6 @@ endif
 
 attr_dep = dependency(
   'libattr',
-  disabler: true,
   required: get_option('xattr'),
 )
 if attr_dep.found()
@@ -298,7 +297,6 @@ endif
 # compression dependencies
 zlib_dep = dependency(
   'zlib',
-  disabler: true,
   required: get_option('zlib'),
 )
 if zlib_dep.found()
@@ -309,7 +307,6 @@ endif
 
 bz2_dep = dependency(
   'bzip2',
-  disabler: true,
   required: get_option('bz2lib'),
 )
 if bz2_dep.found()
@@ -319,7 +316,6 @@ endif
 
 b2_dep = dependency(
   'libb2',
-  disabler: true,
   required: get_option('libb2'),
 )
 if b2_dep.found()
@@ -332,7 +328,6 @@ endif
 
 lz4_dep = dependency(
   'liblz4',
-  disabler: true,
   required: get_option('lz4'),
 )
 if lz4_dep.found()
@@ -342,7 +337,6 @@ endif
 
 zstd_dep = dependency(
   'libzstd',
-  disabler: true,
   required: get_option('zstd'),
 )
 if zstd_dep.found()
@@ -362,7 +356,6 @@ endif
 
 lzma_dep = dependency(
   'liblzma',
-  disabler: true,
   required: get_option('lzma'),
 )
 if lzma_dep.found()
@@ -436,7 +429,6 @@ endif
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency(
     'iconv',
-    disabler: true,
     required: get_option('iconv'),
   )
 elif get_option('iconv').enabled()
@@ -485,7 +477,6 @@ if not get_option('regex').disabled()
     elif rx_support == 'libregex'
       regex_dep = cc.find_library(
         'regex',
-        disabler: true,
         required: false,
       )
       if cc.has_function(
@@ -500,7 +491,6 @@ if not get_option('regex').disabled()
     elif rx_support == 'libpcre2posix'
       pcre2_dep = dependency(
         'libpcre2-posix',
-        disabler: true,
         required: false,
       )
       if pcre2_dep.found()
@@ -521,7 +511,6 @@ deps += rx_dep
 
 libacl_dep = dependency(
   'libacl',
-  disabler: true,
   required: get_option('acl'),
 )
 if libacl_dep.found()
