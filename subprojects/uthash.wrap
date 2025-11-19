@@ -6,4 +6,4 @@ source_hash = e10382ab75518bad8319eb922ad04f907cb20cccb451a3aa980c9d005e661acc
 patch_directory = uthash
 
 [provide]
-uthash = uthash_dep
+dependency_names = uthash
