@@ -7,3 +7,4 @@ patch_directory = libarchive
 
 [provide]
 dependency_names = libarchive
+program_names = bsdcat, bsdcpio, bsdtar
