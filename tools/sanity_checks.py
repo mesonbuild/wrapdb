@@ -339,8 +339,7 @@ class TestReleases(unittest.TestCase):
                     # Intentional leading whitespace
                     errmsg = textwrap.dedent(f'''
                         In the meson.build file use `meson.override_dependency('<name>', <name>_dep)`
-                        for each dependency. Ensure that the minimum `meson_version` in the `project()`
-                        call is at least `>= 0.54`.
+                        for each dependency.
 
                         In subprojects/{name}.wrap, replace `<name> = <name>_dep` entries with
                         `dependency_names = <name>`.
