@@ -4680,6 +4680,14 @@
       "4.0.1-1"
     ]
   },
+  "x265": {
+    "dependency_names": [
+      "x265"
+    ],
+    "versions": [
+      "4.1-1"
+    ]
+  },
   "xdelta3": {
     "program_names": [
       "xdelta3"
