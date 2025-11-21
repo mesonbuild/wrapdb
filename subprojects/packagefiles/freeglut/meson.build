@@ -21,7 +21,7 @@
 project(
   'freeglut',
   'c',
-  version: '3.6.0',
+  version: '3.8.0',
   license: 'MIT',
   meson_version: '>= 0.58.0',
 )
