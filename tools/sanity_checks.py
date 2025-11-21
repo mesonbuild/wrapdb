@@ -32,6 +32,7 @@ import textwrap
 from pathlib import Path
 from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
 
+MINIMUM_MESON_VERSION = '0.56.0'  # also in README.md
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'aws-c-common': {
@@ -800,7 +801,7 @@ class TestReleases(unittest.TestCase):
         options += self.ci_config.get_option_arguments(name)
         try:
             subprocess.check_call(
-                ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', '>=0'],
+                ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', f'>={MINIMUM_MESON_VERSION}'],
                 cwd=source_dir, env=meson_env
             )
             subprocess.check_call(
@@ -830,18 +831,15 @@ class TestReleases(unittest.TestCase):
         for opt in 'c_std', 'cpp_std':
             if opt in default_options:
                 features.setdefault('0.63.0', []).append(f'{opt} in subproject default_options')
+        features.setdefault(MINIMUM_MESON_VERSION, []).append(f'oldest version supported by WrapDB')
 
         versions = sorted(
             features, key=lambda ver: tuple(int(c) for c in ver.split('.'))
         )
-        if versions:
-            message = '\n'.join(
-                f'{ver}: {", ".join(features[ver])}' for ver in versions
-            )
-            min_version = versions[-1]
-        else:
-            message = 'No versioned features found.'
-            min_version = '0.0.0'
+        message = '\n'.join(
+            f'{ver}: {", ".join(features[ver])}' for ver in versions
+        )
+        min_version = versions[-1]
         return (
             'warning' if (version_request or '>=0.0.0') != f'>={min_version}' else 'notice',
             f'Minimum Meson version is {min_version}',
