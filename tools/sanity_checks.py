@@ -636,6 +636,13 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
+    @staticmethod
+    def parse_meson_version(ver: str) -> tuple[int, ...]:
+        ver = re.sub(r'^>=\s*', '', ver)
+        ret = tuple(int(c) for c in ver.split('.'))
+        ret += (0,) * (3 - len(ret))
+        return ret
+
     def check_project_args(self, name: str, wrap: configparser.ConfigParser) -> None:
         dir = self.ensure_source_dir(name, wrap)
         try:
@@ -647,6 +654,14 @@ class TestReleases(unittest.TestCase):
             # rewriter fails if any compilers are missing; ignore
             return
         project = json.loads(project_json)['kwargs']['project#/']
+
+        with self.subTest(step='check_meson_version'):
+            self.assertIn('meson_version', project,
+                          f"project() must specify meson_version (at least '>={MINIMUM_MESON_VERSION}')")
+            ver = project['meson_version']
+            self.assertTrue(ver.startswith('>='))
+            self.assertTrue(self.parse_meson_version(ver) >= self.parse_meson_version(MINIMUM_MESON_VERSION),
+                            f"meson_version '{project['meson_version']}' must be at least '>={MINIMUM_MESON_VERSION}'")
 
         with self.subTest(step='check_license'):
             self.assertIn('license', project)  # project must specify license
@@ -866,9 +881,7 @@ class TestReleases(unittest.TestCase):
                 features.setdefault('0.63.0', []).append(f'{opt} in subproject default_options')
         features.setdefault(MINIMUM_MESON_VERSION, []).append(f'oldest version supported by WrapDB')
 
-        versions = sorted(
-            features, key=lambda ver: tuple(int(c) for c in ver.split('.'))
-        )
+        versions = sorted(features, key=self.parse_meson_version)
         message = '\n'.join(
             f'{ver}: {", ".join(features[ver])}' for ver in versions
         )
