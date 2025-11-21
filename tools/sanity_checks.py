@@ -250,8 +250,8 @@ class TestReleases(unittest.TestCase):
             )
         return dir
 
-    def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
-        with self.subTest(step="check_meson_version"):
+    def check_project_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
+        with self.subTest(step="check_project_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
             # don't check if the build was skipped
             if json_file.exists():
@@ -372,7 +372,7 @@ class TestReleases(unittest.TestCase):
                                 self.check_new_release(name, deps=deps, progs=progs)
                                 with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                     self.assertNotIn(name, self.ci_config.broken)
-                                self.check_meson_version(name, ver, patch_path)
+                                self.check_project_version(name, ver, patch_path)
                         if patch_path:
                             self.check_project_args(name, config)
                         else:
