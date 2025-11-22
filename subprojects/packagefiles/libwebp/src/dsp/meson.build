@@ -25,6 +25,7 @@ foreach _variant, _sources : {
     'upsampling_sse41.c',
     'yuv_sse41.c',
   ],
+  'avx2': ['lossless_avx2.c'],
 }
   webp_dsp_dec_simd_libs += static_library(
     'webpdspdec_' + _variant,
@@ -75,6 +76,7 @@ foreach _variant, _sources : {
   'neon': ['cost_neon.c', 'enc_neon.c', 'lossless_enc_neon.c'],
   'sse2': ['cost_sse2.c', 'enc_sse2.c', 'lossless_enc_sse2.c', 'ssim_sse2.c'],
   'sse41': ['enc_sse41.c', 'lossless_enc_sse41.c'],
+  'avx2': ['lossless_enc_avx2.c'],
 }
   webp_dsp_enc_simd_libs += static_library(
     'webpdspenc_' + _variant,

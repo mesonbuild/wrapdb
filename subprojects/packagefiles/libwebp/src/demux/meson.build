@@ -4,7 +4,7 @@ webpdemux_lib = library(
   dependencies: [build_libwebpdemux, common_deps, webp_dec_dep],
   gnu_symbol_visibility: 'hidden',
   install: true,
-  version: '2.0.14',
+  version: '2.0.17',
 )
 
 webpdemux_dep = declare_dependency(
