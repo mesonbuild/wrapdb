@@ -4,6 +4,7 @@ cpr_src = files(
   'auth.cpp',
   'callback.cpp',
   'cert_info.cpp',
+  'connection_pool.cpp',
   'cookies.cpp',
   'cprtypes.cpp',
   'curl_container.cpp',
