@@ -1,0 +1,9 @@
+[wrap-file]
+directory = base64-0.5.2
+source_url = https://github.com/aklomp/base64/archive/refs/tags/v0.5.2.tar.gz
+source_filename = base64-0.5.2.tar.gz
+source_hash = 723a0f9f4cf44cf79e97bcc315ec8f85e52eb104c8882942c3f2fba95acc080d
+patch_directory = aklomp-base64
+
+[provide]
+dependency_names = base64
