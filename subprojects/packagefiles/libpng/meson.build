@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.50',
+  version: '1.6.51',
   license: 'libpng-2.0',
   meson_version: '>=0.50.0',
 )
@@ -61,12 +61,16 @@ png_src = files(
 )
 
 if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip() != ''
-  png_src += files(
-    'arm/arm_init.c',
-    'arm/filter_neon_intrinsics.c',
-    'arm/palette_neon_intrinsics.c',
-  )
-  c_args += '-DPNG_ARM_NEON_OPT=2'
+  # libpng falls back to 32-bit NEON intrinsics on clang-cl (see 386707c6)
+  # which fails the build on the default soft-float ABI
+  if cc.get_id() != 'clang-cl' or cc.check_header('arm_neon.h')
+    png_src += files(
+      'arm/arm_init.c',
+      'arm/filter_neon_intrinsics.c',
+      'arm/palette_neon_intrinsics.c',
+    )
+    c_args += '-DPNG_ARM_NEON_OPT=2'
+  endif
 elif host_machine.cpu_family() in ['x86', 'x86_64']
   png_src += files('intel/filter_sse2_intrinsics.c', 'intel/intel_init.c')
   c_args += '-DPNG_INTEL_SSE_OPT=1'
@@ -117,6 +121,9 @@ libpng_dep = declare_dependency(
 # Keep the older dependency name for backwards-compat with old-style
 # dependency(..., fallback ['libpng': 'png_dep'])
 png_dep = libpng_dep
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('libpng', libpng_dep)
+endif
 
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(
@@ -154,6 +161,7 @@ if get_option('tests')
     'pngtest',
     'pngtest.c',
     dependencies: libpng_dep,
+    build_by_default: false,
   )
   test(
     'pngtest',
