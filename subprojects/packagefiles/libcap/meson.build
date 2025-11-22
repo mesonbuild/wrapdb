@@ -1,10 +1,11 @@
 project(
   'libcap',
   'c',
-  version: '2.76',
+  version: '2.77',
   license: 'BSD-3-Clause OR GPL-2.0-only',
-  default_options: ['c_std=gnu11'],
 )
+
+override_opts = ['c_std=gnu11']
 
 if host_machine.system() != 'linux'
   error('libcap is not supported on this platform.')
@@ -41,6 +42,7 @@ libpsx = library(
   sources: ['psx/psx.c', 'psx/psx_calls.c'],
   include_directories: incdir,
   install: true,
+  override_options: override_opts,
 )
 
 libcap = library(
@@ -57,9 +59,13 @@ libcap = library(
   ],
   include_directories: incdir,
   install: true,
+  override_options: override_opts,
 )
 
 libcap_dep = declare_dependency(
   include_directories: incdir,
   link_with: [libcap, libpsx],
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('libcap', libcap_dep)
+endif
