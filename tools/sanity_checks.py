@@ -32,6 +32,7 @@ import textwrap
 from pathlib import Path
 from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
 
+MINIMUM_MESON_VERSION = '0.56.0'  # also in README.md
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'aws-c-common': {
@@ -249,8 +250,8 @@ class TestReleases(unittest.TestCase):
             )
         return dir
 
-    def check_meson_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
-        with self.subTest(step="check_meson_version"):
+    def check_project_version(self, name: str, version: str, patch_path: str | None, builddir: str = '_build') -> None:
+        with self.subTest(step="check_project_version"):
             json_file = Path(builddir) / "meson-info/intro-projectinfo.json"
             # don't check if the build was skipped
             if json_file.exists():
@@ -333,8 +334,7 @@ class TestReleases(unittest.TestCase):
                     # Intentional leading whitespace
                     errmsg = textwrap.dedent(f'''
                         In the meson.build file use `meson.override_dependency('<name>', <name>_dep)`
-                        for each dependency. Ensure that the minimum `meson_version` in the `project()`
-                        call is at least `>= 0.54`.
+                        for each dependency.
 
                         In subprojects/{name}.wrap, replace `<name> = <name>_dep` entries with
                         `dependency_names = <name>`.
@@ -371,7 +371,7 @@ class TestReleases(unittest.TestCase):
                                 self.check_new_release(name, deps=deps, progs=progs)
                                 with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                     self.assertNotIn(name, self.ci_config.broken)
-                                self.check_meson_version(name, ver, patch_path)
+                                self.check_project_version(name, ver, patch_path)
                         if patch_path:
                             self.check_project_args(name, config)
                         else:
@@ -627,6 +627,13 @@ class TestReleases(unittest.TestCase):
             return True
         return False
 
+    @staticmethod
+    def parse_meson_version(ver: str) -> tuple[int, ...]:
+        ver = re.sub(r'^>=\s*', '', ver)
+        ret = tuple(int(c) for c in ver.split('.'))
+        ret += (0,) * (3 - len(ret))
+        return ret
+
     def check_project_args(self, name: str, wrap: configparser.ConfigParser) -> None:
         dir = self.ensure_source_dir(name, wrap)
         try:
@@ -638,6 +645,14 @@ class TestReleases(unittest.TestCase):
             # rewriter fails if any compilers are missing; ignore
             return
         project = json.loads(project_json)['kwargs']['project#/']
+
+        with self.subTest(step='check_meson_version'):
+            self.assertIn('meson_version', project,
+                          f"project() must specify meson_version (at least '>={MINIMUM_MESON_VERSION}')")
+            ver = project['meson_version']
+            self.assertTrue(ver.startswith('>='))
+            self.assertTrue(self.parse_meson_version(ver) >= self.parse_meson_version(MINIMUM_MESON_VERSION),
+                            f"meson_version '{project['meson_version']}' must be at least '>={MINIMUM_MESON_VERSION}'")
 
         with self.subTest(step='check_license'):
             self.assertIn('license', project)  # project must specify license
@@ -800,7 +815,7 @@ class TestReleases(unittest.TestCase):
         options += self.ci_config.get_option_arguments(name)
         try:
             subprocess.check_call(
-                ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', '>=0'],
+                ['meson', 'rewrite', 'kwargs', 'set', 'project', '/', 'meson_version', f'>={MINIMUM_MESON_VERSION}'],
                 cwd=source_dir, env=meson_env
             )
             subprocess.check_call(
@@ -830,18 +845,13 @@ class TestReleases(unittest.TestCase):
         for opt in 'c_std', 'cpp_std':
             if opt in default_options:
                 features.setdefault('0.63.0', []).append(f'{opt} in subproject default_options')
+        features.setdefault(MINIMUM_MESON_VERSION, []).append(f'oldest version supported by WrapDB')
 
-        versions = sorted(
-            features, key=lambda ver: tuple(int(c) for c in ver.split('.'))
+        versions = sorted(features, key=self.parse_meson_version)
+        message = '\n'.join(
+            f'{ver}: {", ".join(features[ver])}' for ver in versions
         )
-        if versions:
-            message = '\n'.join(
-                f'{ver}: {", ".join(features[ver])}' for ver in versions
-            )
-            min_version = versions[-1]
-        else:
-            message = 'No versioned features found.'
-            min_version = '0.0.0'
+        min_version = versions[-1]
         return (
             'warning' if (version_request or '>=0.0.0') != f'>={min_version}' else 'notice',
             f'Minimum Meson version is {min_version}',

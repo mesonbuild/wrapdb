@@ -2,7 +2,9 @@
 
 This is a collection of projects that use Meson as their build system, or have
 a meson port maintained by the Meson team. They can be used as subproject to
-any Meson project that needs them as dependency.
+any Meson project that needs them as a dependency.
+
+**Newly added or updated ports in this repository require Meson ≥ 0.56**.
 
 ## How to test a wrap
 
