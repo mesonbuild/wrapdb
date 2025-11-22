@@ -1,0 +1,10 @@
+[wrap-file]
+directory = poppler-26.03.0
+source_url = https://poppler.freedesktop.org/poppler-26.03.0.tar.xz
+source_filename = poppler-26.03.0.tar.xz
+source_hash = 8b3c5e2a9f2ab4c3ec5029f28af1b433c6b71f0d1e7b3997aa561cf1c0ca4ebe
+patch_directory = poppler
+
+[provide]
+dependency_names = poppler, poppler-cpp, poppler-glib, poppler-qt5, poppler-qt6
+program_names = pdftoppm, pdftocairo, pdfdetach, pdfattach, pdffonts, pdfimages, pdfinfo, pdfsig, pdftops, pdftotext, pdftohtml, pdfseparate, pdfunite
