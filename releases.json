@@ -3683,6 +3683,18 @@
       "1.9.0-1"
     ]
   },
+  "poppler": {
+    "dependency_names": [
+      "poppler",
+      "poppler-cpp",
+      "poppler-glib",
+      "poppler-qt5",
+      "poppler-qt6"
+    ],
+    "versions": [
+      "26.02.0-1"
+    ]
+  },
   "protobuf": {
     "dependency_names": [
       "protobuf-lite",

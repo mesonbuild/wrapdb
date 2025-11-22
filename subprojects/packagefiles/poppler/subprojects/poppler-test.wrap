@@ -1,0 +1,6 @@
+[wrap-git]
+directory = poppler-test
+url = git://git.freedesktop.org/git/poppler/test
+revision = HEAD
+depth = 1
+patch_directory = poppler-test
