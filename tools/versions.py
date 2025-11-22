@@ -159,7 +159,9 @@ def update_wrap(name: str, old_ver: str, new_ver: str) -> None:
         lines[i] = line
 
     # update source hash
-    resp = requests.get(source_url, stream=True)
+    resp = requests.get(source_url, stream=True, headers={
+        'User-Agent': 'wrapdb/0',
+    })
     resp.raise_for_status()
     hash = sha256()
     while True:
