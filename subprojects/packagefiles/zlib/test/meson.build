@@ -8,6 +8,7 @@ test(
     'example',
     'example.c',
     dependencies: zlib_dep,
+    build_by_default: false,
   ),
 )
 #test('minigzip', executable('minigzip', 'minigzip.c', dependencies: zlib_dep))

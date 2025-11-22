@@ -12,10 +12,12 @@ link_args = cc.get_supported_link_arguments(
   '-Wl,--version-script,@0@/zlib.map'.format(meson.current_source_dir()),
 )
 
-compile_args = []
-
 if cc.get_argument_syntax() == 'msvc'
-  compile_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_NONSTDC_NO_DEPRECATE']
+  add_project_arguments(
+    '-D_CRT_SECURE_NO_DEPRECATE',
+    '-D_CRT_NONSTDC_NO_DEPRECATE',
+    language: 'c',
+  )
 endif
 
 add_project_arguments(
@@ -73,7 +75,6 @@ endif
 zlib = library(
   'z',
   src,
-  c_args: compile_args,
   link_args: link_args,
   vs_module_defs: 'win32/zlib.def',
   install: true,
@@ -86,6 +87,9 @@ zlib_dep = declare_dependency(
   link_with: zlib,
   include_directories: depinc,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('zlib', zlib_dep)
+endif
 
 install_headers(headers)
 
