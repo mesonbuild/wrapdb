@@ -10,3 +10,4 @@ bsdcpio = executable(
   dependencies: libarchive_fe_dep,
   install: true,
 )
+meson.override_find_program('bsdcpio', bsdcpio)

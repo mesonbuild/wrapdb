@@ -619,6 +619,13 @@
       "windows": false
     }
   },
+  "libarchive": {
+    "alpine_packages": [
+      "gzip",
+      "lzop",
+      "xz"
+    ]
+  },
   "libcap": {
     "_comment": "- relies on Linux specific APIs",
     "build_on": {

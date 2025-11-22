@@ -18,3 +18,4 @@ bsdtar = executable(
   dependencies: [libarchive_fe_dep, rx_dep],
   install: true,
 )
+meson.override_find_program('bsdtar', bsdtar)

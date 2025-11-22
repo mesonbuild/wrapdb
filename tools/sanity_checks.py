@@ -75,6 +75,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'leptonica': {
         '_skipped_test.c',
     },
+    'libarchive': {
+        'mklist.py',
+    },
     'libcap': {
         'gen_cap_names.py',
     },

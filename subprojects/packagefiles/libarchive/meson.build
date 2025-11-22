@@ -1,7 +1,8 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.1',
+  version: '3.8.3',
+  license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
   meson_version: '>=0.54.1',
 )
 
@@ -283,7 +284,6 @@ endif
 
 attr_dep = dependency(
   'libattr',
-  disabler: true,
   required: get_option('xattr'),
 )
 if attr_dep.found()
@@ -297,7 +297,6 @@ endif
 # compression dependencies
 zlib_dep = dependency(
   'zlib',
-  disabler: true,
   required: get_option('zlib'),
 )
 if zlib_dep.found()
@@ -308,7 +307,6 @@ endif
 
 bz2_dep = dependency(
   'bzip2',
-  disabler: true,
   required: get_option('bz2lib'),
 )
 if bz2_dep.found()
@@ -318,7 +316,6 @@ endif
 
 b2_dep = dependency(
   'libb2',
-  disabler: true,
   required: get_option('libb2'),
 )
 if b2_dep.found()
@@ -331,7 +328,6 @@ endif
 
 lz4_dep = dependency(
   'liblz4',
-  disabler: true,
   required: get_option('lz4'),
 )
 if lz4_dep.found()
@@ -341,7 +337,6 @@ endif
 
 zstd_dep = dependency(
   'libzstd',
-  disabler: true,
   required: get_option('zstd'),
 )
 if zstd_dep.found()
@@ -361,7 +356,6 @@ endif
 
 lzma_dep = dependency(
   'liblzma',
-  disabler: true,
   required: get_option('lzma'),
 )
 if lzma_dep.found()
@@ -435,7 +429,6 @@ endif
 if meson.version().version_compare('>= 0.60')
   iconv_dep = dependency(
     'iconv',
-    disabler: true,
     required: get_option('iconv'),
   )
 elif get_option('iconv').enabled()
@@ -473,10 +466,10 @@ rx_dep = dependency(
 if not get_option('regex').disabled()
   foreach rx_support : get_option('regex_provider')
     if (rx_support == 'libc'
-and cc.has_function(
-      'regcomp',
+  and cc.has_function(
+        'regcomp',
       prefix: '#include <regex.h>',
-    )
+      )
 )
       rx_dep = declare_dependency()
       cdata.set('HAVE_REGEX_H', 1)
@@ -484,7 +477,6 @@ and cc.has_function(
     elif rx_support == 'libregex'
       regex_dep = cc.find_library(
         'regex',
-        disabler: true,
         required: false,
       )
       if cc.has_function(
@@ -499,7 +491,6 @@ and cc.has_function(
     elif rx_support == 'libpcre2posix'
       pcre2_dep = dependency(
         'libpcre2-posix',
-        disabler: true,
         required: false,
       )
       if pcre2_dep.found()
@@ -520,7 +511,6 @@ deps += rx_dep
 
 libacl_dep = dependency(
   'libacl',
-  disabler: true,
   required: get_option('acl'),
 )
 if libacl_dep.found()
@@ -655,138 +645,143 @@ foreach h, d : headers
   endif
 endforeach
 
-functions = {
-  'acl_create_entry': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'acl_get_perm': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'acl_init': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'acl_set_fd': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'acl_set_file': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'arc4random_buf': [],
-  'chflags': [],
-  'chown': [],
-  'chroot': [],
-  'ctime_r': [],
-  'cygwin_conv_path': [],
-  'dirfd': [],
-  'fchdir': [],
-  'fchflags': [],
-  'fchmod': [],
-  'fchown': [],
-  'fcntl': [],
-  'fdopendir': [],
-  'fgetxattr': [],
-  'flistxattr': [],
-  'fork': [],
-  'fseeko': [],
-  'fsetxattr': [],
-  'fstat': [],
-  'fstatat': [],
-  'fstatfs': [],
-  'fstatvfs': [],
-  'ftruncate': [],
-  'futimens': [],
-  'futimes': [],
-  'futimesat': [],
-  'geteuid': [],
-  'getgrgid_r': [],
-  'getgrnam_r': [],
-  'getpwnam_r': [],
-  'getpwuid_r': [],
-  'getpid': [],
-  'getvfsbyname': [],
-  'getxattr': [],
-  'gmtime_r': [],
-  'lchflags': [],
-  'lchmod': [],
-  'lchown': [],
-  'lgetxattr': [],
-  'link': [],
-  'linkat': [],
-  'listxattr': [],
-  'llistxattr': [],
-  'locale_charset': iconv_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'localtime_r': [],
-  'lsetxattr': [],
-  'lstat': [],
-  'lutimes': [],
-  'mbrtowc': [],
-  'memmove': [],
-  'mkdir': [],
-  'mkfifo': [],
-  'mknod': [],
-  'mkstemp': [],
-  'nl_langinfo': [],
-  'openat': [],
-  'pipe': [],
-  'poll': [],
-  'posix_spawnp': [],
-  'readdir_r': [],
-  'readlink': [],
-  'readlinkat': [],
-  'readpassphrase': [],
-  'select': [],
-  'setenv': [],
-  'setlocale': [],
-  'setxattr': [],
-  'sigaction': [],
-  'statfs': [],
-  'statvfs': [],
-  'strchr': [],
-  'strdup': [],
-  'strerror': [],
-  'strerror_r': [],
-  'strftime': [],
-  'strncpy_s': [],
-  'strnlen': [],
-  'strrchr': [],
-  'symlink': [],
-  'tcgetattr': [],
-  'tcsetattr': [],
-  'timegm': [],
-  'tzset': [],
-  'unlinkat': [],
-  'unsetenv': [],
-  'utime': [],
-  'utimes': [],
-  'utimensat': [],
-  'vprintf': [],
-  'vfork': [],
-  'wcrtomb': [],
-  'wcscmp': [],
-  'wcscpy': [],
-  'wcslen': [],
-  'wctomb': [],
-  'wmemcmp': [],
-  'wmemcpy': [],
-  'wmemmove': [],
-  '_fseeki64': [],
-  '_get_timezone': [],
-}
+functions = [
+  'arc4random_buf',
+  'chflags',
+  'chown',
+  'chroot',
+  'closefrom',
+  'close_range',
+  'ctime_r',
+  'cygwin_conv_path',
+  'dirfd',
+  'fchdir',
+  'fchflags',
+  'fchmod',
+  'fchown',
+  'fcntl',
+  'fdopendir',
+  'fgetxattr',
+  'flistxattr',
+  'fork',
+  'fseeko',
+  'fsetxattr',
+  'fstat',
+  'fstatat',
+  'fstatfs',
+  'fstatvfs',
+  'ftruncate',
+  'futimens',
+  'futimes',
+  'futimesat',
+  'getegid',
+  'geteuid',
+  'getgrgid_r',
+  'getgrnam_r',
+  'getline',
+  'getpid',
+  'getpwnam_r',
+  'getpwuid_r',
+  'getresgid',
+  'getresuid',
+  'getvfsbyname',
+  'getxattr',
+  'gmtime_r',
+  'issetugid',
+  'lchflags',
+  'lchmod',
+  'lchown',
+  'lgetxattr',
+  'link',
+  'linkat',
+  'listxattr',
+  'llistxattr',
+  'localtime_r',
+  'lsetxattr',
+  'lstat',
+  'lutimes',
+  'mbrtowc',
+  'memmove',
+  'mkdir',
+  'mkfifo',
+  'mknod',
+  'mkstemp',
+  'nl_langinfo',
+  'openat',
+  'pipe',
+  'poll',
+  'posix_spawn',
+  'posix_spawnp',
+  'readdir_r',
+  'readlink',
+  'readlinkat',
+  'readpassphrase',
+  'select',
+  'setenv',
+  'setlocale',
+  'setxattr',
+  'sigaction',
+  'statfs',
+  'statvfs',
+  'strchr',
+  'strdup',
+  'strerror',
+  'strerror_r',
+  'strftime',
+  'strncpy_s',
+  'strnlen',
+  'strrchr',
+  'symlink',
+  'tcgetattr',
+  'tcsetattr',
+  'timegm',
+  'tzset',
+  'unlinkat',
+  'unsetenv',
+  'utime',
+  'utimes',
+  'utimensat',
+  'vprintf',
+  'vfork',
+  'wcrtomb',
+  'wcscmp',
+  'wcscpy',
+  'wcslen',
+  'wctomb',
+  'wmemcmp',
+  'wmemcpy',
+  'wmemmove',
+  '_fseeki64',
+  '_get_timezone',
+]
 
-foreach f, d : functions
-  if cc.has_function(
-    f,
-    dependencies: d,
-  )
+foreach f : functions
+  if cc.has_function(f)
     cdata.set('HAVE_@0@'.format(f.underscorify().to_upper()), 1)
+  endif
+endforeach
+
+# we can't use cc.has_function() on dependencies since they might be
+# internal, so check headers instead
+header_functions = [
+  ['acl_create_entry', 'sys/acl.h', libacl_dep],
+  ['acl_get_perm', 'acl/libacl.h', libacl_dep],
+  ['acl_init', 'sys/acl.h', libacl_dep],
+  ['acl_set_fd', 'sys/acl.h', libacl_dep],
+  ['acl_set_file', 'sys/acl.h', libacl_dep],
+  ['locale_charset', 'iconv.h', iconv_dep],
+]
+
+foreach f : header_functions
+  if cc.has_header_symbol(
+    f[1],
+    f[0],
+    dependencies: f[2].partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  )
+    cdata.set('HAVE_@0@'.format(f[0].underscorify().to_upper()), 1)
   endif
 endforeach
 
@@ -796,6 +791,7 @@ endif
 
 incdirs = include_directories('.')
 
+subdir('test_utils')
 subdir('libarchive')
 
 if get_option('progs').length() > 0
