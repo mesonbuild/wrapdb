@@ -6,4 +6,4 @@ source_hash = 876ab046479166b869afc6896d288183bbc0e5843f141200c677b3e8dfb11724
 patch_directory = json-c
 
 [provide]
-json-c = json_c_dep
+dependency_names = json-c
