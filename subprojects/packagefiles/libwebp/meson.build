@@ -1,36 +1,37 @@
 project(
   'libwebp',
   'c',
-  version: '1.5.0',
+  version: '1.6.0',
+  license: 'BSD-3-Clause',
   meson_version: '>=0.59.0',
 )
 
 # Build libraries. {{{
 
 build_libsharpyuv = (get_option('libsharpyuv').allowed()
-? declare_dependency() : disabler()
+  ? declare_dependency() : disabler()
 )
 
 build_libwebp = (get_option('libwebp').require(
-  build_libsharpyuv.found(),
+    build_libsharpyuv.found(),
   error_message: 'depends on libsharpyuv',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 build_libwebpdecoder = (get_option('libwebpdecoder').allowed()
-? declare_dependency() : disabler()
+  ? declare_dependency() : disabler()
 )
 
 build_libwebpdemux = (get_option('libwebpdemux').require(
-  build_libwebp.found() or build_libwebpdecoder.found(),
+    build_libwebp.found() or build_libwebpdecoder.found(),
   error_message: 'depends on libwebp or libwebpdecoder',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 build_libwebpmux = (get_option('libwebpmux').require(
-  build_libwebp.found(),
+    build_libwebp.found(),
   error_message: 'depends on libwebp',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 # }}}
@@ -39,28 +40,28 @@ build_libwebpmux = (get_option('libwebpmux').require(
 
 # Note: can't build with `libwebpdecoder`.
 build_cwebp = (get_option('cwebp').require(
-  build_libwebp.found() and build_libwebpdemux.found(),
+    build_libwebp.found() and build_libwebpdemux.found(),
   error_message: 'depends on libwebp and libwebpdemux',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 # Note: same as above.
 build_dwebp = (get_option('dwebp').require(
-  build_libwebp.found() and build_libwebpdemux.found(),
+    build_libwebp.found() and build_libwebpdemux.found(),
   error_message: 'depends on libwebp and libwebpdemux',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 build_webpinfo = (get_option('webpinfo').require(
-  build_libwebp.found(),
+    build_libwebp.found(),
   error_message: 'depends on libwebp',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 build_webpmux = (get_option('webpmux').require(
-  build_libwebpmux.found(),
+    build_libwebpmux.found(),
   error_message: 'depends on libwebpmux',
-).allowed() ? declare_dependency() : disabler()
+  ).allowed() ? declare_dependency() : disabler()
 )
 
 # }}}
@@ -82,6 +83,13 @@ add_project_arguments(
 if get_option('default_library') != 'static'
   add_project_arguments(
     '-DWEBP_DLL',
+    language: 'c',
+  )
+endif
+
+if host_machine.endian() == 'big'
+  add_project_arguments(
+    '-DWORDS_BIGENDIAN',
     language: 'c',
   )
 endif
@@ -181,6 +189,14 @@ simd_variants = [
     'gcc_off_args'       : ['-mno-sse4.1'],
     'gcc_on_args'        : ['-msse4.1'],
   },
+  {
+    'name'               : 'AVX2',
+    'id'                 : 'avx2',
+    'emscripten_off_args': [],
+    'emscripten_on_args' : ['-msimd128', '-mavx2'],
+    'gcc_off_args'       : ['-mno-avx2'],
+    'gcc_on_args'        : ['-mavx2'],
+  },
 ]
 
 foreach _variant : simd_variants
@@ -208,8 +224,8 @@ foreach _variant : simd_variants
   endforeach
   _flag = _variant['id'].to_upper()
   _supported = (get_option('simd').allowed()
-and cc.compiles(
-    '''
+  and cc.compiles(
+      '''
       #include "src/dsp/cpu.h"
       int main(void) {
         #if !defined(WEBP_USE_@0@)
@@ -221,7 +237,7 @@ and cc.compiles(
     args: _args['on'],
     include_directories: top_includes,
     name: 'SIMD (@0@) using @1@'.format(_variant['name'], _args['on']),
-  )
+    )
 )
   if _supported
     _args = _args['on']
@@ -298,5 +314,3 @@ summary(
   bool_yn: true,
   section: 'SIMD',
 )
-
-# vim: foldmethod=marker foldlevel=0

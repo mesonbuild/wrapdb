@@ -1,7 +1,8 @@
 config_h = configure_file(
   configuration: cdata,
-  input: 'config.h.meson',
+  input: '../../cmake/config.h.in',
   output: 'config.h',
+  format: 'cmake@',
 )
 
 headers = []

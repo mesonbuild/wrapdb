@@ -15,7 +15,7 @@ foreach _spec : [
   _name = _spec[0]
   _deps = _spec[1]
   _libs = _spec[2]
-  executable(
+  _exe = executable(
     _name,
     _name + '.c',
     c_args: '-DWEBP_EXTERN=extern',
@@ -23,4 +23,5 @@ foreach _spec : [
     install: true,
     link_with: [examples_lib, _libs],
   )
+  meson.override_find_program(_name, _exe)
 endforeach

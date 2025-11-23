@@ -26,7 +26,7 @@ sharpyuv_lib = library(
   gnu_symbol_visibility: 'hidden',
   install: true,
   link_whole: sharpyuv_simd_libs,
-  version: '0.0.1',
+  version: '0.1.2',
 )
 
 sharpyuv_dep = declare_dependency(
