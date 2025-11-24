@@ -1,8 +1,8 @@
 project(
   'miniz',
   'c',
-  license: 'mit',
-  version: '3.0.2',
+  license: 'MIT',
+  version: '3.1.0',
   meson_version: '>=0.48.0',
 )
 
@@ -33,6 +33,9 @@ miniz_dep = declare_dependency(
   include_directories: miniz_inc,
   link_with: miniz_lib,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('miniz', miniz_dep)
+endif
 
 pkg = import('pkgconfig')
 pkg.generate(
