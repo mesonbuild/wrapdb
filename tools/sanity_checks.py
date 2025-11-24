@@ -34,6 +34,11 @@ from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci,
 
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
+    'aws-c-cal': {
+        'tests.txt',
+        'generate_tests.py',
+        'run_test.py',
+    },
     'aws-c-common': {
         'tests.txt',
         'generate_tests.py',
