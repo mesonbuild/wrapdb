@@ -2,7 +2,7 @@ project(
   'pv',
   'c',
   license: 'GPL-3.0-or-later',
-  version: '1.9.34',
+  version: '1.10.2',
   meson_version: '>=0.59.0',
 )
 
@@ -246,10 +246,10 @@ endforeach
 
 summary(
   {
-    'ncurses support'        : ncurses_dep.found(),
-    'IPC messaging'          : ipc_opt.allowed(),
+    'ncurses support': ncurses_dep.found(),
+    'IPC messaging': ipc_opt.allowed(),
     'Native language support': nls_opt.allowed(),
-    'Use splice system call' : splice_opt.allowed(),
+    'Use splice system call': splice_opt.allowed(),
   },
   bool_yn: true,
 )
@@ -259,14 +259,14 @@ foreach _flag : cdata.keys()
 endforeach
 
 cdata.set_quoted(
-  'LOCALEDIR'        ,
+  'LOCALEDIR',
   get_option('prefix') / get_option('localedir'),
 )
-cdata.set_quoted('PACKAGE'          , meson.project_name())
+cdata.set_quoted('PACKAGE', meson.project_name())
 cdata.set_quoted('PACKAGE_BUGREPORT', 'pv@ivarch.com')
-cdata.set_quoted('PACKAGE_NAME'     , meson.project_name())
-cdata.set_quoted('PACKAGE_VERSION'  , meson.project_version())
-cdata.set_quoted('PACKAGE_URL'      , 'https://www.ivarch.com/programs/pv.shtml')
+cdata.set_quoted('PACKAGE_NAME', meson.project_name())
+cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
+cdata.set_quoted('PACKAGE_URL', 'https://www.ivarch.com/programs/pv.shtml')
 
 subdir('src/include')
 
@@ -278,7 +278,6 @@ pv = executable(
     'src/main/help.c',
     'src/main/main.c',
     'src/main/options.c',
-    'src/main/remote.c',
     'src/main/version.c',
     'src/pv/format/averagerate.c',
     'src/pv/format/barstyle.c',
@@ -301,6 +300,7 @@ pv = executable(
     'src/pv/loop.c',
     'src/pv/number.c',
     'src/pv/proctitle.c',
+    'src/pv/remote.c',
     'src/pv/signal.c',
     'src/pv/state.c',
     'src/pv/string.c',
@@ -316,7 +316,7 @@ pv = executable(
 meson.override_find_program('pv', pv)
 
 tests_opt = get_option('tests').disable_auto_if(
-# Tests are way to flaky on macOS.
+  # Tests are way too flaky on macOS.
   host_machine.system() == 'darwin',
 )
 sh = find_program(
