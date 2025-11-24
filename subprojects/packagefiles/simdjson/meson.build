@@ -2,7 +2,7 @@ project(
   'simdjson',
   'cpp',
   license: 'Apache-2.0',
-  version: '3.13.0',
+  version: '4.2.2',
 )
 
 simdjson_inc = include_directories('singleheader')
@@ -23,6 +23,8 @@ simdjson_lib = library(
   include_directories: simdjson_inc,
   cpp_args: simdjson_args_private,
   install: true,
+  version: '29.0.0',
+  override_options: 'cpp_std=c++17',
   # see #1218, simdjson does not link properly with this enabled.
   # gnu_symbol_visibility: 'hidden'
 )
@@ -34,3 +36,6 @@ simdjson_dep = declare_dependency(
   link_with: simdjson_lib,
   compile_args: simdjson_args_public,
 )
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('simdjson', simdjson_dep)
+endif
