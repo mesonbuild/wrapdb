@@ -3060,7 +3060,12 @@
     "dependency_names": [
       "mujs"
     ],
+    "program_names": [
+      "mujs",
+      "mujs-pp"
+    ],
     "versions": [
+      "1.3.8-1",
       "1.3.6-1",
       "1.3.5-1",
       "1.3.3-1"

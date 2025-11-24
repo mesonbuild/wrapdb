@@ -110,6 +110,7 @@ js_setcontext
 js_setglobal
 js_setindex
 js_setlength
+js_setlimit
 js_setproperty
 js_setregistry
 js_setreport
