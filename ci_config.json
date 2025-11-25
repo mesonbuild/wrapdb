@@ -778,6 +778,13 @@
       "windows": false
     }
   },
+  "libtommath": {
+    "build_options": [
+      "libtommath:tests=true",
+      "libtommath:buildtype=release",
+      "libtommath:default_library=both"
+    ]
+  },
   "libupnp": {
     "_comment": "Requires some special pthread library",
     "build_on": {

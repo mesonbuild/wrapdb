@@ -97,6 +97,10 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'libtiff': {
         'cmakedefine.py',
     },
+    'libtommath': {
+        'build-manual.py',
+        'run_mtest.py',
+    },
     'libuv': {
         'link_file_in_build_dir.py',
     },
@@ -168,6 +172,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
 SOURCE_FILENAME_PREFIXES = {
     'icu': 'icu4c',
     'libtomcrypt': 'crypt',
+    'libtommath': 'ltm',
 }
 MIT_LICENSE_BLOCKS = {'expat', 'freeglut', 'glew', 'google-brotli'}
 FORMAT_CHECK_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
