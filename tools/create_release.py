@@ -182,7 +182,7 @@ class CreateRelease:
         filename = Path(self.tempdir, self.wrap_section['source_filename'])
         filename.write_bytes(response.content)
         self.upload(filename, 'application/zip')
-        self.wrap_section['source_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{filename.name}'
+        self.wrap_section['source_fallback_url'] = f'https://wrapdb.mesonbuild.com/v2/{self.tag}/get_source/{filename.name}'
 
     def finalize(self) -> None:
         if not self.repo or not self.token:
