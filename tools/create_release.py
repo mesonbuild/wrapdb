@@ -100,6 +100,7 @@ class CreateRelease:
         del self.wrap_section['patch_directory']
         self.wrap_section['patch_filename'] = patch_filename.name
         self.wrap_section['patch_url'] = f'https://wrapdb.mesonbuild.com/v2/{self.tag}/get_patch'
+        self.wrap_section['patch_fallback_url'] = f'https://github.com/mesonbuild/wrapdb/releases/download/{self.tag}/{patch_filename.name}'
         self.wrap_section['patch_hash'] = patch_hash
 
     def create_wrap_file(self) -> None:
