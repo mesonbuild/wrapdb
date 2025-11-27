@@ -174,7 +174,8 @@ SOURCE_FILENAME_PREFIXES = {
 MIT_LICENSE_BLOCKS = {'expat', 'freeglut', 'glew', 'google-brotli'}
 FORMAT_CHECK_FILES = {'meson.build', 'meson_options.txt', 'meson.options'}
 SUBPROJECTS_METADATA_FILES = {'subprojects/.gitignore'}
-PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names'}
+PERMITTED_KEYS = {'versions', 'dependency_names', 'program_names', 'deprecated'}
+PERMITTED_DEPRECATION_KEYS = {'reason', 'replacement', 'successor'}
 IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
 
@@ -229,6 +230,10 @@ class TestReleases(unittest.TestCase):
         for name, info in self.releases.items():
             for k in info.keys():
                 self.assertIn(k, PERMITTED_KEYS)
+            if 'deprecated' in info:
+                self.assertEqual(len(info['deprecated']), 1)
+                for k in info['deprecated']:
+                    self.assertIn(k, PERMITTED_DEPRECATION_KEYS)
 
         try:
             Releases.format(check=True)
@@ -367,6 +372,8 @@ class TestReleases(unittest.TestCase):
                         with self.subTest(step='check_new_release'):
                             has_new_releases = True
                             self.log_context(name)
+                            self.assertNotIn('deprecated', self.releases[name],
+                                             f'Found new release for deprecated wrap {name}')
                             if not self.skip_build:
                                 self.check_new_release(name, deps=deps, progs=progs)
                                 with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
