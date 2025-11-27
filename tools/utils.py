@@ -140,6 +140,11 @@ class ProjectReleases(T.TypedDict):
     dependency_names: T.NotRequired[list[str]]
     program_names: T.NotRequired[list[str]]
     versions: list[str]
+    deprecated: T.NotRequired[ProjectDeprecated]
+
+class ProjectDeprecated(T.TypedDict):
+    reason: T.NotRequired[str]
+    replacement: T.NotRequired[str]
 
 class Releases(T.Dict[str, ProjectReleases], _JSONFile):
     FILENAME = 'releases.json'
