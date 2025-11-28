@@ -1,9 +1,9 @@
 [wrap-file]
-directory = cpr-1.12.0
-source_url = https://github.com/libcpr/cpr/archive/1.12.0.tar.gz
-source_filename = cpr-1.12.0.tar.gz
-source_hash = f64b501de66e163d6a278fbb6a95f395ee873b7a66c905dd785eae107266a709
+directory = cpr-1.13.0
+source_url = https://github.com/libcpr/cpr/archive/1.13.0.tar.gz
+source_filename = cpr-1.13.0.tar.gz
+source_hash = c55d805300c224f099cad74ad9c68799f23d005d09ba2df76ead975a3e50e09d
 patch_directory = cpr
 
 [provide]
-cpr = cpr_dep
+dependency_names = cpr
