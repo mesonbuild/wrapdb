@@ -338,7 +338,14 @@ if cpu_family in ['arm', 'aarch64']
         auxtest[2],
         auxtest[3],
       )
-      if cc.compiles(testprog)
+      if cc.compiles(
+        testprog,
+        name: '@0@ and @1@ in: @2@'.format(
+          auxtest[2],
+          auxtest[3],
+          ', '.join(auxtest[1]),
+        ),
+      )
         compile_args += auxtest[4]
         set_variable('found_' + auxtest[0], true)
       endif
@@ -371,6 +378,7 @@ if cpu_family in ['arm', 'aarch64']
         return __crc32w(a, b);
     }
     int main(void) { return 0; }''',
+    name: 'ACLE intrinsics',
     args: acleflags,
   )
   if have_acle
@@ -404,13 +412,17 @@ if cpu_family in ['arm', 'aarch64']
   endif
   want_neon = get_option('neon')
   # avoid Alpine armv7 CI failure: https://github.com/zlib-ng/zlib-ng/issues/1844
-  have_neon = want_neon.allowed() and not (cc_id == 'clang' and cpu_family == 'arm') and cc.compiles(
+  have_neon = want_neon.allowed() and not (
+    cc_id == 'clang'
+    and cpu_family == 'arm'
+  ) and cc.compiles(
     '''#if defined(_M_ARM64) || defined(_M_ARM64EC)
     #  include <arm64_neon.h>
     #else
     #  include <arm_neon.h>
     #endif
     int main() { return 0; }''',
+    name: 'NEON flag',
     args: neonflags,
   )
   if have_neon
@@ -426,6 +438,7 @@ if cpu_family in ['arm', 'aarch64']
       #endif
       int32x4x4_t f(int var[16]) { return vld1q_s32_x4(var); }
       int main(void) { return 0; }''',
+      name: 'load 4 NEON vecs into a register range',
       args: neonflags,
     )
       compile_args += '-DARM_NEON_HASLD4'
@@ -461,6 +474,7 @@ if cpu_family in ['arm', 'aarch64']
           return (int)c;
       }
       int main(void) { return f(1,2); }''',
+      name: 'ARMv6 inline asm',
     )
     have_armv6_intrin = cc.compiles(
       '''#if defined(_MSC_VER)
@@ -476,6 +490,7 @@ if cpu_family in ['arm', 'aarch64']
       #endif
       }
       int main(void) { return f(1,2); }''',
+      name: 'ARMv6 intrinsics',
     )
     want_armv6 = get_option('armv6')
     have_armv6 = want_armv6.allowed() and (have_armv6_asm or have_armv6_intrin)
@@ -516,6 +531,7 @@ elif cpu_family in ['ppc', 'ppc64']
           a = vec_add(a, b);
           return 0;
       }''',
+      name: 'AltiVec with @0@'.format(flag),
       args: altivecflags + flag,
     )
       altivecflags += flag
@@ -535,6 +551,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP) & PPC_FEATURE_HAS_ALTIVEC);
     #endif
     }''',
+    name: 'AltiVec',
     args: altivecflags,
   )
   if have_altivec
@@ -571,6 +588,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_2_07);
     #endif
     }''',
+    name: 'POWER8',
     args: power8flags,
   )
   if want_power8.allowed() and not have_power8 and have_linux_auxvec_h and cc.compiles(
@@ -579,6 +597,7 @@ elif cpu_family in ['ppc', 'ppc64']
     int main() {
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_2_07);
     }''',
+    name: 'POWER8 with auxvec.h',
     args: power8flags,
   )
     have_power8 = true
@@ -626,6 +645,7 @@ elif cpu_family in ['ppc', 'ppc64']
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_3_00);
     #endif
     }''',
+    name: 'POWER9',
     args: power9flags,
   )
   if want_power9.allowed() and not have_power9 and have_linux_auxvec_h and cc.compiles(
@@ -634,6 +654,7 @@ elif cpu_family in ['ppc', 'ppc64']
     int main() {
         return (getauxval(AT_HWCAP2) & PPC_FEATURE2_ARCH_3_00);
     }''',
+    name: 'POWER9 with auxvec.h',
     args: power9flags,
   )
     have_power9 = true
@@ -705,6 +726,7 @@ elif cpu_family in ['s390', 's390x']
     int main() {
         return (getauxval(AT_HWCAP) & HWCAP_S390_VXRS);
     }''',
+    name: 'S390',
   )
   if have_s390
     compile_args += '-DS390_FEATURES'
@@ -748,6 +770,7 @@ elif cpu_family in ['s390', 's390x']
         c = vec_gfmsum_accum_128(a, b, c);
         return c[0];
     }''',
+    name: 'VECTOR GALOIS FIELD MULTIPLY SUM AND ACCUMULATE',
     args: vgfmaflags,
   )
   if have_crc32_vx
@@ -790,6 +813,7 @@ elif cpu_family in ['x86', 'x86_64']
     #endif
     unsigned int f(unsigned int a) { return (int) _xgetbv(a); }
     int main(void) { return 0; }''',
+    name: 'XSAVE',
     args: xsaveflags,
   ) and not (cc_id == 'gcc' and cc.version().version_compare('< 8.2'))
   if have_xsave
@@ -823,6 +847,7 @@ elif cpu_family in ['x86', 'x86_64']
     '''#include <immintrin.h>
     __m128i f(__m128i x, __m128i y) { return _mm_sad_epu8(x, y); }
     int main(void) { return 0; }''',
+    name: 'SSE2',
     args: sse2flags,
   )
   if have_sse2
@@ -870,6 +895,7 @@ elif cpu_family in ['x86', 'x86_64']
       return _mm_hadd_epi32(u, v);
     }
     int main(void) { return 0; }''',
+    name: 'SSSE3',
     args: ssse3flags,
   )
   if have_ssse3
@@ -901,6 +927,7 @@ elif cpu_family in ['x86', 'x86_64']
     '''#include <nmmintrin.h>
     unsigned int f(unsigned int a, unsigned int b) { return _mm_crc32_u32(a, b); }
     int main(void) { return 0; }''',
+    name: 'SSE4.2',
     args: sse42flags,
   )
   if have_sse42
@@ -933,6 +960,7 @@ elif cpu_family in ['x86', 'x86_64']
     #include <wmmintrin.h>
     __m128i f(__m128i a, __m128i b) { return _mm_clmulepi64_si128(a, b, 0x10); }
     int main(void) { return 0; }''',
+    name: 'PCLMULQDQ',
     args: pclmulflags,
   )
   if have_pclmulqdq
@@ -965,6 +993,7 @@ elif cpu_family in ['x86', 'x86_64']
         return _mm256_subs_epu16(x, y);
     }
     int main(void) { return 0; }''',
+    name: 'AVX2',
     args: avx2flags,
   )
   if have_avx2
@@ -1014,6 +1043,7 @@ elif cpu_family in ['x86', 'x86_64']
       return _mm512_sub_epi8(x, y);
     }
     int main(void) { return 0; }''',
+    name: 'AVX512',
     args: avx512flags,
   )
   if have_avx512
@@ -1066,6 +1096,7 @@ elif cpu_family in ['x86', 'x86_64']
         (void)r256;
         return 0;
     }''',
+    name: 'AVX512-VNNI',
     args: avx512vnniflags,
   )
   if have_avx512vnni
@@ -1090,7 +1121,10 @@ elif cpu_family in ['x86', 'x86_64']
     vpclmulflags = ['-mvpclmulqdq', '-mavx512f']
   endif
   want_vpclmulqdq = get_option('vpclmulqdq').require(
-    have_avx512 and have_pclmulqdq and not (system == 'darwin' and cpu_family == 'x86'),
+    have_avx512 and have_pclmulqdq and not (
+      system == 'darwin'
+      and cpu_family == 'x86'
+    ),
   )
   have_vpclmulqdq = want_vpclmulqdq.allowed() and cc.compiles(
     '''#include <immintrin.h>
@@ -1100,6 +1134,7 @@ elif cpu_family in ['x86', 'x86_64']
         return _mm512_clmulepi64_epi128(a, b, 0x10);
     }
     int main(void) { return 0; }''',
+    name: 'VPCLMULQDQ',
     args: vpclmulflags,
   )
   if have_vpclmulqdq
