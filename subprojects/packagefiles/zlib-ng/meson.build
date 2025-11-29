@@ -16,7 +16,7 @@ if get_option('b_lto')
   error('LTO cannot be used with runtime CPU detection')
 endif
 
-compile_args = []
+compile_args = ['-DWITH_OPTIM']
 link_args = []
 pkg_config_cflags = []
 arch_libs = []
@@ -95,33 +95,12 @@ foreach f : [
   ['fseeko', [], ['-DNO_FSEEKO']],
   ['strerror', [], ['-DNO_STRERROR']],
 ]
-  if cc.has_function(f[0])
+  res = cc.has_function(f[0])
+  set_variable('have_' + f[0], res)
+  if res
     compile_args += f[1]
   else
     compile_args += f[2]
-  endif
-endforeach
-
-foreach s : [
-  [
-    'stdlib.h',
-    'aligned_alloc',
-    ['-D_POSIX_C_SOURCE=200112L', '-D_ISOC11_SOURCE=1'],
-    ['-DHAVE_ALIGNED_ALLOC'],
-  ],
-  [
-    'stdlib.h',
-    'posix_memalign',
-    ['-D_POSIX_C_SOURCE=200112L', '-D_ISOC11_SOURCE=1'],
-    ['-DHAVE_POSIX_MEMALIGN'],
-  ],
-]
-  if cc.has_header_symbol(
-    s[0],
-    s[1],
-    args: s[2],
-  )
-    compile_args += s[3]
   endif
 endforeach
 
@@ -158,11 +137,8 @@ endforeach
 src = [
   'arch/generic/adler32_c.c',
   'arch/generic/adler32_fold_c.c',
-  'arch/generic/chunkset_c.c',
-  'arch/generic/compare256_c.c',
   'arch/generic/crc32_braid_c.c',
   'arch/generic/crc32_fold_c.c',
-  'arch/generic/slide_hash_c.c',
   'adler32.c',
   'compress.c',
   'cpu_features.c',
@@ -248,6 +224,19 @@ summary(
   bool_yn: true,
 )
 
+with_chorba = get_option('crc32-chorba')
+if with_chorba
+  src += 'arch/generic/crc32_chorba_c.c'
+else
+  compile_args += '-DWITHOUT_CHORBA'
+endif
+summary(
+  'Chorba optimized CRC32',
+  with_chorba,
+  section: general_section,
+  bool_yn: true,
+)
+
 cpu_family = host_machine.cpu_family()
 system = host_machine.system()
 cc_id = cc.get_id()
@@ -270,6 +259,19 @@ def = configure_file(
   output: 'zlib.def',
   configuration: sym_prefix,
 )
+
+if cpu_family == 'x86_64' and get_option('sse2').allowed()
+  if not have___builtin_ctz
+    src += 'arch/generic/compare256_c.c'
+  endif
+else
+  src += [
+    'arch/generic/chunkset_c.c',
+    'arch/generic/compare256_c.c',
+    'arch/generic/slide_hash_c.c',
+  ]
+  compile_args += '-DWITH_ALL_FALLBACKS'
+endif
 
 if cpu_family in ['arm', 'aarch64']
   summary(
@@ -340,7 +342,7 @@ if cpu_family in ['arm', 'aarch64']
       )
       if cc.compiles(
         testprog,
-        name: '@0@ and @1@ in: @2@'.format(
+        name: '@0@ and @1@ in @2@'.format(
           auxtest[2],
           auxtest[3],
           ', '.join(auxtest[1]),
@@ -361,14 +363,34 @@ if cpu_family in ['arm', 'aarch64']
     compile_args += '-D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE'
   endif
 
-  acleflags = []
-  if cc.has_argument('-march=armv8-a+crc')
-    acleflags = ['-march=armv8-a+crc']
-  elif cc.has_argument('-march=armv8-a+crc+simd')
-    acleflags = ['-march=armv8-a+crc+simd']
-  endif
-  want_acle = get_option('acle')
-  have_acle = want_acle.allowed() and cc.compiles(
+  armv8flags = []
+  foreach arg : [
+    '-march=armv8-a+crc',
+    '-march=armv8-a+crc+simd',
+    '-Wa,-march=armv8-a+crc',
+    '-Wa,-march=armv8-a+crc+simd',
+  ]
+    if cc.has_argument(arg)
+      armv8flags = [arg]
+      break
+    endif
+  endforeach
+  want_armv8 = get_option('armv8')
+  have_armv8_asm = want_armv8.allowed() and cc.compiles(
+    '''unsigned int f(unsigned int a, unsigned int b) {
+        unsigned int c;
+    #ifdef __aarch64__
+        __asm__( "crc32w %w0, %w1, %w2" : "=r" (c) : "r" (a), "r" (b));
+    #else
+        __asm__( "crc32w %0, %1, %2" : "=r" (c) : "r" (a), "r" (b));
+    #endif
+        return (int)c;
+    }
+    int main(void) { return f(1,2); }''',
+    name: 'ARMv8 inline asm',
+    args: armv8flags,
+  )
+  have_armv8_intrin = want_armv8.allowed() and cc.compiles(
     '''#if defined(_MSC_VER)
     #include <intrin.h>
     #else
@@ -378,22 +400,26 @@ if cpu_family in ['arm', 'aarch64']
         return __crc32w(a, b);
     }
     int main(void) { return 0; }''',
-    name: 'ACLE intrinsics',
-    args: acleflags,
+    name: 'ARMv8 intrinsics',
+    args: armv8flags,
   )
-  if have_acle
-    compile_args += '-DARM_ACLE'
+  have_armv8 = have_armv8_asm or have_armv8_intrin
+  if have_armv8
+    compile_args += '-DARM_CRC32'
+    if have_armv8_intrin
+      compile_args += '-DARM_CRC32_INTRIN'
+    endif
     arch_libs += static_library(
-      'acle',
-      archdir / 'crc32_acle.c',
-      c_args: compile_args + acleflags,
+      'armv8',
+      archdir / 'crc32_armv8.c',
+      c_args: compile_args + armv8flags,
       link_args: link_args,
     )
   endif
-  want_acle.require(have_acle)
+  want_armv8.require(have_armv8)
   summary(
-    'ACLE',
-    have_acle,
+    'ARMv8 optimized CRC',
+    have_armv8,
     section: arch_section,
     bool_yn: true,
   )
@@ -462,15 +488,16 @@ if cpu_family in ['arm', 'aarch64']
   )
 
   if cpu_family == 'arm'
-    # Upstream explicitly sets -march=armv6, but this also requires
-    # -mfloat-abi=soft since armv6 doesn't require an FPU.  Upstream deals
-    # with this by defaulting the entire library to soft-float on 32-bit ARM,
-    # overriding the compiler's default.  Since armv6 is probably not newer
-    # than the actual target arch, we instead skip setting arch flags at all.
+    # Upstream explicitly sets -march=armv6 or -Wa,-march=armv6, but this
+    # also requires -mfloat-abi=soft since armv6 doesn't require an FPU.
+    # Upstream deals with this by defaulting the entire library to
+    # soft-float on 32-bit ARM, overriding the compiler's default.  Since
+    # armv6 is probably not newer than the actual target arch, we instead
+    # skip setting arch flags at all.
     have_armv6_asm = cc.compiles(
       '''unsigned int f(unsigned int a, unsigned int b) {
           unsigned int c;
-          __asm__ __volatile__ ( "uqsub16 %0, %1, %2" : "=r" (c) : "r" (a), "r" (b) );
+          __asm__ ( "uqsub16 %0, %1, %2" : "=r" (c) : "r" (a), "r" (b) );
           return (int)c;
       }
       int main(void) { return f(1,2); }''',
@@ -510,6 +537,100 @@ if cpu_family in ['arm', 'aarch64']
     )
   endif
 
+elif cpu_family == 'loongarch64'
+  summary(
+    'Architecture',
+    'LoongArch',
+    section: arch_section,
+  )
+  archdir = 'arch/loongarch'
+  src += archdir / 'loongarch_features.c'
+  compile_args += '-DLOONGARCH_FEATURES'
+
+  want_la64crc = get_option('crc32-la')
+  have_la64crc = want_la64crc.allowed() and cc.compiles(
+    '''#include <larchintrin.h>
+    int main(void) {
+        char ch = 'a';
+        int crc = __crc_w_b_w(ch, 0);
+        return crc;
+    }''',
+    name: 'vectorized CRC32',
+  )
+  if have_la64crc
+    src += archdir / 'crc32_la.c'
+    compile_args += '-DLOONGARCH_CRC'
+  endif
+  want_la64crc.require(have_la64crc)
+  summary(
+    'vectorized CRC32',
+    have_la64crc,
+    section: arch_section,
+    bool_yn: true,
+  )
+
+  lsxflags = ['-mlsx']
+  want_lsx = get_option('lsx')
+  have_lsx = want_lsx.allowed() and cc.compiles(
+    '''#include <lsxintrin.h>
+    __m128i f(__m128i a, __m128i b) {
+        return __lsx_vabsd_b(a, b);
+    }
+    int main(void) { return 0; }''',
+    name: 'vectorized LSX',
+    args: lsxflags,
+  )
+  if have_lsx
+    compile_args += '-DLOONGARCH_LSX'
+    arch_libs += static_library(
+      'lsx',
+      archdir / 'adler32_lsx.c',
+      archdir / 'chunkset_lsx.c',
+      archdir / 'compare256_lsx.c',
+      archdir / 'slide_hash_lsx.c',
+      c_args: compile_args + lsxflags,
+      link_args: link_args,
+    )
+  endif
+  want_lsx.require(have_lsx)
+  summary(
+    'vectorized LSX',
+    have_lsx,
+    section: arch_section,
+    bool_yn: true,
+  )
+
+  lasxflags = ['-mlasx']
+  want_lasx = get_option('lasx')
+  have_lasx = want_lasx.allowed() and have_lsx and cc.compiles(
+    '''#include <lasxintrin.h>
+    __m256i f(__m256i a, __m256i b) {
+        return __lasx_xvabsd_b(a, b);
+    }
+    int main(void) { return 0; }''',
+    name: 'vectorized LASX',
+    args: lasxflags,
+  )
+  if have_lasx
+    compile_args += '-DLOONGARCH_LASX'
+    arch_libs += static_library(
+      'lasx',
+      archdir / 'adler32_lasx.c',
+      archdir / 'chunkset_lasx.c',
+      archdir / 'compare256_lasx.c',
+      archdir / 'slide_hash_lasx.c',
+      c_args: compile_args + lasxflags,
+      link_args: link_args,
+    )
+  endif
+  want_lasx.require(have_lasx)
+  summary(
+    'vectorized LASX',
+    have_lasx,
+    section: arch_section,
+    bool_yn: true,
+  )
+
 elif cpu_family in ['ppc', 'ppc64']
   summary(
     'Architecture',
@@ -543,7 +664,7 @@ elif cpu_family in ['ppc', 'ppc64']
     #include <machine/cpu.h>
     #endif
     int main() {
-    #ifdef __FreeBSD__
+    #if defined(__FreeBSD__) || defined(__OpenBSD__)
         unsigned long hwcap;
         elf_aux_info(AT_HWCAP, &hwcap, sizeof(hwcap));
         return (hwcap & PPC_FEATURE_HAS_ALTIVEC);
@@ -580,7 +701,7 @@ elif cpu_family in ['ppc', 'ppc64']
     #include <machine/cpu.h>
     #endif
     int main() {
-    #ifdef __FreeBSD__
+    #if defined(__FreeBSD__) || defined(__OpenBSD__)
         unsigned long hwcap;
         elf_aux_info(AT_HWCAP2, &hwcap, sizeof(hwcap));
         return (hwcap & PPC_FEATURE2_ARCH_2_07);
@@ -637,7 +758,7 @@ elif cpu_family in ['ppc', 'ppc64']
     #include <machine/cpu.h>
     #endif
     int main() {
-    #ifdef __FreeBSD__
+    #if defined(__FreeBSD__) || defined(__OpenBSD__)
         unsigned long hwcap;
         elf_aux_info(AT_HWCAP2, &hwcap, sizeof(hwcap));
         return (hwcap & PPC_FEATURE2_ARCH_3_00);
@@ -684,6 +805,7 @@ elif cpu_family in ['riscv32', 'riscv64']
     section: arch_section,
   )
   archdir = 'arch/riscv'
+
   rvvflags = ['-march=rv64gcv']
   want_rvv = get_option('rvv')
   have_rvv = want_rvv.allowed() and cc.check_header(
@@ -697,7 +819,6 @@ elif cpu_family in ['riscv32', 'riscv64']
       archdir / 'adler32_rvv.c',
       archdir / 'chunkset_rvv.c',
       archdir / 'compare256_rvv.c',
-      archdir / 'riscv_features.c',
       archdir / 'slide_hash_rvv.c',
       c_args: compile_args + rvvflags,
       link_args: link_args,
@@ -709,6 +830,51 @@ elif cpu_family in ['riscv32', 'riscv64']
     have_rvv,
     section: arch_section,
     bool_yn: true,
+  )
+
+  zbcflags = ['-march=rv64gc_zbc']
+  want_zbc = get_option('riscv-zbc')
+  have_zbc = want_zbc.allowed() and cc.compiles(
+    '''#include <stdint.h>
+    uint64_t f(uint64_t a, uint64_t b) {
+        uint64_t c;
+        __asm__ __volatile__ ("clmul %[result], %[input_a], %[input_b]" : [result] "=r" (c) : [input_a] "r" (a), [input_b] "r" (b));
+        return c;
+    }
+    int main(void) { return f(1, 2); }''',
+    name: 'RISC-V Zbc inline asm',
+    args: zbcflags,
+  )
+  if have_zbc
+    compile_args += '-DRISCV_CRC32_ZBC'
+    arch_libs += static_library(
+      'zbc',
+      archdir / 'crc32_zbc.c',
+      c_args: compile_args + zbcflags,
+      link_args: link_args,
+    )
+  endif
+  want_zbc.require(have_zbc)
+  summary(
+    'RISC-V Zbc',
+    have_zbc,
+    section: arch_section,
+    bool_yn: true,
+  )
+
+  riscvflags = []
+  if have_rvv and have_zbc
+    riscvflags = ['-march=rv64gcv_zbc']
+  elif have_rvv
+    riscvflags = ['-march=rv64gcv']
+  elif have_zbc
+    riscvflags = ['-march=rv64gc_zbc']
+  endif
+  arch_libs += static_library(
+    'riscv',
+    archdir / 'riscv_features.c',
+    c_args: compile_args + riscvflags,
+    link_args: link_args,
   )
 
 elif cpu_family in ['s390', 's390x']
@@ -799,6 +965,37 @@ elif cpu_family in ['x86', 'x86_64']
   archdir = 'arch/x86'
   compile_args += '-DX86_FEATURES'
 
+  if cc_id == 'msvc' and cc.version().version_compare('<17')
+    message('Disabling SSE2/SSE4.1 Chorba variants on Visual Studio < 2022')
+    compile_args += '-DWITHOUT_CHORBA_SSE'
+  endif
+
+  if cc_id == 'msvc'
+    if cc.compiles(
+      '''#include <intrin.h>
+      static inline void cpuid_ms(int info, unsigned int *eax, unsigned int *ebx, unsigned int *ecx, unsigned int *edx) {
+          unsigned int registers[4];
+          __cpuid((int *)registers, info);
+          *eax = registers[0];
+          *ebx = registers[1];
+          *ecx = registers[2];
+          *edx = registers[3];
+      }
+      int main(void) {
+        unsigned int eax, ebx, ecx, edx;
+        cpuid_ms(0, &eax, &ebx, &ecx, &edx);
+        return eax;
+      }''',
+      name: 'MSVC CPUID intrinsics',
+    )
+      compile_args += '-DHAVE_CPUID_MS'
+    endif
+  else
+    if cc.has_header_symbol('cpuid.h', '__cpuid_count')
+      compile_args += '-DHAVE_CPUID_GNU'
+    endif
+  endif
+
   xsaveflags = []
   if cc_id != 'msvc' and not cc_id.startswith('intel')
     xsaveflags = ['-mxsave']
@@ -852,20 +1049,9 @@ elif cpu_family in ['x86', 'x86_64']
   )
   if have_sse2
     compile_args += '-DX86_SSE2'
-    if cpu_family == 'x86'
-      want_force_sse2 = get_option('force-sse2')
-      if want_force_sse2
-        compile_args += '-DX86_NOCHECK_SSE2'
-      endif
-      summary(
-        'Assume SSE2',
-        want_force_sse2,
-        section: arch_section,
-        bool_yn: true,
-      )
-    endif
     arch_libs += static_library(
       'sse2',
+      archdir / 'chorba_sse2.c',
       archdir / 'chunkset_sse2.c',
       archdir / 'compare256_sse2.c',
       archdir / 'slide_hash_sse2.c',
@@ -916,13 +1102,44 @@ elif cpu_family in ['x86', 'x86_64']
     bool_yn: true,
   )
 
+  sse41flags = []
+  if cc_syntax == 'msvc' and cc_id.startswith('intel')
+    sse41flags = ['/arch:SSE4.1']
+  elif cc_id != 'msvc'
+    sse41flags = ['-msse4.1']
+  endif
+  want_sse41 = get_option('sse41').require(have_ssse3)
+  have_sse41 = want_sse41.allowed() and cc.compiles(
+    '''#include <smmintrin.h>
+    __m128i f(__m128i a, __m128i b) { return _mm_min_epi32(a, b); }
+    int main(void) { return 0; }''',
+    name: 'SSE4.1',
+    args: sse41flags,
+  )
+  if have_sse41
+    compile_args += '-DX86_SSE41'
+    arch_libs += static_library(
+      'sse41',
+      archdir / 'chorba_sse41.c',
+      c_args: compile_args + sse41flags,
+      link_args: link_args,
+    )
+  endif
+  want_sse41.require(have_sse41)
+  summary(
+    'SSE4.1',
+    have_sse41,
+    section: arch_section,
+    bool_yn: true,
+  )
+
   sse42flags = []
   if cc_syntax == 'msvc' and cc_id.startswith('intel')
     sse42flags = ['/arch:SSE4.2']
   elif cc_id != 'msvc'
     sse42flags = ['-msse4.2']
   endif
-  want_sse42 = get_option('sse42').require(have_ssse3)
+  want_sse42 = get_option('sse42').require(have_sse41)
   have_sse42 = want_sse42.allowed() and cc.compiles(
     '''#include <nmmintrin.h>
     unsigned int f(unsigned int a, unsigned int b) { return _mm_crc32_u32(a, b); }
@@ -1052,6 +1269,7 @@ elif cpu_family in ['x86', 'x86_64']
       'avx512',
       archdir / 'adler32_avx512.c',
       archdir / 'chunkset_avx512.c',
+      archdir / 'compare256_avx512.c',
       c_args: compile_args + avx512flags,
       link_args: link_args,
     )
