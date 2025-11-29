@@ -29,6 +29,11 @@ option(
     type: 'boolean',
     value: false,
 )
+option(
+    'crc32-chorba',
+    description: 'Enable Chorba optimized CRC32',
+    type: 'boolean',
+)
 # ARM
 option(
     'armv6',
@@ -36,13 +41,29 @@ option(
     type: 'feature',
 )
 option(
-    'acle',
-    description: 'Build with ACLE',
+    'armv8',
+    description: 'Build with ARMv8 CRC32 intrinsics',
     type: 'feature',
 )
 option(
     'neon',
     description: 'Build with NEON intrinsics',
+    type: 'feature',
+)
+# LoongArch
+option(
+    'crc32-la',
+    description: 'Build with vectorized CRC32 on LoongArch',
+    type: 'feature',
+)
+option(
+    'lsx',
+    description: 'Build with vectorized LSX on LoongArch',
+    type: 'feature',
+)
+option(
+    'lasx',
+    description: 'Build with vectorized LASX on LoongArch',
     type: 'feature',
 )
 # Power
@@ -65,6 +86,11 @@ option(
 option(
     'rvv',
     description: 'Build with RVV intrinsics',
+    type: 'feature',
+)
+option(
+    'riscv-zbc',
+    description: 'Build with RISCV Zbc',
     type: 'feature',
 )
 # S390
@@ -90,14 +116,13 @@ option(
     type: 'feature',
 )
 option(
-    'force-sse2',
-    description: 'Assume CPU is SSE2 capable',
-    type: 'boolean',
-    value: false,
-)
-option(
     'ssse3',
     description: 'Build with SSSE3',
+    type: 'feature',
+)
+option(
+    'sse41',
+    description: 'Build with SSE4.1',
     type: 'feature',
 )
 option(
