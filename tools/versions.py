@@ -35,13 +35,6 @@ from utils import Releases, read_wrap, wrap_path
 WRAP_URL_TEMPLATE = (
     'https://github.com/mesonbuild/wrapdb/blob/master/subprojects/{0}.wrap'
 )
-# wraps that exist but whose versions should not be reported or updated
-DEPRECATED_WRAPS = set([
-    # replaced with nlohmann_json
-    'json',
-    # replaced with doctest
-    'onqtam-doctest'
-])
 
 
 class AnityaPackageList(T.TypedDict):
@@ -114,7 +107,7 @@ def get_wrap_versions() -> dict[str, str]:
     return {
         name: info['versions'][0].split('-')[0]
         for name, info in Releases.load().items()
-        if name not in DEPRECATED_WRAPS
+        if 'deprecated' not in info
     }
 
 

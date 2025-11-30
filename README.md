@@ -43,6 +43,7 @@ key is the wrap name and the value is a dictionary containing with the following
 | `versions`        | Sorted list (newest first) of release tags in the format `<upstream version>-<revision>` where the revision starts at 1 and is incremented when a change is made in the meson port.         |
 | `dependency_names`| (Optional) List of dependency names (e.g. pkg-config name such as `glib-2.0`) provided by the wrap. It must match information from wrap's `[provide]` section.                              |
 | `program_names`   | (Optional) List of program names (e.g. `glib-compile-resources`) provided by the wrap. It must match information from wrap's `[provide]` section.                                           |
+| `deprecated`      | (Optional) Object describing a wrap that is no longer maintained.  If there's a replacement wrap, the `replacement` field names it, otherwise the `reason` field explains why the wrap is unmaintained. |
 
 ### CI Configure Meta
 
