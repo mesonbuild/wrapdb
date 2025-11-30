@@ -138,10 +138,6 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'meson.build.tmpl',
         'README.md',
     },
-    'pcre': {
-        'pcre.def',
-        'pcreposix.def'
-    },
     'protobuf': {
         'symlink_or_copy.py',
     },
