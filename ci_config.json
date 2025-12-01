@@ -76,6 +76,15 @@
       "boost"
     ]
   },
+  "aws-c-cal": {
+    "build_options": [
+      "aws-c-cal:tests=enabled"
+    ],
+    "alpine_packages": [
+      "openssl-dev",
+      "openssl"
+    ]
+  },
   "aws-c-common": {
     "build_options": [
       "aws-c-common:tests=enabled"
