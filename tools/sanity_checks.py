@@ -363,10 +363,9 @@ class TestReleases(unittest.TestCase):
                     with self.subTest(step='valid release name'):
                         self.assertTrue(re.fullmatch('[a-z0-9._]+', ver))
                         self.assertTrue(re.fullmatch('[0-9]+', rev))
-                    if i == 0:
+                    if i == 0 and t not in self.tags:
                         with self.subTest(step='check_source_url'):
                             self.check_source_url(name, wrap_section, ver)
-                    if i == 0 and t not in self.tags:
                         with self.subTest(step='check_new_release'):
                             has_new_releases = True
                             self.log_context(name)
@@ -461,10 +460,8 @@ class TestReleases(unittest.TestCase):
             segs = version.split('.')
             self.assertEqual(len(segs), 3)
             version = segs[0] + segs[1] + segs[2]
-        elif name in {'netstring-c', 'directxmath', 'luajit'}:
-            # There is no specific version for netstring-c
+        elif name == 'directxmath':
             # DirectXMath source url contains only tag name without version
-            # LuaJIT source URL does not contain the version number.
             return
         version_ = version.replace('.', '_')
         self.assertTrue(version in source_url or version_ in source_url,
