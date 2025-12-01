@@ -26,6 +26,7 @@ foreach t, a : benchmark_tests
       t,
       '@0@.cc'.format(t),
       dependencies: google_benchmark_dep,
+      build_by_default: false,
     ),
     args: a,
   )
@@ -65,6 +66,7 @@ foreach t, a : benchmark_output_tests
       t,
       ['@0@.cc'.format(t), 'output_test_helper.cc'],
       dependencies: google_benchmark_dep,
+      build_by_default: false,
     ),
     args: a,
   )
@@ -78,6 +80,7 @@ test(
     'link_main_test',
     'link_main_test.cc',
     dependencies: google_benchmark_main_dep,
+    build_by_default: false,
   ),
   args: '--benchmark_min_time=0.01s',
 )
