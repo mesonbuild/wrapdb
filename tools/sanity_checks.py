@@ -445,6 +445,8 @@ class TestReleases(unittest.TestCase):
     def check_source_url(self, name: str, wrap_section: configparser.SectionProxy, version: str) -> None:
         source_url = wrap_section['source_url']
         self.assertNotIn('ftp.gnu.org', source_url, 'use ftpmirror.gnu.org instead')
+        if re.search(r'/[0-9a-f]{40}', source_url):
+            raise Exception('Commit hash found in source_url.  Source must come from a release artifact or tag.')
 
         if name == 'sqlite3':
             segs = version.split('.')
