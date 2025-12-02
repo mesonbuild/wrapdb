@@ -27,7 +27,9 @@ import platform
 import io
 import sys
 import shutil
+import tarfile
 import textwrap
+import zipfile
 
 from pathlib import Path
 from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
@@ -377,8 +379,12 @@ class TestReleases(unittest.TestCase):
                                 self.check_meson_version(name, ver, patch_path)
                         if patch_path:
                             self.check_project_args(name, config)
+                            self.check_for_upstream_meson(name, ver, config)
                         else:
                             self.check_nonport_source(name, config)
+                            with self.subTest(step='obsolete ignore_upstream_meson'):
+                                self.assertIsNone(self.ci_config.get(name, {}).get('ignore_upstream_meson'),
+                                                  "found ignore_upstream_meson in wrap without patch_directory")
                     else:
                         with self.subTest(step='version is tagged'):
                             self.assertIn(t, self.tags)
@@ -684,6 +690,31 @@ class TestReleases(unittest.TestCase):
                         # assume if an upstream converts to
                         # override_dependency it converts completely
                         raise Exception(f"{path.relative_to(dir)} contains meson.override_dependency(); wrap provides should be converted to e.g. 'dependency_names = {', '.join(sorted(provides))}'")
+
+    def check_for_upstream_meson(self, name: str, ver: str, wrap: configparser.ConfigParser) -> None:
+        with self.subTest(step='check for upstream meson.build'):
+            if ver == self.ci_config.get(name, {}).get('ignore_upstream_meson'):
+                return
+            # we don't need the unpacked and patched source but do need the
+            # downloaded source archive
+            self.ensure_source_dir(name, wrap)
+            source_path = Path('subprojects', 'packagecache',
+                               wrap['wrap-file']['source_filename'])
+            member_path = 'meson.build'
+            if not wrap['wrap-file'].get('lead_directory_missing', False):
+                member_path = wrap['wrap-file']['directory'] + '/' + member_path
+            try:
+                if source_path.suffix == '.zip':
+                    with zipfile.ZipFile(source_path) as zf:
+                        zf.getinfo(member_path)
+                else:
+                    with tarfile.open(source_path) as tf:
+                        tf.getmember(member_path)
+            except KeyError:
+                self.assertIsNone(self.ci_config.get(name, {}).get('ignore_upstream_meson'),
+                                  'found ignore_upstream_meson in project without upstream Meson config')
+            else:
+                raise Exception(f'Source archive contains meson.build but wrap contains patch_directory. If you want to ship Meson fixes in WrapDB while waiting for them to be merged upstream, add "ignore_upstream_meson": "{ver}" to ci_config.json.')
 
     def get_default_options(self, project: dict[str, T.Any]) -> dict[str, str | None]:
         opts = project.get('default_options')

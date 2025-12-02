@@ -65,6 +65,7 @@ name and the value is a dictionary containing with the following keys:
 | `skip_program_check`    | (Optional) List of platform-specific program names that are not always provided by the project.                                                                                                                                                                                                      |
 | `test_options`          | (Optional) List of arguments that will be passed to `meson test` command (e.g. `--timeout-multiplier`, `--no-suite`).                                                                                                                                                                                |
 | `skip_tests`            | (Optional) If set to `true` tests will not be run. This is useful when tests are known to fail because of upstream issues, or require a specific environment hard to set up.                                                                                                                         |
+| `ignore_upstream_meson` | (Optional) Allow wrap to override an upstream Meson config, but only in the specified upstream version. This is useful when adding a wrap with buggy upstream Meson code while awaiting upstream fixes.                                                                                              |
 
 ### Running sanity test locally
 

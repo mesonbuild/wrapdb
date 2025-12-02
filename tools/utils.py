@@ -153,6 +153,7 @@ class ProjectCIConfig(T.TypedDict):
     skip_program_check: T.NotRequired[list[str]]
     skip_tests: T.NotRequired[bool]
     test_options: T.NotRequired[list[str]]
+    ignore_upstream_meson: T.NotRequired[str]
 
     alpine_packages: T.NotRequired[list[str]]
     brew_packages: T.NotRequired[list[str]]
