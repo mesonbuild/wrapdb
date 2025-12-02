@@ -118,6 +118,9 @@
     "fatal_warnings": false,
     "skip_tests": true
   },
+  "cairomm": {
+    "ignore_upstream_meson": "1.18.0"
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"
@@ -226,6 +229,9 @@
       "curl:ca_bundle=",
       "curl:ca_path="
     ]
+  },
+  "cwalk": {
+    "ignore_upstream_meson": "1.2.9"
   },
   "dlfcn-win32": {
     "_comment": "- Requires Windows",
@@ -774,6 +780,9 @@
       "libunistring"
     ]
   },
+  "libsigcplusplus-3": {
+    "ignore_upstream_meson": "3.6.0"
+  },
   "libtirpc": {
     "_comment": "Linux only and libobsd is broken",
     "alpine_packages": [
@@ -1284,6 +1293,9 @@
       "quickjs-ng:tests=enabled",
       "quickjs-ng:examples=enabled"
     ]
+  },
+  "rang": {
+    "ignore_upstream_meson": "3.2"
   },
   "rdkafka": {
     "_comment": "- broken CI finds bad version of OpenSSL on Windows",
