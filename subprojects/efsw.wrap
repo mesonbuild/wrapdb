@@ -1,0 +1,9 @@
+[wrap-file]
+directory = efsw-1.5.0
+source_url = https://github.com/SpartanJ/efsw/archive/refs/tags/1.5.0.tar.gz
+source_filename = efsw-1.5.0.tar.gz
+source_hash = 20421778fd59a845393ff6a7a1f461228574fe5062b1bf5f82d533c0d25a41bd
+method = cmake
+
+[provide]
+efsw = efsw_dep

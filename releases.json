@@ -811,6 +811,14 @@
       "13.0.0-1"
     ]
   },
+  "efsw": {
+    "dependency_names": [
+      "efsw"
+    ],
+    "versions": [
+      "1.5.0-1"
+    ]
+  },
   "eigen": {
     "dependency_names": [
       "eigen3"
