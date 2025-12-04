@@ -11,6 +11,7 @@ tests = [
   #  'alternating',
   #  'async',
   #  'callback',
+  #  'connection_pool',
   #  'delete',
   #  'download',
   'encoded_auth',
