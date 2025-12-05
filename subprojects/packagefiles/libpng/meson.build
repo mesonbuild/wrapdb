@@ -1,7 +1,7 @@
 project(
   'libpng',
   'c',
-  version: '1.6.51',
+  version: '1.6.52',
   license: 'libpng-2.0',
   meson_version: '>=0.50.0',
 )
