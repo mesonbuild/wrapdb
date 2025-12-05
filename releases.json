@@ -153,6 +153,15 @@
     ]
   },
   "arduinocore-avr": {
+    "dependency_names": [
+      "arduinocore",
+      "arduinocore-main",
+      "arduinocore-eeprom",
+      "arduinocore-hid",
+      "arduinocore-softwareserial",
+      "arduinocore-spi",
+      "arduinocore-wire"
+    ],
     "versions": [
       "1.8.2-2",
       "1.8.2-1",

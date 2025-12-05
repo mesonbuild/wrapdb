@@ -15,6 +15,7 @@ arduinocore_hid_dep = declare_dependency(
   include_directories: include_directories(hid_inc),
   dependencies: [arduinocore_dep],
 )
+meson.override_dependency('arduinocore-hid', arduinocore_hid_dep)
 
 if do_install
   install_headers(

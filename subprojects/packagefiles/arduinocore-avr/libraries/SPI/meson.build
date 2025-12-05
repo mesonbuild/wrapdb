@@ -15,6 +15,7 @@ arduinocore_spi_dep = declare_dependency(
   include_directories: include_directories(spi_inc),
   dependencies: [arduinocore_dep],
 )
+meson.override_dependency('arduinocore-spi', arduinocore_spi_dep)
 
 if do_install
   install_headers(
