@@ -10,6 +10,7 @@ project(
     'cpp_std=gnu++11',
     'b_staticpic=false',
   ],
+  meson_version: '>=0.54.0',
 )
 assert(
   meson.is_cross_build(),
@@ -28,7 +29,7 @@ assert(
 #   robot_motor
 #   standard
 #   yun
-cross_variant = meson.get_cross_property('variant')
+cross_variant = meson.get_external_property('variant')
 # whether install definitions are added (not when compiling as subproject)
 do_install = not meson.is_subproject()
 
