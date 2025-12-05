@@ -85,6 +85,7 @@ arduinocore_dep = declare_dependency(
   include_directories: [includes_sys],
   link_with: arduinocore_lib,
 )
+meson.override_dependency('arduinocore', arduinocore_dep)
 
 arduinocore_main_lib = static_library(
   'arduinocore-main-' + cross_variant,
@@ -99,6 +100,7 @@ arduinocore_main_dep = declare_dependency(
   link_with: arduinocore_main_lib,
   dependencies: [arduinocore_dep],
 )
+meson.override_dependency('arduinocore-main', arduinocore_main_dep)
 
 
 subdir('libraries/')

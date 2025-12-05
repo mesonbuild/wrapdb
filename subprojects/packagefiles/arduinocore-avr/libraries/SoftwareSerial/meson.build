@@ -15,6 +15,10 @@ arduinocore_softwareserial_dep = declare_dependency(
   include_directories: include_directories(softwareserial_inc),
   dependencies: [arduinocore_dep],
 )
+meson.override_dependency(
+  'arduinocore-softwareserial',
+  arduinocore_softwareserial_dep,
+)
 
 if do_install
   install_headers(
