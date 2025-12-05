@@ -2,7 +2,7 @@ project(
   'libarduinocore-avr',
   'c',
   'cpp',
-  version: '1.8.2',
+  version: '1.8.6',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'b_lto=true',
