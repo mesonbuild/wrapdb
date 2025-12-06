@@ -93,7 +93,6 @@ def get_upstream_versions() -> dict[str, str]:
     def sub(name: str, old: str, new: str) -> None:
         if name in versions:
             versions[name] = re.sub(old, new, versions[name])
-    sub('icu', '-', '.')
     sub('inih', '^', 'r')
     sub('mt32emu', '_', '.')
     sub('re2', '-', '')
