@@ -88,7 +88,7 @@ elif host_machine.cpu_family() == 'loongarch64'
       c_args: c_args + ['-mlsx'],
     )
   endif
-elif host_machine.cpu_family() in ['ppc64', 'ppc64le', 'powerpc64le'] and host_machine.endian() == 'little'
+elif host_machine.cpu_family() == 'ppc64' and host_machine.endian() == 'little'
   png_src += files('powerpc/filter_vsx_intrinsics.c', 'powerpc/powerpc_init.c')
   c_args += '-DPNG_POWERPC_VSX_OPT=2'
 elif host_machine.cpu_family() in ['riscv32', 'riscv64']
