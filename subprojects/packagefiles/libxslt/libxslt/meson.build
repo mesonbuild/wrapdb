@@ -78,6 +78,7 @@ libxslt = library(
   sources,
   include_directories: incdir,
   dependencies: [libxml2_dep, libm, librt],
+  version: meson.project_version(),
   install: true,
 )
 
