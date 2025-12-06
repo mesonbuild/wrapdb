@@ -308,9 +308,11 @@ libarchive_test_sources = files(
   'test_zip_filename_encoding.c',
 )
 
-configure_file(
-  command: [mklist] + libarchive_test_sources,
+list_h = custom_target(
+  'list.h',
+  command: [mklist, '@INPUT@'],
   capture: true,
+  input: libarchive_test_sources,
   output: 'list.h',
 )
 
@@ -318,6 +320,7 @@ libarchive_test = executable(
   'libarchive_test',
   libarchive_test_sources,
   test_utils_sources,
+  list_h,
   c_args: '-DLIBARCHIVE_STATIC',
   include_directories: [depinc, test_utils_include],
   link_with: libarchive_both.get_static_lib(),
