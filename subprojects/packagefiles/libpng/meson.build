@@ -1,9 +1,9 @@
 project(
   'libpng',
   'c',
-  version: '1.6.52',
+  version: '1.6.53',
   license: 'libpng-2.0',
-  meson_version: '>=0.50.0',
+  meson_version: '>=0.56.0',
 )
 
 png_versions = meson.project_version().split('.')
@@ -121,9 +121,7 @@ libpng_dep = declare_dependency(
 # Keep the older dependency name for backwards-compat with old-style
 # dependency(..., fallback ['libpng': 'png_dep'])
 png_dep = libpng_dep
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('libpng', libpng_dep)
-endif
+meson.override_dependency('libpng', libpng_dep)
 
 pkgconfig = import('pkgconfig')
 pkgconfig.generate(

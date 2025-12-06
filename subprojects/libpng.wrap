@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libpng-1.6.52
-source_url = https://github.com/pnggroup/libpng/archive/v1.6.52.tar.gz
-source_filename = libpng-1.6.52.tar.gz
-source_hash = 07098f37e7b7570fc06d2ccbaaf5a47e9344fc36e773e312e334a083689a6212
+directory = libpng-1.6.53
+source_url = https://github.com/pnggroup/libpng/archive/v1.6.53.tar.gz
+source_filename = libpng-1.6.53.tar.gz
+source_hash = b20cee717e11416d2f96ccc7d184f63730ca8cb2f03bfd0c4ed77fbc909c0bff
 patch_directory = libpng
 
 [provide]
