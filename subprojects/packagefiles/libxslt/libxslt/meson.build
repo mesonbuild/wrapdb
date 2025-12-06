@@ -1,26 +1,25 @@
-headers = [
-  'xslt.h',
-  'xsltutils.h',
-  'pattern.h',
-  'templates.h',
-  'variables.h',
-  'keys.h',
-  'numbersInternals.h',
+libxslt_headers = files(
+  'attributes.h',
+  'documents.h',
   'extensions.h',
   'extra.h',
   'functions.h',
-  'namespaces.h',
   'imports.h',
-  'attributes.h',
-  'documents.h',
+  'keys.h',
+  'namespaces.h',
+  'numbersInternals.h',
+  'pattern.h',
   'preproc.h',
-  'transform.h',
   'security.h',
+  'templates.h',
+  'transform.h',
+  'variables.h',
+  'xslt.h',
   'xsltInternals.h',
   'xsltexports.h',
   'xsltlocale.h',
-]
-install_headers(headers)
+  'xsltutils.h',
+)
 
 sources = [
   'attrvt.c',
@@ -67,10 +66,15 @@ xsltconfig.set10('WITH_PROFILER', get_option('profiler'))
 xsltconfig.set10('WITH_TRIO', with_trio)
 xsltconfig.set10('WITH_XSLT_DEBUG', get_option('xslt_debug'))
 
-configure_file(
+libxslt_headers += configure_file(
   input: 'xsltconfig.h.in',
   output: 'xsltconfig.h',
   configuration: xsltconfig,
+)
+
+install_headers(
+  libxslt_headers,
+  subdir: 'libxslt',
 )
 
 libxslt = library(
@@ -87,7 +91,7 @@ pkg.generate(libxslt)
 libxslt_dep = declare_dependency(
   compile_args: get_option('default_library') == 'static' ? '-DLIBXSLT_STATIC' : [],
   link_with: libxslt,
-  include_directories: incdir,
+  include_directories: depincdir,
   dependencies: libxml2_dep,
 )
 
