@@ -2,11 +2,11 @@ project(
   'libxslt',
   'c',
   license: 'MIT',
-  version: '1.1.43',
-  meson_version: '>=0.54.1',
+  version: '1.1.45',
+  meson_version: '>=0.56.0',
 )
 
-exslt_version = '0.8.20'
+exslt_version = '0.8.25'
 pkg = import('pkgconfig')
 cc = meson.get_compiler('c')
 config = configuration_data()
@@ -113,7 +113,7 @@ endif
 
 libxml2_dep = dependency(
   'libxml-2.0',
-  version: '>=2.9.10',
+  version: '>=2.15.1',
 )
 with_modules = libxml2_dep.get_variable(
   pkgconfig: 'modules',

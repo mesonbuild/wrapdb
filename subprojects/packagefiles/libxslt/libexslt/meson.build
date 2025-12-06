@@ -40,6 +40,7 @@ libexslt = library(
   sources,
   include_directories: incdir,
   dependencies: [libxml2_dep, libxslt_dep, libm, librt, libgcrypt_dep],
+  version: exslt_version,
   install: true,
 )
 
