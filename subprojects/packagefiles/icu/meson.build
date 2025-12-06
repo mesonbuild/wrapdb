@@ -2,7 +2,7 @@ project(
   'icu',
   'c',
   'cpp',
-  version: '77.1',
+  version: '78.1',
   license: 'BSD-2-Clause AND BSD-3-Clause AND ICU AND NAIST-2003 AND Unicode-3.0',
   meson_version: '>=0.57.0',
   default_options: 'cpp_std=c++17',
@@ -37,7 +37,7 @@ if host_machine.system() == 'windows'
   )
   add_project_arguments(
     '-DWINVER=0x0601',
-    '-D_WIN32_WINNT=0x0601' ,
+    '-D_WIN32_WINNT=0x0601',
     language: 'cpp',
   )
   add_project_arguments(
@@ -56,7 +56,7 @@ if host_machine.system() == 'windows'
   )
   add_project_arguments(
     '-DWINVER=0x0601',
-    '-D_WIN32_WINNT=0x0601' ,
+    '-D_WIN32_WINNT=0x0601',
     language: 'c',
   )
 endif

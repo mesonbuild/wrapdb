@@ -51,10 +51,7 @@ icui18n_native_dep = declare_dependency(
   link_with: i18n_native_lib,
   dependencies: icuuc_native_dep,
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('icu-i18n', icui18n_dep)
-endif
+meson.override_dependency('icu-i18n', icui18n_dep)
 
 headers = files(
   'unicode/alphaindex.h',

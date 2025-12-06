@@ -22,10 +22,7 @@ icuio_dep = declare_dependency(
   link_with: io_lib,
   dependencies: icui18n_dep,
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('icu-io', icuio_dep)
-endif
+meson.override_dependency('icu-io', icuio_dep)
 
 pkg.generate(
   io_lib,
