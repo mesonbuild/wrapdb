@@ -330,8 +330,14 @@ class TestReleases(unittest.TestCase):
                         )
                     progs = [i for i in progs if i]
                     deps = [i for i in deps if i]
-                    self.assertEqual(sorted(progs), sorted(info.get('program_names', [])))
-                    self.assertEqual(sorted(deps), sorted(info.get('dependency_names', [])))
+                    self.assertEqual(
+                        sorted(progs),
+                        sorted(info.get('program_names', [])),
+                        'program_names in the wrap file and releases.json do not list the same names.')
+                    self.assertEqual(
+                        sorted(deps),
+                        sorted(info.get('dependency_names', [])),
+                        'dependency_names in the wrap file and releases.json do not list the same names.')
 
                 # Downstream ports shouldn't use transitional provides syntax
                 # FIXME: Not all wraps currently comply, only check for wraps we modify.
