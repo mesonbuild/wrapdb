@@ -24,10 +24,7 @@ layoutex_dep = declare_dependency(
   link_with: layoutex_lib,
   dependencies: icuuc_dep,
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('icu-lx', layoutex_lib)
-endif
+meson.override_dependency('icu-lx', layoutex_lib)
 
 pkg.generate(
   layoutex_lib,

@@ -51,10 +51,7 @@ icuuc_native_dep = declare_dependency(
   include_directories: incdir,
   dependencies: dl_native_dep,
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('icu-uc', icuuc_dep)
-endif
+meson.override_dependency('icu-uc', icuuc_dep)
 
 headers = files(
   'unicode/appendable.h',
