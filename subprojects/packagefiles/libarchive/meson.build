@@ -1,9 +1,9 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.3',
+  version: '3.8.4',
   license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
-  meson_version: '>=0.54.1',
+  meson_version: '>=0.56.0',
 )
 
 cdata = configuration_data()
@@ -465,12 +465,13 @@ rx_dep = dependency(
 )
 if not get_option('regex').disabled()
   foreach rx_support : get_option('regex_provider')
-    if (rx_support == 'libc'
-  and cc.has_function(
-        'regcomp',
-      prefix: '#include <regex.h>',
-      )
-)
+    if (
+      rx_support == 'libc'
+      and cc.has_function(
+      'regcomp',
+        prefix: '#include <regex.h>',
+          )
+    )
       rx_dep = declare_dependency()
       cdata.set('HAVE_REGEX_H', 1)
       break
