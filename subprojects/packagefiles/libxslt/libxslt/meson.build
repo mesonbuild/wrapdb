@@ -21,27 +21,27 @@ libxslt_headers = files(
   'xsltutils.h',
 )
 
-sources = [
+sources = files(
+  'attributes.c',
   'attrvt.c',
-  'xslt.c',
-  'xsltlocale.c',
-  'xsltutils.c',
-  'pattern.c',
-  'templates.c',
-  'variables.c',
-  'keys.c',
-  'numbers.c',
+  'documents.c',
   'extensions.c',
   'extra.c',
   'functions.c',
-  'namespaces.c',
   'imports.c',
-  'attributes.c',
-  'documents.c',
+  'keys.c',
+  'namespaces.c',
+  'numbers.c',
+  'pattern.c',
   'preproc.c',
-  'transform.c',
   'security.c',
-]
+  'templates.c',
+  'transform.c',
+  'variables.c',
+  'xslt.c',
+  'xsltlocale.c',
+  'xsltutils.c',
+)
 
 version_arr = meson.project_version().split('.')
 version_int = [

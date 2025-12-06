@@ -1,17 +1,17 @@
 libexslt_headers = files('exslt.h', 'exsltexports.h')
 
-sources = [
-  'exslt.c',
+sources = files(
   'common.c',
   'crypto.c',
-  'math.c',
-  'sets.c',
-  'functions.c',
-  'strings.c',
   'date.c',
-  'saxon.c',
   'dynamic.c',
-]
+  'exslt.c',
+  'functions.c',
+  'math.c',
+  'saxon.c',
+  'sets.c',
+  'strings.c',
+)
 
 version_arr = exslt_version.split('.')
 version_int = [
