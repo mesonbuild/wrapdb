@@ -60,6 +60,8 @@ png_src = files(
   'pngwutil.c',
 )
 
+png_libs = []
+
 if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip() != ''
   # libpng falls back to 32-bit NEON intrinsics on clang-cl (see 386707c6)
   # which fails the build on the default soft-float ABI
@@ -74,6 +76,18 @@ if host_machine.cpu_family() == 'aarch64' or cc.get_define('__ARM_NEON').strip()
 elif host_machine.cpu_family() in ['x86', 'x86_64']
   png_src += files('intel/filter_sse2_intrinsics.c', 'intel/intel_init.c')
   c_args += '-DPNG_INTEL_SSE_OPT=1'
+elif host_machine.cpu_family() == 'loongarch64'
+  have_lsx = cc.has_argument('-mlsx')
+  c_args += '-DPNG_LOONGARCH_LSX_OPT=@0@'.format(have_lsx.to_int())
+  if have_lsx
+    png_libs += static_library(
+      'lsx',
+      'loongarch/loongarch_lsx_init.c',
+      'loongarch/filter_lsx_intrinsics.c',
+      dependencies: libpng_deps,
+      c_args: c_args + ['-mlsx'],
+    )
+  endif
 elif host_machine.cpu_family() in ['ppc64', 'ppc64le', 'powerpc64le'] and host_machine.endian() == 'little'
   png_src += files('powerpc/filter_vsx_intrinsics.c', 'powerpc/powerpc_init.c')
   c_args += '-DPNG_POWERPC_VSX_OPT=2'
@@ -93,6 +107,7 @@ libpng = library(
   png_src,
   version: png_libversion,
   dependencies: libpng_deps,
+  link_with: png_libs,
   c_args: c_args,
   install: true,
 )
