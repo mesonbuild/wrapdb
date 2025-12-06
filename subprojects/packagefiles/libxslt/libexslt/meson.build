@@ -1,5 +1,4 @@
-headers = ['exslt.h', 'exsltexports.h']
-install_headers(headers)
+libexslt_headers = files('exslt.h', 'exsltexports.h')
 
 sources = [
   'exslt.c',
@@ -29,10 +28,15 @@ exsltconfig.set('LIBEXSLT_VERSION_NUMBER', version_number)
 exsltconfig.set('LIBEXSLT_VERSION_EXTRA', version_extra)
 exsltconfig.set10('WITH_CRYPTO', libgcrypt_dep.found())
 
-configure_file(
+libexslt_headers += configure_file(
   input: 'exsltconfig.h.in',
   output: 'exsltconfig.h',
   configuration: exsltconfig,
+)
+
+install_headers(
+  libexslt_headers,
+  subdir: 'libexslt',
 )
 
 libexslt = library(
@@ -49,7 +53,7 @@ pkg.generate(libexslt)
 libexslt_dep = declare_dependency(
   compile_args: get_option('default_library') == 'static' ? '-DLIBEXSLT_STATIC' : [],
   link_with: libexslt,
-  include_directories: incdir,
+  include_directories: depincdir,
   dependencies: libxslt_dep,
 )
 

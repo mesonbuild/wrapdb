@@ -142,6 +142,10 @@ if host_machine.system() == 'windows'
 endif
 
 incdir = include_directories('.')
+depincdir = include_directories('include-workaround-meson')
+
 subdir('libxslt')
+subdir('include-workaround-meson/libxslt')
 subdir('libexslt')
+subdir('include-workaround-meson/libexslt')
 subdir('xsltproc')
