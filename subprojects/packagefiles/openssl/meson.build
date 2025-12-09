@@ -1,9 +1,9 @@
 project(
   'openssl',
   'c',
-  version: '3.0.8',
+  version: '3.0.10',
   license: 'Apache-2.0',
-  meson_version: '>= 0.55',
+  meson_version: '>= 0.56',
   default_options: ['warning_level=1'],
 )
 
@@ -54,15 +54,16 @@ asm_opt = get_option('asm')
 if asm_opt.disabled()
   gas_or_nasm = false
 else
-  gas_or_nasm = (find_program(
+  gas_or_nasm = (
+    find_program(
     'as',
-    required: false,
-  ).found() or
-find_program(
+      required: false,
+      ).found()
+    or find_program(
     'nasm',
-    required: false,
-  ).found()
-)
+      required: false,
+      ).found()
+  )
 endif
 
 is_bsd = host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
@@ -353,6 +354,7 @@ libcrypto_dep = declare_dependency(
   dependencies: dependencies,
   link_with: libcrypto_lib,
 )
+meson.override_dependency('libcrypto', libcrypto_dep)
 
 libssl_lib = library(
   'ssl',
@@ -369,10 +371,12 @@ libssl_dep = declare_dependency(
   dependencies: dependencies + [libcrypto_dep],
   link_with: libssl_lib,
 )
+meson.override_dependency('libssl', libssl_dep)
 
 openssl_dep = declare_dependency(
   dependencies: [libcrypto_dep, libssl_dep],
 )
+meson.override_dependency('openssl', openssl_dep)
 
 openssl_cli_directories = include_directories + ['apps/include']
 
