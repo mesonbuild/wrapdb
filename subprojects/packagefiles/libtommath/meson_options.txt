@@ -1,0 +1,20 @@
+option(
+    'tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build and run unit tests',
+)
+
+option(
+    'benchmarks',
+    type: 'boolean',
+    value: false,
+    description: 'Build and run benchmarks',
+)
+
+option(
+    'docs',
+    type: 'boolean',
+    value: false,
+    description: 'Build PDF documentation from LaTeX sources',
+)
