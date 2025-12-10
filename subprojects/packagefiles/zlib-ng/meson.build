@@ -1396,7 +1396,11 @@ zlib_ng_dep = declare_dependency(
   link_with: zlib_ng,
   include_directories: include_directories('.'),
 )
-meson.override_dependency('zlib-ng', zlib_ng_dep)
+if not get_option('zlib-compat')
+  meson.override_dependency('zlib-ng', zlib_ng_dep)
+else
+  meson.override_dependency('zlib', zlib_ng_dep)
+endif
 
 import('pkgconfig').generate(
   zlib_ng,
