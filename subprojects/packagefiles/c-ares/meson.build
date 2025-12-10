@@ -1,26 +1,28 @@
 project(
   'c-ares',
   'c',
-  version: '1.34.5',
+  version: '1.34.6',
   license: 'MIT',
-  meson_version: '>=0.54.0',
+  meson_version: '>=0.56.0',
 )
 
 # don't forget to update mee too
 # see: https://github.com/c-ares/c-ares/blob/f1bf69c2d71a7e426ee967847173200a3ef1705a/CMakeLists.txt#L33
-libtool_version = '2.19.4'
-libtool_soversion = '2'
+libtool_version = '2.19.5'
 
 is_static = (get_option('default_library') == 'static')
 is_windows = (host_machine.system() == 'windows')
 
 cc = meson.get_compiler('c')
-winsock_deps = (is_windows ? [
-  cc.find_library('iphlpapi'),
-  cc.find_library('wininet'),
-  cc.find_library('ws2_32'),
-] : []
-)
+if is_windows
+  winsock_deps = [
+    cc.find_library('iphlpapi'),
+    cc.find_library('wininet'),
+    cc.find_library('ws2_32'),
+  ]
+else
+  winsock_deps = []
+endif
 
 cares_dependencies = [winsock_deps]
 
@@ -141,42 +143,42 @@ cares_include_dirs = include_directories(
 )
 
 has_header_options = {
-  'HAVE_ARPA_INET_H' : cc.has_header('arpa/inet.h'),
-  'HAVE_AVAILABILITYMACROS_H' : cc.has_header('AvailabilityMacros.h'),
+  'HAVE_ARPA_INET_H': cc.has_header('arpa/inet.h'),
+  'HAVE_AVAILABILITYMACROS_H': cc.has_header('AvailabilityMacros.h'),
   'HAVE_ERRNO_H': cc.has_header('errno.h'),
-  'HAVE_FCNTL_H' : cc.has_header('fcntl.h'),
-  'HAVE_IFADDRS_H' : cc.has_header('ifaddrs.h'),
-  'HAVE_IPHLPAPI_H' : cc.has_header('iphlpapi.h'),
+  'HAVE_FCNTL_H': cc.has_header('fcntl.h'),
+  'HAVE_IFADDRS_H': cc.has_header('ifaddrs.h'),
+  'HAVE_IPHLPAPI_H': cc.has_header('iphlpapi.h'),
   'HAVE_LIMITS_H': cc.has_header('limits.h'),
   'HAVE_NETDB_H': cc.has_header('netdb.h'),
-  'HAVE_NETINET_IN_H' : cc.has_header('netinet/in.h'),
+  'HAVE_NETINET_IN_H': cc.has_header('netinet/in.h'),
   'HAVE_NETINET_TCP_H': cc.has_header('netinet/tcp.h'),
-  'HAVE_NETIOAPI_H' : cc.has_header('netioapi.h'),
+  'HAVE_NETIOAPI_H': cc.has_header('netioapi.h'),
   'HAVE_NET_IF_H': cc.has_header('net/if.h'),
-  'HAVE_POLL_H' : cc.has_header('poll.h'),
-  'HAVE_RESOLV_H' : cc.has_header('resolv.h'),
+  'HAVE_POLL_H': cc.has_header('poll.h'),
+  'HAVE_RESOLV_H': cc.has_header('resolv.h'),
   'HAVE_STDBOOL_H': cc.has_header('stdbool.h'),
   'HAVE_STDINT_H': cc.has_header('stdint.h'),
-  'HAVE_STRINGS_H' : cc.has_header('strings.h'),
-  'HAVE_STRING_H' : cc.has_header('string.h'),
-  'HAVE_SYS_EPOLL_H' : cc.has_header('sys/epoll.h'),
-  'HAVE_SYS_EVENT_H' : cc.has_header('sys/event.h'),
-  'HAVE_SYS_FILIO_H' : cc.has_header('sys/filio.h'),
-  'HAVE_SYS_IOCTL_H' : cc.has_header('sys/ioctl.h'),
-  'HAVE_SYS_PARAM_H' : cc.has_header('sys/param.h'),
-  'HAVE_SYS_RANDOM_H' : cc.has_header('sys/random.h'),
-  'HAVE_SYS_SOCKET_H' : cc.has_header('sys/socket.h'),
-  'HAVE_SYS_STAT_H' : cc.has_header('sys/stat.h'),
-  'HAVE_SYS_SYSTEM_PROPERTIES_H' : cc.has_header('sys/system_properties.h'),
-  'HAVE_SYS_TIME_H' : cc.has_header('sys/time.h'),
-  'HAVE_SYS_TYPES_H' : cc.has_header('sys/types.h'),
-  'HAVE_SYS_UIO_H' : cc.has_header('sys/uio.h'),
-  'HAVE_TCP_H' : cc.has_header('tcp.h'),
-  'HAVE_TIME_H' : cc.has_header('time.h'),
-  'HAVE_UNISTD_H' : cc.has_header('unistd.h'),
-  'HAVE_WINDOWS_H' : cc.has_header('windows.h'),
-  'HAVE_WINSOCK2_H' : cc.has_header('winsock2.h'),
-  'HAVE_WS2IPDEF_H' : cc.has_header('ws2ipdef.h'),
+  'HAVE_STRINGS_H': cc.has_header('strings.h'),
+  'HAVE_STRING_H': cc.has_header('string.h'),
+  'HAVE_SYS_EPOLL_H': cc.has_header('sys/epoll.h'),
+  'HAVE_SYS_EVENT_H': cc.has_header('sys/event.h'),
+  'HAVE_SYS_FILIO_H': cc.has_header('sys/filio.h'),
+  'HAVE_SYS_IOCTL_H': cc.has_header('sys/ioctl.h'),
+  'HAVE_SYS_PARAM_H': cc.has_header('sys/param.h'),
+  'HAVE_SYS_RANDOM_H': cc.has_header('sys/random.h'),
+  'HAVE_SYS_SOCKET_H': cc.has_header('sys/socket.h'),
+  'HAVE_SYS_STAT_H': cc.has_header('sys/stat.h'),
+  'HAVE_SYS_SYSTEM_PROPERTIES_H': cc.has_header('sys/system_properties.h'),
+  'HAVE_SYS_TIME_H': cc.has_header('sys/time.h'),
+  'HAVE_SYS_TYPES_H': cc.has_header('sys/types.h'),
+  'HAVE_SYS_UIO_H': cc.has_header('sys/uio.h'),
+  'HAVE_TCP_H': cc.has_header('tcp.h'),
+  'HAVE_TIME_H': cc.has_header('time.h'),
+  'HAVE_UNISTD_H': cc.has_header('unistd.h'),
+  'HAVE_WINDOWS_H': cc.has_header('windows.h'),
+  'HAVE_WINSOCK2_H': cc.has_header('winsock2.h'),
+  'HAVE_WS2IPDEF_H': cc.has_header('ws2ipdef.h'),
 }
 
 header_options = {
@@ -185,7 +187,10 @@ header_options = {
   'HAVE_PIPE2': cc.has_header_symbol('unistd.h', 'pipe2'),
   'HAVE_KQUEUE': cc.has_header_symbol('sys/event.h', 'kqueue'),
   'HAVE_EPOLL': cc.has_header_symbol('sys/epoll.h', 'epoll_create1'),
-  'TIME_WITH_SYS_TIME': (cc.has_header('sys/time.h') and cc.has_header('time.h')),
+  'TIME_WITH_SYS_TIME': (
+    cc.has_header('sys/time.h')
+    and cc.has_header('time.h')
+  ),
   'HAVE_FCNTL_O_NONBLOCK': cc.has_header_symbol('fcntl.h', 'O_NONBLOCK'),
   'HAVE_STRNCASECMP': cc.has_header_symbol('string.h', 'strncasecmp'),
   'HAVE_STRCASECMP': cc.has_header_symbol('string.h', 'strcasecmp'),
@@ -329,7 +334,6 @@ libcares = library(
   ],
   install: true,
   version: libtool_version,
-  soversion: libtool_soversion,
   kwargs: libcares_kwargs,
 )
 
