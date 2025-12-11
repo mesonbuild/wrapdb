@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libjpeg-turbo-3.1.2
-source_url = https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.2/libjpeg-turbo-3.1.2.tar.gz
-source_filename = libjpeg-turbo-3.1.2.tar.gz
-source_hash = 8f0012234b464ce50890c490f18194f913a7b1f4e6a03d6644179fa0f867d0cf
+directory = libjpeg-turbo-3.1.3
+source_url = https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.3/libjpeg-turbo-3.1.3.tar.gz
+source_filename = libjpeg-turbo-3.1.3.tar.gz
+source_hash = 075920b826834ac4ddf97661cc73491047855859affd671d52079c6867c1c6c0
 patch_directory = libjpeg-turbo
 
 [provide]

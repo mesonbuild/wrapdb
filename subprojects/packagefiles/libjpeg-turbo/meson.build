@@ -1,7 +1,7 @@
 project(
   'libjpeg-turbo',
   'c',
-  version: '3.1.2',
+  version: '3.1.3',
   license: 'BSD-3-Clause AND IJG',
   meson_version: '>= 0.64.0',
 )
@@ -119,8 +119,10 @@ else
   cdata.set('THREAD_LOCAL', '__thread')
 endif
 
-cdata.set('HIDDEN', cc.has_function_attribute('visibility:hidden') ? '__attribute__((visibility("hidden")))'
-  : '')
+cdata.set(
+  'HIDDEN',
+  cc.has_function_attribute('visibility:hidden') ? '__attribute__((visibility("hidden")))' : '',
+)
 
 if get_option('force_inline')
   if cc.get_id() == 'msvc'
