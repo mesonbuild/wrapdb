@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libdrm-2.4.129
-source_url = https://dri.freedesktop.org/libdrm/libdrm-2.4.129.tar.xz
-source_filename = libdrm-2.4.129.tar.xz
-source_hash = 5978183f978d697e26a50ba066174964efb0ab97caa1ecaa1b861fbe5ddf77dc
+directory = libdrm-2.4.130
+source_url = https://dri.freedesktop.org/libdrm/libdrm-2.4.130.tar.xz
+source_filename = libdrm-2.4.130.tar.xz
+source_hash = a5c585ba8484c85fa8029bc8d0aad2af814e800b36e0f67150971b5037716ea5
 
 [provide]
 dependency_names = libdrm, libdrm_amdgpu, libdrm_etnaviv, libdrm_exynos, libdrm_freedreno, libdrm_intel, libdrm_nouveau, libdrm_omap, libdrm_radeon, libdrm_tegra
