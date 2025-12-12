@@ -8,7 +8,8 @@ project(
   ],
   license: 'Apache-2.0',
   version: '0.1.3',
-  meson_version: '>= 0.59.0',
+  # Need 1.2.0 for cc.compiles() with a file generated at setup time. This is only used on arm, so the CI will warn on x86_64.
+  meson_version: '>= 1.2.0',
 )
 
 armv7neon = false
