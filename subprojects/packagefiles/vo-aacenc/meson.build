@@ -8,7 +8,7 @@ project(
   ],
   license: 'Apache-2.0',
   version: '0.1.3',
-  meson_version: '>= 0.52.0',
+  meson_version: '>= 1.2.0',
 )
 
 armv7neon = false
@@ -136,6 +136,8 @@ libvo_aacenc_dep = declare_dependency(
   link_with: libvo_aacenc,
   include_directories: libvo_aacenc_includes,
 )
+
+meson.override_dependency('vo-aacenc', libvo_aacenc_dep)
 
 if not get_option('example').disabled()
   example = executable(
