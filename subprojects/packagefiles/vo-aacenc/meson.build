@@ -137,6 +137,8 @@ libvo_aacenc_dep = declare_dependency(
   include_directories: libvo_aacenc_includes,
 )
 
+meson.override_dependency('vo-aacenc', libvo_aacenc_dep)
+
 if not get_option('example').disabled()
   example = executable(
     'aac-enc',
