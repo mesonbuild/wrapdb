@@ -89,8 +89,5 @@ if cpp.get_argument_syntax() != 'msvc'
     include_directories: incdir,
     compile_args: usage_args,
   )
-
-  if meson.version().version_compare('>=0.54.0')
-    meson.override_dependency('icu-data', icudata_dep)
-  endif
+  meson.override_dependency('icu-data', icudata_dep)
 endif
