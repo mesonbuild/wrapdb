@@ -141,6 +141,14 @@
       "1.0.0-1"
     ]
   },
+  "aklomp-base64": {
+    "dependency_names": [
+      "base64"
+    ],
+    "versions": [
+      "0.5.2-1"
+    ]
+  },
   "apache-orc": {
     "dependency_names": [
       "orc"
