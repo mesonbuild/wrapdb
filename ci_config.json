@@ -84,6 +84,12 @@
       "numactl-dev"
     ]
   },
+  "argtable3": {
+    "build_options": [
+      "argtable3:examples=true",
+      "argtable3:tests=true"
+    ]
+  },
   "backward-cpp": {
     "alpine_packages": [
       "binutils-dev"

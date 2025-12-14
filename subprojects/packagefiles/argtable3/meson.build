@@ -1,17 +1,19 @@
 project(
   'argtable3',
   'c',
-  version: '3.3.0',
+  version: '3.3.1',
   license: 'BSD-3-Clause',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
-libm = cc.find_library(
-  'm',
-  required: false,
-)
+if cc.links('#include <math.h>\nint main(){log(0);}')
+  libm = []
+else
+  libm = cc.find_library('m')
+endif
 
-argtable3_inc = include_directories(['src'])
+argtable3_inc = include_directories('src')
 argtable3_headers = files('src/argtable3.h')
 argtable3_sources = files(
   'src/arg_cmd.c',
@@ -40,7 +42,7 @@ specific_c_args = cc.get_supported_arguments('-Wno-stringop-truncation')
 argtable3_lib = library(
   'argtable3',
   argtable3_sources,
-  dependencies: [libm],
+  dependencies: libm,
   include_directories: argtable3_inc,
   version: meson.project_version(),
   install: true,
@@ -54,3 +56,14 @@ argtable3_dep = declare_dependency(
   include_directories: argtable3_inc,
   link_with: argtable3_lib,
 )
+
+meson.override_dependency('argtable3', argtable3_dep)
+
+pconf = import('pkgconfig')
+pconf.generate(
+  argtable3_lib,
+  description: 'ANSI C command-line parsing library',
+)
+
+subdir('examples')
+subdir('tests')

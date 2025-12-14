@@ -1,9 +1,9 @@
 [wrap-file]
-directory = argtable-v3.3.0.116da6c
-source_url = https://github.com/argtable/argtable3/releases/download/v3.3.0.116da6c/argtable-v3.3.0.116da6c.tar.gz
-source_filename = argtable-v3.3.0.116da6c.tar.gz
-source_hash = 21d653eaab4b9dede76ceb0cb4e8878cf5cadb48ef9180c6a4d1a5cef1549e65
+directory = argtable-v3.3.1
+source_url = https://github.com/argtable/argtable3/releases/download/v3.3.1/argtable-v3.3.1.tar.gz
+source_filename = argtable-v3.3.1.tar.gz
+source_hash = c08bca4b88ddb9234726b75455b3b1670d7c864d8daf198eaa7a3b4d41addf2c
 patch_directory = argtable3
 
 [provide]
-argtable3 = argtable3_dep
+dependency_names = argtable3
