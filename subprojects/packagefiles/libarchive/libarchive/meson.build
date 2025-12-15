@@ -157,7 +157,7 @@ configure_file(
 
 ver_parts = meson.project_version().split('.')
 ver_darwin_compat = (ver_parts[1].to_int() + 14).to_string()
-libarchive_both = both_libraries(
+libarchive = library(
   'libarchive',
   sources,
   include_directories: libinc,
@@ -172,13 +172,6 @@ libarchive_both = both_libraries(
   dependencies: deps,
   install: true,
 )
-
-# default_both_libraries requires Meson >= 1.6
-if get_option('default_library') == 'static'
-  libarchive = libarchive_both.get_static_lib()
-else
-  libarchive = libarchive_both.get_shared_lib()
-endif
 
 depinc = include_directories('.')
 libarchive_dep = declare_dependency(
