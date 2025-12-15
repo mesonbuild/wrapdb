@@ -95,6 +95,16 @@
       "binutils-dev"
     ]
   },
+  "aklomp-base64": {
+    "_comment": [
+      "The test program has a bug that causes it to fail with a SIGILL on x86 platforms without avx512 (all CI runners)",
+      "Fix pending at https://github.com/aklomp/base64/pull/153"
+    ],
+    "build_options": [
+      "aklomp-base64:tests=enabled"
+    ],
+    "skip_tests": true
+  },
   "blueprint-compiler": {
     "_comment": "Tests require pygobject and Gtk4 typelib, and also they crash",
     "skip_tests": true
