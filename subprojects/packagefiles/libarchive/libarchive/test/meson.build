@@ -316,6 +316,17 @@ list_h = custom_target(
   output: 'list.h',
 )
 
+# Wrap objects in a static library so the compiler treats them as one.
+# Repack objects even if a static library is already available, to reduce
+# codepaths.
+libarchive_static = static_library(
+  'archive-static',
+  objects: libarchive.extract_all_objects(
+    recursive: false,
+  ),
+  build_by_default: false,
+)
+
 libarchive_test = executable(
   'libarchive_test',
   libarchive_test_sources,
@@ -323,7 +334,7 @@ libarchive_test = executable(
   list_h,
   c_args: '-DLIBARCHIVE_STATIC',
   include_directories: [depinc, test_utils_include],
-  link_with: libarchive_both.get_static_lib(),
+  link_with: libarchive_static,
   dependencies: deps,
   build_by_default: false,
 )
