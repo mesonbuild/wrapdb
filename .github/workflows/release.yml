@@ -25,11 +25,29 @@ jobs:
       - name: Upload release assets
         run: |
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload releases.json
+        uses: actions/upload-pages-artifact@v4
+
+  update_index:
+    needs: create_release
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}releases.json
+    steps:
+      - name: Deploy releases.json
+        id: deploy
+        uses: actions/deploy-pages@v4
 
   # Ideally we should trigger Meson's CI to update the website, but unfortunately
   # it requires a Personal Access Token. Instead clone meson and do it ourself.
   # This job is copied from Meson's workflows.
   update_website:
+    # the site builder reads releases.json, so update that first
+    needs: update_index
     env:
       HAS_SSH_KEY: ${{ secrets.WEBSITE_PRIV_KEY != '' }}
     runs-on: ubuntu-latest
