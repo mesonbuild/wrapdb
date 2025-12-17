@@ -42,6 +42,10 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'generate_tests.py',
         'run_test.py',
     },
+    'avro-cpp': {
+        'fix_symbol_visibility.diff',
+        'fix_datafile_32bit.diff',
+    },
     'aws-c-common': {
         'tests.txt',
         'generate_tests.py',
