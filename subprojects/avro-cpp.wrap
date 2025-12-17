@@ -4,6 +4,7 @@ source_url = https://dlcdn.apache.org/avro/avro-1.12.1/cpp/avro-cpp-1.12.1.tar.g
 source_filename = avro-cpp-1.12.1.tar.gz
 source_hash = 18a0d155905a4dab0c2bfd66c742358a7d969bcff58cf6f655bcf602879f4fe7
 patch_directory = avro-cpp
+diff_files = avro-cpp/fix_symbol_visibility.diff, avro-cpp/fix_datafile_32bit.diff
 
 [provide]
 dependency_names = avro-cpp

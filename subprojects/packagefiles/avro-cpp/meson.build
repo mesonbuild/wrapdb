@@ -90,7 +90,7 @@ avro_lib = library(
   cpp_args: avro_flags,
   dependencies: avro_deps,
   override_options: override_cpp,
-  # gnu_symbol_visibility: 'hidden', # TODO: requires a release with https://github.com/apache/avro/pull/3600
+  gnu_symbol_visibility: 'hidden',  # TODO: requires a release with https://github.com/apache/avro/pull/3600
   version: meson.project_version(),
   install: true,
 )
