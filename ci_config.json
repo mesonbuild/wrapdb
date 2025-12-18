@@ -1040,12 +1040,8 @@
     ]
   },
   "miniaudio": {
-    "_comment": "Remove when fixed: https://github.com/xiph/opus/pull/285",
+    "_comment": "Remove when fixed: https://github.com/xiph/opus/pull/445",
     "fatal_warnings": false,
-    "_comment2": "Remove when fixed: https://github.com/xiph/opus/pull/287",
-    "test_options": [
-      "--timeout-multiplier=2"
-    ],
     "build_options": [
       "miniaudio:tests=enabled",
       "miniaudio:tools=enabled",
