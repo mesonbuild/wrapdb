@@ -2,8 +2,8 @@ project(
   'ffmpegthumbnailer',
   'cpp',
   license: 'LGPL-2.1-or-later',
-  version: '2.2.3',
-  meson_version: '>=0.54.1',
+  version: '2.2.4',
+  meson_version: '>=0.56.0',
 )
 
 libavcodec_dep = dependency('libavcodec')
@@ -37,12 +37,14 @@ ffmpegthumbnailer_deps = [
   libavfilter_dep,
   libavformat_dep,
   libavutil_dep,
+  libjpeg_dep,
+  libpng_dep,
   dl_dep,
 ]
 
 cdata = configuration_data()
 vers = meson.project_version().split('.')
-cdata.set('PACKAGE', 'ffmpegthumbnailer')
+cdata.set('PACKAGE', meson.project_name())
 cdata.set('PACKAGE_VERSION_MAJOR', vers[0])
 cdata.set('PACKAGE_VERSION_MINOR', vers[1])
 cdata.set('PACKAGE_VERSION_PATCH', vers[2])
@@ -57,58 +59,6 @@ cfile = configure_file(
   configuration: cdata,
 )
 
-libffmpegthumbnailer_incdir = include_directories('libffmpegthumbnailer')
-
-compfiles = files(
-  'libffmpegthumbnailer/filmstripfilter.cpp',
-  'libffmpegthumbnailer/moviedecoder.cpp',
-  'libffmpegthumbnailer/rgbwriter.cpp',
-  'libffmpegthumbnailer/stringoperations.cpp',
-  'libffmpegthumbnailer/videothumbnailer.cpp',
-  'libffmpegthumbnailer/videothumbnailerc.cpp',
-)
-
-if libjpeg_dep.found()
-  compfiles += files('libffmpegthumbnailer/jpegwriter.cpp')
-  ffmpegthumbnailer_deps += libjpeg_dep
-endif
-
-if libpng_dep.found()
-  compfiles += files('libffmpegthumbnailer/pngwriter.cpp')
-  ffmpegthumbnailer_deps += libpng_dep
-endif
-
-libffmpegthumbnailer = library(
-  'ffmpegthumbnailer',
-  compfiles,
-  override_options: 'cpp_std=c++11',
-  dependencies: ffmpegthumbnailer_deps,
-  install: true,
-  version: '4.15.1',
-)
-
-pkg = import('pkgconfig')
-pkg.generate(
-  libffmpegthumbnailer,
-  description: 'Generates thumbnails for movie files',
-)
-
-install_headers(
-  'libffmpegthumbnailer/videothumbnailer.h',
-  'libffmpegthumbnailer/videothumbnailerc.h',
-  'libffmpegthumbnailer/imagetypes.h',
-  'libffmpegthumbnailer/ffmpegthumbnailertypes.h',
-  'libffmpegthumbnailer/ifilter.h',
-  'libffmpegthumbnailer/videoframe.h',
-  'libffmpegthumbnailer/filmstripfilter.h',
-  subdir: 'libffmpegthumbnailer',
-)
-
-libffmpegthumbnailer_dep = declare_dependency(
-  include_directories: '.',
-  link_with: libffmpegthumbnailer,
-)
-
-meson.override_dependency('libffmpegthumbnailer', libffmpegthumbnailer_dep)
-
+confinc = include_directories('.')
+subdir('libffmpegthumbnailer')
 subdir('test')
