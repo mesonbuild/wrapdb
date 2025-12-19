@@ -2,7 +2,7 @@ project(
   'pv',
   'c',
   license: 'GPL-3.0-or-later',
-  version: '1.10.2',
+  version: '1.10.3',
   meson_version: '>=0.59.0',
 )
 

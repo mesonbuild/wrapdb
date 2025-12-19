@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pv-1.10.2
-source_url = https://codeberg.org/ivarch/pv/releases/download/v1.10.2/pv-1.10.2.tar.gz
-source_hash = 3f7b47f0eaf66f9c2a487fc5dbc409cd00bfe5ecd8a9b198d76f1ed39f792dc9
-source_filename = pv-1.10.2.tar.gz
+directory = pv-1.10.3
+source_url = https://codeberg.org/ivarch/pv/releases/download/v1.10.3/pv-1.10.3.tar.gz
+source_hash = aa1630c79af6960a8922ffa64d2c3e7f87486da21fcb57e277824294fd266742
+source_filename = pv-1.10.3.tar.gz
 patch_directory = pv
 
 [provide]
