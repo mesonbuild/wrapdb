@@ -8,6 +8,8 @@ option(
     description: 'Compile tests',
     type: 'feature',
 )
+# example usage:
+# dependency('zlib', fallback: 'zlib-ng', default_options: ['zlib-compat=true'])
 option(
     'zlib-compat',
     description: 'Compile with zlib compatible API',
