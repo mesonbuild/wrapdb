@@ -239,11 +239,14 @@ if host_machine.system() == 'darwin'
 endif
 
 if host_machine.system() == 'linux'
+  # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
   cdata.set('HAVE_STRLEN', 1)
   cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
+  cdata.set('SDL_SENSOR_DUMMY', 1)
+  cdata.set('SDL_POWER_DUMMY', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
   cdata.set('SDL_VIDEO_RENDER_OGL', 1)
   cdata.set('SDL_GPU_VULKAN', 1)
@@ -288,6 +291,9 @@ elif host_machine.subsystem() == 'macos'
   cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
+  cdata.set('SDL_VIDEO_DRIVER_COCOA', 1)
+  cdata.set('SDL_VIDEO_OPENGL_CGL', 1)
+  cdata.set('SDL_VIDEO_OPENGL', 1)
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_MACOSX', 1)
@@ -313,6 +319,8 @@ elif host_machine.subsystem() == 'macos'
       'Foundation',
       'QuartzCore',
       'Metal',
+      'Carbon',
+      'UniformTypeIdentifiers',
     ],
   )
 else
@@ -356,3 +364,6 @@ sdl3_dep = declare_dependency(
   include_directories: 'include',
   link_with: sdl_lib,
 )
+
+meson.override_dependency('sdl3', sdl3_dep)
+

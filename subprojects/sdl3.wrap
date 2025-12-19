@@ -6,4 +6,4 @@ source_hash = f87be7b4dec66db4098e9c167b2aa34e2ca10aeb5443bdde95ae03185ed513e0
 patch_directory = sdl3
 
 [provide]
-sdl3 = sdl3_dep
+dependency_names = sdl3
