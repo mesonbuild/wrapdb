@@ -2,13 +2,17 @@ project(
   'lua',
   'c',
   license: 'MIT',
-  meson_version: '>=0.49.2',
+  meson_version: '>=0.56.0',
   version: '5.4.8',
-  default_options: ['c_std=c99', 'warning_level=2'],
+  default_options: ['warning_level=2'],
 )
 
 lua_versions = meson.project_version().split('.')
 cc = meson.get_compiler('c')
+
+override_options = [
+  'c_std=c99',
+]
 
 # Skip bogus warning.
 add_project_arguments(
@@ -127,12 +131,19 @@ lua_lib = library(
   soversion: lua_versions[0] + '.' + lua_versions[1],
   implicit_include_directories: false,
   install: true,
+  override_options: override_options,
 )
 
 inc = include_directories('src')
 lua_dep = declare_dependency(
   link_with: lua_lib,
   include_directories: inc,
+)
+
+meson.override_dependency('lua', lua_dep)
+meson.override_dependency(
+  'lua-' + lua_versions[0] + '.' + lua_versions[1],
+  lua_dep,
 )
 
 if get_option('interpreter')
@@ -143,6 +154,7 @@ if get_option('interpreter')
     dependencies: [lua_dep, lua_exe_deps],
     export_dynamic: dl_dep.found(),
     implicit_include_directories: false,
+    override_options: override_options,
   )
 
   if get_option('default_library') == 'static'
@@ -151,6 +163,7 @@ if get_option('interpreter')
       'src/luac.c',
       dependencies: lua_dep,
       implicit_include_directories: false,
+      override_options: override_options,
     )
   endif
 endif
