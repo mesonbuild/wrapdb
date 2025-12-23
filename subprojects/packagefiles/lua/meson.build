@@ -2,7 +2,7 @@ project(
   'lua',
   'c',
   license: 'MIT',
-  meson_version: '>=0.49.2',
+  meson_version: '>=0.63.0',
   version: '5.4.8',
   default_options: ['c_std=c99', 'warning_level=2'],
 )
@@ -49,17 +49,10 @@ lua_lib_deps = [
   ),
 ]
 
-if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency(
-    'dl',
-    required: get_option('loadlib'),
-  )
-else
-  dl_dep = cc.find_library(
-    'dl',
-    required: get_option('loadlib'),
-  )
-endif
+dl_dep = dependency(
+  'dl',
+  required: get_option('loadlib'),
+)
 
 if dl_dep.found()
   lua_lib_deps += dl_dep
@@ -133,6 +126,12 @@ inc = include_directories('src')
 lua_dep = declare_dependency(
   link_with: lua_lib,
   include_directories: inc,
+)
+
+meson.override_dependency('lua', lua_dep)
+meson.override_dependency(
+  'lua-' + lua_versions[0] + '.' + lua_versions[1],
+  lua_dep,
 )
 
 if get_option('interpreter')

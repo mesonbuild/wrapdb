@@ -6,5 +6,4 @@ source_hash = 4f18ddae154e793e46eeab727c59ef1c0c0c2b744e7b94219710d76f530629ae
 patch_directory = lua
 
 [provide]
-lua-5.4 = lua_dep
-lua = lua_dep
+dependency_names = lua, lua-5.4
