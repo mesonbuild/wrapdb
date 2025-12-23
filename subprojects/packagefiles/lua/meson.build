@@ -1,5 +1,5 @@
 project(
-  'lua-5.4',
+  'lua',
   'c',
   license: 'MIT',
   meson_version: '>=0.49.2',
