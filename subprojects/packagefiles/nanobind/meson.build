@@ -100,3 +100,5 @@ nanobind_dep = declare_dependency(
     'stubgen': meson.current_source_dir() / 'src/stubgen.py',
   },
 )
+
+meson.override_dependency('nanobind', nanobind_dep)
