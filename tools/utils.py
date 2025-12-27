@@ -118,13 +118,18 @@ class _JSONFile(abc.ABC):
         with open(cls.FILENAME, encoding='utf-8') as f:
             return cls(json.load(f))
 
-    def encode(self) -> str:
-        return json.dumps(self, indent=2, sort_keys=True) + '\n'
+    def encode(self, *, compact: bool = False) -> str:
+        if compact:
+            kwargs: dict[str, T.Any] = dict(separators=(',', ':'))
+        else:
+            kwargs = dict(indent=2)
+        return json.dumps(self, sort_keys=True, **kwargs) + '\n'
 
-    def save(self) -> None:
-        with open(f'{self.FILENAME}.new', 'w', encoding='utf-8') as f:
-            f.write(self.encode())
-        os.rename(f'{self.FILENAME}.new', self.FILENAME)
+    def save(self, *, dir: Path = Path('.'), compact: bool = False) -> None:
+        temp = dir / f'{self.FILENAME}.new'
+        with temp.open('w', encoding='utf-8') as f:
+            f.write(self.encode(compact=compact))
+        temp.rename(dir / self.FILENAME)
 
     @classmethod
     def format(cls, *, check: bool = False) -> None:
