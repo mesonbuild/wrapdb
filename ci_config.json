@@ -540,6 +540,20 @@
       "libpng"
     ]
   },
+  "jitterentropy": {
+    "_comment": "Only enable the openssl environment for tests",
+    "build_options": [
+      "jitterentropy:tests=enabled",
+      "jitterentropy:environments=openssl"
+    ],
+    "alpine_packages": [
+      "openssl-dev"
+    ],
+    "choco_packages": [
+      "strawberryperl",
+      "openssl"
+    ]
+  },
   "json-glib": {
     "_comment": [
       "- gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",

@@ -1802,6 +1802,14 @@
       "2.1-1"
     ]
   },
+  "jitterentropy": {
+    "dependency_names": [
+      "jitterentropy"
+    ],
+    "versions": [
+      "3.6.3-1"
+    ]
+  },
   "json": {
     "versions": [
       "3.2.0-1",
