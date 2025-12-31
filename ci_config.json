@@ -32,6 +32,13 @@
     "glib:tests=false",
     "libxml2:iconv=disabled"
   ],
+  "abseil-cpp": {
+    "_comment": "- statically link gtest to avoid symbolextractor issues on Windows + clang-cl + arm64",
+    "build_options": [
+      "abseil-cpp:tests=enabled",
+      "gtest:default_library=static"
+    ]
+  },
   "apache-orc": {
     "test_options": [
       "--timeout-multiplier=2"
