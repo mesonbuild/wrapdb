@@ -1,7 +1,9 @@
 project(
   'tree-sitter',
   'c',
-  version: '0.22.5',
+  version: '0.26.3',
+  meson_version: '>=0.56.0',
+  license: 'MIT',
 )
 
 src = files(
@@ -11,6 +13,7 @@ src = files(
   'lib/src/lexer.c',
   'lib/src/node.c',
   'lib/src/parser.c',
+  'lib/src/point.c',
   'lib/src/query.c',
   'lib/src/stack.c',
   'lib/src/subtree.c',
@@ -43,3 +46,4 @@ pkg_mod.generate(
   version: meson.project_version(),
 )
 
+meson.override_dependency('tree-sitter', tree_sitter_dep)
