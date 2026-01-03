@@ -71,6 +71,7 @@ flac_dep = declare_dependency(
   include_directories: main_inc,
   link_with: flac_lib,
 )
+meson.override_dependency('flac', flac_dep)
 
 pconf.generate(
   flac_lib,
