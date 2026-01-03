@@ -67,12 +67,24 @@ foreach h : cheaders
   cdata.set('HAVE_' + h.underscorify().to_upper(), cc.has_header(h))
 endforeach
 
+# check for bug on some MSVC versions with incompatible declaration
+# of int32x4_t and similar types.
+supports_neon_types = cc.get_id() != 'msvc' or cc.compiles(
+  '''
+    #include <arm_neon.h>
+    int32x4_t val = {0,0,0,0};
+  ''',
+)
+
 cdata.set('HAVE_CPUID_H', cc.check_header('cpuid.h'))
 cdata.set('HAVE_X86INTRIN_H', cc.check_header('x86intrin.h'))
-cdata.set10('FLAC__HAS_NEONINTRIN', cc.check_header('arm_neon.h'))
+cdata.set10(
+  'FLAC__HAS_NEONINTRIN',
+  cc.check_header('arm_neon.h') and supports_neon_types,
+)
 cdata.set10(
   'FLAC__HAS_A64NEONINTRIN',
-  cc.check_header('arm_neon.h') and host_machine.cpu_family() == 'aarch64',
+  cc.check_header('arm_neon.h') and host_machine.cpu_family() == 'aarch64' and supports_neon_types,
 )
 cdata.set('FLAC__USE_ALTIVEC', cc.check_header('altivec.h'))
 cdata.set('WITH_AVX', cc.check_header('immintrin.h'))
