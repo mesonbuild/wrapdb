@@ -6,4 +6,4 @@ source_hash = f2c1c76592a82ffff8413ba3c4a1299b6c7ab06c734dee03fd88630485c2b920
 patch_directory = flac
 
 [provide]
-flac = flac_dep
+dependency_names = flac
