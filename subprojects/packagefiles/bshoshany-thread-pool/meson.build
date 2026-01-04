@@ -25,6 +25,4 @@ if not meson.is_subproject()
   install_headers('include/BS_thread_pool.hpp', 'modules/BS.thread_pool.cppm')
 endif
 
-if meson.version().version_compare('>=0.56.0')
-  meson.override_dependency('bshoshany-thread-pool', bshoshany_thread_pool_dep)
-endif
+meson.override_dependency('bshoshany-thread-pool', bshoshany_thread_pool_dep)
