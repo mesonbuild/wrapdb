@@ -1,8 +1,8 @@
 [wrap-file]
-directory = thread-pool-5.0.0
-source_url = https://github.com/bshoshany/thread-pool/archive/refs/tags/v5.0.0.zip
-source_filename = thread-pool-5.0.0.zip
-source_hash = d3e4be162c45ac784ac6fb2096f9494469571a3473a18829c2adae1aab67cfbc
+directory = thread-pool-5.1.0
+source_url = https://github.com/bshoshany/thread-pool/archive/refs/tags/v5.1.0.zip
+source_filename = thread-pool-5.1.0.zip
+source_hash = ce4364b65d68465d6c8bc764997b3129178e0a52e6645443e7748973280f15d0
 patch_directory = bshoshany-thread-pool
 
 [provide]
