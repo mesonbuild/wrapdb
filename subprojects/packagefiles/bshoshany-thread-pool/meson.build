@@ -1,7 +1,7 @@
 project(
   'bshoshany-thread-pool',
   'cpp',
-  version: '5.0.0',
+  version: '5.1.0',
   license: 'MIT',
   meson_version: '>=0.47.0',
   default_options: ['cpp_std=c++17'],
