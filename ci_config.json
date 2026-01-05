@@ -76,6 +76,28 @@
       "boost"
     ]
   },
+  "avro-cpp": {
+    "build_options": [
+      "google-snappy:default_library=static",
+      "zstd:default_library=static",
+      "avro-cpp:snappy=enabled",
+      "avro-cpp:zstd=enabled",
+      "avro-cpp:avrogencpp=enabled"
+    ],
+    "_comment": "Tests require Boost, which is not available on WrapDB",
+    "alpine_packages": [
+      "boost-dev"
+    ],
+    "brew_packages": [
+      "boost"
+    ],
+    "debian_packages": [
+      "libboost-test-dev"
+    ],
+    "msys_packages": [
+      "boost"
+    ]
+  },
   "aws-c-common": {
     "build_options": [
       "aws-c-common:tests=enabled"
