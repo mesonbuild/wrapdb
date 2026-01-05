@@ -1,7 +1,7 @@
 project(
   'sdl3',
   'c',
-  version: '3.2.10',
+  version: '3.4.0',
   license: 'zlib',
   meson_version: '>=1.6',
   default_options: ['c_std=none'],
@@ -239,6 +239,46 @@ if host_machine.system() == 'darwin'
 endif
 
 if host_machine.system() == 'linux'
+
+  ## some of these checks could be done via have include
+  ## but it is done this way to be consistent from what CMake does
+  ## and avoid any further issues with updates
+
+  # check Kronos EGL support
+  have_opengl_egl_code = '''
+    #define EGL_API_FB
+    #define MESA_EGL_NO_X11_HEADERS
+    #define EGL_NO_X11
+    #include <EGL/egl.h>
+    #include <EGL/eglext.h>
+    int main (int argc, char** argv) { return 0; }
+  '''
+  have_opengl_egl = cc.compiles(
+    have_opengl_egl_code,
+    name: 'have OpenGL EGL support',
+  )
+  # check OpenGL GLX support
+  have_opengl_glx_code = '''
+    #include <GL/glx.h>
+    int main(int argc, char** argv) { return 0; }
+  '''
+  have_opengl_glx = cc.compiles(
+    have_opengl_glx_code,
+    name: 'have OpenGL GLX support',
+  )
+
+  # check OpenGL support
+  have_opengl_code = '''
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+    int main(int argc, char** argv) { return 0; }
+  '''
+  have_opengl = cc.compiles(
+    have_opengl_code,
+    name: 'have OpenGL support',
+  )
+
+
   # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
@@ -246,9 +286,18 @@ if host_machine.system() == 'linux'
   cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
-  cdata.set('SDL_POWER_DUMMY', 1)
+  cdata.set('SDL_POWER_LINUX', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
-  cdata.set('SDL_VIDEO_RENDER_OGL', 1)
+  if have_opengl_egl
+    cdata.set('SDL_VIDEO_OPENGL_EGL', 1)
+  endif
+  if have_opengl_glx
+    cdata.set('SDL_VIDEO_OPENGL_GLX', 1)
+  endif
+  if have_opengl
+    cdata.set('SDL_VIDEO_OPENGL', 1)
+    cdata.set('SDL_VIDEO_RENDER_OGL', 1)
+  endif
   cdata.set('SDL_GPU_VULKAN', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
