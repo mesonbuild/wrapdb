@@ -194,6 +194,13 @@ class CreateRelease:
         response.raise_for_status()
         print('Published release:', self.upload_url)
 
+def generate_site(releases: Releases) -> None:
+    site = Path('_site')  # default path for actions/upload-pages-artifact
+    if site.exists():
+        shutil.rmtree(site)
+    site.mkdir()
+    releases.save(dir=site, compact=True)
+
 def run(repo: T.Optional[str], token: T.Optional[str]) -> None:
     releases = Releases.load()
     stdout = subprocess.check_output(['git', 'tag'])
@@ -203,6 +210,7 @@ def run(repo: T.Optional[str], token: T.Optional[str]) -> None:
         latest_tag = f'{name}_{versions[0]}'
         if latest_tag not in tags:
             CreateRelease(repo, token, latest_tag)
+    generate_site(releases)
 
 if __name__ == '__main__':
     # Support local testing when passing no arguments
