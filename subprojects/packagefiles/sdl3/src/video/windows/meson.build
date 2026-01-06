@@ -1,9 +1,8 @@
 sources += files(
-  'SDL_surface_utils.c',
   'SDL_windowsclipboard.c',
   'SDL_windowsevents.c',
   'SDL_windowsframebuffer.c',
-  'SDL_windowsgameinput.c',
+  'SDL_windowsgameinput.cpp',
   'SDL_windowskeyboard.c',
   'SDL_windowsmessagebox.c',
   'SDL_windowsmodes.c',
