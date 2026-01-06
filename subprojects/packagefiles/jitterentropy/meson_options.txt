@@ -1,0 +1,18 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build tests',
+)
+
+option(
+    'enable_internal_timer',
+    type: 'feature',
+    description: 'Enable timer-less entropy source',
+)
+
+option(
+    'environments',
+    type: 'array',
+    description: 'Target environments to support',
+    choices: ['aws-lc', 'libgcrypt', 'openssl'],
+)

@@ -1,0 +1,9 @@
+[wrap-file]
+directory = jitterentropy-library-3.6.3
+source_url = https://github.com/smuellerDD/jitterentropy-library/archive/refs/tags/v3.6.3.tar.gz
+source_filename = jitterentropy-3.6.3.tar.gz
+source_hash = 9b3819e275e6473a94c70cfaae7cc2a87a11f60b862e694745daa5d232b0eea3
+patch_directory = jitterentropy
+
+[provide]
+dependency_names = jitterentropy
