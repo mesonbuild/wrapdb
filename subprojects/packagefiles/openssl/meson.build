@@ -116,6 +116,12 @@ if gas_or_nasm
       arch_subdir = 'linux-ppc64le'
     elif is_x86
       arch_subdir = 'linux-elf'
+      dependencies += [
+        compiler.find_library(
+          'atomic',
+          static: get_option('default_library') == 'static',
+        ),
+      ]
     elif is_x86_64
       arch_subdir = 'linux-x86_64'
     else
