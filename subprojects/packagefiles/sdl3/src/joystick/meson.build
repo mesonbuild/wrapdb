@@ -1,8 +1,8 @@
 if host_machine.system() == 'windows'
   cdata.set('SDL_JOYSTICK_DINPUT', 1)
-  cdata.set('SDL_JOYSTICK_XINPUT', 1)
   subdir('hidapi')
   subdir('windows')
+  subdir('gdk')
 elif host_machine.system() == 'darwin'
   cdata.set('SDL_JOYSTICK_IOKIT', 1)
   cdata.set('SDL_JOYSTICK_MFI', 1)

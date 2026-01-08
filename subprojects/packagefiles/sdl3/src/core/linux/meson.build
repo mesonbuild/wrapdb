@@ -6,6 +6,7 @@ sources += files(
   'SDL_fcitx.c',
   'SDL_ibus.c',
   'SDL_ime.c',
+  'SDL_progressbar.c',
   'SDL_system_theme.c',
   'SDL_threadprio.c',
   'SDL_udev.c',
