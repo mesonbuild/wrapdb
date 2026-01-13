@@ -1,4 +1,5 @@
 src_files = files(
+  'bidirectional.c',
   'case.c',
   'character.c',
   'line.c',

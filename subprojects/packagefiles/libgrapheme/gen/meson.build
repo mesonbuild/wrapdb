@@ -1,5 +1,15 @@
 gendir = include_directories('.')
 gen_headers_tgt = {
+  'bidirectional': files(
+    '../data/BidiBrackets.txt',
+    '../data/BidiMirroring.txt',
+    '../data/DerivedBidiClass.txt',
+    '../data/UnicodeData.txt',
+  ),
+  'bidirectional-test': files(
+    '../data/BidiCharacterTest.txt',
+    '../data/BidiTest.txt',
+  ),
   'case': files(
     '../data/DerivedCoreProperties.txt',
     '../data/SpecialCasing.txt',
