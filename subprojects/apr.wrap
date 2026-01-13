@@ -1,0 +1,9 @@
+[wrap-file]
+directory = apr-1.7.6
+source_url = https://dlcdn.apache.org//apr/apr-1.7.6.tar.gz
+source_filename = apr-1.7.6.tar.gz
+source_hash = 6a10e7f7430510600af25fabf466e1df61aaae910bf1dc5d10c44a4433ccc81d
+patch_directory = apr
+
+[provide]
+dependency_names = apr

@@ -1,0 +1,51 @@
+install_headers(
+  'apr_allocator.h',
+  'apr_atomic.h',
+  'apr_cstr.h',
+  'apr_dso.h',
+  'apr_encode.h',
+  'apr_env.h',
+  'apr_errno.h',
+  'apr_escape.h',
+  'apr_file_info.h',
+  'apr_file_io.h',
+  'apr_fnmatch.h',
+  'apr_general.h',
+  'apr_getopt.h',
+  'apr_global_mutex.h',
+  'apr_hash.h',
+  'apr_inherit.h',
+  'apr_lib.h',
+  'apr_mmap.h',
+  'apr_network_io.h',
+  'apr_perms_set.h',
+  'apr_poll.h',
+  'apr_pools.h',
+  'apr_portable.h',
+  'apr_proc_mutex.h',
+  'apr_random.h',
+  'apr_ring.h',
+  'apr_shm.h',
+  'apr_signal.h',
+  'apr_skiplist.h',
+  'apr_strings.h',
+  'apr_support.h',
+  'apr_tables.h',
+  'apr_thread_cond.h',
+  'apr_thread_mutex.h',
+  'apr_thread_proc.h',
+  'apr_thread_rwlock.h',
+  'apr_time.h',
+  'apr_user.h',
+  'apr_version.h',
+  'apr_want.h',
+)
+
+if host_machine.system() != 'windows'
+  subdir('arch/unix')
+else
+  configure_file(
+    output: 'apr_private_meson.h',
+    configuration: {},
+  )
+endif

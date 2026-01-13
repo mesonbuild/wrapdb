@@ -37,6 +37,10 @@ from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci,
 MINIMUM_MESON_VERSION = '0.56.0'  # also in README.md
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
+    'apr': {
+        'empty.txt',
+        'apr_private.h',
+    },
     'aws-c-common': {
         'tests.txt',
         'generate_tests.py',
@@ -64,7 +68,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     },
     'godot-cpp' : {
          'meson-bindings-generator.py',
-     },
+    },
     'gumbo-parser': {
         'tokenizer.cc',
     },
