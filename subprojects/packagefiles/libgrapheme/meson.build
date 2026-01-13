@@ -20,6 +20,8 @@ cc = meson.get_compiler('c')
 cc_id = cc.get_id()
 os_name = target_machine.system()
 
+chdir_wrapper = files('chdir_wrapper.py')
+
 subdir('src')
 
 subdir('gen')
