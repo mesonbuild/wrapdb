@@ -4067,7 +4067,8 @@
   },
   "sfml": {
     "dependency_names": [
-      "sfml"
+      "sfml",
+      "sfml-all"
     ],
     "versions": [
       "3.0.2-1",

@@ -107,4 +107,5 @@ window_lib = library(
   include_directories: [glad_inc, pub_inc, priv_inc, vulkan_inc],
   dependencies: [gl_dep, winmm_dep, window_deps],
   override_options: override_opts,
+  install: true,
 )
