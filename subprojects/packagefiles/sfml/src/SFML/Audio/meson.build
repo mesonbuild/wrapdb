@@ -65,4 +65,5 @@ audio_lib = library(
     vorbisfile_dep,
     ogg_dep,
   ],
+  install: true,
 )

@@ -45,4 +45,5 @@ graphics_lib = library(
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
   override_options: override_opts,
+  install: true,
 )

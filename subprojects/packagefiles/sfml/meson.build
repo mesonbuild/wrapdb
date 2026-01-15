@@ -46,12 +46,15 @@ override_opts = ['cpp_std=c++17']
 sfml_libs = []
 subdir('src/SFML')
 
+compile_args = get_option('default_library') == 'static' ? '-DSFML_STATIC' : []
+
 sfml_dep = declare_dependency(
   include_directories: pub_inc,
   link_with: sfml_libs,
-  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+  compile_args: compile_args,
 )
 meson.override_dependency('sfml', sfml_dep)
+meson.override_dependency('sfml-all', sfml_dep)
 
 if get_option('examples') and build_machine.system() != 'android'
   subdir('examples')
