@@ -2,7 +2,7 @@ project(
   'sfml',
   'cpp',
   license: 'Zlib',
-  version: '3.0.1',
+  version: '3.0.2',
   default_options: ['wrap_mode=forcefallback'],
   meson_version: '>=0.64.0',
 )
@@ -52,6 +52,8 @@ override_opts = ['cpp_std=c++17']
 
 subdir('src/SFML')
 
+compile_args = get_option('default_library') == 'static' ? '-DSFML_STATIC' : []
+
 sfml_dep = declare_dependency(
   include_directories: pub_inc,
   link_with: [
@@ -62,7 +64,7 @@ sfml_dep = declare_dependency(
     system_lib,
     host_machine.system() == 'windows' ? main_lib : [],
   ],
-  compile_args: get_option('default_library') == 'static' ? '-DSFML_STATIC' : [],
+  compile_args: compile_args,
 )
 
 subdir('examples')
