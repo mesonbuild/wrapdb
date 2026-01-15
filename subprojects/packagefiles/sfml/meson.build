@@ -67,4 +67,7 @@ sfml_dep = declare_dependency(
   compile_args: compile_args,
 )
 
+meson.override_dependency('sfml', sfml_dep)
+meson.override_dependency('sfml-all', sfml_dep)
+
 subdir('examples')
