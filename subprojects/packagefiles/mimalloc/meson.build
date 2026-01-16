@@ -1,9 +1,9 @@
 project(
   'mimalloc',
   'c',
-  meson_version: '>=0.46.0',
+  meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.1.5',
+  version: '3.2.7',
 )
 
 mi_sources = []
@@ -29,6 +29,8 @@ mi_sources += files(
   'src/prim/prim.c',
   'src/random.c',
   'src/stats.c',
+  'src/theap.c',
+  'src/threadlocal.c',
 )
 
 # System libraries
@@ -123,6 +125,7 @@ mi_dep = declare_dependency(
   include_directories: mi_inc,
   link_with: mi_lib,
 )
+meson.override_dependency('mimalloc', mi_dep)
 
 # Install Headers
 install_headers(
