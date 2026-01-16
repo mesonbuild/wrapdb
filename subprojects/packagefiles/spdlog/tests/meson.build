@@ -24,9 +24,11 @@ test_src = files(
   'test_mpmc_q.cpp',
   'test_pattern_formatter.cpp',
   'test_registry.cpp',
+  'test_ringbuffer.cpp',
   'test_stdout_api.cpp',
   'test_stopwatch.cpp',
   'test_time_point.cpp',
+  'test_timezone.cpp',
   'utils.cpp',
 )
 

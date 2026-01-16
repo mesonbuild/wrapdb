@@ -1,7 +1,7 @@
 project(
   'spdlog',
   'cpp',
-  version: '1.15.3',
+  version: '1.17.0',
   license: 'MIT',
   meson_version: '>=0.56.0',
 )
@@ -77,6 +77,4 @@ pkg.generate(
 
 subdir('tests')
 
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('spdlog', spdlog_dep)
-endif
+meson.override_dependency('spdlog', spdlog_dep)
