@@ -2047,6 +2047,19 @@
       "2.4.110-1"
     ]
   },
+  "libdwarf": {
+    "dependency_names": [
+      "libdwarf",
+      "libdwarfp"
+    ],
+    "program_names": [
+      "dwarfdump",
+      "dwarfgen"
+    ],
+    "versions": [
+      "0.9.1-1"
+    ]
+  },
   "libebml": {
     "dependency_names": [
       "libebml"

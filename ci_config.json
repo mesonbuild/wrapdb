@@ -683,6 +683,14 @@
       "libpciaccess-dev"
     ]
   },
+  "libdwarf": {
+    "_comment": "- provides both dwarfgen and libdwarfp",
+    "build_options": [
+      "libdwarf:dwarfgen=true"
+    ],
+    "_comment": "- tests are broken on meson, will make a PR to fix -- @judemille",
+    "skip_tests": "true"
+  },
   "libffi": {
     "_comment": "libffi has too many unit tests and it exceed command line limit to rebuild test targets",
     "test_options": [
