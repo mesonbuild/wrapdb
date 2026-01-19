@@ -40,6 +40,11 @@
       "tzdata"
     ]
   },
+  "apr": {
+    "build_options": [
+      "apr:tests=enabled"
+    ]
+  },
   "arrow-cpp": {
     "build_options": [
       "arrow-cpp:compute=enabled"

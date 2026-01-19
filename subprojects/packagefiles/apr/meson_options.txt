@@ -1,0 +1,6 @@
+option(
+    'tests',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build unit tests',
+)

@@ -160,6 +160,14 @@
       "2.2.0-1"
     ]
   },
+  "apr": {
+    "dependency_names": [
+      "apr"
+    ],
+    "versions": [
+      "1.7.6-1"
+    ]
+  },
   "arduinocore-avr": {
     "dependency_names": [
       "arduinocore",
