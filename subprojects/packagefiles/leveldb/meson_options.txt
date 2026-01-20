@@ -1,18 +1,18 @@
 option(
-  'leveldb_build_tests',
-  type: 'boolean',
-  value: false,
-  description: 'Build LevelDB unit tests'
+    'leveldb_build_tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build LevelDB unit tests',
 )
 option(
-  'leveldb_build_benchmarks',
-  type: 'boolean',
-  value: false,
-  description: 'Build LevelDB benchmarks'
+    'leveldb_build_benchmarks',
+    type: 'boolean',
+    value: false,
+    description: 'Build LevelDB benchmarks',
 )
 option(
-  'leveldb_install',
-  type: 'boolean',
-  value: true,
-  description: 'Install LevelDB headers and library'
+    'leveldb_install',
+    type: 'boolean',
+    value: true,
+    description: 'Install LevelDB headers and library',
 )

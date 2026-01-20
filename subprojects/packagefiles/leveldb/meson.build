@@ -1,4 +1,12 @@
-project('leveldb', 'c', 'cpp', version: '1.23.0', default_options: ['cpp_std=c++17'])
+project(
+  'leveldb',
+  'c',
+  'cpp',
+  version: '1.23.0',
+  default_options: ['cpp_std=c++17'],
+  meson_version: '>=0.56.0',
+  license: 'BSD-3-Clause',
+)
 
 build_tests = get_option('leveldb_build_tests')
 build_benchmarks = get_option('leveldb_build_benchmarks')
@@ -13,7 +21,13 @@ if host_machine.system() == 'windows'
     'util/env_windows.cc',
     'util/windows_logger.h',
   )
-  cpp_project_args = ['/EHs-c-', '/GR-', '/D_HAS_EXCEPTIONS=0', '/D_UNICODE', '/DUNICODE']
+  cpp_project_args = [
+    '/EHs-c-',
+    '/GR-',
+    '/D_HAS_EXCEPTIONS=0',
+    '/D_UNICODE',
+    '/DUNICODE',
+  ]
 else
   platform_define = 'LEVELDB_PLATFORM_POSIX=1'
   platform_sources = files(
@@ -47,28 +61,61 @@ if not have_cxx17_has_include
   cpp_project_args += ['-DLEVELDB_HAS_PORT_CONFIG_H=1']
 endif
 
-add_project_arguments(c_project_args, language: 'c')
-add_project_arguments(cpp_project_args, language: 'cpp')
+add_project_arguments(
+  c_project_args,
+  language: 'c',
+)
+add_project_arguments(
+  cpp_project_args,
+  language: 'cpp',
+)
 
-have_fdatasync = cpp_comp.has_function('fdatasync', prefix: '#include <unistd.h>')
+have_fdatasync = cpp_comp.has_function(
+  'fdatasync',
+  prefix: '#include <unistd.h>',
+)
 have_fullfsync = cpp_comp.has_header_symbol('fcntl.h', 'F_FULLFSYNC')
 have_o_cloexec = cpp_comp.has_header_symbol('fcntl.h', 'O_CLOEXEC')
 
-crc32c_dep = dependency('crc32c', required: false)
+crc32c_dep = dependency(
+  'crc32c',
+  required: false,
+)
 if not crc32c_dep.found()
-  crc32c_dep = cpp_comp.find_library('crc32c', required: false)
+  crc32c_dep = cpp_comp.find_library(
+    'crc32c',
+    required: false,
+  )
 endif
-snappy_dep = dependency('snappy', required: false)
+snappy_dep = dependency(
+  'snappy',
+  required: false,
+)
 if not snappy_dep.found()
-  snappy_dep = cpp_comp.find_library('snappy', required: false)
+  snappy_dep = cpp_comp.find_library(
+    'snappy',
+    required: false,
+  )
 endif
-zstd_dep = dependency('libzstd', required: false)
+zstd_dep = dependency(
+  'libzstd',
+  required: false,
+)
 if not zstd_dep.found()
-  zstd_dep = cpp_comp.find_library('zstd', required: false)
+  zstd_dep = cpp_comp.find_library(
+    'zstd',
+    required: false,
+  )
 endif
-tcmalloc_dep = dependency('tcmalloc', required: false)
+tcmalloc_dep = dependency(
+  'tcmalloc',
+  required: false,
+)
 if not tcmalloc_dep.found()
-  tcmalloc_dep = cpp_comp.find_library('tcmalloc', required: false)
+  tcmalloc_dep = cpp_comp.find_library(
+    'tcmalloc',
+    required: false,
+  )
 endif
 
 conf_data = configuration_data()
@@ -192,7 +239,7 @@ leveldb_dep = declare_dependency(
   include_directories: inc,
   link_with: leveldb_lib,
   dependencies: leveldb_deps,
-  compile_args: ['-DLEVELDB_HAS_PORT_CONFIG_H=1'] # 仅当你需要强制定义,
+  compile_args: ['-DLEVELDB_HAS_PORT_CONFIG_H=1'],  # 仅当你需要强制定义,
 )
 
 if meson.version().version_compare('>=0.54.0')
@@ -230,9 +277,18 @@ if do_install
 endif
 
 if build_tests
-  gtest_dep = dependency('gtest', required: false)
-  gmock_dep = dependency('gmock', required: false)
-  gtest_main_dep = dependency('gtest_main', required: false)
+  gtest_dep = dependency(
+    'gtest',
+    required: false,
+  )
+  gmock_dep = dependency(
+    'gmock',
+    required: false,
+  )
+  gtest_main_dep = dependency(
+    'gtest_main',
+    required: false,
+  )
   if not gtest_dep.found() or not gmock_dep.found()
     error('LEVELDB_BUILD_TESTS requires gtest and gmock dependencies.')
   endif
@@ -318,9 +374,18 @@ if build_tests
 endif
 
 if build_benchmarks
-  benchmark_dep = dependency('benchmark', required: false)
-  gtest_dep = dependency('gtest', required: false)
-  gmock_dep = dependency('gmock', required: false)
+  benchmark_dep = dependency(
+    'benchmark',
+    required: false,
+  )
+  gtest_dep = dependency(
+    'gtest',
+    required: false,
+  )
+  gmock_dep = dependency(
+    'gmock',
+    required: false,
+  )
   if not benchmark_dep.found() or not gtest_dep.found() or not gmock_dep.found()
     error('LEVELDB_BUILD_BENCHMARKS requires benchmark, gtest, and gmock.')
   endif
@@ -342,7 +407,10 @@ if build_benchmarks
     )
   endif
 
-  sqlite3_dep = dependency('sqlite3', required: false)
+  sqlite3_dep = dependency(
+    'sqlite3',
+    required: false,
+  )
   if sqlite3_dep.found()
     bench_sqlite = executable(
       'db_bench_sqlite3',
@@ -353,7 +421,10 @@ if build_benchmarks
     )
   endif
 
-  kyoto_lib = cpp_comp.find_library('kyotocabinet', required: false)
+  kyoto_lib = cpp_comp.find_library(
+    'kyotocabinet',
+    required: false,
+  )
   if kyoto_lib.found() and cpp_comp.has_header('kcpolydb.h')
     bench_kyoto = executable(
       'db_bench_tree_db',
