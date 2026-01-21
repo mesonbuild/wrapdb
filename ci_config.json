@@ -1099,9 +1099,6 @@
   },
   "openblas": {
     "_comment": "Doesn't work with windows native compilers",
-    "build_on": {
-      "windows": false
-    },
     "alpine_packages": [
       "gfortran"
     ],
@@ -1110,7 +1107,7 @@
       "gfortran"
     ],
     "debian_packages": [
-      "libtinfo5",
+      "libtinfo6",
       "gfortran"
     ],
     "msys_packages": [
