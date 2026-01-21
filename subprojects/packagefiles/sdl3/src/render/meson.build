@@ -3,6 +3,7 @@ subdir('software')
 
 if host_machine.system() == 'windows'
   subdir('direct3d12')
+  subdir('opengl')
   subdir('vulkan')
 elif host_machine.system() == 'darwin'
   subdir('metal')
