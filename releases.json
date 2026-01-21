@@ -1117,6 +1117,14 @@
       "3.4.0-1"
     ]
   },
+  "freetype1": {
+    "dependency_names": [
+      "freetype1"
+    ],
+    "versions": [
+      "1.4"
+    ]
+  },
   "freetype2": {
     "dependency_names": [
       "freetype2"
