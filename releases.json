@@ -4292,9 +4292,11 @@
       "sqlpp11"
     ],
     "program_names": [
-      "ddl2cpp"
+      "ddl2cpp",
+      "sqlite2cpp"
     ],
     "versions": [
+      "0.64-2",
       "0.64-1"
     ]
   },
