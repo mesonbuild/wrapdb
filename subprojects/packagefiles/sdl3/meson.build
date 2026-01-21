@@ -373,6 +373,9 @@ elif host_machine.system() == 'windows'
   cdata.set('SDL_GPU_D3D12', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
+  cdata.set('SDL_VIDEO_OPENGL', 1)
+  cdata.set('SDL_VIDEO_OPENGL_WGL', 1)
+  cdata.set('SDL_VIDEO_RENDER_OGL', 1)
 
   if have_xinput_header
     cdata.set('SDL_JOYSTICK_XINPUT', 1)
@@ -391,6 +394,7 @@ elif host_machine.system() == 'windows'
   sdl_deps += cc.find_library('imm32')
   sdl_deps += cc.find_library('setupapi')
   sdl_deps += cc.find_library('winmm')
+  sdl_deps += cc.find_library('opengl32')
 elif host_machine.subsystem() == 'macos'
   cdata.set('SDL_PLATFORM_APPLE', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
