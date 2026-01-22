@@ -1586,6 +1586,17 @@
       "2.4.1-1"
     ]
   },
+  "hse": {
+    "dependency_names": [
+      "hse-2"
+    ],
+    "program_names": [
+      "hse2"
+    ],
+    "versions": [
+      "2.0.0-1"
+    ]
+  },
   "htslib": {
     "dependency_names": [
       "htslib"
