@@ -855,6 +855,16 @@
       "3.3.4-1"
     ]
   },
+  "elfutils": {
+    "dependency_names": [
+      "asm",
+      "dw",
+      "elf"
+    ],
+    "versions": [
+      "0.190-1"
+    ]
+  },
   "emilk-loguru": {
     "dependency_names": [
       "loguru"
