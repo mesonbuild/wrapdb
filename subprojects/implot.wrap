@@ -1,9 +1,9 @@
 [wrap-file]
-directory = implot-0.16
-source_url = https://github.com/epezent/implot/archive/refs/tags/v0.16.zip
-source_filename = implot-0.16.zip
-source_hash = 24f772c688f6b8a6e19d7efc10e4923a04a915f13d487b08b83553aa62ae1708
+directory = implot-0.17
+source_url = https://github.com/epezent/implot/archive/refs/tags/v0.17.zip
+source_filename = implot-0.17.zip
+source_hash = 112e4da5d3b83082b4e0671e19b5ea11ebc8afe2794162d020d3fd8d0ea5a9ee
 patch_directory = implot
 
 [provide]
-implot = implot_dep
+dependency_names = implot
