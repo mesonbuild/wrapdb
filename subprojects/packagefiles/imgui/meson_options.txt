@@ -40,6 +40,11 @@ option(
     value: 'auto',
 )
 option(
+    'sdl3_gpu',
+    type: 'feature',
+    value: 'auto',
+)
+option(
     'vulkan',
     type: 'feature',
     value: 'auto',
