@@ -2,8 +2,8 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.92.3',
-  meson_version: '>=0.54.0',
+  version: '1.92.5',
+  meson_version: '>=0.56.0',
 )
 
 if host_machine.system() == 'darwin'
@@ -59,8 +59,7 @@ dx12_dep = cpp.find_library(
   'd3d12',
   required: get_option('dx12'),
 )
-# MinGW does not work. See https://github.com/ocornut/imgui/pull/4604
-if dx12_dep.found() and cpp.get_argument_syntax() == 'msvc'
+if dx12_dep.found()
   sources += 'backends/imgui_impl_dx12.cpp'
   dependencies += dx12_dep
 endif
@@ -68,7 +67,7 @@ dxgi_dep = cpp.find_library(
   'dxgi',
   required: get_option('dx12'),
 )
-if dxgi_dep.found() and cpp.get_argument_syntax() == 'msvc'
+if dxgi_dep.found()
   dependencies += dxgi_dep
 endif
 
@@ -104,7 +103,7 @@ if sdl2_renderer_dep.found()
 endif
 sdl3_renderer_dep = dependency(
   'sdl3',
-  version: '>=3.1.3',
+  version: '>=3.1.8',
   required: get_option('sdl3_renderer'),
 )
 if sdl3_renderer_dep.found()
@@ -113,7 +112,7 @@ if sdl3_renderer_dep.found()
 endif
 sdl3_gpu_dep = dependency(
   'sdl3',
-  version: '>=3.1.3',
+  version: '>=3.1.8',
   required: get_option('sdl3_gpu'),
 )
 if sdl3_gpu_dep.found()
@@ -138,6 +137,7 @@ endif
 # platform backends
 glfw_dep = dependency(
   'glfw3',
+  version: '>=3.0',
   required: get_option('glfw'),
 )
 if glfw_dep.found()
