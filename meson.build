@@ -1,6 +1,6 @@
 project(
   'wrapdb',
-  meson_version: '>=0.58.0',
+  meson_version: '>=0.63.0',
 )
 
 if (
