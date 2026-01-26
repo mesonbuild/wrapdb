@@ -1841,6 +1841,14 @@
       "3.6.3-1"
     ]
   },
+  "joltphysics": {
+    "dependency_names": [
+      "Jolt"
+    ],
+    "versions": [
+      "5.3.0-1"
+    ]
+  },
   "json": {
     "versions": [
       "3.2.0-1",

@@ -563,6 +563,17 @@
       "openssl"
     ]
   },
+  "joltphysics": {
+    "_comment": [
+      "Very math-y library so enable optimizations to make tests run faster.",
+      "Additionally set cpp_rtti=true to work around a meson bug in 1.9.1"
+    ],
+    "build_options": [
+      "joltphysics:tests=enabled",
+      "buildtype=debugoptimized",
+      "cpp_rtti=true"
+    ]
+  },
   "json-glib": {
     "_comment": [
       "- gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
