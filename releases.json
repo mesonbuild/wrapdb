@@ -4391,6 +4391,14 @@
       "1.12-1"
     ]
   },
+  "taocpp-json": {
+    "dependency_names": [
+      "taocpp-json"
+    ],
+    "versions": [
+      "1.0.0-beta.14-1"
+    ]
+  },
   "tclap": {
     "dependency_names": [
       "tclap"
