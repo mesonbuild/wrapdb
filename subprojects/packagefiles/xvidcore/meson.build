@@ -1,16 +1,16 @@
 project(
   'xvidcore',
-  ['c', 'nasm'],
+  'c',
   version: '1.3.7',
   license: 'GPL-2.0-or-later',
   meson_version: '>= 1.3.0',
-  default_options: ['warning_level=2', 'c_std=gnu99'],
+  default_options: ['warning_level=2', 'c_std=gnu99,c99'],
 )
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library(
   'm',
-  required: true,
+  required: false,
 )
 threads_deps = dependency(
   'threads',
@@ -23,6 +23,14 @@ sources = []
 includes = []
 nasm_args = []
 c_args = []
+link_args = []
+
+if cpu_family == 'x86' or cpu_family == 'x86_64'
+  add_languages(
+    'nasm',
+    native: false,
+  )
+endif
 
 if endian == 'big'
   c_args += ['-DARCH_IS_BIG_ENDIAN']
@@ -36,34 +44,99 @@ else
   c_args += ['-DARCH_IS_32BIT']
 endif
 
-if threads_deps.found()
+if cc.has_header('stdint.h')
+  c_args += ['-DHAVE_STDINT_H']
+endif
+
+if cc.has_header('inttypes.h')
+  c_args += ['-DHAVE_INTTYPES_H']
+endif
+
+if threads_deps.found() and cc.has_header('pthread.h')
   c_args += ['-DHAVE_PTHREAD']
 endif
 
 if cpu_family == 'x86_64'
   c_args += ['-DARCH_IS_X86_64']
   nasm_args += ['-DARCH_IS_X86_64']
+  add_project_arguments(
+    nasm_args,
+    language: 'nasm',
+  )
 elif cpu_family == 'x86'
-  c_args += ['-DARCH_IS_X86']
-  nasm_args += ['-DARCH_IS_X86']
-elif cpu_family == 'arm' or cpu_family == 'aarch64'
-  c_args += ['-DARCH_IS_ARM']
-  nasm_args += ['-DARCH_IS_ARM']
-elif cpu_family == 'ppc' or cpu_family == 'ppc64'
-  c_args += ['-DARCH_IS_PPC']
-  nasm_args += ['-DARCH_IS_PPC', '-maltivec', '-mabi=altivec']
+  c_args += ['-DARCH_IS_IA32']
+  nasm_args += ['-DARCH_IS_IA32']
+  add_project_arguments(
+    nasm_args,
+    language: 'nasm',
+  )
+elif (cpu_family == 'ppc' or cpu_family == 'ppc64') and endian == 'big'
+  c_args += ['-DARCH_IS_PPC', '-maltivec', '-mabi=altivec']
+else
+  c_args += ['-DARCH_IS_GENERIC']
 endif
 
-nasm_args += ['-DMARK_FUNCS']
-c_args += ['-ffast-math', '-fomit-frame-pointer', '-finline-functions', '-fPIC']
+if host_os == 'darwin' or (host_os == 'windows' and cpu_family == 'x86')
+  nasm_args += ['-DPREFIX']
+
+  if host_os == 'linux'
+    nasm_args += ['-DMARK_FUNCS']
+  endif
+
+  if (cpu_family == 'x86' or cpu_family == 'x86_64')
+    add_project_arguments(
+      nasm_args,
+      language: 'nasm',
+    )
+  endif
+
+endif
+if host_os == 'windows'
+  c_args += [
+    '-DWIN32',
+    '-DHAVE_STDINT_H',
+    '-DHAVE_INTTYPES_H',
+    '-DHAVE_SYS_TYPES_H',
+  ]
+  if cc.get_argument_syntax() == 'msvc'
+    c_args += [
+      '/FIstdint.h',
+      '-D_try=__try',
+      '-D_except=__except',
+      '/EHa',
+      '/wd4996',
+    ]
+    exports = [
+      '/EXPORT:xvid_global',
+      '/EXPORT:xvid_decore',
+      '/EXPORT:xvid_encore',
+      '/EXPORT:xvid_plugin_single',
+      '/EXPORT:xvid_plugin_2pass1',
+      '/EXPORT:xvid_plugin_2pass2',
+      '/EXPORT:xvid_plugin_lumimasking',
+      '/EXPORT:xvid_plugin_dump',
+      '/EXPORT:xvid_plugin_psnr',
+      '/EXPORT:xvid_plugin_psnrhvsm',
+      '/EXPORT:xvid_plugin_ssim',
+    ]
+    link_args += exports
+  endif
+endif
+
+if cc.get_argument_syntax() == 'msvc'
+  c_args += ['/wd4996']
+else
+  c_args += [
+    '-ffast-math',
+    '-fomit-frame-pointer',
+    '-finline-functions',
+    '-fPIC',
+  ]
+endif
 
 add_project_arguments(
   c_args,
   language: 'c',
-)
-add_project_arguments(
-  nasm_args,
-  language: 'nasm',
 )
 
 sources += [
@@ -89,10 +162,10 @@ sources += [
     'src/motion/estimation_pvop.c',
     'src/motion/estimation_rd_based.c',
     'src/motion/estimation_rd_based_bvop.c',
-    'src/motion/gmc.c',
     'src/motion/motion_comp.c',
     'src/motion/sad.c',
     'src/motion/vop_type_decision.c',
+    'src/plugins/plugin_2pass1.c',
     'src/plugins/plugin_2pass2.c',
     'src/plugins/plugin_dump.c',
     'src/plugins/plugin_lumimasking.c',
@@ -113,7 +186,7 @@ sources += [
   ),
 ]
 
-if cpu_family == 'ppc' or cpu_family == 'ppc64'
+if (cpu_family == 'ppc' or cpu_family == 'ppc64') and endian == 'big'
   sources += [
     files(
       'src/dct/ppc_asm/idct_altivec.c',
@@ -157,7 +230,6 @@ elif cpu_family == 'x86' or cpu_family == 'x86_64'
       'src/motion/x86_asm/sad_mmx.asm',
       'src/motion/x86_asm/sad_sse2.asm',
       'src/motion/x86_asm/sad_xmm.asm',
-      'src/plugins/plugin_2pass1.c',
       'src/plugins/x86_asm/plugin_ssim-a.asm',
       'src/quant/x86_asm/quantize_h263_3dne.asm',
       'src/quant/x86_asm/quantize_h263_mmx.asm',
@@ -183,12 +255,32 @@ includes += [
   include_directories('src/utils'),
 ]
 
+if cpu_family == 'aarch64' and cc.get_id() == 'msvc'
+  prog_python = import('python').find_installation()
+  gmc_patched = custom_target(
+    'gmc_patched',
+    input: 'src/motion/gmc.c',
+    output: 'gmc_patched.c',
+    command: [
+      prog_python,
+      '-c',
+      'import sys; open(sys.argv[2], "w", encoding="utf-8").write(open(sys.argv[1], "r", encoding="utf-8").read().replace("defined(_MSC_VER)", "0"))',
+      '@INPUT@',
+      '@OUTPUT@',
+    ],
+  )
+  sources += [gmc_patched]
+else
+  sources += files('src/motion/gmc.c')
+endif
+
 xvidcore = both_libraries(
   'xvidcore',
   sources,
   install: true,
   dependencies: [m_dep, threads_deps],
   include_directories: includes,
+  link_args: link_args,
 )
 
 xvidcore_deps = declare_dependency(
