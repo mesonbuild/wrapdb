@@ -3079,6 +3079,11 @@
       "3.0.6-1"
     ]
   },
+  "mockcpp": {
+    "versions": [
+      "git-master"
+    ]
+  },
   "mocklibc": {
     "versions": [
       "1.0-2"
