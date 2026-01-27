@@ -4174,6 +4174,14 @@
       "2.3.2-1"
     ]
   },
+  "sparkcli": {
+    "dependency_names": [
+      "sparkcli"
+    ],
+    "versions": [
+      "0.0.1-1"
+    ]
+  },
   "sparrow": {
     "dependency_names": [
       "sparrow"
