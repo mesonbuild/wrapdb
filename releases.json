@@ -2980,6 +2980,14 @@
       "1.4.19-1"
     ]
   },
+  "macrolibx": {
+    "dependency_names": [
+      "mlx"
+    ],
+    "versions": [
+      "2.2.4-1"
+    ]
+  },
   "magic_enum": {
     "dependency_names": [
       "magic_enum"

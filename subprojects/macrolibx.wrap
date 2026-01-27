@@ -1,0 +1,8 @@
+[wrap-file]
+directory = MacroLibX-2.2.4
+source_url = https://github.com/seekrs/MacroLibX/archive/v2.2.4.tar.gz
+source_filename = MacroLibX-2.2.4.tar.gz
+source_hash = 66bed06c8a17cf596555d6c899cd5b117538ef726ab4970664f853e791ef148b
+
+[provide]
+dependency_names = mlx
