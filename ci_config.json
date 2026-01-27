@@ -1548,6 +1548,14 @@
       "tinyfsm:build_examples=true"
     ]
   },
+  "taskflow": {
+    "debian_packages": [
+      "doctest-dev"
+    ],
+    "_comment": "/usr/include/doctest/doctest.h is not included on Mesonbuild search path",
+    "build_on": {
+      "windows": false
+    }
   "wayland": {
     "_comment": [
       "- relies on Linux-specific APIs"
