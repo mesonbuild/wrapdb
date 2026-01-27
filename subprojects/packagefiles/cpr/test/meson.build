@@ -11,6 +11,7 @@ tests = [
   #  'alternating',
   #  'async',
   #  'callback',
+  #  'connection_pool',
   #  'delete',
   #  'download',
   'encoded_auth',
@@ -48,6 +49,7 @@ foreach t : tests
       t,
       '@0@_tests.cpp'.format(t),
       dependencies: [cpr_dep, gtest_dep],
+      override_options: override_cpp,
     ),
   )
 endforeach

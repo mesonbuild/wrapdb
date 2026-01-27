@@ -37,7 +37,17 @@ from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci,
 MINIMUM_MESON_VERSION = '0.56.0'  # also in README.md
 PERMITTED_FILES = {'generator.sh', 'meson.build', 'meson_options.txt', 'meson.options', 'LICENSE.build'}
 PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
+    'aws-c-cal': {
+        'tests.txt',
+        'generate_tests.py',
+        'run_test.py',
+    },
     'aws-c-common': {
+        'tests.txt',
+        'generate_tests.py',
+        'run_test.py',
+    },
+    'aws-c-compression': {
         'tests.txt',
         'generate_tests.py',
         'run_test.py',

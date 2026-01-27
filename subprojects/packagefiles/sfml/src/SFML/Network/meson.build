@@ -21,4 +21,5 @@ network_lib = library(
   link_with: system_lib,
   dependencies: w32_dep,
   override_options: override_opts,
+  install: true,
 )

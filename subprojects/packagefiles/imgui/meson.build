@@ -2,12 +2,15 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.91.6',
-  meson_version: '>=0.50.0',
+  version: '1.92.5',
+  meson_version: '>=0.56.0',
 )
 
 if host_machine.system() == 'darwin'
-  add_languages('objcpp')
+  add_languages(
+    'objcpp',
+    native: false,
+  )
 endif
 
 include_dirs = include_directories('.', 'backends')
@@ -56,10 +59,16 @@ dx12_dep = cpp.find_library(
   'd3d12',
   required: get_option('dx12'),
 )
-# MinGW does not work. See https://github.com/ocornut/imgui/pull/4604
-if dx12_dep.found() and cpp.get_argument_syntax() == 'msvc'
+if dx12_dep.found()
   sources += 'backends/imgui_impl_dx12.cpp'
   dependencies += dx12_dep
+endif
+dxgi_dep = cpp.find_library(
+  'dxgi',
+  required: get_option('dx12'),
+)
+if dxgi_dep.found()
+  dependencies += dxgi_dep
 endif
 metal_dep = dependency(
   'appleframeworks',
@@ -93,12 +102,21 @@ if sdl2_renderer_dep.found()
 endif
 sdl3_renderer_dep = dependency(
   'sdl3',
-  version: '>=3.1.3',
+  version: '>=3.1.8',
   required: get_option('sdl3_renderer'),
 )
 if sdl3_renderer_dep.found()
   sources += 'backends/imgui_impl_sdlrenderer3.cpp'
   dependencies += sdl3_renderer_dep
+endif
+sdl3_gpu_dep = dependency(
+  'sdl3',
+  version: '>=3.1.8',
+  required: get_option('sdl3_gpu'),
+)
+if sdl3_gpu_dep.found()
+  sources += 'backends/imgui_impl_sdlgpu3.cpp'
+  dependencies += sdl3_gpu_dep
 endif
 vulkan_dep = dependency(
   'vulkan',
@@ -118,6 +136,7 @@ endif
 # platform backends
 glfw_dep = dependency(
   'glfw3',
+  version: '>=3.0',
   required: get_option('glfw'),
 )
 if glfw_dep.found()
@@ -204,3 +223,5 @@ imgui_dep = declare_dependency(
   include_directories: include_dirs,
   link_with: imgui,
 )
+
+meson.override_dependency('imgui', imgui_dep)

@@ -1,0 +1,12 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build aws-c-cal unit tests',
+)
+
+option(
+    'ed25519_everywhere',
+    type: 'boolean',
+    value: false,
+    description: 'Experimental feature to support ED25519 keygen on platforms that do not support it in os libs (i.e. win/mac)',
+)

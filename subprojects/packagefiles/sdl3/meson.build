@@ -1,7 +1,7 @@
 project(
   'sdl3',
   'c',
-  version: '3.2.10',
+  version: '3.4.0',
   license: 'zlib',
   meson_version: '>=1.6',
   default_options: ['c_std=none'],
@@ -66,6 +66,7 @@ basic_headers = [
   ['ddraw.h', 'HAVE_DDRAW_H'],
   ['dsound.h', 'HAVE_DSOUND_H'],
   ['dinput.h', 'HAVE_DINPUT_H'],
+  ['signal.h', 'HAVE_SIGTIMEDWAIT'],
 ]
 
 foreach i : basic_headers
@@ -227,6 +228,10 @@ endforeach
 
 sources = []
 
+cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
+cdata.set('SDL_XKBCOMMON_VERSION_MINOR', 0)
+cdata.set('SDL_XKBCOMMON_VERSION_PATCH', 0)
+
 if host_machine.system() == 'darwin'
   add_languages(
     'objc',
@@ -239,6 +244,46 @@ if host_machine.system() == 'darwin'
 endif
 
 if host_machine.system() == 'linux'
+
+  ## some of these checks could be done via have include
+  ## but it is done this way to be consistent from what CMake does
+  ## additionally these values are not defined in the config file
+
+  # check Kronos EGL support
+  have_opengl_egl_code = '''
+    #define EGL_API_FB
+    #define MESA_EGL_NO_X11_HEADERS
+    #define EGL_NO_X11
+    #include <EGL/egl.h>
+    #include <EGL/eglext.h>
+    int main (int argc, char** argv) { return 0; }
+  '''
+  have_opengl_egl = cc.compiles(
+    have_opengl_egl_code,
+    name: 'have OpenGL EGL support',
+  )
+  # check OpenGL GLX support
+  have_opengl_glx_code = '''
+    #include <GL/glx.h>
+    int main(int argc, char** argv) { return 0; }
+  '''
+  have_opengl_glx = cc.compiles(
+    have_opengl_glx_code,
+    name: 'have OpenGL GLX support',
+  )
+
+  # check OpenGL support
+  have_opengl_code = '''
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+    int main(int argc, char** argv) { return 0; }
+  '''
+  have_opengl = cc.compiles(
+    have_opengl_code,
+    name: 'have OpenGL support',
+  )
+
+
   # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
@@ -246,9 +291,18 @@ if host_machine.system() == 'linux'
   cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
-  cdata.set('SDL_POWER_DUMMY', 1)
+  cdata.set('SDL_POWER_LINUX', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
-  cdata.set('SDL_VIDEO_RENDER_OGL', 1)
+  if have_opengl_egl
+    cdata.set('SDL_VIDEO_OPENGL_EGL', 1)
+  endif
+  if have_opengl_glx
+    cdata.set('SDL_VIDEO_OPENGL_GLX', 1)
+  endif
+  if have_opengl
+    cdata.set('SDL_VIDEO_OPENGL', 1)
+    cdata.set('SDL_VIDEO_RENDER_OGL', 1)
+  endif
   cdata.set('SDL_GPU_VULKAN', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
@@ -259,12 +313,53 @@ if host_machine.system() == 'linux'
   sdl_deps += dependency('wayland-client')
   sdl_deps += dependency('wayland-egl')
   sdl_deps += dependency('wayland-cursor')
-  # sdl_deps += dependency('xkbcommon')
-  sdl_deps += dependency('xkbcommon')
+  xkbcommon_dep = dependency('xkbcommon')
+  sdl_deps += xkbcommon_dep
   cdata.set('HAVE_DBUS_DBUS_H', 1)
   wayland_scanner = find_program('wayland-scanner')
   subdir('wayland-protocols')
 elif host_machine.system() == 'windows'
+
+  # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include
+  have_xinput_header_code = '''
+    #include <windows.h>
+    #include <xinput.h>
+    int main(int argc, char **argv) { }
+  '''
+  have_xinput_header = cc.compiles(
+    have_xinput_header_code,
+    name: 'have XInput support',
+  )
+
+  # Microsoft Windows gaming input header is provided by the Windows SDK (winrt)
+  have_windows_gaming_input_header_code = '''
+    #define COBJMACROS
+    #include <windows.gaming.input.h>
+    static __x_ABI_CWindows_CGaming_CInput_CIGamepadStatics2 *s2;
+    int main(int argc, char **argv) {  }
+  '''
+  have_windows_gaming_input_header = cc.compiles(
+    have_windows_gaming_input_header_code,
+    name: 'have Windows Gaming Input support',
+  )
+
+  # Microsoft Windows GameInput is provided via the Microsoft Game Development Kit (GDK)
+  have_gameinput_header_code = '''
+    #include <stdbool.h>
+    #define COBJMACROS
+    #include <gameinput.h>
+    int main(int argc, char **argv) {  }
+  '''
+  have_gameinput_header = cc.compiles(
+    have_gameinput_header_code,
+    name: 'have GameInput support',
+  )
+  add_languages(
+    'cpp',
+    native: false,
+  )
+
+
   cdata.set('SDL_PLATFORM_WIN32', 1)
   cdata.set('SDL_THREAD_WINDOWS', 1)
   cdata.set('SDL_THREAD_GENERIC_COND_SUFFIX', 1)
@@ -278,12 +373,28 @@ elif host_machine.system() == 'windows'
   cdata.set('SDL_GPU_D3D12', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
-  cdata.set('SDL_XINPUT', 1)
+  cdata.set('SDL_VIDEO_OPENGL', 1)
+  cdata.set('SDL_VIDEO_OPENGL_WGL', 1)
+  cdata.set('SDL_VIDEO_RENDER_OGL', 1)
+
+  if have_xinput_header
+    cdata.set('SDL_JOYSTICK_XINPUT', 1)
+    cdata.set('HAVE_XINPUT', true)
+  endif
+  if have_windows_gaming_input_header
+    cdata.set('SDL_JOYSTICK_WGI', 1)
+  endif
+  if have_gameinput_header
+    cdata.set('HAVE_GAMEINPUT_H', 1)
+    cdata.set('SDL_JOYSTICK_GAMEINPUT', 1)
+  endif
+
   cdata.set('SDL_TIMER_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
   sdl_deps += cc.find_library('setupapi')
   sdl_deps += cc.find_library('winmm')
+  sdl_deps += cc.find_library('opengl32')
 elif host_machine.subsystem() == 'macos'
   cdata.set('SDL_PLATFORM_APPLE', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
@@ -303,7 +414,6 @@ elif host_machine.subsystem() == 'macos'
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_METAL', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
-  cdata.set('SDL_XINPUT', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   sdl_deps += dependency(
     'appleframeworks',

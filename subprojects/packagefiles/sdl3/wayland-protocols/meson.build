@@ -8,6 +8,8 @@ files = [
   'input-timestamps-unstable-v1.xml',
   'keyboard-shortcuts-inhibit-unstable-v1.xml',
   'pointer-constraints-unstable-v1.xml',
+  'pointer-gestures-unstable-v1.xml',
+  'pointer-warp-v1.xml',
   'primary-selection-unstable-v1.xml',
   'relative-pointer-unstable-v1.xml',
   'tablet-v2.xml',

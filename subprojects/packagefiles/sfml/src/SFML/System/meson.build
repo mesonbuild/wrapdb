@@ -23,4 +23,5 @@ system_lib = library(
   include_directories: [pub_inc, priv_inc],
   dependencies: [thread_dep, winmm_dep],
   override_options: override_opts,
+  install: true,
 )

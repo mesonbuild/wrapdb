@@ -76,6 +76,15 @@
       "boost"
     ]
   },
+  "aws-c-cal": {
+    "build_options": [
+      "aws-c-cal:tests=enabled"
+    ],
+    "alpine_packages": [
+      "openssl-dev",
+      "openssl"
+    ]
+  },
   "aws-c-common": {
     "build_options": [
       "aws-c-common:tests=enabled"
@@ -540,6 +549,20 @@
       "libpng"
     ]
   },
+  "jitterentropy": {
+    "_comment": "Only enable the openssl environment for tests",
+    "build_options": [
+      "jitterentropy:tests=enabled",
+      "jitterentropy:environments=openssl"
+    ],
+    "alpine_packages": [
+      "openssl-dev"
+    ],
+    "choco_packages": [
+      "strawberryperl",
+      "openssl"
+    ]
+  },
   "json-glib": {
     "_comment": [
       "- gettext is not optional: https://gitlab.gnome.org/GNOME/json-glib/-/merge_requests/50",
@@ -592,10 +615,6 @@
     "alpine_packages": [
       "bash"
     ],
-    "fatal_warnings": false
-  },
-  "lcms2": {
-    "_comment": "https://github.com/mm2/Little-CMS/pull/473",
     "fatal_warnings": false
   },
   "kafel": {

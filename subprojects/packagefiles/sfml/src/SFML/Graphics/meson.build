@@ -35,6 +35,8 @@ graphics_sources += files(
   'RenderTextureImplFBO.cpp',
 )
 
+freetype_dep = dependency('freetype2')
+
 graphics_lib = library(
   'sfml-graphics',
   graphics_sources,
@@ -43,4 +45,5 @@ graphics_lib = library(
   link_with: [window_lib, system_lib],
   dependencies: [gl_dep, freetype_dep],
   override_options: override_opts,
+  install: true,
 )

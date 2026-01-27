@@ -43,6 +43,13 @@ audio_cpp_args += [
 # use standard fixed-width integer types
 audio_cpp_args += '-DMA_USE_STDINT'
 
+miniaudio_dep = dependency('miniaudio')
+flac_dep = dependency('flac')
+vorbis_dep = dependency('vorbis')
+vorbisenc_dep = dependency('vorbisenc')
+vorbisfile_dep = dependency('vorbisfile')
+ogg_dep = dependency('ogg')
+
 audio_lib = library(
   'sfml-audio',
   audio_sources,
@@ -58,4 +65,5 @@ audio_lib = library(
     vorbisfile_dep,
     ogg_dep,
   ],
+  install: true,
 )
