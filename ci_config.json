@@ -1014,20 +1014,11 @@
     ]
   },
   "macrolibx": {
-    "build_on": {
-      "msys2": false,
-      "windows": false
-    },
     "alpine_packages": [
-      "libx11-dev",
-      "sdl2-dev"
+      "libx11-dev"
     ],
     "debian_packages": [
-      "libx11-dev",
-      "libsdl2-dev"
-    ],
-    "brew_packages": [
-      "sdl2"
+      "libx11-dev"
     ]
   },
   "magic_enum": {
