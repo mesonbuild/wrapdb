@@ -23,7 +23,6 @@ sources = []
 includes = []
 nasm_args = []
 c_args = []
-link_args = []
 
 if cpu_family == 'x86' or cpu_family == 'x86_64'
   add_languages(
@@ -104,22 +103,8 @@ if host_os == 'windows'
       '-D_try=__try',
       '-D_except=__except',
       '/EHa',
-      '/wd4996',
     ]
-    exports = [
-      '/EXPORT:xvid_global',
-      '/EXPORT:xvid_decore',
-      '/EXPORT:xvid_encore',
-      '/EXPORT:xvid_plugin_single',
-      '/EXPORT:xvid_plugin_2pass1',
-      '/EXPORT:xvid_plugin_2pass2',
-      '/EXPORT:xvid_plugin_lumimasking',
-      '/EXPORT:xvid_plugin_dump',
-      '/EXPORT:xvid_plugin_psnr',
-      '/EXPORT:xvid_plugin_psnrhvsm',
-      '/EXPORT:xvid_plugin_ssim',
-    ]
-    link_args += exports
+    sources += files('build/generic/libxvidcore.def')
   endif
 endif
 
@@ -280,7 +265,6 @@ xvidcore = both_libraries(
   install: true,
   dependencies: [m_dep, threads_deps],
   include_directories: includes,
-  link_args: link_args,
 )
 
 xvidcore_deps = declare_dependency(
@@ -288,4 +272,8 @@ xvidcore_deps = declare_dependency(
   link_with: xvidcore,
 )
 meson.override_dependency('xvidcore', xvidcore_deps)
+
+pkg = import('pkgconfig')
+
+pkg.generate(xvidcore)
 
