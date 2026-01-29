@@ -1,0 +1,55 @@
+option(
+    'broadphase_stats',
+    type: 'feature',
+)
+option(
+    'narrowphase_stats',
+    type: 'feature',
+)
+option(
+    'debug_render',
+    type: 'feature',
+)
+option(
+    'asserts',
+    type: 'feature',
+)
+option(
+    'profile',
+    type: 'feature',
+)
+
+option(
+    'tests',
+    type: 'feature',
+)
+
+option(
+    'double_precision',
+    type: 'boolean',
+    value: false,
+)
+option(
+    'disable_custom_allocator',
+    type: 'boolean',
+    value: false,
+)
+option(
+    'cross_platform_determinism',
+    type: 'boolean',
+    value: true,
+)
+option(
+    'object_layer_bits',
+    type: 'integer',
+    value: 16,
+)
+option(
+    'fpu_exceptions',
+    type: 'boolean',
+    value: false,
+)
+option(
+    'object_stream',
+    type: 'boolean',
+)
