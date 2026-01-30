@@ -12,7 +12,7 @@ m_dep = cc.find_library(
   'm',
   required: false,
 )
-threads_deps = dependency(
+thread_dep = dependency(
   'threads',
   required: false,
 )
@@ -51,7 +51,10 @@ if cc.has_header('inttypes.h')
   c_args += ['-DHAVE_INTTYPES_H']
 endif
 
-if threads_deps.found() and cc.has_header('pthread.h')
+if cc.has_header(
+  'pthread.h',
+  dependencies: thread_dep,
+)
   c_args += ['-DHAVE_PTHREAD']
 endif
 
@@ -104,7 +107,6 @@ if host_os == 'windows'
       '-D_except=__except',
       '/EHa',
     ]
-    sources += files('build/generic/libxvidcore.def')
   endif
 endif
 
@@ -263,17 +265,18 @@ xvidcore = both_libraries(
   'xvidcore',
   sources,
   install: true,
-  dependencies: [m_dep, threads_deps],
+  dependencies: [m_dep, thread_dep],
   include_directories: includes,
+  vs_module_defs: 'build/generic/libxvidcore.def',
 )
-
-xvidcore_deps = declare_dependency(
-  include_directories: includes,
-  link_with: xvidcore,
-)
-meson.override_dependency('xvidcore', xvidcore_deps)
 
 pkg = import('pkgconfig')
 
 pkg.generate(xvidcore)
+
+xvidcore_dep = declare_dependency(
+  include_directories: includes,
+  link_with: xvidcore,
+)
+meson.override_dependency('xvidcore', xvidcore_dep)
 
