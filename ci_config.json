@@ -1031,6 +1031,11 @@
       "minizip-ng:tests=enabled"
     ]
   },
+  "mldsa-native": {
+    "build_options": [
+      "mldsa-native:tests=enabled"
+    ]
+  },
   "mpdecimal": {
     "build_options": [
       "mpdecimal:examples=true",

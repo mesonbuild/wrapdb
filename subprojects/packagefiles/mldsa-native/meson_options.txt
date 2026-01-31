@@ -1,0 +1,23 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build tests for mldsa-native',
+)
+option(
+    'asm',
+    type: 'feature',
+    description: 'Enable assembly implementations of mldsa',
+)
+option(
+    'byo_rand',
+    type: 'boolean',
+    description: 'The consumer will provide a random bytes API. This enables randomized key generation and signing.',
+    value: false,
+)
+option(
+    'security_level',
+    type: 'combo',
+    description: 'Select FIPS 204 security level',
+    choices: ['ML-DSA-44', 'ML-DSA-65', 'ML-DSA-87'],
+    value: 'ML-DSA-44',
+)

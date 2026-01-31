@@ -3080,6 +3080,14 @@
       "3.0.6-1"
     ]
   },
+  "mldsa-native": {
+    "dependency_names": [
+      "mldsa-native"
+    ],
+    "versions": [
+      "1.0.0-1"
+    ]
+  },
   "mocklibc": {
     "versions": [
       "1.0-2"
