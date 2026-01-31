@@ -1,0 +1,9 @@
+[wrap-file]
+directory = mldsa-native-1.0.0-alpha
+source_url = https://github.com/pq-code-package/mldsa-native/archive/refs/tags/v1.0.0-alpha.tar.gz
+source_filename = mldsa-native-1.0.0-alpha.tar.gz
+source_hash = 4ab44a6615107ed97ae6b30adeac21473c941205a5fdd8d2bb416dae78aced1d
+patch_directory = mldsa-native
+
+[provide]
+dependency_names = mldsa-native
