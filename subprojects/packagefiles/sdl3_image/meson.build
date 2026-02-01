@@ -1,5 +1,3 @@
-# list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-
 project('sdl3_image', 'c',
   meson_version: '>= 1.1.0',
   version: '3.4.0',
@@ -30,8 +28,8 @@ get_option('SDLIMAGE_INSTALL').require(not meson.is_subproject(), error_message:
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
 
-get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows required')
-get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin required')
+get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows must be set as the build target')
+get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
 
 subdir('src')
 
@@ -40,7 +38,7 @@ if get_option('SDLIMAGE_BACKEND_STB').enabled()
 endif
 
 if target_machine.system() == 'darwin'
-  add_language('objc', required: get_option('SDLIMAGE_BACKEND_IMAGEIO'))
+  add_language('objc')
   if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
     add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
   endif
@@ -63,7 +61,8 @@ sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true,
                       'TGA': true, 'TIF': false, 'WEBP': true, 'XCF': false,
                       'XPM': false, 'XV': false} 
 
-
+# Sets load macros, save macros and guards against
+# enabling saving without enabling loading
 foreach extension, savable : sdlimage_extensions
   if get_option(f'SDLIMAGE_@extension@').enabled()
     add_project_arguments(f'-DLOAD_@extension@')
