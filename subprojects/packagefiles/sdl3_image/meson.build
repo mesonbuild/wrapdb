@@ -34,13 +34,11 @@ get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_
 get_option('SDLIMAGE_INSTALL').require(not subproject('sdl3').found(), error_message: 'Cannot install SDL3_image when SDL3 is built in same build')
 get_option('SDLIMAGE_INSTALL').require(not meson.is_subproject(), error_message: 'Cannot install SDL3_image when it is a subproject')
 
-get_option('SDLIMAGE_SAMPLES').enable_auto_if(sdlimage_rootproject)
+get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
-get_option('SDLIMAGE_SAMPLES_INSTALL').enable_auto_if(get_option('SDLIMAGE_SAMPLES').enabled() and get_option('SDLIMAGE_INSTALL').enabled())
 
 get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows required')
 get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin required')
-get_option('SDLIMAGE_PNG_LIBPNG').enable_auto_if(libpng_dep.found())
 
 subdir('src')
 
@@ -74,7 +72,7 @@ sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true,
                       'JPG': true, 'JXL': false, 'LBM': false, 'PCX': false,
                       'PNG': true, 'PNM': false, 'QOI': false, 'SVG': false,
                       'TGA': true, 'TIF': false, 'WEBP': true, 'XCF': false,
-                      'XPM': false, 'XC': false} 
+                      'XPM': false, 'XV': false} 
 
 
 foreach extension, savable : sdlimage_extensions
@@ -83,7 +81,7 @@ foreach extension, savable : sdlimage_extensions
     if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
         add_project_arguments(f'-DSAVE_@extension@')
     endif
-  elif get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
+  elif savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
     get_option(f'SDLIMAGE_@extension@_SAVE').disable_if(true, error_message: f'"SDLIMAGE_@extension@" must be enabled to enable saving')
   endif
 endforeach
