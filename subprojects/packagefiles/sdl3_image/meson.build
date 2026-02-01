@@ -16,23 +16,25 @@ libwebp_dep = dependency('libwebp', required: get_option('SDLIMAGE_WEBP'))
 libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG'))
 
 deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep, libtiff_dep, libwebp_dep, libjpeg_dep]
+subdir('src')
 
 platform_supports_shared = target_machine.system() == 'emscripten' ? false : true
 
 get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'Target "' + target_machine.system() + '" does not support shared libraries')
+if get_option('POSITION_INDEPENDENT_CODE').enabled()
+  add_project_arguments('-fPIC', language: 'c')
+
 
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
 
+
 get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows must be set as the build target')
-get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
-
-subdir('src')
-
-if get_option('SDLIMAGE_BACKEND_STB').enabled()
-  add_project_arguments('-DUSE_STBIMAGE', language: 'c')
+if get_option('SDLIMAGE_BACKEND_WIC').enabled()
+  add_project_arguments('-DSDL_IMAGE_USE_WIC_BACKEND', language: 'c')
 endif
 
+get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
 if target_machine.system() == 'darwin'
   add_language('objc')
   if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
@@ -45,9 +47,10 @@ else
   add_project_arguments('-DSDL_IMAGE_USE_COMMON_BACKEND', language: 'objc')
 endif
 
-if get_option('SDLIMAGE_BACKEND_WIC').enabled()
-  add_project_arguments('-DSDL_IMAGE_USE_WIC_BACKEND', language: 'c')
+if get_option('SDLIMAGE_BACKEND_STB').enabled()
+  add_project_arguments('-DUSE_STBIMAGE', language: 'c')
 endif
+
 
 
 # Boolean correlates to whether the extension is natively savable or not
