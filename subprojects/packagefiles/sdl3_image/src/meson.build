@@ -20,3 +20,11 @@ sdl3_image_src = files(
   'IMG_xv.c',
   'IMG_xxx.c',
 )
+
+if meson.get_compiler('c').get_id() == 'msvc' and get_option('default_library') == 'shared'
+  sdl3_image_src += 'version.rc'
+endif
+ 
+if target_machine.system() == 'darwin'
+  sdl3_image_src += 'IMG_ImageIO.m'
+endif

@@ -10,9 +10,8 @@
 
 project('sdl3_image', 'c',
   meson_version: '>= 1.1.0',
-  version: '3.4.0')
-
-varr = meson.project_version().split('.')
+  version: '3.4.0',
+  default_options: 'c_std=c99')
 
 major_version = meson.project_version().split('.')[0]
 minor_version = meson.project_version().split('.')[1]
@@ -22,9 +21,12 @@ feature_args = []
 
 sdl3_dep = dependency('sdl3', version: '>=3.4.0') # Minimum allowed SDL3 version, not SDL3_IMAGE version
 libpng_dep = dependency('libpng', required: get_option('SDLIMAGE_PNG_LIBPNG'))
-libavif_dep = dependency('libavif', version: '>=0.1.0', required: false)
+libavif_dep = dependency('libavif', version: '>=0.1.0', required: get_option('SDLIMAGE_AVIF')) # Absent from wrapdb as of Feb 1 2026
+libjxl_dep = dependency('libjxl', required: get_option('SDLIMAGE_JXL')) # Absent from wrapdb as of Feb 1 2026
+libtiff_dep = dependency('libtiff', required: get_option('SDLIMAGE_TIF'))
+libwebp_dep = dependency('libwebp', required: get_option('SDLIMAGE_WEBP'))
 
-deps = [sdl3_dep, libpng_dep, libavif_dep]
+deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep]
 
 # include("${CMAKE_CURRENT_LIST_DIR}/cmake/GetGitRevisionDescription.cmake")
 # include("${CMAKE_CURRENT_LIST_DIR}/cmake/PrivateSdlFunctions.cmake")
@@ -56,21 +58,12 @@ get_option('SDLIMAGE_INSTALL').require(sdlimage_rootproject, error_message: 'Can
 # cmake_dependent_option(SDLIMAGE_RELOCATABLE "Create relocatable SDL_image package" "${MSVC}" SDLIMAGE_INSTALL OFF)
 # option(SDLIMAGE_WERROR "Treat warnings as errors" OFF)
 
-# option(SDLIMAGE_STRICT "Fail when a dependency could not be found" OFF)
-# set(required "")
-# set(fatal_error "STATUS")
-# if(SDLIMAGE_STRICT)
-#   set(required "REQUIRED")
-#   set(fatal_error "FATAL_ERROR")
-# endif()
-
 get_option('SDLIMAGE_SAMPLES').enable_auto_if(sdlimage_rootproject)
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
 get_option('SDLIMAGE_SAMPLES_INSTALL').enable_auto_if(get_option('SDLIMAGE_SAMPLES').enabled() and get_option('SDLIMAGE_INSTALL').enabled())
 
-# SDLIMAGE_BACKEND_STB is included in the SDL3_image source
-get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'SDLIMAGE_BACKEND_WIC: Windows Required')
-get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.subsystem() == 'macos', error_message: 'SDLIMAGE_BACKEND_IMAGEIO: MacOS required')
+get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows required')
+get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin required')
 get_option('SDLIMAGE_PNG_LIBPNG').enable_auto_if(libpng_dep.found())
 
 get_option('SDLIMAGE_ANI_SAVE').enable_auto_if(get_option('SDLIMAGE_ANI').enabled())
@@ -83,296 +76,39 @@ get_option('SDLIMAGE_TGA_SAVE').enable_auto_if(get_option('SDLIMAGE_TGA').enable
 get_option('SDLIMAGE_WEBP_SAVE').enable_auto_if(get_option('SDLIMAGE_WEBP').enabled())
 get_option('SDLIMAGE_PNG_LIBPNG').enable_auto_if(get_option('SDLIMAGE_PNG').enabled())
 
-# cmake_dependent_option(SDLIMAGE_AVIF_SHARED "Dynamically load AVIF support (requires shared libavif)"
-#     ${SDLIMAGE_DEPS_SHARED} SDLIMAGE_AVIF ON)
-
-# if(SDLIMAGE_VENDORED AND SDLIMAGE_JPG AND NOT (SDLIMAGE_BACKEND_WIC OR SDLIMAGE_BACKEND_STB OR SDLIMAGE_BACKEND_IMAGEIO))
-#     set(SDLIMAGE_JPG_VENDORED ON)
-# else()
-#     set(SDLIMAGE_JPG_VENDORED OFF)
-# endif()
-# cmake_dependent_option(SDLIMAGE_JPG_SHARED "Dynamically load JPG support (requires shared libjpeg)"
-#     ${SDLIMAGE_DEPS_SHARED} "SDLIMAGE_JPG;NOT SDLIMAGE_BACKEND_WIC;NOT SDLIMAGE_BACKEND_STB;NOT SDLIMAGE_BACKEND_IMAGEIO" OFF)
-
-# if(SDLIMAGE_VENDORED AND SDLIMAGE_JXL)
-#     set(SDLIMAGE_JXL_VENDORED ON)
-# else()
-#     set(SDLIMAGE_JXL_VENDORED OFF)
-# endif()
-# cmake_dependent_option(SDLIMAGE_JXL_SHARED "Dynamically load JXL support (requires shared libjxl)"
-#     ${SDLIMAGE_DEPS_SHARED} SDLIMAGE_JXL OFF)
-
-# if(SDLIMAGE_VENDORED AND SDLIMAGE_PNG)
-#     set(SDLIMAGE_PNG_VENDORED ON)
-# else()
-#     set(SDLIMAGE_PNG_VENDORED OFF)
-# endif()
-# cmake_dependent_option(SDLIMAGE_PNG_SHARED "Dynamically load PNG support (requires shared libpng)"
-#     ${SDLIMAGE_DEPS_SHARED} "SDLIMAGE_PNG" OFF)
-
-# if(SDLIMAGE_VENDORED AND SDLIMAGE_TIF AND NOT (SDLIMAGE_BACKEND_IMAGEIO OR SDLIMAGE_BACKEND_WIC))
-#     set(SDLIMAGE_TIF_VENDORED ON)
-# else()
-#     set(SDLIMAGE_TIF_VENDORED OFF)
-# endif()
-# cmake_dependent_option(SDLIMAGE_TIF_SHARED "Dynamically load TIFF support (requires shared libtiff)"
-#     ${SDLIMAGE_DEPS_SHARED} SDLIMAGE_TIF OFF)
-
-# if(SDLIMAGE_VENDORED AND SDLIMAGE_WEBP)
-#     set(SDLIMAGE_WEBP_VENDORED ON)
-# else()
-#     set(SDLIMAGE_WEBP_VENDORED OFF)
-# endif()
-# cmake_dependent_option(SDLIMAGE_WEBP_SHARED "Dynamically load WEBP support (requires shared libwebp)"
-#     ${SDLIMAGE_DEPS_SHARED} SDLIMAGE_WEBP OFF)
-
-# # Save BUILD_SHARED_LIBS variable
-# set(SDLIMAGE_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-
-# set(sdl_required_components Headers)
-
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     set(sdl3_image_target_name SDL3_image-shared)
-#     set(sdl3_target_name SDL3::SDL3-shared)
-
-#     list(APPEND sdl_required_components SDL3-shared)
-# else()
-#     set(sdl3_image_target_name SDL3_image-static)
-#     set(sdl3_target_name SDL3::SDL3)
-# endif()
-
-# if(NOT TARGET SDL3::Headers OR NOT TARGET ${sdl3_target_name})
-#     find_package(SDL3 ${SDL_REQUIRED_VERSION} REQUIRED COMPONENTS ${sdl_required_components})
-# endif()
-
-# get_property(sdl3_version TARGET ${sdl3_target_name} PROPERTY SDL_FULL_VERSION)
-# if(sdl3_version AND sdl3_version VERSION_LESS SDL_REQUIRED_VERSION)
-#   message(FATAL_ERROR "SDL3 ${SDL_REQUIRED_VERSION} is required (${sdl3_version} was found)")
-# endif()
-
-# SDL_DetectTargetCPUArchitectures(SDL_CPU_NAMES)
-# SDL_DetectCMakePlatform()
-
-# # Set PROJECT_VERSION of subprojects to "" if it's project call does not set VERSION
-# cmake_policy(SET CMP0048 NEW)
-
-# # Allow cmake_dependent_option to use "Full Condition Syntax"
-# if(POLICY CMP0127)
-#     cmake_policy(SET CMP0127 NEW)
-# endif()
-
-# # OpenGL is required by dependencies of (dependencies of) some vendored libraries
-# if(NOT DEFINED OpenGL_GL_PREFERENCE)
-#     set(OpenGL_GL_PREFERENCE GLVND)
-# endif()
-
-# set(BUILD_SHARED_LIBS ${SDLIMAGE_BUILD_SHARED_LIBS})
 subdir('src')
-# add_library(SDL3_image::${sdl3_image_target_name} ALIAS ${sdl3_image_target_name})
-# if(NOT TARGET SDL3_image::SDL3_image)
-#     add_library(SDL3_image::SDL3_image ALIAS ${sdl3_image_target_name})
-# endif()
-# if("c_std_99" IN_LIST CMAKE_C_COMPILE_FEATURES)
-#     target_compile_features(${sdl3_image_target_name} PRIVATE c_std_99)
-# else()
-#     message(WARNING "target_compile_features does not know c_std_99 for C compiler")
-# endif()
-# target_include_directories(${sdl3_image_target_name}
-#     PUBLIC
-#         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-#         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
-# )
-# target_compile_definitions(${sdl3_image_target_name} PRIVATE
-#     BUILD_SDL
-#     SDL_BUILD_MAJOR_VERSION=${MAJOR_VERSION}
-#     SDL_BUILD_MINOR_VERSION=${MINOR_VERSION}
-#     SDL_BUILD_MICRO_VERSION=${MICRO_VERSION}
-# )
-# # Make sure SDL3's include directory comes first
-# target_include_directories(${sdl3_image_target_name} PRIVATE $<TARGET_PROPERTY:SDL3::Headers,INTERFACE_INCLUDE_DIRECTORIES>)
-# target_link_libraries(${sdl3_image_target_name} PUBLIC SDL3::Headers)
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     target_link_libraries(${sdl3_image_target_name} PRIVATE SDL3::SDL3-shared)
-# endif()
-# sdl_add_warning_options(${sdl3_image_target_name} WARNING_AS_ERROR ${SDLIMAGE_WERROR})
-# if(WIN32 AND SDLIMAGE_BUILD_SHARED_LIBS)
-#     target_sources(${sdl3_image_target_name} PRIVATE
-#         src/version.rc
-#     )
-#     if(MINGW)
-#         target_link_options(${sdl3_image_target_name} PRIVATE -static-libgcc)
-#     endif()
-# endif()
-# set_target_properties(${sdl3_image_target_name} PROPERTIES
-#     OUTPUT_NAME "SDL3_image"
-#     DEFINE_SYMBOL DLL_EXPORT
-#     EXPORT_NAME ${sdl3_image_target_name}
-#     C_VISIBILITY_PRESET "hidden"
-# )
 
-# sdl_target_link_option_version_file(${sdl3_image_target_name} "${CMAKE_CURRENT_SOURCE_DIR}/src/SDL_image.sym")
+add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + major_version, language: 'c')
+add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + minor_version, language: 'c')
+add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + micro_version, language: 'c')
 
-# if(NOT ANDROID)
-#     set_target_properties(${sdl3_image_target_name} PROPERTIES
-#         SOVERSION "${SO_VERSION_MAJOR}"
-#         VERSION "${SO_VERSION}"
-#     )
-#     if(APPLE)
-#         set_target_properties(${sdl3_image_target_name} PROPERTIES
-#             MACHO_COMPATIBILITY_VERSION "${DYLIB_COMPAT_VERSION}"
-#             MACHO_CURRENT_VERSION "${DYLIB_CURRENT_VERSION}"
-#         )
-#         sdl_no_deprecated_errors(${sdl3_image_target_name})
-#         set_property(TARGET ${sdl3_image_target_name} APPEND PROPERTY LINK_DEPENDS
-#             "${PROJECT_SOURCE_DIR}/src/SDL_image.exports")
-#         target_link_options(${sdl3_image_target_name} PRIVATE
-#             "SHELL:-Wl,-exported_symbols_list,${PROJECT_SOURCE_DIR}/src/SDL_image.exports")
-#     endif()
-# endif()
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     if(WIN32)
-#         set_target_properties(${sdl3_image_target_name} PROPERTIES
-#             PREFIX ""
-#             DLL_NAME_WITH_SOVERSION FALSE
-#         )
-#     endif()
-# else()
-#     if(MSVC)
-#         set_target_properties(${sdl3_image_target_name} PROPERTIES
-#             OUTPUT_NAME "SDL3_image-static"
-#         )
-#     endif()
-# endif()
-
-# # Use `Compatible Interface Properties` to ensure a shared SDL3_image is built with a shared SDL3
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     set_property(TARGET ${sdl3_image_target_name} PROPERTY INTERFACE_SDL3_SHARED TRUE)
-#     set_property(TARGET ${sdl3_image_target_name} APPEND PROPERTY COMPATIBLE_INTERFACE_BOOL SDL3_SHARED)
-# endif()
-
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     sdl_target_link_options_no_undefined(${sdl3_image_target_name})
-# endif()
-
-# if(SDLIMAGE_BUILD_SHARED_LIBS)
-#     # Make sure static library dependencies are built with -fPIC when building a shared SDL3_image
-#     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-# endif()
-
-# set(install_license_names)
-# macro(register_license NAME FILE)
-#   list(APPEND install_license_names ${NAME})
-#   set(install_license_${NAME} "${FILE}")
-# endmacro()
-
-# set(INSTALL_EXTRA_TARGETS)
-# set(INSTALL_EXTRA_CMAKE_MODULES)
-# set(PC_LIBS)
-# set(PC_REQUIRES)
-# set(SDLIMAGE_BACKENDS)
-
-# list(APPEND SDLIMAGE_BACKENDS STB)
-# set(SDLIMAGE_STB_ENABLED FALSE)
-# if(SDLIMAGE_BACKEND_STB)
-#     set(SDLIMAGE_STB_ENABLED TRUE)
-#     target_compile_definitions(${sdl3_image_target_name} PRIVATE USE_STBIMAGE)
-# endif()
-
-# list(APPEND SDLIMAGE_BACKENDS IMAGEIO)
-# set(SDLIMAGE_IMAGEIO_ENABLED FALSE)
-# if(APPLE)
-#     if(SDLIMAGE_BACKEND_IMAGEIO)
-#         enable_language(OBJC)
-#         set(SDLIMAGE_IMAGEIO_ENABLED TRUE)
-#         if(CMAKE_VERSION VERSION_LESS "3.24")
-#             set(genex_FRAMEWORK "1:")
-#         else()
-#             set(genex_FRAMEWORK "LINK_LIBRARY:FRAMEWORK,")
-#         endif()
-#         if(CMAKE_SYSTEM_NAME MATCHES ".*(Darwin|MacOS).*")
-#             target_link_libraries(${sdl3_image_target_name} PRIVATE $<${genex_FRAMEWORK}ApplicationServices>)
-#             target_link_libraries(${sdl3_image_target_name} PRIVATE $<${genex_FRAMEWORK}Foundation>)
-#         else()
-#             target_link_libraries(${sdl3_image_target_name} PRIVATE
-#                 $<${genex_FRAMEWORK}CoreGraphics>
-#                 $<${genex_FRAMEWORK}Foundation>
-#                 $<${genex_FRAMEWORK}ImageIO>
-#                 $<${genex_FRAMEWORK}MobileCoreServices>
-#                 $<${genex_FRAMEWORK}UIKit>
-#             )
-#         endif()
-#         target_link_libraries(${sdl3_image_target_name} PRIVATE objc)
-#         target_sources(${sdl3_image_target_name} PRIVATE
-#             src/IMG_ImageIO.m
-#         )
-
-#         if (SDLIMAGE_PNG AND NOT SDLIMAGE_BACKEND_STB)
-#             target_compile_definitions(${sdl3_image_target_name} PRIVATE PNG_USES_IMAGEIO)
-#         endif()
-#         if (SDLIMAGE_JPG AND NOT SDLIMAGE_BACKEND_STB)
-#             target_compile_definitions(${sdl3_image_target_name} PRIVATE JPG_USES_IMAGEIO)
-#         endif()
-#     else()
-#         target_compile_definitions(${sdl3_image_target_name} PRIVATE SDL_IMAGE_USE_COMMON_BACKEND)
-#     endif()
-# endif()
-
-# list(APPEND SDLIMAGE_BACKENDS WIC)
-# set(SDLIMAGE_WIC_ENABLED FALSE)
-# if(SDLIMAGE_BACKEND_WIC)
-#     set(SDLIMAGE_WIC_ENABLED TRUE)
-#     target_compile_definitions(${sdl3_image_target_name} PRIVATE SDL_IMAGE_USE_WIC_BACKEND)
-# endif()
-
-# list(APPEND SDLIMAGE_BACKENDS AVIF)
-# set(SDLIMAGE_AVIF_ENABLED FALSE)
-if get_option('SDLIMAGE_AVIF').enabled()
+if get_option('SDLIMAGE_BACKEND_STB').enabled()
+  add_project_arguments('-DUSE_STBIMAGE', language: 'c')
 endif
-# if(SDLIMAGE_AVIF)
-#     if(SDLIMAGE_AVIF_SHARED AND DEFINED SDLIMAGE_DYNAMIC_AVIF AND EXISTS "${SDLIMAGE_DYNAMIC_AVIF}")
-#         message(STATUS "${PROJECT_NAME}: Using libavif from CMake variable")
-#         set(SDLIMAGE_AVIF_ENABLED TRUE)
-#         endif()
-#     else()
-#         find_package(libavif "${LIBAVIF_MINIMUM_VERSION}" QUIET ${required})
-#         if(libavif_FOUND)
-#             message(STATUS "${PROJECT_NAME}: Using system libavif")
-#             set(SDLIMAGE_AVIF_ENABLED TRUE)
-#             if(NOT SDLIMAGE_AVIF_SHARED)
-#                 list(APPEND PC_REQUIRES "libavif >= ${LIBAVIF_MINIMUM_VERSION}")
-#             endif()
-#         else()
-#             message(STATUS "libavif-${LIBAVIF_MINIMUM_VERSION} or compatible not found")
-#             message(${fatal_error} "libavif NOT found")
-#         endif()
-#     endif()
-#     if(SDLIMAGE_AVIF_ENABLED)
-#         target_compile_definitions(${sdl3_image_target_name} PRIVATE
-#             LOAD_AVIF
-#             SAVE_AVIF=$<BOOL:${SDLIMAGE_AVIF_SAVE}>
-#         )
-#         if(SDLIMAGE_AVIF_SHARED)
-#             if(NOT DEFINED SDLIMAGE_DYNAMIC_AVIF)
-#                 target_include_directories(${sdl3_image_target_name} PRIVATE
-#                     $<TARGET_PROPERTY:avif,INCLUDE_DIRECTORIES>
-#                     $<TARGET_PROPERTY:avif,INTERFACE_INCLUDE_DIRECTORIES>
-#                     $<TARGET_PROPERTY:avif,INTERFACE_SYSTEM_INCLUDE_DIRECTORIES>
-#                 )
-#                 if(SDLIMAGE_AVIF_VENDORED)
-#                     add_dependencies(${sdl3_image_target_name} avif)
-#                 endif()
-#             endif()
-#             target_get_dynamic_library(SDLIMAGE_DYNAMIC_AVIF avif)
-#             message(STATUS "Dynamic libavif: ${SDLIMAGE_DYNAMIC_AVIF}")
-#             target_compile_definitions(${sdl3_image_target_name} PRIVATE "LOAD_AVIF_DYNAMIC=\"${SDLIMAGE_DYNAMIC_AVIF}\"")
-#         else()
-#             target_link_libraries(${sdl3_image_target_name} PRIVATE avif)
-#         endif()
-#     else()
-#         # Variable is used by test suite
-#         set(SDLIMAGE_AVIF_SAVE OFF)
-#     endif()
-# endif()
+
+if target_machine.system() == 'darwin'
+  add_language('objc', required: get_option('SDLIMAGE_BACKEND_IMAGEIO'))
+  if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
+    add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
+  endif
+  if get_option('SDLIMAGE_JPG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
+    add_project_arguments('-DJPG_USES_IMAGEIO', language: 'objc')
+  endif
+else
+  add_project_arguments('-DSDL_IMAGE_USE_COMMON_BACKEND', language: 'objc')
+endif
+
+if get_option('SDLIMAGE_BACKEND_WIC').enabled()
+  add_project_arguments('-DSDL_IMAGE_USE_WIC_BACKEND', language: 'c')
+endif
+
+
+
+
+if get_option('SDLIMAGE_AVIF').enabled()
+  add_project_arguments('-DLOAD_AVIF', language: 'c')
+  add_project_arguments('-DSAVE_AVIF=' + get_option('SDLIMAGE_AVIF_SAVE').enabled(), language: 'c')
+endif
 
 # list(APPEND SDLIMAGE_BACKENDS ANI)
 # set(SDLIMAGE_ANI_ENABLED FALSE)
