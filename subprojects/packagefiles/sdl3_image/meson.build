@@ -1,18 +1,28 @@
+# Rough PR Comments:
+# - Mostly 1:1 recreation of the logic used in the SDL_image/CMakeLists.txt (exceptions listed below)
+# - Meson best practices always preferred over the CMake logic
+# - CPack excluded because yknow, it aint CMake
+# - Vendored dependencies excluded as they're not directly included in the source
+# -
+#
+
 # list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-major_version = 3
-minor_version = 4
-micro_version = 0
-version_string = to_string(major_version) + '.' + to_string(minor_version) + '.' + to_string(micro_version)
-
 project('sdl3_image', 'c',
-  version: version_string)
+  meson_version: '>= 1.1.0',
+  version: '3.4.0')
+
+varr = meson.project_version().split('.')
+
+major_version = meson.project_version().split('.')[0]
+minor_version = meson.project_version().split('.')[1]
+micro_version = meson.project_version().split('.')[2]
 
 feature_args = []
 
 sdl3_dep = dependency('sdl3', version: '>=3.4.0') # Minimum allowed SDL3 version, not SDL3_IMAGE version
 libpng_dep = dependency('libpng', required: get_option('SDLIMAGE_PNG_LIBPNG'))
-libavif_dep = dependency('libavif', version: '>=0.1.0' required: false)
+libavif_dep = dependency('libavif', version: '>=0.1.0', required: false)
 
 deps = [sdl3_dep, libpng_dep, libavif_dep]
 
@@ -25,10 +35,6 @@ deps = [sdl3_dep, libpng_dep, libavif_dep]
 
 sdlimage_rootproject = not meson.is_subproject()
 
-# Assume MSVC projects don't have a package manager and need vendored dependencies (by default).
-# Most other platforms have some kind of package manager.
-get_option('SDLIMAGE_VENDORED').enable_auto_if(meson.get_compiler('c') == 'MSVC')
-
 # if(NOT DEFINED CMAKE_FIND_PACKAGE_PREFER_CONFIG)
 #     set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 # endif()
@@ -37,13 +43,13 @@ get_option('SDLIMAGE_VENDORED').enable_auto_if(meson.get_compiler('c') == 'MSVC'
 # include(CMakePackageConfigHelpers)
 # include(GNUInstallDirs)
 
-platform_supports_shared = target_machine.system() == 'emscripten' ? true : false
+platform_supports_shared = target_machine.system() == 'emscripten' ? false : true
 
-get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'POSITION_INDEPENDENT_CODE: Target does not support shared libraries')
+get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'Target "' + target_machine.system() + '" does not support shared libraries')
 
 # SDL3_image-3.4.0, CMakeLists.txt, line 65
-get_option('SDLIMAGE_INSTALL').require(!subproject('sdl3'), error_message: 'SDLIMAGE_INSTALL: Cannot install SDL3_image when SDL3 is built in same build')
-get_option('SDLIMAGE_INSTALL').require(sdlimage_rootproject, error_message: 'SDLIMAGE_INSTALL: Cannot install SDL3_image when it is a subproject')
+get_option('SDLIMAGE_INSTALL').require(not subproject('sdl3').found(), error_message: 'Cannot install SDL3_image when SDL3 is built in same build')
+get_option('SDLIMAGE_INSTALL').require(sdlimage_rootproject, error_message: 'Cannot install SDL3_image when it is a subproject')
 
 # cmake_dependent_option(SDLIMAGE_INSTALL_MAN "Install man pages for SDL3_image" OFF "SDLIMAGE_INSTALL" OFF)
 # cmake_dependent_option(SDLIMAGE_DEPS_SHARED "Load dependencies dynamically" ON PLATFORM_SUPPORTS_SHARED OFF)
@@ -77,15 +83,8 @@ get_option('SDLIMAGE_TGA_SAVE').enable_auto_if(get_option('SDLIMAGE_TGA').enable
 get_option('SDLIMAGE_WEBP_SAVE').enable_auto_if(get_option('SDLIMAGE_WEBP').enabled())
 get_option('SDLIMAGE_PNG_LIBPNG').enable_auto_if(get_option('SDLIMAGE_PNG').enabled())
 
-sdlimage_avif_vendored = get_option('SDLIMAGE_VENDORED' and 'SDLIMAGE_AVIF') ? true : false
 # cmake_dependent_option(SDLIMAGE_AVIF_SHARED "Dynamically load AVIF support (requires shared libavif)"
 #     ${SDLIMAGE_DEPS_SHARED} SDLIMAGE_AVIF ON)
-
-sdlimage_dav1d = sdlimage_avif_vendored ? true : false
-sdlimage_dav1d = sdlimage_avif_vendored ? true : false
-sdlimage_dav1d_vendored = sdlimage_avif_vendored ? true : false
-sdlimage_aom = sdlimage_avif_vendored ? true : false
-sdlimage_aom_vendored = sdlimage_avif_vendored ? true : false
 
 # if(SDLIMAGE_AVIF_SHARED)
 #   set(SDLIMAGE_DAV1D_SHARED ON)
@@ -442,8 +441,8 @@ subdir('src')
 
 # list(APPEND SDLIMAGE_BACKENDS AVIF)
 # set(SDLIMAGE_AVIF_ENABLED FALSE)
-if get_option('SDLIMAGE_AVIF'):
-  if get_option('SDLIMAGE_VENDORED'):
+if get_option('SDLIMAGE_AVIF').enabled()
+endif
 # if(SDLIMAGE_AVIF)
 #     if(SDLIMAGE_AVIF_VENDORED)
 #         set(SDLIMAGE_AVIF_ENABLED TRUE)
@@ -1179,20 +1178,6 @@ if get_option('SDLIMAGE_AVIF'):
 #     foreach(license_name IN LISTS install_license_names)
 #         install(FILES "${install_license_${license_name}}" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME}/optional" RENAME "LICENSE.${license_name}.txt")
 #     endforeach()
-
-#     if(SDLIMAGE_INSTALL_CPACK)
-#         if(MSVC)
-#             set(CPACK_GENERATOR "ZIP")
-#         else()
-#             set(CPACK_GENERATOR "TGZ")
-#         endif()
-#         configure_file(cmake/CPackProjectConfig.cmake.in CPackProjectConfig.cmake @ONLY)
-#         set(CPACK_PROJECT_CONFIG_FILE "${PROJECT_BINARY_DIR}/CPackProjectConfig.cmake")
-#         # CPACK_SOURCE_PACKAGE_FILE_NAME must end with "-src" (so we can block creating a source archive)
-#         set(CPACK_SOURCE_PACKAGE_FILE_NAME "SDL${PROJECT_VERSION_MAJOR}-${PROJECT_VERSION}-src")
-#         set(CPACK_PACKAGE_DIRECTORY "${CMAKE_BINARY_DIR}/dist")
-#         include(CPack)
-#     endif()
 
 #     if(SDLIMAGE_INSTALL_MAN)
 #         sdl_get_git_revision_hash(SDLIMAGE_REVISION)
