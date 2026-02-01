@@ -3,10 +3,6 @@ project('sdl3_image', 'c',
   version: '3.4.0',
   default_options: 'c_std=c99')
 
-major_version = meson.project_version().split('.')[0]
-minor_version = meson.project_version().split('.')[1]
-micro_version = meson.project_version().split('.')[2]
-
 sdl3_dep = dependency('sdl3', version: '>=3.4.0') # Minimum allowed SDL3 version, not SDL3_IMAGE version
 libpng_dep = dependency('libpng', required: get_option('SDLIMAGE_PNG_LIBPNG'))
 libavif_dep = dependency('libavif', version: '>=0.1.0', required: get_option('SDLIMAGE_AVIF')) # Absent from wrapdb as of Feb 1 2026
@@ -47,10 +43,10 @@ endif
 
 # Boolean correlates to whether the extension is natively savable or not
 sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true, 
-                      'JPG': true, 'JXL': false, 'LBM': false, 'PCX': false,
-                      'PNG': true, 'PNM': false, 'QOI': false, 'SVG': false,
-                      'TGA': true, 'TIF': false, 'WEBP': true, 'XCF': false,
-                      'XPM': false, 'XV': false} 
+                       'JPG': true, 'JXL': false, 'LBM': false, 'PCX': false,
+                       'PNG': true, 'PNM': false, 'QOI': false, 'SVG': false,
+                       'TGA': true, 'TIF': false, 'WEBP': true, 'XCF': false,
+                       'XPM': false, 'XV': false} 
 
 # Sets load macros, save macros, and guards against
 # enabling saving without enabling loading
