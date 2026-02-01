@@ -42,10 +42,6 @@ get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwi
 
 subdir('src')
 
-add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + major_version, language: 'c')
-add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + minor_version, language: 'c')
-add_project_arguments('-DSDL_BUILD_MAJOR_VERSION=' + micro_version, language: 'c')
-
 if get_option('SDLIMAGE_BACKEND_STB').enabled()
   add_project_arguments('-DUSE_STBIMAGE', language: 'c')
 endif
