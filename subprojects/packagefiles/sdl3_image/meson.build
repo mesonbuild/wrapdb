@@ -21,10 +21,6 @@ platform_supports_shared = target_machine.system() == 'emscripten' ? false : tru
 
 get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'Target "' + target_machine.system() + '" does not support shared libraries')
 
-# SDL3_image-3.4.0, CMakeLists.txt, line 65
-get_option('SDLIMAGE_INSTALL').require(not subproject('sdl3').found(), error_message: 'Cannot install SDL3_image when SDL3 is built in same build')
-get_option('SDLIMAGE_INSTALL').require(not meson.is_subproject(), error_message: 'Cannot install SDL3_image when it is a subproject')
-
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
 
