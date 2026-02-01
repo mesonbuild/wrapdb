@@ -19,13 +19,6 @@ libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG'))
 
 deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep, libtiff_dep, libwebp_dep, libjpeg_dep]
 
-# include("${CMAKE_CURRENT_LIST_DIR}/cmake/GetGitRevisionDescription.cmake")
-# include("${CMAKE_CURRENT_LIST_DIR}/cmake/PrivateSdlFunctions.cmake")
-# include("${CMAKE_CURRENT_LIST_DIR}/cmake/sdlcpu.cmake")
-# include("${CMAKE_CURRENT_LIST_DIR}/cmake/sdlplatform.cmake")
-# include("${CMAKE_CURRENT_LIST_DIR}/cmake/sdlmanpages.cmake")
-# sdl_calculate_derived_version_variables(${MAJOR_VERSION} ${MINOR_VERSION} ${MICRO_VERSION})
-
 platform_supports_shared = target_machine.system() == 'emscripten' ? false : true
 
 get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'Target "' + target_machine.system() + '" does not support shared libraries')
