@@ -1,4 +1,4 @@
-img_src = files(
+sdl3_image_src = files(
   'IMG_avif.c',
   'IMG_bmp.c',
   'IMG_gif.c',
