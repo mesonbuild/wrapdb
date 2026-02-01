@@ -18,13 +18,6 @@ libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG'))
 deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep, libtiff_dep, libwebp_dep, libjpeg_dep]
 subdir('src')
 
-platform_supports_shared = target_machine.system() == 'emscripten' ? false : true
-
-get_option('POSITION_INDEPENDENT_CODE').require(platform_supports_shared, error_message: 'Target "' + target_machine.system() + '" does not support shared libraries')
-if get_option('POSITION_INDEPENDENT_CODE').enabled()
-  add_project_arguments('-fPIC', language: 'c')
-
-
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
 get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
 
@@ -36,7 +29,7 @@ endif
 
 get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
 if target_machine.system() == 'darwin'
-  add_language('objc')
+  add_language('objc', native: false)
   if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
     add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
   endif
@@ -52,7 +45,6 @@ if get_option('SDLIMAGE_BACKEND_STB').enabled()
 endif
 
 
-
 # Boolean correlates to whether the extension is natively savable or not
 sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true, 
                       'JPG': true, 'JXL': false, 'LBM': false, 'PCX': false,
@@ -60,7 +52,7 @@ sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true,
                       'TGA': true, 'TIF': false, 'WEBP': true, 'XCF': false,
                       'XPM': false, 'XV': false} 
 
-# Sets load macros, save macros and guards against
+# Sets load macros, save macros, and guards against
 # enabling saving without enabling loading
 foreach extension, savable : sdlimage_extensions
   if get_option(f'SDLIMAGE_@extension@').enabled()
@@ -69,14 +61,15 @@ foreach extension, savable : sdlimage_extensions
         add_project_arguments(f'-DSAVE_@extension@')
     endif
   elif savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
-    get_option(f'SDLIMAGE_@extension@_SAVE').disable_if(true, error_message: f'"SDLIMAGE_@extension@" must be enabled to enable saving')
+    get_option(f'SDLIMAGE_@extension@_SAVE').disable_if(true, error_message: f'"SDLIMAGE_@extension@" must be enabled')
   endif
 endforeach
 
 sdl3_image_lib = library('sdl3_image',
   sdl3_image_src,
   include_directories: 'include',
-  dependencies: deps)
+  dependencies: deps,
+  install: true)
 
 sdl3_image_dep = declare_dependency(include_directories: 'include',
   link_with: sdl3_image_lib)
