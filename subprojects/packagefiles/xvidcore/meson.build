@@ -245,7 +245,7 @@ else
   sources += files('src/motion/gmc.c')
 endif
 
-xvidcore = both_libraries(
+xvidcore = library(
   'xvidcore',
   sources,
   install: true,
