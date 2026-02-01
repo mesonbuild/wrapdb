@@ -28,8 +28,8 @@ sdl3_image_src = files(
   'IMG_xxx.c',
 )
 
-if meson.get_compiler('c').get_id() == 'msvc' and get_option('default_library') == 'shared'
-  sdl3_image_src += 'version.rc'
+if target_machine.system() == 'windows' and get_option('default_library') == 'shared'
+  import('windows').compile_resources('version.rc')
 endif
  
 if target_machine.system() == 'darwin'

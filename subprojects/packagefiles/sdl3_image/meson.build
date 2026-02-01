@@ -58,7 +58,7 @@ foreach extension, savable : sdlimage_extensions
   if get_option(f'SDLIMAGE_@extension@').enabled()
     add_project_arguments(f'-DLOAD_@extension@')
     if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
-        add_project_arguments(f'-DSAVE_@extension@')
+      add_project_arguments(f'-DSAVE_@extension@')
     endif
   elif savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
     get_option(f'SDLIMAGE_@extension@_SAVE').disable_if(true, error_message: f'"SDLIMAGE_@extension@" must be enabled')
