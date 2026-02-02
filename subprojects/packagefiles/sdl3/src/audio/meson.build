@@ -10,6 +10,10 @@ else
   subdir('pipewire')
 endif
 
+# Always include dummy audio driver as fallback
+cdata.set('SDL_AUDIO_DRIVER_DUMMY', 1)
+subdir('dummy')
+
 sources += files(
   'SDL_audio.c',
   'SDL_audiocvt.c',
