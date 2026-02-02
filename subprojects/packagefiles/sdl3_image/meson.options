@@ -1,12 +1,4 @@
-option('BUILD_SHARED_LIBS', type: 'feature', value: 'enabled', description: 'Build the library as a shared library')
-
-option('SDLIMAGE_INSTALL', type: 'feature', value: 'disabled', description: 'Enable SDL3_image install target')
-option('SDLIMAGE_SAMPLES', type: 'feature', value: 'disabled', description: 'Build the SDL3_image sample program(s)')
-option('SDLIMAGE_SAMPLES_INSTALL', type: 'feature', value: 'disabled', description: 'Install the SDL3_image sample program(s)')
-option('SDLIMAGE_TESTS', type: 'feature', value: 'disabled', description: 'Build unit tests?')
-option('SDLIMAGE_TESTS_INSTALL', type: 'feature', value: 'disabled', description: 'Install unit tests?')
-
-option('SDLIMAGE_BACKEND_STB', type: 'feature', value: 'enabled', description: 'Use stb_image for loading JPEG files')
+option('SDLIMAGE_BACKEND_STB', type: 'feature', value: 'auto', description: 'Use stb_image for loading JPEG files')
 option('SDLIMAGE_BACKEND_WIC', type: 'feature', value: 'auto', description: 'Add WIC backend (Windows Imaging Component)')
 option('SDLIMAGE_BACKEND_IMAGEIO', type: 'feature', value: 'auto', description: 'Use native Mac OS X frameworks for loading images')
 option('SDLIMAGE_PNG_LIBPNG', type: 'feature', value: 'auto', description: 'Support loading PNGs using libpng (useful for APNGs)')
