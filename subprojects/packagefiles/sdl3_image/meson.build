@@ -4,12 +4,12 @@ project('sdl3_image', 'c',
   default_options: 'c_std=c99')
 
 sdl3_dep = dependency('sdl3', version: '>=3.4.0') # Minimum allowed SDL3 version, not SDL3_IMAGE version
-libpng_dep = dependency('libpng', required: get_option('SDLIMAGE_PNG_LIBPNG'))
+libpng_dep = dependency('libpng', required: get_option('SDLIMAGE_PNG_LIBPNG')) # STB loadable
 libavif_dep = dependency('libavif', version: '>=0.1.0', required: get_option('SDLIMAGE_AVIF')) # Absent from wrapdb as of Feb 1 2026
 libjxl_dep = dependency('libjxl', required: get_option('SDLIMAGE_JXL')) # Absent from wrapdb as of Feb 1 2026
 libtiff_dep = dependency('libtiff', required: get_option('SDLIMAGE_TIF'))
 libwebp_dep = dependency('libwebp', required: get_option('SDLIMAGE_WEBP'))
-libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG'))
+libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG')) # STB loadable
 
 deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep, libtiff_dep, libwebp_dep, libjpeg_dep]
 subdir('src')
@@ -69,3 +69,5 @@ sdl3_image_lib = library('sdl3_image',
 
 sdl3_image_dep = declare_dependency(include_directories: 'include',
   link_with: sdl3_image_lib)
+
+meson.override_dependency('sdl3_image', sdl3_image_dep)
