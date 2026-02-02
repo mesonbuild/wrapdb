@@ -26,14 +26,15 @@ endif
 get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
 if target_machine.system() == 'darwin'
   add_language('objc', native: false)
-  if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
-    add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
-  endif
-  if get_option('SDLIMAGE_JPG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
-    add_project_arguments('-DJPG_USES_IMAGEIO', language: 'objc')
-  endif
-else
-  add_project_arguments('-DSDL_IMAGE_USE_COMMON_BACKEND', language: 'objc')
+  if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
+    if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
+      add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
+    endif
+    if get_option('SDLIMAGE_JPG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
+      add_project_arguments('-DJPG_USES_IMAGEIO', language: 'objc')
+    endif
+  else
+    add_project_arguments('-DSDL_IMAGE_USE_COMMON_BACKEND', language: 'objc')
 endif
 
 if get_option('SDLIMAGE_BACKEND_STB').enabled()
