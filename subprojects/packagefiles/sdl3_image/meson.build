@@ -14,10 +14,6 @@ libjpeg_dep = dependency('libjpeg-turbo', required: get_option('SDLIMAGE_JPG')) 
 deps = [sdl3_dep, libpng_dep, libavif_dep, libjxl_dep, libtiff_dep, libwebp_dep, libjpeg_dep]
 subdir('src')
 
-get_option('SDLIMAGE_SAMPLES').disable_auto_if(meson.is_subproject())
-get_option('SDLIMAGE_SAMPLES').disable_auto_if(target_machine.system() == 'android')
-
-
 get_option('SDLIMAGE_BACKEND_WIC').require(target_machine.system() == 'windows', error_message : 'Windows must be set as the build target')
 if get_option('SDLIMAGE_BACKEND_WIC').enabled()
   add_project_arguments('-DSDL_IMAGE_USE_WIC_BACKEND', language: 'c')
@@ -25,7 +21,7 @@ endif
 
 get_option('SDLIMAGE_BACKEND_IMAGEIO').require(target_machine.system() == 'darwin', error_message: 'Darwin must be set as the build target')
 if target_machine.system() == 'darwin'
-  add_language('objc', native: false)
+  add_languages('objc', native: false)
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option('SDLIMAGE_BACKEND_STB').enabled()
       add_project_arguments('-DPNG_USES_IMAGEIO', language: 'objc')
@@ -35,6 +31,7 @@ if target_machine.system() == 'darwin'
     endif
   else
     add_project_arguments('-DSDL_IMAGE_USE_COMMON_BACKEND', language: 'objc')
+  endif
 endif
 
 if get_option('SDLIMAGE_BACKEND_STB').enabled()
@@ -53,9 +50,9 @@ sdlimage_extensions = {'ANI': true, 'AVIF': true, 'BMP': true, 'GIF': true,
 # enabling saving without enabling loading
 foreach extension, savable : sdlimage_extensions
   if get_option(f'SDLIMAGE_@extension@').enabled()
-    add_project_arguments(f'-DLOAD_@extension@')
+    add_project_arguments(f'-DLOAD_@extension@', language: 'c')
     if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
-      add_project_arguments(f'-DSAVE_@extension@')
+      add_project_arguments(f'-DSAVE_@extension@', language: 'c')
     endif
   elif savable and get_option(f'SDLIMAGE_@extension@_SAVE').enabled()
     get_option(f'SDLIMAGE_@extension@_SAVE').disable_if(true, error_message: f'"SDLIMAGE_@extension@" must be enabled')
