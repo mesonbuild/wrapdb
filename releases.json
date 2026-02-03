@@ -3116,6 +3116,14 @@
       "2.5.0-1"
     ]
   },
+  "msft_proxy4": {
+    "dependency_names": [
+      "msft_proxy4"
+    ],
+    "versions": [
+      "4.0.1-1"
+    ]
+  },
   "msgpackc-cxx": {
     "dependency_names": [
       "msgpack-cxx"

@@ -1047,6 +1047,17 @@
       "mpark-patterns:tests=enabled"
     ]
   },
+  "msft_proxy4": {
+    "_comment": "Fails in clang-cl: https://github.com/llvm/llvm-project/issues/143245",
+    "_comment2": "Reading symlinks when generating examples from doc requires administrator.",
+    "build_on": {
+      "windows": false
+    },
+    "build_options": [
+      "msft_proxy4:tests=enabled",
+      "msft_proxy4:benchmarks=enabled"
+    ]
+  },
   "msgpackc-cxx": {
     "alpine_packages": [
       "boost-dev"
