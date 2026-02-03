@@ -1,10 +1,10 @@
 # Build targets.
 option(
-    'tool'     ,
+    'tool',
     type: 'feature',
 )
 option(
-    'tests'    ,
+    'tests',
     type: 'feature',
 )
 option(
@@ -20,19 +20,19 @@ option(
 )
 # Debug build only: use libuv for event-based tests.
 option(
-    'libuv'    ,
+    'libuv',
     type: 'feature',
 )
 
 # CA.
 option(
-    'ca_bundle'  ,
-    type: 'string' ,
+    'ca_bundle',
+    type: 'string',
     value: 'auto',
 )
 option(
-    'ca_path'    ,
-    type: 'string' ,
+    'ca_path',
+    type: 'string',
     value: 'auto',
 )
 option(
@@ -47,105 +47,105 @@ option(
 # Features. {{{
 
 option(
-    'bindlocal'      ,
+    'bindlocal',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'brotli'         ,
+    'brotli',
     type: 'feature',
 )
 option(
-    'cookies'        ,
-    type: 'feature',
-    value: 'enabled',
-)
-option(
-    'doh'            ,
+    'cookies',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'form-api'       ,
+    'doh',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'getoptions'     ,
+    'form-api',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'gsasl'          ,
-    type: 'feature',
-)
-option(
-    'http2'          ,
-    type: 'feature',
-)
-option(
-    'ipv6'           ,
-    type: 'feature',
-)
-option(
-    'libcurl-option' ,
+    'getoptions',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'libz'           ,
+    'gsasl',
     type: 'feature',
 )
 option(
-    'mime'           ,
+    'http2',
     type: 'feature',
-    value: 'enabled',
 )
 option(
-    'netrc'          ,
+    'ipv6',
     type: 'feature',
-    value: 'enabled',
 )
 option(
-    'parsedate'      ,
+    'libcurl-option',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'progress-meter' ,
+    'libz',
+    type: 'feature',
+)
+option(
+    'mime',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'proxy'          ,
+    'netrc',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'psl'            ,
-    type: 'feature',
-)
-option(
-    'sha512_256'     ,
+    'parsedate',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'shuffle-dns'    ,
+    'progress-meter',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'socketpair'     ,
+    'proxy',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'sspi'           ,
+    'psl',
     type: 'feature',
 )
 option(
-    'unixsockets'    ,
+    'sha512_256',
+    type: 'feature',
+    value: 'enabled',
+)
+option(
+    'shuffle-dns',
+    type: 'feature',
+    value: 'enabled',
+)
+option(
+    'socketpair',
+    type: 'feature',
+    value: 'enabled',
+)
+option(
+    'sspi',
+    type: 'feature',
+)
+option(
+    'unixsockets',
     type: 'feature',
 )
 option(
@@ -154,12 +154,12 @@ option(
     value: 'enabled',
 )
 option(
-    'websockets'     ,
+    'websockets',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'zstd'           ,
+    'zstd',
     type: 'feature',
 )
 
@@ -178,27 +178,27 @@ option(
 
 # Authentication.
 option(
-    'aws'           ,
+    'aws',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'basic-auth'    ,
+    'basic-auth',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'bearer-auth'   ,
+    'bearer-auth',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'digest-auth'   ,
+    'digest-auth',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'kerberos-auth' ,
+    'kerberos-auth',
     type: 'feature',
     value: 'enabled',
 )
@@ -234,7 +234,7 @@ option(
 
 # HTTP.
 option(
-    'alt-svc'    ,
+    'alt-svc',
     type: 'feature',
 )
 option(
@@ -243,11 +243,11 @@ option(
     value: 'enabled',
 )
 option(
-    'hsts'       ,
+    'hsts',
     type: 'feature',
 )
 option(
-    'http-auth'  ,
+    'http-auth',
     type: 'feature',
     value: 'enabled',
 )
@@ -279,31 +279,31 @@ option(
 
 # SSL support.
 option(
-    'ssl'                ,
+    'ssl',
     type: 'feature',
 )
 option(
-    'tls-srp'            ,
+    'tls-srp',
     type: 'feature',
 )
 option(
     'ssl-default-backend',
-    type: 'combo'  ,
+    type: 'combo',
     choices: ['implicit', 'openssl', 'schannel', 'secure-transport'],
 )
 # Backends.
 option(
-    'openssl'            ,
+    'openssl',
     type: 'feature',
 )
 # Windows only.
 option(
-    'schannel'           ,
+    'schannel',
     type: 'feature',
 )
 # macOS only.
 option(
-    'secure-transport'   ,
+    'secure-transport',
     type: 'feature',
 )
 
@@ -312,16 +312,16 @@ option(
 # Protocols. {{{
 
 option(
-    'dict'  ,
+    'dict',
     type: 'feature',
 )
 option(
-    'file'  ,
+    'file',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'ftp'   ,
+    'ftp',
     type: 'feature',
 )
 option(
@@ -329,48 +329,48 @@ option(
     type: 'feature',
 )
 option(
-    'http'  ,
+    'http',
     type: 'feature',
     value: 'enabled',
 )
 option(
-    'imap'  ,
+    'imap',
     type: 'feature',
 )
 option(
-    'ipfs'  ,
+    'ipfs',
     type: 'feature',
 )
 option(
-    'ldap'  ,
+    'ldap',
     type: 'feature',
 )
 option(
-    'ldaps' ,
+    'ldaps',
     type: 'feature',
 )
 option(
-    'mqtt'  ,
+    'mqtt',
     type: 'feature',
 )
 option(
-    'pop3'  ,
+    'pop3',
     type: 'feature',
 )
 option(
-    'rtmp'  ,
+    'rtmp',
     type: 'feature',
 )
 option(
-    'rtsp'  ,
+    'rtsp',
     type: 'feature',
 )
 option(
-    'smb'   ,
+    'smb',
     type: 'feature',
 )
 option(
-    'smtp'  ,
+    'smtp',
     type: 'feature',
 )
 option(
@@ -378,7 +378,7 @@ option(
     type: 'feature',
 )
 option(
-    'tftp'  ,
+    'tftp',
     type: 'feature',
 )
 
@@ -391,7 +391,7 @@ option(
     value: 'disabled',
 )
 option(
-    '_enabled' ,
+    '_enabled',
     type: 'feature',
     value: 'enabled',
 )
