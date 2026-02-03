@@ -21,7 +21,6 @@ env_defines = {
 }
 
 src = files(
-  'src/jitterentropy-base.c',
   'src/jitterentropy-gcd.c',
   'src/jitterentropy-health.c',
   'src/jitterentropy-noise.c',
@@ -59,11 +58,24 @@ if enable_internal_timer_opt.allowed()
   private_deps += [dependency('threads')]
 endif
 
+libjitterentropy_base = static_library(
+  'jitterentropy-base',
+  'src/jitterentropy-base.c',
+  include_directories: [inc, private_inc],
+  dependencies: [deps, private_deps],
+  c_args: c_args,
+  install: false,
+  gnu_symbol_visibility: 'hidden',
+  # CPU jitter should not be optimized, it reduces the entropy quality.
+  override_options: ['optimization=0'],
+)
+
 libjitterentropy = library(
   'jitterentropy',
   src,
   include_directories: [inc, private_inc],
   dependencies: [deps, private_deps],
+  link_whole: [libjitterentropy_base],
   c_args: c_args,
   install: true,
   version: meson.project_version(),
