@@ -2,7 +2,8 @@ project(
   'tl-optional',
   'cpp',
   license: 'CC0-1.0',
-  version: '1.0.0',
+  version: '1.1.0',
+  meson_version: '>=0.56.0',
 )
 
 tl_optional_dep = declare_dependency(
