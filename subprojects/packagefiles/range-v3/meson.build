@@ -3,7 +3,7 @@ project(
   'cpp',
   version: '0.12.0',
   meson_version: '>=0.59.0',
-  license: 'Boost, libc++, Stepanov and McJones "Elements of Programming", SGI STL',
+  license: 'BSL-1.0 and NCSA and MIT and Stepanov McJones Elements of Programming and SGI STL',
 )
 
 range_inc = include_directories('include')
