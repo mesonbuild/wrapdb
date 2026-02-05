@@ -1,7 +1,7 @@
 project(
   'libgrapheme',
   'c',
-  version: '2.0.2',
+  version: '3.0.0',
   default_options: ['c_std=c99', 'warning_level=3', 'b_lundef=false'],
   meson_version: '>=0.57.0',
   license: 'ISC',
@@ -19,6 +19,8 @@ pkg_mod = import('pkgconfig')
 cc = meson.get_compiler('c')
 cc_id = cc.get_id()
 os_name = target_machine.system()
+
+chdir_wrapper = files('chdir_wrapper.py')
 
 subdir('src')
 
@@ -68,3 +70,5 @@ endif
 if get_option('benchmark')
   subdir('benchmark')
 endif
+
+meson.override_dependency('libgrapheme', libgrapheme_dep)
