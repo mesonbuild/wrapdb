@@ -6,6 +6,14 @@ project(
   license: 'BSL-1.0 and NCSA and MIT and Stepanov McJones Elements of Programming and SGI STL',
 )
 
+if meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
+  add_project_arguments(
+    '/permissive-',
+    '-fno-delayed-template-parsing',
+    language: 'cpp',
+  )
+endif
+
 range_inc = include_directories('include')
 
 range_dep = declare_dependency(

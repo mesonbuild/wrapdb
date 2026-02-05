@@ -1333,6 +1333,12 @@
   "rang": {
     "ignore_upstream_meson": "3.2"
   },
+  "range-v3": {
+    "_comment": "c++17 is required when using Visual Studio",
+    "build_options": [
+      "range-v3:cpp_std=c++17",
+    ]
+  },
   "rdkafka": {
     "_comment": "- broken CI finds bad version of OpenSSL on Windows",
     "build_options": [
