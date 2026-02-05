@@ -21,4 +21,6 @@ range_dep = declare_dependency(
 )
 meson.override_dependency('range-v3', range_dep)
 
-subdir('test')
+if get_option('tests').disable_auto_if(meson.is_subproject()).allowed()
+  subdir('test')
+endif
