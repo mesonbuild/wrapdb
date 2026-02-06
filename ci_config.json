@@ -1553,6 +1553,19 @@
       "tinyfsm:build_examples=true"
     ]
   },
+  "volk": {
+    "alpine_packages": [
+      "py3-mako"
+    ],
+    "brew_packages": [
+    ],
+    "debian_packages": [
+      "python3-mako"
+    ],
+    "msys_packages": [
+      "python-mako"
+    ]
+  },
   "wayland": {
     "_comment": [
       "- relies on Linux-specific APIs"
