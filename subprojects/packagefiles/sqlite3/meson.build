@@ -2,8 +2,8 @@ project(
   'sqlite3',
   'c',
   license: 'blessing',
-  version: '3.51.1',
-  meson_version: '>=0.48.0',
+  version: '3.51.2',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
@@ -76,14 +76,12 @@ foreach extension : extensions
   if enabled
     sqlite_args += extension[2]
   endif
-  if meson.version().version_compare('>=0.53.0')
-    summary(
-      extension[0],
-      enabled,
-      bool_yn: true,
-      section: 'Extensions',
-    )
-  endif
+  summary(
+    extension[0],
+    enabled,
+    bool_yn: true,
+    section: 'Extensions',
+  )
 endforeach
 
 if host_machine.system() == 'windows'
@@ -150,9 +148,7 @@ sqlite3_dep = declare_dependency(
   include_directories: depinc,
   link_with: libsqlite3,
 )
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('sqlite3', sqlite3_dep)
-endif
+meson.override_dependency('sqlite3', sqlite3_dep)
 
 install_headers('sqlite3.h')
 
