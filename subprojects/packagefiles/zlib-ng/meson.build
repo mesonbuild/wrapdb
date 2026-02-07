@@ -59,9 +59,14 @@ summary(
 
 cc = meson.get_compiler('c')
 
+configure_file(
+  input: 'zlib@0@.map.in'.format(suffix),
+  output: 'zlib@0@.map'.format(suffix),
+  configuration: sym_prefix,
+)
 link_args += cc.get_supported_link_arguments(
   '-Wl,--version-script,@0@/zlib@1@.map'.format(
-    meson.current_source_dir(),
+    meson.current_build_dir(),
     suffix,
   ),
   # force-disable LTO at link time in case -flto was passed manually
@@ -210,12 +215,12 @@ with_gzfileop = get_option('gzfileop') or get_option('zlib-compat')
 if with_gzfileop
   compile_args += '-DWITH_GZFILEOP'
   pkg_config_cflags += '-DWITH_GZFILEOP'
-  src += configure_file(
-    input: 'gzread.c.in',
-    output: 'gzread.c',
+  configure_file(
+    input: 'gzread_mangle.h.in',
+    output: 'gzread_mangle.h',
     configuration: sym_prefix,
   )
-  src += ['gzlib.c', 'gzwrite.c']
+  src += ['gzlib.c', 'gzread.c', 'gzwrite.c']
 endif
 summary(
   'gzFile functions',
