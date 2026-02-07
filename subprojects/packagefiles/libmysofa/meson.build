@@ -34,11 +34,7 @@ configure_file(
   format: 'cmake',
 )
 
-configure_file(
-  input: 'src/hrtf/mysofa_export.h.in',
-  output: 'mysofa_export.h',
-  configuration: conf_data,
-)
+subdir('src/hrtf')
 
 includes = [
   include_directories('src/'),
