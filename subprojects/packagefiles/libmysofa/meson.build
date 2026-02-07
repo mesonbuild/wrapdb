@@ -1,6 +1,6 @@
 project(
   'libmysofa',
-  ['c', 'cpp'],
+  'c',
   meson_version: '>= 1.3.0',
   version: '1.3.2',
   license: 'BSD-3-Clause',
@@ -34,18 +34,10 @@ configure_file(
   format: 'cmake',
 )
 
-export_config = configuration_data()
-
-if get_option('default_library') == 'static'
-  export_config.set('MYSOFA_STATIC_DEFINE', 1)
-else
-  export_config.set('MYSOFA_STATIC_DEFINE', 0)
-endif
-
 configure_file(
-  input: 'src/hrtf/mysofa_export.in.h.meson',
+  input: 'src/hrtf/mysofa_export.h.in',
   output: 'mysofa_export.h',
-  configuration: export_config,
+  configuration: conf_data,
 )
 
 includes = [
@@ -87,6 +79,7 @@ libmysofa = library(
   include_directories: includes,
   dependencies: [zlib, m_dep],
   gnu_symbol_visibility: 'hidden',
+  vs_module_defs: 'libmysofa.def',
 )
 
 pkg.generate(libmysofa)
