@@ -1,8 +1,12 @@
 project(
   'libXext',
   'c',
-  version: '1.3.6',
+  version: '1.3.7',
   default_options: ['warning_level=3'],
+  # also a Digital Equipment Corporation MIT-like license that doesn't
+  # seem to exactly match anything in SPDX
+  license: 'HPND-doc AND HPND-doc-sell AND HPND-sell-variant AND ISC AND MIT AND MIT-open-group AND NTP AND SMLNJ AND X11',
+  meson_version: '>= 0.56.0',
 )
 
 incdirs = include_directories('.', 'include')
@@ -34,7 +38,7 @@ xext = library(
 )
 
 xext_dep = declare_dependency(
-  dependencies: x11_dep,
   include_directories: incdirs,
   link_with: xext,
 )
+meson.override_dependency('xext', xext_dep)
