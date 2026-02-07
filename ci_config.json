@@ -965,7 +965,10 @@
     ]
   },
   "libxxf86vm": {
-    "_comment": "X11 needs a POSIX system",
+    "_comment": [
+      "X11 needs a POSIX system",
+      "https://gitlab.freedesktop.org/xorg/lib/libxxf86vm/-/merge_requests/13"
+    ],
     "build_on": {
       "msys2": false,
       "windows": false
@@ -975,7 +978,8 @@
     ],
     "debian_packages": [
       "libx11-dev"
-    ]
+    ],
+    "ignore_upstream_meson": "1.1.7"
   },
   "lmdb": {
     "_comment": "Tests are disabled by default",
