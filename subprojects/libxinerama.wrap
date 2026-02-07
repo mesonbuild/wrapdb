@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libXinerama-1.1.5
-source_url = https://xorg.freedesktop.org/releases/individual/lib/libXinerama-1.1.5.tar.xz
-source_filename = libXinerama-1.1.5.tar.xz
-source_hash = 5094d1f0fcc1828cb1696d0d39d9e866ae32520c54d01f618f1a3c1e30c2085c
+directory = libXinerama-1.1.6
+source_url = https://xorg.freedesktop.org/releases/individual/lib/libXinerama-1.1.6.tar.xz
+source_filename = libXinerama-1.1.6.tar.xz
+source_hash = d00fc1599c303dc5cbc122b8068bdc7405d6fcb19060f4597fc51bd3a8be51d7
 patch_directory = libXinerama
 
 [provide]
-xinerama = xinerama_dep
+dependency_names = xinerama
