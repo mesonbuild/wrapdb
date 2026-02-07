@@ -1,7 +1,9 @@
 project(
   'libXxf86vm',
   'c',
-  version: '1.1.6',
+  version: '1.1.7',
+  license: 'X11',
+  meson_version: '>= 1.1.0',
 )
 
 if host_machine.system() == 'windows'
@@ -22,7 +24,7 @@ xxf86vm = library(
 )
 
 xxf86vm_dep = declare_dependency(
-  dependencies: [x11_dep, xext_dep],
   include_directories: incdirs,
   link_with: xxf86vm,
 )
+meson.override_dependency('xxf86vm', xxf86vm_dep)
