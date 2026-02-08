@@ -1,8 +1,8 @@
 [wrap-file]
-directory = aws-c-cal-0.9.10
-source_url = https://github.com/awslabs/aws-c-cal/archive/refs/tags/v0.9.10.tar.gz
-source_filename = aws-c-cal-0.9.10.tar.gz
-source_hash = a41b389e942fadd599a6a0f692b75480d663f1e702c0301177f00f365e0c9b94
+directory = aws-c-cal-0.9.13
+source_url = https://github.com/awslabs/aws-c-cal/archive/refs/tags/v0.9.13.tar.gz
+source_filename = aws-c-cal-0.9.13.tar.gz
+source_hash = 80b7c6087b0af461b4483e4c9483aea2e0dac5d9fb2289b057159ea6032409e1
 patch_directory = aws-c-cal
 
 [provide]
