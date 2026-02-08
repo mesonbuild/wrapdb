@@ -2,8 +2,8 @@ project(
   'pupnp',
   'c',
   license: 'BSD-3-Clause',
-  version: '1.14.25',
-  meson_version: '>=0.54.1',
+  version: '1.14.27',
+  meson_version: '>=0.56.0',
 )
 
 cstd = 'c_std=gnu99'
