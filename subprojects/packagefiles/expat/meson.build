@@ -23,11 +23,12 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.7.3',
-  meson_version: '>= 0.58',
+  version: '2.7.4',
+  # str.replace()
+  meson_version: '>= 0.58.0',
 )
 
-dllver = '1.11.1'
+dllver = '1.11.2'
 
 config = configuration_data()
 cc = meson.get_compiler('c')
@@ -44,29 +45,8 @@ config.set(
 # Define how much context to retain around the current parse point.
 config.set('XML_CONTEXT_BYTES', 1024)
 
-dep_libbsd = dependency(
-  'libbsd-overlay',
-  required: get_option('use_libbsd'),
-)
-if dep_libbsd.type_name() == 'internal'
-  config.set('HAVE_ARC4RANDOM_BUF', dep_libbsd.found())
-  config.set('HAVE_ARC4RANDOM', dep_libbsd.found())
-else
-  config.set(
-    'HAVE_ARC4RANDOM_BUF',
-    cc.has_function(
-      'arc4random_buf',
-      dependencies: dep_libbsd,
-    ),
-  )
-  config.set(
-    'HAVE_ARC4RANDOM',
-    cc.has_function(
-      'arc4random',
-      dependencies: dep_libbsd,
-    ),
-  )
-endif
+config.set('HAVE_ARC4RANDOM_BUF', cc.has_function('arc4random_buf'))
+config.set('HAVE_ARC4RANDOM', cc.has_function('arc4random'))
 
 config.set('XML_ATTR_INFO', get_option('xml_attr_info'))
 config.set('XML_DTD', get_option('xml_dtd'))
@@ -140,7 +120,7 @@ add_project_arguments(
   language: 'c',
 )
 add_project_arguments(
-  cc.get_supported_arguments('-fno-strict-aliasing'),
+  cc.get_supported_arguments('-Wstrict-aliasing=3'),
   language: 'c',
 )
 if cc.get_argument_syntax() == 'msvc'
@@ -189,27 +169,40 @@ else
   endif
 endif
 
-defs = configuration_data()
+defs_conf = configuration_data()
+map_conf = configuration_data()
 if get_option('xml_dtd') or get_option('xml_ge')
-  defs.set('_EXPAT_COMMENT_DTD_OR_GE', ' ')
+  defs_conf.set('_EXPAT_COMMENT_DTD_OR_GE', ' ')
+  map_conf.set('_EXPAT_COMMENT_DTD_OR_GE', ' ')
 else
-  defs.set('_EXPAT_COMMENT_DTD_OR_GE', ';')
+  defs_conf.set('_EXPAT_COMMENT_DTD_OR_GE', ';')
+  map_conf.set('_EXPAT_COMMENT_DTD_OR_GE', '#')
 endif
 if get_option('xml_attr_info')
-  defs.set('_EXPAT_COMMENT_ATTR_INFO', ' ')
+  defs_conf.set('_EXPAT_COMMENT_ATTR_INFO', ' ')
+  map_conf.set('_EXPAT_COMMENT_ATTR_INFO', ' ')
 else
-  defs.set('_EXPAT_COMMENT_ATTR_INFO', ';')
+  defs_conf.set('_EXPAT_COMMENT_ATTR_INFO', ';')
+  map_conf.set('_EXPAT_COMMENT_ATTR_INFO', '#')
 endif
 dfile = configure_file(
-  configuration: defs,
+  configuration: defs_conf,
   format: 'cmake@',
   input: 'lib/libexpat.def.cmake',
   output: 'libexpat.def',
+)
+configure_file(
+  configuration: map_conf,
+  format: 'cmake@',
+  input: 'lib/libexpat.map.in',
+  output: 'libexpat.map',
 )
 
 incdir = include_directories('lib')
 
 sources = files('lib/xmlparse.c', 'lib/xmlrole.c', 'lib/xmltok.c')
+
+link_args = []
 
 if host_machine.system() == 'windows'
   sources += import('windows').compile_resources(
@@ -218,13 +211,17 @@ if host_machine.system() == 'windows'
       meson.project_version().replace('.', ','),
     ),
   )
+elif get_option('symbol_versioning')
+  link_args += '-Wl,--version-script=@0@/libexpat.map'.format(
+    meson.current_build_dir(),
+  )
 endif
 
 libexpat = library(
   'expat',
   sources,
+  link_args: link_args,
   include_directories: incdir,
-  dependencies: dep_libbsd,
   version: dllver,
   soversion: host_machine.system() != 'windows' ? '1' : '',
   vs_module_defs: dfile,
@@ -237,6 +234,7 @@ expat_dep = declare_dependency(
   include_directories: incdir,
   compile_args: expat_static_args,
 )
+meson.override_dependency('expat', expat_dep)
 
 pkg = import('pkgconfig')
 pkg.generate(libexpat)
