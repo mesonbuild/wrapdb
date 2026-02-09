@@ -20,9 +20,10 @@
 # SOFTWARE.
 
 option(
-    'use_libbsd',
-    type: 'feature',
-    description: 'Use libbsd for arc4random_buf',
+    'symbol_versioning',
+    type: 'boolean',
+    value: false,
+    description: 'If true provide symbol versioning for dependency generation',
 )
 option(
     'xml_attr_info',
