@@ -3182,7 +3182,8 @@
   },
   "nanoarrow": {
     "dependency_names": [
-      "nanoarrow"
+      "nanoarrow",
+      "nanoarrow-ipc"
     ],
     "versions": [
       "0.8.0-1",
