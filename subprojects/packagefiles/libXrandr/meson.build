@@ -1,8 +1,10 @@
 project(
   'libxrandr',
   'c',
-  version: '1.5.4',
+  version: '1.5.5',
   default_options: ['warning_level=3'],
+  license: 'HPND-sell-variant',
+  meson_version: '>= 1.1.0',
 )
 
 incdirs = include_directories('include', 'include/X11/extensions')
@@ -28,7 +30,7 @@ xrandr = library(
 )
 
 xrandr_dep = declare_dependency(
-  dependencies: [xext_dep, xrender_dep],
   include_directories: incdirs,
   link_with: xrandr,
 )
+meson.override_dependency('xrandr', xrandr_dep)

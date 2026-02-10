@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libXrandr-1.5.4
-source_url = https://xorg.freedesktop.org/releases/individual/lib/libXrandr-1.5.4.tar.xz
-source_filename = libXrandr-1.5.4.tar.xz
-source_hash = 1ad5b065375f4a85915aa60611cc6407c060492a214d7f9daf214be752c3b4d3
+directory = libXrandr-1.5.5
+source_url = https://xorg.freedesktop.org/releases/individual/lib/libXrandr-1.5.5.tar.xz
+source_filename = libXrandr-1.5.5.tar.xz
+source_hash = 72b922c2e765434e9e9f0960148070bd4504b288263e2868a4ccce1b7cf2767a
 patch_directory = libXrandr
 
 [provide]
-xrandr = xrandr_dep
+dependency_names = xrandr

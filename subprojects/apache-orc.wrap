@@ -1,9 +1,9 @@
 [wrap-file]
-directory = orc-2.2.1
-source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=orc/orc-2.2.1/orc-2.2.1.tar.gz
-source_fallback_url = https://github.com/apache/orc/archive/refs/tags/v2.2.1.tar.gz
-source_filename = orc-2.2.1.tar.gz
-source_hash = 52fc762332442e8b05d7182f8c035f9e04d945b9a52be22ab69f28b3f37d4500
+directory = orc-2.2.2
+source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=orc/orc-2.2.2/orc-2.2.2.tar.gz
+source_fallback_url = https://github.com/apache/orc/archive/refs/tags/v2.2.2.tar.gz
+source_filename = orc-2.2.2.tar.gz
+source_hash = 4214bfc8e01316305e915a3bd7d2675bf3b95d79243aa5fb6c471ea0765add8e
 
 [provide]
 orc = orc_dep

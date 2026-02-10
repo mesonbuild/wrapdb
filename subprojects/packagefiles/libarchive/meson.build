@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.4',
+  version: '3.8.5',
   license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
   meson_version: '>=0.56.0',
 )

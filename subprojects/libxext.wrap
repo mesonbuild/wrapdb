@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libXext-1.3.6
-source_url = https://xorg.freedesktop.org/releases/individual/lib/libXext-1.3.6.tar.xz
-source_filename = libXext-1.3.6.tar.xz
-source_hash = edb59fa23994e405fdc5b400afdf5820ae6160b94f35e3dc3da4457a16e89753
+directory = libXext-1.3.7
+source_url = https://xorg.freedesktop.org/releases/individual/lib/libXext-1.3.7.tar.xz
+source_filename = libXext-1.3.7.tar.xz
+source_hash = 6c643c7035cdacf67afd68f25d01b90ef889d546c9fcd7c0adf7c2cf91e3a32d
 patch_directory = libXext
 
 [provide]
-xext = xext_dep
+dependency_names = xext
