@@ -21,7 +21,6 @@ sdl3_image_src = files(
   'IMG_tga.c',
   'IMG_tif.c',
   'IMG_webp.c',
-  'IMG_WIC.c',
   'IMG_xcf.c',
   'IMG_xpm.c',
   'IMG_xv.c',
@@ -31,7 +30,7 @@ sdl3_image_src = files(
 if target_machine.system() == 'windows' and get_option('default_library') == 'shared'
   import('windows').compile_resources('version.rc')
 endif
- 
+
 if target_machine.system() == 'darwin'
   sdl3_image_src += 'IMG_ImageIO.m'
 endif

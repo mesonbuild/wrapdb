@@ -1,32 +1,182 @@
-option('SDLIMAGE_BACKEND_STB', type: 'feature', value: 'auto', description: 'Use stb_image for loading JPEG files')
-option('SDLIMAGE_BACKEND_WIC', type: 'feature', value: 'auto', description: 'Add WIC backend (Windows Imaging Component)')
-option('SDLIMAGE_BACKEND_IMAGEIO', type: 'feature', value: 'auto', description: 'Use native Mac OS X frameworks for loading images')
-option('SDLIMAGE_PNG_LIBPNG', type: 'feature', value: 'auto', description: 'Support loading PNGs using libpng (useful for APNGs)')
+option(
+    'SDLIMAGE_BACKEND_STB',
+    type: 'feature',
+    value: 'auto',
+    description: 'Use stb_image for loading JPEG files',
+)
+option(
+    'SDLIMAGE_BACKEND_WIC',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add WIC backend (Windows Imaging Component)',
+)
+option(
+    'SDLIMAGE_BACKEND_IMAGEIO',
+    type: 'feature',
+    value: 'auto',
+    description: 'Use native Mac OS X frameworks for loading images',
+)
+option(
+    'SDLIMAGE_PNG_LIBPNG',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading PNGs using libpng (useful for APNGs)',
+)
 
-option('SDLIMAGE_ANI', type: 'feature', value: 'auto', description: 'Support loading ANI animations')
-option('SDLIMAGE_AVIF', type: 'feature', value: 'auto', description: 'Support loading AVIF images')
-option('SDLIMAGE_BMP', type: 'feature', value: 'auto', description: 'Support loading BMP images')
-option('SDLIMAGE_GIF', type: 'feature', value: 'auto', description: 'Support loading GIF images')
-option('SDLIMAGE_JPG', type: 'feature', value: 'auto', description: 'Support loading JPEG images')
-option('SDLIMAGE_JXL', type: 'feature', value: 'auto', description: 'Support loading JXL images')
-option('SDLIMAGE_LBM', type: 'feature', value: 'auto', description: 'Support loading LBM images')
-option('SDLIMAGE_PCX', type: 'feature', value: 'auto', description: 'Support loading PCX images')
-option('SDLIMAGE_PNG', type: 'feature', value: 'auto', description: 'Support loading PNG images')
-option('SDLIMAGE_PNM', type: 'feature', value: 'auto', description: 'Support loading PNM images')
-option('SDLIMAGE_QOI', type: 'feature', value: 'auto', description: 'Support loading QOI images')
-option('SDLIMAGE_SVG', type: 'feature', value: 'auto', description: 'Support loading SVG images')
-option('SDLIMAGE_TGA', type: 'feature', value: 'auto', description: 'Support loading TGA images')
-option('SDLIMAGE_TIF', type: 'feature', value: 'auto', description: 'Support loading TIFF images')
-option('SDLIMAGE_WEBP', type: 'feature', value: 'auto', description: 'Support loading WEBP images')
-option('SDLIMAGE_XCF', type: 'feature', value: 'auto', description: 'Support loading XCF images')
-option('SDLIMAGE_XPM', type: 'feature', value: 'auto', description: 'Support loading XPM images')
-option('SDLIMAGE_XV', type: 'feature', value: 'auto', description: 'Support loading XV images')
+option(
+    'SDLIMAGE_ANI',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading ANI animations',
+)
+option(
+    'SDLIMAGE_AVIF',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading AVIF images',
+)
+option(
+    'SDLIMAGE_BMP',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading BMP images',
+)
+option(
+    'SDLIMAGE_GIF',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading GIF images',
+)
+option(
+    'SDLIMAGE_JPG',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading JPEG images',
+)
+option(
+    'SDLIMAGE_JXL',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading JXL images',
+)
+option(
+    'SDLIMAGE_LBM',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading LBM images',
+)
+option(
+    'SDLIMAGE_PCX',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading PCX images',
+)
+option(
+    'SDLIMAGE_PNG',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading PNG images',
+)
+option(
+    'SDLIMAGE_PNM',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading PNM images',
+)
+option(
+    'SDLIMAGE_QOI',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading QOI images',
+)
+option(
+    'SDLIMAGE_SVG',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading SVG images',
+)
+option(
+    'SDLIMAGE_TGA',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading TGA images',
+)
+option(
+    'SDLIMAGE_TIF',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading TIFF images',
+)
+option(
+    'SDLIMAGE_WEBP',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading WEBP images',
+)
+option(
+    'SDLIMAGE_XCF',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading XCF images',
+)
+option(
+    'SDLIMAGE_XPM',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading XPM images',
+)
+option(
+    'SDLIMAGE_XV',
+    type: 'feature',
+    value: 'auto',
+    description: 'Support loading XV images',
+)
 
-option('SDLIMAGE_ANI_SAVE', type: 'feature', value: 'auto', description: 'Add ANI save support')
-option('SDLIMAGE_AVIF_SAVE', type: 'feature', value: 'auto', description: 'Add AVIF save support')
-option('SDLIMAGE_BMP_SAVE', type: 'feature', value: 'auto', description: 'Add BMP save support')
-option('SDLIMAGE_GIF_SAVE', type: 'feature', value: 'auto', description: 'Add GIF save support')
-option('SDLIMAGE_JPG_SAVE', type: 'feature', value: 'auto', description: 'Add JPEG save support')
-option('SDLIMAGE_PNG_SAVE', type: 'feature', value: 'auto', description: 'Add PNG save support')
-option('SDLIMAGE_TGA_SAVE', type: 'feature', value: 'auto', description: 'Add TGA save support')
-option('SDLIMAGE_WEBP_SAVE', type: 'feature', value: 'auto', description: 'Add WEBP save support')
+option(
+    'SDLIMAGE_ANI_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add ANI save support',
+)
+option(
+    'SDLIMAGE_AVIF_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add AVIF save support',
+)
+option(
+    'SDLIMAGE_BMP_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add BMP save support',
+)
+option(
+    'SDLIMAGE_GIF_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add GIF save support',
+)
+option(
+    'SDLIMAGE_JPG_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add JPEG save support',
+)
+option(
+    'SDLIMAGE_PNG_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add PNG save support',
+)
+option(
+    'SDLIMAGE_TGA_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add TGA save support',
+)
+option(
+    'SDLIMAGE_WEBP_SAVE',
+    type: 'feature',
+    value: 'auto',
+    description: 'Add WEBP save support',
+)
