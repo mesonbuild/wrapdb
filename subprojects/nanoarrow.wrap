@@ -6,4 +6,4 @@ source_filename = apache-arrow-nanoarrow-0.8.0.tar.gz
 source_hash = 6e61e2819c9138e9092ba32b568ed6f4594928b306171937251eaaafa7dc2b8c
 
 [provide]
-nanoarrow = nanoarrow_dep
+dependency_names = nanoarrow
