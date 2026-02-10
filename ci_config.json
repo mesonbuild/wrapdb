@@ -93,6 +93,42 @@
       "numactl-dev"
     ]
   },
+  "aws-lc": {
+    "_comment": [
+      "Clear jitterentropy target environments to prevent a circular dependency"
+    ],
+    "build_options": [
+      "force_fallback_for=jitterentropy",
+      "wrap_mode=forcefallback",
+      "aws-lc:tests=enabled",
+      "jitterentropy:environments=[]"
+    ],
+    "alpine_packages": [
+      "go",
+      "perl"
+    ],
+    "brew_packages": [
+      "golang",
+      "perl"
+    ],
+    "debian_packages": [
+      "golang",
+      "perl"
+    ],
+    "msys_packages": [
+      "go",
+      "perl",
+      "nasm"
+    ],
+    "choco_packages": [
+      "golang",
+      "strawberryperl",
+      "nasm"
+    ],
+    "test_options": [
+      "--no-suite=slow"
+    ]
+  },
   "argtable3": {
     "build_options": [
       "argtable3:examples=true",

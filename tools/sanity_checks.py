@@ -52,6 +52,13 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'generate_tests.py',
         'run_test.py',
     },
+    'aws-lc': {
+        'inject_hash_wrapper.sh',
+        'capture_hash_wrapper.sh',
+        'capture_hash_wrapper.bat',
+        'run_go.sh',
+        'convert_archive.sh',
+    },
     'box2d': {
         'doctest.h'
     },
@@ -636,6 +643,9 @@ class TestReleases(unittest.TestCase):
                 # https://bugzilla.nasm.us/show_bug.cgi?id=3392224.
                 meson_env['PATH'] = 'C:\\Program Files\\NASM;' + meson_env['PATH']
         elif msys_packages and is_msys():
+            if is_ci() and 'go' in msys_packages:
+                # msys2 doesn't set GOROOT by default
+                meson_env['GOROOT'] = str(Path(sys.executable).parent.parent / 'lib/go')
             do_install('MSYS2', ['sh', '-lc', 'pacboy --noconfirm sync $(printf "%s:p " $@)', 'pacboy'], msys_packages)
         elif alpine_packages and is_alpinelike():
             do_install('Alpine', ['sudo', 'apk', 'add'], alpine_packages)
