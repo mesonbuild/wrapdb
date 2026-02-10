@@ -72,19 +72,11 @@ if target_machine.system() == 'darwin'
   deps += dependency(
     'appleframeworks',
     modules: [
-      'CoreFoundation',
-      'Cocoa',
-      'CoreAudio',
       'CoreGraphics',
-      'CoreHaptics',
-      'GameController',
-      'ForceFeedback',
-      'IOKit',
       'Foundation',
-      'QuartzCore',
-      'Metal',
-      'Carbon',
-      'UniformTypeIdentifiers',
+      'ImageIO',
+      'MobileCoreServices',
+      'UIKit',
     ],
   )
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
