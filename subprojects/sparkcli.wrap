@@ -1,8 +1,8 @@
 [wrap-file]
-directory = sparkcli-0.0.4
-source_url = https://github.com/antoniovazquezblanco/sparkcli/archive/refs/tags/v0.0.4.tar.gz
-source_filename = sparkcli-0.0.4.tar.gz
-source_hash = 972f1867869f23b3b4e69409253d42d32ac8a7831182b3f6871058597dec808f
+directory = sparkcli-0.0.6
+source_url = https://github.com/antoniovazquezblanco/sparkcli/archive/refs/tags/v0.0.6.tar.gz
+source_filename = sparkcli-0.0.6.tar.gz
+source_hash = bd4dbad086ec7bf3448aabef3177da33a7cf451c85aea046cf4c59492f5fd951
 
 [provide]
 sparkcli = sparkcli_dep
