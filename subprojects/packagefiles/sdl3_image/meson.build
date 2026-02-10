@@ -1,6 +1,6 @@
 project('sdl3_image', 'c',
-  license: 'Zlib'
-  license_files: 'LICENSE.txt'
+  license: 'Zlib',
+  license_files: 'LICENSE.txt',
   meson_version: '>= 1.1.0',
   version: '3.4.0',
   default_options: 'c_std=c99')
