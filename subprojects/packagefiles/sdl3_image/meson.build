@@ -69,6 +69,24 @@ if target_machine.system() == 'darwin'
     'objc',
     native: false,
   )
+  deps += dependency(
+    'appleframeworks',
+    modules: [
+      'CoreFoundation',
+      'Cocoa',
+      'CoreAudio',
+      'CoreGraphics',
+      'CoreHaptics',
+      'GameController',
+      'ForceFeedback',
+      'IOKit',
+      'Foundation',
+      'QuartzCore',
+      'Metal',
+      'Carbon',
+      'UniformTypeIdentifiers',
+    ],
+  )
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
       'SDLIMAGE_BACKEND_STB',
