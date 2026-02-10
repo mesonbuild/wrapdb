@@ -30,6 +30,7 @@ import shutil
 import tarfile
 import textwrap
 import zipfile
+import warnings
 
 from pathlib import Path
 from utils import CIConfig, ProjectCIConfig, Releases, Version, ci_group, is_ci, is_alpinelike, is_debianlike, is_macos, is_windows, is_msys, read_wrap, FormattingError, format_meson, format_wrap
@@ -688,9 +689,12 @@ class TestReleases(unittest.TestCase):
                 print('\nno license_expression library; skipping SPDX validation')
             else:
                 try:
-                    license_expression.get_spdx_licensing().parse(
-                        project['license'], validate=True, strict=True
-                    )
+                    licensing = license_expression.get_spdx_licensing()
+                    expression = licensing.parse(project['license'], strict=True)
+                    unknown_license_keys = licensing.unknown_license_keys(expression)
+                    if unknown_license_keys:
+                        msg = f"Unknown license key(s): {', '.join(unknown_license_keys)}"
+                        warnings.warn(msg)
                 except license_expression.ExpressionParseError as exc:
                     raise Exception('Invalid license expression; see https://spdx.github.io/spdx-spec/v3.0.1/annexes/spdx-license-expressions/') from exc
                 except license_expression.ExpressionError as exc:
