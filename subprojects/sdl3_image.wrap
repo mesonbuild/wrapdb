@@ -6,4 +6,4 @@ source_hash = 2ceb75eab4235c2c7e93dafc3ef3268ad368ca5de40892bf8cffdd510f29d9d8
 patch_directory = sdl3_image
 
 [provide]
-sdl3_image = sdl3_image_dep
+dependency_names = sdl3_image
