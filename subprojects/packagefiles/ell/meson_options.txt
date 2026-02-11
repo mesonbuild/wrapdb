@@ -1,0 +1,30 @@
+option(
+    'glib',
+    type: 'boolean',
+    value: true,
+    description: 'Enable ell/glib main loop example',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Enable unit tests compilation',
+)
+option(
+    'cert-tests',
+    type: 'boolean',
+    value: true,
+    description: 'Enable OpenSSL cert tests',
+)
+option(
+    'tools',
+    type: 'boolean',
+    value: true,
+    description: 'Enable extra tools compilation',
+)
+option(
+    'examples',
+    type: 'boolean',
+    value: true,
+    description: 'Enable code examples compilation',
+)

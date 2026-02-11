@@ -877,6 +877,14 @@
       "3.3.4-1"
     ]
   },
+  "ell": {
+    "dependency_names": [
+      "ell"
+    ],
+    "versions": [
+      "0.82-1"
+    ]
+  },
   "emilk-loguru": {
     "dependency_names": [
       "loguru"
