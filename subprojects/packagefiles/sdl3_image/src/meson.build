@@ -32,5 +32,5 @@ if target_machine.system() == 'windows' and get_option('default_library') == 'sh
 endif
 
 if target_machine.system() == 'darwin'
-  sdl3_image_src += 'IMG_ImageIO.m'
+  sdl3_image_src += files('IMG_ImageIO.m')
 endif
