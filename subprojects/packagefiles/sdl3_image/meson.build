@@ -64,15 +64,32 @@ get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
   target_machine.system() == 'darwin',
   error_message: 'Darwin must be set as the build target',
 )
+
+apple_frameworks = {}
+
 if target_machine.system() == 'darwin'
   add_languages(
     'objc',
     native: false,
   )
-  deps += dependency(
-    'appleframeworks',
-    modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'ImageIO'],
-  )
+  if target_machine.subsystem() == 'macos'
+    deps += dependency(
+      'appleframeworks',
+      modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'ImageIO'],
+    )
+  else
+    deps += dependency(
+      'appleframeworks',
+      modules: [
+        'CoreGraphics',
+        'Foundation',
+        'CoreServices',
+        'ImageIO',
+        'UIKit',
+      ],
+    )
+  endif
+
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
       'SDLIMAGE_BACKEND_STB',
