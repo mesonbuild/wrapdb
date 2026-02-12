@@ -49,27 +49,20 @@ deps = [
 ]
 subdir('src')
 
-get_option('SDLIMAGE_BACKEND_WIC').require(
+if get_option('SDLIMAGE_BACKEND_WIC').require(
   target_machine.system() == 'windows',
   error_message: 'Windows must be set as the build target',
-)
-if get_option('SDLIMAGE_BACKEND_WIC').allowed()
+).allowed()
   add_project_arguments(
     '-DSDL_IMAGE_USE_WIC_BACKEND',
     language: 'c',
   )
 endif
 
-get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
+if get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
   target_machine.system() == 'darwin',
   error_message: 'Darwin must be set as the build target',
-)
-
-if target_machine.system() == 'darwin'
-  add_languages(
-    'objc',
-    native: false,
-  )
+).allowed()
   if target_machine.subsystem() == 'macos'
     deps += dependency(
       'appleframeworks',
@@ -88,34 +81,36 @@ if target_machine.system() == 'darwin'
     )
   endif
 
-  get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(true)
-
-  if get_option('SDLIMAGE_BACKEND_IMAGEIO').allowed()
-    if get_option('SDLIMAGE_PNG').allowed() and get_option(
-      'SDLIMAGE_BACKEND_STB',
-    ).disabled()
-      add_project_arguments(
-        '-DPNG_USES_IMAGEIO',
-        language: 'objc',
-      )
-    endif
-    if get_option('SDLIMAGE_JPG').allowed() and get_option(
-      'SDLIMAGE_BACKEND_STB',
-    ).disabled()
-      add_project_arguments(
-        '-DJPG_USES_IMAGEIO',
-        language: 'objc',
-      )
-    endif
-  else
+  if get_option('SDLIMAGE_PNG').allowed() and get_option(
+    'SDLIMAGE_BACKEND_STB',
+  ).disable_auto_if(
+    true,
+  )
+    .disabled()
     add_project_arguments(
-      '-DSDL_IMAGE_USE_COMMON_BACKEND',
+      '-DPNG_USES_IMAGEIO',
       language: 'objc',
     )
   endif
+  if get_option('SDLIMAGE_JPG').allowed() and get_option(
+    'SDLIMAGE_BACKEND_STB',
+  ).disable_auto_if(
+    true,
+  )
+    .disabled()
+    add_project_arguments(
+      '-DJPG_USES_IMAGEIO',
+      language: 'objc',
+    )
+  endif
+else
+  add_project_arguments(
+    '-DSDL_IMAGE_USE_COMMON_BACKEND',
+    language: 'objc',
+  )
 endif
 
-if get_option('SDLIMAGE_BACKEND_STB').allowed()
+if get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(true).enabled()
   add_project_arguments(
     '-DUSE_STBIMAGE',
     language: 'c',
@@ -148,12 +143,12 @@ sdlimage_extensions = {
 # Sets load macros, save macros, and guards against
 # enabling saving without enabling loading
 foreach extension, savable : sdlimage_extensions
-  if get_option(f'SDLIMAGE_@extension@').allowed()
+  if get_option(f'SDLIMAGE_@extension@').enable_auto_if(true).enabled()
     add_project_arguments(
       f'-DLOAD_@extension@',
       language: 'c',
     )
-    if savable and get_option(f'SDLIMAGE_@extension@_SAVE').allowed()
+    if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enable_auto_if(true).enabled()
       add_project_arguments(
         f'-DSAVE_@extension@',
         language: 'c',
