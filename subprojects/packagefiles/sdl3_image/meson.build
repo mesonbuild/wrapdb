@@ -71,7 +71,7 @@ if target_machine.system() == 'darwin'
   )
   deps += dependency(
     'appleframeworks',
-    modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'UIKit'],
+    modules: ['CoreGraphics', 'Foundation', 'CoreServices'],
   )
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
