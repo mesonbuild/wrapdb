@@ -156,10 +156,17 @@ foreach extension, savable : sdlimage_extensions
   endif
 endforeach
 
+if get_option('default_library') == 'shared'
+  c_args = ['-DDLL_EXPORT']
+else
+  c_args = []
+endif
+
 sdl3_image_lib = library(
   'sdl3_image',
   sdl3_image_src,
   include_directories: 'include',
+  c_args: c_args,
   dependencies: deps,
   install: true,
 )
