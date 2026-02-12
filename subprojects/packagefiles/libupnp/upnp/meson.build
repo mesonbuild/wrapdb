@@ -79,7 +79,7 @@ libupnp = library(
   link_with: libixml,
   override_options: cstd,
   install: true,
-  version: '17.2.4',
+  version: '17.2.8',
 )
 
 libupnp_dep = declare_dependency(
