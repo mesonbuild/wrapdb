@@ -88,7 +88,10 @@ if target_machine.system() == 'darwin'
     )
   endif
 
-  get_option('SDLIMAGE_BACKEND_IMAGEIO').enable_if(true, error_message: 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+  get_option('SDLIMAGE_BACKEND_IMAGEIO').enable_if(
+    true,
+    error_message: 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH',
+  )
 
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     message('SDLIMAGE_BACKEND_IMAGEIO')
