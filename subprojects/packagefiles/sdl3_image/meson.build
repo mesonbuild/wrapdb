@@ -38,8 +38,7 @@ libjpeg_dep = dependency(
   required: get_option('SDLIMAGE_JPG'),
 )  # STB loadable
 
-deps = [
-  sdl3_dep,
+image_deps = [
   libpng_dep,
   libavif_dep,
   libjxl_dep,
@@ -47,6 +46,9 @@ deps = [
   libwebp_dep,
   libjpeg_dep,
 ]
+
+deps = [sdl3_dep, image_deps]
+
 subdir('src')
 
 if get_option('SDLIMAGE_BACKEND_WIC').require(
@@ -140,15 +142,22 @@ sdlimage_extensions = {
   'XV': false,
 }
 
-# Sets load macros, save macros, and guards against
-# enabling saving without enabling loading
+# Sets load macros, save macros, guards against
+# loading without required dependencies, and
+# guards against enabling saving without
+# enabling loading
 foreach extension, savable : sdlimage_extensions
-  if get_option(f'SDLIMAGE_@extension@').enable_auto_if(true).enabled()
+  if is_variable(f'lib@extension@_dep'.to_lower())
+    auto = get_variable(f'lib@extension@_dep'.to_lower()).found() ? true : false
+  else
+    auto = true
+  endif
+  if get_option(f'SDLIMAGE_@extension@').enable_auto_if(auto).enabled()
     add_project_arguments(
       f'-DLOAD_@extension@',
       language: 'c',
     )
-    if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enable_auto_if(true).enabled()
+    if savable and get_option(f'SDLIMAGE_@extension@_SAVE').enable_auto_if(auto).enabled()
       add_project_arguments(
         f'-DSAVE_@extension@',
         language: 'c',
