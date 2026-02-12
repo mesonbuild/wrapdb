@@ -88,6 +88,8 @@ if target_machine.system() == 'darwin'
     )
   endif
 
+  get_option('SDLIMAGE_BACKEND_IMAGEIO').enable_auto_if(true)
+
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     message('SDLIMAGE_BACKEND_IMAGEIO')
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
