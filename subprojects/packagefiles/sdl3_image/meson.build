@@ -34,7 +34,7 @@ libwebp_dep = dependency(
   required: get_option('SDLIMAGE_WEBP'),
 )
 libjpeg_dep = dependency(
-  'libjpeg-turbo',
+  'libjpeg',
   required: get_option('SDLIMAGE_JPG'),
 )  # STB loadable
 
