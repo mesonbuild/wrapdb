@@ -1413,7 +1413,19 @@
       "pipewire-dev",
       "libxkbcommon-dev",
       "mesa-dev",
-      "wayland-dev"
+      "wayland-dev",
+      "libpng-dev",
+      "libavif-dev",
+      "libjxl-dev",
+      "tiff-dev",
+      "libwebp-dev",
+      "libjpeg-turbo-dev"
+    ],
+    "brew_packages": [
+      "libpng",
+      "libavif",
+      "libtiff",
+      "jpeg-turbo"
     ],
     "debian_packages": [
       "libudev-dev",
@@ -1425,6 +1437,10 @@
       "libegl-dev",
       "libgl-dev",
       "libpng-dev",
+      "libavif-dev",
+      "libjxl-dev",
+      "libtiff-dev",
+      "libwebp-dev",
       "libjpeg-dev"
     ]
   },
