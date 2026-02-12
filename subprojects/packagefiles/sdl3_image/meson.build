@@ -47,7 +47,11 @@ image_deps = [
   libjpeg_dep,
 ]
 
-deps = [sdl3_dep, image_deps]
+deps = [sdl3_dep]
+
+foreach dependency : image_deps
+  deps += dependency
+endforeach
 
 subdir('src')
 
