@@ -65,8 +65,6 @@ get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
   error_message: 'Darwin must be set as the build target',
 )
 
-apple_frameworks = {}
-
 if target_machine.system() == 'darwin'
   add_languages(
     'objc',
@@ -89,6 +87,8 @@ if target_machine.system() == 'darwin'
       ],
     )
   endif
+
+  get_option('SDLIMAGE_BACKEND_IMAGEIO').enable_auto_if(true)
 
   if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
