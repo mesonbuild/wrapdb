@@ -88,13 +88,7 @@ if target_machine.system() == 'darwin'
     )
   endif
 
-  get_option('SDLIMAGE_BACKEND_IMAGEIO').enable_if(
-    true,
-    error_message: 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH',
-  )
-
-  if get_option('SDLIMAGE_BACKEND_IMAGEIO').enabled()
-    message('SDLIMAGE_BACKEND_IMAGEIO')
+  if get_option('SDLIMAGE_BACKEND_IMAGEIO').allowed()
     if get_option('SDLIMAGE_PNG').enabled() and not get_option(
       'SDLIMAGE_BACKEND_STB',
     ).enabled()
@@ -116,7 +110,6 @@ if target_machine.system() == 'darwin'
       '-DSDL_IMAGE_USE_COMMON_BACKEND',
       language: 'objc',
     )
-    message('SDL_IMAGE_USE_COMMON_BACKEND')
   endif
 endif
 
