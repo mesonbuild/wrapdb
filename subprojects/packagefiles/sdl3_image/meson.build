@@ -47,11 +47,7 @@ image_deps = [
   libjpeg_dep,
 ]
 
-deps = [sdl3_dep]
-
-foreach dependency : image_deps
-  deps += dependency
-endforeach
+deps = [sdl3_dep, image_deps]
 
 subdir('src')
 
@@ -63,6 +59,7 @@ if get_option('SDLIMAGE_BACKEND_WIC').require(
     '-DSDL_IMAGE_USE_WIC_BACKEND',
     language: 'c',
   )
+  deps += meson.get_compiler('c').find_library('windowscodecs')
 endif
 
 if get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
@@ -87,23 +84,17 @@ if get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
     )
   endif
 
-  if get_option('SDLIMAGE_PNG').allowed() and get_option(
-    'SDLIMAGE_BACKEND_STB',
-  ).disable_auto_if(
+  if get_option('SDLIMAGE_PNG').allowed() and get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
     true,
-  )
-    .disabled()
+  ).disabled()
     add_project_arguments(
       '-DPNG_USES_IMAGEIO',
       language: 'objc',
     )
   endif
-  if get_option('SDLIMAGE_JPG').allowed() and get_option(
-    'SDLIMAGE_BACKEND_STB',
-  ).disable_auto_if(
+  if get_option('SDLIMAGE_JPG').allowed() and get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
     true,
-  )
-    .disabled()
+  ).disabled()
     add_project_arguments(
       '-DJPG_USES_IMAGEIO',
       language: 'objc',
