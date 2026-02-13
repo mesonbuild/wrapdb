@@ -143,9 +143,11 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'bn_conf.h',
         'dso_conf.h',
         'buildinf.h',
+        'exclude-library-directive-msvc.patch',
         'generate_def.py',
         'generate_gypi.pl.patch',
         'meson.build.tmpl',
+        'Makefile.patch',
         'README.md',
     },
     'pcre': {
