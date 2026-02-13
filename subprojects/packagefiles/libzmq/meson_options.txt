@@ -1,0 +1,16 @@
+option('openpgm', type: 'feature', value: 'auto', description: 'Build with support for OpenPGM')
+option('norm', type: 'feature', value: 'auto', description: 'Build with support for NORM')
+option('vmci', type: 'feature', value: 'disabled', description: 'Build with support for VMware VMCI socket')
+
+option('drafts', type: 'boolean', value: false, description: 'Build and install draft classes and methods')
+option('websockets', type: 'feature', value: 'auto', description: 'Enable WebSocket transport')
+option('radix_tree', type: 'feature', value: 'auto', description: 'Use radix tree implementation to manage subscriptions')
+option('tls', type: 'feature', value: 'auto', description: 'Use TLS for WSS support')
+option('nss', type: 'feature', value: 'auto', description: 'Use NSS instead of builtin sha1')
+option('libbsd', type: 'feature', value: 'auto', description: 'Use libbsd instead of builtin strlcpy')
+option('curve', type: 'boolean', value: false, description: 'Enable CURVE security')
+option('libsodium', type: 'feature', value: 'auto', description: 'Use libsodium for CURVE security')
+option('libsodium_randombytes_close', type: 'boolean', value: true, description: 'Automatically close libsodium randombytes')
+
+option('api_poller', type: 'combo', choices: ['auto', 'poll', 'select'], value: 'auto', description: 'Choose polling system for zmq_poll(er)_*.')
+option('poller', type: 'combo', choices: ['auto', 'kqueue', 'epoll', 'devpoll', 'pollset', 'poll', 'select'], value: 'auto', description: 'Choose polling system for I/O threads.')

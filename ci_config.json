@@ -995,6 +995,19 @@
     ],
     "ignore_upstream_meson": "1.1.7"
   },
+  "libzmq": {
+    "debian_packages": [
+      "libbsd-dev",
+      "libgnutls28-dev",
+      "libnorm-dev",
+      "libnss3-dev",
+      "libpgm-dev",
+      "libsodium-dev"
+    ],
+    "build_options": [
+      "libzmq:drafts=true"
+    ]
+  },
   "lmdb": {
     "_comment": "Tests are disabled by default",
     "build_options": [
