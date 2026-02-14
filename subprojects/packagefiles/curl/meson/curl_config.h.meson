@@ -3,8 +3,14 @@
 /* to enable curl debug memory tracking */
 #mesondefine CURLDEBUG
 
+#mesondefine CURL_HAS_CA_BUNDLE
+
 /* Location of default ca bundle */
 #mesondefine CURL_CA_BUNDLE
+
+#if !CURL_HAS_CA_BUNDLE
+#  undef CURL_CA_BUNDLE
+#endif
 
 /* define "1" to use built in CA store of SSL library */
 #mesondefine CURL_CA_FALLBACK
@@ -510,6 +516,9 @@
 
 /* Define to 1 if you have the <stdbool.h> header file. */
 #mesondefine HAVE_STDBOOL_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
 
 /* Define to 1 if you have the <stdio.h> header file. */
 #mesondefine HAVE_STDIO_H

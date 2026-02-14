@@ -3,7 +3,7 @@
 project(
   'curl',
   'c',
-  version: '8.12.1',
+  version: '8.18.0',
   meson_version: '>=0.60.0',
 )
 
@@ -256,9 +256,11 @@ foreach _header, _symlist : _headerlist
   endif
   foreach _symbol : _symlist
     _flag = 'HAVE_' + _symbol.underscorify().to_upper()
-    _available = (cdata.get(_flag, false)
-  or (_has_header and cc.has_header_symbol(_header, _symbol))
-)
+    _available = (
+      cdata.get(_flag, false)
+      or (_has_header
+      and cc.has_header_symbol(_header, _symbol))
+    )
     cdata.set(_flag, _available)
   endforeach
 endforeach
@@ -282,16 +284,16 @@ endforeach
 cdata.set('HAVE_LONGLONG', cc.has_type('long long'))
 
 foreach _type, _prefix : {
-  'int'          : check_prefix['stdinc'],
-  'short'        : check_prefix['stdinc'],
-  'long'         : check_prefix['stdinc'],
-  'long double'  : check_prefix['stdinc'],
-  '__int64'      : check_prefix['stdinc'],
-  'off_t'        : check_prefix['stdinc'],
-  'size_t'       : check_prefix['stdinc'],
-  'ssize_t'      : check_prefix['stdinc'],
-  'time_t'       : check_prefix['stdinc'],
-  'curl_off_t'   : '#include"curl/system.h"',
+  'int': check_prefix['stdinc'],
+  'short': check_prefix['stdinc'],
+  'long': check_prefix['stdinc'],
+  'long double': check_prefix['stdinc'],
+  '__int64': check_prefix['stdinc'],
+  'off_t': check_prefix['stdinc'],
+  'size_t': check_prefix['stdinc'],
+  'ssize_t': check_prefix['stdinc'],
+  'time_t': check_prefix['stdinc'],
+  'curl_off_t': '#include"curl/system.h"',
   'curl_socket_t': '#include"curl/curl.h"',
 }
   cdata.set(
@@ -355,11 +357,12 @@ cdata.set(
 
 # Windows. {{{
 
-use_win32_crypto = (host_machine.system() == 'windows'
+use_win32_crypto = (
+  host_machine.system() == 'windows'
   and cc.has_header_symbol(
-    'wincrypt.h',
-  'CryptAcquireContext',
-  prefix: '#include<windows.h>',
+  'wincrypt.h',
+    'CryptAcquireContext',
+    prefix: '#include<windows.h>',
   )
 )
 
@@ -384,15 +387,17 @@ _required = asynchdns_opt.disabled() ? asynchdns_opt : false
 foreach _resolver : get_option('asynchdns-resolver')
   if _resolver == 'pthread'
     # Posix threaded resolver.
-    _dep = (asynchdns_opt.allowed()
-  and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
-)
+    _dep = (
+      asynchdns_opt.allowed()
+      and cdata.get('HAVE_PTHREAD_H') ? threads_dep : disabler()
+    )
     _flag = 'USE_THREADS_POSIX'
   elif _resolver == 'win32'
     # Win32 threaded resolver.
-    _dep = (asynchdns_opt.allowed()
-  and host_machine.system() == 'windows' ? threads_dep : disabler()
-)
+    _dep = (
+      asynchdns_opt.allowed()
+      and host_machine.system() == 'windows' ? threads_dep : disabler()
+    )
     _flag = 'USE_THREADS_WIN32'
   elif _resolver == 'ares'
     # Library: c-ares.
@@ -458,10 +463,10 @@ cdata.set('USE_IPV6', ipv6_opt.allowed())
 # Large file. {{{
 
 cdata.set('USE_WIN32_LARGE_FILES', host_machine.system() == 'windows')
-largefile_opt = (cdata.get('USE_WIN32_LARGE_FILES')
+largefile_opt = (
+  cdata.get('USE_WIN32_LARGE_FILES')
   or (cdata.get('SIZEOF_CURL_OFF_T') > 4
-    and cdata.get('SIZEOF_OFF_T') > 4)
-  ? ENABLED_OPT : DISABLED_OPT
+  and cdata.get('SIZEOF_OFF_T') > 4) ? ENABLED_OPT : DISABLED_OPT
 )
 
 # }}}
@@ -784,12 +789,13 @@ foreach _provider : get_option('ldap-provider')
     )
     _flag = 'OPENLDAP'
   elif _provider == 'win32'
-    _dep = (host_machine.system() == 'windows' ? cc.find_library(
-        'wldap32',
-      has_headers: 'winldap.h',
-      required: _required,
-      ) : disabler()
-)
+    _dep = (
+      host_machine.system() == 'windows' ? cc.find_library(
+      'wldap32',
+        has_headers: 'winldap.h',
+        required: _required,
+          ) : disabler()
+    )
     _flag = 'WIN32_LDAP'
   else
     error('invalid LDAP provider: ' + _provider)
@@ -929,12 +935,13 @@ foreach _provider : get_option('idn-provider')
     endif
   elif _provider == 'winidn'
     # Windows IDN.
-    _dep = (host_vista_or_newer ? cc.find_library(
-        'normaliz',
-      disabler: true,
-      required: _required,
-      ) : disabler()
-)
+    _dep = (
+      host_vista_or_newer ? cc.find_library(
+      'normaliz',
+        disabler: true,
+        required: _required,
+          ) : disabler()
+    )
     if cc.has_function(
       'IdnToUnicode',
       dependencies: _dep,
@@ -1076,15 +1083,16 @@ else
   endforeach
 endif
 
-threadsafe_opt = (host_vista_or_newer
-  or cdata.get('HAVE_STDATOMIC_H')
-  ? ENABLED_OPT : DISABLED_OPT
+threadsafe_opt = (
+  host_vista_or_newer
+  or cdata.get('HAVE_STDATOMIC_H') ? ENABLED_OPT : DISABLED_OPT
 )
 
-_have_clock_gettime = (cdata.get('HAVE_CLOCK_GETTIME')
+_have_clock_gettime = (
+  cdata.get('HAVE_CLOCK_GETTIME')
   and cc.has_function(
-    'clock_gettime',
-  dependencies: sys_deps,
+  'clock_gettime',
+    dependencies: sys_deps,
   )
 )
 cdata.set(
@@ -1313,9 +1321,10 @@ cdata.set(
 _required = cdata.get('HAVE_GETHOSTNAME') ? true : disabler()
 foreach _arg1 : ['char *', 'unsigned char *', 'void *']
   foreach _arg2 : ['int', 'unsigned int', 'size_t']
-    if (_required
-  and cc.compiles(
-        _source_epilogue + '''
+    if (
+      _required
+      and cc.compiles(
+      _source_epilogue + '''
         #ifdef HAVE_WINDOWS_H
         #  ifndef WIN32_LEAN_AND_MEAN
         #    define WIN32_LEAN_AND_MEAN
@@ -1345,10 +1354,10 @@ foreach _arg1 : ['char *', 'unsigned char *', 'void *']
           return 0;
         }
         '''.format(_arg1, _arg2),
-      args: check_args,
-      name: 'gethostname(@0@, @1@)'.format(_arg1, _arg2),
-      )
-)
+        args: check_args,
+        name: 'gethostname(@0@, @1@)'.format(_arg1, _arg2),
+          )
+    )
       cdata.set('GETHOSTNAME_TYPE_ARG2', _arg2)
       _required = disabler()
     endif
@@ -1406,7 +1415,8 @@ cdata.set_quoted('CURL_OS', _os)
 # Compile flags. {{{
 
 # Symbols visibility.
-if (cc.has_argument('-fvisibility=hidden')
+if (
+  cc.has_argument('-fvisibility=hidden')
   and cc.has_function_attribute('visibility:default')
 )
   cdata.set('CURL_EXTERN_SYMBOL', '__attribute__ ((__visibility__ ("default")))')
@@ -1457,11 +1467,9 @@ if ca_bundle == 'auto'
     ca_bundle = ''
   endif
 endif
-if ca_bundle == ''
-  cdata.set('CURL_CA_BUNDLE', false)
-else
-  cdata.set_quoted('CURL_CA_BUNDLE', ca_bundle)
-endif
+
+cdata.set10('CURL_HAS_CA_BUNDLE', ca_bundle != '')
+cdata.set_quoted('CURL_CA_BUNDLE', ca_bundle)
 
 ca_path = get_option('ca_path')
 if ca_path == 'auto'
@@ -1526,14 +1534,16 @@ endforeach
 
 # Features. {{{
 
-kerberos_opt = (kerberos_auth_opt.allowed()
-  and (gss_api_opt.allowed() or sspi_opt.allowed())
-  ? ENABLED_OPT : DISABLED_OPT
+kerberos_opt = (
+  kerberos_auth_opt.allowed()
+  and (gss_api_opt.allowed()
+  or sspi_opt.allowed()) ? ENABLED_OPT : DISABLED_OPT
 )
 
-spnego_opt = (negotiate_auth_opt.allowed()
-  and (gss_api_opt.allowed() or sspi_opt.allowed())
-  ? ENABLED_OPT : DISABLED_OPT
+spnego_opt = (
+  negotiate_auth_opt.allowed()
+  and (gss_api_opt.allowed()
+  or sspi_opt.allowed()) ? ENABLED_OPT : DISABLED_OPT
 )
 
 # `CURL_DISABLE_ALTSVC` is used instead of `CURL_DISABLE_ALT_SVC`…
@@ -1675,10 +1685,11 @@ ssl_backends_summary += {
 # Sanitize boolean flags.
 _boolkeys = ['STDC_HEADERS']
 foreach _key : cdata.keys()
-  if (_key.startswith('CURL_DISABLE_')
-  or _key.endswith('_ENABLED')
-  or _key.split('_')[0] in ['ENABLE', 'HAVE', 'NEED', 'USE']
-)
+  if (
+    _key.startswith('CURL_DISABLE_')
+    or _key.endswith('_ENABLED')
+    or _key.split('_')[0] in ['ENABLE', 'HAVE', 'NEED', 'USE']
+  )
     _boolkeys += _key
   endif
 endforeach
@@ -1878,8 +1889,8 @@ summary(
 
 summary(
   {
-    'Path'    : cdata.get('CURL_CA_PATH'),
-    'Bundle'  : cdata.get('CURL_CA_BUNDLE'),
+    'Path': cdata.get('CURL_CA_PATH'),
+    'Bundle': cdata.get('CURL_CA_BUNDLE'),
     'Fallback': cdata.get('CURL_CA_FALLBACK'),
   },
   bool_yn: true,
@@ -1889,7 +1900,7 @@ summary(
 if get_option('debug')
   summary(
     {
-      'Track memory'        : trackmemory_opt.allowed(),
+      'Track memory': trackmemory_opt.allowed(),
       'Use libuv for events': libuv_opt.allowed(),
     },
     bool_yn: true,

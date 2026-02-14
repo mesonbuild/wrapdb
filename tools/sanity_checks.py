@@ -62,6 +62,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'buildinfo.txt.meson',
         'extract.mk',
         'rewrite.mk',
+        'meson_empty.c',
     },
     'glbinding': {
         'pch.h',

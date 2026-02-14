@@ -47,14 +47,16 @@ foreach _spec : makefile_extractions['libtest']
     elif _part.startswith('-I')
       _incs += include_directories(_part.substring(2))
     elif _part.endswith('.c')
-      _srcs += (_part in _generated_srcs ? _generated_srcs.get(_part) : files(
-          _part,
-        )
-)
+      _srcs += (
+        _part in _generated_srcs ? _generated_srcs.get(_part) : files(
+        _part,
+              )
+      )
     endif
   endforeach
   libtest_targets += executable(
     _name,
+    files('meson_empty.c'),
     c_args: _args,
     dependencies: [_deps, curl_ilib_dep, threads_dep],
     include_directories: _incs,
