@@ -25,7 +25,7 @@ libjxl_dep = dependency(
   'libjxl',
   required: get_option('SDLIMAGE_JXL'),
 )  # Absent from wrapdb as of Feb 1 2026
-libtiff_dep = dependency(
+libtif_dep = dependency(
   'libtiff',
   required: get_option('SDLIMAGE_TIF'),
 )
@@ -42,19 +42,37 @@ image_deps = [
   libpng_dep,
   libavif_dep,
   libjxl_dep,
-  libtiff_dep,
+  libtif_dep,
   libwebp_dep,
   libjpeg_dep,
 ]
 
 deps = [sdl3_dep, image_deps]
 
+c_args = []
+
 subdir('src')
 
-if get_option('SDLIMAGE_BACKEND_WIC').require(
+# Targets
+windows = target_machine.system() == 'windows'
+darwin = target_machine.system() == 'darwin'
+
+macos = target_machine.subsystem() == 'macos'
+
+# Backends
+sdlimage_backend_wic = get_option('SDLIMAGE_BACKEND_WIC').require(
   target_machine.system() == 'windows',
   error_message: 'Windows must be set as the build target',
 ).allowed()
+sdlimage_backend_imageio = get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
+  target_machine.system() == 'darwin',
+  error_message: 'Darwin must be set as the build target',
+).allowed()
+sdlimage_backend_stb = get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
+  sdlimage_backend_wic or sdlimage_backend_imageio,
+).allowed()
+
+if sdlimage_backend_wic
   add_project_arguments(
     '-DSDL_IMAGE_USE_WIC_BACKEND',
     language: 'c',
@@ -62,11 +80,8 @@ if get_option('SDLIMAGE_BACKEND_WIC').require(
   deps += meson.get_compiler('c').find_library('windowscodecs')
 endif
 
-if get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
-  target_machine.system() == 'darwin',
-  error_message: 'Darwin must be set as the build target',
-).allowed()
-  if target_machine.subsystem() == 'macos'
+if sdlimage_backend_imageio
+  if macos
     deps += dependency(
       'appleframeworks',
       modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'ImageIO'],
@@ -84,17 +99,13 @@ if get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
     )
   endif
 
-  if get_option('SDLIMAGE_PNG').allowed() and get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
-    true,
-  ).disabled()
+  if get_option('SDLIMAGE_PNG').allowed() and not sdlimage_backend_stb
     add_project_arguments(
       '-DPNG_USES_IMAGEIO',
       language: 'objc',
     )
   endif
-  if get_option('SDLIMAGE_JPG').allowed() and get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
-    true,
-  ).disabled()
+  if get_option('SDLIMAGE_JPG').allowed() and not sdlimage_backend_stb
     add_project_arguments(
       '-DJPG_USES_IMAGEIO',
       language: 'objc',
@@ -107,7 +118,7 @@ else
   )
 endif
 
-if get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(true).enabled()
+if sdlimage_backend_stb
   add_project_arguments(
     '-DUSE_STBIMAGE',
     language: 'c',
@@ -166,10 +177,8 @@ foreach extension, savable : sdlimage_extensions
   endif
 endforeach
 
-if get_option('default_library') == 'shared'
+if (get_option('default_library') == 'shared') and windows
   c_args = ['-DDLL_EXPORT']
-else
-  c_args = []
 endif
 
 sdl3_image_lib = library(
