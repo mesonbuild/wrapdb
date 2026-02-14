@@ -245,6 +245,9 @@ else
   sources += files('src/motion/gmc.c')
 endif
 
+# Install header 'xvid.h'
+subdir('src')
+
 xvidcore = library(
   'xvidcore',
   sources,
