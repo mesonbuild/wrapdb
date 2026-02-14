@@ -8,51 +8,6 @@ project(
   default_options: 'c_std=c99',
 )
 
-sdl3_dep = dependency(
-  'sdl3',
-  version: '>=3.4.0',
-)  # Minimum allowed SDL3 version, not SDL3_IMAGE version
-libpng_dep = dependency(
-  'libpng',
-  required: get_option('SDLIMAGE_PNG_LIBPNG'),
-)  # STB loadable
-libavif_dep = dependency(
-  'libavif',
-  version: '>=0.1.0',
-  required: get_option('SDLIMAGE_AVIF'),
-)  # Absent from wrapdb as of Feb 1 2026
-libjxl_dep = dependency(
-  'libjxl',
-  required: get_option('SDLIMAGE_JXL'),
-)  # Absent from wrapdb as of Feb 1 2026
-libtif_dep = dependency(
-  'libtiff',
-  required: get_option('SDLIMAGE_TIF'),
-)
-libwebp_dep = dependency(
-  'libwebp',
-  required: get_option('SDLIMAGE_WEBP'),
-)
-libjpeg_dep = dependency(
-  'libjpeg',
-  required: get_option('SDLIMAGE_JPG'),
-)  # STB loadable
-
-image_deps = [
-  libpng_dep,
-  libavif_dep,
-  libjxl_dep,
-  libtif_dep,
-  libwebp_dep,
-  libjpeg_dep,
-]
-
-deps = [sdl3_dep, image_deps]
-
-c_args = []
-
-subdir('src')
-
 # Targets
 windows = target_machine.system() == 'windows'
 darwin = target_machine.system() == 'darwin'
@@ -60,43 +15,117 @@ darwin = target_machine.system() == 'darwin'
 macos = target_machine.subsystem() == 'macos'
 
 # Backends
+sdlimage_png_libpng = get_option('SDLIMAGE_PNG_LIBPNG').require(
+  get_option('SDLIMAGE_PNG').enabled(),
+  error_message: 'SDLIMAGE_PNG must be enabled to use libpng',
+).enabled()
 sdlimage_backend_wic = get_option('SDLIMAGE_BACKEND_WIC').require(
-  target_machine.system() == 'windows',
+  windows,
   error_message: 'Windows must be set as the build target',
 ).allowed()
 sdlimage_backend_imageio = get_option('SDLIMAGE_BACKEND_IMAGEIO').require(
-  target_machine.system() == 'darwin',
+  darwin,
   error_message: 'Darwin must be set as the build target',
 ).allowed()
 sdlimage_backend_stb = get_option('SDLIMAGE_BACKEND_STB').disable_auto_if(
   sdlimage_backend_wic or sdlimage_backend_imageio,
 ).allowed()
 
+
+
+
+required_deps = []
+
+if get_option('enable-all').enabled()
+  foreach key, dep : deps_dict
+    required_deps += key.split('_')[0]
+  endforeach
+else
+  if sdlimage_png_libpng  # If libpng explicity requested, add it to required
+    required_deps += 'libpng'
+  endif
+  if not (  # If no loadable PNG backends and PNG is requested,
+    sdlimage_backend_stb  # require libpng if it isn't already
+    or sdlimage_backend_wic
+    or sdlimage_backend_imageio
+  )
+    if get_option('SDLIMAGE_PNG').enabled()
+      if 'libpng' not in required_deps
+        required_deps += 'libpng'
+      endif
+    endif
+    if get_option('SDLIMAGE_JPG').enabled()  # If no JPEG loadable backends and
+      required_deps += 'libjpeg'      # JPEG is requested, require libjpeg
+    endif
+  endif
+endif
+
+deps_dict = {
+  'sdl3_dep': dependency(
+    'sdl3',
+    version: '>=3.4.0',
+  ),
+  'libpng_dep': dependency(
+    'libpng',
+    required: 'libpng' in required_deps,
+  ),
+  'libavif_dep': dependency(
+    'libavif',
+    required: 'libavif' in required_deps,
+  ),
+  'libjxl_dep': dependency(
+    'libjxl',
+    required: 'libjxl' in required_deps,
+  ),
+  'libtif_dep': dependency(
+    'libtif',
+    required: 'libtif' in required_deps,
+  ),
+  'libwebp_dep': dependency(
+    'libwebp',
+    required: 'libwebp' in required_deps,
+  ),
+  'libjpeg_dep': dependency(
+    'libjpeg',
+    required: 'libjpeg' in required_deps,
+  ),
+}
+
+c_args = []
+
+subdir('src')
+
 if sdlimage_backend_wic
   add_project_arguments(
     '-DSDL_IMAGE_USE_WIC_BACKEND',
     language: 'c',
   )
-  deps += meson.get_compiler('c').find_library('windowscodecs')
+  deps_dict += {
+    'windowscodecs': meson.get_compiler('c').find_library('windowscodecs'),
+  }
 endif
 
 if sdlimage_backend_imageio
   if macos
-    deps += dependency(
-      'appleframeworks',
-      modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'ImageIO'],
-    )
+    deps_dict += {
+      'appleframeworks_dep': dependency(
+        'appleframeworks',
+        modules: ['CoreGraphics', 'Foundation', 'CoreServices', 'ImageIO'],
+      ),
+    }
   else
-    deps += dependency(
-      'appleframeworks',
-      modules: [
-        'CoreGraphics',
-        'Foundation',
-        'CoreServices',
-        'ImageIO',
-        'UIKit',
-      ],
-    )
+    deps_dict += {
+      'appleframeworks_dep': dependency(
+        'appleframeworks',
+        modules: [
+          'CoreGraphics',
+          'Foundation',
+          'CoreServices',
+          'ImageIO',
+          'UIKit',
+        ],
+      ),
+    }
   endif
 
   if get_option('SDLIMAGE_PNG').allowed() and not sdlimage_backend_stb
@@ -153,11 +182,13 @@ sdlimage_extensions = {
 # guards against enabling saving without
 # enabling loading
 foreach extension, savable : sdlimage_extensions
-  if is_variable(f'lib@extension@_dep'.to_lower())
-    auto = get_variable(f'lib@extension@_dep'.to_lower()).found() ? true : false
-  else
-    auto = true
-  endif
+  foreach key, dep : deps_dict
+    if key.split('_')[0].endswith(extension)
+      auto = dep.found() ? true : false
+    else
+      auto = false
+    endif
+  endforeach
   if get_option(f'SDLIMAGE_@extension@').enable_auto_if(auto).enabled()
     add_project_arguments(
       f'-DLOAD_@extension@',
@@ -177,9 +208,11 @@ foreach extension, savable : sdlimage_extensions
   endif
 endforeach
 
-if (get_option('default_library') == 'shared') and windows
-  c_args = ['-DDLL_EXPORT']
-endif
+deps = []
+
+foreach key, dep : deps_dict
+  deps += dep
+endforeach
 
 sdl3_image_lib = library(
   'sdl3_image',

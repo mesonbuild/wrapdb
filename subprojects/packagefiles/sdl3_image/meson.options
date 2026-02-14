@@ -180,3 +180,12 @@ option(
     value: 'auto',
     description: 'Add WEBP save support',
 )
+
+# Meson
+
+option(
+    'enable-all',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Requires all possible dependencies',
+)

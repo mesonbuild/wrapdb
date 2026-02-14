@@ -27,11 +27,12 @@ sdl3_image_src = files(
   'IMG_xxx.c',
 )
 
-if target_machine.system() == 'windows' and get_option('default_library') == 'shared'
+if windows and get_option('default_library') == 'shared'
   import('windows').compile_resources('version.rc')
+  c_args = ['-DDLL_EXPORT']
 endif
 
-if target_machine.system() == 'darwin'
+if darwin
   add_languages(
     'objc',
     native: false,

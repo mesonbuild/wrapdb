@@ -1407,6 +1407,9 @@
     ]
   },
   "sdl3_image": {
+    "build_options": [
+      "sdl3_image:enable-all=enabled"
+    ],
     "alpine_packages": [
       "libudev-zero-dev",
       "dbus-dev",
