@@ -1,0 +1,24 @@
+option(
+    'audio',
+    type: 'boolean',
+    value: 'true',
+    description: 'Build SFML Audio module',
+)
+option(
+    'network',
+    type: 'boolean',
+    value: 'true',
+    description: 'Build SFML Network module',
+)
+option(
+    'graphics',
+    type: 'boolean',
+    value: 'true',
+    description: 'Build SFML Network module',
+)
+option(
+    'window',
+    type: 'boolean',
+    value: 'true',
+    description: 'Build SFML Window module. This setting is ignored, if the graphics module is built.',
+)
