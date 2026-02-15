@@ -20,13 +20,6 @@ install_subdir(
   install_dir: 'include/CSFML',
 )
 
-if host_machine.system() == 'windows'
-  install_subdir(
-    'Main',
-    install_dir: 'include/CSFML',
-  )
-endif
-
 if get_option('window') or get_option('graphics')
   install_headers(
     'Window.h',
