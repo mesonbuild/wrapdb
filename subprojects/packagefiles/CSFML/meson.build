@@ -1,7 +1,7 @@
 project(
   'csfml',
   ['c', 'cpp'],
-  meson_version: '>= 0.56.0',
+  meson_version: '>= 0.63.0',
   version: '3.0.0',
   license: 'Zlib',
   default_options: [
