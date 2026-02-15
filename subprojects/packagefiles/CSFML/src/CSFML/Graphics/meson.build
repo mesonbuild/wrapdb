@@ -1,0 +1,33 @@
+graphics_source = files(
+  'BlendMode.cpp',
+  'CircleShape.cpp',
+  'Color.cpp',
+  'ConvexShape.cpp',
+  'Font.cpp',
+  'Image.cpp',
+  'Rect.cpp',
+  'RectangleShape.cpp',
+  'RenderStates.cpp',
+  'RenderTexture.cpp',
+  'RenderWindow.cpp',
+  'Shader.cpp',
+  'Shape.cpp',
+  'Sprite.cpp',
+  'StencilMode.cpp',
+  'Text.cpp',
+  'Texture.cpp',
+  'Transform.cpp',
+  'Transformable.cpp',
+  'VertexArray.cpp',
+  'VertexBuffer.cpp',
+  'View.cpp',
+)
+
+graphics_lib = library(
+  'csfml-graphics',
+  graphics_source,
+  link_with: system_lib,
+  include_directories: [public_include, private_include],
+  dependencies: deps,
+  install: true,
+)

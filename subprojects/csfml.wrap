@@ -1,0 +1,9 @@
+[wrap-file]
+directory = CSFML-3.0.0
+source_url = https://github.com/SFML/CSFML/archive/refs/tags/3.0.0.tar.gz
+source_filename = CSFML-3.0.0.tar.gz
+source_hash = 903cd4a782fb0b233f732dc5b37861b552998e93ae8f268c40bd4ce50b2e88ca
+patch_directory = CSFML
+
+[provide]
+dependency_names = csfml

@@ -738,6 +738,14 @@
       "1.3.0-1"
     ]
   },
+  "csfml": {
+    "dependency_names": [
+      "csfml"
+    ],
+    "versions": [
+      "3.0.0-1"
+    ]
+  },
   "ctre": {
     "dependency_names": [
       "ctre"

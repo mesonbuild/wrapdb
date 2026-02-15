@@ -206,6 +206,20 @@
       "openssl"
     ]
   },
+  "csfml" : {
+    "alpine_packages": [
+      "libudev-zero-dev",
+      "libxi-dev",
+      "mesa-dev"
+    ],
+    "debian_packages": [
+      "libgl-dev",
+      "libminiaudio-dev",
+      "libudev-dev",
+      "libxrandr-dev",
+      "libxi-dev"
+    ]
+  },
   "curl": {
     "_comment": [
       "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
