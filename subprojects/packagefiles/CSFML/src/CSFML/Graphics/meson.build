@@ -27,6 +27,7 @@ graphics_lib = library(
   'csfml-graphics',
   graphics_source,
   link_with: system_lib,
+  cpp_args: get_option('default_library') != 'static' ? '-DCSFML_GRAPHICS_EXPORTS' : '-DCSFML_STATIC',
   include_directories: [public_include, private_include],
   dependencies: deps,
   install: true,

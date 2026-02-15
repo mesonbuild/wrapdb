@@ -1,4 +1,4 @@
-main_lib = library(
+main_lib = static_library(
   'csfml-main',
   'SFML_Main.cpp',
   link_with: system_lib,
