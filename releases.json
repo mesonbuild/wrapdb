@@ -3979,6 +3979,14 @@
       "3.6.2-1"
     ]
   },
+  "scdoc": {
+    "program_names": [
+      "scdoc"
+    ],
+    "versions": [
+      "1.11.4-1"
+    ]
+  },
   "sdl2": {
     "dependency_names": [
       "sdl2",
