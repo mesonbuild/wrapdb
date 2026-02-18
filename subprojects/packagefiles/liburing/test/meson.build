@@ -77,7 +77,6 @@ all_tests = [
   'init-mem.c',
   'io-cancel.c',
   'io-wq-exit.c',
-  'io-wq-unused-exit.c',
   'io_uring_enter.c',
   'io_uring_passthrough.c',
   'io_uring_setup.c',
@@ -142,7 +141,6 @@ all_tests = [
   'read-write.c',
   'recv-bundle-short-ooo.c',
   'recv-inc-ooo.c',
-  'recv-msgall-stream.c',
   'recv-msgall.c',
   'recv-mshot-fair.c',
   'recv-multishot.c',
@@ -168,7 +166,6 @@ all_tests = [
   'self.c',
   'send-zerocopy.c',
   'send_recv.c',
-  'send_recvmsg.c',
   'sendmsg_iov_clean.c',
   'sendzc-bug.c',
   'shared-wq.c',
@@ -223,7 +220,6 @@ all_tests = [
   'wq-aff.c',
   'xattr.c',
   'xfail_prep_link_timeout_out_of_scope.c',
-  'xfail_register_buffers_out_of_scope.c',
   'zcrx.c',
 ]
 
