@@ -359,6 +359,14 @@
       "libxkbcommon-dev"
     ]
   },
+  "freertos": {
+    "build_on": {
+      "windows": false,
+      "alpine": false,
+      "darwin": false,
+      "msys2": false
+    }
+  },
   "fuse": {
     "_comment": "- relies on Linux and BSD specific APIs",
     "build_on": {
