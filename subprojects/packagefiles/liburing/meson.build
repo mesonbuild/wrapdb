@@ -1,7 +1,7 @@
 project(
   'liburing',
   ['c', 'cpp'],
-  version: '2.12',
+  version: '2.14',
   license: '(MIT OR LGPL-2.1-only) AND (MIT OR GPL-2.0-only WITH Linux-syscall-note)',
   meson_version: '>=0.63.0',
   default_options: [
@@ -15,6 +15,12 @@ project(
 if host_machine.system() != 'linux'
   error('Everything except Linux is unsupported. uring is a Linux framework')
 endif
+
+sanitize_opt = get_option('b_sanitize')
+
+use_asan = sanitize_opt.contains('address')
+use_ubsan = sanitize_opt.contains('undefined')
+use_tsan = sanitize_opt.contains('thread')
 
 project_version = meson.project_version().split('.')
 major_version = project_version[0]
@@ -132,6 +138,31 @@ has_nvme_uring_cmd = cc.has_type(
   prefix: '#include <linux/nvme_ioctl.h>',
 )
 
+has_memfd_create = cc.compiles(
+  '''
+#include <sys/mman.h>
+int main(int argc, char **argv)
+{
+  int memfd = memfd_create("test", 0);
+  return 0;
+}
+''',
+  name: 'Has memfd_create',
+  args: ['-Werror=implicit-function-declaration']
+)
+
+has_idtype_t = cc.compiles(
+  '''
+#include <sys/wait.h>
+int main(void)
+{
+  idtype_t v;
+  return 0;
+}
+''',
+  name: 'Has idtype_t',
+)
+
 has_futexv = cc.compiles(
   '''
 #include <linux/futex.h>
@@ -149,6 +180,22 @@ int main(void)
   name: 'Has futexv',
 )
 
+ublk_header = cc.compiles(
+  '''
+#include <string.h>
+#include <sys/ioctl.h>
+#include <linux/ublk_cmd.h>
+int main(int argc, char **argv)
+{
+  struct ublksrv_ctrl_cmd cmd = { };
+
+  cmd.addr = UBLK_U_CMD_START_DEV;
+  return cmd.queue_id;
+}
+''',
+  name: 'Has ublk header'
+)
+
 conf_data = configuration_data()
 conf_data.set('CONFIG_HAVE_KERNEL_RWF_T', has__kernel_rwf_t)
 conf_data.set('CONFIG_HAVE_KERNEL_TIMESPEC', has__kernel_timespec)
@@ -157,9 +204,15 @@ conf_data.set('CONFIG_HAVE_STATX', has_statx)
 conf_data.set('CONFIG_HAVE_GLIBC_STATX', glibc_statx)
 conf_data.set('CONFIG_HAVE_CXX', has_cxx)
 conf_data.set('CONFIG_HAVE_UCONTEXT', has_ucontext)
+conf_data.set('CONFIG_HAVE_STRINGOP_OVERFLOW', has_stringop_overflow)
+conf_data.set('CONFIG_HAVE_ARRAY_BOUNDS', has_array_bounds)
+conf_data.set('CONFIG_HAVE_MEMFD_CREATE', has_memfd_create)
 conf_data.set('CONFIG_HAVE_NVME_URING', has_nvme_uring_cmd)
 conf_data.set('CONFIG_HAVE_FUTEXV', has_futexv)
 conf_data.set('CONFIG_HAVE_FANOTIFY', cc.has_header('sys/fanotify.h'))
+conf_data.set('CONFIG_HAVE_UBLK_HEADER', ublk_header)
+conf_data.set('CONFIG_USE_SANITIZER', use_asan or use_ubsan)
+conf_data.set('CONFIG_USE_TSAN', use_tsan)
 configure_file(
   output: 'config-host.h',
   configuration: conf_data,

@@ -76,6 +76,8 @@ all_tests = [
   'ignore-single-mmap.c',
   'init-mem.c',
   'io-cancel.c',
+  'io-wq-exit.c',
+  'io-wq-unused-exit.c',
   'io_uring_enter.c',
   'io_uring_passthrough.c',
   'io_uring_setup.c',
@@ -94,6 +96,7 @@ all_tests = [
   'min-timeout-wait.c',
   'min-timeout.c',
   'mkdir.c',
+  'mock_file.c',
   'msg-ring-fd.c',
   'msg-ring-flags.c',
   'msg-ring-overflow.c',
@@ -104,6 +107,8 @@ all_tests = [
   'nolibc.c',
   'nop-all-sizes.c',
   'nop.c',
+  'nop32-overflow.c',
+  'nop32.c',
   'ooo-file-unreg.c',
   'open-close.c',
   'open-direct-link.c',
@@ -124,6 +129,7 @@ all_tests = [
   'poll-race-mshot.c',
   'poll-race.c',
   'poll-ring.c',
+  'poll-update-trigger.c',
   'poll-v-poll.c',
   'poll.c',
   'pollfree.c',
@@ -136,6 +142,7 @@ all_tests = [
   'read-write.c',
   'recv-bundle-short-ooo.c',
   'recv-inc-ooo.c',
+  'recv-msgall-stream.c',
   'recv-msgall.c',
   'recv-mshot-fair.c',
   'recv-multishot.c',
@@ -152,13 +159,18 @@ all_tests = [
   'resize-rings.c',
   'ring-leak.c',
   'ring-leak2.c',
+  'ring-query.c',
+  'ringbuf-loop.c',
   'ringbuf-read.c',
   'ringbuf-status.c',
   'rsrc_tags.c',
   'rw_merge_test.c',
   'self.c',
+  'send-zerocopy.c',
   'send_recv.c',
+  'send_recvmsg.c',
   'sendmsg_iov_clean.c',
+  'sendzc-bug.c',
   'shared-wq.c',
   'short-read.c',
   'shutdown.c',
@@ -178,6 +190,9 @@ all_tests = [
   'sq-poll-kthread.c',
   'sq-poll-share.c',
   'sq-space_left.c',
+  'sqe-mixed-bad-wrap.c',
+  'sqe-mixed-nop.c',
+  'sqe-mixed-uring_cmd.c',
   'sqpoll-disable-exit.c',
   'sqpoll-exec.c',
   'sqpoll-exit-hang.c',
@@ -194,6 +209,7 @@ all_tests = [
   'timeout-new.c',
   'timeout.c',
   'timerfd-short-read.c',
+  'timestamp-bug.c',
   'timestamp.c',
   'truncate.c',
   'tty-write-dpoll.c',
@@ -207,6 +223,7 @@ all_tests = [
   'wq-aff.c',
   'xattr.c',
   'xfail_prep_link_timeout_out_of_scope.c',
+  'xfail_register_buffers_out_of_scope.c',
   'zcrx.c',
 ]
 
@@ -227,7 +244,7 @@ if has_cxx
 endif
 
 if has_futexv
-  all_tests += ['futex-kill.c', 'futex.c']
+  all_tests += ['futex-kill.c', 'futex.c', 'fifo-futex-poll.c']
 endif
 
 runtests_sh = find_program('runtests.sh')
