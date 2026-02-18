@@ -6,6 +6,7 @@ liburing = library(
   'uring',
   'queue.c',
   'register.c',
+  'sanitize.c',
   'setup.c',
   'syscall.c',
   'version.c',

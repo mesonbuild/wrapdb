@@ -3,10 +3,16 @@ all_examples = [
   'io_uring-cp.c',
   'io_uring-test.c',
   'io_uring-udp.c',
+  'kdigest.c',
   'link-cp.c',
+  'napi-busy-poll-client.c',
+  'napi-busy-poll-server.c',
   'poll-bench.c',
-  'send-zerocopy.c',
+  'proxy.c',
+  'reg-wait.c',
   'rsrc-update-bench.c',
+  'send-zerocopy.c',
+  'zcrx.c',
 ]
 
 if has_ucontext

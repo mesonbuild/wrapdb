@@ -35,6 +35,35 @@ struct open_how {
 '''
 endif
 
+if has_futexv
+  futexv_compat = ''
+else
+  futexv_compat = '''#include <inttypes.h>
+
+#define FUTEX_32	2
+#define FUTEX_WAITV_MAX	128
+
+struct futex_waitv {
+	uint64_t	val;
+	uint64_t	uaddr;
+	uint32_t	flags;
+	uint32_t	__reserved;
+};
+'''
+endif
+
+if has_idtype_t
+  has_idtype_t_compat = ''
+else
+  has_idtype_t_compat = '''typedef enum
+{
+  P_ALL,		/* Wait for any child.  */
+  P_PID,		/* Wait for specified process.  */
+  P_PGID		/* Wait for members of process group.  */
+} idtype_t;
+'''
+endif
+
 has_block_uring_cmd_discard = cc.has_header_symbol(
   'linux/blkdev.h',
   'BLOCK_URING_CMD_DISCARD',
@@ -56,6 +85,8 @@ conf_data = configuration_data()
 conf_data.set('__kernel_rwf_t_compat', __kernel_rwf_t_compat)
 conf_data.set('__kernel_timespec_compat', __kernel_timespec_compat)
 conf_data.set('open_how_compat', open_how_compat)
+conf_data.set('futexv_compat', futexv_compat)
+conf_data.set('has_idtype_t_compat', has_idtype_t_compat)
 conf_data.set('block_uring_cmd_discard_compat', block_uring_cmd_discard_compat)
 
 if not glibc_statx and has_statx
