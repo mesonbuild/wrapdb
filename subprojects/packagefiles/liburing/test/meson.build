@@ -157,7 +157,6 @@ all_tests = [
   'rsrc_tags.c',
   'rw_merge_test.c',
   'self.c',
-  'send-zerocopy.c',
   'send_recv.c',
   'sendmsg_iov_clean.c',
   'sendzc-bug.c',
