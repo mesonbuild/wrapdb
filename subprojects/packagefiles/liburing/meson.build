@@ -148,19 +148,7 @@ int main(int argc, char **argv)
 }
 ''',
   name: 'Has memfd_create',
-  args: ['-Werror=implicit-function-declaration']
-)
-
-has_idtype_t = cc.compiles(
-  '''
-#include <sys/wait.h>
-int main(void)
-{
-  idtype_t v;
-  return 0;
-}
-''',
-  name: 'Has idtype_t',
+  args: ['-Werror=implicit-function-declaration'],
 )
 
 has_futexv = cc.compiles(
@@ -193,7 +181,7 @@ int main(int argc, char **argv)
   return cmd.queue_id;
 }
 ''',
-  name: 'Has ublk header'
+  name: 'Has ublk header',
 )
 
 conf_data = configuration_data()

@@ -6,6 +6,5 @@
 @open_how_compat@
 @no_glibc_statx@
 @futexv_compat@
-@has_idtype_t_compat@
 @block_uring_cmd_discard_compat@
 #endif
