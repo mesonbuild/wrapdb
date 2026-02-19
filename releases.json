@@ -1410,6 +1410,22 @@
       "5.0-1"
     ]
   },
+  "gobject-introspection": {
+    "dependency_names": [
+      "gobject-introspection-1.0"
+    ],
+    "program_names": [
+      "g-ir-annotation-tool",
+      "g-ir-compiler",
+      "g-ir-generate",
+      "g-ir-inspect",
+      "g-ir-scanner",
+      "g-ir-doc-tool"
+    ],
+    "versions": [
+      "1.86.0-1"
+    ]
+  },
   "godot-cpp": {
     "dependency_names": [
       "godot-cpp"

@@ -490,6 +490,36 @@
     ],
     "fatal_warnings": false
   },
+"gobject-introspection" : {
+    "__comment": [
+      " - Disable fatal_warnings because without doctool and cairo-gobject the wrap cannot execute all tests and generates a warning, and meson.build uses a deprecated str.format feature"
+    ],
+    "debian_packages": [
+      "flex",
+      "bison"
+    ],
+    "brew_packages": [
+      "flex",
+      "bison"
+    ],
+    "alpine_packages": [
+      "python3-dev",
+      "musl-libintl",
+      "flex",
+      "bison"
+    ],
+    "choco_packages": [
+      "winflexbison3"
+    ],
+    "python_packages": [
+      "packaging",
+      "setuptools"
+    ],
+    "skip_program_check": [
+      "g-ir-doc-tool"
+    ],
+    "fatal_warnings" : false
+  },
   "glib-networking": {
     "_comment": [
       "- This wrap only provides plugins for gio, so it doesn't provide any libraries to link to.",
