@@ -895,6 +895,8 @@ class TestReleases(unittest.TestCase):
         for opt in 'c_std', 'cpp_std':
             if opt in default_options:
                 features.setdefault('0.63.0', []).append(f'{opt} in subproject default_options')
+                if ',' in default_options[opt]:
+                    features.setdefault('1.3.0', []).append(f'list of values in {opt}')
         features.setdefault(MINIMUM_MESON_VERSION, []).append(f'oldest version supported by WrapDB')
 
         versions = sorted(features, key=self.parse_meson_version)
