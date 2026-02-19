@@ -1,0 +1,9 @@
+[wrap-file]
+directory = gobject-introspection-1.86.0
+source_url = https://download.gnome.org/sources/gobject-introspection/1.86/gobject-introspection-1.86.0.tar.xz
+source_filename = gobject-introspection-1.86.0.tar.gz
+source_hash = 920d1a3fcedeadc32acff95c2e203b319039dd4b4a08dd1a2dfd283d19c0b9ae
+
+[provide]
+program_names = g-ir-annotation-tool, g-ir-compiler, g-ir-generate, g-ir-inspect, g-ir-scanner, g-ir-doc-tool
+dependency_names = gobject-introspection-1.0
