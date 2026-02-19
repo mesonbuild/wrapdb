@@ -1,8 +1,8 @@
 [wrap-file]
-directory = quickjs-0.12.0
-source_url = https://github.com/quickjs-ng/quickjs/archive/refs/tags/v0.12.0.tar.gz
-source_filename = quickjs-ng-0.12.0.tar.gz
-source_hash = c882895d2dde0920fbfc668ec5de514774db1d400390692f4f6bfa8e513f6084
+directory = quickjs-0.12.1
+source_url = https://github.com/quickjs-ng/quickjs/archive/refs/tags/v0.12.1.tar.gz
+source_filename = quickjs-ng-0.12.1.tar.gz
+source_hash = c2c54b76ca2f52ffea49658a61c5111449cfe0f94e62510bd3bd7a12e2e18884
 
 [provide]
 dependency_names = quickjs-ng
