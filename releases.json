@@ -1282,6 +1282,14 @@
       "5.2.1-1"
     ]
   },
+  "glaze": {
+    "dependency_names": [
+      "glaze"
+    ],
+    "versions": [
+      "5.5.2-1"
+    ]
+  },
   "glbinding": {
     "dependency_names": [
       "glbinding",
