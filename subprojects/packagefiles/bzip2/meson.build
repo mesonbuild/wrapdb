@@ -3,6 +3,11 @@ project(
   'c',
   version: '1.0.8',
   meson_version: '>=1.0.0',
+  default_options: [
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu11,c11' : 'c_std=gnu11',
+    'warning_level=0',
+  ],
+  license: 'bzip2-1.0.6',
 )
 
 libbz2_lib = static_library(
@@ -18,13 +23,18 @@ libbz2_lib = static_library(
   install: true,
 )
 
+c_args = meson.get_compiler('c').get_supported_arguments(
+  '-Wno-unused-result',
+)
+
 bzip2_exe = executable(
   'bzip2',
   'bzip2.c',
+  c_args: c_args,
   link_with: libbz2_lib,
 )
 
-if meson.can_run_host_binaries()
+if get_option('tests') and meson.can_run_host_binaries()
   python = find_program(
     'python3',
     native: true,
