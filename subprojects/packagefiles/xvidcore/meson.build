@@ -3,33 +3,43 @@ project(
   'c',
   version: '1.3.7',
   license: 'GPL-2.0-or-later',
-  meson_version: '>= 1.3.0',
-  default_options: ['warning_level=2', 'c_std=gnu99,c99'],
+  meson_version: '>= 0.64.0',
+  default_options: [
+    'warning_level=2',
+    meson.version().version_compare('>=1.3.0') ? 'c_std=gnu99,c99' : 'c_std=gnu99',
+  ],
 )
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library(
-  'm',
-  required: false,
-)
-thread_dep = dependency(
-  'threads',
-  required: false,
-)
-cpu_family = host_machine.cpu_family()
+
+
 host_os = host_machine.system()
+cpu_family = host_machine.cpu_family()
 endian = host_machine.endian()
 sources = []
 includes = []
 nasm_args = []
 c_args = []
-
-if cpu_family == 'x86' or cpu_family == 'x86_64'
-  add_languages(
-    'nasm',
-    native: false,
+deps = []
+m_dep = cc.find_library(
+  'm',
+  required: false,
+)
+if host_os != 'windows'
+  thread_dep = dependency(
+    'threads',
+    required: false,
   )
+  if cc.has_header(
+    'pthread.h',
+    dependencies: thread_dep,
+  )
+    c_args += ['-DHAVE_PTHREAD']
+    deps += thread_dep
+  endif
 endif
+
+deps += m_dep
 
 if endian == 'big'
   c_args += ['-DARCH_IS_BIG_ENDIAN']
@@ -51,27 +61,12 @@ if cc.has_header('inttypes.h')
   c_args += ['-DHAVE_INTTYPES_H']
 endif
 
-if cc.has_header(
-  'pthread.h',
-  dependencies: thread_dep,
-)
-  c_args += ['-DHAVE_PTHREAD']
-endif
-
 if cpu_family == 'x86_64'
   c_args += ['-DARCH_IS_X86_64']
   nasm_args += ['-DARCH_IS_X86_64']
-  add_project_arguments(
-    nasm_args,
-    language: 'nasm',
-  )
 elif cpu_family == 'x86'
   c_args += ['-DARCH_IS_IA32']
   nasm_args += ['-DARCH_IS_IA32']
-  add_project_arguments(
-    nasm_args,
-    language: 'nasm',
-  )
 elif (cpu_family == 'ppc' or cpu_family == 'ppc64') and endian == 'big'
   c_args += ['-DARCH_IS_PPC', '-maltivec', '-mabi=altivec']
 else
@@ -83,13 +78,6 @@ if host_os == 'darwin' or (host_os == 'windows' and cpu_family == 'x86')
 
   if host_os == 'linux'
     nasm_args += ['-DMARK_FUNCS']
-  endif
-
-  if (cpu_family == 'x86' or cpu_family == 'x86_64')
-    add_project_arguments(
-      nasm_args,
-      language: 'nasm',
-    )
   endif
 
 endif
@@ -138,6 +126,7 @@ sources += files(
   'src/motion/estimation_pvop.c',
   'src/motion/estimation_rd_based.c',
   'src/motion/estimation_rd_based_bvop.c',
+  'src/motion/gmc.c',
   'src/motion/motion_comp.c',
   'src/motion/sad.c',
   'src/motion/vop_type_decision.c',
@@ -174,7 +163,15 @@ if (cpu_family == 'ppc' or cpu_family == 'ppc64') and endian == 'big'
     'src/utils/ppc_asm/mem_transfer_altivec.c',
   )
 elif cpu_family == 'x86' or cpu_family == 'x86_64'
-  includes += [include_directories('src/image/x86_asm')]
+  add_languages(
+    'nasm',
+    native: false,
+  )
+  add_project_arguments(
+    nasm_args,
+    language: 'nasm',
+  )
+  includes += include_directories('src/image/x86_asm')
   sources += files(
     'src/bitstream/x86_asm/cbp_mmx.asm',
     'src/bitstream/x86_asm/cbp_sse2.asm',
@@ -214,36 +211,17 @@ elif cpu_family == 'x86' or cpu_family == 'x86_64'
   )
 endif
 
-includes += [
-  include_directories('src'),
-  include_directories('src/bitstream'),
-  include_directories('src/dct'),
-  include_directories('src/image'),
-  include_directories('src/motion'),
-  include_directories('src/plugins'),
-  include_directories('src/prediction'),
-  include_directories('src/quant'),
-  include_directories('src/utils'),
-]
-
-if cpu_family == 'aarch64' and cc.get_id() == 'msvc'
-  prog_python = import('python').find_installation()
-  gmc_patched = custom_target(
-    'gmc_patched',
-    input: 'src/motion/gmc.c',
-    output: 'gmc_patched.c',
-    command: [
-      prog_python,
-      '-c',
-      'import sys; open(sys.argv[2], "w", encoding="utf-8").write(open(sys.argv[1], "r", encoding="utf-8").read().replace("defined(_MSC_VER)", "0"))',
-      '@INPUT@',
-      '@OUTPUT@',
-    ],
-  )
-  sources += [gmc_patched]
-else
-  sources += files('src/motion/gmc.c')
-endif
+includes += include_directories(
+  'src',
+  'src/bitstream',
+  'src/dct',
+  'src/image',
+  'src/motion',
+  'src/plugins',
+  'src/prediction',
+  'src/quant',
+  'src/utils',
+)
 
 # Install header 'xvid.h'
 subdir('src')
@@ -252,7 +230,7 @@ xvidcore = library(
   'xvidcore',
   sources,
   install: true,
-  dependencies: [m_dep, thread_dep],
+  dependencies: deps,
   include_directories: includes,
   vs_module_defs: 'build/generic/libxvidcore.def',
 )
