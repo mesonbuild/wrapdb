@@ -847,6 +847,16 @@ class TestReleases(unittest.TestCase):
         source_meson_file = source_dir / 'meson.build'
         source_meson_contents = source_meson_file.read_bytes()
         try:
+            # If default_options conditionalizes list-style c_std/cpp_std on
+            # Meson >= 1.3.0, use the legacy value.  Otherwise 'meson rewrite'
+            # won't notice the *_std options at all, and we won't know to
+            # warn that we need Meson >= 0.63.0.
+            # Regex assumes the whitespace produced by 'meson format'.
+            conditional_std_removed = re.sub(rb"meson\.version\(\)\.version_compare\('>= *1\.3(?:\.0)?'\) \? '[a-z]+_std=[^']+' : ('[a-z]+_std=[^']+')",
+                                             rb"\1",
+                                             source_meson_contents)
+            if conditional_std_removed != source_meson_contents:
+                source_meson_file.write_bytes(conditional_std_removed)
             project_args = json.loads(
                 subprocess.check_output(
                     ['meson', 'rewrite', 'kwargs', 'info', 'project', '/'],
@@ -855,6 +865,8 @@ class TestReleases(unittest.TestCase):
             )['kwargs']['project#/']
         except subprocess.CalledProcessError:
             project_args = {}
+        finally:
+            source_meson_file.write_bytes(source_meson_contents)
         version_request = project_args.get('meson_version')
         if version_request:
             version_request = version_request.replace(' ', '')
