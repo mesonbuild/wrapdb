@@ -2000,6 +2000,17 @@
       "1.83.1-1"
     ]
   },
+  "leveldb": {
+    "dependency_names": [
+      "leveldb"
+    ],
+    "program_names": [
+      "leveldbutil"
+    ],
+    "versions": [
+      "1.23-1"
+    ]
+  },
   "libaegis": {
     "dependency_names": [
       "libaegis"
