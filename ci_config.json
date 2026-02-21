@@ -1075,6 +1075,14 @@
       "lz4:tests=true"
     ]
   },
+  "macrolibx": {
+    "alpine_packages": [
+      "libx11-dev"
+    ],
+    "debian_packages": [
+      "libx11-dev"
+    ]
+  },
   "magic_enum": {
     "build_options": [
       "magic_enum:test=false"
