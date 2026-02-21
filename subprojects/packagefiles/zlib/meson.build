@@ -1,9 +1,9 @@
 project(
   'zlib',
   'c',
-  version: '1.3.1',
+  version: '1.3.2',
   license: 'Zlib',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
@@ -87,9 +87,7 @@ zlib_dep = declare_dependency(
   link_with: zlib,
   include_directories: depinc,
 )
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('zlib', zlib_dep)
-endif
+meson.override_dependency('zlib', zlib_dep)
 
 install_headers(headers)
 
