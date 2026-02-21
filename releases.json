@@ -2570,6 +2570,14 @@
       "1.17-1"
     ]
   },
+  "libtommath": {
+    "dependency_names": [
+      "libtommath"
+    ],
+    "versions": [
+      "1.3.0-1"
+    ]
+  },
   "libunibreak": {
     "dependency_names": [
       "libunibreak"
