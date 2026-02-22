@@ -93,6 +93,11 @@
       "numactl-dev"
     ]
   },
+  "aws-c-sdkutils": {
+    "build_options": [
+      "aws-c-sdkutils:tests=enabled"
+    ]
+  },
   "argtable3": {
     "build_options": [
       "argtable3:examples=true",
