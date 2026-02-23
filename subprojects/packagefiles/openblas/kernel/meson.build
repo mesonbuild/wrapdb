@@ -659,7 +659,9 @@ base_kops = [
     'modes': {
       '': {
         'exts': {
-          '': {},
+          '': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
     },
@@ -669,12 +671,16 @@ base_kops = [
     'modes': {
       's': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
       'd': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
       # 'q': {'exts': {'': {}}},
