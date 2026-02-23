@@ -313,6 +313,18 @@
     ],
     "fatal_warnings": false
   },
+  "ell": {
+    "alpine_packages": [
+      "glib-dev",
+      "openssl",
+      "xxd"
+    ],
+    "debian_packages": [
+      "libglib2.0-dev",
+      "openssl",
+      "xxd"
+    ]
+  },
   "enlog": {
     "build_options": [
       "enlog:color=true",
