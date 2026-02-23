@@ -640,6 +640,39 @@
       "libvulkan-dev"
     ]
   },
+  "jsonrpc-glib" : {
+    "_comment" : [
+      "- Disable fatal warnings because the wrap the this wraning : 'Could not detect glib version'",
+      "- Disable unit tests because Windows cannot found gio-unix-2.0"
+    ],
+    "build_options" : [
+      "jsonrpc-glib:enable_tests=false"
+    ],
+    "debian_packages": [
+      "flex",
+      "bison"
+    ],
+    "brew_packages": [
+      "flex",
+      "bison"
+    ],
+    "alpine_packages": [
+      "python3-dev",
+      "musl-libintl",
+      "flex",
+      "bison",
+      "gettext"
+    ],
+     "python_packages": [
+      "setuptools",
+      "packaging"
+    ],
+    "skip_dependency_check": [
+      "gio-windows-2.0",
+      "gio-unix-2.0"
+    ],
+    "fatal_warnings": false
+  },
   "imgui-sfml": {
     "alpine_packages": [
       "libudev-zero-dev",

@@ -1927,6 +1927,14 @@
       "1.8.4-1"
     ]
   },
+  "jsonrpc-glib": {
+    "dependency_names": [
+      "jsonrpc-glib-1.0"
+    ],
+    "versions": [
+      "3.44.2-1"
+    ]
+  },
   "kafel": {
     "dependency_names": [
       "kafel"
