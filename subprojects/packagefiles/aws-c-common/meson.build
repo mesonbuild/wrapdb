@@ -1,7 +1,7 @@
 project(
   'aws-c-common',
   'c',
-  version: '0.12.4',
+  version: '0.12.6',
   meson_version: '>=0.63.0',
   license: 'Apache-2.0',
   default_options: ['warning_level=3'],
@@ -16,6 +16,11 @@ cjson = dependency('libcjson')
 threads = dependency('threads')
 m = cc.find_library(
   'm',
+  required: false,
+)
+# linking to dl is required on Amazon Linux 2
+dl = cc.find_library(
+  'dl',
   required: false,
 )
 bcrypt = cc.find_library(
@@ -82,8 +87,16 @@ generic_src = files(
   'source/xml_parser.c',
 )
 
-public_c_args = ['-DAWS_COMMON_USE_IMPORT_EXPORT']
-c_args = ['-DAWS_COMMON_EXPORTS']
+c_args = ['-DAWS_COMMON_EXPORTS=1']
+
+# AWS_COMMON_USE_IMPORT_EXPORT should not be defined for static libraries on Windows
+public_c_args = []
+if (
+  get_option('default_library') == 'shared'
+  and host_machine.system() == 'windows'
+) or host_machine.system() != 'windows'
+  public_c_args += ['-DAWS_COMMON_USE_IMPORT_EXPORT=1']
+endif
 
 if host_machine.cpu_family() in ['x86', 'x86_64']
   if cc.get_argument_syntax() == 'msvc'
@@ -124,11 +137,15 @@ posix_src = files(
 
 if host_machine.system() == 'darwin'
   platform_src = posix_src + files(
+    'source/platform_fallback_stubs/file_direct_io.c',
     'source/platform_fallback_stubs/system_info.c',
   )
   c_args += ['-DAWS_AFFINITY_METHOD=AWS_AFFINITY_METHOD_NONE']
 elif host_machine.system() == 'linux'
-  platform_src = posix_src + files('source/linux/system_info.c')
+  platform_src = posix_src + files(
+    'source/linux/file_direct_io.c',
+    'source/linux/system_info.c',
+  )
   if cc.has_function(
     'pthread_attr_setaffinity_np',
     prefix: '#include <pthread.h>',
@@ -139,6 +156,7 @@ elif host_machine.system() == 'linux'
   endif
 elif host_machine.system() == 'windows'
   platform_src = files(
+    'source/platform_fallback_stubs/file_direct_io.c',
     'source/platform_fallback_stubs/system_info.c',
     'source/windows/clock.c',
     'source/windows/condition_variable.c',
@@ -158,6 +176,11 @@ elif host_machine.system() == 'windows'
     '-DAWS_AFFINITY_METHOD=AWS_AFFINITY_METHOD_NONE',
     '-DWINDOWS_KERNEL_LIB=kernel32',
   ]
+elif host_machine.system() == 'emscripten'
+  platform_src = posix_src + files(
+    'source/platform_fallback_stubs/system_info.c',
+  )
+  c_args += ['-DAWS_AFFINITY_METHOD=AWS_AFFINITY_METHOD_NONE']
 else
   error('Unsupported platform: ' + host_machine.system())
 endif
@@ -169,7 +192,7 @@ libaws_c_common = library(
   generic_src,
   platform_src,
   arch_src,
-  dependencies: [libcbor, cjson, threads, m, bcrypt, shlwapi, foundation],
+  dependencies: [libcbor, cjson, threads, m, dl, bcrypt, shlwapi, foundation],
   c_args: c_args + public_c_args,
   include_directories: inc,
   install: true,
