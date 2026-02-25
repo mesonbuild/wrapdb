@@ -176,6 +176,10 @@
       "openssl-dev",
       "openssl"
     ],
+    "choco_packages": [
+      "strawberryperl",
+      "openssl"
+    ],
     "debian_packages": [
       "libssl-dev"
     ],
