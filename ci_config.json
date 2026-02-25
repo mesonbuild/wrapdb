@@ -165,6 +165,24 @@
     "_comment": "Upstream doesn't officially support 32-bit platforms and warns about it",
     "fatal_warnings": false
   },
+  "cppbor": {
+    "build_options": [
+      "cpp_std=c++20"
+    ],
+    "build_on": {
+      "windows": false
+    },
+    "alpine_packages": [
+      "openssl-dev",
+      "openssl"
+    ],
+    "debian_packages": [
+      "libssl-dev"
+    ],
+    "msys_packages": [
+      "openssl"
+    ]
+  },
   "cpputest": {
     "build_options": [
       "cpputest:enable_cpputest_extensions=true",

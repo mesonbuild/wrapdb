@@ -1,0 +1,8 @@
+[wrap-file]
+directory = libcppbor-1.0.0
+source_url = https://gitlab.com/viperscience/libcppbor/-/archive/1.0.0/libcppbor-1.0.0.tar.gz
+source_filename = libcppbor-1.0.0.tar.gz
+source_hash = e7f9b71767003cbe142ebda44dd7068f3d09c8f7f2648939bc89154b9e1eae3b
+
+[provide]
+cppbor = cppbor_dep
