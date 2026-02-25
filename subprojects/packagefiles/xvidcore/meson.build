@@ -30,12 +30,14 @@ if host_os != 'windows'
     'threads',
     required: false,
   )
-  if cc.has_header(
-    'pthread.h',
-    dependencies: thread_dep,
-  )
-    c_args += ['-DHAVE_PTHREAD']
-    deps += thread_dep
+  if (thread_dep.found())
+    if cc.has_header(
+      'pthread.h',
+      dependencies: thread_dep,
+    )
+      c_args += ['-DHAVE_PTHREAD']
+      deps += thread_dep
+    endif
   endif
 endif
 
