@@ -2,7 +2,7 @@
 directory = libcppbor-1.0.0
 source_url = https://gitlab.com/viperscience/libcppbor/-/archive/1.0.0/libcppbor-1.0.0.tar.gz
 source_filename = libcppbor-1.0.0.tar.gz
-source_hash = 90aab05d49e8230bb8928028c5eafbfae0c12a2ba840ea59e51d4b2ca98b6aaa
+source_hash = e9118d03023f0aaa06c2ea36a5f410fc934f9c3187a16529d1ec714a319248f1
 
 [provide]
 dependency_names = cppbor
