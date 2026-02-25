@@ -93,12 +93,15 @@ freeglut_deps = [
   dep_glu,
 ]
 
+compile_args = []
+
 if host_system == 'windows'
   if cc.get_id() == 'msvc'
     add_project_arguments(
-      '/source-charset:windows-1252',
+      ['/source-charset:windows-1252', '-DFREEGLUT_LIB_PRAGMAS=0'],
       language: 'c',
     )
+    compile_args += '-DFREEGLUT_LIB_PRAGMAS=0'
   endif
 
   freeglut_sources += files(
@@ -293,7 +296,6 @@ freeglut_def = configure_file(
   configuration: config,
 )
 
-compile_args = ['-DFREEGLUT_LIB_PRAGMAS=0']
 if get_option('default_library') == 'static'
   compile_args += '-DFREEGLUT_STATIC'
   add_project_arguments(
