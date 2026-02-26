@@ -34,7 +34,7 @@ if building_glib_wrapper
     output: 'poppler-macros.h',
     configuration: {
       'NAME': 'GLIB',
-      'PUBLIC_DEFINE': 'POPPLER_PUBLIC'
+      'PUBLIC_DEFINE': 'POPPLER_PUBLIC',
     },
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'blib',

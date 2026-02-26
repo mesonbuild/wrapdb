@@ -165,7 +165,7 @@ if get_option('tools').allowed()
   )
   install_man('pdfunite.1')
   meson.override_find_program('pdfunite', pdfunite_executable)
-  
+
 endif
 
 summary('tools', get_option('tools').allowed())

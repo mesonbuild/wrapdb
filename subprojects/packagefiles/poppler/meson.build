@@ -32,13 +32,25 @@ poppler_library_version = poppler_library_so_version.to_string() + '.0.0'
 
 cpp_compiler = meson.get_compiler('cpp')
 poppler_configuration.set10('HAVE_FSEEK64', cpp_compiler.has_function('fseek64'))
-poppler_configuration.set10('HAVE_FSEEKO', cpp_compiler.has_header_symbol('stdio.h', 'fseeko'))
-poppler_configuration.set10('HAVE_GMTIME_R', cpp_compiler.has_function('gmtime_r'))
-poppler_configuration.set10('HAVE_LOCALTIME_R', cpp_compiler.has_function('localtime_r'))
+poppler_configuration.set10(
+  'HAVE_FSEEKO',
+  cpp_compiler.has_header_symbol('stdio.h', 'fseeko'),
+)
+poppler_configuration.set10(
+  'HAVE_GMTIME_R',
+  cpp_compiler.has_function('gmtime_r'),
+)
+poppler_configuration.set10(
+  'HAVE_LOCALTIME_R',
+  cpp_compiler.has_function('localtime_r'),
+)
 poppler_configuration.set10('HAVE_LSEEK64', cpp_compiler.has_function('lseek64'))
 poppler_configuration.set10('HAVE_POPEN', cpp_compiler.has_function('popen'))
 poppler_configuration.set10('HAVE_PREAD64', cpp_compiler.has_function('pread64'))
-poppler_configuration.set10('HAVE_STRTOK_R', cpp_compiler.has_function('strtok_r'))
+poppler_configuration.set10(
+  'HAVE_STRTOK_R',
+  cpp_compiler.has_function('strtok_r'),
+)
 poppler_configuration.set10('HAVE_TIMEGM', cpp_compiler.has_function('timegm'))
 
 poppler_library_cpp_arguments = []
@@ -170,7 +182,10 @@ poppler_configuration.set10('ENABLE_ZLIB_UNCOMPRESS', false)
 # @todo ENABLE_PGP_SIGNATURES could be dependent on a meson configuration feature option 'pgp_signatures'
 poppler_configuration.set10('ENABLE_PGP_SIGNATURES', false)
 # @todo POPPLER_DATADIR could be dependent on a poppler-data subproject.
-poppler_configuration.set('POPPLER_DATADIR', get_option('prefix') / 'share' / 'poppler')
+poppler_configuration.set(
+  'POPPLER_DATADIR',
+  get_option('prefix') / 'share' / 'poppler',
+)
 
 
 # optional libcurl support
@@ -270,7 +285,10 @@ if signature_backends.length() > 0
 else
   poppler_configuration.set('DEFAULT_SIGNATURE_BACKEND', 'None')
 endif
-poppler_configuration.set10('ENABLE_SIGNATURES', nss_dep.found() or gpgmepp_dep.found())
+poppler_configuration.set10(
+  'ENABLE_SIGNATURES',
+  nss_dep.found() or gpgmepp_dep.found(),
+)
 
 
 # option 'dct_decoder'
@@ -373,7 +391,7 @@ iconv_dep = dependency(
   required: get_option('cpp'),
 )
 if iconv_dep.found() and cpp_compiler.compiles(
-    '''
+  '''
   #include <iconv.h>
   int main(){
     iconv_t conv = 0;
@@ -384,9 +402,9 @@ if iconv_dep.found() and cpp_compiler.compiles(
     iconv(conv, &in, &ilen, &out, &olen);
     return 0;
   }''',
-    dependencies: [iconv_dep],
-    werror: true,
-  )
+  dependencies: [iconv_dep],
+  werror: true,
+)
   poppler_configuration.set('ICONV_CONST', 'const')
 else
   poppler_configuration.set('ICONV_CONST', '')
@@ -395,7 +413,10 @@ endif
 
 # relocatable is a Windows-only feature
 # @todo allow turning it off via options
-poppler_configuration.set10('ENABLE_RELOCATABLE', host_machine.system() == 'windows')
+poppler_configuration.set10(
+  'ENABLE_RELOCATABLE',
+  host_machine.system() == 'windows',
+)
 
 
 # fontconfig / font configuration support
@@ -459,8 +480,8 @@ poppler_exports_h = configure_file(
   output: 'poppler_private_export.h',
   configuration: {
     'NAME': 'PRIVATE',
-    'PUBLIC_DEFINE': 'POPPLER_PRIVATE_EXPORT'
-  }
+    'PUBLIC_DEFINE': 'POPPLER_PRIVATE_EXPORT',
+  },
 )
 poppler_library_sources += poppler_exports_h
 

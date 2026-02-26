@@ -35,7 +35,7 @@ poppler_qt5_library_sources += configure_file(
   output: 'poppler-export.h',
   configuration: {
     'NAME': 'QT5',
-    'PUBLIC_DEFINE': 'POPPLER_QT5_EXPORT'
+    'PUBLIC_DEFINE': 'POPPLER_QT5_EXPORT',
   },
   install: true,
   install_dir: get_option('includedir') / meson.project_name() / 'qt5',

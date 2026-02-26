@@ -43,7 +43,7 @@ if iconv_dep.found()
     output: 'poppler_cpp_export.h',
     configuration: {
       'NAME': 'CPP',
-      'PUBLIC_DEFINE': 'POPPLER_CPP_EXPORT'
+      'PUBLIC_DEFINE': 'POPPLER_CPP_EXPORT',
     },
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'cpp',

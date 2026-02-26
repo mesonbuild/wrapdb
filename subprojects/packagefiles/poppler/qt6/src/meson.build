@@ -35,7 +35,7 @@ poppler_qt6_library_sources += configure_file(
   output: 'poppler-export.h',
   configuration: {
     'NAME': 'QT6',
-    'PUBLIC_DEFINE': 'POPPLER_QT6_EXPORT'
+    'PUBLIC_DEFINE': 'POPPLER_QT6_EXPORT',
   },
   install: true,
   install_dir: get_option('includedir') / meson.project_name() / 'qt6',
