@@ -1,12 +1,11 @@
 building_tools = false
-parseargs_cc = files('parseargs.cc')
+utils_parseargs_cc = files('parseargs.cc')
 
 if get_option('tools').allowed() == true
   building_tools = true
 
   tools_dependencies = [poppler_library_dependency]
 
-  utils_parseargs_cc = files('parseargs.cc')
   tools_sources = [utils_parseargs_cc, 'Win32Console.cc']
 
 
