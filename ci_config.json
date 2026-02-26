@@ -1351,6 +1351,10 @@
       "libboost-iostreams-dev"
     ]
   },
+	"poppler": {
+    "_comment": "- fontconfig warns on v1 wraps; fixed in next release",
+    "fatal_warnings": false
+	},
   "qarchive": {
     "build_on": {
       "windows": false

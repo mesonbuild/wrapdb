@@ -3691,6 +3691,21 @@
       "poppler-qt5",
       "poppler-qt6"
     ],
+    "program_names": [
+      "pdfattach",
+      "pdfdetach",
+      "pdffonts",
+      "pdfimages",
+      "pdfinfo",
+      "pdfseparate",
+      "pdfsig",
+      "pdftocairo",
+      "pdftohtml",
+      "pdftoppm",
+      "pdftops",
+      "pdftotext",
+      "pdfunite"
+    ],
     "versions": [
       "26.02.0-1"
     ]
