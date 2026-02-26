@@ -1,6 +1,6 @@
 [wrap-git]
 directory = poppler-test
 url = git://git.freedesktop.org/git/poppler/test
-revision = HEAD
+revision = b85e4d1ce75636b3e727555a9d31da34ad771c1c
 depth = 1
 patch_directory = poppler-test
