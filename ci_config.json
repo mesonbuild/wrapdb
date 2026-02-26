@@ -1209,6 +1209,22 @@
       "mingw-w64-ucrt-x86_64-fc"
     ]
   },
+  "oatpp-libressl": {
+    "debian_packages": [
+      "libssl3",
+      "libssl-dev",
+      "libtls22",
+      "libtls-dev"
+    ],
+    "brew_packages":[
+      "libressl"
+    ],
+    "_comment": "- libressl doesn't work on windows",
+    "build_on": {
+      "windows": false,
+      "msys2": false
+    }
+  },
   "openh264": {
     "alpine_packages": [
       "nasm"
