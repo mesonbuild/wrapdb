@@ -62,7 +62,7 @@ if building_glib_wrapper == true
   if get_option('default_library') == 'static'
     poppler_glib_library_cpp_arguments += '-DPOPPLER_GLIB_STATIC_DEFINE'
   else
-    poppler_glib_library_cpp_arguments += '-Dpoppler_glib_EXPORTS'
+    poppler_glib_library_cpp_arguments += '-DPOPPLER_GLIB_EXPORTS'
   endif
 
   poppler_glib_library_dependencies = [

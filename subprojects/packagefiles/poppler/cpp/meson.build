@@ -7,7 +7,7 @@ if building_cpp_wrapper == true
   if get_option('default_library') == 'static'
     poppler_cpp_library_cpp_arguments += '-DPOPPLER_CPP_STATIC_DEFINE'
   else
-    poppler_cpp_library_cpp_arguments += '-Dpoppler_cpp_EXPORTS'
+    poppler_cpp_library_cpp_arguments += '-DPOPPLER_CPP_EXPORTS'
   endif
 
   poppler_cpp_library_dependencies = [

@@ -6,7 +6,7 @@
 #  define POPPLER_CPP_NO_EXPORT
 #else
 #  ifndef POPPLER_CPP_EXPORT
-#    ifdef poppler_cpp_EXPORTS
+#    ifdef POPPLER_CPP_EXPORTS
         /* We are building this library */
 #      if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
 #        define POPPLER_CPP_EXPORT __declspec(dllexport)

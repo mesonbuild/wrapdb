@@ -6,7 +6,7 @@
 #  define POPPLER_PRIVATE_NO_EXPORT
 #else
 #  ifndef POPPLER_PRIVATE_EXPORT
-#    ifdef poppler_EXPORTS
+#    ifdef POPPLER_PRIVATE_EXPORTS
        /* We are building this library */
 #      if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
 #        define POPPLER_PRIVATE_EXPORT __declspec(dllexport)

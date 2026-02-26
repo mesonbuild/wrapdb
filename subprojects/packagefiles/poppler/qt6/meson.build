@@ -20,7 +20,7 @@ if building_qt6_wrapper == true
   if get_option('default_library') == 'static'
     poppler_qt6_library_cpp_arguments += '-DPOPPLER_QT6_STATIC_DEFINE'
   else
-    poppler_qt6_library_cpp_arguments += '-Dpoppler_qt6_EXPORTS'
+    poppler_qt6_library_cpp_arguments += '-DPOPPLER_QT6_EXPORTS'
   endif
 
   # MSVC complains about dll-interface for embedded members of the internal API library

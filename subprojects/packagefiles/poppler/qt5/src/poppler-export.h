@@ -6,7 +6,7 @@
 #  define POPPLER_QT5_NO_EXPORT
 #else
 #  ifndef POPPLER_QT5_EXPORT
-#    ifdef poppler_qt5_EXPORTS
+#    ifdef POPPLER_QT5_EXPORTS
        /* We are building this library */
 #      if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
 #        define POPPLER_QT5_EXPORT __declspec(dllexport)

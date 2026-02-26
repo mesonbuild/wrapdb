@@ -477,7 +477,7 @@ subdir('poppler')
 
 # defines for poppler_private_export.h
 if get_option('default_library') != 'static'
-  poppler_library_cpp_arguments += '-Dpoppler_EXPORTS'
+  poppler_library_cpp_arguments += '-DPOPPLER_PRIVATE_EXPORTS'
 else
   poppler_library_cpp_arguments += '-DPOPPLER_PRIVATE_STATIC_DEFINE'
 endif

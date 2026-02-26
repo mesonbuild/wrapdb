@@ -22,7 +22,7 @@ if building_qt5_wrapper == true
   if get_option('default_library') == 'static'
     poppler_qt5_library_cpp_arguments += '-DPOPPLER_QT5_STATIC_DEFINE'
   else
-    poppler_qt5_library_cpp_arguments += '-Dpoppler_qt5_EXPORTS'
+    poppler_qt5_library_cpp_arguments += '-DPOPPLER_QT5_EXPORTS'
   endif
 
   poppler_qt5_library_include_directories = include_directories('src')
