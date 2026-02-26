@@ -153,10 +153,6 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'pcreposix.def'
     },
     'poppler': {
-        'poppler_private_export.h',
-        'poppler_cpp_export.h',
-        'poppler-macros.h',
-        'poppler-export.h',
         'poppler-test.wrap',
     },
     'protobuf': {

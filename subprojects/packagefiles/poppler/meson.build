@@ -475,6 +475,18 @@ configure_file(
 
 subdir('poppler')
 
+poppler_exports_h_in = files('poppler_exports.h.in')
+# exports header file for private library
+poppler_exports_h = configure_file(
+  input: poppler_exports_h_in,
+  output: 'poppler_private_export.h',
+  configuration: {
+    'NAME': 'PRIVATE',
+    'PUBLIC_DEFINE': 'POPPLER_PRIVATE_EXPORT'
+  }
+)
+poppler_library_sources += poppler_exports_h
+
 # defines for poppler_private_export.h
 if get_option('default_library') != 'static'
   poppler_library_cpp_arguments += '-DPOPPLER_PRIVATE_EXPORTS'

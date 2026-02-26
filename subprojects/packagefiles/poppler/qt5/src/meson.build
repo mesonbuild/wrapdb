@@ -1,11 +1,3 @@
-poppler_qt5_poppler_version_h = configure_file(
-  configuration: poppler_configuration,
-  input: 'poppler-version.h.in',
-  output: 'poppler-version.h',
-  install: true,
-  install_dir: get_option('includedir') / meson.project_name() / 'qt5',
-)
-
 poppler_qt5_library_sources = files(
   'QPainterOutputDev.cc',
   'poppler-annotation.cc',
@@ -31,13 +23,28 @@ poppler_qt5_library_sources = files(
   'poppler-textbox.cc',
   'poppler-version.cpp',
 )
-poppler_qt5_library_sources += poppler_qt5_poppler_version_h
+poppler_qt5_library_sources += configure_file(
+  input: 'poppler-version.h.in',
+  output: 'poppler-version.h',
+  configuration: poppler_configuration,
+  install: true,
+  install_dir: get_option('includedir') / meson.project_name() / 'qt5',
+)
+poppler_qt5_library_sources += configure_file(
+  input: poppler_exports_h_in,
+  output: 'poppler-export.h',
+  configuration: {
+    'NAME': 'QT5',
+    'PUBLIC_DEFINE': 'POPPLER_QT5_EXPORT'
+  },
+  install: true,
+  install_dir: get_option('includedir') / meson.project_name() / 'qt5',
+)
 poppler_qt5_library_sources += qt5_module.compile_moc(
   headers: files('poppler-form.h', 'poppler-optcontent.h'),
 )
 
 install_headers(
-  'poppler-export.h',
   'poppler-qt5.h',
   'poppler-link.h',
   'poppler-annotation.h',

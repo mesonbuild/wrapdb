@@ -31,6 +31,16 @@ if building_glib_wrapper == true
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'glib',
   )
+  poppler_glib_library_sources += configure_file(
+    input: poppler_exports_h_in,
+    output: 'poppler-macros.h',
+    configuration: {
+      'NAME': 'GLIB',
+      'PUBLIC_DEFINE': 'POPPLER_PUBLIC'
+    },
+    install: true,
+    install_dir: get_option('includedir') / meson.project_name() / 'blib',
+  )
 
   poppler_glib_library_headers = files(
     'poppler-action.h',
@@ -40,7 +50,6 @@ if building_glib_wrapper == true
     'poppler-document.h',
     'poppler-form-field.h',
     'poppler-layer.h',
-    'poppler-macros.h',
     'poppler-media.h',
     'poppler-movie.h',
     'poppler-page.h',

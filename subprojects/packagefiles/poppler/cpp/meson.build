@@ -39,6 +39,16 @@ if building_cpp_wrapper == true
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'cpp',
   )
+  poppler_cpp_library_sources += configure_file(
+    input: poppler_exports_h_in,
+    output: 'poppler_cpp_export.h',
+    configuration: {
+      'NAME': 'CPP',
+      'PUBLIC_DEFINE': 'POPPLER_CPP_EXPORT'
+    },
+    install: true,
+    install_dir: get_option('includedir') / meson.project_name() / 'cpp',
+  )
 
   poppler_cpp_library = library(
     'poppler-cpp',
@@ -65,7 +75,6 @@ if building_cpp_wrapper == true
   meson.override_dependency('poppler-cpp', poppler_cpp_library_dependency)
 
   install_headers(
-    'poppler_cpp_export.h',
     'poppler-destination.h',
     'poppler-document.h',
     'poppler-embedded-file.h',
