@@ -7,3 +7,4 @@ patch_directory = poppler
 
 [provide]
 dependency_names = poppler, poppler-cpp, poppler-glib, poppler-qt5, poppler-qt6
+program_names = pdftoppm, pdftocairo, pdfdetach, pdfattach, pdffonts, pdfimages, pdfinfo, pdfsig, pdftops, pdftotext, pdftohtml, pdfseparate, pdfunite

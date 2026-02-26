@@ -17,6 +17,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdftoppm.1')
+  meson.override_find_program('pdftoppm', pdftoppm_executable)
 
 
   # pdftocairo
@@ -36,6 +37,7 @@ if get_option('tools').allowed()
       install: true,
     )
     install_man('pdftocairo.1')
+    meson.override_find_program('pdftocairo', pdftocairo_executable)
   endif
 
 
@@ -47,6 +49,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfdetach.1')
+  meson.override_find_program('pdfdetach', pdfdetach_executable)
 
 
   # pdfattach
@@ -57,6 +60,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfattach.1')
+  meson.override_find_program('pdfattach', pdfattach_executable)
 
 
   # pdffonts
@@ -67,6 +71,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdffonts.1')
+  meson.override_find_program('pdffonts', pdffonts_executable)
 
 
   # pdfimages
@@ -77,6 +82,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfimages.1')
+  meson.override_find_program('pdfimages', pdfimages_executable)
 
 
   # pdfinfo
@@ -87,6 +93,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfinfo.1')
+  meson.override_find_program('pdfinfo', pdfinfo_executable)
 
 
   # pdfsig
@@ -98,6 +105,7 @@ if get_option('tools').allowed()
       install: true,
     )
     install_man('pdfsig.1')
+    meson.override_find_program('pdfsig', pdfsig_executable)
   endif
 
 
@@ -109,6 +117,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdftops.1')
+  meson.override_find_program('pdftops', pdftops_executable)
 
 
   # pdftotext
@@ -119,6 +128,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdftotext.1')
+  meson.override_find_program('pdftotext', pdftotext_executable)
 
 
   # pdftohtml
@@ -135,6 +145,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdftohtml.1')
+  meson.override_find_program('pdftohtml', pdftohtml_executable)
 
 
   # pdfseparate
@@ -145,6 +156,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfseparate.1')
+  meson.override_find_program('pdfseparate', pdfseparate_executable)
 
 
   # pdfunite
@@ -155,6 +167,7 @@ if get_option('tools').allowed()
     install: true,
   )
   install_man('pdfunite.1')
+  meson.override_find_program('pdfunite', pdfunite_executable)
 
 
 endif
