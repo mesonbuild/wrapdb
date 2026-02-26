@@ -1,7 +1,7 @@
 building_tools = false
 utils_parseargs_cc = files('parseargs.cc')
 
-if get_option('tools').allowed() == true
+if get_option('tools').allowed()
   building_tools = true
 
   tools_dependencies = [poppler_library_dependency]
@@ -20,7 +20,7 @@ if get_option('tools').allowed() == true
 
 
   # pdftocairo
-  if cairo_dependency.found() == true
+  if cairo_dependency.found()
     pdftocairo_executable = executable(
       'pdftocairo',
       sources: [
@@ -90,7 +90,7 @@ if get_option('tools').allowed() == true
 
 
   # pdfsig
-  if enable_signatures == true
+  if enable_signatures
     pdfsig_executable = executable(
       'pdfsig',
       sources: tools_sources + ['pdfsig.cc'],

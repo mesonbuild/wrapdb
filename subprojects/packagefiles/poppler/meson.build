@@ -168,7 +168,7 @@ libcurl_depedency = dependency(
   required: get_option('libcurl'),
 )
 enable_libcurl = libcurl_depedency.found()
-if enable_libcurl == true
+if enable_libcurl
   poppler_library_sources += [
     'poppler/CurlCachedFile.cc',
     'poppler/CurlPDFDocBuilder.cc',
@@ -183,7 +183,7 @@ lcms2_dependency = dependency(
   required: get_option('lcms2'),
 )
 enable_lcms2 = lcms2_dependency.found()
-if enable_lcms2 == true
+if enable_lcms2
   poppler_library_dependencies += lcms2_dependency
 endif
 
@@ -193,7 +193,7 @@ libpng_dependency = dependency(
   required: get_option('libpng'),
 )
 enable_libpng = libpng_dependency.found()
-if enable_libpng == true
+if enable_libpng
   poppler_library_dependencies += libpng_dependency
 endif
 
@@ -204,7 +204,7 @@ libtiff_4_dependency = dependency(
   required: get_option('libtiff'),
 )
 enable_libtiff_4 = libtiff_4_dependency.found()
-if enable_libtiff_4 == true
+if enable_libtiff_4
   poppler_library_dependencies += libtiff_4_dependency
 endif
 
@@ -218,7 +218,7 @@ nss_dependency = dependency(
   required: get_option('nss'),
 )
 enable_nss = nss_dependency.found()
-if enable_nss == true
+if enable_nss
   poppler_library_sources += ['poppler/NSSCryptoSignBackend.cc']
   poppler_library_dependencies += nss_dependency
   signature_backends += 'NSS'
@@ -231,7 +231,7 @@ gpgmepp_dependency = dependency(
   required: get_option('gpgmepp'),
 )
 enable_gpgmepp = gpgmepp_dependency.found()
-if enable_gpgmepp == true
+if enable_gpgmepp
   poppler_library_sources += ['poppler/GPGMECryptoSignBackend.cc']
   poppler_library_dependencies += gpgmepp_dependency
   signature_backends += 'GPG'
@@ -287,7 +287,7 @@ boost_dependency = dependency(
   required: get_option('boost'),
 )
 use_boost_headers = boost_dependency.found()
-if use_boost_headers == true
+if use_boost_headers
   poppler_library_dependencies += boost_dependency
 endif
 
@@ -316,13 +316,13 @@ cairo_dependency = dependency(
   not_found_message: 'Cairo is required for the GLib backend.',
 )
 have_cairo = cairo_dependency.found()
-if have_cairo == true
+if have_cairo
   cairo_feature = '#define POPPLER_HAS_CAIRO 1'
 else
   cairo_feature = '#undef POPPLER_HAS_CAIRO'
 endif
 building_glib_wrapper = have_cairo and have_glib
-if have_glib == true
+if have_glib
   gtk3_dependency = dependency(
     'gtk+-3.0',
     version: '>=3.24',
@@ -340,7 +340,7 @@ iconv_dependency = dependency(
   required: get_option('cpp'),
 )
 compile_check_iconv_const = false
-if iconv_dependency.found() == true
+if iconv_dependency.found()
   compile_check_iconv_const = cpp_compiler.compiles(
     '''
   #include <iconv.h>
@@ -523,7 +523,7 @@ poppler_library_dependency = declare_dependency(
 )
 meson.override_dependency('poppler', poppler_library_dependency)
 
-if get_option('tests') == true
+if get_option('tests')
   poppler_test_subproject = subproject('poppler-test')
   poppler_test_directory = poppler_test_subproject.get_variable(
     'poppler_test_directory',

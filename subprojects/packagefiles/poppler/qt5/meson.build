@@ -8,7 +8,7 @@ qt5_dependency = dependency(
 
 building_qt5_wrapper = qt5_dependency.found()
 building_qt5_wrapper_demo = false
-if building_qt5_wrapper == true
+if building_qt5_wrapper
   poppler_qt5_library_cpp_arguments = [
     '-DQT_STRICT_ITERATORS',
     '-DQT_DISABLE_DEPRECATED_BEFORE=0x050E00',

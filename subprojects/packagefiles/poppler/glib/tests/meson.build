@@ -1,4 +1,4 @@
-if get_option('tests') == true and gtk3_dependency.found() == true
+if get_option('tests') and gtk3_dependency.found()
   # pdfdrawbb
   poppler_glib_pdfdrawbb_executable = executable(
     'pdfdrawbb',

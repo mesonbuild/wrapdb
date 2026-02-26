@@ -1,4 +1,4 @@
-if get_option('tests') == true
+if get_option('tests')
   perf_test_executable = executable(
     'perf-test',
     sources: 'perf-test.cc',
@@ -11,7 +11,7 @@ if get_option('tests') == true
     dependencies: poppler_library_dependency,
   )
 
-  if gtk3_dependency.found() == true
+  if gtk3_dependency.found()
     gtk_test_executable = executable(
       'gtk-test',
       sources: 'gtk-test.cc',
@@ -19,7 +19,7 @@ if get_option('tests') == true
     )
   endif
 
-  if cairo_dependency.found() == true and gtk3_dependency.found() == true
+  if cairo_dependency.found() and gtk3_dependency.found()
     pdf_inspector_executable = executable(
       'pdf-inspector',
       sources: ['pdf-inspector.cc', poppler_cairo_sources],
@@ -32,7 +32,7 @@ if get_option('tests') == true
     'threads',
     required: cairo_dependency.found(),
   )
-  if threads_dependency.found() == true
+  if threads_dependency.found()
     cairo_thread_test_executable = executable(
       'cairo-thread-test',
       sources: ['cairo-thread-test.cc', poppler_cairo_sources],
@@ -44,7 +44,7 @@ if get_option('tests') == true
     )
   endif
 
-  if enable_nss == true
+  if enable_nss
     pdf_validate_signature_executable = executable(
       'pdf-validate-signature',
       sources: 'pdf-validate-signature.cc',

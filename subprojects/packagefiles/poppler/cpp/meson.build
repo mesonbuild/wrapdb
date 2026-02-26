@@ -1,5 +1,5 @@
 building_cpp_wrapper = iconv_dependency.found()
-if building_cpp_wrapper == true
+if building_cpp_wrapper
   poppler_cpp_library_version = '3.0.0'
   poppler_cpp_library_so_version = '3'
 

@@ -1,4 +1,4 @@
-if get_option('tests') == true
+if get_option('tests')
   qt6_test_dependency = dependency(
     'qt6',
     version: '>=6.2',
@@ -29,13 +29,13 @@ if get_option('tests') == true
 
   foreach qt6_build_only_test_name, qt6_build_only_test : qt6_build_only_tests
     qt6_build_only_test_sources = [qt6_build_only_test[0]]
-    if qt6_build_only_test[1] == true
+    if qt6_build_only_test[1]
       qt6_build_only_test_sources += qt6_module.compile_moc(
         sources: qt6_build_only_test[0],
       )
     endif
     qt6_build_only_test_dependencies = [poppler_qt6_library_dependency]
-    if qt6_build_only_test[2] == true
+    if qt6_build_only_test[2]
       qt6_build_only_test_dependencies += qt6_widgets_dependency
     endif
     executable(
@@ -100,7 +100,7 @@ if get_option('tests') == true
 
   # @todo disabled beacuse test fails
   # @sa https://gitlab.freedesktop.org/poppler/poppler/-/issues/1678
-  # if enable_gpgmepp == true
+  # if enable_gpgmepp
   #     qt6_check_create_pgp_signature1_executable = executable(
   #     'check_create_pgp_signature1',
   #     sources: [

@@ -5,7 +5,7 @@ qt6_widgets_dependency = dependency(
 )
 
 building_qt6_wrapper_demo = qt6_widgets_dependency.found()
-if building_qt6_wrapper_demo == true
+if building_qt6_wrapper_demo
   poppler_qt6_viewer_sources = files(
     'abstractinfodock.cpp',
     'documentobserver.cpp',

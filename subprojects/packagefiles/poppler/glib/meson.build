@@ -1,6 +1,6 @@
 building_gobject_introspection = false
 building_glib_wrapper_demo = false
-if building_glib_wrapper == true
+if building_glib_wrapper
   poppler_glib_library_version = '8.31.0'
   poppler_glib_library_so_version = '8'
 
@@ -111,7 +111,7 @@ if building_glib_wrapper == true
     subdir: meson.project_name() / 'glib',
   )
 
-  if get_option('gobject_introspection').allowed() == true and get_option(
+  if get_option('gobject_introspection').allowed() and get_option(
     'default_library',
   ) == 'shared'
     building_gobject_introspection = true

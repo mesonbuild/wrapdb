@@ -8,7 +8,7 @@ qt6_dependency = dependency(
 
 building_qt6_wrapper = qt6_dependency.found()
 building_qt6_wrapper_demo = false
-if building_qt6_wrapper == true
+if building_qt6_wrapper
   poppler_qt6_library_cpp_arguments = [
     '-DQT_STRICT_ITERATORS',
     '-DQT_NO_SIGNALS_SLOTS_KEYWORDS',

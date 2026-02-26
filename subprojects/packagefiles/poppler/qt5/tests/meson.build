@@ -1,4 +1,4 @@
-if get_option('tests') == true
+if get_option('tests')
   qt5_test_dependency = dependency(
     'qt5',
     version: '>=5.15',
@@ -29,13 +29,13 @@ if get_option('tests') == true
 
   foreach qt5_manual_test_name, qt5_manual_test : qt5_manual_tests
     qt5_manual_test_sources = [qt5_manual_test[0]]
-    if qt5_manual_test[1] == true
+    if qt5_manual_test[1]
       qt5_manual_test_sources += qt5_module.compile_moc(
         sources: qt5_manual_test[0],
       )
     endif
     qt5_manual_test_dependencies = [poppler_qt5_library_dependency]
-    if qt5_manual_test[2] == true
+    if qt5_manual_test[2]
       qt5_manual_test_dependencies += qt5_widgets_dependency
     endif
     executable(
