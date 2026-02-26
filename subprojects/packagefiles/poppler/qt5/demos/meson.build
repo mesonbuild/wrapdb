@@ -1,10 +1,10 @@
-qt5_widgets_dependency = dependency(
+qt5_widgets_dep = dependency(
   'qt5',
   modules: 'Widgets',
   required: get_option('qt5_demo'),
 )
 
-building_qt5_wrapper_demo = qt5_widgets_dependency.found()
+building_qt5_wrapper_demo = qt5_widgets_dep.found()
 if building_qt5_wrapper_demo
   poppler_qt5_viewer_sources = files(
     'abstractinfodock.cpp',
@@ -43,6 +43,6 @@ if building_qt5_wrapper_demo
   poppler_qt5_viewer_executable = executable(
     'poppler_qt5viewer',
     sources: poppler_qt5_viewer_sources,
-    dependencies: [poppler_qt5_library_dependency, qt5_widgets_dependency],
+    dependencies: [poppler_qt5_library_dep, qt5_widgets_dep],
   )
 endif

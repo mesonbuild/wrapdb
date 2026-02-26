@@ -1,5 +1,5 @@
 if get_option('tests')
-  qt6_test_dependency = dependency(
+  qt6_test_dep = dependency(
     'qt6',
     version: '>=6.2',
     modules: ['Test'],
@@ -21,7 +21,7 @@ if get_option('tests')
     'poppler-qt6-page-labels': ['poppler-page-labels.cpp', false, false],
   }
 
-  qt6_widgets_dependency = dependency(
+  qt6_widgets_dep = dependency(
     'qt6',
     version: '>=6.2',
     modules: ['Widgets'],
@@ -34,9 +34,9 @@ if get_option('tests')
         sources: qt6_build_only_test[0],
       )
     endif
-    qt6_build_only_test_dependencies = [poppler_qt6_library_dependency]
+    qt6_build_only_test_dependencies = [poppler_qt6_library_dep]
     if qt6_build_only_test[2]
-      qt6_build_only_test_dependencies += qt6_widgets_dependency
+      qt6_build_only_test_dependencies += qt6_widgets_dep
     endif
     executable(
       qt6_build_only_test_name,
@@ -92,7 +92,7 @@ if get_option('tests')
           sources: qt6_unit_test_source,
         ),
       ],
-      dependencies: [poppler_qt6_library_dependency, qt6_test_dependency],
+      dependencies: [poppler_qt6_library_dep, qt6_test_dep],
       cpp_args: ['-DTESTDATADIR="@0@"'.format(poppler_test_directory)],
     )
     test(qt6_unit_test_name, qt6_unit_test_executable)
@@ -108,8 +108,8 @@ if get_option('tests')
   #       qt6_module.compile_moc(sources: 'check_create_pgp_signature1.cpp')
   #     ],
   #     dependencies: [
-  #       poppler_qt6_library_dependency,
-  #       qt6_test_dependency
+  #       poppler_qt6_library_dep,
+  #       qt6_test_dep
   #     ],
   #     cpp_args: [
   #       '-DTESTDATADIR="@0@"'.format(poppler_test_directory)

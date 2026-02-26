@@ -1,5 +1,5 @@
 if get_option('tests')
-  qt5_test_dependency = dependency(
+  qt5_test_dep = dependency(
     'qt5',
     version: '>=5.15',
     modules: ['Test'],
@@ -21,7 +21,7 @@ if get_option('tests')
     'poppler-qt5-page-labels': ['poppler-page-labels.cpp', false, false],
   }
 
-  qt5_widgets_dependency = dependency(
+  qt5_widgets_dep = dependency(
     'qt5',
     version: '>=5.15',
     modules: ['Widgets'],
@@ -34,9 +34,9 @@ if get_option('tests')
         sources: qt5_manual_test[0],
       )
     endif
-    qt5_manual_test_dependencies = [poppler_qt5_library_dependency]
+    qt5_manual_test_dependencies = [poppler_qt5_library_dep]
     if qt5_manual_test[2]
-      qt5_manual_test_dependencies += qt5_widgets_dependency
+      qt5_manual_test_dependencies += qt5_widgets_dep
     endif
     executable(
       qt5_manual_test_name,
@@ -88,7 +88,7 @@ if get_option('tests')
           sources: qt5_unit_test_source,
         ),
       ],
-      dependencies: [poppler_qt5_library_dependency, qt5_test_dependency],
+      dependencies: [poppler_qt5_library_dep, qt5_test_dep],
       cpp_args: ['-DTESTDATADIR="@0@"'.format(poppler_test_directory)],
     )
     test(qt5_unit_test_name, qt5_unit_test_executable)

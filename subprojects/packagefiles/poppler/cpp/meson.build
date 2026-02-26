@@ -1,4 +1,4 @@
-building_cpp_wrapper = iconv_dependency.found()
+building_cpp_wrapper = iconv_dep.found()
 if building_cpp_wrapper
   poppler_cpp_library_version = '3.0.0'
   poppler_cpp_library_so_version = '3'
@@ -11,8 +11,8 @@ if building_cpp_wrapper
   endif
 
   poppler_cpp_library_dependencies = [
-    iconv_dependency,
-    poppler_library_dependency,
+    iconv_dep,
+    poppler_library_dep,
   ]
 
   poppler_cpp_library_include_directories = include_directories('.')
@@ -66,13 +66,13 @@ if building_cpp_wrapper
     description: 'C++ wrapper for Poppler PDF rendering library.',
   )
 
-  poppler_cpp_library_dependency = declare_dependency(
+  poppler_cpp_library_dep = declare_dependency(
     link_with: poppler_cpp_library,
     dependencies: poppler_cpp_library_dependencies,
     include_directories: poppler_cpp_library_include_directories,
   )
 
-  meson.override_dependency('poppler-cpp', poppler_cpp_library_dependency)
+  meson.override_dependency('poppler-cpp', poppler_cpp_library_dep)
 
   install_headers(
     'poppler-destination.h',

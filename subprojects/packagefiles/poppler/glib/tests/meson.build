@@ -1,16 +1,16 @@
-if get_option('tests') and gtk3_dependency.found()
+if get_option('tests') and gtk3_dep.found()
   # pdfdrawbb
   poppler_glib_pdfdrawbb_executable = executable(
     'pdfdrawbb',
     sources: 'pdfdrawbb.c',
-    dependencies: poppler_glib_library_dependency,
+    dependencies: poppler_glib_library_dep,
   )
 
   # check-text
   poppler_glib_check_text_executable = executable(
     'poppler-check-text',
     sources: 'check_text.c',
-    dependencies: [poppler_glib_library_dependency, gtk3_dependency],
+    dependencies: [poppler_glib_library_dep, gtk3_dep],
     c_args: ['-DTESTDATADIR="@0@"'.format(poppler_test_directory)],
   )
   test('poppler-check-text', poppler_glib_check_text_executable)
@@ -19,7 +19,7 @@ if get_option('tests') and gtk3_dependency.found()
   poppler_glib_check_bb_executable = executable(
     'poppler-check-bb',
     sources: 'check_bb.c',
-    dependencies: [poppler_glib_library_dependency, gtk3_dependency],
+    dependencies: [poppler_glib_library_dep, gtk3_dep],
   )
 
   poppler_glib_check_bb_tests = {

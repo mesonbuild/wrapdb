@@ -75,11 +75,11 @@ if building_glib_wrapper
   endif
 
   poppler_glib_library_dependencies = [
-    cairo_dependency,
-    gio_dependency,
-    glib_dependency,
-    gobject_dependency,
-    poppler_library_dependency,
+    cairo_dep,
+    gio_dep,
+    glib_dep,
+    gobject_dep,
+    poppler_library_dep,
   ]
 
   poppler_glib_library = library(
@@ -98,13 +98,13 @@ if building_glib_wrapper
     description: 'GLib wrapper for Poppler PDF rendering library.',
   )
 
-  poppler_glib_library_dependency = declare_dependency(
+  poppler_glib_library_dep = declare_dependency(
     link_with: poppler_glib_library,
     dependencies: poppler_glib_library_dependencies,
     include_directories: poppler_glib_library_include_directories,
   )
 
-  meson.override_dependency('poppler-glib', poppler_glib_library_dependency)
+  meson.override_dependency('poppler-glib', poppler_glib_library_dep)
 
   install_headers(
     poppler_glib_library_headers,

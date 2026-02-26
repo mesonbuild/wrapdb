@@ -1,12 +1,12 @@
 qt5_module = import('qt5')
-qt5_dependency = dependency(
+qt5_dep = dependency(
   'qt5',
   version: '>=5.15',
   modules: ['Core', 'Gui', 'Xml'],
   required: get_option('qt5'),
 )
 
-building_qt5_wrapper = qt5_dependency.found()
+building_qt5_wrapper = qt5_dep.found()
 building_qt5_wrapper_demo = false
 if building_qt5_wrapper
   poppler_qt5_library_cpp_arguments = [
@@ -28,8 +28,8 @@ if building_qt5_wrapper
   poppler_qt5_library_include_directories = include_directories('src')
 
   poppler_qt5_library_dependencies = [
-    poppler_library_dependency,
-    qt5_dependency,
+    poppler_library_dep,
+    qt5_dep,
   ]
 
   subdir('src')
@@ -50,13 +50,13 @@ if building_qt5_wrapper
     description: 'Qt5 wrapper for Poppler PDF rendering library.',
   )
 
-  poppler_qt5_library_dependency = declare_dependency(
+  poppler_qt5_library_dep = declare_dependency(
     link_with: poppler_qt5_library,
     dependencies: poppler_qt5_library_dependencies,
     include_directories: poppler_qt5_library_include_directories,
   )
 
-  meson.override_dependency('poppler-qt5', poppler_qt5_library_dependency)
+  meson.override_dependency('poppler-qt5', poppler_qt5_library_dep)
 
   subdir('demos')
   subdir('tests')

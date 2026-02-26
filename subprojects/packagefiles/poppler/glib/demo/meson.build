@@ -1,4 +1,4 @@
-building_glib_wrapper_demo = gtk3_dependency.found()
+building_glib_wrapper_demo = gtk3_dep.found()
 if building_glib_wrapper_demo
   poppler_glib_demo_sources = files(
     'annots.c',
@@ -26,6 +26,6 @@ if building_glib_wrapper_demo
   poppler_glib_demo_executable = executable(
     'poppler-glib-demo',
     sources: poppler_glib_demo_sources,
-    dependencies: [poppler_glib_library_dependency, gtk3_dependency],
+    dependencies: [poppler_glib_library_dep, gtk3_dep],
   )
 endif

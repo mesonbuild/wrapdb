@@ -1,12 +1,12 @@
 qt6_module = import('qt6')
-qt6_dependency = dependency(
+qt6_dep = dependency(
   'qt6',
   version: '>=6.2',
   modules: ['Core', 'Gui'],
   required: get_option('qt6'),
 )
 
-building_qt6_wrapper = qt6_dependency.found()
+building_qt6_wrapper = qt6_dep.found()
 building_qt6_wrapper_demo = false
 if building_qt6_wrapper
   poppler_qt6_library_cpp_arguments = [
@@ -31,8 +31,8 @@ if building_qt6_wrapper
   poppler_qt6_library_include_directories = include_directories('src')
 
   poppler_qt6_library_dependencies = [
-    poppler_library_dependency,
-    qt6_dependency,
+    poppler_library_dep,
+    qt6_dep,
   ]
 
   subdir('src')
@@ -53,13 +53,13 @@ if building_qt6_wrapper
     description: 'Qt6 wrapper for Poppler PDF rendering library.',
   )
 
-  poppler_qt6_library_dependency = declare_dependency(
+  poppler_qt6_library_dep = declare_dependency(
     link_with: poppler_qt6_library,
     dependencies: poppler_qt6_library_dependencies,
     include_directories: poppler_qt6_library_include_directories,
   )
 
-  meson.override_dependency('poppler-qt6', poppler_qt6_library_dependency)
+  meson.override_dependency('poppler-qt6', poppler_qt6_library_dep)
 
   subdir('demos')
   subdir('tests')

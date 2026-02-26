@@ -4,7 +4,7 @@ utils_parseargs_cc = files('parseargs.cc')
 if get_option('tools').allowed()
   building_tools = true
 
-  tools_dependencies = [poppler_library_dependency]
+  tools_dependencies = [poppler_library_dep]
 
   tools_sources = [utils_parseargs_cc, 'Win32Console.cc']
 
@@ -21,7 +21,7 @@ if get_option('tools').allowed()
 
 
   # pdftocairo
-  if cairo_dependency.found()
+  if cairo_dep.found()
     pdftocairo_executable = executable(
       'pdftocairo',
       sources: [
@@ -31,7 +31,7 @@ if get_option('tools').allowed()
         'pdftocairo-win32.cc',
       ],
       dependencies: [
-        cairo_dependency,
+        cairo_dep,
         tools_dependencies,
       ],
       install: true,

@@ -162,78 +162,78 @@ poppler_library_sources = [
 ]
 
 # optional libcurl support
-libcurl_depedency = dependency(
+libcurl_dep = dependency(
   'libcurl',
   version: '>=7.81',
   required: get_option('libcurl'),
 )
-enable_libcurl = libcurl_depedency.found()
+enable_libcurl = libcurl_dep.found()
 if enable_libcurl
   poppler_library_sources += [
     'poppler/CurlCachedFile.cc',
     'poppler/CurlPDFDocBuilder.cc',
   ]
-  poppler_library_dependencies += libcurl_depedency
+  poppler_library_dependencies += libcurl_dep
 endif
 
 # optional lcms2 dependency
-lcms2_dependency = dependency(
+lcms2_dep = dependency(
   'lcms2',
   version: '>= 2.12',
   required: get_option('lcms2'),
 )
-enable_lcms2 = lcms2_dependency.found()
+enable_lcms2 = lcms2_dep.found()
 if enable_lcms2
-  poppler_library_dependencies += lcms2_dependency
+  poppler_library_dependencies += lcms2_dep
 endif
 
 # optional libpng dependency
-libpng_dependency = dependency(
+libpng_dep = dependency(
   'libpng',
   required: get_option('libpng'),
 )
-enable_libpng = libpng_dependency.found()
+enable_libpng = libpng_dep.found()
 if enable_libpng
-  poppler_library_dependencies += libpng_dependency
+  poppler_library_dependencies += libpng_dep
 endif
 
 # optional libtiff dependency
-libtiff_4_dependency = dependency(
+libtiff_4_dep = dependency(
   'libtiff-4',
   version: '>=4.3',
   required: get_option('libtiff'),
 )
-enable_libtiff_4 = libtiff_4_dependency.found()
+enable_libtiff_4 = libtiff_4_dep.found()
 if enable_libtiff_4
-  poppler_library_dependencies += libtiff_4_dependency
+  poppler_library_dependencies += libtiff_4_dep
 endif
 
 # gather signature backends
 signature_backends = []
 
 # optional nss dependency
-nss_dependency = dependency(
+nss_dep = dependency(
   'nss',
   version: '>=3.68',
   required: get_option('nss'),
 )
-enable_nss = nss_dependency.found()
+enable_nss = nss_dep.found()
 if enable_nss
   poppler_library_sources += ['poppler/NSSCryptoSignBackend.cc']
-  poppler_library_dependencies += nss_dependency
+  poppler_library_dependencies += nss_dep
   signature_backends += 'NSS'
 endif
 
 # optional gpgmepp dependency
-gpgmepp_dependency = dependency(
+gpgmepp_dep = dependency(
   'gpgmepp',
   version: '>=1.19',
   required: get_option('gpgmepp'),
 )
-enable_gpgmepp = gpgmepp_dependency.found()
+enable_gpgmepp = gpgmepp_dep.found()
 if enable_gpgmepp
   poppler_library_sources += ['poppler/GPGMECryptoSignBackend.cc']
-  poppler_library_dependencies += gpgmepp_dependency
+  poppler_library_dependencies += gpgmepp_dep
   signature_backends += 'GPG'
 endif
 
@@ -247,10 +247,10 @@ enable_signatures = enable_nss or enable_gpgmepp
 
 # option 'dct_decoder'
 if get_option('dct_decoder') == 'libjpeg'
-  libjpeg_dependency = dependency('libjpeg')
+  libjpeg_dep = dependency('libjpeg')
   enable_libjpeg = true
   have_dct_decoder = true
-  poppler_library_dependencies += libjpeg_dependency
+  poppler_library_dependencies += libjpeg_dep
   poppler_library_sources += 'poppler/DCTStream.cc'
 else
   enable_libjpeg = false
@@ -263,13 +263,13 @@ endif
 
 # JPEG2000 support
 if get_option('jpx_decoder') == 'libopenjp2'
-  libopenjp2_dependency = dependency(
+  libopenjp2_dep = dependency(
     'libopenjp2',
     version: '>=2',
   )
   enable_libopenjp2 = true
   have_jpx_decoder = true
-  poppler_library_dependencies += libopenjp2_dependency
+  poppler_library_dependencies += libopenjp2_dep
   poppler_library_sources += 'poppler/JPEG2000Stream.cc'
 else
   enable_libopenjp2 = false
@@ -282,40 +282,40 @@ else
 endif
 
 # Boost support
-boost_dependency = dependency(
+boost_dep = dependency(
   'boost',
   required: get_option('boost'),
 )
-use_boost_headers = boost_dependency.found()
+use_boost_headers = boost_dep.found()
 if use_boost_headers
-  poppler_library_dependencies += boost_dependency
+  poppler_library_dependencies += boost_dep
 endif
 
 
 # GLib wrapper
-glib_dependency = dependency(
+glib_dep = dependency(
   'glib-2.0',
   version: '>=2.72',
   required: get_option('glib'),
 )
-gobject_dependency = dependency(
+gobject_dep = dependency(
   'gobject-2.0',
   version: '>=2.72',
   required: get_option('glib'),
 )
-gio_dependency = dependency(
+gio_dep = dependency(
   'gio-2.0',
   version: '>=2.72',
   required: get_option('glib'),
 )
-have_glib = glib_dependency.found() and gobject_dependency.found() and gio_dependency.found()
-cairo_dependency = dependency(
+have_glib = glib_dep.found() and gobject_dep.found() and gio_dep.found()
+cairo_dep = dependency(
   'cairo',
   version: '>=1.16.0',
   required: have_glib,
   not_found_message: 'Cairo is required for the GLib backend.',
 )
-have_cairo = cairo_dependency.found()
+have_cairo = cairo_dep.found()
 if have_cairo
   cairo_feature = '#define POPPLER_HAS_CAIRO 1'
 else
@@ -323,24 +323,24 @@ else
 endif
 building_glib_wrapper = have_cairo and have_glib
 if have_glib
-  gtk3_dependency = dependency(
+  gtk3_dep = dependency(
     'gtk+-3.0',
     version: '>=3.24',
     required: have_glib,
   )
 else
-  gtk3_dependency = disabler()
+  gtk3_dep = disabler()
 endif
 
 
 # cpp wrapper requires iconv
 ## this needs to be discovered here, so we can set the ICONV_CONST configuration
-iconv_dependency = dependency(
+iconv_dep = dependency(
   'iconv',
   required: get_option('cpp'),
 )
 compile_check_iconv_const = false
-if iconv_dependency.found()
+if iconv_dep.found()
   compile_check_iconv_const = cpp_compiler.compiles(
     '''
   #include <iconv.h>
@@ -353,7 +353,7 @@ if iconv_dependency.found()
     iconv(conv, &in, &ilen, &out, &olen);
     return 0;
   }''',
-    dependencies: [iconv_dependency],
+    dependencies: [iconv_dep],
     werror: true,
   )
 endif
@@ -516,12 +516,12 @@ pkgconfig_module.generate(
   description: 'PDF rendering library.',
 )
 
-poppler_library_dependency = declare_dependency(
+poppler_library_dep = declare_dependency(
   include_directories: poppler_library_include_directories,
   dependencies: poppler_library_dependencies,
   link_with: poppler_library,
 )
-meson.override_dependency('poppler', poppler_library_dependency)
+meson.override_dependency('poppler', poppler_library_dep)
 
 if get_option('tests')
   poppler_test_subproject = subproject('poppler-test')
