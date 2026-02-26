@@ -21,24 +21,25 @@ project(
   },
 )
 
-poppler_version = meson.project_version()
-poppler_version_parts = poppler_version.split('.')
-poppler_major_version = poppler_version_parts[0]
-poppler_minor_version = poppler_version_parts[1]
-poppler_micro_version = poppler_version_parts[2]
+poppler_configuration = configuration_data()
+poppler_configuration.set('POPPLER_VERSION', meson.project_version())
+poppler_version_parts = meson.project_version().split('.')
+poppler_configuration.set('POPPLER_MAJOR_VERSION', poppler_version_parts[0])
+poppler_configuration.set('POPPLER_MINOR_VERSION', poppler_version_parts[1])
+poppler_configuration.set('POPPLER_MICRO_VERSION', poppler_version_parts[2])
 poppler_library_so_version = 157
 poppler_library_version = poppler_library_so_version.to_string() + '.0.0'
 
 cpp_compiler = meson.get_compiler('cpp')
-have_fseek64 = cpp_compiler.has_function('fseek64')
-have_fseeko = cpp_compiler.has_header_symbol('stdio.h', 'fseeko')
-have_gmtime_r = cpp_compiler.has_function('gmtime_r')
-have_localtime_r = cpp_compiler.has_function('localtime_r')
-have_lseek64 = cpp_compiler.has_function('lseek64')
-have_popen = cpp_compiler.has_function('popen')
-have_pread64 = cpp_compiler.has_function('pread64')
-have_strtok_r = cpp_compiler.has_function('strtok_r')
-have_timegm = cpp_compiler.has_function('timegm')
+poppler_configuration.set10('HAVE_FSEEK64', cpp_compiler.has_function('fseek64'))
+poppler_configuration.set10('HAVE_FSEEKO', cpp_compiler.has_header_symbol('stdio.h', 'fseeko'))
+poppler_configuration.set10('HAVE_GMTIME_R', cpp_compiler.has_function('gmtime_r'))
+poppler_configuration.set10('HAVE_LOCALTIME_R', cpp_compiler.has_function('localtime_r'))
+poppler_configuration.set10('HAVE_LSEEK64', cpp_compiler.has_function('lseek64'))
+poppler_configuration.set10('HAVE_POPEN', cpp_compiler.has_function('popen'))
+poppler_configuration.set10('HAVE_PREAD64', cpp_compiler.has_function('pread64'))
+poppler_configuration.set10('HAVE_STRTOK_R', cpp_compiler.has_function('strtok_r'))
+poppler_configuration.set10('HAVE_TIMEGM', cpp_compiler.has_function('timegm'))
 
 poppler_library_cpp_arguments = []
 
@@ -161,20 +162,34 @@ poppler_library_sources = [
   'splash/SplashXPathScanner.cc',
 ]
 
+poppler_configuration.set10('WORDS_BIGENDIAN', host_machine.endian() == 'big')
+poppler_configuration.set10('USE_FLOAT', get_option('use_float'))
+summary('splash precision', get_option('use_float') ? 'float' : 'double')
+# @todo ENABLE_ZLIB_UNCOMPRESS could be dependent on a meson configuration feature option 'zlib_uncompress'
+poppler_configuration.set10('ENABLE_ZLIB_UNCOMPRESS', false)
+# @todo ENABLE_PGP_SIGNATURES could be dependent on a meson configuration feature option 'pgp_signatures'
+poppler_configuration.set10('ENABLE_PGP_SIGNATURES', false)
+# @todo POPPLER_DATADIR could be dependent on a poppler-data subproject.
+poppler_configuration.set('POPPLER_DATADIR', get_option('prefix') / 'share' / 'poppler')
+
+
 # optional libcurl support
 libcurl_dep = dependency(
   'libcurl',
   version: '>=7.81',
   required: get_option('libcurl'),
 )
-enable_libcurl = libcurl_dep.found()
-if enable_libcurl
+poppler_configuration.set10('ENABLE_LIBCURL', libcurl_dep.found())
+poppler_configuration.set10('POPPLER_HAS_CURL_SUPPORT', libcurl_dep.found())
+if libcurl_dep.found()
   poppler_library_sources += [
     'poppler/CurlCachedFile.cc',
     'poppler/CurlPDFDocBuilder.cc',
   ]
   poppler_library_dependencies += libcurl_dep
 endif
+summary('use libcurl', libcurl_dep.found())
+
 
 # optional lcms2 dependency
 lcms2_dep = dependency(
@@ -182,20 +197,25 @@ lcms2_dep = dependency(
   version: '>= 2.12',
   required: get_option('lcms2'),
 )
-enable_lcms2 = lcms2_dep.found()
-if enable_lcms2
+poppler_configuration.set10('ENABLE_LCMS', lcms2_dep.found())
+poppler_configuration.set10('USE_CMS', lcms2_dep.found())
+if lcms2_dep.found()
   poppler_library_dependencies += lcms2_dep
 endif
+summary('use lcms2', lcms2_dep.found())
+
 
 # optional libpng dependency
 libpng_dep = dependency(
   'libpng',
   required: get_option('libpng'),
 )
-enable_libpng = libpng_dep.found()
-if enable_libpng
+poppler_configuration.set10('ENABLE_LIBPNG', libpng_dep.found())
+if libpng_dep.found()
   poppler_library_dependencies += libpng_dep
 endif
+summary('use libpng', libpng_dep.found())
+
 
 # optional libtiff dependency
 libtiff_4_dep = dependency(
@@ -203,13 +223,16 @@ libtiff_4_dep = dependency(
   version: '>=4.3',
   required: get_option('libtiff'),
 )
-enable_libtiff_4 = libtiff_4_dep.found()
-if enable_libtiff_4
+poppler_configuration.set10('ENABLE_LIBTIFF', libtiff_4_dep.found())
+if libtiff_4_dep.found()
   poppler_library_dependencies += libtiff_4_dep
 endif
+summary('use libtiff', libtiff_4_dep.found())
+
 
 # gather signature backends
 signature_backends = []
+
 
 # optional nss dependency
 nss_dep = dependency(
@@ -217,12 +240,14 @@ nss_dep = dependency(
   version: '>=3.68',
   required: get_option('nss'),
 )
-enable_nss = nss_dep.found()
-if enable_nss
+poppler_configuration.set10('ENABLE_NSS3', nss_dep.found())
+if nss_dep.found()
   poppler_library_sources += ['poppler/NSSCryptoSignBackend.cc']
   poppler_library_dependencies += nss_dep
   signature_backends += 'NSS'
 endif
+summary('use nss', nss_dep.found())
+
 
 # optional gpgmepp dependency
 gpgmepp_dep = dependency(
@@ -230,66 +255,75 @@ gpgmepp_dep = dependency(
   version: '>=1.19',
   required: get_option('gpgmepp'),
 )
-enable_gpgmepp = gpgmepp_dep.found()
-if enable_gpgmepp
+poppler_configuration.set10('ENABLE_GPGME', gpgmepp_dep.found())
+if gpgmepp_dep.found()
   poppler_library_sources += ['poppler/GPGMECryptoSignBackend.cc']
   poppler_library_dependencies += gpgmepp_dep
   signature_backends += 'GPG'
 endif
+summary('use gpgmepp', gpgmepp_dep.found())
+
 
 # default_signature_backend depends on the backends gathered
 if signature_backends.length() > 0
-  default_signature_backend = signature_backends[0]
+  poppler_configuration.set('DEFAULT_SIGNATURE_BACKEND', signature_backends[0])
 else
-  default_signature_backend = 'None'
+  poppler_configuration.set('DEFAULT_SIGNATURE_BACKEND', 'None')
 endif
-enable_signatures = enable_nss or enable_gpgmepp
+poppler_configuration.set10('ENABLE_SIGNATURES', nss_dep.found() or gpgmepp_dep.found())
+
 
 # option 'dct_decoder'
 if get_option('dct_decoder') == 'libjpeg'
   libjpeg_dep = dependency('libjpeg')
-  enable_libjpeg = true
-  have_dct_decoder = true
-  poppler_library_dependencies += libjpeg_dep
+  poppler_configuration.set10('ENABLE_LIBJPEG', true)
+  poppler_configuration.set10('HAVE_DCT_DECODER', true)
   poppler_library_sources += 'poppler/DCTStream.cc'
+  poppler_library_dependencies += libjpeg_dep
 else
-  enable_libjpeg = false
+  poppler_configuration.set10('ENABLE_LIBJPEG', false)
   if get_option('dct_decoder') == 'unmaintained'
-    have_dct_decoder = true
+    poppler_configuration.set10('HAVE_DCT_DECODER', true)
   else  # none
-    have_dct_decoder = false
+    poppler_configuration.set10('HAVE_DCT_DECODER', false)
   endif
 endif
+summary('dct_decoder', get_option('dct_decoder'))
 
-# JPEG2000 support
+
+# option 'jpx_decoder'
 if get_option('jpx_decoder') == 'libopenjp2'
   libopenjp2_dep = dependency(
     'libopenjp2',
     version: '>=2',
   )
-  enable_libopenjp2 = true
-  have_jpx_decoder = true
-  poppler_library_dependencies += libopenjp2_dep
+  poppler_configuration.set10('ENABLE_LIBOPENJPEG', true)
+  poppler_configuration.set10('HAVE_JPX_DECODER', true)
   poppler_library_sources += 'poppler/JPEG2000Stream.cc'
+  poppler_library_dependencies += libopenjp2_dep
 else
-  enable_libopenjp2 = false
+  poppler_configuration.set10('ENABLE_LIBOPENJPEG', false)
   poppler_library_sources += 'poppler/JPXStream.cc'
   if get_option('jpx_decoder') == 'unmaintained'
+    poppler_configuration.set10('HAVE_JPX_DECODER', true)
     have_jpx_decoder = true
   else  # none
-    have_jpx_decoder = false
+    poppler_configuration.set10('HAVE_JPX_DECODER', false)
   endif
 endif
+summary('jpx_decoder', get_option('jpx_decoder'))
+
 
 # Boost support
 boost_dep = dependency(
   'boost',
   required: get_option('boost'),
 )
-use_boost_headers = boost_dep.found()
-if use_boost_headers
+poppler_configuration.set10('USE_BOOST_HEADERS', boost_dep.found())
+if boost_dep.found()
   poppler_library_dependencies += boost_dep
 endif
+summary('use boost', boost_dep.found())
 
 
 # GLib wrapper
@@ -315,18 +349,17 @@ cairo_dep = dependency(
   required: have_glib,
   not_found_message: 'Cairo is required for the GLib backend.',
 )
-have_cairo = cairo_dep.found()
-if have_cairo
-  cairo_feature = '#define POPPLER_HAS_CAIRO 1'
+if cairo_dep.found()
+  poppler_configuration.set('CAIRO_FEATURE', '#define POPPLER_HAS_CAIRO 1')
 else
-  cairo_feature = '#undef POPPLER_HAS_CAIRO'
+  poppler_configuration.set('CAIRO_FEATURE', '#undef POPPLER_HAS_CAIRO')
 endif
-building_glib_wrapper = have_cairo and have_glib
+building_glib_wrapper = cairo_dep.found() and have_glib
 if have_glib
   gtk3_dep = dependency(
     'gtk+-3.0',
     version: '>=3.24',
-    required: have_glib,
+    required: false,
   )
 else
   gtk3_dep = disabler()
@@ -339,9 +372,7 @@ iconv_dep = dependency(
   'iconv',
   required: get_option('cpp'),
 )
-compile_check_iconv_const = false
-if iconv_dep.found()
-  compile_check_iconv_const = cpp_compiler.compiles(
+if iconv_dep.found() and cpp_compiler.compiles(
     '''
   #include <iconv.h>
   int main(){
@@ -356,30 +387,34 @@ if iconv_dep.found()
     dependencies: [iconv_dep],
     werror: true,
   )
+  poppler_configuration.set('ICONV_CONST', 'const')
+else
+  poppler_configuration.set('ICONV_CONST', '')
 endif
 
 
 # relocatable is a Windows-only feature
-enable_relocatable = false
 # @todo allow turning it off via options
-if host_machine.system() == 'windows'
-  enable_relocatable = true
-endif
+poppler_configuration.set10('ENABLE_RELOCATABLE', host_machine.system() == 'windows')
+
 
 # fontconfig / font configuration support
-with_font_configuration_android = false
-with_font_configuration_fontconfig = false
-with_font_configuration_win32 = false
 if host_machine.system() == 'windows'
-  font_configuration = 'win32'
-  with_font_configuration_win32 = true
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_WIN32', true)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_FONTCONFIG', false)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_ANDROID', false)
+  summary('font_configuration', 'win32')
 elif host_machine.system() == 'android'
-  font_configuration == 'android'
-  with_font_configuration_android = true
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_WIN32', false)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_FONTCONFIG', false)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_ANDROID', true)
+  summary('font_configuration', 'android')
 else
-  font_configuration = 'fontconfig'
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_WIN32', false)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_FONTCONFIG', false)
+  poppler_configuration.set10('WITH_FONTCONFIGURATION_ANDROID', true)
   poppler_library_dependencies += dependency('fontconfig')
-  with_font_configuration_fontconfig = true
+  summary('font_configuration', 'fontconfig')
 endif
 
 poppler_font_widths = [
@@ -408,64 +443,6 @@ foreach poppler_font_width : poppler_font_widths
   ]
 endforeach
 
-poppler_configuration = configuration_data()
-poppler_configuration.set('POPPLER_VERSION', meson.project_version())
-poppler_configuration.set('POPPLER_MAJOR_VERSION', poppler_major_version)
-poppler_configuration.set('POPPLER_MINOR_VERSION', poppler_minor_version)
-poppler_configuration.set('POPPLER_MICRO_VERSION', poppler_micro_version)
-poppler_configuration.set10('HAVE_FSEEK64', have_fseek64)
-poppler_configuration.set10('HAVE_FSEEKO', have_fseeko)
-poppler_configuration.set10('HAVE_GMTIME_R', have_gmtime_r)
-poppler_configuration.set10('HAVE_LOCALTIME_R', have_localtime_r)
-poppler_configuration.set10('HAVE_LSEEK64', have_lseek64)
-poppler_configuration.set10('HAVE_POPEN', have_popen)
-poppler_configuration.set10('HAVE_PREAD64', have_pread64)
-poppler_configuration.set10('HAVE_STRTOK_R', have_strtok_r)
-poppler_configuration.set10('HAVE_TIMEGM', have_timegm)
-poppler_configuration.set(
-  'ICONV_CONST',
-  compile_check_iconv_const ? 'const' : '',
-)
-poppler_configuration.set10('ENABLE_LIBCURL', enable_libcurl)
-poppler_configuration.set10('POPPLER_HAS_CURL_SUPPORT', enable_libcurl)
-poppler_configuration.set10('ENABLE_LIBJPEG', enable_libjpeg)
-poppler_configuration.set10('ENABLE_LCMS', enable_lcms2)
-poppler_configuration.set10('USE_CMS', enable_lcms2)
-poppler_configuration.set10('ENABLE_LIBPNG', enable_libpng)
-poppler_configuration.set10('ENABLE_LIBTIFF', enable_libtiff_4)
-poppler_configuration.set10('ENABLE_NSS3', enable_nss)
-poppler_configuration.set10('ENABLE_GPGME', enable_gpgmepp)
-poppler_configuration.set10('ENABLE_SIGNATURES', enable_signatures)
-poppler_configuration.set('DEFAULT_SIGNATURE_BACKEND', default_signature_backend)
-poppler_configuration.set10('HAVE_DCT_DECODER', have_dct_decoder)
-poppler_configuration.set10('ENABLE_LIBOPENJPEG', enable_libopenjp2)
-poppler_configuration.set10('HAVE_JPX_DECODER', have_jpx_decoder)
-poppler_configuration.set10('ENABLE_RELOCATABLE', enable_relocatable)
-poppler_configuration.set10(
-  'WITH_FONTCONFIGURATION_WIN32',
-  with_font_configuration_win32,
-)
-poppler_configuration.set10(
-  'WITH_FONTCONFIGURATION_FONTCONFIG',
-  with_font_configuration_fontconfig,
-)
-poppler_configuration.set10(
-  'WITH_FONTCONFIGURATION_ANDROID',
-  with_font_configuration_android,
-)
-poppler_configuration.set('CAIRO_FEATURE', cairo_feature)
-# @todo ENABLE_ZLIB_UNCOMPRESS could be dependent on a meson configuration feature option 'zlib_uncompress'
-poppler_configuration.set10('ENABLE_ZLIB_UNCOMPRESS', false)
-# @todo ENABLE_PGP_SIGNATURES should be dependent on a meson configuration feature option 'pgp_signatures'
-poppler_configuration.set10('ENABLE_PGP_SIGNATURES', false)
-# @todo POPPLER_DATADIR should be dependent on the pkgconfig of the poppler-data project.
-poppler_configuration.set(
-  'POPPLER_DATADIR',
-  get_option('prefix') / 'share' / 'poppler',
-)
-poppler_configuration.set10('USE_BOOST_HEADERS', use_boost_headers)
-poppler_configuration.set10('USE_FLOAT', get_option('use_float'))
-poppler_configuration.set10('WORDS_BIGENDIAN', host_machine.endian() == 'big')
 configure_file(
   configuration: poppler_configuration,
   format: 'cmake',
@@ -537,29 +514,3 @@ subdir('glib')
 subdir('qt5')
 subdir('qt6')
 subdir('test')
-
-summary(
-  {
-    'font_configuration': font_configuration,
-    'dct_decoder': get_option('dct_decoder'),
-    'jpx_decoder': get_option('jpx_decoder'),
-    'use boost': use_boost_headers,
-    'use lcms2': enable_lcms2,
-    'use libcurl': enable_libcurl,
-    'use libpng': enable_libpng,
-    'use libtiff': enable_libtiff_4,
-    'use nss': enable_nss,
-    'use gpgmepp': enable_gpgmepp,
-    'splash precision': get_option('use_float') ? 'float' : 'double',
-    'C++ wrapper': building_cpp_wrapper,
-    'GLib wrapper': building_glib_wrapper,
-    '  GLib demo': building_glib_wrapper_demo,
-    '  GObject introspection': building_gobject_introspection,
-    'Qt5 wrapper': building_qt5_wrapper,
-    '  Qt5 demo': building_qt5_wrapper_demo,
-    'Qt6 wrapper': building_qt6_wrapper,
-    '  Qt6 demo': building_qt6_wrapper_demo,
-    'tests': get_option('tests'),
-    'tools': building_tools,
-  },
-)

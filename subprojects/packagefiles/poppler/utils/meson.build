@@ -1,9 +1,6 @@
-building_tools = false
 utils_parseargs_cc = files('parseargs.cc')
 
 if get_option('tools').allowed()
-  building_tools = true
-
   tools_dependencies = [poppler_library_dep]
 
   tools_sources = [utils_parseargs_cc, 'Win32Console.cc']
@@ -97,7 +94,7 @@ if get_option('tools').allowed()
 
 
   # pdfsig
-  if enable_signatures
+  if nss_dep.found() or gpgmepp_dep.found()
     pdfsig_executable = executable(
       'pdfsig',
       sources: tools_sources + ['pdfsig.cc'],
@@ -168,6 +165,7 @@ if get_option('tools').allowed()
   )
   install_man('pdfunite.1')
   meson.override_find_program('pdfunite', pdfunite_executable)
-
-
+  
 endif
+
+summary('tools', get_option('tools').allowed())

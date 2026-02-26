@@ -1,5 +1,4 @@
-building_cpp_wrapper = iconv_dep.found()
-if building_cpp_wrapper
+if iconv_dep.found()
   poppler_cpp_library_version = '3.0.0'
   poppler_cpp_library_so_version = '3'
 
@@ -92,3 +91,5 @@ if building_cpp_wrapper
 
   subdir('tests')
 endif
+
+summary('C++ wrapper', iconv_dep.found())

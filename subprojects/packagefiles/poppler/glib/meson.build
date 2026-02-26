@@ -1,5 +1,3 @@
-building_gobject_introspection = false
-building_glib_wrapper_demo = false
 if building_glib_wrapper
   poppler_glib_library_version = '8.31.0'
   poppler_glib_library_so_version = '8'
@@ -114,7 +112,7 @@ if building_glib_wrapper
   if get_option('gobject_introspection').allowed() and get_option(
     'default_library',
   ) == 'shared'
-    building_gobject_introspection = true
+    summary('  GObject introspection', true)
     gnome_module.generate_gir(
       poppler_glib_library,
       namespace: 'Poppler',
@@ -124,6 +122,8 @@ if building_glib_wrapper
       header: 'poppler.h',
       install: true,
     )
+  else
+    summary('  GObject introspection', false)
   endif
 
   # @todo Gtk docs
@@ -131,3 +131,5 @@ if building_glib_wrapper
   subdir('tests')
   subdir('demo')
 endif
+
+summary('GLib wrapper', building_glib_wrapper)

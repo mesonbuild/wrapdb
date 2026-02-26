@@ -6,9 +6,7 @@ qt6_dep = dependency(
   required: get_option('qt6'),
 )
 
-building_qt6_wrapper = qt6_dep.found()
-building_qt6_wrapper_demo = false
-if building_qt6_wrapper
+if qt6_dep.found()
   poppler_qt6_library_cpp_arguments = [
     '-DQT_STRICT_ITERATORS',
     '-DQT_NO_SIGNALS_SLOTS_KEYWORDS',
@@ -64,3 +62,5 @@ if building_qt6_wrapper
   subdir('demos')
   subdir('tests')
 endif
+
+summary('Qt6 wrapper', qt6_dep.found())

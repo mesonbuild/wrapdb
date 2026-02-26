@@ -44,7 +44,7 @@ if get_option('tests')
     )
   endif
 
-  if enable_nss
+  if nss_dep.found()
     pdf_validate_signature_executable = executable(
       'pdf-validate-signature',
       sources: 'pdf-validate-signature.cc',
@@ -59,3 +59,5 @@ if get_option('tests')
     # @todo add tests, but they depend on test data, not in this repository
   endif
 endif
+
+summary('tests', get_option('tests'))
