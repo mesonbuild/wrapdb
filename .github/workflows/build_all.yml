@@ -264,9 +264,9 @@ jobs:
       matrix:
         include:
           - platform: arm64
-            runner: macos-latest
+            runner: macos-26
           - platform: x86_64
-            runner: macos-15-intel
+            runner: macos-26-intel
     steps:
       - uses: actions/checkout@v5
         with:
