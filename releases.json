@@ -1568,6 +1568,14 @@
       "1.7.0-2"
     ]
   },
+  "gtk4": {
+    "dependency_names": [
+      "gtk4"
+    ],
+    "versions": [
+      "4.12.3-1"
+    ]
+  },
   "gumbo-parser": {
     "dependency_names": [
       "gumbo"
