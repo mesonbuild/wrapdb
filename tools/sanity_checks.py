@@ -194,6 +194,7 @@ IGNORE_SETUP_WARNINGS = None  # or re.compile(r'something')
 
 class TestReleases(unittest.TestCase):
     ci_config: CIConfig
+    github_output_vars: Path | None
     fatal_warnings: bool
     annotate_context: bool
     skip_build: bool
@@ -225,6 +226,8 @@ class TestReleases(unittest.TestCase):
         except json.decoder.JSONDecodeError as ex:
             raise RuntimeError('metadata is malformed') from ex
 
+        github_output = os.environ.get('GITHUB_OUTPUT')
+        cls.github_output_vars = Path(github_output) if github_output else None
         cls.fatal_warnings = os.environ.get('TEST_FATAL_WARNINGS', 'yes') == 'yes'
         cls.annotate_context = os.environ.get('TEST_ANNOTATE_CONTEXT') == 'yes'
         cls.skip_build = os.environ.get('TEST_SKIP_BUILD') == 'yes'
@@ -281,6 +284,11 @@ class TestReleases(unittest.TestCase):
             return set()
         keys = set(k.strip() for k in wrap['provide'])
         return keys - {'dependency_names', 'program_names'}
+
+    def write_github_output_var(self, name: str, value: str) -> None:
+        if self.github_output_vars is not None:
+            with self.github_output_vars.open('a', encoding='utf-8') as f:
+                f.write(f'{name}={value}\n')
 
     def test_releases(self) -> None:
         has_new_releases = False
@@ -386,6 +394,7 @@ class TestReleases(unittest.TestCase):
                         with self.subTest(step='check_source_url'):
                             self.check_source_url(name, wrap_section, ver)
                         with self.subTest(step='check_new_release'):
+                            first_build = not has_new_releases
                             has_new_releases = True
                             self.log_context(name)
                             if not self.skip_build:
@@ -393,6 +402,8 @@ class TestReleases(unittest.TestCase):
                                 with self.subTest(f'If this works now, please remove it from broken_{platform.system().lower()}!'):
                                     self.assertNotIn(name, self.ci_config.broken)
                                 self.check_project_version(name, ver, patch_path)
+                            elif first_build:
+                                self.write_github_output_var('need-build', '1')
                         if patch_path:
                             self.check_project_args(name, config)
                             self.check_for_upstream_meson(name, ver, config)

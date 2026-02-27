@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
+      need-build: ${{ steps.sanity-checks.outputs.need-build }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -53,6 +54,7 @@ jobs:
           enableCrossOsArchive: true
 
       - name: Quick checks
+        id: sanity-checks
         env:
           TEST_ANNOTATE_CONTEXT: yes
           TEST_SKIP_BUILD: yes
@@ -63,6 +65,7 @@ jobs:
     name: Ubuntu (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
@@ -119,6 +122,7 @@ jobs:
     name: Alpine (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
@@ -191,6 +195,7 @@ jobs:
     name: Visual Studio (cl, ${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
@@ -246,6 +251,7 @@ jobs:
     name: Visual Studio (clang-cl, ${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
@@ -291,6 +297,7 @@ jobs:
     name: MSYS2 (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
@@ -354,6 +361,7 @@ jobs:
     name: MacOS (${{ matrix.platform }})
     runs-on: ${{ matrix.runner }}
     needs: prelude
+    if: needs.prelude.outputs.need-build
     strategy:
       fail-fast: false
       matrix:
