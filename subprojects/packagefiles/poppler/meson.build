@@ -365,7 +365,6 @@ cairo_dep = dependency(
   'cairo',
   version: '>=1.16.0',
   required: have_glib,
-  not_found_message: 'Cairo is required for the GLib backend.',
 )
 if cairo_dep.found()
   poppler_configuration.set('CAIRO_FEATURE', '#define POPPLER_HAS_CAIRO 1')

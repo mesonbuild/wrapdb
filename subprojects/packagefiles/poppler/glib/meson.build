@@ -111,7 +111,9 @@ if building_glib_wrapper
 
   if get_option('gobject_introspection').allowed() and get_option(
     'default_library',
-  ) == 'shared'
+  ) == 'shared' or get_option(
+    'default_library',
+  ) == 'both'
     summary('  GObject introspection', true)
     gnome_module.generate_gir(
       poppler_glib_library,
