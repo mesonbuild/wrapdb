@@ -1,0 +1,13 @@
+diff --git a/util/mkdef.pl b/util/mkdef.pl
+index d9534674..eb98b1cf 100755
+--- a/util/mkdef.pl
++++ b/util/mkdef.pl
+@@ -299,8 +299,6 @@ sub writer_windows {
+ ; Definition file for the DLL version of the $libname library from OpenSSL
+ ;
+ 
+-LIBRARY         "$libname"
+-
+ EXPORTS
+ _____
+     for (@_) {
