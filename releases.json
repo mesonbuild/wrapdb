@@ -2459,6 +2459,18 @@
       "1.6.17-2"
     ]
   },
+  "libportal": {
+    "dependency_names": [
+      "libportal",
+      "libportal-gtk3",
+      "libportal-gtk4",
+      "libportal-qt5",
+      "libportal-qt6"
+    ],
+    "versions": [
+      "0.9.1-1"
+    ]
+  },
   "libpsl": {
     "dependency_names": [
       "libpsl"
