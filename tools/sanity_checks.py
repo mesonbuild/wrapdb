@@ -152,6 +152,10 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'pcre.def',
         'pcreposix.def'
     },
+    'poppler': {
+        'poppler_exports.h.in',
+        'poppler-test.wrap',
+    },
     'protobuf': {
         'symlink_or_copy.py',
     },

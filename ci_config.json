@@ -1311,6 +1311,30 @@
       "pkgconf:tests=disabled"
     ]
   },
+	"poppler": {
+    "_comment": [
+			"- fontconfig warns on v1 wraps; fixed in next release"
+		],
+		"alpine_packages": [
+			"cairo-dev",
+			"glib-dev",
+			"nss-dev",
+			"qt5-qtbase-dev",
+			"qt6-qtbase-dev"
+		],
+		"debian_packages": [
+			"libcairo2-dev",
+			"libglib2.0-dev",
+			"libgpgmepp-dev",
+			"libnss3-dev",
+			"qtbase5-dev",
+			"qt6-base-dev"
+		],
+		"build_options": [
+			"poppler:gobject_introspection=disabled"
+		],
+    "fatal_warnings": false
+	},
   "protobuf": {
     "_comment": "Getting patched version elsewhere until abseil-cpp/issues/1510 is fixed, because cannot patch wrapdb version",
     "msys_packages": [
