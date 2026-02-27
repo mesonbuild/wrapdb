@@ -649,19 +649,29 @@
       "jsonrpc-glib:enable_tests=false"
     ],
     "debian_packages": [
+      "valac",
+      "libgirepository1.0-dev",
+      "libjson-glib-dev",
       "flex",
       "bison"
     ],
     "brew_packages": [
+      "vala",
+      "json-glib",
       "flex",
       "bison"
     ],
     "alpine_packages": [
+      "vala",
       "python3-dev",
-      "musl-libintl",
+      "gettext-dev",
+      "json-glib-dev",
       "flex",
-      "bison",
-      "gettext"
+      "bison"
+    ],
+    "msys_packages": [
+      "vala",
+      "json-glib"
     ],
      "python_packages": [
       "setuptools",
