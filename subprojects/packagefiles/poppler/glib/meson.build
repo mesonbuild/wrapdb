@@ -21,7 +21,7 @@ if building_glib_wrapper
     'poppler-input-stream.cc',
     'poppler-structure-element.cc',
   ]
-  poppler_glib_library_sources += configure_file(
+  poppler_glib_library_features_h = configure_file(
     configuration: poppler_configuration,
     input: 'poppler-features.h.cmake',
     output: 'poppler-features.h',
@@ -29,7 +29,8 @@ if building_glib_wrapper
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'glib',
   )
-  poppler_glib_library_sources += configure_file(
+  poppler_glib_library_sources += poppler_glib_library_features_h
+  poppler_glib_library_macros_h = configure_file(
     input: poppler_exports_h_in,
     output: 'poppler-macros.h',
     configuration: {
@@ -39,6 +40,7 @@ if building_glib_wrapper
     install: true,
     install_dir: get_option('includedir') / meson.project_name() / 'blib',
   )
+  poppler_glib_library_sources += poppler_glib_library_macros_h
 
   poppler_glib_library_headers = files(
     'poppler-action.h',
@@ -56,7 +58,7 @@ if building_glib_wrapper
   )
 
   gnome_module = import('gnome')
-  poppler_glib_library_sources += gnome_module.mkenums(
+  poppler_glib_library_enums = gnome_module.mkenums(
     'bogus',
     c_template: 'poppler-enums.c.template',
     h_template: 'poppler-enums.h.template',
@@ -64,6 +66,7 @@ if building_glib_wrapper
     install_dir: get_option('includedir') / meson.project_name() / 'glib',
     sources: poppler_glib_library_headers,
   )
+  poppler_glib_library_sources += poppler_glib_library_enums
 
   poppler_glib_library_cpp_arguments = []
   if get_option('default_library') == 'static'
@@ -100,6 +103,11 @@ if building_glib_wrapper
     link_with: poppler_glib_library,
     dependencies: poppler_glib_library_dependencies,
     include_directories: poppler_glib_library_include_directories,
+    sources: [
+      poppler_glib_library_enums,
+      poppler_glib_library_features_h,
+      poppler_glib_library_macros_h,
+    ],
   )
 
   meson.override_dependency('poppler-glib', poppler_glib_library_dep)
