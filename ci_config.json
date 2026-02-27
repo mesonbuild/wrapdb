@@ -1672,6 +1672,23 @@
       "liblzma-dev"
     ]
   },
+  "xvidcore" : {
+     "alpine_packages": [
+      "nasm"
+    ],
+    "brew_packages": [
+      "nasm"
+    ],
+    "debian_packages": [
+      "nasm"
+    ],
+    "choco_packages": [
+      "nasm"
+    ],
+    "msys_packages": [
+      "nasm"
+    ]
+  },
   "yaml-cpp": {
     "build_options": [
       "yaml-cpp:tests=enabled"
