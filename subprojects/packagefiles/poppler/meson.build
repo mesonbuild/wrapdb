@@ -17,7 +17,8 @@ project(
   license: 'GPL-2.0',
   meson_version: '>=1.3.0',
   default_options: {
-    'cpp_std': 'c++23',
+    'cpp_std': ['c++23', 'c++latest'],
+    'c_std': 'c17',
   },
 )
 
