@@ -1,5 +1,4 @@
 thorvg_src = [
-  '../../others/vg_lite_tvg/vg_lite_tvg.cpp',
   'tvgAccessor.cpp',
   'tvgAnimation.cpp',
   'tvgCanvas.cpp',
