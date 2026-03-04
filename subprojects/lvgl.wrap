@@ -1,8 +1,8 @@
 [wrap-file]
-directory = lvgl-9.4.0
-source_url = https://github.com/lvgl/lvgl/archive/refs/tags/v9.4.0.tar.gz
-source_filename = lvgl-9.4.0.tar.gz
-source_hash = 932c864de98431b38c5758a87f1de12bbee7b76943b8312bcf13d2f29ac14627
+directory = lvgl-9.5.0
+source_url = https://github.com/lvgl/lvgl/archive/refs/tags/v9.5.0.tar.gz
+source_filename = lvgl-9.5.0.tar.gz
+source_hash = 34a955cdf3a2d005507b704e87357af669a114523b6d3f77b5344fdc68717bc6
 patch_directory = lvgl
 
 [provide]

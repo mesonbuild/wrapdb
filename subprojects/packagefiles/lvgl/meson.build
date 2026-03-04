@@ -4,8 +4,8 @@ project(
   'cpp',
   default_options: ['default_library=static'],
   license: 'MIT',
-  meson_version: '>= 0.54.0',
-  version: '9.4.0',
+  meson_version: '>= 0.56.0',
+  version: '9.5.0',
 )
 
 subdir('src')
