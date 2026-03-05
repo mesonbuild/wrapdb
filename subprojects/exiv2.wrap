@@ -1,8 +1,8 @@
 [wrap-file]
-directory = exiv2-0.28.7
-source_url = https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.7.tar.gz
-source_filename = exiv2-0.28.7.tar.gz
-source_hash = 5e292b02614dbc0cee40fe1116db2f42f63ef6b2ba430c77b614e17b8d61a638
+directory = exiv2-0.28.8
+source_url = https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.8.tar.gz
+source_filename = exiv2-0.28.8.tar.gz
+source_hash = ea51b0609f58a9afa063b60daa1539948b62247721e154f4fff0ad3aec9f9756
 
 [provide]
 exiv2 = exiv2_dep
