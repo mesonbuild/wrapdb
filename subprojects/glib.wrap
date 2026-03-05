@@ -1,6 +1,5 @@
 [wrap-file]
 directory = glib-2.86.4
-
 source_url = https://download.gnome.org/sources/glib/2.86/glib-2.86.4.tar.xz
 source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/glib/2.86/glib-2.86.4.tar.xz
 source_filename = glib-2.86.4.tar.xz

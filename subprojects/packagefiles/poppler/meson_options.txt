@@ -1,0 +1,120 @@
+option(
+    'boost',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with boost headers to accelerate rendering in the Splash backend.',
+)
+option(
+    'cpp',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the C++ wrapper library.',
+)
+option(
+    'dct_decoder',
+    type: 'combo',
+    choices: ['libjpeg', 'unmaintained', 'none'],
+    value: 'libjpeg',
+)
+option(
+    'glib',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the GLib wrapper library.',
+)
+option(
+    'glib_demo',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the GLib demo program.',
+)
+option(
+    'gobject_introspection',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build GObject introspection.',
+)
+option(
+    'gpgmepp',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with gpgmepp for signature handling.',
+)
+option(
+    'jpx_decoder',
+    type: 'combo',
+    choices: ['libopenjp2', 'unmaintained', 'none'],
+    value: 'libopenjp2',
+)
+option(
+    'lcms2',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with lcms2 based color management support.',
+)
+option(
+    'libcurl',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with libcurl based HTTP support.',
+)
+option(
+    'libpng',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with support for writing PNG images. (pdfimages/pdftocairo/etc)',
+)
+option(
+    'libtiff',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with support for writing TIFF images. (pdfimages/pdftocairo/etc)',
+)
+option(
+    'nss',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build with NSS for signature handling.',
+)
+option(
+    'qt5',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the Qt5 wrapper library.',
+)
+option(
+    'qt5_demo',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the Qt5 demo program.',
+)
+option(
+    'qt6',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the Qt6 wrapper library.',
+)
+option(
+    'qt6_demo',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the Qt6 demo program.',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: true,
+    description: 'Build all applicable tests.',
+)
+option(
+    'tools',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the poppler tools.',
+)
+option(
+    'use_float',
+    type: 'boolean',
+    value: false,
+    description: 'Use single precision arithmatic in the Splash backend (instead of double precision).',
+)

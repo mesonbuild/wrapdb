@@ -1,0 +1,58 @@
+#ifndef POPPLER_@NAME@_EXPORT_H
+#define POPPLER_@NAME@_EXPORT_H
+
+#ifdef POPPLER_@NAME@_STATIC_DEFINE
+#  define @PUBLIC_DEFINE@
+#  define POPPLER_@NAME@_NO_EXPORT
+#else
+#  ifndef @PUBLIC_DEFINE@
+#    ifdef POPPLER_@NAME@_EXPORTS
+       /* We are building this library */
+#      if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
+#        define @PUBLIC_DEFINE@ __declspec(dllexport)
+#      else
+#        define @PUBLIC_DEFINE@ __attribute__((visibility("default")))
+#      endif
+#    else
+       /* We are using this library */
+#      if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
+#        define @PUBLIC_DEFINE@ __declspec(dllimport)
+#      else
+#        define @PUBLIC_DEFINE@ __attribute__((visibility("default")))
+#      endif
+#    endif
+#  endif
+
+#  ifndef POPPLER_@NAME@_NO_EXPORT
+#    if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
+#      define POPPLER_@NAME@_NO_EXPORT
+#    else
+#      define POPPLER_@NAME@_NO_EXPORT __attribute__((visibility("hidden")))
+#    endif
+#  endif
+#endif
+
+#ifndef POPPLER_@NAME@_DEPRECATED
+#  if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MSYS__) || defined(__CYGWIN__)
+#    define POPPLER_@NAME@_DEPRECATED __declspec(deprecated)
+#  else
+#    define POPPLER_@NAME@_DEPRECATED __attribute__ ((__deprecated__))
+#  endif
+#endif
+
+#ifndef POPPLER_@NAME@_DEPRECATED_EXPORT
+#  define POPPLER_@NAME@_DEPRECATED_EXPORT @PUBLIC_DEFINE@ POPPLER_@NAME@_DEPRECATED
+#endif
+
+#ifndef POPPLER_@NAME@_DEPRECATED_NO_EXPORT
+#  define POPPLER_@NAME@_DEPRECATED_NO_EXPORT POPPLER_@NAME@_NO_EXPORT POPPLER_@NAME@_DEPRECATED
+#endif
+
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
+#if 0 /* DEFINE_NO_DEPRECATED */
+#  ifndef POPPLER_@NAME@_NO_DEPRECATED
+#    define POPPLER_@NAME@_NO_DEPRECATED
+#  endif
+#endif
+
+#endif

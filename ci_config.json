@@ -1311,6 +1311,39 @@
       "pkgconf:tests=disabled"
     ]
   },
+  "poppler": {
+    "_comment": [
+      "- fontconfig warns on v1 wraps; fixed in next release",
+      "- alpine stable doesn't know gpgmepp-dev, yet",
+			"- skip old dependency for Qt5 wrapper"
+    ],
+    "alpine_packages": [
+      "cairo-dev",
+      "glib-dev",
+      "nss-dev",
+      "qt6-qtbase-dev"
+    ],
+    "debian_packages": [
+      "libcairo2-dev",
+      "libglib2.0-dev",
+      "libgpgmepp-dev",
+      "libnss3-dev",
+      "qt6-base-dev"
+    ],
+    "brew_packages": [
+      "qt@6"
+    ],
+    "msys_packages": [
+      "qt6-base"
+    ],
+    "build_options": [
+      "poppler:gobject_introspection=disabled"
+    ],
+    "skip_dependency_check": [
+      "poppler-qt5"
+    ]
+    "fatal_warnings": false
+  },
   "protobuf": {
     "_comment": "Getting patched version elsewhere until abseil-cpp/issues/1510 is fixed, because cannot patch wrapdb version",
     "msys_packages": [
