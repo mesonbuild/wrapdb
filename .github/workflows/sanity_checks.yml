@@ -20,7 +20,7 @@ jobs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
       need-build: ${{ steps.sanity-checks.outputs.need-build }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -35,7 +35,7 @@ jobs:
 
       - name: Restore sources
         id: restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           path: subprojects/packagecache
@@ -46,7 +46,7 @@ jobs:
         run: tools/internalize_sources.py download
 
       - name: Save sources
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: steps.restore.outputs.cache-hit != 'true'
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
@@ -77,7 +77,7 @@ jobs:
             runner: ubuntu-latest
             python: 3.13
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -98,7 +98,7 @@ jobs:
           python3 -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -149,7 +149,7 @@ jobs:
             runner: ubuntu-latest
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/x86_64/apk.static#!sha256!34bb1a96f0258982377a289392d4ea9f3f4b767a4bb5806b1b87179b79ad8a1c'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -167,7 +167,7 @@ jobs:
         run: sudo update-binfmts --disable qemu-arm
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -207,7 +207,7 @@ jobs:
           - platform: x86
             runner: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -235,7 +235,7 @@ jobs:
           arch: ${{matrix.platform}}
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -261,7 +261,7 @@ jobs:
           - platform: x64
             runner: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -277,7 +277,7 @@ jobs:
           python -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -309,7 +309,7 @@ jobs:
           - platform: CLANGARM64
             runner: windows-11-arm
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -344,7 +344,7 @@ jobs:
           python -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -371,7 +371,7 @@ jobs:
           - platform: x86_64
             runner: macos-26-intel
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -388,7 +388,7 @@ jobs:
           python3 -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache

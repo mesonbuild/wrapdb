@@ -24,7 +24,7 @@ jobs:
     outputs:
       cache-key: ${{ steps.cache-key.outputs.cache-key }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Check for cache
         id: lookup
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           # don't restore from older cache keys; it would bloat the cache
@@ -53,7 +53,7 @@ jobs:
 
       - name: Save sources
         if: steps.lookup.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           path: subprojects/packagecache
@@ -72,7 +72,7 @@ jobs:
           - platform: x86_64
             runner: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -83,7 +83,7 @@ jobs:
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -117,12 +117,12 @@ jobs:
           packages: >
             binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -145,7 +145,7 @@ jobs:
       matrix:
         platform: ['x64', 'x86']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -166,7 +166,7 @@ jobs:
           arch: ${{matrix.platform}}
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -185,7 +185,7 @@ jobs:
       CC: clang-cl
       CXX: clang-cl
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -196,7 +196,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -215,7 +215,7 @@ jobs:
       matrix:
         platform: ['UCRT64', 'CLANG64']
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -243,7 +243,7 @@ jobs:
           python -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -268,7 +268,7 @@ jobs:
           - platform: x86_64
             runner: macos-26-intel
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -284,7 +284,7 @@ jobs:
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
