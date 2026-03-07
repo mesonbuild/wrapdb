@@ -546,6 +546,20 @@
       "gumbo-parser:tests=enabled"
     ]
   },
+  "gtk4": {
+    "_comment": [
+      "harfbuzz triggers warnings",
+      "wayland-client of the CI is too old"
+    ],
+    "build_options": [
+      "gtk4:media-gstreamer=disabled",
+      "gtk4:wayland-backend=false"
+    ],
+    "debian_packages": [
+      "libxkbcommon-dev"
+    ],
+    "fatal_warnings": false
+  },
   "harfbuzz": {
     "_comment": [
       "- Currently builds with no warnings other than an incorrect warning() function",
