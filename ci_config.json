@@ -165,6 +165,12 @@
     "_comment": "Upstream doesn't officially support 32-bit platforms and warns about it",
     "fatal_warnings": false
   },
+  "cppbor": {
+    "_comment": "MSVC x86 build fails due to missing openssl.",
+    "alpine_packages": [
+      "openssl-dev"
+    ]
+  },
   "cpputest": {
     "build_options": [
       "cpputest:enable_cpputest_extensions=true",
