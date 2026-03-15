@@ -1,8 +1,8 @@
 [wrap-file]
-directory = leptonica-1.84.1
-source_url = https://github.com/DanBloomberg/leptonica/releases/download/1.84.1/leptonica-1.84.1.tar.gz
-source_filename = leptonica-1.84.1.tar.gz
-source_hash = 2b3e1254b1cca381e77c819b59ca99774ff43530209b9aeb511e1d46588a64f6
+directory = leptonica-1.87.0
+source_url = https://github.com/DanBloomberg/leptonica/releases/download/1.87.0/leptonica-1.87.0.tar.gz
+source_filename = leptonica-1.87.0.tar.gz
+source_hash = c73363397f96eb1295602bf44d708a994ad42046c791bf03ea0505d829bdb6a7
 patch_directory = leptonica
 
 [provide]

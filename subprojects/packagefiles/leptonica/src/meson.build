@@ -154,6 +154,7 @@ lept_lib = library(
     'recogident.c',
     'recogtrain.c',
     'regutils.c',
+    'renderpdf.c',
     'rop.c',
     'roplow.c',
     'rotate.c',

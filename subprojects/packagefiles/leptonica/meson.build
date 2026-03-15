@@ -1,7 +1,8 @@
 project(
   'leptonica',
   'c',
-  version: '1.84.1',
+  license: 'BSD-2-Clause',
+  version: '1.87.0',
   meson_version: '>=0.59.0',
 )
 
@@ -19,10 +20,10 @@ cdata = configuration_data()
 foreach _feat, _spec : {
   'libjp2k': ['libopenjp2', '>=2.1.0'],
   'libjpeg': ['libjpeg'],
-  'libpng' : ['libpng'],
+  'libpng': ['libpng'],
   'libtiff': ['libtiff-4'],
   'libwebp': ['libwebp'],
-  'libz'   : ['zlib'],
+  'libz': ['zlib'],
 }
   _dep = dependency(
     _spec[0],
