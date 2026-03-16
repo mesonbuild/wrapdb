@@ -2055,6 +2055,14 @@
       "3.6.2-1"
     ]
   },
+  "libattr": {
+    "dependency_names": [
+      "libattr"
+    ],
+    "versions": [
+      "2.5.1-1"
+    ]
+  },
   "libcap": {
     "dependency_names": [
       "libcap"
