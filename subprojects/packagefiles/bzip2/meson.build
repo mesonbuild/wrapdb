@@ -34,7 +34,7 @@ bzip2_exe = executable(
   link_with: libbz2_lib,
 )
 
-if meson.can_run_host_binaries()
+if get_option('tests') and meson.can_run_host_binaries()
   python = find_program(
     'python3',
     native: true,

@@ -1,0 +1,5 @@
+option(
+    'tests',
+    type: 'boolean',
+    description: 'build and run tests',
+)
