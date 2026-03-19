@@ -1,8 +1,8 @@
 [wrap-file]
-directory = atomic_queue-1.7.1
-source_url = https://github.com/max0x7ba/atomic_queue/archive/refs/tags/v1.7.1.tar.gz
-source_filename = atomic_queue-1.7.1.tar.gz
-source_hash = 6eeff578f8b0499717bf890d90e2c58106ac2b8076084b73f2183a631742b4ab
+directory = atomic_queue-1.7.2
+source_url = https://github.com/max0x7ba/atomic_queue/archive/refs/tags/v1.7.2.tar.gz
+source_filename = atomic_queue-1.7.2.tar.gz
+source_hash = 7f0004b3821f90e35d898d37564be273909aeb24a8ca71a988fc65a5cf584a68
 
 [provide]
 atomic_queue = atomic_queue_dep
