@@ -28,6 +28,10 @@ cc = meson.get_compiler('c')
 
 ###############################################################################
 # Per-compiler/platform additional flags
+add_project_arguments(
+  cc.get_supported_arguments('-Wno-format-extra-args'),
+  language: 'c',
+)
 if host_machine.system() == 'windows'
   add_project_arguments(
     '-D_CRT_SECURE_NO_DEPRECATE',
