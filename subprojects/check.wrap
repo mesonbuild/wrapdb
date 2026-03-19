@@ -6,4 +6,4 @@ source_hash = 998d355294bb94072f40584272cf4424571c396c631620ce463f6ea97aa67d2e
 patch_directory = check
 
 [provide]
-check = check_dep
+dependency_names = check
