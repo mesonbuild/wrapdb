@@ -4,7 +4,7 @@ check_test_lib = static_library(
     recursive: false,
   ),
   include_directories: confinc,
-  dependencies: [libm, compatlib_dep],
+  dependencies: [libm, libsubunit, compatlib_dep],
 )
 
 check_test_dep = declare_dependency(
