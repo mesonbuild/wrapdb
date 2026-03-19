@@ -1891,6 +1891,9 @@
     ]
   },
   "json": {
+    "deprecated": {
+      "replacement": "nlohmann_json"
+    },
     "versions": [
       "3.2.0-1",
       "2.1.1-1",
@@ -2982,6 +2985,9 @@
     "dependency_names": [
       "luajit"
     ],
+    "deprecated": {
+      "reason": "project does not perform formal releases"
+    },
     "program_names": [
       "luajit"
     ],
@@ -3454,6 +3460,9 @@
     ]
   },
   "onqtam-doctest": {
+    "deprecated": {
+      "replacement": "doctest"
+    },
     "versions": [
       "2.4.0-1",
       "2.3.7-1"
@@ -3605,6 +3614,9 @@
       "libpcre",
       "libpcreposix"
     ],
+    "deprecated": {
+      "successor": "pcre2"
+    },
     "versions": [
       "8.45-5",
       "8.45-4",
