@@ -44,3 +44,4 @@ check_dep = declare_dependency(
   link_with: checklib,
   compile_args: ck_dll_exp_interface,
 )
+meson.override_dependency('check', check_dep)
