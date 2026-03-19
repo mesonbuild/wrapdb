@@ -36,7 +36,7 @@ checklib = library(
   sources,
   c_args: ['-DHAVE_CONFIG_H=1', ck_dll_exp_private],
   include_directories: [confinc],
-  dependencies: [libm, compatlib_dep],
+  dependencies: [libm, libsubunit, compatlib_dep],
 )
 
 check_dep = declare_dependency(
