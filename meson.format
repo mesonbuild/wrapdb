@@ -1,2 +1,3 @@
 use_editor_config=true
 kwargs_force_multiline=true
+sort_files=true
