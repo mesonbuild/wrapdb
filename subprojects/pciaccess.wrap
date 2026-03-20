@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libpciaccess-0.18.1
-source_url = https://xorg.freedesktop.org/archive/individual/lib/libpciaccess-0.18.1.tar.xz
-source_filename = libpciaccess-0.18.1.tar.xz
-source_hash = 4af43444b38adb5545d0ed1c2ce46d9608cc47b31c2387fc5181656765a6fa76
+directory = libpciaccess-0.19
+source_url = https://xorg.freedesktop.org/archive/individual/lib/libpciaccess-0.19.tar.xz
+source_filename = libpciaccess-0.19.tar.xz
+source_hash = 3c55aa86c82e54a4e3109786f0463530d53b36b6d1cfd14616454f985dd2aa43
 
 [provide]
 dependency_names = pciaccess
