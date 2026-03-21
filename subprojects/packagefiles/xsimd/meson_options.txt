@@ -1,0 +1,6 @@
+option(
+    'xtl_complex',
+    type: 'boolean',
+    value: false,
+    description: 'Support for complex numbers from xtl',
+)
