@@ -23,12 +23,12 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.7.4',
+  version: '2.7.5',
   # str.replace()
   meson_version: '>= 0.58.0',
 )
 
-dllver = '1.11.2'
+dllver = '1.11.3'
 
 config = configuration_data()
 cc = meson.get_compiler('c')
