@@ -1,6 +1,5 @@
 option(
     'xtl_complex',
     type: 'feature',
-    value: 'disabled',
     description: 'Support for complex numbers from xtl',
 )
