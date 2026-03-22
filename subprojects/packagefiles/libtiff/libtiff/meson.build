@@ -5,16 +5,12 @@ tiffconf_h = configure_file(
   configuration: cdata,
 )
 
-if meson.version().version_compare('>=1.9')
-  tif_config_tmpl = files('tif_config.h.cmake.in')
-else
-  # Meson can't handle "# cmakedefine" with whitespace
-  tif_config_tmpl = configure_file(
-    command: [find_program('cmakedefine.py'), '@INPUT0@', '@OUTPUT0@'],
-    input: 'tif_config.h.cmake.in',
-    output: 'tif_config.h.meson.in',
-  )
-endif
+# Meson < 1.9 can't handle "# cmakedefine" with whitespace
+tif_config_tmpl = configure_file(
+  command: [find_program('cmakedefine.py'), '@INPUT0@', '@OUTPUT0@'],
+  input: 'tif_config.h.cmake.in',
+  output: 'tif_config.h.meson.in',
+)
 
 configure_file(
   input: tif_config_tmpl,
