@@ -2,7 +2,7 @@ project(
   'pv',
   'c',
   license: 'GPL-3.0-or-later',
-  version: '1.10.3',
+  version: '1.10.5',
   meson_version: '>=0.59.0',
 )
 
@@ -16,6 +16,9 @@ feature_macros = [
   '-D_OPENBSD_SOURCE',
   '-D_POSIX_SOURCE',
 ]
+foreach macro : feature_macros
+  cdata.set(macro.replace('-D', ''), true)
+endforeach
 
 ncurses_dep = dependency(
   'curses',
@@ -46,6 +49,7 @@ endforeach
 
 foreach _spec : [
   ['fcntl.h', 'posix_fadvise splice'],
+  ['ftw.h', 'nftw'],
   ['getopt.h', 'getopt_long'],
   ['langinfo.h'],
   ['libgen.h', 'basename'],
@@ -258,10 +262,6 @@ foreach _flag : cdata.keys()
   cdata.set(_flag, cdata.get(_flag) ? 1 : false)
 endforeach
 
-cdata.set_quoted(
-  'LOCALEDIR',
-  get_option('prefix') / get_option('localedir'),
-)
 cdata.set_quoted('PACKAGE', meson.project_name())
 cdata.set_quoted('PACKAGE_BUGREPORT', 'pv@ivarch.com')
 cdata.set_quoted('PACKAGE_NAME', meson.project_name())
@@ -307,7 +307,10 @@ pv = executable(
     'src/pv/transfer.c',
     'src/pv/watchpid.c',
   ],
-  c_args: feature_macros + ['-DHAVE_CONFIG_H'],
+  c_args: [
+    '-DHAVE_CONFIG_H',
+    '-DLOCALEDIR="@0@"'.format(get_option('prefix') / get_option('localedir')),
+  ],
   dependencies: [intl_dep, m_dep, ncurses_dep, rt_dep],
   implicit_include_directories: false,
   include_directories: 'src/include',
