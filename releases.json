@@ -1027,6 +1027,14 @@
       "0.7.5-1"
     ]
   },
+  "fast_float": {
+    "dependency_names": [
+      "FastFloat"
+    ],
+    "versions": [
+      "8.2.4-1"
+    ]
+  },
   "fdk-aac": {
     "dependency_names": [
       "fdk-aac"
