@@ -1762,8 +1762,11 @@ cdata.set('SUPPORT_FEATURES', ' '.join(enabled_features))
 cdata.set('SUPPORT_PROTOCOLS', ' '.join(enabled_protocols))
 cdata.set('SSL_BACKENDS', ' '.join(enabled_ssl_backends))
 
+curl_config_cdata = configuration_data()
+curl_config_cdata.merge_from(cdata)
+curl_config_cdata.set('CURL_CA_BUNDLE', ca_bundle)
 curl_config_script = configure_file(
-  configuration: cdata,
+  configuration: curl_config_cdata,
   input: 'curl-config.in',
   output: 'curl-config',
   install: true,
