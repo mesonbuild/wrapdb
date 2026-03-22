@@ -210,7 +210,7 @@ pkg.generate(
   extra_cflags: public_args,
   name: 'libcurl',
   unescaped_variables: (
-  # NOTE: variables with empty values are not allowed…
+    # NOTE: variables with empty values are not allowed…
     (enabled_features.length() > 0 ? {
         'supported_features': ' '.join(enabled_features),
       } : {}) + (enabled_protocols.length() > 0 ? {
