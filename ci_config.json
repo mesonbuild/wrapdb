@@ -1395,6 +1395,26 @@
   "rang": {
     "ignore_upstream_meson": "3.2"
   },
+  "raylib": {
+    "alpine_packages": [
+      "libxi-dev",
+      "libxkbcommon-dev",
+      "mesa-dev",
+      "wayland-dev"
+    ],
+    "debian_packages": [
+      "libxi-dev",
+      "libxkbcommon-dev",
+      "libxrandr-dev",
+      "libwayland-dev",
+      "libwayland-bin",
+      "libegl-dev",
+      "libgl-dev"
+    ],
+    "build_options": [
+      "raylib:examples=true"
+    ]
+  },
   "rdkafka": {
     "_comment": "- broken CI finds bad version of OpenSSL on Windows",
     "build_options": [
