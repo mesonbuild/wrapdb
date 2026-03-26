@@ -1,9 +1,9 @@
 [wrap-file]
-directory = freetype-2.14.2
-source_url = https://download.savannah.gnu.org/releases/freetype/freetype-2.14.2.tar.xz
-source_fallback_url = https://downloads.sourceforge.net/project/freetype/freetype2/2.14.2/freetype-2.14.2.tar.xz
-source_filename = freetype-2.14.2.tar.xz
-source_hash = 4b62dcab4c920a1a860369933221814362e699e26f55792516d671e6ff55b5e1
+directory = freetype-2.14.3
+source_url = https://download.savannah.gnu.org/releases/freetype/freetype-2.14.3.tar.xz
+source_fallback_url = https://downloads.sourceforge.net/project/freetype/freetype2/2.14.3/freetype-2.14.3.tar.xz
+source_filename = freetype-2.14.3.tar.xz
+source_hash = 36bc4f1cc413335368ee656c42afca65c5a3987e8768cc28cf11ba775e785a5f
 
 [provide]
 dependency_names = freetype2
