@@ -313,6 +313,23 @@
     ],
     "fatal_warnings": false
   },
+  "ell": {
+    "_comment": "- relies on Linux specific APIs (getrandom)",
+    "build_on": {
+      "darwin": false,
+      "windows": false
+    },
+    "alpine_packages": [
+      "glib-dev",
+      "openssl",
+      "xxd"
+    ],
+    "debian_packages": [
+      "libglib2.0-dev",
+      "openssl",
+      "xxd"
+    ]
+  },
   "enlog": {
     "build_options": [
       "enlog:color=true",
