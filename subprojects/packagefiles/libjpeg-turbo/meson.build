@@ -1,7 +1,7 @@
 project(
   'libjpeg-turbo',
   'c',
-  version: '3.1.3',
+  version: '3.1.4.1',
   license: 'BSD-3-Clause AND IJG',
   meson_version: '>= 0.64.0',
 )
@@ -16,7 +16,7 @@ host_cpu = host_machine.cpu_family()
 cdata = configuration_data()
 cdata.set('CMAKE_PROJECT_NAME', meson.project_name())
 cdata.set('VERSION', meson.project_version())
-cdata.set('COPYRIGHT_YEAR', '1991-2025')
+cdata.set('COPYRIGHT_YEAR', '1991-2026')
 
 jpeg_lib_version = 80
 so_major = jpeg_lib_version / 10
