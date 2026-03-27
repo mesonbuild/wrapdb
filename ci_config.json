@@ -835,6 +835,13 @@
       "libopenjpip"
     ]
   },
+  "libportal": {
+    "ignore_upstream_meson": "0.9.1",
+    "build_options": [
+      "libportal:docs=false",
+      "libportal:tests=false"
+    ]
+  },
   "libpfm": {
     "_comment": "Wrap only supports Linux",
     "build_on": {
