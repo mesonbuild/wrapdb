@@ -90,6 +90,15 @@ simd_opt = get_option('simd')
 have_simd = false
 simd = []
 
+foreach _sym : ['getauxval', 'elf_aux_info']
+  if cc.has_header_symbol('sys/auxv.h', _sym)
+    add_project_arguments(
+      '-DHAVE_' + _sym.to_upper(),
+      language: 'c',
+    )
+  endif
+endforeach
+
 if host_cpu in ['x86', 'x86_64']
   have_simd = add_languages(
     'nasm',
