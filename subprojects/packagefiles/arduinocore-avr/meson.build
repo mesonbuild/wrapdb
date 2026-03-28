@@ -2,7 +2,7 @@ project(
   'libarduinocore-avr',
   'c',
   'cpp',
-  version: '1.8.6',
+  version: '1.8.7',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'b_lto=true',
@@ -10,11 +10,11 @@ project(
     'cpp_std=gnu++11',
     'b_staticpic=false',
   ],
-  meson_version: '>=0.54.0',
+  meson_version: '>=0.56.0',
 )
 assert(
   meson.is_cross_build(),
-  'Arduino projects can only be built in a cross build environment.',
+  'Building Arduino projects in a native environment is not supported.',
 )
 # variant has to be defined in a cross file depending on your board
 # It must be set to one of the following values:

@@ -8,18 +8,13 @@
     "explicitly disable that Operating System in build_on.",
     "Please remove projects from those lists once they are updated."
   ],
-  "broken_linux": [
-    "arduinocore-avr"
-  ],
   "broken_windows": [
-    "arduinocore-avr",
     "mocklibc",
     "termbox",
     "m4",
     "tinyply"
   ],
   "broken_darwin": [
-    "arduinocore-avr",
     "graphite2",
     "mocklibc"
   ],
@@ -39,6 +34,16 @@
     "alpine_packages": [
       "tzdata"
     ]
+  },
+  "arduinocore-avr": {
+    "_comment": "Building Arduino projects in a native environment is not supported.",
+    "build_on": {
+      "alpine": false,
+      "darwin": false,
+      "linux": false,
+      "msys2": false,
+      "windows": false
+    }
   },
   "arrow-cpp": {
     "build_options": [
