@@ -1,0 +1,9 @@
+[wrap-file]
+directory = aws-c-sdkutils-0.2.4
+source_url = https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v0.2.4.tar.gz
+source_filename = aws-c-sdkutils-0.2.4.tar.gz
+source_hash = 493cbed4fa57e0d4622fcff044e11305eb4fc12445f32c8861025597939175fc
+patch_directory = aws-c-sdkutils
+
+[provide]
+dependency_names = aws-c-sdkutils
