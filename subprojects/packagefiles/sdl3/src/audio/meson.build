@@ -4,6 +4,7 @@ if host_machine.system() == 'windows'
   subdir('directsound')
   #  subdir('wasapi')
 elif host_machine.system() == 'darwin'
+  cdata.set('SDL_AUDIO_DRIVER_COREAUDIO', 1)
   subdir('coreaudio')
 else
   cdata.set('SDL_AUDIO_DRIVER_PIPEWIRE', 1)

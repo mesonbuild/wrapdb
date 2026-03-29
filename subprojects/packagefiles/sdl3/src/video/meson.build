@@ -4,6 +4,7 @@ if host_machine.system() == 'windows'
   cdata.set('SDL_VIDEO_DRIVER_WINDOWS', 1)
   subdir('windows')
 elif host_machine.system() == 'darwin'
+  cdata.set('SDL_VIDEO_DRIVER_COCOA', 1)
   subdir('cocoa')
 else
   cdata.set('SDL_VIDEO_DRIVER_WAYLAND', 1)
