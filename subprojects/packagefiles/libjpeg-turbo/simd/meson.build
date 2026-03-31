@@ -316,9 +316,9 @@ elif host_cpu in ['arm', 'aarch64']
 
     if neon_intrinsics or host_cpu == 'arm'
       simd_src_arm += files(
-        dir / 'jchuff-neon.c',
         'arm/jdcolor-neon.c',
         'arm/jfdctint-neon.c',
+        dir / 'jchuff-neon.c',
       )
     endif
 
