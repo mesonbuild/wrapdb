@@ -1,8 +1,8 @@
 [wrap-file]
-directory = avr-1.8.6
-source_url = https://downloads.arduino.cc/cores/staging/avr-1.8.6.tar.bz2
-source_filename = avr-1.8.6.tar.bz2
-source_hash = ff1d17274b5a952f172074bd36c3924336baefded0232e10982f8999c2f7c3b6
+directory = ArduinoCore-avr-1.8.7
+source_url = https://downloads.arduino.cc/cores/staging/avr-1.8.7.tar.bz2
+source_filename = avr-1.8.7.tar.bz2
+source_hash = 6ae7000b1b6c004c4a208d6d924a8046b417580e4a10cfd3f88930b6660a51db
 patch_directory = arduinocore-avr
 
 [provide]
