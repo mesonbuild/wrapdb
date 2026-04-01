@@ -1,4 +1,4 @@
-wire_src = files('src/Wire.cpp', 'src/utility/twi.c')
+wire_src = files('src/utility/twi.c', 'src/Wire.cpp')
 
 wire_inc = ['src/']
 
