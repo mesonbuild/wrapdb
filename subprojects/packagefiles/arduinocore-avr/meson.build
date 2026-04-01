@@ -59,7 +59,7 @@ arduinocore_src = files(
   'cores/arduino/WMath.cpp',
   'cores/arduino/WString.cpp',
 )
-arduinocore_inc = ['cores/arduino', 'variants/' + cross_variant]
+arduinocore_inc = ['cores/arduino', 'variants' / cross_variant]
 
 arduinocore_main_src = files('cores/arduino/main.cpp')
 
@@ -133,8 +133,8 @@ if do_install
     install_dir: 'lib/avr/include/arduino',
   )
   install_headers(
-    ['variants/' + cross_variant + '/pins_arduino.h'],
-    install_dir: 'lib/avr/include/arduino/variants/' + cross_variant,
+    ['variants' / cross_variant / 'pins_arduino.h'],
+    install_dir: 'lib/avr/include/arduino/variants' / cross_variant,
   )
 endif
 
