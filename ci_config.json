@@ -400,6 +400,7 @@
     ],
     "build_options": [
       "gdk-pixbuf:glycin=disabled",
+      "gdk-pixbuf:legacy_xpm=enabled",
       "gdk-pixbuf:man=false",
       "gdk-pixbuf:others=enabled"
     ],
