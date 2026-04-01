@@ -182,6 +182,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     },
 }
 SOURCE_FILENAME_PREFIXES = {
+    'arduinocore-avr': 'avr',
     'icu': 'icu4c',
     'libtomcrypt': 'crypt',
 }
