@@ -4943,6 +4943,14 @@
       "3.1.0-1"
     ]
   },
+  "xsimd": {
+    "dependency_names": [
+      "xsimd"
+    ],
+    "versions": [
+      "14.1.0-1"
+    ]
+  },
   "xtensor": {
     "dependency_names": [
       "xtensor"
