@@ -2,6 +2,11 @@ if host_machine.system() == 'windows'
   cdata.set('SDL_FSOPS_WINDOWS', 1)
   cdata.set('SDL_FILESYSTEM_WINDOWS', 1)
   subdir('windows')
+elif host_machine.system() == 'darwin'
+  cdata.set('SDL_FSOPS_POSIX', 1)
+  cdata.set('SDL_FILESYSTEM_COCOA', 1)
+  subdir('cocoa')
+  subdir('posix')
 else
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_UNIX', 1)
