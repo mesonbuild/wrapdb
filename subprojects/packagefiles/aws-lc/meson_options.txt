@@ -1,0 +1,26 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build aws-lc tests. Requires a C++ compiler',
+)
+option(
+    'libssl',
+    type: 'feature',
+    description: 'Build aws-lc libssl library',
+)
+option(
+    'fips',
+    type: 'feature',
+    description: 'Build aws-lc in FIPS mode. Requires an installed go toolchain and perl',
+)
+option(
+    'asm',
+    type: 'feature',
+    description: 'Enable assembly, required for FIPS mode',
+)
+option(
+    'openssl-override',
+    type: 'boolean',
+    description: 'Override openssl libcrypto and libssl dependency with aws-lc libcrypto',
+    value: false,
+)
