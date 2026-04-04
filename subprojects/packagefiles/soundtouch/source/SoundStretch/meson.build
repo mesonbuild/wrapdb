@@ -1,4 +1,4 @@
-soundstretch_sources = files('RunParameters.cpp', 'WavFile.cpp', 'main.cpp')
+soundstretch_sources = files('main.cpp', 'RunParameters.cpp', 'WavFile.cpp')
 
 if get_option('soundstretch')
   soundstretch_bin = executable(

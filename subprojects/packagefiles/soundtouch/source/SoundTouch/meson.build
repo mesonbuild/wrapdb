@@ -1,18 +1,18 @@
 soundtouch_sources = files(
   'AAFilter.cpp',
   'BPMDetect.cpp',
+  'cpu_detect_x86.cpp',
   'FIFOSampleBuffer.cpp',
   'FIRFilter.cpp',
   'InterpolateCubic.cpp',
   'InterpolateLinear.cpp',
   'InterpolateShannon.cpp',
+  'mmx_optimized.cpp',
   'PeakFinder.cpp',
   'RateTransposer.cpp',
   'SoundTouch.cpp',
-  'TDStretch.cpp',
-  'cpu_detect_x86.cpp',
-  'mmx_optimized.cpp',
   'sse_optimized.cpp',
+  'TDStretch.cpp',
 )
 
 # This library requires WINDOWS_EXPORT_ALL_SYMBOLS to export all the relevant
