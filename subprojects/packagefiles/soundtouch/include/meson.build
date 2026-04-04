@@ -2,8 +2,8 @@ soundtouch_headers = files(
   'BPMDetect.h',
   'FIFOSampleBuffer.h',
   'FIFOSamplePipe.h',
-  'STTypes.h',
   'SoundTouch.h',
+  'STTypes.h',
 )
 
 soundtouch_config_h = configure_file(

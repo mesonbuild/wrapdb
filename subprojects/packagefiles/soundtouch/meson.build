@@ -2,7 +2,7 @@ project(
   'soundtouch',
   'c',
   'cpp',
-  version: '2.4.0',
+  version: '2.4.1',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'c_std=c11',
@@ -12,7 +12,7 @@ project(
     'cpp_eh=default',
     'pkgconfig.relocatable=true',
   ],
-  meson_version: '>= 0.53',
+  meson_version: '>= 0.56',
 )
 
 cpp = meson.get_compiler('cpp')
