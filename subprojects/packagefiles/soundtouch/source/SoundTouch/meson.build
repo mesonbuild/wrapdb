@@ -46,3 +46,4 @@ soundtouch_dep = declare_dependency(
   link_with: soundtouch_lib,
   include_directories: soundtouch_includes,
 )
+meson.override_dependency('soundtouch', soundtouch_dep)
