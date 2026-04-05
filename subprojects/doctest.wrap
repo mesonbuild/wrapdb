@@ -1,8 +1,8 @@
 [wrap-file]
-directory = doctest-2.5.0
-source_url = https://github.com/doctest/doctest/archive/refs/tags/v2.5.0.tar.gz
-source_filename = doctest-2.5.0.tar.gz
-source_hash = eb917c80bef7aceb9eca59d9328142351facdcdabe90b5242632b93c34b9e345
+directory = doctest-2.5.1
+source_url = https://github.com/doctest/doctest/archive/refs/tags/v2.5.1.tar.gz
+source_filename = doctest-2.5.1.tar.gz
+source_hash = d4ebd26061d5a5d05355f52289c3f595d744aac8d70c547a012b2be96bc2f014
 
 [provide]
 dependency_names = doctest
