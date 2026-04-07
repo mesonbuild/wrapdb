@@ -86,6 +86,20 @@ simd_src_arm = files(
   'arm/jquanti-neon.c',
 )
 
+simd_src_ppc = files(
+  'powerpc/jccolor-altivec.c',
+  'powerpc/jcgray-altivec.c',
+  'powerpc/jcsample-altivec.c',
+  'powerpc/jdcolor-altivec.c',
+  'powerpc/jdmerge-altivec.c',
+  'powerpc/jdsample-altivec.c',
+  'powerpc/jfdctfst-altivec.c',
+  'powerpc/jfdctint-altivec.c',
+  'powerpc/jidctfst-altivec.c',
+  'powerpc/jidctint-altivec.c',
+  'powerpc/jquanti-altivec.c',
+)
+
 simd_opt = get_option('simd')
 have_simd = false
 simd = []
@@ -341,6 +355,30 @@ elif host_cpu in ['arm', 'aarch64']
       pic: get_option('default_library') != 'static',
       include_directories: [incdir, 'arm', dir],
       c_args: neon_flags,
+    )
+  endif
+elif host_cpu in ['ppc', 'ppc64']
+  dir = 'powerpc'
+  have_simd = cc.compiles(
+    '''
+    #include <altivec.h>
+    int main(void) {
+      __vector int vi = { 0, 0, 0, 0 };
+      int i[4];
+      vec_st(vi, 0, i);
+      return i[0];
+    }''',
+    args: '-maltivec',
+    name: 'AltiVec',
+  )
+  if have_simd
+    simd = static_library(
+      'simd',
+      dir / 'jsimd.c',
+      simd_src_ppc,
+      include_directories: [incdir, dir],
+      pic: get_option('default_library') != 'static',
+      c_args: '-maltivec',
     )
   endif
 elif simd_opt.enabled()
