@@ -6,6 +6,13 @@ if not meson.can_run_host_binaries()
 endif
 
 
+test_wrapper = executable(
+  'test_wrapper',
+  'test_wrapper.cpp',
+  dependencies: tclap_dep,
+)
+
+
 if not find_program(
   '/bin/bash',
   required: false,
