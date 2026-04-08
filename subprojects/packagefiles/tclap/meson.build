@@ -17,6 +17,7 @@ project(
 tclap_dep = declare_dependency(
   include_directories: 'include',
 )
+meson.override_dependency('tclap', tclap_dep)
 
 # --
 # Examples
