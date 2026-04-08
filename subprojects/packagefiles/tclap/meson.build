@@ -29,6 +29,10 @@ subdir('examples')
 # Tests
 # --
 
-subdir('tests')
+# TCLAP is known to have problems on Windows platforms.
+# Re-enable tests when TCLAP has solved those.
+if host_machine.system() != 'windows'
+  subdir('tests')
+endif
 
 
