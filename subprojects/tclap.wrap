@@ -7,4 +7,3 @@ patch_directory = tclap
 
 [provide]
 dependency_names = tclap_dep
-
