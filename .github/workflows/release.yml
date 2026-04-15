@@ -26,7 +26,7 @@ jobs:
         run: |
           ./tools/create_release.py ${{ github.repository }} ${{ secrets.GITHUB_TOKEN }}
       - name: Upload releases.json
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
 
   update_index:
     needs: create_release
@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Deploy releases.json
         id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # Ideally we should trigger Meson's CI to update the website, but unfortunately
   # it requires a Personal Access Token. Instead clone meson and do it ourself.
