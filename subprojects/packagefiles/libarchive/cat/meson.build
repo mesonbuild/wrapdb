@@ -1,6 +1,6 @@
 bsdcat = executable(
   'bsdcat',
-  ['bsdcat.c', 'cmdline.c'],
+  files('bsdcat.c', 'cmdline.c'),
   dependencies: libarchive_fe_dep,
   install: true,
 )

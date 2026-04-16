@@ -1,4 +1,4 @@
-src = [
+src = files(
   'bsdtar.c',
   'cmdline.c',
   'creation_set.c',
@@ -6,7 +6,7 @@ src = [
   'subst.c',
   'util.c',
   'write.c',
-]
+)
 
 if host_machine.system() == 'windows'
   src += 'bsdtar_windows.c'

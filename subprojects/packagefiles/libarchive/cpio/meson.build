@@ -1,7 +1,7 @@
-src = ['cmdline.c', 'cpio.c']
+src = files('cmdline.c', 'cpio.c')
 
 if host_machine.system() == 'windows'
-  src += 'cpio_windows.c'
+  src += files('cpio_windows.c')
 endif
 
 bsdcpio = executable(
