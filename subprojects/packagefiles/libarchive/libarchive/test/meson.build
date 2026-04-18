@@ -349,6 +349,7 @@ if meson.version().version_compare('>=0.62.0')
     'libarchive_test',
     libarchive_test,
     args: ['-r', meson.current_source_dir(), '-v'],
+    env: ['LRZIP=NOCONFIG', 'DFLTCC=0'],
     timeout: 600,
     verbose: true,
   )
@@ -357,6 +358,7 @@ else
     'libarchive_test',
     libarchive_test,
     args: ['-r', meson.current_source_dir(), '-v'],
+    env: ['LRZIP=NOCONFIG', 'DFLTCC=0'],
     timeout: 600,
   )
 endif
