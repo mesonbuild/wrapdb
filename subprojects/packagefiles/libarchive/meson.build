@@ -524,22 +524,30 @@ if libacl_dep.found()
 endif
 
 headers = {
-  'acl/libacl.h': libacl_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'attr/xattr.h': attr_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'blake2.h': b2_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'bzlib.h': bz2_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
+  'acl/libacl.h': [
+    libacl_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'attr/xattr.h': [
+    attr_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'blake2.h': [
+    b2_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'bzlib.h': [
+    bz2_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
   'copyfile.h': [],
   'ctype.h': [],
   'direct.h': [],
@@ -547,25 +555,33 @@ headers = {
   'ext2fs/ext2_fs.h': [],
   'fcntl.h': [],
   'grp.h': [],
-  'iconv.h': iconv_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
+  'iconv.h': [
+    iconv_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
   'inttypes.h': [],
   'io.h': [],
   'langinfo.h': [],
-  'libxml/xmlreader.h': xml2_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'libxml/xmlversion.h': xml2_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'libxml/xmlwriter.h': xml2_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
+  'libxml/xmlreader.h': [
+    xml2_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'libxml/xmlversion.h': [
+    xml2_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'libxml/xmlwriter.h': [
+    xml2_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
   'limits.h': [],
   'linux/ext2_fs.h': [],
   'linux/fiemap.h': [],
@@ -574,24 +590,32 @@ headers = {
   'linux/types.h': [],
   'localcharset.h': [],
   'locale.h': [],
-  'lz4.h': lz4_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'lz4hc.h': lz4_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
-  'lzma.h': lzma_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
+  'lz4.h': [
+    lz4_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'lz4hc.h': [
+    lz4_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
+  'lzma.h': [
+    lzma_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
   'membership.h': [],
   'memory.h': [],
-  'openssl/opensslv.h': crypto_dep.partial_dependency(
-    compile_args: true,
-    includes: true,
-  ),
+  'openssl/opensslv.h': [
+    crypto_dep.partial_dependency(
+      compile_args: true,
+      includes: true,
+    ),
+  ],
   'paths.h': [],
   'poll.h': [],
   'process.h': [],
@@ -639,7 +663,14 @@ headers = {
 }
 
 foreach h, d : headers
-  if cc.has_header(
+  found = true
+  foreach dep : d
+    if not dep.found()
+      found = false
+      break
+    endif
+  endforeach
+  if found and cc.has_header(
     h,
     dependencies: d,
   )
