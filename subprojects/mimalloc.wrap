@@ -1,8 +1,8 @@
 [wrap-file]
-directory = mimalloc-3.2.7
-source_url = https://github.com/microsoft/mimalloc/archive/refs/tags/v3.2.7.tar.gz
-source_filename = mimalloc-3.2.7.tar.gz
-source_hash = 33621bea902711639b8f83128e64685ffc8224a65443625530747603a2d8726d
+directory = mimalloc-3.3.2
+source_url = https://github.com/microsoft/mimalloc/archive/refs/tags/v3.3.2.tar.gz
+source_filename = mimalloc-3.3.2.tar.gz
+source_hash = ca02384e007f46950598500dfaebde5ff9948c1d231f5a81b058799afa64bbbb
 patch_directory = mimalloc
 
 [provide]
