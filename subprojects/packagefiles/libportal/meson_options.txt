@@ -1,0 +1,54 @@
+option(
+    'backend-gtk3',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the GTK3 portal backend',
+)
+option(
+    'backend-gtk4',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the GTK4 portal backend',
+)
+option(
+    'backend-qt5',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the Qt5 portal backend',
+)
+option(
+    'backend-qt6',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the Qt6 portal backend',
+)
+option(
+    'portal-tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build portal tests of each backend',
+)
+option(
+    'introspection',
+    type: 'boolean',
+    value: false,
+    description: 'Generate GObject introspection files',
+)
+option(
+    'vapi',
+    type: 'boolean',
+    value: true,
+    description: 'Generate Vala bindings',
+)
+option(
+    'docs',
+    type: 'boolean',
+    value: false,
+    description: 'Build API reference with gi-docgen',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build unit tests',
+)
