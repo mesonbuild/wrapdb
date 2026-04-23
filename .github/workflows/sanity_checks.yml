@@ -253,7 +253,10 @@ jobs:
       # https://github.com/actions/partner-runner-images/issues/99
       - name: Install zstandard
         if: matrix.platform == 'arm64'
-        run: choco install zstandard
+        run: |
+          choco install -y zstandard
+          # choco exits 0 if it can't fetch package info
+          zstd -V
 
       - name: Install packages
         run: |
@@ -299,7 +302,10 @@ jobs:
       # https://github.com/actions/partner-runner-images/issues/99
       - name: Install zstandard
         if: matrix.platform == 'arm64'
-        run: choco install zstandard
+        run: |
+          choco install -y zstandard
+          # choco exits 0 if it can't fetch package info
+          zstd -V
 
       - name: Install packages
         run: |
@@ -347,7 +353,10 @@ jobs:
       # https://github.com/actions/partner-runner-images/issues/99
       - name: Install zstandard
         if: matrix.platform == 'CLANGARM64'
-        run: choco install zstandard
+        run: |
+          choco install -y zstandard
+          # choco exits 0 if it can't fetch package info
+          zstd -V
 
       - uses: msys2/setup-msys2@v2
         with:
