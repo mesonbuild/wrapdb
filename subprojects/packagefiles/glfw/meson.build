@@ -90,42 +90,37 @@ elif opt_display == 'wayland'
     )
   endif
   s_wayland = []
-  protocols = {
-    'idle-inhibit': 'unstable',
-    'pointer-constraints': 'unstable',
-    'relative-pointer': 'unstable',
-    'viewporter': 'stable',
-    'xdg-decoration': 'unstable',
-    'xdg-shell': 'stable',
-  }
-  foreach p, s : protocols
-    x_path = join_paths(wl_dir, s, p, p)
-    if s == 'stable'
-      x_name = p
-      xml = files(x_path + '.xml')
-    else
-      x_name = p + '-unstable-v1'
-      xml = files(x_path + '-unstable-v1.xml')
-    endif
-    foreach f : ['client-header', 'server-header', 'private-code']
-      if (f == 'client-header' and p == 'xdg-decoration')
-        outfile = 'wayland-' + p + '-client-protocol.h'
-      elif f == 'client-header'
-        outfile = 'wayland-' + x_name + '-client-protocol.h'
-      elif f == 'server-header'
-        outfile = 'wayland-' + p + '-server-protocol.h'
-      elif (f == 'private-code' and p == 'xdg-decoration')
-        outfile = 'wayland-' + p + '-protocol.c'
-      else
-        outfile = 'wayland-' + x_name + '-protocol.c'
-      endif
-      s_wayland += custom_target(
-        '@0@ @1@'.format(p, f),
-        command: ['wayland-scanner', f, '@INPUT@', '@OUTPUT@'],
-        input: xml,
-        output: outfile,
-      )
-    endforeach
+
+  protocols = [
+    'fractional-scale-v1',
+    'idle-inhibit-unstable-v1',
+    'pointer-constraints-unstable-v1',
+    'relative-pointer-unstable-v1',
+    'viewporter',
+    'wayland',
+    'xdg-activation-v1',
+    'xdg-decoration-unstable-v1',
+    'xdg-shell',
+  ]
+
+  foreach proto : protocols
+    xml_file = files('deps' / 'wayland' / (proto + '.xml'))
+    header_file = proto + '-client-protocol.h'
+    code_file = proto + '-client-protocol-code.h'
+
+    s_wayland += custom_target(
+      '@0@ client-header'.format(proto),
+      command: ['wayland-scanner', 'client-header', '@INPUT@', '@OUTPUT@'],
+      input: xml_file,
+      output: header_file,
+    )
+
+    s_wayland += custom_target(
+      '@0@ private-code'.format(proto),
+      command: ['wayland-scanner', 'private-code', '@INPUT@', '@OUTPUT@'],
+      input: xml_file,
+      output: code_file,
+    )
   endforeach
   #  Win32
 elif opt_display == 'win32'
