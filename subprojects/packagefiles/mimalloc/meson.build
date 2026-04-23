@@ -3,7 +3,7 @@ project(
   'c',
   meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.2.7',
+  version: '3.3.1',
 )
 
 mi_sources = []
@@ -13,6 +13,7 @@ mi_static_args = []
 mi_shared_args = []
 
 mi_sources += files(
+  'src/prim/prim.c',
   'src/alloc-aligned.c',
   'src/alloc-posix.c',
   'src/alloc.c',
@@ -26,7 +27,6 @@ mi_sources += files(
   'src/os.c',
   'src/page-map.c',
   'src/page.c',
-  'src/prim/prim.c',
   'src/random.c',
   'src/stats.c',
   'src/theap.c',
