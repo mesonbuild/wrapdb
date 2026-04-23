@@ -274,6 +274,17 @@
       "0.9.10-1"
     ]
   },
+  "avro-cpp": {
+    "dependency_names": [
+      "avro-cpp"
+    ],
+    "program_names": [
+      "avrogencpp"
+    ],
+    "versions": [
+      "1.12.1-1"
+    ]
+  },
   "aws-c-common": {
     "dependency_names": [
       "aws-c-common"
