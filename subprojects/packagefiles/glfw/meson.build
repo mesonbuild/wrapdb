@@ -27,13 +27,13 @@ add_project_arguments(
   language: 'c',
 )
 
-if opt_display == 'auto'
+if opt_display == ['auto']
   if sys_os == 'windows'
-    opt_display = 'win32'
+    opt_display = ['win32']
   elif sys_os == 'darwin'
-    opt_display = 'cocoa'
+    opt_display = ['cocoa']
   else
-    opt_display = 'x11'
+    opt_display = ['x11']
   endif
 endif
 
@@ -41,18 +41,27 @@ endif
 deps = []
 #@ Backend API
 #  OSMesa
-if opt_display == 'osmesa'
+if opt_display.contains('osmesa')
   deps += dependency('osmesa')
-  #  X11
-elif opt_display == 'x11'
+endif
+
+# X11
+if opt_display.contains('x11')
   foreach x : ['x11', 'xrandr', 'xinerama', 'xcursor', 'xi']
     deps += dependency(
       x,
       required: true,
     )
   endforeach
-  #  Wayland
-elif opt_display == 'wayland'
+
+  add_project_arguments(
+    '-D_GLFW_X11',
+    language: 'c',
+  )
+endif
+
+# Wayland
+if opt_display.contains('wayland')
   warning('Wayland support is experimental & incomplete.')
   warning(
     'GLFW < 3.4 cannot detect Wayland if both x11 and Wayland exist on-system!',
@@ -122,13 +131,27 @@ elif opt_display == 'wayland'
       output: code_file,
     )
   endforeach
-  #  Win32
-elif opt_display == 'win32'
+
+  add_project_arguments(
+    '-D_GLFW_WAYLAND',
+    language: 'c',
+  )
+endif
+
+# Win32
+if opt_display.contains('win32')
   if sys_os != 'windows'
     error('Non Windows is unsupported')
   endif
-  #  Cocoa
-elif opt_display == 'cocoa'
+
+  add_project_arguments(
+    '-D_GLFW_WIN32',
+    language: 'c',
+  )
+endif
+
+# Cocoa
+if opt_display.contains('cocoa')
   if sys_os != 'darwin'
     error('Non macOS is unsupported')
   endif
@@ -136,7 +159,13 @@ elif opt_display == 'cocoa'
     'appleframeworks',
     modules: ['Cocoa', 'CoreFoundation', 'IOKit'],
   )
+
+  add_project_arguments(
+    '-D_GLFW_COCOA',
+    language: 'c',
+  )
 endif
+
 #@ System Dependencies
 foreach l : ['m', 'rt']
   deps += sys_cc.find_library(
@@ -156,12 +185,6 @@ else
   )
 endif
 deps += dependency('threads')
-
-### Configuration ###
-add_project_arguments(
-  '-D_GLFW_' + opt_display.to_upper(),
-  language: 'c',
-)
 
 ### Targets ###
 #@ Primary target:
@@ -190,9 +213,12 @@ elif sys_os == 'windows'
 else
   s_os = files('src/posix_module.c', 'src/posix_thread.c', 'src/posix_time.c')
 endif
+
 #  Backend files
-if opt_display == 'osmesa'
-  s_display = files(
+s_display = []
+
+if opt_display.contains('osmesa')
+  s_display += files(
     'src/null_init.c',
     'src/null_joystick.c',
     'src/null_monitor.c',
@@ -201,8 +227,10 @@ if opt_display == 'osmesa'
     'src/posix_thread.c',
     'src/posix_time.c',
   )
-elif opt_display == 'x11'
-  s_display = files(
+endif
+
+if opt_display.contains('x11')
+  s_display += files(
     'src/glx_context.c',
     'src/linux_joystick.c',
     'src/posix_poll.c',
@@ -211,8 +239,10 @@ elif opt_display == 'x11'
     'src/x11_window.c',
     'src/xkb_unicode.c',
   )
-elif opt_display == 'wayland'
-  s_display = files(
+endif
+
+if opt_display.contains('wayland')
+  s_display += files(
     'src/linux_joystick.c',
     'src/posix_poll.c',
     'src/wl_init.c',
@@ -220,20 +250,24 @@ elif opt_display == 'wayland'
     'src/wl_window.c',
     'src/xkb_unicode.c',
   )
-elif opt_display == 'win32'
-  s_display = files(
+endif
+
+if opt_display.contains('win32')
+  s_display += files(
     'src/wgl_context.c',
     'src/win32_init.c',
     'src/win32_joystick.c',
     'src/win32_monitor.c',
     'src/win32_window.c',
   )
-elif opt_display == 'cocoa'
+endif
+
+if opt_display.contains('cocoa')
   add_languages(
     'objc',
     native: false,
   )
-  s_display = files(
+  s_display += files(
     'src/cocoa_init.m',
     'src/cocoa_joystick.m',
     'src/cocoa_monitor.m',
@@ -248,8 +282,9 @@ elif opt_display == 'cocoa'
     )
   endif
 endif
+
 srcfiles = [s_common, s_os, s_display]
-if opt_display == 'wayland'
+if opt_display.contains('wayland')
   srcfiles += s_wayland
 endif
 incdirs = include_directories('include', 'src')
