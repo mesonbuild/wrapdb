@@ -23,8 +23,8 @@ option(
 #@ Configuration options
 option(
     'display-api',
-    type: 'combo',
+    type: 'array',
     choices: ['auto', 'osmesa', 'x11', 'wayland', 'win32', 'cocoa'],
-    value: 'auto',
+    value: ['auto'],
     description: 'Choose backend display API.',
 )
