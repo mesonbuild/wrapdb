@@ -1,0 +1,16 @@
+project('vk-bootstrap', 'cpp')
+
+vk_bootstrap_inc = include_directories('src')
+
+vk_bootstrap_lib = static_library(
+    'vk-bootstrap',
+    ['src/VkBootstrap.cpp'],
+    include_directories: vk_bootstrap_inc
+)
+
+vk_bootstrap_dep = declare_dependency(
+    include_directories: vk_bootstrap_inc,
+    link_with: vk_bootstrap_lib
+)
+
+meson.override_dependency('vk-bootstrap', fast_float_dep)
