@@ -4809,6 +4809,14 @@
       "2.3.0-1"
     ]
   },
+  "vk-bootstrap": {
+    "dependency_names": [
+      "vk-bootstrap"
+    ],
+    "versions": [
+      "1.4.349-1"
+    ]
+  },
   "vo-aacenc": {
     "dependency_names": [
       "vo-aacenc"
