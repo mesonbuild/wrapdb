@@ -1,4 +1,10 @@
-project('vk-bootstrap', 'cpp')
+project(
+    'vk-bootstrap', 
+    'cpp',
+    version: '8.2.4',
+    license: 'MIT',
+    meson_version: '>=0.56.0',
+)
 
 vk_bootstrap_inc = include_directories('src')
 
