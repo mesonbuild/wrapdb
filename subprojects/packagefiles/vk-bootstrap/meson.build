@@ -11,7 +11,7 @@ vk_bootstrap_inc = include_directories('src')
 vulkan_dep = dependency(
   'vulkan',
   required: true,
-  fallback: ['VulkanHeaders'],
+  fallback: ['vulkan-headers', 'vulkan_headers_dep'],
 )
 
 vk_bootstrap_lib = static_library(
