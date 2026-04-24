@@ -4812,7 +4812,7 @@
   "vk-bootstrap": {
     "dependency_names": [
       "vk-bootstrap"
-    ],    
+    ],
     "versions": [
       "1.4.349-1"
     ]
