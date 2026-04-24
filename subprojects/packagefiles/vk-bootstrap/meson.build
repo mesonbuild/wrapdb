@@ -1,7 +1,7 @@
 project(
   'vk-bootstrap',
   'cpp',
-  version: '8.2.4',
+  version: '1.4.349',
   license: 'MIT',
   meson_version: '>=0.56.0',
 )
