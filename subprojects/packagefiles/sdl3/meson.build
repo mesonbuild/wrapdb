@@ -1,7 +1,7 @@
 project(
   'sdl3',
   'c',
-  version: '3.4.0',
+  version: '3.4.2',
   license: 'zlib',
   meson_version: '>=1.6',
   default_options: ['c_std=none'],
@@ -418,18 +418,22 @@ elif host_machine.subsystem() == 'macos'
   sdl_deps += dependency(
     'appleframeworks',
     modules: [
-      'CoreFoundation',
+      'AudioToolbox',
+      'AVFoundation',
+      'Carbon',
       'Cocoa',
       'CoreAudio',
+      'CoreFoundation',
       'CoreGraphics',
       'CoreHaptics',
-      'GameController',
+      'CoreMedia',
+      'CoreVideo',
       'ForceFeedback',
-      'IOKit',
       'Foundation',
-      'QuartzCore',
+      'GameController',
+      'IOKit',
       'Metal',
-      'Carbon',
+      'QuartzCore',
       'UniformTypeIdentifiers',
     ],
   )
@@ -473,6 +477,7 @@ sdl_lib = library(
 sdl3_dep = declare_dependency(
   include_directories: 'include',
   link_with: sdl_lib,
+  dependencies: sdl_deps,
 )
 
 meson.override_dependency('sdl3', sdl3_dep)
