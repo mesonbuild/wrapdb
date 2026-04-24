@@ -4,6 +4,7 @@ project(
   version: '1.4.349',
   license: 'MIT',
   meson_version: '>=0.56.0',
+  default_options: ['cpp_std=c++17'],
 )
 
 vk_bootstrap_inc = include_directories('src')
