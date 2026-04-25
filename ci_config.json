@@ -285,6 +285,16 @@
   "cwalk": {
     "ignore_upstream_meson": "1.2.9"
   },
+  "gd32f4xx-spl": {
+    "_comment": "Embedded ARM Cortex-M4 firmware library, cannot be built on host CI",
+    "build_on": {
+      "alpine": false,
+      "darwin": false,
+      "linux": false,
+      "msys2": false,
+      "windows": false
+    }
+  },
   "dlfcn-win32": {
     "_comment": "- Requires Windows",
     "build_on": {

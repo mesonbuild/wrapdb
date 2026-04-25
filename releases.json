@@ -1257,6 +1257,14 @@
       "2.9.9-1"
     ]
   },
+  "gd32f4xx-spl": {
+    "dependency_names": [
+      "gd32f4xx_spl"
+    ],
+    "versions": [
+      "3.3.3-3"
+    ]
+  },
   "gdbm": {
     "dependency_names": [
       "gdbm"
