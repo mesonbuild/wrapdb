@@ -1,0 +1,8 @@
+[wrap-file]
+directory = gd32f4xx-spl-3.3.3-3
+source_url = https://github.com/wjjsn/GD32F4xx_SPL/archive/refs/tags/3.3.3-3.tar.gz
+source_filename = gd32f4xx-spl-3.3.3-3.tar.gz
+source_hash = 0350147c2fdb0a20c92eb5771afb978d6532c02b1d5838c138e6dd7d42887513
+
+[provide]
+dependency_names = gd32f4xx_spl
