@@ -1271,6 +1271,14 @@
       "1.14.1-1"
     ]
   },
+  "GD32F4xx_SPL": {
+    "dependency_names": [
+      "GD32F4xx_SPL"
+    ],
+    "versions": [
+      "3.3.3-1"
+    ]
+  },
   "gdk-pixbuf": {
     "dependency_names": [
       "gdk-pixbuf-2.0"
