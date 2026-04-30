@@ -1,0 +1,7 @@
+[wrap-file]
+source_url = https://github.com/ThePhD/sol2/archive/refs/tags/v3.5.0.tar.gz
+source_filename = v3.5.0.tar.gz
+source_hash=86c0f6d2836b184a250fc2907091c076bf53c9603dd291eaebade36cc342e13c
+
+[provide]
+sol2=sol2_dep
