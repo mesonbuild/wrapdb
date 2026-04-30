@@ -20,7 +20,9 @@ project(
   meson_version: '>=0.58',
 )
 
-# Expose standard dependency.
-sol2 = declare_dependency(
+# Expose standard dependency. Library is header-only
+sol2_dep = declare_dependency(
   include_directories: include_directories('./include'),
 )
+
+meson.override_dependency('sol2', sol2_dep)
