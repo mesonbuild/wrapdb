@@ -4299,7 +4299,7 @@
     ]
   },
   "sol2": {
-    "dependency_names" : [
+    "dependency_names": [
       "sol2"
     ],
     "versions": [

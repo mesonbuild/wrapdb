@@ -14,5 +14,5 @@ includes = include_directories('include')
 
 # Expose standard dependency.
 sol2 = declare_dependency(
-	include_directories: include_directories('./include'),
+  include_directories: include_directories('./include'),
 )
