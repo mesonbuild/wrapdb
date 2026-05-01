@@ -80,11 +80,16 @@ if dl_dep.found()
 endif
 
 
-if build_as_cpp:
-  add_project_arguments(
-    '-xc++',
-    language: 'c'
-  )
+if build_as_cpp
+ if cc.get_id() == 'msvc'
+    add_project_arguments('/TP', '/EHa', language: 'c')
+  elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+    add_project_arguments(
+      '-xc++',
+      language: 'c'
+    )
+  else
+    warning('Unknown compiler family. We do not know how to enforce C++ on C files')
 endif
 
 # Interpreter dependencies.
