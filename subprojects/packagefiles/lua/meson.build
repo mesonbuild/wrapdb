@@ -14,7 +14,7 @@ override_options = []
 
 build_as_cpp = get_option('lua_cpp')
 
-if not build_as_cpp:
+if not build_as_cpp
   override_options  += [
     'c_std=c99',
   ]
