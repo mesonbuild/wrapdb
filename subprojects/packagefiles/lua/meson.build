@@ -10,9 +10,15 @@ project(
 lua_versions = meson.project_version().split('.')
 cc = meson.get_compiler('c')
 
-override_options = [
-  'c_std=c99',
-]
+override_options = []
+
+build_as_cpp = get_option('lua_cpp')
+
+if not build_as_cpp:
+  override_options  += [
+    'c_std=c99',
+  ]
+endif
 
 # Skip bogus warning.
 add_project_arguments(
@@ -70,6 +76,14 @@ if dl_dep.found()
   add_project_arguments(
     '-DLUA_USE_DLOPEN',
     language: 'c',
+  )
+endif
+
+
+if build_as_cpp:
+  add_project_arguments(
+    '-xc++',
+    language: 'c'
   )
 endif
 
@@ -146,7 +160,12 @@ meson.override_dependency(
   lua_dep,
 )
 
-if get_option('interpreter')
+# Note: you can compile C code as C++, but you can't link it. Clang compiler
+# has option to treat C source code as C++, but clang linker does not. And
+# as there are several possible C++ standard libraries, we can't just pick
+# one and pass it to linker explicitly.
+# If building Lua as C++ is enabed, then disable interpreter
+if get_option('interpreter') and not build_as_cpp
   lua_exe = executable(
     'lua',
     'src/lua.c',
