@@ -2,9 +2,8 @@ project(
   'xsimd',
   'cpp',
   license: 'BSD-3-Clause',
-  meson_version: '>=0.63.0',
-  version: '14.1.0',
-  default_options: ['cpp_std=c++14'],
+  meson_version: '>=0.56.0',
+  version: '14.2.0',
 )
 
 xsimd_inc = include_directories('include')
@@ -24,6 +23,11 @@ xsimd_dep = declare_dependency(
   include_directories: xsimd_inc,
   dependencies: xtl_dep,
   compile_args: complex_args,
+)
+
+install_subdir(
+  'include/xsimd',
+  install_dir: get_option('includedir'),
 )
 
 meson.override_dependency('xsimd', xsimd_dep)
