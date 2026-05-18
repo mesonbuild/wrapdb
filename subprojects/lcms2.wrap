@@ -1,8 +1,8 @@
 [wrap-file]
-directory = lcms2-2.19
-source_url = https://github.com/mm2/Little-CMS/releases/download/lcms2.19/lcms2-2.19.tar.gz
-source_filename = lcms2-2.19.tar.gz
-source_hash = 49e7e134e4299733dd0eda434fa468997a28ab3d33fa397c642b03644f552216
+directory = lcms2-2.19.1
+source_url = https://github.com/mm2/Little-CMS/releases/download/lcms2.19.1/lcms2-2.19.1.tar.gz
+source_filename = lcms2-2.19.1.tar.gz
+source_hash = bfc54f7bab59fbc921012014a8032e4cba4abd46db47d46b76416a8c0b2815c8
 
 [provide]
 lcms2 = liblcms2_dep
