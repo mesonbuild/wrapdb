@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libslirp-v4.9.1
-source_url = https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.9.1/libslirp-v4.9.1.tar.gz
-source_fallback_url = https://mirror.rackspace.com/gentoo/distfiles/libslirp-4.9.1.tar.gz
-source_filename = libslirp-v4.9.1.tar.gz
-source_hash = 3970542143b7c11e6a09a4d2b50f30a133473c41f15ed0bdcc3b7a1c450d9a5c
+directory = libslirp-v4.9.2
+source_url = https://gitlab.freedesktop.org/slirp/libslirp/-/archive/v4.9.2/libslirp-v4.9.2.tar.gz
+source_fallback_url = https://mirror.rackspace.com/gentoo/distfiles/libslirp-4.9.2.tar.gz
+source_filename = libslirp-v4.9.2.tar.gz
+source_hash = fb3c0d3db56174016c96803882378e262e5b59a7bd38feb107d915a79aad5288
 
 [provide]
 dependency_names = slirp
