@@ -144,8 +144,9 @@ jobs:
           # next two lines: https://github.com/jirutka/setup-alpine/pull/22
           arch: ${{ matrix.platform }}
           apk-tools-url: ${{ matrix.apk-tools-url }}
+          # gcc for https://gitlab.alpinelinux.org/alpine/aports/-/work_items/18257
           packages: >
-            binutils clang libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
+            binutils clang gcc libc-dev fortify-headers make patch cmake git linux-headers pkgconf py3-pip samurai sudo
           # https://github.com/jirutka/setup-alpine/pull/28
           volumes: ${{ github.workspace }} ${{ runner.temp }}
 
