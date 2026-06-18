@@ -1,0 +1,9 @@
+[wrap-file]
+directory = attr-2.5.1
+source_url = http://download.savannah.nongnu.org/releases/attr/attr-2.5.1.tar.xz
+source_filename = attr-2.5.1.tar.xz
+source_hash = db448a626f9313a1a970d636767316a8da32aede70518b8050fa0de7947adc32
+patch_directory = libattr
+
+[provide]
+dependency_names = libattr
