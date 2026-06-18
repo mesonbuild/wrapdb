@@ -1,7 +1,7 @@
 project(
   'abseil-cpp',
   'cpp',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.59.0',
   version: '20250814.1',
   license: 'Apache-2.0',
 )
@@ -10,8 +10,24 @@ override_cpp = 'cpp_std=c++17'
 
 cpp = meson.get_compiler('cpp')
 
+tests_opt = get_option('tests').disable_auto_if(meson.is_subproject())
+
+if tests_opt.allowed()
+  add_languages(
+    'c',
+    native: false,
+  )
+endif
+
+gmock_main = dependency(
+  'gmock_main',
+  required: tests_opt,
+  default_options: [override_cpp],
+)
+
 flags = cpp.get_supported_arguments(
   '/DNOMINMAX',
+  '/bigobj',
   '-Wcast-qual',
   '-Wconversion-null',
   '-Wmissing-declarations',
@@ -35,12 +51,15 @@ flags = cpp.get_supported_arguments(
   '-Wvarargs',
   '-Wvla',
   '-Wwrite-strings',
+  '-Wa,-mbig-obj',
 )
 
 add_project_arguments(
   flags,
   language: 'cpp',
 )
+
+has_death_tests = host_machine.system() != 'windows' and cpp.sizeof('void*') == 8
 
 arch_cpp_flags = []
 hw_cpp_flags = []
@@ -64,6 +83,16 @@ elif host_machine.cpu_family() == 'ppc' or host_machine.cpu_family() == 'ppc64'
 endif
 arch_flags = cpp.get_supported_arguments(arch_cpp_flags) + unscaled_cycleclock_flag
 hw_flags = cpp.get_supported_arguments(hw_cpp_flags)
+
+dbghelp = cpp.find_library(
+  'dbghelp',
+  required: host_machine.system() == 'windows',
+)
+
+bcrypt = cpp.find_library(
+  'bcrypt',
+  required: host_machine.system() == 'windows',
+)
 
 libatomic = dependency(
   '',
@@ -91,10 +120,12 @@ absl_base_sources = files(
   'absl/base/internal/sysinfo.cc',
   'absl/base/internal/thread_identity.cc',
   'absl/base/internal/throw_delegate.cc',
+  'absl/base/internal/tracing.cc',
   'absl/base/internal/unscaledcycleclock.cc',
   'absl/base/log_severity.cc',
 )
 absl_base_headers = files(
+  'absl/algorithm/container.h',
   'absl/base/attributes.h',
   'absl/base/call_once.h',
   'absl/base/casts.h',
@@ -704,7 +735,7 @@ absl_debugging_lib = static_library(
   include_directories: absl_include_dir,
   override_options: override_cpp,
   link_with: [absl_base_lib, absl_strings_lib],
-  dependencies: libatomic,
+  dependencies: [libatomic, dbghelp],
 )
 
 absl_random_lib = static_library(
@@ -714,7 +745,7 @@ absl_random_lib = static_library(
   override_options: override_cpp,
   cpp_args: hw_flags,
   link_with: [absl_base_lib, absl_strings_lib],
-  dependencies: libatomic,
+  dependencies: [libatomic, bcrypt],
 )
 
 absl_time_lib = static_library(
@@ -817,13 +848,13 @@ absl_strings_dep = declare_dependency(
 absl_debugging_dep = declare_dependency(
   include_directories: absl_include_dir,
   link_with: absl_debugging_lib,
-  dependencies: [absl_base_dep, absl_strings_dep],
+  dependencies: [absl_base_dep, absl_strings_dep, dbghelp],
 )
 
 absl_random_dep = declare_dependency(
   include_directories: absl_include_dir,
   link_with: absl_random_lib,
-  dependencies: [absl_base_dep, absl_strings_dep],
+  dependencies: [absl_base_dep, absl_strings_dep, bcrypt],
 )
 
 absl_crc_dep = declare_dependency(
@@ -883,3 +914,804 @@ absl_status_dep = declare_dependency(
   link_with: absl_status_lib,
   dependencies: [absl_base_dep, absl_strings_dep],
 )
+
+names = {
+  'absl_base': absl_base_dep,
+  'absl_hash': absl_hash_dep,
+  'absl_numeric': absl_numeric_dep,
+  'absl_profiling': absl_profiling_dep,
+  'absl_strings': absl_strings_dep,
+  'absl_debugging': absl_debugging_dep,
+  'absl_random': absl_random_dep,
+  'absl_crc': absl_crc_dep,
+  'absl_time': absl_time_dep,
+  'absl_types': absl_types_dep,
+  'absl_synchronization': absl_synchronization_dep,
+  'absl_container': absl_container_dep,
+  'absl_flags': absl_flags_dep,
+  'absl_log': absl_log_dep,
+  'absl_status': absl_status_dep,
+  # Additional pkgconfig names shipped by distros
+  'absl_algorithm_container': absl_base_dep,
+  'absl_any_invocable': absl_base_dep,
+  'absl_bad_any_cast_impl': absl_types_dep,
+  'absl_bad_optional_access': absl_types_dep,
+  'absl_bad_variant_access': absl_types_dep,
+  'absl_bind_front': absl_base_dep,
+  'absl_city': absl_hash_dep,
+  'absl_civil_time': absl_time_dep,
+  'absl_cleanup': absl_base_dep,
+  'absl_cord': absl_strings_dep,
+  'absl_cord_internal': absl_strings_dep,
+  'absl_cordz_functions': absl_strings_dep,
+  'absl_cordz_handle': absl_strings_dep,
+  'absl_cordz_info': absl_strings_dep,
+  'absl_cordz_sample_token': absl_strings_dep,
+  'absl_core_headers': absl_base_dep,
+  'absl_crc32c': absl_crc_dep,
+  'absl_debugging_internal': absl_debugging_dep,
+  'absl_demangle_internal': absl_debugging_dep,
+  'absl_die_if_null': absl_log_dep,
+  'absl_examine_stack': absl_debugging_dep,
+  'absl_exponential_biased': absl_profiling_dep,
+  'absl_failure_signal_handler': absl_debugging_dep,
+  'absl_flags_commandlineflag': absl_flags_dep,
+  'absl_flags_commandlineflag_internal': absl_flags_dep,
+  'absl_flags_config': absl_flags_dep,
+  'absl_flags_internal': absl_flags_dep,
+  'absl_flags_marshalling': absl_flags_dep,
+  'absl_flags_parse': absl_flags_dep,
+  'absl_flags_private_handle_accessor': absl_flags_dep,
+  'absl_flags_program_name': absl_flags_dep,
+  'absl_flags_reflection': absl_flags_dep,
+  'absl_flags_usage': absl_flags_dep,
+  'absl_flags_usage_internal': absl_flags_dep,
+  'absl_flat_hash_map': absl_container_dep,
+  'absl_flat_hash_set': absl_container_dep,
+  'absl_function_ref': absl_base_dep,
+  'absl_graphcycles_internal': absl_synchronization_dep,
+  'absl_hashtablez_sampler': absl_container_dep,
+  'absl_inlined_vector': absl_container_dep,
+  'absl_int128': absl_numeric_dep,
+  'absl_leak_check': absl_debugging_dep,
+  'absl_log_initialize': absl_log_dep,
+  'absl_log_internal_check_op': absl_log_dep,
+  'absl_log_internal_message': absl_log_dep,
+  'absl_log_severity': absl_base_dep,
+  'absl_low_level_hash': absl_hash_dep,
+  'absl_memory': absl_base_dep,
+  'absl_optional': absl_types_dep,
+  'absl_periodic_sampler': absl_profiling_dep,
+  'absl_random_bit_gen_ref': absl_random_dep,
+  'absl_random_distributions': absl_random_dep,
+  'absl_random_internal_distribution_test_util': absl_random_dep,
+  'absl_random_internal_platform': absl_random_dep,
+  'absl_random_internal_pool_urbg': absl_random_dep,
+  'absl_random_internal_randen': absl_random_dep,
+  'absl_random_internal_randen_hwaes': absl_random_dep,
+  'absl_random_internal_randen_hwaes_impl': absl_random_dep,
+  'absl_random_internal_randen_slow': absl_random_dep,
+  'absl_random_internal_seed_material': absl_random_dep,
+  'absl_random_random': absl_random_dep,
+  'absl_random_seed_gen_exception': absl_random_dep,
+  'absl_random_seed_sequences': absl_random_dep,
+  'absl_raw_hash_set': absl_container_dep,
+  'absl_raw_logging_internal': absl_base_dep,
+  'absl_scoped_set_env': absl_base_dep,
+  'absl_span': absl_types_dep,
+  'absl_spinlock_wait': absl_base_dep,
+  'absl_stacktrace': absl_debugging_dep,
+  'absl_statusor': absl_status_dep,
+  'absl_str_format': absl_strings_dep,
+  'absl_str_format_internal': absl_strings_dep,
+  'absl_strerror': absl_base_dep,
+  'absl_string_view': absl_strings_dep,
+  'absl_strings_internal': absl_strings_dep,
+  'absl_symbolize': absl_debugging_dep,
+  'absl_throw_delegate': absl_base_dep,
+  'absl_time_zone': absl_time_dep,
+  'absl_type_traits': absl_base_dep,
+  'absl_utility': absl_base_dep,
+  'absl_variant': absl_types_dep,
+}
+
+foreach name, dep : names
+  meson.override_dependency(name, dep)
+endforeach
+
+if gmock_main.found()
+  testcases = {}
+
+  # absl_base_dep tests
+  libatomic_hook_test_helper = static_library(
+    'libatomic_hook_test_helper',
+    'absl/base/internal/atomic_hook_test_helper.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    cpp_args: arch_flags,
+    dependencies: [absl_base_dep, dependency('threads'), libatomic],
+    build_by_default: false,
+  )
+
+  atomic_hook_test_helper_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: libatomic_hook_test_helper,
+  )
+
+  libexception_safety_testing = static_library(
+    'libexception_safety_testing',
+    'absl/base/internal/exception_safety_testing.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    dependencies: [absl_base_dep, gmock_main],
+    build_by_default: false,
+  )
+
+  exception_safety_testing_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: libexception_safety_testing,
+  )
+
+  base_testcases = {
+    'atomic_hook_test': {
+      'sources': files('absl/base/internal/atomic_hook_test.cc'),
+      'dependencies': [absl_base_dep, atomic_hook_test_helper_dep, gmock_main],
+    },
+    'bit_cast_test': {
+      'sources': files('absl/base/bit_cast_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'attributes_test': {
+      'sources': files('absl/base/attributes_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'c_header_test': {
+      'sources': files('absl/base/c_header_test.c'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'throw_delegate_test': {
+      'sources': files('absl/base/throw_delegate_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'errno_saver_test': {
+      'sources': files('absl/base/internal/errno_saver_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'exception_safety_testing_test': {
+      'sources': files('absl/base/exception_safety_testing_test.cc'),
+      'dependencies': [
+        absl_base_dep,
+        absl_strings_dep,
+        exception_safety_testing_dep,
+        gmock_main,
+      ],
+    },
+    'spinlock_test': {
+      'sources': files('absl/base/spinlock_test_common.cc'),
+      'dependencies': [absl_base_dep, absl_synchronization_dep, gmock_main],
+    },
+    'endian_test': {
+      'sources': files('absl/base/internal/endian_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'config_test': {
+      'sources': files('absl/base/config_test.cc'),
+      'dependencies': [absl_base_dep, absl_synchronization_dep, gmock_main],
+    },
+    'call_once_test': {
+      'sources': files('absl/base/call_once_test.cc'),
+      'dependencies': [absl_base_dep, absl_synchronization_dep, gmock_main],
+    },
+    'no_destructor_test': {
+      'sources': files('absl/base/no_destructor_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'nullability_test': {
+      'sources': files('absl/base/nullability_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'nullability_default_nonnull_test': {
+      'sources': files('absl/base/nullability_default_nonnull_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'raw_logging_test': {
+      'sources': files('absl/base/raw_logging_test.cc'),
+      'dependencies': [absl_base_dep, absl_strings_dep, gmock_main],
+    },
+    'sysinfo_test': {
+      'sources': files('absl/base/internal/sysinfo_test.cc'),
+      'dependencies': [absl_base_dep, absl_synchronization_dep, gmock_main],
+    },
+    'low_level_alloc_test': {
+      'sources': files('absl/base/internal/low_level_alloc_test.cc'),
+      'dependencies': [absl_base_dep, absl_container_dep, gmock_main],
+    },
+    'thread_identity_test': {
+      'sources': files('absl/base/internal/thread_identity_test.cc'),
+      'dependencies': [absl_base_dep, absl_synchronization_dep, gmock_main],
+    },
+    'scoped_set_env_test': {
+      'sources': files('absl/base/internal/scoped_set_env_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'log_severity_test': {
+      'sources': files('absl/base/log_severity_test.cc'),
+      'dependencies': [absl_log_dep, gmock_main],
+    },
+    'strerror_test': {
+      'sources': files('absl/base/internal/strerror_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'fast_type_id_test': {
+      'sources': files('absl/base/fast_type_id_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'prefetch_test': {
+      'sources': files('absl/base/prefetch_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'poison_test': {
+      'sources': files('absl/base/internal/poison_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'unique_small_name_test': {
+      'sources': files('absl/base/internal/unique_small_name_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'optimization_test': {
+      'sources': files('absl/base/optimization_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'iterator_traits_test': {
+      'sources': files('absl/base/internal/iterator_traits_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'tracing_internal_weak_test': {
+      'sources': files('absl/base/internal/tracing_weak_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+    'tracing_internal_strong_test': {
+      'sources': files('absl/base/internal/tracing_strong_test.cc'),
+      'dependencies': [absl_base_dep, gmock_main],
+    },
+  }
+
+  # absl_numeric_dep tests
+
+  numeric_testcases = {
+    'bits_test': {
+      'sources': files('absl/numeric/bits_test.cc'),
+      'dependencies': [absl_numeric_dep, absl_random_dep, gmock_main],
+    },
+    'int128_test': {
+      'sources': files('absl/numeric/int128_test.cc'),
+      'dependencies': [
+        absl_numeric_dep,
+        absl_log_dep,
+        absl_strings_dep,
+        gmock_main,
+      ],
+    },
+  }
+
+  # absl_hash_dep tests
+
+  hash_testcases = {
+    'hash_instantiated_test': {
+      'sources': files('absl/hash/hash_instantiated_test.cc'),
+      'dependencies': [
+        absl_hash_dep,
+        absl_container_dep,
+        absl_hash_dep,
+        gmock_main,
+      ],
+    },
+    'city_test': {
+      'sources': files('absl/hash/internal/city_test.cc'),
+      'dependencies': [absl_hash_dep, gmock_main],
+    },
+    'low_level_hash_test': {
+      'sources': files('absl/hash/internal/low_level_hash_test.cc'),
+      'dependencies': [absl_hash_dep, absl_strings_dep, gmock_main],
+    },
+  }
+
+  # std::filesystem::path hashes differently on msys2
+  if host_machine.cpu_family() == 'x86_64' and host_machine.system() != 'windows'
+    hash_testcases += {
+      'hash_test': {
+        'sources': files('absl/hash/hash_test.cc'),
+        'dependencies': [
+          absl_hash_dep,
+          absl_container_dep,
+          absl_log_dep,
+          absl_numeric_dep,
+          gmock_main,
+        ],
+      },
+    }
+  endif
+
+  # absl_container_dep tests
+
+  libtest_instance_tracker = static_library(
+    'libtest_instance_tracker',
+    'absl/container/internal/test_instance_tracker.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    dependencies: [absl_container_dep],
+    build_by_default: false,
+  )
+
+  test_instance_tracker_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: libtest_instance_tracker,
+  )
+
+  libhash_generator_testing = static_library(
+    'libhash_generator_testing',
+    'absl/container/internal/hash_generator_testing.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    dependencies: [absl_container_dep, gmock_main],
+    build_by_default: false,
+  )
+
+  hash_generator_testing_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: libhash_generator_testing,
+    dependencies: [absl_random_dep],
+  )
+
+  container_testcases = {
+    'compressed_tuple_test': {
+      'sources': files('absl/container/internal/compressed_tuple_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        test_instance_tracker_dep,
+        gmock_main,
+      ],
+    },
+    'fixed_array_test': {
+      'sources': files('absl/container/fixed_array_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'fixed_array_exception_safety_test': {
+      'sources': files('absl/container/fixed_array_exception_safety_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        exception_safety_testing_dep,
+        gmock_main,
+      ],
+    },
+    'inlined_vector_test': {
+      'sources': files('absl/container/inlined_vector_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        absl_log_dep,
+        test_instance_tracker_dep,
+        gmock_main,
+      ],
+    },
+    'inlined_vector_exception_safety_test': {
+      'sources': files('absl/container/inlined_vector_exception_safety_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        exception_safety_testing_dep,
+        gmock_main,
+      ],
+    },
+    'test_instance_tracker_test': {
+      'sources': files('absl/container/internal/test_instance_tracker_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        test_instance_tracker_dep,
+        gmock_main,
+      ],
+    },
+    'flat_hash_map_test': {
+      'sources': files('absl/container/flat_hash_map_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        absl_log_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'flat_hash_set_test': {
+      'sources': files('absl/container/flat_hash_set_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        absl_log_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'node_hash_map_test': {
+      'sources': files('absl/container/node_hash_map_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'node_hash_set_test': {
+      'sources': files('absl/container/node_hash_set_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'container_memory_test': {
+      'sources': files('absl/container/internal/container_memory_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        test_instance_tracker_dep,
+        gmock_main,
+      ],
+    },
+    'hash_function_defaults_test': {
+      'sources': files('absl/container/internal/hash_function_defaults_test.cc'),
+      'dependencies': [absl_container_dep, absl_random_dep, gmock_main],
+    },
+    'hash_policy_testing_test': {
+      'sources': files('absl/container/internal/hash_policy_testing_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'hash_policy_traits_test': {
+      'sources': files('absl/container/internal/hash_policy_traits_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'common_policy_traits_test': {
+      'sources': files('absl/container/internal/common_policy_traits_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'hashtablez_sampler_test': {
+      'sources': files('absl/container/internal/hashtablez_sampler_test.cc'),
+      'dependencies': [absl_container_dep, absl_random_dep, gmock_main],
+    },
+    'node_slot_policy_test': {
+      'sources': files('absl/container/internal/node_slot_policy_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'hashtable_control_bytes_test': {
+      'sources': files('absl/container/internal/hashtable_control_bytes_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'raw_hash_set_resize_impl_test': {
+      'sources': files(
+        'absl/container/internal/raw_hash_set_resize_impl_test.cc',
+      ),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'raw_hash_set_allocator_test': {
+      'sources': files('absl/container/internal/raw_hash_set_allocator_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        gmock_main,
+      ],
+    },
+    'layout_test': {
+      'sources': files('absl/container/internal/layout_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        absl_log_dep,
+        absl_strings_dep,
+        gmock_main,
+      ],
+    },
+    'unordered_set_test': {
+      'sources': files('absl/container/internal/unordered_set_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        absl_hash_dep,
+        absl_random_dep,
+        gmock_main,
+      ],
+    },
+    'unordered_map_test': {
+      'sources': files('absl/container/internal/unordered_map_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        hash_generator_testing_dep,
+        absl_random_dep,
+        gmock_main,
+      ],
+    },
+    'sample_element_size_test': {
+      'sources': files('absl/container/sample_element_size_test.cc'),
+      'dependencies': [absl_container_dep, gmock_main],
+    },
+    'btree_test': {
+      'sources': files('absl/container/btree_test.cc'),
+      'dependencies': [
+        absl_container_dep,
+        absl_random_dep,
+        test_instance_tracker_dep,
+        absl_flags_dep,
+        gmock_main,
+      ],
+    },
+  }
+
+  if has_death_tests
+    container_testcases += {
+      'raw_hash_set_test': {
+        'sources': files('absl/container/internal/raw_hash_set_test.cc'),
+        'dependencies': [
+          absl_container_dep,
+          absl_log_dep,
+          test_instance_tracker_dep,
+          hash_generator_testing_dep,
+          gmock_main,
+        ],
+      },
+    }
+  endif
+
+  # absl_crc_dep tests
+
+  crc_testcases = {
+    'crc32c_test': {
+      'sources': files('absl/crc/crc32c_test.cc'),
+      'dependencies': [absl_crc_dep, absl_strings_dep, gmock_main],
+    },
+    'crc_memcpy_test': {
+      'sources': files('absl/crc/internal/crc_memcpy_test.cc'),
+      'dependencies': [
+        absl_crc_dep,
+        absl_random_dep,
+        absl_strings_dep,
+        gmock_main,
+      ],
+    },
+    'non_temporal_memcpy_test': {
+      'sources': files('absl/crc/internal/non_temporal_memcpy_test.cc'),
+      'dependencies': [
+        absl_crc_dep,
+        absl_random_dep,
+        absl_strings_dep,
+        gmock_main,
+      ],
+    },
+    'crc_cord_state_test': {
+      'sources': files('absl/crc/internal/crc_cord_state_test.cc'),
+      'dependencies': [
+        absl_crc_dep,
+        absl_random_dep,
+        absl_strings_dep,
+        gmock_main,
+      ],
+    },
+  }
+
+  # absl_log_dep tests
+
+  liblog_test_helpers = static_library(
+    'liblog_test_helpers',
+    'absl/log/internal/test_helpers.cc',
+    'absl/log/internal/test_matchers.cc',
+    'absl/log/internal/test_actions.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    cpp_args: unscaled_cycleclock_flag,
+    dependencies: [absl_log_dep, gmock_main],
+    build_by_default: false,
+  )
+
+  log_test_helpers_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: liblog_test_helpers,
+    dependencies: [absl_log_dep],
+  )
+
+  libscoped_mock_log = static_library(
+    'libscoped_mock_log',
+    'absl/log/scoped_mock_log.cc',
+    include_directories: absl_include_dir,
+    override_options: override_cpp,
+    cpp_args: unscaled_cycleclock_flag,
+    dependencies: [absl_log_dep, gmock_main],
+    build_by_default: false,
+  )
+
+  scoped_mock_log_dep = declare_dependency(
+    include_directories: absl_include_dir,
+    link_with: libscoped_mock_log,
+    dependencies: [absl_log_dep, absl_status_dep],
+  )
+
+  log_testcases = {
+    'vlog_is_on_test': {
+      'sources': files('absl/log/vlog_is_on_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        scoped_mock_log_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'die_if_null_test': {
+      'sources': files('absl/log/die_if_null_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'flags_test': {
+      'sources': files('absl/log/flags_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        absl_flags_dep,
+        gmock_main,
+      ],
+    },
+    'globals_test': {
+      'sources': files('absl/log/globals_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'log_entry_test': {
+      'sources': files('absl/log/log_entry_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'log_format_test': {
+      'sources': files('absl/log/log_format_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'log_macro_hygiene_test': {
+      'sources': files('absl/log/log_macro_hygiene_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'log_modifier_methods_test': {
+      'sources': files('absl/log/log_modifier_methods_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'scoped_mock_log_test': {
+      'sources': files('absl/log/scoped_mock_log_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        gmock_main,
+      ],
+    },
+    'stripping_test': {
+      'sources': files('absl/log/stripping_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        log_test_helpers_dep,
+        scoped_mock_log_dep,
+        absl_status_dep,
+        gmock_main,
+      ],
+    },
+    'structured_test': {
+      'sources': files('absl/log/structured_test.cc'),
+      'dependencies': [
+        absl_log_dep,
+        scoped_mock_log_dep,
+        log_test_helpers_dep,
+        gmock_main,
+      ],
+    },
+  }
+
+  if has_death_tests
+    log_testcases += {
+      'absl_log_basic_test': {
+        'sources': files('absl/log/absl_log_basic_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          scoped_mock_log_dep,
+          log_test_helpers_dep,
+          gmock_main,
+        ],
+      },
+      'log_basic_test': {
+        'sources': files('absl/log/log_basic_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          log_test_helpers_dep,
+          scoped_mock_log_dep,
+          gmock_main,
+        ],
+      },
+      'log_sink_test': {
+        'sources': files('absl/log/log_sink_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          log_test_helpers_dep,
+          scoped_mock_log_dep,
+          gmock_main,
+        ],
+      },
+      'log_streamer_test': {
+        'sources': files('absl/log/log_streamer_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          log_test_helpers_dep,
+          scoped_mock_log_dep,
+          gmock_main,
+        ],
+      },
+      'absl_check_test': {
+        'sources': files('absl/log/absl_check_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          scoped_mock_log_dep,
+          log_test_helpers_dep,
+          gmock_main,
+        ],
+      },
+      'check_test': {
+        'sources': files('absl/log/check_test.cc'),
+        'dependencies': [
+          absl_log_dep,
+          log_test_helpers_dep,
+          scoped_mock_log_dep,
+          gmock_main,
+        ],
+      },
+    }
+  endif
+
+  testcases += base_testcases
+  testcases += numeric_testcases
+  testcases += hash_testcases
+  testcases += container_testcases
+  testcases += crc_testcases
+  testcases += log_testcases
+
+  foreach name, setup : testcases
+    test_exe = executable(
+      name,
+      kwargs: setup,
+      override_options: override_cpp,
+      build_by_default: false,
+    )
+
+    # a few tests take a very long time (btree_test, hash_test, etc)
+    # so really crank up the timeout so that CI doesn't kill them
+    test(
+      name,
+      test_exe,
+      timeout: 3000,
+    )
+  endforeach
+endif
