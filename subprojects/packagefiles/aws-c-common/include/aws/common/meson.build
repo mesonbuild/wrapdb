@@ -27,7 +27,7 @@ cfg_data.set(
 gcc_inline_asm = '''
 int main() {
     int foo = 42, bar = 24;
-    __asm__ __volatile__(\"\":\"=r\"(foo):\"r\"(bar):\"memory\");
+    __asm__ __volatile__("":"=r"(foo):"r"(bar):"memory");
 }
 '''
 
@@ -108,6 +108,7 @@ cfg_data.set(
   cc.links(
     avx2_intrinsics,
     name: 'avx2_intrinsics',
+    args: cc.get_supported_arguments('/arch:AVX2', '-mavx2'),
   ),
 )
 
@@ -125,6 +126,7 @@ cfg_data.set(
   cc.links(
     avx512_intrinsics,
     name: 'avx512_intrinsics',
+    args: cc.get_supported_arguments('/arch:AVX512', '-mavx512f'),
   ),
 )
 
@@ -144,6 +146,7 @@ cfg_data.set(
   cc.links(
     mm256_extract_epi64,
     name: 'mm256_extract_epi64',
+    args: cc.get_supported_arguments('/arch:AVX', '-mavx'),
   ),
 )
 
@@ -164,6 +167,7 @@ cfg_data.set(
   cc.links(
     clmul,
     name: 'clmul',
+    args: cc.get_supported_arguments('-mpclmul'),
   ),
 )
 
@@ -201,7 +205,8 @@ cfg_data.set(
 )
 
 cfg_data.set('AWS_ARCH_INTEL', host_machine.cpu_family() in ['x86', 'x86_64'])
-cfg_data.set('AWS_ARCH_INTEL64', host_machine.cpu_family() == 'x86_64')
+cfg_data.set('AWS_ARCH_INTEL_X64', host_machine.cpu_family() == 'x86_64')
+cfg_data.set('AWS_USE_CPU_EXTENSIONS', host_machine.system() != 'cygwin')
 
 cfg_data.set('AWS_ARCH_ARM64', host_machine.cpu_family() == 'aarch64')
 
