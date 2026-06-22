@@ -88,3 +88,10 @@ option(
     type: 'feature',
     value: 'auto',
 )
+
+# freetype
+option(
+    'freetype',
+    type: 'boolean',
+    value: false,
+)
