@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.7',
+  version: '3.8.8',
   license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
   meson_version: '>=0.56.0',
 )
@@ -384,6 +384,9 @@ if bcrypt_dep.found() and cc.has_header(
   required: get_option('cng'),
 )
   cdata.set('HAVE_BCRYPT_H', 1)
+  foreach f : ['md5', 'sha1', 'sha256', 'sha384', 'sha512']
+    cdata.set('ARCHIVE_CRYPTO_@0@_WIN'.format(f.to_upper()), 1)
+  endforeach
   deps += bcrypt_dep
 endif
 
@@ -561,6 +564,7 @@ headers = {
       includes: true,
     ),
   ],
+  'intsafe.h': [],
   'inttypes.h': [],
   'io.h': [],
   'langinfo.h': [],
@@ -625,6 +629,7 @@ headers = {
   'signal.h': [],
   'spawn.h': [],
   'stdarg.h': [],
+  'stdckdint.h': [],
   'stdint.h': [],
   'stdio.h': [],
   'stdlib.h': [],
@@ -657,7 +662,6 @@ headers = {
   'utime.h': [],
   'wchar.h': [],
   'wctype.h': [],
-  'wincrypt.h': [],
   'windows.h': [],
   'winioctl.h': [],
 }
