@@ -1,4 +1,10 @@
 option(
+    'fgk',
+    type: 'boolean',
+    value: false,
+    description: 'FGK adaptive-Huffman compression support',
+)
+option(
     'lzma',
     type: 'feature',
     description: 'LZMA compression support',
