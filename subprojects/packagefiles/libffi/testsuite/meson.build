@@ -258,8 +258,7 @@ if cc.get_id() == 'gcc'
       ['-DABI_NUM=FFI_THISCALL', '-DABI_ATTR=__THISCALL__'],
       ['-DABI_NUM=FFI_FASTCALL', '-DABI_ATTR=__FASTCALL__'],
     ]
-  elif host_cpu_family == 'x86_64' and \
-  cc.compiles(
+  elif host_cpu_family == 'x86_64' and cc.compiles(
     feature_check_code.format('#if !defined __ILP32__ && !defined __i386__'),
     include_directories: ffiinc,
     args: feature_check_cargs,
@@ -392,8 +391,8 @@ foreach suite, sources : tests
               suite_c_args,
               matrix_c_args,
             ],
-            # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
-            #override_options: ['optimization=plain'],
+                      # Not supported by Meson < 0.64, but -Ox in c_args takes precedence
+                      #override_options: ['optimization=plain'],
           )
           test(
             test_name,
