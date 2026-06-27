@@ -1531,6 +1531,12 @@
     ],
     "fatal_warnings": false
   },
+  "sol2" : {
+    "_comment": [
+      "provided meson.build file is incompatible with WrapDB"
+    ],
+    "ignore_upstream_meson": "3.5.0"
+  },
   "sqlpp11": {
     "_comment": "hard to set up PostgreSQL via choco",
     "build_on": {
