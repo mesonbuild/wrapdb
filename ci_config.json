@@ -348,6 +348,12 @@
       "epoxy:tests=false"
     ]
   },
+  "expat": {
+    "build_options": [
+      "expat:build_tests=true",
+      "expat:use_dev_urandom=true"
+    ]
+  },
   "facil": {
     "_comment": "- Requires POSIX platform.",
     "build_on": {

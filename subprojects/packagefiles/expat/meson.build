@@ -23,12 +23,12 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.7.5',
+  version: '2.8.2',
   # str.replace()
   meson_version: '>= 0.58.0',
 )
 
-dllver = '1.11.3'
+dllver = '1.12.2'
 
 config = configuration_data()
 cc = meson.get_compiler('c')
@@ -44,9 +44,6 @@ config.set(
 
 # Define how much context to retain around the current parse point.
 config.set('XML_CONTEXT_BYTES', 1024)
-
-config.set('HAVE_ARC4RANDOM_BUF', cc.has_function('arc4random_buf'))
-config.set('HAVE_ARC4RANDOM', cc.has_function('arc4random'))
 
 config.set('XML_ATTR_INFO', get_option('xml_attr_info'))
 config.set('XML_DTD', get_option('xml_dtd'))
@@ -81,9 +78,21 @@ foreach h : ['stdlib', 'stdarg', 'string', 'float']
 endforeach
 config.set('STDC_HEADERS', _stdc)
 
-foreach f : ['getpagesize', 'mmap', 'getrandom']
+foreach f : [
+  'arc4random',
+  'arc4random_buf',
+  'getentropy',
+  'getpagesize',
+  'getrandom',
+  'mmap',
+]
   config.set('HAVE_@0@'.format(f.to_upper()), cc.has_function(f))
 endforeach
+
+config.set(
+  'XML_DEV_URANDOM',
+  host_machine.system() != 'windows' and get_option('use_dev_urandom'),
+)
 
 if host_machine.endian() == 'little'
   config.set('BYTEORDER', 1234)
@@ -133,10 +142,6 @@ endif
 
 if host_machine.system() == 'windows'
   add_project_arguments(
-    '-DXMLCALL=WINAPIV',
-    language: 'c',
-  )
-  add_project_arguments(
     '-DXMLIMPORT=__declspec(dllexport)',
     language: 'c',
   )
@@ -161,12 +166,6 @@ else
     '-DXMLIMPORT=__attribute__ ((visibility("default")))',
     language: 'c',
   )
-  if get_option('use_dev_urandom')
-    add_project_arguments(
-      '-DXML_DEV_URANDOM',
-      language: 'c',
-    )
-  endif
 endif
 
 defs_conf = configuration_data()
@@ -201,6 +200,22 @@ configure_file(
 incdir = include_directories('lib')
 
 sources = files('lib/xmlparse.c', 'lib/xmlrole.c', 'lib/xmltok.c')
+
+foreach randsrc : [
+  [config.get('HAVE_ARC4RANDOM'), 'lib/random_arc4random.c'],
+  [config.get('HAVE_ARC4RANDOM_BUF'), 'lib/random_arc4random_buf.c'],
+  [config.get('XML_DEV_URANDOM'), 'lib/random_dev_urandom.c'],
+  [config.get('HAVE_GETENTROPY'), 'lib/random_getentropy.c'],
+  [
+    config.get('HAVE_GETRANDOM') or config.get('HAVE_SYSCALL_GETRANDOM'),
+    'lib/random_getrandom.c',
+  ],
+  [host_machine.system() == 'windows', 'lib/random_rand_s.c'],
+]
+  if randsrc[0]
+    sources += files(randsrc[1])
+  endif
+endforeach
 
 link_args = []
 
@@ -240,34 +255,32 @@ pkg = import('pkgconfig')
 pkg.generate(libexpat)
 
 if get_option('build_tests')
-  add_languages('cpp')
-
-  libtest = static_library(
-    'libtest',
-    'tests/chardata.c',
-    'tests/memcheck.c',
-    'tests/minicheck.c',
-    'tests/structdata.c',
-    include_directories: incdir,
-  )
-
   test(
     'runtests',
     executable(
       'runtests',
-      'tests/runtests.c',
+      sources,
+      files(
+        'tests/acc_tests.c',
+        'tests/alloc_tests.c',
+        'tests/basic_tests.c',
+        'tests/chardata.c',
+        'tests/common.c',
+        'tests/dummy.c',
+        'tests/handlers.c',
+        'tests/memcheck.c',
+        'tests/minicheck.c',
+        'tests/misc_tests.c',
+        'tests/ns_tests.c',
+        'tests/nsalloc_tests.c',
+        'tests/runtests.c',
+        'tests/structdata.c',
+      ),
+      c_args: '-DXML_TESTING',
       include_directories: incdir,
-      link_with: [libtest, libexpat],
+      build_by_default: false,
     ),
-  )
-  test(
-    'runtestspp',
-    executable(
-      'runtestspp',
-      'tests/runtestspp.cpp',
-      include_directories: incdir,
-      link_with: [libtest, libexpat],
-    ),
+    timeout: 60,
   )
 endif
 
