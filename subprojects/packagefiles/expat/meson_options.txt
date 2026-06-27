@@ -52,7 +52,7 @@ option(
 option(
     'use_dev_urandom',
     type: 'boolean',
-    value: true,
+    value: false,
     description: 'If true use /dev/urandom for entropy. Has no affect on platforms without /dev/urandom',
 )
 option(
