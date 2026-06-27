@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libffi-3.5.2
-source_url = https://github.com/libffi/libffi/releases/download/v3.5.2/libffi-3.5.2.tar.gz
-source_filename = libffi-3.5.2.tar.gz
-source_hash = f3a3082a23b37c293a4fcd1053147b371f2ff91fa7ea1b2a52e335676bac82dc
+directory = libffi-3.6.0
+source_url = https://github.com/libffi/libffi/releases/download/v3.6.0/libffi-3.6.0.tar.gz
+source_filename = libffi-3.6.0.tar.gz
+source_hash = 31ff1fe32deaebfbb388727f32677bb254bf2a41382c51464c0b1837c9ee9828
 patch_directory = libffi
 
 [provide]
