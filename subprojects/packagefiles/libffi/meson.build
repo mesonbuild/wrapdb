@@ -1,7 +1,7 @@
 project(
   'libffi',
   'c',
-  version: '3.5.2',
+  version: '3.6.0',
   license: 'MIT',
   meson_version: '>= 0.56.0',
   default_options: ['warning_level=1'],
@@ -223,6 +223,8 @@ elif host_cpu_family == 'kvx'
   target = 'KVX'
 elif host_cpu_family == 'loongarch64'
   target = 'LOONGARCH64'
+  targetdir = 'loongarch'
+  private_c_args += cc.get_supported_arguments('-mcmodel=medium')
 elif host_cpu_family.startswith('m32r')
   target = 'M32R'
 elif host_cpu_family == 'm68k'
@@ -366,6 +368,9 @@ if have_long_double == ''
   endif
 else
   ffi_conf.set('HAVE_LONG_DOUBLE', have_long_double)
+endif
+if cc.has_type('__int128_t')
+  ffi_conf.set('HAVE_INT128', 1)
 endif
 
 if host_machine.endian() == 'big'
@@ -534,7 +539,9 @@ if get_option('exe_static_tramp')
     'aarch64',
     'x86',
     'x86_64',
-    'loongarch',
+    'loongarch64',
+    'riscv32',
+    'riscv64',
     's390x',
     'ppc',
     'ppc64',
