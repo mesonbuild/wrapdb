@@ -1,0 +1,9 @@
+[wrap-file]
+directory = glaze-5.5.2
+source_url = https://github.com/stephenberry/glaze/archive/refs/tags/v5.5.2.tar.gz
+source_filename = glaze-5.5.2.tar.gz
+source_hash = 92382568999829a531db5a3800a36d8699674d640d3862fcb7e79ee2879d95ec
+patch_directory = glaze
+
+[provide]
+glaze = glaze_dep
