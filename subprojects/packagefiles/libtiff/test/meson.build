@@ -44,6 +44,7 @@ foreach t : tests
       t,
       '@0@.c'.format(t),
       dependencies: [libtiff4_dep, tiff_port],
+      build_by_default: false,
     ),
   )
 endforeach
@@ -55,6 +56,7 @@ test(
     'short_tag.c',
     'check_tag.c',
     dependencies: [libtiff4_dep, tiff_port],
+    build_by_default: false,
   ),
 )
 test(
@@ -64,6 +66,7 @@ test(
     'long_tag.c',
     'check_tag.c',
     dependencies: [libtiff4_dep, tiff_port],
+    build_by_default: false,
   ),
 )
 
@@ -75,6 +78,7 @@ test(
     'strip.c',
     'test_arrays.c',
     dependencies: [libtiff4_dep, tiff_port],
+    build_by_default: false,
   ),
 )
 
@@ -85,6 +89,7 @@ if jpeg_dep.found()
       'raw_decode',
       'raw_decode.c',
       dependencies: [libtiff4_dep, tiff_port, jpeg_dep],
+      build_by_default: false,
     ),
     workdir: meson.current_source_dir(),
   )
