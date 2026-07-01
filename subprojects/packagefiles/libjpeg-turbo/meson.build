@@ -1,7 +1,7 @@
 project(
   'libjpeg-turbo',
   'c',
-  version: '3.1.4.1',
+  version: '3.2.0',
   license: 'BSD-3-Clause AND IJG',
   meson_version: '>= 0.64.0',
 )
@@ -141,9 +141,22 @@ if host_system == 'windows'
   )
 endif
 
+spng_dep = dependency(
+  'spng',
+  required: get_option('turbojpeg'),
+)
+build_turbojpeg = spng_dep.found()
+summary(
+  'TurboJPEG',
+  build_turbojpeg,
+  bool_yn: true,
+)
+
 incdir = include_directories('src')
 
 subdir('simd')
+summary('SIMD architecture', simd_architecture)
 cdata.set('WITH_SIMD', have_simd)
+cdata.set('SIMD_ARCHITECTURE', simd_architecture)
 
 subdir('src')

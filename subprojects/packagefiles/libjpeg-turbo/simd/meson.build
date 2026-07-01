@@ -26,6 +26,7 @@ simd_src_x86_64 = [
   'x86_64/jquanti-avx2.asm',
   'x86_64/jquanti-sse2.asm',
   'x86_64/jsimdcpu.asm',
+  'jsimd.c',
 ]
 
 simd_src_i386 = [
@@ -66,24 +67,31 @@ simd_src_i386 = [
   'i386/jidctint-sse2.asm',
   'i386/jidctred-mmx.asm',
   'i386/jidctred-sse2.asm',
-  'i386/jquant-3dn.asm',
+  'i386/jquantf-3dn.asm',
   'i386/jquantf-sse2.asm',
   'i386/jquanti-avx2.asm',
   'i386/jquanti-sse2.asm',
-  'i386/jquant-mmx.asm',
-  'i386/jquant-sse.asm',
+  'i386/jquanti-mmx.asm',
+  'i386/jquantf-sse.asm',
   'i386/jsimdcpu.asm',
+  'jsimd.c',
 ]
 
 simd_src_arm = files(
+  'arm/jccolor-neon.c',
   'arm/jcgray-neon.c',
   'arm/jcphuff-neon.c',
   'arm/jcsample-neon.c',
+  'arm/jdcolor-neon.c',
   'arm/jdmerge-neon.c',
   'arm/jdsample-neon.c',
   'arm/jfdctfst-neon.c',
+  'arm/jfdctint-neon.c',
+  'arm/jidctfst-neon.c',
+  'arm/jidctint-neon.c',
   'arm/jidctred-neon.c',
   'arm/jquanti-neon.c',
+  'jsimd.c',
 )
 
 simd_src_ppc = files(
@@ -98,11 +106,47 @@ simd_src_ppc = files(
   'powerpc/jidctfst-altivec.c',
   'powerpc/jidctint-altivec.c',
   'powerpc/jquanti-altivec.c',
+  'powerpc/jsimdcpu.c',
+  'jsimd.c',
+)
+
+simd_src_riscv = files(
+  'riscv64/jccolor-rvv.c',
+  'riscv64/jcgray-rvv.c',
+  'riscv64/jcsample-rvv.c',
+  'riscv64/jdcolor-rvv.c',
+  'riscv64/jdmerge-rvv.c',
+  'riscv64/jdsample-rvv.c',
+  'riscv64/jfdctfst-rvv.c',
+  'riscv64/jfdctint-rvv.c',
+  'riscv64/jidctfst-rvv.c',
+  'riscv64/jidctint-rvv.c',
+  'riscv64/jquanti-rvv.c',
+  'riscv64/jsimdcpu.c',
+  'riscv64/jsimdcpu.S',
+  'jsimd.c',
+)
+
+simd_src_mips64 = files(
+  'mips64/jccolor-mmi.c',
+  'mips64/jcgray-mmi.c',
+  'mips64/jcsample-mmi.c',
+  'mips64/jdcolor-mmi.c',
+  'mips64/jdmerge-mmi.c',
+  'mips64/jdsample-mmi.c',
+  'mips64/jfdctfst-mmi.c',
+  'mips64/jfdctint-mmi.c',
+  'mips64/jidctfst-mmi.c',
+  'mips64/jidctint-mmi.c',
+  'mips64/jquanti-mmi.c',
+  'mips64/jsimdcpu.c',
+  'jsimd.c',
 )
 
 simd_opt = get_option('simd')
 have_simd = false
 simd = []
+simd_architecture = 'NONE'
 
 foreach _sym : ['getauxval', 'elf_aux_info']
   if cc.has_header_symbol('sys/auxv.h', _sym)
@@ -114,6 +158,7 @@ foreach _sym : ['getauxval', 'elf_aux_info']
 endforeach
 
 if host_cpu in ['x86', 'x86_64']
+  simd_architecture = host_cpu == 'x86' ? 'I386' : 'X86_64'
   have_simd = add_languages(
     'nasm',
     required: simd_opt,
@@ -145,13 +190,13 @@ if host_cpu in ['x86', 'x86_64']
     simd_src = x64 ? simd_src_x86_64 : simd_src_i386
     simd = static_library(
       'simd',
-      dir / 'jsimd.c',
       simd_src,
       include_directories: [incdir, 'nasm', dir],
       pic: get_option('default_library') != 'static',
     )
   endif
 elif host_cpu in ['arm', 'aarch64']
+  simd_architecture = host_cpu == 'aarch64' ? 'ARM64' : 'ARM'
   aarch = host_cpu == 'aarch64' ? 'aarch64' : 'aarch32'
   dir = 'arm' / aarch
   cdata_neon = configuration_data()
@@ -256,109 +301,37 @@ elif host_cpu in ['arm', 'aarch64']
     )
 
     subdir('arm')
-    simd_src_arm += [neon_compat_h]
 
     # GCC 11 and earlier and some older versions of Clang do not have a full or
-    # optimal set of Neon intrinsics, so for performance reasons, when using those
-    # compilers, we default to using the older GAS implementation of the Neon SIMD
-    # extensions for certain algorithms.  The presence or absence of the three
+    # optimal set of Neon intrinsics.  The presence or absence of the three
     # intrinsics we tested above is a reasonable proxy for this, except with GCC 10
     # and 11.
-
-    default_neon_intrinsics = cdata_neon.get('HAVE_VLD1_S16_X3') and cdata_neon.get(
+    if not cdata_neon.get('HAVE_VLD1_S16_X3') or not cdata_neon.get(
       'HAVE_VLD1_U16_X2',
-    ) and cdata_neon.get(
+    ) or not cdata_neon.get(
       'HAVE_VLD1Q_U8_X4',
-    ) and (
-      cc.get_id() != 'gcc'
-      or cc.version().version_compare('>= 12.0.0')
+    ) or (
+      cc.get_id() == 'gcc'
+      and cc.version().version_compare('< 12.0.0')
     )
-
-    neon_intrinsics = get_option('neon-intrinsics').disable_auto_if(
-      not default_neon_intrinsics,
-    ).allowed()
-
-    # It is possible to run compile checks on generated files, however,
-    # Meson versions earlier than 1.2.0 do not set the lookup path
-    # correctly, causing Python to fail opening it.
-    # https://github.com/mesonbuild/meson/issues/11983
-    if meson.version().version_compare('>= 1.2.0') and not neon_intrinsics
-      if (host_cpu == 'armv7')
-        gastest = '''
-        .text
-        .fpu neon
-        .arch armv7a
-        .object_arch armv4
-        .arm
-        pld [r0]
-        vmovn.u16 d0, q0
-        '''
-      else
-        gastest = '''
-        .text
-        MYVAR .req x0
-        movi v0.16b, #100
-        mov MYVAR, #100
-        .unreq MYVAR
-        '''
-      endif
-      # cc.compiles() can't pass inline assembly to the C compiler
-      # https://github.com/mesonbuild/meson/issues/12395
-      f = configure_file(
-        command: [
-          python,
-          '-c',
-          'import sys; print(sys.argv[1])',
-          '@0@'.format(gastest),
-        ],
-        output: 'gastest.S',
-        capture: true,
+      warning(
+        'The compiler\'s Arm Neon intrinsics implementation is incomplete or suboptimal.  Performance will suffer.  Use GCC 12 or later or Clang for full performance.',
       )
-      if not cc.compiles(
-        f,
-        args: neon_flags,
-        name: 'can use the partial Neon SIMD intrinsics implementation',
-      )
-        neon_intrinsics = true
-      endif
-    endif
-
-    summary('Neon SIMD intrinsics', neon_intrinsics ? 'full' : 'partial')
-
-    if neon_intrinsics
-      add_project_arguments(
-        '-DNEON_INTRINSICS',
-        language: 'c',
-      )
-      simd_src_arm += files('arm/jccolor-neon.c', 'arm/jidctint-neon.c')
-    endif
-
-    if neon_intrinsics or host_cpu == 'aarch64'
-      simd_src_arm += files('arm/jidctfst-neon.c')
-    endif
-
-    if neon_intrinsics or host_cpu == 'arm'
-      simd_src_arm += files(
-        'arm/jdcolor-neon.c',
-        'arm/jfdctint-neon.c',
-        dir / 'jchuff-neon.c',
-      )
-    endif
-
-    if not neon_intrinsics
-      simd_src_arm += files(dir / 'jsimd_neon.S')
     endif
 
     simd = static_library(
       'simd',
-      simd_src_arm + files(dir / 'jsimd.c'),
+      dir / 'jchuff-neon.c',
+      dir / 'jsimdcpu.c',
+      simd_src_arm,
+      neon_compat_h,
       pic: get_option('default_library') != 'static',
-      include_directories: [incdir, 'arm', dir],
+      include_directories: [incdir, 'arm'],
       c_args: neon_flags,
     )
   endif
 elif host_cpu in ['ppc', 'ppc64']
-  dir = 'powerpc'
+  simd_architecture = 'POWERPC'
   have_simd = cc.compiles(
     '''
     #include <altivec.h>
@@ -374,11 +347,72 @@ elif host_cpu in ['ppc', 'ppc64']
   if have_simd
     simd = static_library(
       'simd',
-      dir / 'jsimd.c',
       simd_src_ppc,
-      include_directories: [incdir, dir],
+      include_directories: [incdir, 'powerpc'],
       pic: get_option('default_library') != 'static',
       c_args: '-maltivec',
+    )
+  endif
+elif host_cpu == 'riscv64'
+  simd_architecture = 'RISCV64'
+  have_simd = cc.compiles(
+    '''
+    #include <riscv_vector.h>
+    int main(int argc, char **argv) {
+      size_t vl = __riscv_vsetvl_e32m8(32);
+      vuint32m8_t tmp0 = __riscv_vmv_v_x_u32m8(argc, vl);
+      vuint16m4_t tmp1 = __riscv_vnclipu_wx_u16m4(tmp0, 1, __RISCV_VXRM_RNU, vl);
+      vuint16m4_t tmp2 = __riscv_vnclipu_wx_u16m4(tmp0, 1, __RISCV_VXRM_RDN, vl);
+      vuint8m2_t tmp3 = __riscv_vmv_v_x_u8m2(argc, vl);
+      vuint8m2_t tmp4 = __riscv_vmv_v_x_u8m2(argc, vl);
+      vuint8m2x2_t tmp5 = __riscv_vcreate_v_u8m2x2(tmp3, tmp4);
+      return __riscv_vmv_x_s_u16m4_u16(tmp1) + __riscv_vmv_x_s_u16m4_u16(tmp2) +
+             __riscv_vmv_x_s_u8m2_u8(__riscv_vget_v_u8m2x2_u8m2(tmp5, 0)) +
+             __riscv_vmv_x_s_u8m2_u8(__riscv_vget_v_u8m2x2_u8m2(tmp5, 1));
+    }
+    ''',
+    args: '-march=rv64gcv',
+    name: 'RVV',
+  )
+  if have_simd
+    simd = static_library(
+      'simd',
+      simd_src_riscv,
+      include_directories: [incdir, 'riscv64'],
+      pic: get_option('default_library') != 'static',
+      c_args: '-march=rv64gcv',
+    )
+  endif
+elif host_cpu == 'loongarch64'
+  simd_architecture = 'MIPS64'
+  have_simd = cc.compiles(
+    '''
+    #if !(defined(__mips__) && __mips_isa_rev < 6)
+    #error \"Loongson MMI can't work with MIPS Release 6+\"
+    #endif
+    int main(void) {
+      int c = 0, a = 0, b = 0;
+      asm (
+        \"paddb %0, %1, %2\"
+        : \"=f\" (c)
+        : \"f\" (a), \"f\" (b)
+      );
+      return c;
+    }
+    ''',
+    args: '-Wa,-mloongson-mmi,-mloongson-ext',
+    name: 'MMI',
+  )
+  if have_simd
+    simd = static_library(
+      'simd',
+      simd_src_mips64,
+      include_directories: [incdir, 'mips64'],
+      pic: get_option('default_library') != 'static',
+      c_args: [
+        '-Wa,-mloongson-mmi,-mloongson-ext',
+        cc.get_supported_arguments('-fno-strict-aliasing'),
+      ],
     )
   endif
 elif simd_opt.enabled()

@@ -809,6 +809,10 @@
     }
   },
   "libjpeg-turbo": {
+    "_comment": "spng warns about WrapDB v1",
+    "build_options": [
+      "libjpeg-turbo:turbojpeg=enabled"
+    ],
     "brew_packages": [
       "nasm"
     ],
@@ -817,7 +821,8 @@
     ],
     "debian_packages": [
       "nasm"
-    ]
+    ],
+    "fatal_warnings": false
   },
   "libkqueue": {
     "_comment": "- MacOS already provides kqueue",
