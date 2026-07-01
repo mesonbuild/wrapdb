@@ -14,7 +14,3 @@ option(
     'tests',
     type: 'feature',
 )
-option(
-    'neon-intrinsics',
-    type: 'feature',
-)

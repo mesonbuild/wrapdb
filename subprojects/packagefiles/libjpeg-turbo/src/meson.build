@@ -152,16 +152,22 @@ jpeg_dep = declare_dependency(
 )
 meson.override_dependency('libjpeg', jpeg_dep)
 
-if get_option('turbojpeg').allowed()
+if build_turbojpeg
   install_headers('turbojpeg.h')
 
   turbojpeg = library(
     'turbojpeg',
     sources,
     files(
+      'wrapper/rdpng-8.c',
+      'wrapper/rdpng-12.c',
+      'wrapper/rdpng-16.c',
       'wrapper/rdppm-8.c',
       'wrapper/rdppm-12.c',
       'wrapper/rdppm-16.c',
+      'wrapper/wrpng-8.c',
+      'wrapper/wrpng-12.c',
+      'wrapper/wrpng-16.c',
       'wrapper/wrppm-8.c',
       'wrapper/wrppm-12.c',
       'wrapper/wrppm-16.c',
@@ -172,10 +178,11 @@ if get_option('turbojpeg').allowed()
       'turbojpeg.c',
       'wrbmp.c',
     ),
-    c_args: ['-DBMP_SUPPORTED', '-DPPM_SUPPORTED'],
+    c_args: ['-DBMP_SUPPORTED', '-DPNG_SUPPORTED', '-DPPM_SUPPORTED'],
+    dependencies: spng_dep,
     install: true,
     link_whole: simd,
-    soversion: '0.4.0',
+    soversion: '0.5.0',
   )
 
   pkg.generate(
@@ -192,8 +199,8 @@ if get_option('turbojpeg').allowed()
 endif
 
 if get_option('tests').require(
-  get_option('turbojpeg').allowed(),
-  error_message: 'turbojpeg feature needed',
+  build_turbojpeg,
+  error_message: 'turbojpeg feature needed for tests',
 ).allowed()
   tjunittest = executable(
     'tjunittest',
