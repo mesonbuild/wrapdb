@@ -22,7 +22,7 @@ jobs:
       matrix-ubuntu: ${{ steps.ubuntu.outputs.matrix }}
       need-build: ${{ steps.sanity-checks.outputs.need-build }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Restore sources
         id: restore
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           path: subprojects/packagecache
@@ -48,7 +48,7 @@ jobs:
         run: tools/internalize_sources.py download
 
       - name: Save sources
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         if: steps.restore.outputs.cache-hit != 'true'
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
@@ -121,7 +121,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.prelude.outputs.matrix-ubuntu) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -143,7 +143,7 @@ jobs:
           python3 -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -173,7 +173,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.prelude.outputs.matrix-alpine) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -198,7 +198,7 @@ jobs:
         run: sudo update-binfmts --disable qemu-arm
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -238,7 +238,7 @@ jobs:
           - platform: x86
             runner: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -269,7 +269,7 @@ jobs:
           arch: ${{matrix.platform}}
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -295,7 +295,7 @@ jobs:
           - platform: x64
             runner: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -314,7 +314,7 @@ jobs:
           python -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -346,7 +346,7 @@ jobs:
           - platform: CLANGARM64
             runner: windows-11-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -384,7 +384,7 @@ jobs:
           python -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -411,7 +411,7 @@ jobs:
           - platform: x86_64
             runner: macos-26-intel
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -428,7 +428,7 @@ jobs:
           python3 -m pip install --pre meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache

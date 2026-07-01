@@ -26,7 +26,7 @@ jobs:
       matrix-alpine: ${{ steps.alpine.outputs.matrix }}
       matrix-ubuntu: ${{ steps.ubuntu.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -39,7 +39,7 @@ jobs:
 
       - name: Check for cache
         id: lookup
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           # don't restore from older cache keys; it would bloat the cache
@@ -55,7 +55,7 @@ jobs:
 
       - name: Save sources
         if: steps.lookup.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           key: ${{ steps.cache-key.outputs.cache-key }}
           path: subprojects/packagecache
@@ -104,7 +104,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.prelude.outputs.matrix-ubuntu) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -115,7 +115,7 @@ jobs:
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -150,12 +150,12 @@ jobs:
           # https://github.com/jirutka/setup-alpine/pull/28
           volumes: ${{ github.workspace }} ${{ runner.temp }}
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -178,7 +178,7 @@ jobs:
       matrix:
         platform: ['x64', 'x86']
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -199,7 +199,7 @@ jobs:
           arch: ${{matrix.platform}}
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -218,7 +218,7 @@ jobs:
       CC: clang-cl
       CXX: clang-cl
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -229,7 +229,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -248,7 +248,7 @@ jobs:
       matrix:
         platform: ['UCRT64', 'CLANG64']
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -276,7 +276,7 @@ jobs:
           python -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
@@ -301,7 +301,7 @@ jobs:
           - platform: x86_64
             runner: macos-26-intel
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -317,7 +317,7 @@ jobs:
           python3 -m pip install git+https://github.com/mesonbuild/meson
 
       - name: Restore sources
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ needs.prelude.outputs.cache-key }}
           path: subprojects/packagecache
