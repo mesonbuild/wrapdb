@@ -1,0 +1,9 @@
+[wrap-file]
+directory = geo-utils-cpp-1.2.0
+source_url = https://github.com/gistrec/geo-utils-cpp/archive/refs/tags/v1.2.0.tar.gz
+source_filename = geo-utils-cpp-1.2.0.tar.gz
+source_hash = 129b2a966891a5a911884d4b7e8e46f0e8b41d1a79f166ed4e527592cdd84935
+patch_directory = geo-utils-cpp
+
+[provide]
+dependency_names = geo-utils-cpp
