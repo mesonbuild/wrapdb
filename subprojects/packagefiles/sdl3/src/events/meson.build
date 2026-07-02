@@ -1,4 +1,5 @@
 sources += files(
+  'imKStoUCS.c',
   'SDL_categories.c',
   'SDL_clipboardevents.c',
   'SDL_displayevents.c',
@@ -15,5 +16,4 @@ sources += files(
   'SDL_scancode_tables.c',
   'SDL_touch.c',
   'SDL_windowevents.c',
-  'imKStoUCS.c',
 )
