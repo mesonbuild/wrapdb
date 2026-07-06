@@ -1542,6 +1542,12 @@
     ],
     "fatal_warnings": false
   },
+  "sparkcli": {
+    "_comment": [
+      "Outputs warnings about missing dependencies, but they are not required for the build"
+    ],
+    "fatal_warnings": false
+  },
   "sqlpp11": {
     "_comment": "hard to set up PostgreSQL via choco",
     "build_on": {
