@@ -5,15 +5,8 @@ tiffconf_h = configure_file(
   configuration: cdata,
 )
 
-# Meson < 1.9 can't handle "# cmakedefine" with whitespace
-tif_config_tmpl = configure_file(
-  command: [find_program('cmakedefine.py'), '@INPUT0@', '@OUTPUT0@'],
-  input: 'tif_config.h.cmake.in',
-  output: 'tif_config.h.meson.in',
-)
-
 configure_file(
-  input: tif_config_tmpl,
+  input: 'tif_config.h.cmake.in',
   output: 'tif_config.h',
   format: 'cmake@',
   configuration: cdata,

@@ -6,9 +6,9 @@ project(
   meson_version: '>=0.57.0',
 )
 # calculate library version from configure.ac values
-libtiff_current = 8
+libtiff_current = 9
 libtiff_revision = 0
-libtiff_age = 2
+libtiff_age = 3
 library_version = '@0@.@1@.@2@'.format(
   libtiff_current - libtiff_age,
   libtiff_age,
@@ -52,9 +52,7 @@ zstd_dep = dependency(
 cdata = configuration_data()
 
 cdata.set10('HOST_BIG_ENDIAN', host_machine.endian() == 'big')
-if host_machine.endian() == 'big'
-  cdata.set10('WORDS_BIGENDIAN', true)
-endif
+cdata.set10('WORDS_BIGENDIAN', host_machine.endian() == 'big')
 
 cdata.set('TIFF_INT8_T', 'int8_t')
 cdata.set('TIFF_UINT8_T', 'uint8_t')
