@@ -110,9 +110,6 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'libgrapheme': {
         'chdir_wrapper.py',
     },
-    'libtiff': {
-        'cmakedefine.py',
-    },
     'libuv': {
         'link_file_in_build_dir.py',
     },
