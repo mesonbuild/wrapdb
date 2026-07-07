@@ -1308,6 +1308,14 @@
       "0.20.6-1"
     ]
   },
+  "geo-utils-cpp": {
+    "dependency_names": [
+      "geo-utils-cpp"
+    ],
+    "versions": [
+      "1.2.2-1"
+    ]
+  },
   "gflags": {
     "dependency_names": [
       "gflags"
