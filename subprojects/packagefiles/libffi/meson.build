@@ -157,9 +157,6 @@ elif host_cpu_family == 'hppa' and host_system in ['hpux']
 elif host_cpu_family == 'x86' and host_system in ['freebsd', 'openbsd']
   target = 'X86_FREEBSD'
   targetdir = 'x86'
-  if is_msvc
-    asm_sources = ['sysv_intel.S']
-  endif
 elif (host_cpu_family == 'x86' and host_system in [
   'cygwin',
   'windows',
@@ -186,9 +183,6 @@ elif host_cpu_family in ['x86', 'x86_64'] and host_system in ['darwin', 'ios']
   targetdir = 'x86'
   if size_t == 4
     target = 'X86_DARWIN'
-    if is_msvc
-      asm_sources = ['sysv_intel.S']
-    endif
   else
     target = 'X86_64'
     c_sources = ['ffi64.c', 'ffiw64.c']
