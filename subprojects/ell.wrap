@@ -1,0 +1,10 @@
+[wrap-file]
+directory = ell-0.83
+source_url = https://www.kernel.org/pub/linux/libs/ell/ell-0.83.tar.xz
+source_filename = ell-0.83.tar.xz
+source_hash = 39a562f5ab2768e69da1ffbb1f98a8eb3483baffc7d2ef6adc3705e4fd4e53fb
+# Maintained in https://github.com/hadess/ell/tree/wip/hadess/add-meson
+patch_directory = ell
+
+[provide]
+dependency_names = ell
