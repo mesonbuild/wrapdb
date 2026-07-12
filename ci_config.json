@@ -1317,16 +1317,6 @@
       "--timeout-multiplier=3"
     ]
   },
-  "pkgconf": {
-    "_comment": [
-      "test_env.sh.in has missing substitutions",
-      "Tests cannot be run without kyua, which is difficult to install when not packaged."
-    ],
-    "fatal_warnings": false,
-    "build_options": [
-      "pkgconf:tests=disabled"
-    ]
-  },
   "protobuf": {
     "_comment": "Getting patched version elsewhere until abseil-cpp/issues/1510 is fixed, because cannot patch wrapdb version",
     "msys_packages": [
