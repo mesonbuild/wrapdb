@@ -1,0 +1,20 @@
+option(
+    'platform',
+    type: 'combo',
+    choices: ['Desktop', 'GLFW', 'RGFW', 'Web', 'Android', 'DRM', 'SDL'],
+    value: 'Desktop',
+    description: 'Platform to build for',
+)
+option(
+    'opengl_version',
+    type: 'combo',
+    choices: ['off', '4.3', '3.3', '2.1', '1.1', 'ES 2.0', 'ES 3.0'],
+    value: 'off',
+    description: 'Force a specific OpenGL Version',
+)
+option(
+    'examples',
+    type: 'boolean',
+    value: false,
+    description: 'Build the examples',
+)
