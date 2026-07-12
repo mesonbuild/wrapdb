@@ -1,0 +1,24 @@
+option(
+    'snappy',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable support for snappy codec',
+)
+option(
+    'zstd',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable support for zstd codec',
+)
+option(
+    'avrogencpp',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build avrogencpp exectuable',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build tests (requires avrogencpp)',
+)
