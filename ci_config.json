@@ -1460,7 +1460,8 @@
       "libwayland-bin",
       "libxkbcommon-dev",
       "libegl-dev",
-      "libgl-dev"
+      "libgl-dev",
+      "liboss4-salsa-asound2-"
     ]
   },
   "sdl3_image": {
