@@ -1,0 +1,8 @@
+[wrap-file]
+directory = zxc-0.13.0
+source_url = https://github.com/hellobertrand/zxc/archive/refs/tags/v0.13.0.tar.gz
+source_filename = zxc-0.13.0.tar.gz
+source_hash = 2e7f960c37c8c0225bba122d17dcefda1597f3a98e9822611a6963416b769e8b
+
+[provide]
+dependency_names = libzxc
