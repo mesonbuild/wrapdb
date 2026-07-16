@@ -6,4 +6,4 @@ source_hash = 321f7d3f72206b2522f30a1cb8ad1936fd4533ffc4d29dd335b1953c9fb371e6
 patch_directory = fluidsynth
 
 [provide]
-fluidsynth = fluidsynth_dep
+dependency_names = fluidsynth
