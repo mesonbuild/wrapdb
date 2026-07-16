@@ -5,7 +5,7 @@ project(
   version: '2.3.3',
   license: 'LGPL-2.1-or-later',
   default_options: ['b_ndebug=if-release'],
-  meson_version: '>= 0.54.1',
+  meson_version: '>= 1.0.0',
 )
 
 cc = meson.get_compiler('c')
@@ -230,6 +230,7 @@ fluidsynth_lib = library(
   dependencies: ext_deps,
   gnu_symbol_visibility: 'hidden',
   include_directories: lib_includes,
+  install: true,
   c_args: lib_args,
   cpp_args: lib_args,
 )
@@ -240,6 +241,7 @@ fluidsynth_dep = declare_dependency(
   link_with: fluidsynth_lib,
   include_directories: dep_includes,
 )
+meson.override_dependency('fluidsynth', fluidsynth_dep)
 
 # unit tests
 if get_option('tests')
