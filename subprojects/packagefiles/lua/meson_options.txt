@@ -14,3 +14,9 @@ option(
     value: true,
     description: 'Build the Lua interpreter.',
 )
+option(
+    'lua_cpp',
+    type: 'boolean',
+    value: false,
+    description: 'Build Lua as C++. This will disable building interpreter and executable ',
+)
