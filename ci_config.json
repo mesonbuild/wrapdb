@@ -615,6 +615,23 @@
       "icu-data"
     ]
   },
+  "id3tag": {
+    "alpine_packages": [
+      "gperf"
+    ],
+    "brew_packages": [
+      "gperf"
+    ],
+    "choco_packages": [
+      "gperf"
+    ],
+    "debian_packages": [
+      "gperf"
+    ],
+    "msys_packages": [
+      "gperf"
+    ]
+  },
   "jbig2dec": {
     "msys_packages": [
       "libpng"
