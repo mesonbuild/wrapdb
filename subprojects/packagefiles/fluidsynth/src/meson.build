@@ -50,6 +50,13 @@ fluidsynth_sources = files(
   'utils/fluid_sys.c',
 )
 
+if host_machine.system() == 'windows'
+  fluidsynth_sources += files(
+    'drivers/fluid_wasapi.c',
+    'drivers/fluid_winmidi.c',
+  )
+endif
+
 make_tables_sources = files(
   'gentables/gen_conv.c',
   'gentables/gen_rvoice_dsp.c',

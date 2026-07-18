@@ -173,8 +173,10 @@ ext_deps = [m_dep, glib_dep, gthread_dep, openmp_dep]
 lib_args = []
 if host_machine.system() == 'windows'
   if is_shared_lib
-    lib_args = ['-DFLUIDSYNTH_DLL_EXPORTS']
+    lib_args += ['-DFLUIDSYNTH_DLL_EXPORTS']
   endif
+  lib_args += ['-DWASAPI_SUPPORT=1', '-DWINMIDI_SUPPORT=1']
+  ext_deps += [cc.find_library('winmm')]
   # Specific workaround on MSYS2 to obtain static dependencies of intl, such as iconv
   # This is required as of meson 0.59
   if get_option('try-static-deps') and host_is_msys2
