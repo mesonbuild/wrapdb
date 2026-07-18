@@ -1758,6 +1758,14 @@
       "55.2-1"
     ]
   },
+  "id3tag": {
+    "dependency_names": [
+      "id3tag"
+    ],
+    "versions": [
+      "0.16.4-1"
+    ]
+  },
   "iir": {
     "dependency_names": [
       "iir"

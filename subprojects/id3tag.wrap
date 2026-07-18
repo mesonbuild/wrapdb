@@ -1,0 +1,9 @@
+[wrap-file]
+directory = id3tag-0.16.4-source
+source_url = https://codeberg.org/tenacityteam/libid3tag/releases/download/0.16.4/id3tag-0.16.4-source.tar.gz
+source_filename = id3tag-0.16.4-source.tar.gz
+source_hash = 8b6bc96016f6ab3a52b753349ed442e15181de9db1df01884f829e3d4f3d1e78
+patch_directory = id3tag
+
+[provide]
+dependency_names = id3tag
