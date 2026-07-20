@@ -209,6 +209,8 @@ jobs:
         env:
           CC: clang
           CXX: clang++
+          # don't inherit nonexistent runtime dir from runner image
+          XDG_RUNTIME_DIR:
         run: |
           # Work around PEP 668 nonsense…
           sudo rm -vf /usr/lib*/python3.*/EXTERNALLY-MANAGED
