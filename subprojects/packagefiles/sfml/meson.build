@@ -2,7 +2,7 @@ project(
   'sfml',
   'cpp',
   license: 'Zlib',
-  version: '3.0.2',
+  version: '3.1.0',
   default_options: ['wrap_mode=forcefallback'],
   meson_version: '>=0.64.0',
 )
@@ -15,15 +15,14 @@ winmm_dep = cpp.find_library(
   'winmm',
   required: host_machine.system() == 'windows',
 )
-w32_dep = cpp.find_library(
-  'ws2_32',
-  required: host_machine.system() == 'windows',
-)
 
 stb_inc = include_directories('extlibs/headers/stb_image')
 glad_inc = include_directories('extlibs/headers/glad/include')
 vulkan_inc = include_directories('extlibs/headers/vulkan')
-mp3_inc = include_directories('extlibs/headers/minimp3')
+mp3_inc = include_directories('extlibs/headers/dr_mp3')
+qoi_inc = include_directories('extlibs/headers/qoi')
+wepoll_inc = include_directories('extlibs/headers/wepoll')
+unicode_inc = include_directories('extlibs/headers/cpp-unicodelib')
 pub_inc = include_directories('include')
 priv_inc = include_directories('src')
 
@@ -56,6 +55,6 @@ sfml_dep = declare_dependency(
 meson.override_dependency('sfml', sfml_dep)
 meson.override_dependency('sfml-all', sfml_dep)
 
-if get_option('examples') and build_machine.system() != 'android'
+if get_option('examples')
   subdir('examples')
 endif
