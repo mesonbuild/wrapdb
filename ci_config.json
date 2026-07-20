@@ -1636,7 +1636,8 @@
   },
   "wayland": {
     "_comment": [
-      "- relies on Linux-specific APIs"
+      "- relies on Linux-specific APIs",
+      "- warns on redundant version conditionals, https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/551"
     ],
     "alpine_packages": [
       "python3-dev"
@@ -1648,7 +1649,8 @@
     },
     "build_options": [
       "wayland:documentation=false"
-    ]
+    ],
+    "fatal_warnings": false
   },
   "wayland-protocols": {
     "_comment": "- relies on wayland-scanner which uses Linux-specific APIs",
