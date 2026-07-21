@@ -929,6 +929,33 @@
       "libudev-dev"
     ]
   },
+  "libvmaf": {
+    "build_options": [
+      "libvmaf:enable_docs=false",
+      "libvmaf:enable_tools=false"
+    ],
+    "build_on": {
+      "windows": false
+    },
+    "test_options": [
+      "--timeout-multiplier=3"
+    ],
+    "debian_packages": [
+      "nasm",
+      "xxd"
+    ],
+    "alpine_packages": [
+      "nasm",
+      "xxd"
+    ],
+    "brew_packages": [
+      "nasm"
+    ],
+    "msys_packages": [
+      "nasm",
+      "vim"
+    ]
+  },
   "libxcursor": {
     "_comment": "X11 needs a POSIX system",
     "build_on": {

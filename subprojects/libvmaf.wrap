@@ -1,0 +1,9 @@
+[wrap-file]
+directory = vmaf-3.2.0
+source_url = https://github.com/Netflix/vmaf/archive/v3.2.0.tar.gz
+source_filename = vmaf-3.2.0.tar.gz
+source_hash = a28f93f3b4fa65601be324587072e32a6a704a304ba7b1aec9b70b3f709bc1dc
+patch_directory = libvmaf
+
+[provide]
+dependency_names = libvmaf
