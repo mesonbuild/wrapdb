@@ -2767,6 +2767,14 @@
       "1.18.0-1"
     ]
   },
+  "libvmaf": {
+    "dependency_names": [
+      "libvmaf"
+    ],
+    "versions": [
+      "3.2.0-1"
+    ]
+  },
   "libwebp": {
     "dependency_names": [
       "libsharyuv",
