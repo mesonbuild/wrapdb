@@ -41,14 +41,13 @@ else
 endif
 
 sources += files(
-  'SDL_RLEaccel.c',
   'SDL_blit.c',
   'SDL_blit_0.c',
   'SDL_blit_1.c',
   'SDL_blit_A.c',
-  'SDL_blit_N.c',
   'SDL_blit_auto.c',
   'SDL_blit_copy.c',
+  'SDL_blit_N.c',
   'SDL_blit_slow.c',
   'SDL_bmp.c',
   'SDL_clipboard.c',
@@ -56,6 +55,7 @@ sources += files(
   'SDL_fillrect.c',
   'SDL_pixels.c',
   'SDL_rect.c',
+  'SDL_RLEaccel.c',
   'SDL_rotate.c',
   'SDL_stb.c',
   'SDL_stretch.c',

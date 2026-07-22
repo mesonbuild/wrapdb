@@ -17,8 +17,8 @@ subdir('virtual')
 cdata.set('SDL_JOYSTICK_VIRTUAL', 1)
 
 sources += files(
+  'controller_type.c',
   'SDL_gamepad.c',
   'SDL_joystick.c',
   'SDL_steam_virtual_gamepad.c',
-  'controller_type.c',
 )

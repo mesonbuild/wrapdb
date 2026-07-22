@@ -1,5 +1,6 @@
 
 sources += files(
+  'edid-parse.c',
   'SDL_x11clipboard.c',
   'SDL_x11dyn.c',
   'SDL_x11events.c',
@@ -22,7 +23,6 @@ sources += files(
   'SDL_x11xinput2.c',
   'SDL_x11xsync.c',
   'SDL_x11xtest.c',
-  'edid-parse.c',
   'xsettings-client.c',
 )
 
