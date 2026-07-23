@@ -375,9 +375,24 @@ if lzo2_dep.found()
   deps += lzo2_dep
 endif
 
+# bcrypt is needed in two places: for crypto stuff (optional) and
+# for __archive_mktempx implementation (unconditional dependency).
+#
+# bcrypt is needed for __archive_mktempx if
+# defined(_WIN32) && !defined(__CYGWIN__) is true.
+#
+# See
+# https://github.com/libarchive/libarchive/blob/7219b0134d771dc4b51bf86b4d01761b87398b1b/libarchive/archive_util.c#L44-L51
+bcrypt_unconditionally_needed = host_machine.system() == 'windows'
+if bcrypt_unconditionally_needed
+  bcrypt_required = true
+else
+  bcrypt_required = get_option('cng')
+endif
+
 bcrypt_dep = cc.find_library(
   'bcrypt',
-  required: get_option('cng'),
+  required: bcrypt_required,
 )
 if bcrypt_dep.found() and cc.has_header(
   'bcrypt.h',
@@ -387,6 +402,8 @@ if bcrypt_dep.found() and cc.has_header(
   foreach f : ['md5', 'sha1', 'sha256', 'sha384', 'sha512']
     cdata.set('ARCHIVE_CRYPTO_@0@_WIN'.format(f.to_upper()), 1)
   endforeach
+  deps += bcrypt_dep
+elif bcrypt_unconditionally_needed
   deps += bcrypt_dep
 endif
 
