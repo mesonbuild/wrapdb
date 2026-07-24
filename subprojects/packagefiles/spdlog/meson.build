@@ -40,6 +40,12 @@ if get_option('compile_library')
   if get_option('default_library') != 'static'
     spdlog_compile_args += '-DSPDLOG_SHARED_LIB'
     spdlog_private_args += '-Dspdlog_EXPORTS'
+    if meson.get_compiler('cpp').get_id() == 'msvc'
+      # Suppress dll-interface warnings, which also fire in consumer TUs for
+      # correctly dllimport-ed classes with STL members/bases (upstream CMake
+      # likewise applies these as PUBLIC options).
+      spdlog_compile_args += ['/wd4251', '/wd4275']
+    endif
     if not fmt_dep.found()
       spdlog_compile_args += '-DFMT_EXPORT'
       spdlog_compile_args += '-DFMT_SHARED'
