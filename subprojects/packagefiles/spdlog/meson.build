@@ -12,6 +12,7 @@ thread_dep = dependency('threads')
 
 spdlog_dependencies = [thread_dep]
 spdlog_compile_args = []
+spdlog_private_args = []
 override_cpp = meson.version().version_compare('>=1.3.0') ? 'cpp_std=gnu++17,c++17' : 'cpp_std=gnu++17'
 
 if meson.get_compiler('cpp').has_header_symbol(
@@ -38,7 +39,7 @@ if get_option('compile_library')
   spdlog_compile_args += '-DSPDLOG_COMPILED_LIB'
   if get_option('default_library') != 'static'
     spdlog_compile_args += '-DSPDLOG_SHARED_LIB'
-    spdlog_compile_args += '-Dspdlog_EXPORTS'
+    spdlog_private_args += '-Dspdlog_EXPORTS'
     if not fmt_dep.found()
       spdlog_compile_args += '-DFMT_EXPORT'
       spdlog_compile_args += '-DFMT_SHARED'
