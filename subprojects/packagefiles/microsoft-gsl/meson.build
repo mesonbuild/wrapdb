@@ -1,7 +1,7 @@
 project(
   'microsoft-gsl',
   'cpp',
-  version: '4.2.1',
+  version: '4.2.2',
   license: 'MIT',
   meson_version: '>=0.63.0',
 )
