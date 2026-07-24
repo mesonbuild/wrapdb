@@ -7,10 +7,6 @@ src = files(
   'stdout_sinks.cpp',
 )
 
-if not fmt_dep.found()
-  src += files('bundled_fmtlib_format.cpp')
-endif
-
 version_parts = meson.project_version().split('.')
 
 spdlog_lib = library(

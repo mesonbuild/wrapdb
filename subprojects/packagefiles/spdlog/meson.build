@@ -46,10 +46,6 @@ if get_option('compile_library')
       # likewise applies these as PUBLIC options).
       spdlog_compile_args += ['/wd4251', '/wd4275']
     endif
-    if not fmt_dep.found()
-      spdlog_compile_args += '-DFMT_EXPORT'
-      spdlog_compile_args += '-DFMT_SHARED'
-    endif
   endif
   subdir('src')
 
