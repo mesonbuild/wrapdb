@@ -1,8 +1,8 @@
 [wrap-file]
-directory = GSL-4.2.1
-source_url = https://github.com/microsoft/GSL/archive/v4.2.1.zip
-source_filename = GSL-4.2.1.zip
-source_hash = c9291d95f5f6e5c561990d06a589b01d89e553d0f366f0ce723dd1788e7a6076
+directory = GSL-4.2.2
+source_url = https://github.com/microsoft/GSL/archive/v4.2.2.zip
+source_filename = GSL-4.2.2.zip
+source_hash = 6d3e29f88f0eaefea3bdb33a4eb30807667f33ca2bd7ed208d7862976af48c2e
 patch_directory = microsoft-gsl
 
 [provide]
