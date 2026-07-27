@@ -1713,7 +1713,8 @@
   },
   "yaml-cpp": {
     "build_options": [
-      "yaml-cpp:tests=enabled"
+      "yaml-cpp:tests=enabled",
+      "gtest:default_library=static"
     ]
   },
   "zycore": {
