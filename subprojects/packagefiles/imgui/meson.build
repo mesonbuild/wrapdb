@@ -2,7 +2,7 @@ project(
   'imgui',
   'cpp',
   license: 'MIT',
-  version: '1.92.5',
+  version: '1.92.8',
   meson_version: '>=0.56.0',
 )
 
@@ -15,12 +15,12 @@ endif
 
 include_dirs = include_directories('.', 'backends')
 sources = files(
+  'misc/cpp/imgui_stdlib.cpp',
   'imgui.cpp',
   'imgui_demo.cpp',
   'imgui_draw.cpp',
   'imgui_tables.cpp',
   'imgui_widgets.cpp',
-  'misc/cpp/imgui_stdlib.cpp',
 )
 
 cpp = meson.get_compiler('cpp')
