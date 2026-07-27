@@ -3,7 +3,7 @@ project(
   'c',
   meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.3.2',
+  version: '3.4.5',
 )
 
 mi_sources = []
@@ -119,6 +119,7 @@ mi_lib = library(
   dependencies: mi_deps,
   version: mi_version,
   soversion: mi_soversion,
+  gnu_symbol_visibility: 'hidden',
   install: true,
 )
 mi_dep = declare_dependency(
