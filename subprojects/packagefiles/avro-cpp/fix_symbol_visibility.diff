@@ -1,0 +1,125 @@
+diff --git a/impl/json/JsonDom.hh b/impl/json/JsonDom.hh
+index 75728c6ba..b2be02b30 100644
+--- a/impl/json/JsonDom.hh
++++ b/impl/json/JsonDom.hh
+@@ -31,7 +31,7 @@
+ 
+ namespace avro {
+ 
+-class AVRO_DECL InputStream;
++class InputStream;
+ 
+ namespace json {
+ class Entity;
+@@ -59,7 +59,7 @@ enum class EntityType {
+     Obj
+ };
+ 
+-const char *typeToString(EntityType t);
++AVRO_DECL const char *typeToString(EntityType t);
+ 
+ inline std::ostream &operator<<(std::ostream &os, EntityType et) {
+     return os << typeToString(et);
+diff --git a/include/avro/Compiler.hh b/include/avro/Compiler.hh
+index bdcbb355e..7a97c4f4d 100644
+--- a/include/avro/Compiler.hh
++++ b/include/avro/Compiler.hh
+@@ -25,14 +25,14 @@
+ 
+ namespace avro {
+ 
+-class AVRO_DECL InputStream;
++class InputStream;
+ 
+ /// This class is used to implement an avro spec parser using a flex/bison
+ /// compiler.  In order for the lexer to be reentrant, this class provides a
+ /// lexer object for each parse.  The bison parser also uses this class to
+ /// build up an avro parse tree as the avro spec is parsed.
+ 
+-class AVRO_DECL ValidSchema;
++class ValidSchema;
+ 
+ /// Given a stream containing a JSON schema, compiles the schema to a
+ /// ValidSchema object.  Throws if the schema cannot be compiled to a valid
+diff --git a/include/avro/Config.hh b/include/avro/Config.hh
+index dd2438deb..0f7ea3738 100644
+--- a/include/avro/Config.hh
++++ b/include/avro/Config.hh
+@@ -21,17 +21,29 @@
+ 
+ // Windows DLL support
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+ #pragma warning(disable : 4275 4251)
++#endif // _MSC_VER
++
++#if defined _WIN32 || defined __CYGWIN__
++#define AVRO_DLL_EXPORT __declspec(dllexport)
++#define AVRO_DLL_IMPORT __declspec(dllimport)
++#define AVRO_DLL_HIDDEN
++#else
++#define AVRO_DLL_EXPORT [[gnu::visibility("default")]]
++#define AVRO_DLL_IMPORT [[gnu::visibility("default")]]
++#define AVRO_DLL_HIDDEN [[gnu::visibility("hidden")]]
++#endif // _WIN32 || __CYGWIN__
+ 
+-#if defined(AVRO_DYN_LINK)
++#ifdef AVRO_DYN_LINK
+ #ifdef AVRO_SOURCE
+-#define AVRO_DECL __declspec(dllexport)
++#define AVRO_DECL AVRO_DLL_EXPORT
+ #else
+-#define AVRO_DECL __declspec(dllimport)
++#define AVRO_DECL AVRO_DLL_IMPORT
+ #endif // AVRO_SOURCE
+ #endif // AVRO_DYN_LINK
+ 
++#ifdef _WIN32
+ #include <intsafe.h>
+ using ssize_t = SSIZE_T;
+ #endif // _WIN32
+diff --git a/include/avro/buffer/BufferStream.hh b/include/avro/buffer/BufferStream.hh
+index a8510adaa..3aeda37f0 100644
+--- a/include/avro/buffer/BufferStream.hh
++++ b/include/avro/buffer/BufferStream.hh
+@@ -35,7 +35,7 @@ namespace avro {
+  *
+  **/
+ 
+-class AVRO_DECL ostream : public std::ostream {
++class ostream : public std::ostream {
+ 
+ public:
+     /// Default constructor, creates a new OutputBuffer.
+@@ -65,7 +65,7 @@ protected:
+  *
+  **/
+ 
+-class AVRO_DECL istream : public std::istream {
++class istream : public std::istream {
+ 
+ public:
+     /// Constructor, requires an InputBuffer to read from.
+diff --git a/include/avro/buffer/BufferStreambuf.hh b/include/avro/buffer/BufferStreambuf.hh
+index 42eb20c21..38cc91fce 100644
+--- a/include/avro/buffer/BufferStreambuf.hh
++++ b/include/avro/buffer/BufferStreambuf.hh
+@@ -41,7 +41,7 @@ namespace avro {
+  * but we have no need since all writes are immediately stored in the buffer.
+  **/
+ 
+-class AVRO_DECL ostreambuf : public std::streambuf {
++class ostreambuf : public std::streambuf {
+ 
+ public:
+     /// Default constructor creates a new OutputBuffer.
+@@ -86,7 +86,7 @@ private:
+  *
+  **/
+ 
+-class AVRO_DECL istreambuf : public std::streambuf {
++class istreambuf : public std::streambuf {
+ 
+ public:
+     /// Default constructor requires an InputBuffer to read from.
