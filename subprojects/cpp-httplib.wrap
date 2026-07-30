@@ -1,8 +1,8 @@
 [wrap-file]
-directory = cpp-httplib-0.50.1
-source_url = https://github.com/yhirose/cpp-httplib/archive/refs/tags/v0.50.1.tar.gz
-source_filename = cpp-httplib-0.50.1.tar.gz
-source_hash = 3c23acaf0e37bf63cf1b747813b358063e2e40590a7f6418955031fe5eb173c0
+directory = cpp-httplib-0.51.0
+source_url = https://github.com/yhirose/cpp-httplib/archive/refs/tags/v0.51.0.tar.gz
+source_filename = cpp-httplib-0.51.0.tar.gz
+source_hash = d740ced75352f44e9d66d08806dc231b5621bb3592b5a5d5b2bd890a9a9d86cc
 
 [provide]
 dependency_names = cpp-httplib
