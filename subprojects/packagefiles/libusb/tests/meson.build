@@ -8,6 +8,7 @@ stress = executable(
   'testlib.c',
   dependencies: libusb_dep,
   include_directories: config_inc,
+  build_by_default: false,
 )
 
 test(
@@ -26,6 +27,7 @@ if umockdev_dep.found()
     'umockdev.c',
     dependencies: libusb_dep,
     include_directories: config_inc,
+    build_by_default: false,
   )
 
   test(
