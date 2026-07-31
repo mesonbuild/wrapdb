@@ -30,7 +30,7 @@ fxload_sources = files('ezusb.c', 'fxload.c')
 getopt_inc = []
 if cc.get_argument_syntax() == 'msvc'
   getopt_inc = include_directories('../msvc/getopt')
-  fxload_sources += files('../msvc/getopt/getopt.c', '../msvc/getopt/getopt1.c')
+  fxload_sources += files('../msvc/getopt/getopt1.c', '../msvc/getopt/getopt.c')
 endif
 
 executable(
@@ -38,5 +38,5 @@ executable(
   fxload_sources,
   dependencies: libusb_dep,
   include_directories: [config_inc, getopt_inc],
-  c_args: cc.get_argument_syntax() == 'msvc' ? '-DHAVE_STRING_H' : [],
+  c_args: cc.get_argument_syntax() == 'msvc' ? '-D_GL_UNUSED=' : [],
 )

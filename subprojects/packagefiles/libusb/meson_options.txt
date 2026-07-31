@@ -5,9 +5,15 @@ option(
 )
 
 option(
+    'windows-hotplug',
+    type: 'boolean',
+    value: false,
+    description: 'Enable Windows hotplug support',
+)
+
+option(
     'logging',
     type: 'boolean',
-    value: true,
     description: 'Enable or disable logging',
 )
 
@@ -28,13 +34,11 @@ option(
 option(
     'examples',
     type: 'boolean',
-    value: true,
     description: 'Build libusb example programs',
 )
 
 option(
     'tests',
     type: 'boolean',
-    value: true,
     description: 'Build libusb example tests',
 )

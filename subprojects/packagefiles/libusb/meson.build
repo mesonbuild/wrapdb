@@ -1,10 +1,11 @@
 project(
   'libusb',
   'c',
-  version: '1.0.29',
-  meson_version: '>=0.49.0',
+  version: '1.0.30',
+  meson_version: '>=0.56.0',
   license: 'LGPL-2.1-or-later',
 )
+library_version = '0.6.0'
 
 cc = meson.get_compiler('c')
 pconf = import('pkgconfig')
@@ -112,6 +113,10 @@ sources = files(
 if host_machine.system() == 'windows'
   cdata.set('PLATFORM_WINDOWS', true)
   sources += files('libusb/os/events_windows.c', 'libusb/os/threads_windows.c')
+  if get_option('windows-hotplug')
+    cdata.set('LIBUSB_WINDOWS_HOTPLUG', 1)
+    sources += files('os/windows_hotplug.c')
+  endif
 else
   cdata.set('PLATFORM_POSIX', true)
   sources += files('libusb/os/events_posix.c', 'libusb/os/threads_posix.c')
@@ -169,7 +174,7 @@ libusb = library(
   override_options: host_machine.system() == 'emscripten' ? 'cpp_std=c++20' : [],
   dependencies: [thread_dep, macos_dep, udev_dep],
   include_directories: incdirs,
-  version: '0.5.0',
+  version: library_version,
   soversion: host_machine.system() == 'windows' ? '' : '0',
   name_prefix: '',
   gnu_symbol_visibility: 'hidden',
@@ -188,6 +193,7 @@ libusb_dep = declare_dependency(
   include_directories: incdirs,
   link_with: libusb,
 )
+meson.override_dependency('libusb-1.0', libusb_dep)
 
 subdir('examples')
 subdir('tests')
