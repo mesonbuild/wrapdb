@@ -1,8 +1,9 @@
 project(
   'libcap',
   'c',
-  version: '2.77',
+  version: '2.78',
   license: 'BSD-3-Clause OR GPL-2.0-only',
+  meson_version: '>=0.56.0',
 )
 
 override_opts = ['c_std=gnu11']
@@ -66,6 +67,4 @@ libcap_dep = declare_dependency(
   include_directories: incdir,
   link_with: [libcap, libpsx],
 )
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('libcap', libcap_dep)
-endif
+meson.override_dependency('libcap', libcap_dep)
