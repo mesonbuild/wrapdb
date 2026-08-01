@@ -2,8 +2,8 @@ project(
   'miniz',
   'c',
   license: 'MIT',
-  version: '3.1.0',
-  meson_version: '>=0.48.0',
+  version: '3.1.2',
+  meson_version: '>=0.56.0',
 )
 
 install_headers('miniz.h')
@@ -33,9 +33,7 @@ miniz_dep = declare_dependency(
   include_directories: miniz_inc,
   link_with: miniz_lib,
 )
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('miniz', miniz_dep)
-endif
+meson.override_dependency('miniz', miniz_dep)
 
 pkg = import('pkgconfig')
 pkg.generate(
@@ -44,20 +42,26 @@ pkg.generate(
   description: 'Single C source file zlib-replacement library',
 )
 
-foreach n : ['1', '2', '3', '4', '5']
-  executable(
-    'example@0@'.format(n),
-    'examples/example@0@.c'.format(n),
-    dependencies: miniz_dep,
-  )
-endforeach
+if get_option('examples')
+  foreach n : ['1', '2', '3', '4', '5']
+    executable(
+      'example@0@'.format(n),
+      'examples/example@0@.c'.format(n),
+      dependencies: miniz_dep,
+    )
+  endforeach
 
-m_dep = cc.find_library(
-  'm',
-  required: false,
-)
-executable(
-  'example6',
-  'examples/example6.c',
-  dependencies: [miniz_dep, m_dep],
-)
+  if cc.links(
+    '#include <math.h>\nint main(){log(0);}',
+    name: 'log()',
+  )
+    m_dep = declare_dependency()
+  else
+    m_dep = cc.find_library('m')
+  endif
+  executable(
+    'example6',
+    'examples/example6.c',
+    dependencies: [miniz_dep, m_dep],
+  )
+endif

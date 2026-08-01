@@ -1,9 +1,9 @@
 [wrap-file]
-directory = miniz-3.1.0
+directory = miniz-3.1.2
 lead_directory_missing = true
-source_url = https://github.com/richgel999/miniz/releases/download/3.1.0/miniz-3.1.0.zip
-source_filename = miniz-3.1.0.zip
-source_hash = f9d3e769ec5fd5583955a3c22eea457fe806be0d507805966d1a5b0410c77dda
+source_url = https://github.com/richgel999/miniz/releases/download/3.1.2/miniz-3.1.2.zip
+source_filename = miniz-3.1.2.zip
+source_hash = f0446d863f9c19926ad9483c523fdc42e42b8d4a6a431d27e09d49c79a140d9a
 patch_directory = miniz
 
 [provide]
