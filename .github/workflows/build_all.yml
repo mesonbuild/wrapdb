@@ -188,7 +188,7 @@ jobs:
       # Install a 32-bit Python so building related stuff work.
       - name: Setup x86 Python
         if: matrix.platform == 'x86'
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           architecture: 'x86'
           python-version: '3.12'
@@ -310,7 +310,7 @@ jobs:
 
       - run: brew update
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
