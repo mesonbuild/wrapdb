@@ -25,6 +25,7 @@ foreach t : tests
       'test-@0@'.format(t),
       'test-@0@.c'.format(t),
       dependencies: exif_dep,
+      build_by_default: false,
     ),
     workdir: meson.current_source_dir(),
   )

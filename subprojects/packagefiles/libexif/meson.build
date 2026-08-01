@@ -2,16 +2,20 @@ project(
   'exif',
   'c',
   license: 'LGPL-2.1',
-  version: '0.6.25',
-  meson_version: '>=0.49.0',
+  version: '0.6.26',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
 
-m_dep = cc.find_library(
-  'm',
-  required: false,
+if cc.links(
+  '#include <math.h>\nint main(){log(0);}',
+  name: 'log()',
 )
+  m_dep = declare_dependency()
+else
+  m_dep = cc.find_library('m')
+endif
 if meson.version().version_compare('>= 0.59')
   intl_dep = dependency(
     'intl',
@@ -51,6 +55,15 @@ sources = files(
   'libexif/canon/exif-mnote-data-canon.c',
   'libexif/canon/mnote-canon-entry.c',
   'libexif/canon/mnote-canon-tag.c',
+  'libexif/fuji/exif-mnote-data-fuji.c',
+  'libexif/fuji/mnote-fuji-entry.c',
+  'libexif/fuji/mnote-fuji-tag.c',
+  'libexif/olympus/exif-mnote-data-olympus.c',
+  'libexif/olympus/mnote-olympus-entry.c',
+  'libexif/olympus/mnote-olympus-tag.c',
+  'libexif/pentax/exif-mnote-data-pentax.c',
+  'libexif/pentax/mnote-pentax-entry.c',
+  'libexif/pentax/mnote-pentax-tag.c',
   'libexif/exif-byte-order.c',
   'libexif/exif-content.c',
   'libexif/exif-data.c',
@@ -64,15 +77,6 @@ sources = files(
   'libexif/exif-mnote-data.c',
   'libexif/exif-tag.c',
   'libexif/exif-utils.c',
-  'libexif/fuji/exif-mnote-data-fuji.c',
-  'libexif/fuji/mnote-fuji-entry.c',
-  'libexif/fuji/mnote-fuji-tag.c',
-  'libexif/olympus/exif-mnote-data-olympus.c',
-  'libexif/olympus/mnote-olympus-entry.c',
-  'libexif/olympus/mnote-olympus-tag.c',
-  'libexif/pentax/exif-mnote-data-pentax.c',
-  'libexif/pentax/mnote-pentax-entry.c',
-  'libexif/pentax/mnote-pentax-tag.c',
 )
 
 defs = custom_target(
@@ -114,10 +118,7 @@ exif_dep = declare_dependency(
   include_directories: depinc,
   link_with: exif,
 )
-
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('libexif', exif_dep)
-endif
+meson.override_dependency('libexif', exif_dep)
 
 subdir('contrib')
 subdir('test')
