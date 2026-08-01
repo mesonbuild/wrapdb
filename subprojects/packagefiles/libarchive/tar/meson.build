@@ -9,7 +9,11 @@ src = files(
 )
 
 if host_machine.system() == 'windows'
-  src += 'bsdtar_windows.c'
+  src += files('bsdtar_windows.c')
+  src += import('windows').compile_resources(
+    'bsdtar.rc',
+    depend_files: 'bsdtar.exe.manifest',
+  )
 endif
 
 bsdtar = executable(
