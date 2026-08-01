@@ -1,7 +1,7 @@
 project(
   'libarchive',
   'c',
-  version: '3.8.8',
+  version: '3.8.9',
   license: 'BSD-2-Clause AND BSD-3-Clause AND (CC0-1.0 OR OpenSSL OR Apache-2.0)',
   meson_version: '>=0.56.0',
 )
@@ -721,6 +721,7 @@ functions = [
   'getpwuid_r',
   'getresgid',
   'getresuid',
+  'gettimeofday',
   'getvfsbyname',
   'getxattr',
   'gmtime_r',
