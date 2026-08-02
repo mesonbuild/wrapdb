@@ -1,7 +1,7 @@
 project(
   'giflib',
   'c',
-  version: '5.2.2',
+  version: '6.1.3',
   meson_version: '>=0.59.0',
   license: 'MIT',
 )
@@ -46,7 +46,8 @@ foreach _hdr : ['limits.h', 'fcntl.h', 'stdint.h', 'stdarg.h']
 endforeach
 
 # No `strtok_r` when building with MSVC, use `strtok_s` instead.
-if (host_machine.system() == 'windows'
+if (
+  host_machine.system() == 'windows'
   and not cc.has_header_symbol('string.h', 'strtok_r')
   and cc.has_header_symbol('string.h', 'strtok_s')
 )
@@ -85,10 +86,11 @@ install_headers('gif_lib.h')
 
 if enable_progs or enable_tests
 
-  m_dep = cc.find_library(
-    'm',
-    required: false,
-  )
+  if cc.links('#include <math.h>\nint main(){log(0);}')
+    m_dep = declare_dependency()
+  else
+    m_dep = cc.find_library('m')
+  endif
 
   util_lib = static_library(
     'util',
@@ -103,40 +105,40 @@ if enable_progs or enable_tests
   # `GifAsciiTable8x8` (required) in the def file.
   _programs = [
     # name        build?                           install?
-    ['gif2rgb'  , true, enable_progs],
-    ['gifbg'    , enable_progs, false],
-    ['gifbuild' , true, enable_progs],
-    ['gifclrmp' , true, enable_progs],
-    ['gifcolor' , enable_progs and not cc_is_msvc, false],
-    ['gifecho'  , not cc_is_msvc, false],
+    ['gif2rgb', true, enable_progs],
+    ['gifbg', enable_progs, false],
+    ['gifbuild', true, enable_progs],
+    ['gifclrmp', true, enable_progs],
+    ['gifcolor', enable_progs and not cc_is_msvc, false],
+    ['gifecho', not cc_is_msvc, false],
     ['giffilter', true, false],
-    ['giffix'   , true, enable_progs],
-    ['gifhisto' , enable_progs, false],
-    ['gifinto'  , true, false],
+    ['giffix', true, enable_progs],
+    ['gifhisto', enable_progs, false],
+    ['gifinto', true, false],
     ['gifsponge', true, false],
-    ['giftext'  , true, enable_progs],
-    ['gifwedge' , true, false],
+    ['giftext', true, enable_progs],
+    ['gifwedge', true, false],
   ]
 
   if cc.has_header('getopt.h')
     _programs += [['giftool', true, enable_progs]]
     giftool_tests = [
       [
-        'copy'       ,
-        ''      ,
-        'pic/gifgrid.gif'            ,
+        'copy',
+        '',
+        'pic/gifgrid.gif',
         'tests/gifgrid.rgb',
       ],
       [
         'deinterlace',
-        '-i on' ,
+        '-i on',
         'pic/treescap-interlaced.gif',
         'tests/treescap.rgb',
       ],
       [
-        'interlace'  ,
+        'interlace',
         '-i off',
-        'pic/treescap.gif'           ,
+        'pic/treescap.gif',
         'tests/treescap-interlaced.rgb',
       ],
     ]
@@ -255,7 +257,7 @@ if enable_tests
   # Test gifclrmp, giftext.
   foreach _suite, _ext : {
     'gifclrmp': '.map',
-    'giftext' : '.dmp',
+    'giftext': '.dmp',
   }
     _prog = get_variable(_suite)
     foreach _gif : gifs
