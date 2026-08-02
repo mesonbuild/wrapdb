@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libpsl-0.23.0
-source_url = https://github.com/rockdaboot/libpsl/releases/download/0.23.0/libpsl-0.23.0.tar.gz
-source_filename = libpsl-0.23.0.tar.gz
-source_hash = f39b9631b3d369a21259ea4654f8875c0ec6995ce9551c0eb5d423e4c011f911
+directory = libpsl-0.23.1
+source_url = https://github.com/rockdaboot/libpsl/releases/download/0.23.1/libpsl-0.23.1.tar.gz
+source_filename = libpsl-0.23.1.tar.gz
+source_hash = 8fbb03054556498ba9c4cc48fcaa36a4483748c6504a65bdb9ba348f555b0e56
 
 [provide]
 libpsl = libpsl_dep
