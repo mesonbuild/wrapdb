@@ -2,7 +2,8 @@ project(
   'littlefs',
   'c',
   license: 'BSD-3-Clause',
-  version: '2.11.2',
+  version: '2.11.3',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
@@ -27,6 +28,4 @@ littlefs_dep = declare_dependency(
   include_directories: littlefs_inc,
   link_with: littlefs_lib,
 )
-if meson.version().version_compare('>=0.54.0')
-  meson.override_dependency('littlefs', littlefs_dep)
-endif
+meson.override_dependency('littlefs', littlefs_dep)
