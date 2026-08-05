@@ -1,9 +1,9 @@
 [wrap-file]
-directory = msgpack-cxx-7.0.0
-source_url = https://github.com/msgpack/msgpack-c/releases/download/cpp-7.0.0/msgpack-cxx-7.0.0.tar.gz
-source_filename = msgpack-cxx-7.0.0.tar.gz
-source_hash = 7504b7af7e7b9002ce529d4f941e1b7fb1fb435768780ce7da4abaac79bb156f
+directory = msgpack-cxx-8.0.0
+source_url = https://github.com/msgpack/msgpack-c/releases/download/cpp-8.0.0/msgpack-cxx-8.0.0.tar.gz
+source_filename = msgpack-cxx-8.0.0.tar.gz
+source_hash = 4a3c0c0ac55ef4456c2d0b93c21b5d105aa3a8f21ef8fa9758550feaf989b92f
 patch_directory = msgpackc-cxx
 
 [provide]
-msgpack-cxx = msgpack_cxx_dep
+dependency_names = msgpack-cxx
