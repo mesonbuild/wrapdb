@@ -81,6 +81,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'icu': {
         'export_module.py'
     },
+    'id3tag': {
+        'genre_dat.py',
+    },
     'lame': {
         'fix_def.py',
         'sym2ver.py',
