@@ -1,8 +1,9 @@
 project(
   'msgpack-cxx',
   'cpp',
-  version: '7.0.0',
-  meson_version: '>=0.48.0',
+  version: '8.0.0',
+  meson_version: '>=0.56.0',
+  license: 'BSL-1.0',
 )
 
 args = []
@@ -36,6 +37,7 @@ msgpack_cxx_dep = declare_dependency(
   include_directories: include_directories('include'),
   dependencies: boost_dep,
 )
+meson.override_dependency('msgpack-cxx', msgpack_cxx_dep)
 
 install_headers('include/msgpack.hpp')
 install_subdir(
