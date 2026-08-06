@@ -44,11 +44,11 @@ audio_cpp_args += [
 audio_cpp_args += '-DMA_USE_STDINT'
 
 miniaudio_dep = dependency('miniaudio')
-flac_dep = dependency('flac')
-vorbis_dep = dependency('vorbis')
+flac_dep = dependency('flac', version: '>=1.5.0')
+vorbis_dep = dependency('vorbis', version: '>=1.3.7')
 vorbisenc_dep = dependency('vorbisenc')
 vorbisfile_dep = dependency('vorbisfile')
-ogg_dep = dependency('ogg')
+ogg_dep = dependency('ogg', version: '>=1.3.6')
 
 audio_lib = library(
   'sfml-audio',
