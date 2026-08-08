@@ -1463,6 +1463,20 @@
       "cpp_std=c++14"
     ]
   },
+  "robin-map": {
+    "alpine_packages": [
+      "boost-dev"
+    ],
+    "brew_packages": [
+      "boost"
+    ],
+    "debian_packages": [
+      "libboost-test-dev"
+    ],
+    "msys_packages": [
+      "boost"
+    ]
+  },
   "rubberband": {
     "_comment": "Project uses newer feature but targets older Meson",
     "fatal_warnings": false
