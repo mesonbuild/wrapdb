@@ -79,8 +79,8 @@ src = [
 
 is_can_be_installed = cc.get_id() != 'msvc'
 
-if is_can_be_installed
-  install_headers(
+
+install_headers(
     'include/enet/callbacks.h',
     'include/enet/enet.h',
     'include/enet/list.h',
@@ -91,8 +91,7 @@ if is_can_be_installed
     'include/enet/utility.h',
     'include/enet/win32.h',
     subdir : 'enet'
-  )
-endif
+)
 
 incdir = include_directories('include')
 enetlib = library(
@@ -102,7 +101,8 @@ enetlib = library(
   name_prefix: '',
   dependencies: deps,
   c_args: c_args,
-  install: is_can_be_installed,
+  install: true,
+  vs_module_defs: 'msvc_export.def'
 )
 
 enet_dep = declare_dependency(
