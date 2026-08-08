@@ -98,6 +98,7 @@ enetlib = library(
   dependencies: deps,
   c_args: c_args,
   install: true,
+  vs_module_defs: 'with_public_symbols',
 )
 
 enet_dep = declare_dependency(
