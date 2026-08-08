@@ -3,7 +3,7 @@ project(
   'c',
   version: '1.3.18',
   license: 'mit',
-  meson_version: '>=0.54.0',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
@@ -77,6 +77,22 @@ src = [
   'win32.c',
 ]
 
+is_can_be_installed = cc.get_id() != 'msvc'
+
+if is_can_be_installed
+  install_headers(
+    'include/enet/callbacks.h',
+    'include/enet/enet.h',
+    'include/enet/list.h',
+    'include/enet/protocol.h',
+    'include/enet/time.h',
+    'include/enet/types.h',
+    'include/enet/unix.h',
+    'include/enet/utility.h',
+    'include/enet/win32.h',
+  )
+endif
+
 incdir = include_directories('include')
 enetlib = library(
   'libenet',
@@ -85,6 +101,7 @@ enetlib = library(
   name_prefix: '',
   dependencies: deps,
   c_args: c_args,
+  install: is_can_be_installed,
 )
 
 enet_dep = declare_dependency(
