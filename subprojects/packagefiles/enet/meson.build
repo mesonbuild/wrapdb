@@ -77,9 +77,6 @@ src = [
   'win32.c',
 ]
 
-is_can_be_installed = cc.get_id() != 'msvc'
-
-
 install_headers(
     'include/enet/callbacks.h',
     'include/enet/enet.h',
