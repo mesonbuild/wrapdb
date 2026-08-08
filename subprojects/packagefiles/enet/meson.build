@@ -90,6 +90,7 @@ if is_can_be_installed
     'include/enet/unix.h',
     'include/enet/utility.h',
     'include/enet/win32.h',
+    subdir : 'enet'
   )
 endif
 
