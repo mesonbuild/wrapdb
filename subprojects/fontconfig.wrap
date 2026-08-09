@@ -1,9 +1,9 @@
 [wrap-file]
-directory = fontconfig-2.16.2
+directory = fontconfig-2.18.3
 
-source_url = https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.16.2/fontconfig-2.16.2.tar.xz
-source_filename = fontconfig-2.16.2.tar.xz
-source_hash = 165b8fd2a119864c87464b233986c4a1bc09efb09c65de1ca40cc1e85ffb77e2
+source_url = https://gitlab.freedesktop.org/api/v4/projects/890/packages/generic/fontconfig/2.18.3/fontconfig-2.18.3.tar.xz
+source_filename = fontconfig-2.18.3.tar.xz
+source_hash = 4f7b554a38cdf78c033f666c8871f3749e14a094f65a07f630c91ed0b43d35e3
 
 [provide]
 fontconfig = fontconfig_dep
