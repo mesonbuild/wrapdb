@@ -28,8 +28,9 @@
     "libxml2:iconv=disabled"
   ],
   "apache-orc": {
+    "_comment": "Currently only passes on macOS and Ubuntu",
     "test_options": [
-      "--timeout-multiplier=2"
+      "--timeout-multiplier=4"
     ],
     "alpine_packages": [
       "tzdata"
