@@ -19,7 +19,7 @@ py = py_mod.find_installation()
 py_dep = py.dependency()
 
 robin_map_dep = dependency(
-  'robin-map',
+  'tsl-robin-map',
   version: '>=1.4.0',
 )
 
