@@ -86,30 +86,30 @@ jobs:
         run: |
           - platform: aarch64
             runner: ubuntu-24.04-arm
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/aarch64/apk.static#!sha256!a573ef057cff787b2a50b5f391ab89aea789fe30c238154d66726313a17e6f8a'
           - platform: armv7
             runner: ubuntu-24.04-arm
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/aarch64/apk.static#!sha256!a573ef057cff787b2a50b5f391ab89aea789fe30c238154d66726313a17e6f8a'
           - platform: loongarch64
             runner: ubuntu-24.04-arm
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/aarch64/apk.static#!sha256!a573ef057cff787b2a50b5f391ab89aea789fe30c238154d66726313a17e6f8a'
           - platform: ppc64le
             runner: ubuntu-24.04-ppc64le
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/ppc64le/apk.static#!sha256!fb576913fe730e039c9ca55f78c0686053aa2c3d9c4c593822a6e70ae36f0472'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/ppc64le/apk.static#!sha256!714c96431c7c821887148c55602e6aa17f0568805b4de4f381f562cee523fc2a'
             selfhosted: true
           - platform: riscv64
             runner: ubuntu-24.04-arm
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/aarch64/apk.static#!sha256!e471d35aa221d031abe9b6288aede12a8e9f1a398954e5a2e1d1bce1727b4ef4'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/aarch64/apk.static#!sha256!a573ef057cff787b2a50b5f391ab89aea789fe30c238154d66726313a17e6f8a'
           - platform: s390x
             runner: ubuntu-24.04-s390x
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/s390x/apk.static#!sha256!6880a5f5e7f62e1f4c47ad3a75d699f9b1f99f3f20f9f8be01637bef1012b8e7'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/s390x/apk.static#!sha256!609e729890c89a353c59d4130b764d590c8ff471126af14fabb4732bccc15792'
             selfhosted: true
           - platform: x86
             runner: ubuntu-latest
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/x86_64/apk.static#!sha256!34bb1a96f0258982377a289392d4ea9f3f4b767a4bb5806b1b87179b79ad8a1c'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/x86_64/apk.static#!sha256!c07bf5356eacc9dd7a8c56bc537f46702f007170287403299d52a04264e74b3c'
           - platform: x86_64
             runner: ubuntu-latest
-            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v2.14.10/x86_64/apk.static#!sha256!34bb1a96f0258982377a289392d4ea9f3f4b767a4bb5806b1b87179b79ad8a1c'
+            apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/x86_64/apk.static#!sha256!c07bf5356eacc9dd7a8c56bc537f46702f007170287403299d52a04264e74b3c'
 
   Ubuntu:
     name: Ubuntu (${{ matrix.platform }})
