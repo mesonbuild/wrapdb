@@ -101,6 +101,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
+      fail-fast: false
       matrix:
         include: ${{ fromJson(needs.prelude.outputs.matrix-ubuntu) }}
     steps:
@@ -132,6 +133,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
+      fail-fast: false
       matrix:
         include: ${{ fromJson(needs.prelude.outputs.matrix-alpine) }}
     steps:
@@ -178,6 +180,7 @@ jobs:
     runs-on: windows-latest
     needs: prelude
     strategy:
+      fail-fast: false
       matrix:
         platform: ['x64', 'x86']
     steps:
@@ -248,6 +251,7 @@ jobs:
     runs-on: windows-latest
     needs: prelude
     strategy:
+      fail-fast: false
       matrix:
         platform: ['UCRT64', 'CLANG64']
     steps:
@@ -297,6 +301,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs: prelude
     strategy:
+      fail-fast: false
       matrix:
         include:
           - platform: arm64
