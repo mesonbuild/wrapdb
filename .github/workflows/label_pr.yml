@@ -1,0 +1,27 @@
+# Privileged workflow to label PRs
+
+name: Label PR
+
+on:
+  pull_request_target:
+    branches: [master]
+    types: [synchronize]
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  label:
+    name: Process
+    runs-on: ubuntu-slim
+    steps:
+      - name: Remove needs-fixes label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit -R "${{ github.repository }}" \
+              "${{ github.event.number }}" \
+              --remove-label "needs fixes"
