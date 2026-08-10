@@ -1,6 +1,6 @@
 functional_test = {
-  'fun.bind_back' : files('bind_back.cpp'),
-  'fun.on' : files('on.cpp'),
+  'fun.bind_back': files('bind_back.cpp'),
+  'fun.on': files('on.cpp'),
 }
 
 foreach name, sources : functional_test
