@@ -1,0 +1,10 @@
+option(
+    'exclude_slipif',
+    type: 'boolean',
+)
+option(
+    'lwip_debug',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable lwIP debug infrastructure',
+)
