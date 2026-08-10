@@ -1,0 +1,9 @@
+[wrap-file]
+directory = metal-cpp-macOS15-iOS18
+source_url = https://developer.apple.com/metal/cpp/files/metal-cpp_macOS15_iOS18.zip
+source_filename = metal-cpp_macOS15_iOS18.zip
+source_hash = 0433df1e0ab13c2b0becbd78665071e3fa28381e9714a3fce28a497892b8a184
+patch_directory = metal-cpp_macOS15_iOS18
+
+[provide]
+metal_cpp_macos15_ios18 = metal_cpp_macos15_ios18_dep
