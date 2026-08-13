@@ -1,9 +1,9 @@
 project(
   'asio',
   'cpp',
-  version: '1.36.0',
+  version: '1.38.2',
   license: 'BSL-1.0',
-  meson_version: '>=0.49.0',
+  meson_version: '>=0.56.0',
 )
 
 asio_deps = []
@@ -19,6 +19,7 @@ asio_dep = declare_dependency(
   include_directories: include_directories('include'),
   dependencies: asio_deps,
 )
+meson.override_dependency('asio', asio_dep)
 
 install_headers('include/asio.hpp')
 install_subdir(
