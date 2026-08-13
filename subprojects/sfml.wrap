@@ -1,8 +1,8 @@
 [wrap-file]
-directory = SFML-3.0.2
-source_url = https://github.com/SFML/SFML/archive/refs/tags/3.0.2.tar.gz
-source_filename = SFML-3.0.2.tar.gz
-source_hash = 0034e05f95509e5d3fb81b1625713e06da7b068f210288ce3fd67106f8f46995
+directory = SFML-3.1.0
+source_url = https://github.com/SFML/SFML/archive/refs/tags/3.1.0.tar.gz
+source_filename = SFML-3.1.0.tar.gz
+source_hash = 91209a112c2bd0bc6f4ce0d5f3e413cfb48b57c0de59f5507dc81f71b1ad7a5c
 patch_directory = sfml
 
 [provide]
