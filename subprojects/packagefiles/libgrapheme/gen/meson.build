@@ -1,5 +1,11 @@
 gendir = include_directories('.')
 gen_headers_tgt = {
+  'bidirectional': files(
+    '../data/BidiBrackets.txt',
+    '../data/BidiMirroring.txt',
+    '../data/DerivedBidiClass.txt',
+    '../data/UnicodeData.txt',
+  ),
   'case': files(
     '../data/DerivedCoreProperties.txt',
     '../data/SpecialCasing.txt',
@@ -10,20 +16,28 @@ gen_headers_tgt = {
     '../data/GraphemeBreakProperty.txt',
     '../data/emoji-data.txt',
   ),
-  'character-test': files('../data/GraphemeBreakTest.txt'),
   'line': files(
     '../data/EastAsianWidth.txt',
     '../data/LineBreak.txt',
     '../data/emoji-data.txt',
   ),
-  'line-test': files('../data/LineBreakTest.txt'),
   'sentence': files('../data/SentenceBreakProperty.txt'),
-  'sentence-test': files('../data/SentenceBreakTest.txt'),
   'word': files('../data/WordBreakProperty.txt'),
-  'word-test': files('../data/WordBreakTest.txt'),
 }
 
-chdir_wrapper = files('chdir_wrapper.py')
+if get_option('test') or get_option('benchmark')
+  gen_headers_tgt = gen_headers_tgt + {
+    'bidirectional-test': files(
+      '../data/BidiCharacterTest.txt',
+      '../data/BidiTest.txt',
+    ),
+    'character-test': files('../data/GraphemeBreakTest.txt'),
+    'line-test': files('../data/LineBreakTest.txt'),
+    'sentence-test': files('../data/SentenceBreakTest.txt'),
+    'word-test': files('../data/WordBreakTest.txt'),
+  }
+endif
+
 gen_headers = []
 foreach exe_name, data_files : gen_headers_tgt
   src = exe_name + '.c'
