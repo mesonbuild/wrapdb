@@ -439,6 +439,14 @@
       "1.18.0-1"
     ]
   },
+  "capnp-janet": {
+    "dependency_names": [
+      "capnp-janet"
+    ],
+    "versions": [
+      "0.2.5-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",

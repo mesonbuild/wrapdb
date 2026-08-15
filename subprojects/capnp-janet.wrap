@@ -1,0 +1,8 @@
+[wrap-file]
+directory = capnp-janet-0.2.5
+source_url = https://github.com/HaoZeke/capnp-janet/archive/refs/tags/v0.2.5.tar.gz
+source_filename = capnp-janet-0.2.5.tar.gz
+source_hash = f8274cb7802a6caeaa6aeb1d64acae0e78c824af7ce5a37888c3b718a7712267
+
+[provide]
+dependency_names = capnp-janet
