@@ -439,6 +439,14 @@
       "1.18.0-1"
     ]
   },
+  "capnp-fortran": {
+    "dependency_names": [
+      "capnp-fortran"
+    ],
+    "versions": [
+      "0.3.0-1"
+    ]
+  },
   "catch": {
     "versions": [
       "2.2.2-1",

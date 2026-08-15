@@ -160,6 +160,21 @@
   "cairomm": {
     "ignore_upstream_meson": "1.18.0"
   },
+  "capnp-fortran": {
+    "_comment": "Fortran; gfortran is what the runners need",
+    "alpine_packages": [
+      "gfortran"
+    ],
+    "brew_packages": [
+      "gfortran"
+    ],
+    "debian_packages": [
+      "gfortran"
+    ],
+    "msys_packages": [
+      "fc"
+    ]
+  },
   "cexception": {
     "build_options": [
       "cexception:werror=false"

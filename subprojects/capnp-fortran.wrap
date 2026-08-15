@@ -1,0 +1,8 @@
+[wrap-file]
+directory = capnp-fortran-0.3.0
+source_url = https://github.com/HaoZeke/capnp-fortran/archive/refs/tags/v0.3.0.tar.gz
+source_filename = capnp-fortran-0.3.0.tar.gz
+source_hash = c873f0ad032d12d5a7a8419f56c7e7fee96d71c806599eaa0feca3a105e7df88
+
+[provide]
+dependency_names = capnp-fortran
