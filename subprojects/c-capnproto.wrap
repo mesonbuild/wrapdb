@@ -1,0 +1,8 @@
+[wrap-file]
+directory = c-capnproto-0.4.1
+source_url = https://github.com/HaoZeke/c-capnproto/archive/refs/tags/v0.4.1.tar.gz
+source_filename = c-capnproto-0.4.1.tar.gz
+source_hash = 33b8d08f47914308db229a6004e9019fdec32a9e7cd147c908c62421e9b268c1
+
+[provide]
+dependency_names = c-capnproto

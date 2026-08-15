@@ -407,6 +407,14 @@
       "1.20.1-1"
     ]
   },
+  "c-capnproto": {
+    "dependency_names": [
+      "c-capnproto"
+    ],
+    "versions": [
+      "0.4.1-1"
+    ]
+  },
   "c-flags": {
     "dependency_names": [
       "c-flags"
