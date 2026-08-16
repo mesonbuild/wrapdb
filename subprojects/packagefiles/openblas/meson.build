@@ -31,6 +31,11 @@ if host_machine.cpu_family() not in supported_architectures
     f'unsupported architecture: Building OpenBLAS with Meson is currently not supported on @cpu_family@.',
   )
 endif
+# GNU meson port. wrapdb VS jobs set build_on.windows=false and require
+# the configure error to contain "unsupported", not a compiler ICE.
+if meson.get_compiler('c').get_id() in ['msvc', 'clang-cl']
+  error('unsupported: OpenBLAS meson port does not support MSVC or clang-cl')
+endif
 
 # why not just  (not meson.is_subproject())
 as_subproject = get_option('as_subproject')
