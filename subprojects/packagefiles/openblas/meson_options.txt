@@ -187,6 +187,14 @@ option(
 )
 # option('exprecision', type: 'boolean', value: false, description: 'Build the q suffixes')
 
+# For overriding CORE from meson
+option(
+    'target',
+    type: 'string',
+    value: 'UNKNOWN',
+    description: 'Overrides detection',
+)
+
 # Meson only
 # This is the equivalent of producing all precisions via make all inside lapack-netlib/blas/src
 option(
