@@ -2177,11 +2177,29 @@ search_order = [base_dict]
 if conf_hdat.has('ARCH_X86_64')
   subdir('x86_64')
   search_order = [x86_64_base_dict] + search_order
-  if conf_hdat.has('HASWELL')
+  if conf_hdat.has('HASWELL') or conf_hdat.has('COOPERLAKE') or conf_hdat.has(
+    'SAPPHIRERAPIDS',
+  ) or conf_hdat.has(
+    'ICELAKE_SERVER',
+  ) or conf_hdat.has(
+    'CASCADELAKE',
+  ) or conf_hdat.has(
+    'ALDERLAKE',
+  ) or conf_hdat.has(
+    'SAPPHIRERAPIDS_SPR',
+  ) or conf_hdat.has(
+    'SKYLAKE',
+  )
     search_order = [x86_64_haswell_dict] + search_order
   elif conf_hdat.has('SKYLAKEX')
     search_order = [x86_64_skylakex_dict, x86_64_haswell_dict] + search_order
-  elif conf_hdat.has('ZEN')
+  elif conf_hdat.has('ZEN') or conf_hdat.has('ZEN2') or conf_hdat.has(
+    'ZEN3',
+  ) or conf_hdat.has(
+    'ZEN4',
+  ) or conf_hdat.has(
+    'ZEN5',
+  )
     search_order = [x86_64_zen_dict] + search_order
   elif conf_hdat.has('SANDYBRIDGE')
     search_order = [x86_64_sandybridge_dict] + search_order

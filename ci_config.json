@@ -1268,9 +1268,8 @@
       "gfortran"
     ],
     "msys_packages": [
-      "base-devel",
-      "mingw-w64-ucrt-x86_64-toolchain",
-      "mingw-w64-ucrt-x86_64-fc"
+      "toolchain",
+      "fc"
     ]
   },
   "openh264": {
