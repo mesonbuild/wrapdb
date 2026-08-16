@@ -1256,6 +1256,13 @@
   },
   "openblas": {
     "ignore_upstream_meson": "0.3.34",
+    "_comment": "Meson port is GNU/UCRT. Native VS and CLANG64 fail (gnu11, flang-new). Pin HASWELL so Alpine/QEMU does not compile AVX-512 SKYLAKEX kernels.",
+    "build_on": {
+      "windows": false
+    },
+    "build_options": [
+      "openblas:target=HASWELL"
+    ],
     "alpine_packages": [
       "gfortran"
     ],

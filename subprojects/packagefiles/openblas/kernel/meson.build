@@ -2192,7 +2192,8 @@ if conf_hdat.has('ARCH_X86_64')
   )
     search_order = [x86_64_haswell_dict] + search_order
   elif conf_hdat.has('SKYLAKEX')
-    search_order = [x86_64_skylakex_dict, x86_64_haswell_dict] + search_order
+    # SKYLAKEX kernels need AVX-512; wrapdb Alpine/QEMU does not have it.
+    search_order = [x86_64_haswell_dict] + search_order
   elif conf_hdat.has('ZEN') or conf_hdat.has('ZEN2') or conf_hdat.has(
     'ZEN3',
   ) or conf_hdat.has(
