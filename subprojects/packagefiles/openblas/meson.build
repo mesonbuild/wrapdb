@@ -207,18 +207,33 @@ if cpu_fam == 'x86_64'
   _cargs += ['-m64']
 endif
 
-if fc_id == 'gcc'
-  add_project_arguments(
-    '-DF_INTERFACE_GFORT',
-    language: 'c',
-  )
-else
-  upper_fcid = fc_id.to_upper()
-  add_project_arguments(
-    f'-DF_INTERFACE_@upper_fcid@',
-    language: 'c',
-  )
-endif
+f_interface_map = {
+  'gcc': 'GFORT',
+  'lcc': 'GFORT',
+  'llvm-flang': 'GFORT',
+  'llvm': 'GFORT',
+  'intel': 'INTEL',
+  'intel-cl': 'INTEL',
+  'intel-llvm': 'INTEL',
+  'intel-llvm-cl': 'INTEL',
+  'flang': 'FLANG',
+  'armltdflang': 'FLANG',
+  'pgi': 'PGI',
+  'nvidia_hpc': 'PGI',
+  'ibm': 'IBM',
+  'compaq': 'COMPAQ',
+  'sun': 'SUN',
+  'g95': 'G95',
+  'pathscale': 'PATHSCALE',
+  'open64': 'OPEN64',
+  'nagfor': 'NAG',
+  'fujitsu': 'FUJITSU',
+}
+f_interface = f_interface_map.get(fc_id, 'GFORT')
+add_project_arguments(
+  f'-DF_INTERFACE_@f_interface@',
+  language: 'c',
+)
 
 # Warnings from LAPACK that we're not interested in seeing:
 add_project_arguments(
