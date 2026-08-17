@@ -1387,17 +1387,18 @@ foreach key, val : conf_kv
   endif
 endforeach
 
-# MSYS2 UCRT64 getarch reports Sapphire Rapids and defines
-# HAVE_AVX512* / SAPPHIRERAPIDS. This port has no -mavx512f
-# (those flags break tests) and uses the Haswell overlay, so
-# Windows C sources must not take the AVX-512 branches
-# (drot.c, sgemm_direct_skylakex.c). Leave Linux/macOS alone.
+# getarch on Cooper Lake / Sapphire Rapids defines HAVE_AVX512*
+# and those CORE names. This port has no -mavx512f (those flags
+# break tests) and uses the Haswell overlay, so drot.c takes the
+# simd AVX-512 path and fails. Remap those cores to HASWELL.
+# Leave SKYLAKEX alone: it uses drot_microk_skylakex and is what
+# Alpine x86_64 getarch reports.
 _getarch_avx512 = (
   conf_hdat.has('HAVE_AVX512VL')
   or conf_hdat.has('HAVE_AVX512F')
   or conf_hdat.has('HAVE_AVX512BF16')
 )
-if _getarch_avx512 and host_machine.system() == 'windows'
+if _getarch_avx512 and not conf_hdat.has('SKYLAKEX')
   run_command(
     py3,
     f'@_msproot@/write_to_file.py',
