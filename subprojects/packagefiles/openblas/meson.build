@@ -1387,17 +1387,17 @@ foreach key, val : conf_kv
   endif
 endforeach
 
-# getarch on Skylake-X / Cooper Lake / Sapphire Rapids defines
-# HAVE_AVX512*. This port does not pass -mavx512f (those flags
-# break tests) and uses the Haswell kernel overlay, so C sources
-# must not see the AVX-512 macros or they include avx512fintrin.h
-# and fail to compile (MSYS2 UCRT64 drot.c).
+# MSYS2 UCRT64 getarch reports Sapphire Rapids and defines
+# HAVE_AVX512* / SAPPHIRERAPIDS. This port has no -mavx512f
+# (those flags break tests) and uses the Haswell overlay, so
+# Windows C sources must not take the AVX-512 branches
+# (drot.c, sgemm_direct_skylakex.c). Leave Linux/macOS alone.
 _getarch_avx512 = (
   conf_hdat.has('HAVE_AVX512VL')
   or conf_hdat.has('HAVE_AVX512F')
   or conf_hdat.has('HAVE_AVX512BF16')
 )
-if _getarch_avx512
+if _getarch_avx512 and host_machine.system() == 'windows'
   run_command(
     py3,
     f'@_msproot@/write_to_file.py',
@@ -1416,6 +1416,15 @@ if _getarch_avx512
 #endif
 #ifdef HAVE_AVX512CD
 #undef HAVE_AVX512CD
+#endif
+#ifdef SKYLAKEX
+#undef SKYLAKEX
+#endif
+#ifdef COOPERLAKE
+#undef COOPERLAKE
+#endif
+#ifdef SAPPHIRERAPIDS
+#undef SAPPHIRERAPIDS
 #endif
 #ifndef HASWELL
 #define HASWELL 1
