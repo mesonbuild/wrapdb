@@ -1387,6 +1387,45 @@ foreach key, val : conf_kv
   endif
 endforeach
 
+# getarch on Skylake-X / Cooper Lake / Sapphire Rapids defines
+# HAVE_AVX512*. This port does not pass -mavx512f (those flags
+# break tests) and uses the Haswell kernel overlay, so C sources
+# must not see the AVX-512 macros or they include avx512fintrin.h
+# and fail to compile (MSYS2 UCRT64 drot.c).
+_getarch_avx512 = (
+  conf_hdat.has('HAVE_AVX512VL')
+  or conf_hdat.has('HAVE_AVX512F')
+  or conf_hdat.has('HAVE_AVX512BF16')
+)
+if _getarch_avx512
+  run_command(
+    py3,
+    f'@_msproot@/write_to_file.py',
+    '''
+#ifdef HAVE_AVX512VL
+#undef HAVE_AVX512VL
+#endif
+#ifdef HAVE_AVX512BF16
+#undef HAVE_AVX512BF16
+#endif
+#ifdef HAVE_AVX512F
+#undef HAVE_AVX512F
+#endif
+#ifdef HAVE_AVX512DQ
+#undef HAVE_AVX512DQ
+#endif
+#ifdef HAVE_AVX512CD
+#undef HAVE_AVX512CD
+#endif
+#ifndef HASWELL
+#define HASWELL 1
+#endif
+''',
+    _config_h,
+    check: true,
+  )
+endif
+
 # Define target-specific data in a dictionary
 target_data = {
   # These are from prebuild.cmake
