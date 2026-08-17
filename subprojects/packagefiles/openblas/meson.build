@@ -31,12 +31,13 @@ if host_machine.cpu_family() not in supported_architectures
     f'unsupported architecture: Building OpenBLAS with Meson is currently not supported on @cpu_family@.',
   )
 endif
-# GNU meson port. wrapdb VS uses build_on.windows=false. MSYS2 CLANG
-# still has expect_working=true, so sanity_checks only skips when this
-# error contains "unsupported architecture".
-if meson.get_compiler('c').get_id() in ['msvc', 'clang-cl', 'clang'] and host_machine.system() == 'windows'
+# wrapdb Windows jobs (VS, CLANG64, UCRT64) have expect_working=true
+# unless build_on.<system> is false. UCRT64 gcc compiles then fails
+# to link (blas_level3_thread_*, *larf1f_, *laswp_). Skip all
+# Windows configure with the sanity_checks skip string.
+if host_machine.system() == 'windows'
   error(
-    'unsupported architecture: OpenBLAS meson port does not support MSVC/clang on Windows',
+    'unsupported architecture: OpenBLAS meson port does not support Windows',
   )
 endif
 

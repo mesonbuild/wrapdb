@@ -1256,7 +1256,7 @@
   },
   "openblas": {
     "ignore_upstream_meson": "0.3.34",
-    "_comment": "Meson port is GNU/UCRT. Native VS and CLANG64 fail (gnu11, flang-new).",
+    "_comment": "Meson port is GNU/Linux/macOS. Windows configure errors (gnu11, flang-new, UCRT64 link).",
     "build_on": {
       "windows": false
     },
