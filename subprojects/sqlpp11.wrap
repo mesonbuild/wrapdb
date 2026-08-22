@@ -7,4 +7,4 @@ patch_directory = sqlpp11
 
 [provide]
 sqlpp11 = sqlpp11_dep
-program_names = ddl2cpp
+program_names = ddl2cpp, sqlite2cpp

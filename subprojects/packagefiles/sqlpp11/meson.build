@@ -5,7 +5,8 @@ project(
   license: 'BSD-2-Clause',
 )
 
-meson.override_find_program('ddl2cpp', files('scripts/ddl2cpp'))
+meson.override_find_program('ddl2cpp', find_program('scripts/ddl2cpp'))
+meson.override_find_program('sqlite2cpp', find_program('scripts/sqlite2cpp.py'))
 
 connector_deps = []
 
