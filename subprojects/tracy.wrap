@@ -1,8 +1,8 @@
 [wrap-file]
-directory = tracy-0.14.0
-source_url = https://github.com/wolfpld/tracy/archive/refs/tags/v0.14.0.tar.gz
-source_filename = tracy-0.14.0.tar.gz
-source_hash = a932cf2a90adbf63f87b449fa4374a52f18a36c4a3858d4d69d3e75d62fa5f6a
+directory = tracy-0.14.1
+source_url = https://github.com/wolfpld/tracy/archive/refs/tags/v0.14.1.tar.gz
+source_filename = tracy-0.14.1.tar.gz
+source_hash = bf4af567e9c7524d07f3caa745fad02fb33bd5694f11910750382d1efbb251c1
 
 [provide]
 dependency_names = tracy
