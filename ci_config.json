@@ -1463,6 +1463,26 @@
       "cpp_std=c++14"
     ]
   },
+  "readcon-core": {
+    "_comment": "cxx wrap builds the Rust crate via cargo; rustc is not on the default image",
+    "alpine_packages": [
+      "cargo",
+      "rust"
+    ],
+    "brew_packages": [
+      "rust"
+    ],
+    "choco_packages": [
+      "rust"
+    ],
+    "debian_packages": [
+      "cargo",
+      "rustc"
+    ],
+    "msys_packages": [
+      "rust"
+    ]
+  },
   "robin-map": {
     "alpine_packages": [
       "boost-dev"
