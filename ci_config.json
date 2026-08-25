@@ -220,7 +220,7 @@
       "openssl"
     ]
   },
-  "csfml" : {
+  "csfml": {
     "alpine_packages": [
       "libudev-zero-dev",
       "libxi-dev",
@@ -238,8 +238,8 @@
     "_comment": [
       "don't bother installing samba: not usable by the testuite due to smbd non-standard install name",
       "don't install stunnel: it breaks the testsuite (certificates issues)",
-      "even with libpsl installed, the dependency is not detected…",
-      "ditto with openldap (“unknown version” at dependency check)"
+      "even with libpsl installed, the dependency is not detected\u2026",
+      "ditto with openldap (\u201cunknown version\u201d at dependency check)"
     ],
     "alpine_packages": [
       "bash",
@@ -365,8 +365,7 @@
     "_comment": [
       "- making glib subproject build warning free on cl and clang-cl at the same time seems to not be possible"
     ],
-    "build_on": {
-    }
+    "build_on": {}
   },
   "fontconfig": {
     "_comment": [
@@ -521,7 +520,7 @@
     ],
     "fatal_warnings": false
   },
-"gobject-introspection" : {
+  "gobject-introspection": {
     "__comment": [
       " - Disable fatal_warnings because without doctool and cairo-gobject the wrap cannot execute all tests and generates a warning, and meson.build uses a deprecated str.format feature"
     ],
@@ -549,7 +548,7 @@
     "skip_program_check": [
       "g-ir-doc-tool"
     ],
-    "fatal_warnings" : false
+    "fatal_warnings": false
   },
   "glib-networking": {
     "_comment": [
@@ -776,13 +775,12 @@
     ]
   },
   "libdrm": {
-    "_comment": "- relies on Linux and BSD specific APIs",
+    "_comment": "- Upstream has no idea how to use feature options",
     "build_on": {
       "darwin": false,
       "msys2": false,
       "windows": false
     },
-    "_comment": "- Upstream has no idea how to use feature options",
     "build_options": [
       "libdrm:amdgpu=enabled",
       "libdrm:etnaviv=enabled",
@@ -1248,7 +1246,7 @@
       "nowide:tests=true"
     ]
   },
-  "oatpp":{
+  "oatpp": {
     "_comment": "Some tests take really long",
     "test_options": [
       "--timeout-multiplier=3"
@@ -1464,8 +1462,7 @@
     ]
   },
   "readcon-core": {
-    "_comment": "cxx wrap builds the Rust crate via cargo; rustc is not on the default image. ignore_upstream_meson: Windows artifact names and rustc --version abort on Alpine loongarch64/riscv64 qemu.",
-    "ignore_upstream_meson": "0.14.8",
+    "_comment": "cxx wrap builds the Rust crate via cargo; rustc is not on the default image",
     "alpine_packages": [
       "cargo",
       "rust"
@@ -1773,8 +1770,8 @@
       "liblzma-dev"
     ]
   },
-  "xvidcore" : {
-     "alpine_packages": [
+  "xvidcore": {
+    "alpine_packages": [
       "nasm"
     ],
     "brew_packages": [

@@ -155,9 +155,6 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'protobuf': {
         'symlink_or_copy.py',
     },
-    'readcon-core': {
-        'meson_cargo_build.py',
-    },
     'sdl2': {
         'find-dylib-name.py'
     },
