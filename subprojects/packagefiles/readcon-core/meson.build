@@ -4,7 +4,6 @@ project(
     version: '0.14.8',
     meson_version: '>=1.3.0',
     default_options: [
-        'buildtype=debugoptimized',
         'warning_level=3',
         'c_std=c99',
         'b_ndebug=if-release',

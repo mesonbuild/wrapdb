@@ -1464,7 +1464,8 @@
     ]
   },
   "readcon-core": {
-    "_comment": "cxx wrap builds the Rust crate via cargo; rustc is not on the default image",
+    "_comment": "cxx wrap builds the Rust crate via cargo; rustc is not on the default image. ignore_upstream_meson: Windows artifact names and rustc --version abort on Alpine loongarch64/riscv64 qemu.",
+    "ignore_upstream_meson": "0.14.8",
     "alpine_packages": [
       "cargo",
       "rust"
