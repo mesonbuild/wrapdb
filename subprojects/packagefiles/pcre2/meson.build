@@ -2,14 +2,15 @@ project(
   'pcre2',
   'c',
   license: 'BSD-3-Clause WITH PCRE2-exception',
-  meson_version: '>=0.54.0',
-  version: '10.47',
+  meson_version: '>=0.56.0',
+  version: '10.48',
 )
 
-pcre2_8_lib_version = '0.15.0'
-pcre2_16_lib_version = '0.15.0'
-pcre2_32_lib_version = '0.15.0'
-pcre2_posix_lib_version = '3.0.7'
+pcre2_date = '2026-08-31'
+pcre2_8_lib_version = '0.16.0'
+pcre2_16_lib_version = '0.16.0'
+pcre2_32_lib_version = '0.16.0'
+pcre2_posix_lib_version = '3.0.8'
 
 c_compiler = meson.get_compiler('c')
 
@@ -31,7 +32,7 @@ varr = meson.project_version().split('.')
 pcredata.set('PCRE2_MAJOR', varr[0])
 pcredata.set('PCRE2_MINOR', varr[1])
 pcredata.set('PCRE2_PRERELEASE', '')
-pcredata.set('PCRE2_DATE', '2025-08-27')
+pcredata.set('PCRE2_DATE', pcre2_date)
 
 # config.h
 cdata = configuration_data()
@@ -114,7 +115,13 @@ foreach h : check_headers
   endif
 endforeach
 
-foreach f : ['memfd_create', 'mkostemp', 'realpath', 'secure_getenv']
+foreach f : [
+  'memfd_create',
+  'mkostemp',
+  'realpath',
+  'secure_getenv',
+  'setrlimit',
+]
   if c_compiler.has_function(f)
     cdata.set10('HAVE_@0@'.format(f.to_upper()), true)
   endif
@@ -208,16 +215,25 @@ if host_machine.system() == 'windows'
   general_c_args += ['-D_CRT_SECURE_NO_DEPRECATE', '-D_CRT_SECURE_NO_WARNINGS']
 endif
 
+libs = ['pcre2-8', 'pcre2-posix', 'pcre2-16', 'pcre2-32']
+foreach lib : libs
+  configure_file(
+    input: 'src/lib@0@.sym.in'.format(lib),
+    output: 'lib@0@.sym'.format(lib),
+    configuration: {
+      # only non-empty on Solaris
+      'PCRE2_EXTRA_LOCAL_SYMS': '',
+    },
+  )
+endforeach
 have_version_scripts = c_compiler.has_link_argument(
-  '-Wl,--version-script,@0@/src/libpcre2-8.sym'.format(
-    meson.current_source_dir(),
-  ),
+  '-Wl,--version-script,@0@/libpcre2-8.sym'.format(meson.current_build_dir()),
 )
-foreach lib : ['pcre2-8', 'pcre2-posix', 'pcre2-16', 'pcre2-32']
+foreach lib : libs
   if have_version_scripts
     value = [
-      '-Wl,--version-script,@0@/src/lib@1@.sym'.format(
-        meson.current_source_dir(),
+      '-Wl,--version-script,@0@/lib@1@.sym'.format(
+        meson.current_build_dir(),
         lib,
       ),
     ]
@@ -345,7 +361,8 @@ pkg.generate(
 
 #### tests
 
-if (get_option('test')
+if (
+  get_option('test')
   and not meson.is_cross_build()  # wine wrappers are not bat-friendly, this would need better testing
 )
   link_args = []
@@ -359,6 +376,7 @@ if (get_option('test')
     dependencies: [libpcre2_8, libpcre2_posix, libpcre2_16, libpcre2_32],
     c_args: general_c_args,
     link_args: link_args,
+    build_by_default: false,
   )
 
   pcre2posix_test = executable(
@@ -366,6 +384,7 @@ if (get_option('test')
     'src/pcre2posix_test.c',
     dependencies: [libpcre2_8, libpcre2_posix],
     link_args: link_args,
+    build_by_default: false,
   )
   test('pcre2posix_test', pcre2posix_test)
 
@@ -381,6 +400,7 @@ if (get_option('test')
     'RunTest',
     runtest,
     should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
+    depends: pcre2test,
     env: 'srcdir=@0@'.format(meson.current_source_dir()),
     workdir: meson.current_build_dir(),
   )
@@ -390,6 +410,7 @@ if (get_option('test')
       'RunGrepTest',
       rungreptest,
       should_fail: host_machine.system() == 'windows' and c_compiler.get_argument_syntax() != 'msvc',
+      depends: pcre2test,
       env: 'srcdir=@0@'.format(meson.current_source_dir()),
       workdir: meson.current_build_dir(),
     )
