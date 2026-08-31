@@ -23,12 +23,12 @@ project(
   'expat',
   'c',
   license: 'MIT',
-  version: '2.8.2',
+  version: '2.8.4',
   # str.replace()
   meson_version: '>= 0.58.0',
 )
 
-dllver = '1.12.2'
+dllver = '1.12.4'
 
 config = configuration_data()
 cc = meson.get_compiler('c')
@@ -136,6 +136,7 @@ if cc.get_argument_syntax() == 'msvc'
   add_project_arguments(
     '-D_CRT_SECURE_NO_WARNINGS',
     '-wd4996',
+    '/source-charset:utf-8',
     language: 'c',
   )
 endif
@@ -280,7 +281,7 @@ if get_option('build_tests')
       include_directories: incdir,
       build_by_default: false,
     ),
-    timeout: 60,
+    timeout: 300,
   )
 endif
 
