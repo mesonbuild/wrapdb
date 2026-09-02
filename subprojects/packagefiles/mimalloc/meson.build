@@ -3,7 +3,7 @@ project(
   'c',
   meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.3.2',
+  version: '3.5.1',
 )
 
 mi_sources = []
@@ -13,11 +13,11 @@ mi_static_args = []
 mi_shared_args = []
 
 mi_sources += files(
+  'src/prim/prim-tls.c',
   'src/prim/prim.c',
   'src/alloc-aligned.c',
   'src/alloc-posix.c',
   'src/alloc.c',
-  'src/arena-meta.c',
   'src/arena.c',
   'src/bitmap.c',
   'src/heap.c',
@@ -29,6 +29,7 @@ mi_sources += files(
   'src/page.c',
   'src/random.c',
   'src/stats.c',
+  'src/subproc.c',
   'src/theap.c',
   'src/threadlocal.c',
 )
@@ -61,10 +62,26 @@ mi_shared_args += ['-DMI_SHARED_LIB', '-DMI_SHARED_LIB_EXPORT']
 if not get_option('debug')
   mi_args += ['-DMI_BUILD_RELEASE']
 endif
-if get_option('local_dynamic_tls')
+tls_model = get_option('tl_model')
+if tls_model == 'PTHREADS'
+  mi_args += ['-DMI_TLS_MODEL_PTHREADS=1']
+elif tls_model == 'FIXED'
+  mi_args += ['-DMI_TLS_MODEL=FIXED=1']
+elif tls_model == 'LOCAL' or tls_model == 'LOCAL_DYNAMIC'
+  mi_args += ['-DMI_TLS_MODEL_LOCAL=1']
+elif tls_model == 'WIN32'
+  mi_args += ['-DMI_TLS_MODEL_WIN32=1']
+endif
+if tls_model == 'LOCAL_DYNAMIC'
   mi_args += cc.get_supported_arguments('-ftls-model=local-dynamic')
 else
   mi_args += cc.get_supported_arguments('-ftls-model=initial-exec')
+endif
+if host_machine.system() == 'cygwin' and cc.has_header_symbol(
+  'corecrt.h',
+  '_UCRT',
+)
+  mi_args += ['-DMI_MINGW_UCRT64=1']
 endif
 
 # malloc override
@@ -119,6 +136,7 @@ mi_lib = library(
   dependencies: mi_deps,
   version: mi_version,
   soversion: mi_soversion,
+  gnu_symbol_visibility: 'hidden',
   install: true,
 )
 mi_dep = declare_dependency(

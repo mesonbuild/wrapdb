@@ -11,8 +11,8 @@ option(
     description: 'Use redirection module (mimalloc-redirect) on Windows if compiling mimalloc as a DLL',
 )
 option(
-    'local_dynamic_tls',
-    type: 'boolean',
-    value: false,
-    description: 'Use local-dynamic-tls on Unix, a slightly slower but dlopen-compatible thread local storage mechanism',
+    'tl_model',
+    type: 'combo',
+    choices: ['DEFAULT', 'PTHREADS', 'FIXED', 'LOCAL', 'LOCAL_DYNAMIC', 'WIN32'],
+    description: 'Force TLS model: PTHREADS (pthread locals), FIXED (fixed thread local slots), LOCAL (thread local variables), LOCAL_DYNAMIC (dlopen-compatible thread local storage mechanism (Unix)), WIN32 (direct Windows TLS slots)',
 )
