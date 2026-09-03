@@ -1,0 +1,6 @@
+EXPORTS
+phr_parse_request
+phr_parse_response
+phr_parse_headers
+phr_decode_chunked
+phr_decode_chunked_is_in_data

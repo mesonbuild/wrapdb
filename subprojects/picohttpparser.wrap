@@ -1,0 +1,9 @@
+[wrap-file]
+directory = picohttpparser-1.2
+source_url = https://github.com/h2o/picohttpparser/archive/refs/tags/v1.2.tar.gz
+source_filename = picohttpparser-1.2.tar.gz
+source_hash = 1cb1532689cba72890c2e08fc24c7f0515a94dd2ba1a7f32cb3cfb50b829ed30
+patch_directory = picohttpparser
+
+[provide]
+dependency_names = picohttpparser
