@@ -141,6 +141,20 @@ jobs:
       - name: Create work directory
         run: mkdir -p $HOME/work
 
+      - name: Calculate apk cache key
+        id: apk-cache-key
+        run: |
+          url="${{ matrix.apk-tools-url }}"
+          # entire URL is too unwieldy as cache key; extract sha256
+          grep -q "!sha256!" <<< "$url"
+          echo "key=apk-${url##*!}" >> $GITHUB_OUTPUT
+
+      - name: Cache apk binary
+        uses: actions/cache@v6
+        with:
+          key: ${{ steps.apk-cache-key.outputs.key }}
+          path: ${{ runner.temp }}/apk
+
       - uses: jirutka/setup-alpine@v1
         with:
           # next two lines: https://github.com/jirutka/setup-alpine/pull/22
