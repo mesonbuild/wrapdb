@@ -890,6 +890,45 @@
       "darwin": false
     }
   },
+  "libportal": {
+    "_comment": [
+      "- Windows and MSYS2: libportal wraps the XDG desktop portals and needs gio-unix-2.0. Nothing to remove, the project is not portable there.",
+      "- macOS: notification.c calls memfd_create() unconditionally, which does not exist on Darwin. Remove build_on.darwin once upstream guards it.",
+      "- The Qt 5 backend needs Qt5X11Extras, which is deprecated; upstream's own Alpine packaging disables it too. Drop backend-qt5=disabled and the skip_dependency_check entry when the backend is dropped upstream or CI grows the dependency.",
+      "- introspection, vapi and docs need g-ir-scanner, valac and gi-docgen, and the pytest suite additionally needs pygobject, dbus-python, python-dbusmock and a session bus. Remove these once those are available on the runners.",
+      "- fatal_warnings: upstream has redundant meson.version() conditionals at meson.build:22 and libportal/meson.build:323, which are always true given meson_version '>= 0.62.0'. Remove once fixed upstream."
+    ],
+    "alpine_packages": [
+      "gtk+3.0-dev",
+      "gtk4.0-dev",
+      "qt6-qtbase-dev",
+      "qt6-qtbase-private-dev"
+    ],
+    "build_on": {
+      "darwin": false,
+      "msys2": false,
+      "windows": false
+    },
+    "build_options": [
+      "libportal:backend-gtk3=enabled",
+      "libportal:backend-gtk4=enabled",
+      "libportal:backend-qt5=disabled",
+      "libportal:backend-qt6=enabled",
+      "libportal:docs=false",
+      "libportal:introspection=false",
+      "libportal:vapi=false"
+    ],
+    "debian_packages": [
+      "libgtk-3-dev",
+      "libgtk-4-dev",
+      "qt6-base-dev",
+      "qt6-base-private-dev"
+    ],
+    "fatal_warnings": false,
+    "skip_dependency_check": [
+      "libportal-qt5"
+    ]
+  },
   "libpsl": {
     "_comment": "with build all, it selects icu as a dependency which breaks the tests.",
     "alpine_packages": [

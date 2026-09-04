@@ -1,0 +1,12 @@
+[wrap-file]
+directory = libportal-0.10.0
+source_url = https://github.com/flatpak/libportal/archive/refs/tags/0.10.0.tar.gz
+source_filename = libportal-0.10.0.tar.gz
+source_hash = e1b6913c6d9015bfa918ace86f82c30940982add97aed9c18cc929c5327054fd
+
+[provide]
+libportal = libportal_dep
+libportal-gtk3 = libportal_gtk3_dep
+libportal-gtk4 = libportal_gtk4_dep
+libportal-qt5 = libportal_qt5_dep
+libportal-qt6 = libportal_qt6_dep
