@@ -63,6 +63,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'extract.mk',
         'rewrite.mk',
     },
+    'ell': {
+        'gen-cert-expired-pem.sh',
+    },
     'glbinding': {
         'pch.h',
         'glbinding_api.h',
