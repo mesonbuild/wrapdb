@@ -1255,7 +1255,8 @@
     ]
   },
   "openblas": {
-    "_comment": "Doesn't work with windows native compilers",
+    "ignore_upstream_meson": "0.3.34",
+    "_comment": "Meson port is GNU/Linux/macOS. Windows configure errors (gnu11, flang-new, UCRT64 link).",
     "build_on": {
       "windows": false
     },
@@ -1267,13 +1268,12 @@
       "gfortran"
     ],
     "debian_packages": [
-      "libtinfo5",
+      "libtinfo6",
       "gfortran"
     ],
     "msys_packages": [
-      "base-devel",
-      "mingw-w64-ucrt-x86_64-toolchain",
-      "mingw-w64-ucrt-x86_64-fc"
+      "toolchain",
+      "fc"
     ]
   },
   "openh264": {
