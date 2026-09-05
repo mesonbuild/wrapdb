@@ -1,0 +1,159 @@
+option(
+    'native_build',
+    type: 'boolean',
+    value: false,
+    description: 'Target the build CPU',
+)
+option(
+    '10bit',
+    type: 'boolean',
+    value: true,
+    description: 'Build x265 including 10 bit depth support',
+)
+option(
+    'hdr10_plus',
+    type: 'boolean',
+    value: true,
+    description: 'Enable dynamic HDR10 compilation',
+)
+option(
+    '12bit',
+    type: 'boolean',
+    value: true,
+    description: 'Build x265 including 12 bit depth support',
+)
+option(
+    'asm',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable use of assembly coded primitives',
+)
+
+option(
+    'libnuma',
+    type: 'feature',
+    value: 'auto',
+    description: 'Enable libnuma usage (Linux only)',
+)
+option(
+    'no_atomics',
+    type: 'boolean',
+    value: false,
+    description: 'Use a slow mutex to replace atomics',
+)
+option(
+    'libvmaf',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Enable VMAF',
+)
+
+# Options for manually enabling/disabling AArch64 SIMD extensions.
+option(
+    'aarch64_warnings_as_errors',
+    type: 'boolean',
+    description: 'Build with -Werror for AArch64 Intrinsics files',
+    value: false,
+)
+option(
+    'aarch64_runtime_cpu_detect',
+    type: 'feature',
+    description: 'Enable AArch64 run-time CPU feature detection',
+    value: 'auto',
+)
+option(
+    'neon',
+    type: 'feature',
+    description: 'Enable Neon',
+    value: 'auto',
+)
+option(
+    'neon_dotprod',
+    type: 'feature',
+    description: 'Enable Neon DotProd',
+    value: 'auto',
+)
+option(
+    'neon_i8mm',
+    type: 'feature',
+    description: 'Enable Neon I8MM',
+    value: 'auto',
+)
+option(
+    'sve',
+    type: 'feature',
+    description: 'Enable SVE',
+    value: 'auto',
+)
+option(
+    'sve2',
+    type: 'feature',
+    description: 'Enable SVE2',
+    value: 'auto',
+)
+
+option(
+    'checked_build',
+    type: 'boolean',
+    description: 'Enable run-time sanity checks (debugging)',
+    value: false,
+)
+
+option(
+    'high_bit_depth',
+    type: 'feature',
+    description: 'Store pixel samples as 16bit values (Main10/Main12)',
+    value: 'auto',
+)
+
+option(
+    'altivec',
+    type: 'boolean',
+    description: 'Enable ALTIVEC profiling instrumentation',
+    value: true,
+)
+option(
+    'cpu_power8',
+    type: 'boolean',
+    description: 'Enable CPU POWER8 profiling instrumentation',
+    value: true,
+)
+
+option(
+    'detailed_cu_stats',
+    type: 'boolean',
+    description: 'Enable internal profiling of encoder work',
+    value: false,
+)
+option(
+    'alpha',
+    type: 'boolean',
+    description: 'Enable alpha encoding in x265',
+    value: false,
+)
+option(
+    'multiview',
+    type: 'boolean',
+    description: 'Enable Multi-view encoding in HEVC',
+    value: false,
+)
+option(
+    'scc_ext',
+    type: 'boolean',
+    description: 'Enable screen content coding extension in HEVC',
+    value: false,
+)
+
+option(
+    'cli',
+    type: 'feature',
+    description: 'Build standalone CLI application',
+    value: 'auto',
+)
+
+option(
+    'tests',
+    type: 'feature',
+    description: 'Enable Unit Tests',
+    value: 'auto',
+)
