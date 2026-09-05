@@ -1,0 +1,9 @@
+[wrap-file]
+directory = vk-bootstrap-1.4.349
+source_url = https://github.com/charles-lunarg/vk-bootstrap/archive/refs/tags/v1.4.349.tar.gz
+source_filename = vk-bootstrap-1.4.349.tar.gz
+source_hash = 0db474bcd9417bbcc40f66bb3b65d3179d48373ff979b604172ca5b670eb5b04
+patch_directory = vk-bootstrap
+
+[provide]
+dependency_names = vk-bootstrap
