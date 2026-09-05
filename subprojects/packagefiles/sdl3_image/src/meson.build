@@ -1,4 +1,6 @@
 img_src = files(
+  'IMG.c',
+  'IMG_WIC.c',
   'IMG_avif.c',
   'IMG_bmp.c',
   'IMG_gif.c',
@@ -14,7 +16,6 @@ img_src = files(
   'IMG_tga.c',
   'IMG_tif.c',
   'IMG_webp.c',
-  'IMG_WIC.c',
   'IMG_xcf.c',
   'IMG_xpm.c',
   'IMG_xv.c',
