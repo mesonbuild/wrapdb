@@ -5,9 +5,9 @@ system_sources = files(
   'MemoryInputStream.cpp',
   'Sleep.cpp',
   'String.cpp',
+  'TimeoutWithPredicate.cpp',
   'Utils.cpp',
-  'Vector2.cpp',
-  'Vector3.cpp',
+  'Version.cpp',
 )
 
 if host_machine.system() == 'windows'
@@ -20,7 +20,7 @@ system_lib = library(
   'sfml-system',
   system_sources,
   cpp_args: get_option('default_library') != 'static' ? '-DSFML_SYSTEM_EXPORTS' : '-DSFML_STATIC',
-  include_directories: [pub_inc, priv_inc],
+  include_directories: [pub_inc, priv_inc, unicode_inc],
   dependencies: [thread_dep, winmm_dep],
   override_options: override_opts,
   install: true,
