@@ -1,8 +1,8 @@
 [wrap-file]
-directory = STC-4a76ff9bc961750b5d1932496f6b861e794f8178
-source_url = https://github.com/stclib/STC/archive/4a76ff9bc961750b5d1932496f6b861e794f8178/v5.0.tar.gz
-source_filename = STC-4a76ff9bc961750b5d1932496f6b861e794f8178.tar.gz
-source_hash = 9c8cd0a2e99c82d584cc106376b027183331ad07a5f602422ece95dcea35c2dd
+directory = STC-19db5051157da5525b3b4cfced4e33810985bd94
+source_url = https://github.com/stclib/STC/archive/19db5051157da5525b3b4cfced4e33810985bd94/v6.0_rc3.tar.gz
+source_filename = STC-19db5051157da5525b3b4cfced4e33810985bd94.tar.gz
+source_hash = ff525db4469868f6b0c7a6b2af7d30c231a97916d60e59422e62530ba0ad9146
 
 [provide]
 dependency_names = stc
