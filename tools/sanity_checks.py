@@ -52,6 +52,11 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'generate_tests.py',
         'run_test.py',
     },
+    'aws-c-sdkutils': {
+        'tests.txt',
+        'generate_tests.py',
+        'run_test.py',
+    },
     'box2d': {
         'doctest.h'
     },
