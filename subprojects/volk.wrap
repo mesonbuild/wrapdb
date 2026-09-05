@@ -1,0 +1,9 @@
+[wrap-file]
+directory = volk-3.1.2
+source_url = https://github.com/gnuradio/volk/releases/download/v3.1.2/volk-3.1.2.tar.xz
+source_filename = volk-3.1.2.tar.xz
+source_hash = ce62f645c2ee3ef8b38f923de78ef4df9a1b7696d618f57781955803ee29bab3
+method = cmake
+
+[provide]
+volk = volk_dep
