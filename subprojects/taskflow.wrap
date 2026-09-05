@@ -1,0 +1,11 @@
+[wrap-file]
+directory = taskflow-3.4.0
+
+source_url = https://github.com/taskflow/taskflow/archive/refs/tags/v3.4.0.tar.gz
+source_filename = taskflow-v3.4.0.tar.gz
+source_hash = 8f449137d3f642b43e905aeacdf1d7c5365037d5e1586103ed4f459f87cecf89
+
+patch_directory = taskflow
+
+[provide]
+taskflow = taskflow_dep
