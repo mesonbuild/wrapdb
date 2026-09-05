@@ -10,6 +10,7 @@ src = files(
   'emitterutils.cpp',
   'exceptions.cpp',
   'exp.cpp',
+  'fptostring.cpp',
   'memory.cpp',
   'node.cpp',
   'node_data.cpp',
