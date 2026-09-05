@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 GNOME Foundation, Inc.
+[wrap-file]
+directory = tinycdb-0.81
+source_url = https://www.corpit.ru/mjt/tinycdb/tinycdb-0.81.tar.gz
+source_filename = tinycdb-0.81.tar.gz
+source_hash = 469de2d445bf54880f652f4b6dc95c7cdf6f5502c35524a45b2122d70d47ebc2
+
+patch_directory = tinycdb
+
+[provide]
+dependency_names = libcdb
