@@ -26,6 +26,12 @@ sources = files(
 cpp = meson.get_compiler('cpp')
 dependencies = []
 
+if get_option('freetype')
+    sources += files('misc/freetype/imgui_freetype.cpp')
+    add_project_arguments('-DIMGUI_ENABLE_FREETYPE', language: 'cpp')
+    dependencies += dependency('freetype2')
+endif
+
 # renderer backends
 dependencies += cpp.find_library(
   'd3dcompiler',
