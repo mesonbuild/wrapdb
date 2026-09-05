@@ -1,10 +1,18 @@
-benches = ['case', 'character', 'line', 'sentence', 'utf8-decode', 'word']
+benchmarks = [
+  'bidirectional',
+  'case',
+  'character',
+  'line',
+  'sentence',
+  'utf8-decode',
+  'word',
+]
 
 libutf8proc_dep = dependency('libutf8proc')
 
 bench_c_flags = cc.get_supported_arguments('-Wno-overlength-strings')
 
-foreach exe_name : benches
+foreach exe_name : benchmarks
   src = exe_name + '.c'
   exe = executable(
     'bench-' + exe_name,

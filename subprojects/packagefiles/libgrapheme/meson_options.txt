@@ -1,13 +1,13 @@
 option(
     'test',
     type: 'boolean',
-    value: true,
+    value: false,
     description: 'Build tests',
 )
 option(
     'benchmark',
     type: 'boolean',
-    value: true,
+    value: false,
     description: 'Build benchmarks',
 )
 option(
