@@ -1,8 +1,8 @@
 [wrap-file]
-directory = pkgconf-3.0.6
-source_url = https://distfiles.ariadne.space/pkgconf/pkgconf-3.0.6.tar.xz
-source_filename = pkgconf-3.0.6.tar.xz
-source_hash = c88a653fbabfa2a5857a30f6b6ad6c40dbacc3b7c72cc066e5c7dc4571cbddaa
+directory = pkgconf-3.0.7
+source_url = https://distfiles.ariadne.space/pkgconf/pkgconf-3.0.7.tar.xz
+source_filename = pkgconf-3.0.7.tar.xz
+source_hash = c926ff491cbd9a331a589160811bd97ab1749b4d5198a519338f2cdfabe6940a
 
 [provide]
 dependency_names = libpkgconf
