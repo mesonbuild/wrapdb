@@ -21,9 +21,9 @@
 project(
   'glew',
   'c',
-  version: '2.2.0',
+  version: '2.3.1',
   license: 'MIT AND BSD-3-Clause',
-  meson_version: '>= 0.49.0',
+  meson_version: '>=0.56.0',
 )
 
 cc = meson.get_compiler('c')
@@ -76,9 +76,12 @@ if host_system == 'windows'
   glew_sources += windows.compile_resources('build/glew.rc')
   name = 'glew32'
 
-  if cc.get_argument_syntax() == 'msvc'
+  if cc.get_argument_syntax() == 'msvc' and host_machine.cpu_family() == 'x86'
     c_args += ['-DVC_EXTRALEAN', '-GS-']
     ld_args += ['-BASE:0x62AA0000', '-nodefaultlib', '-noentry']
+  elif cc.get_argument_syntax() == 'msvc'
+    c_args += ['-DVC_EXTRALEAN', '-GS-']
+    ld_args += ['-nodefaultlib', '-noentry']
   else
     c_args += ['-fno-builtin', '-fno-stack-protector']
     ld_args += '-nostdlib'
@@ -119,5 +122,6 @@ glew_dep = declare_dependency(
   link_with: libglew,
   compile_args: user_args,
   include_directories: glew_include,
-  dependencies: [dep_gl, dep_egl, dep_glu],
 )
+
+meson.override_dependency('glew', glew_dep)

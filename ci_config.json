@@ -483,6 +483,9 @@
     ]
   },
   "glew": {
+    "alpine_packages": [
+      "mesa-dev"
+    ],
     "debian_packages": [
       "libgl-dev"
     ]
