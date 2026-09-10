@@ -1,8 +1,9 @@
 project(
   'tclap',
   'cpp',
-  version: '1.2.4',
+  version: '1.2.5',
   license: 'MIT',
+  meson_version: '>=0.56.0',
 )
 
 # This is a minimum meson.build to use TCLAP.
@@ -14,9 +15,9 @@ project(
 # --
 
 tclap_dep = declare_dependency(
-  version: '1.2.4',
   include_directories: 'include',
 )
+meson.override_dependency('tclap', tclap_dep)
 
 # --
 # Examples
@@ -28,6 +29,10 @@ subdir('examples')
 # Tests
 # --
 
-subdir('tests')
+# TCLAP is known to have problems on Windows platforms.
+# Re-enable tests when TCLAP has solved those.
+if host_machine.system() != 'windows'
+  subdir('tests')
+endif
 
 
