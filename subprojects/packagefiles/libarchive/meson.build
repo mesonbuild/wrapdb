@@ -375,19 +375,42 @@ if lzo2_dep.found()
   deps += lzo2_dep
 endif
 
-bcrypt_dep = cc.find_library(
-  'bcrypt',
-  required: get_option('cng'),
-)
-if bcrypt_dep.found() and cc.has_header(
-  'bcrypt.h',
-  required: get_option('cng'),
-)
-  cdata.set('HAVE_BCRYPT_H', 1)
-  foreach f : ['md5', 'sha1', 'sha256', 'sha384', 'sha512']
-    cdata.set('ARCHIVE_CRYPTO_@0@_WIN'.format(f.to_upper()), 1)
-  endforeach
-  deps += bcrypt_dep
+cng_feature = get_option('cng')
+
+if host_machine.system() in ['windows', 'cygwin']
+  if host_machine.system() == 'windows'
+    bcrypt_required = true
+  else
+    bcrypt_required = cng_feature
+  endif
+
+  bcrypt_dep = cc.find_library(
+    'bcrypt',
+    required: bcrypt_required,
+  )
+
+  if bcrypt_dep.found() and cc.has_header(
+    'bcrypt.h',
+    required: true,
+    dependencies: bcrypt_dep,
+  )
+    cdata.set('HAVE_BCRYPT_H', 1)
+    if not cng_feature.disabled()
+      foreach f : ['md5', 'sha1', 'sha256', 'sha384', 'sha512']
+        cdata.set('ARCHIVE_CRYPTO_@0@_WIN'.format(f.to_upper()), 1)
+      endforeach
+    endif
+    deps += bcrypt_dep
+  endif
+else
+  if cng_feature.auto()
+    message('cng will not be used on Windows')
+  elif cng_feature.enabled()
+    error(
+      'cng is a Windows-only dependency! If you are cross compiling,',
+      'please set correct Windows values in the cross file.',
+    )
+  endif
 endif
 
 crypto_dep = dependency(
