@@ -1,3 +1,9 @@
+# NOTE to wrapdb contributors: When updating libarchive from 3.8.9 to a newer
+#      version, the Meson patch build system must be updated to follow the
+#      upstream one. There is at least one change made since 3.8.9
+#      (https://github.com/libarchive/libarchive/pull/3500) which should be
+#      reflected in the patch Meson build system.
+
 [wrap-file]
 directory = libarchive-3.8.9
 source_url = https://github.com/libarchive/libarchive/releases/download/v3.8.9/libarchive-3.8.9.tar.xz
