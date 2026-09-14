@@ -270,6 +270,17 @@
       "0.4.1-1"
     ]
   },
+  "avro-cpp": {
+    "dependency_names": [
+      "avro-cpp"
+    ],
+    "program_names": [
+      "avrogencpp"
+    ],
+    "versions": [
+      "1.12.2-1"
+    ]
+  },
   "aws-c-cal": {
     "dependency_names": [
       "aws-c-cal"
