@@ -3,7 +3,7 @@ project(
   'c',
   meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.5.1',
+  version: '3.5.2',
 )
 
 mi_sources = []
@@ -28,6 +28,8 @@ mi_sources += files(
   'src/page-map.c',
   'src/page.c',
   'src/random.c',
+  'src/sample-guarded.c',
+  'src/sample-profile.c',
   'src/stats.c',
   'src/subproc.c',
   'src/theap.c',
