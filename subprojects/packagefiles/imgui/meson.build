@@ -30,6 +30,11 @@ if get_option('freetype')
     sources += files('misc/freetype/imgui_freetype.cpp')
     add_project_arguments('-DIMGUI_ENABLE_FREETYPE', language: 'cpp')
     dependencies += dependency('freetype2')
+freetype_dep = dependency('freetype2', required: get_option('freetype'))
+if freetype_dep.found()
+  sources += files('misc/freetype/imgui_freetype.cpp')
+  add_project_arguments('-DIMGUI_ENABLE_FREETYPE', language: 'cpp')
+  dependencies += freetype_dep
 endif
 
 # renderer backends
