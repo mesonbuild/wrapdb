@@ -4141,6 +4141,14 @@
       "20201101-1"
     ]
   },
+  "readcon-core": {
+    "dependency_names": [
+      "readcon-core"
+    ],
+    "versions": [
+      "0.14.9-1"
+    ]
+  },
   "reflex": {
     "dependency_names": [
       "reflex"
