@@ -1,8 +1,8 @@
 project(
   'yaml-cpp',
   'cpp',
-  version: '0.8.0',
-  meson_version: '>=0.54.0',
+  version: '0.9.0',
+  meson_version: '>=0.56.0',
   license: 'MIT',
 )
 
