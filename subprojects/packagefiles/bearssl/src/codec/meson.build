@@ -1,0 +1,17 @@
+src_lib += files(
+  'ccopy.c',
+  'dec16be.c',
+  'dec16le.c',
+  'dec32be.c',
+  'dec32le.c',
+  'dec64be.c',
+  'dec64le.c',
+  'enc16be.c',
+  'enc16le.c',
+  'enc32be.c',
+  'enc32le.c',
+  'enc64be.c',
+  'enc64le.c',
+  'pemdec.c',
+  'pemenc.c',
+)

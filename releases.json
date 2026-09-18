@@ -326,6 +326,14 @@
       "7.6.8-1"
     ]
   },
+  "bearssl": {
+    "dependency_names": [
+      "bearssl"
+    ],
+    "versions": [
+      "0.6-1"
+    ]
+  },
   "blueprint-compiler": {
     "program_names": [
       "blueprint-compiler"
