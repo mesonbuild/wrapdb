@@ -601,9 +601,7 @@ foreach conf : _blas_roots
     endif
     # Seed with common args
     compiler_args = _cargs + interface_args
-    if fc_id == 'gcc'
-      compiler_args += ['-DF_INTERFACE_GFORT']
-    endif
+    compiler_args += [f'-DF_INTERFACE_@f_interface@']
     # Generate the symbol flags
     base = conf['base']
     if symb_defs.has_key(base)

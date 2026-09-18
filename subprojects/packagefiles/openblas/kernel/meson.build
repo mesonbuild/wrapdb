@@ -72,7 +72,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'xq': {'exts': {'_k': {}}},
+          # 'xq': {'exts': {'_k': {}}},
     },
   },
   {
@@ -98,8 +98,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -125,8 +125,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -152,8 +152,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -183,8 +183,8 @@ base_kops = [
           },
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -294,8 +294,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -321,8 +321,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -348,8 +348,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -400,8 +400,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -427,8 +427,8 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
-      # 'x': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -469,7 +469,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
     },
   },
   {
@@ -485,7 +485,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
     },
   },
   {
@@ -501,7 +501,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
     },
   },
   {
@@ -517,7 +517,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
     },
   },
   {
@@ -599,18 +599,18 @@ base_kops = [
           '_d': {},
         },
       },
-      # 'x': {
-      #     'exts': {
-      #         '_n': {},
-      #         '_t': {},
-      #         '_r': {},
-      #         '_c': {},
-      #         '_o': {},
-      #         '_u': {},
-      #         '_s': {},
-      #         '_d': {},
-      #     }
-      # },
+          # 'x': {
+          #     'exts': {
+          #         '_n': {},
+          #         '_t': {},
+          #         '_r': {},
+          #         '_c': {},
+          #         '_o': {},
+          #         '_u': {},
+          #         '_s': {},
+          #         '_d': {},
+          #     }
+          # },
     },
   },
   {
@@ -640,18 +640,18 @@ base_kops = [
           '_L': {},
         },
       },
-      # 'q': {
-      #     'exts': {
-      #         '_U': {},
-      #         '_L': {},
-      #     }
-      # },
-      # 'x': {
-      #     'exts': {
-      #         '_U': {},
-      #         '_L': {},
-      #     }
-      # },
+          # 'q': {
+          #     'exts': {
+          #         '_U': {},
+          #         '_L': {},
+          #     }
+          # },
+          # 'x': {
+          #     'exts': {
+          #         '_U': {},
+          #         '_L': {},
+          #     }
+          # },
     },
   },
   {
@@ -659,7 +659,9 @@ base_kops = [
     'modes': {
       '': {
         'exts': {
-          '': {},
+          '': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
     },
@@ -669,15 +671,19 @@ base_kops = [
     'modes': {
       's': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
       'd': {
         'exts': {
-          '1': {},
+          '1': {
+            'addl': ['-DF_INTERFACE'],
+          },
         },
       },
-      # 'q': {'exts': {'': {}}},
+          # 'q': {'exts': {'': {}}},
     },
   },
   {
@@ -784,7 +790,7 @@ base_kops = [
           '_k': {},
         },
       },
-      # 'q': {'exts': {'_k': {}}},
+          # 'q': {'exts': {'_k': {}}},
     },
   },
   {
@@ -804,7 +810,7 @@ base_kops = [
           },
         },
       },
-      # 'x': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -824,7 +830,7 @@ base_kops = [
           },
         },
       },
-      # 'x': {'exts': {'_k': {}}},
+          # 'x': {'exts': {'_k': {}}},
     },
   },
   {
@@ -881,14 +887,14 @@ base_kops = [
           },
         },
       },
-      # 'x': {
-      #     'exts': {
-      #         '_U': {},
-      #         '_L': {},
-      #         '_V': {},
-      #         '_M': {},
-      #     }
-      # },
+          # 'x': {
+          #     'exts': {
+          #         '_U': {},
+          #         '_L': {},
+          #         '_V': {},
+          #         '_M': {},
+          #     }
+          # },
     },
   },
   # { 'base': '?bgemv',
@@ -948,8 +954,8 @@ base_kops = [
           },
         },
       },
-      # 'q': {'exts': {'': {}}},
-      # 'x': {'exts': {'': {}}},
+          # 'q': {'exts': {'': {}}},
+          # 'x': {'exts': {'': {}}},
     },
   },
   {
@@ -2046,10 +2052,10 @@ base_kops = [
           '_nt': {},
           '_tn': {},
           '_tt': {},
-          # '_b0_nn': {'addl': ['-DB0']},
-          # '_b0_nt': {'addl': ['-DB0']},
-          # '_b0_tn': {'addl': ['-DB0']},
-          # '_b0_tt': {'addl': ['-DB0']},
+                  # '_b0_nn': {'addl': ['-DB0']},
+                  # '_b0_nt': {'addl': ['-DB0']},
+                  # '_b0_tn': {'addl': ['-DB0']},
+                  # '_b0_tt': {'addl': ['-DB0']},
         },
       },
       'd': {
@@ -2171,11 +2177,30 @@ search_order = [base_dict]
 if conf_hdat.has('ARCH_X86_64')
   subdir('x86_64')
   search_order = [x86_64_base_dict] + search_order
-  if conf_hdat.has('HASWELL')
+  if conf_hdat.has('HASWELL') or conf_hdat.has('COOPERLAKE') or conf_hdat.has(
+    'SAPPHIRERAPIDS',
+  ) or conf_hdat.has(
+    'ICELAKE_SERVER',
+  ) or conf_hdat.has(
+    'CASCADELAKE',
+  ) or conf_hdat.has(
+    'ALDERLAKE',
+  ) or conf_hdat.has(
+    'SAPPHIRERAPIDS_SPR',
+  ) or conf_hdat.has(
+    'SKYLAKE',
+  )
     search_order = [x86_64_haswell_dict] + search_order
   elif conf_hdat.has('SKYLAKEX')
-    search_order = [x86_64_skylakex_dict, x86_64_haswell_dict] + search_order
-  elif conf_hdat.has('ZEN')
+    # SKYLAKEX kernels need AVX-512; wrapdb Alpine/QEMU does not have it.
+    search_order = [x86_64_haswell_dict] + search_order
+  elif conf_hdat.has('ZEN') or conf_hdat.has('ZEN2') or conf_hdat.has(
+    'ZEN3',
+  ) or conf_hdat.has(
+    'ZEN4',
+  ) or conf_hdat.has(
+    'ZEN5',
+  )
     search_order = [x86_64_zen_dict] + search_order
   elif conf_hdat.has('SANDYBRIDGE')
     search_order = [x86_64_sandybridge_dict] + search_order
@@ -2229,7 +2254,10 @@ foreach _kop : base_kops
     foreach ext, extdat : details['exts']
       _ext_cargs = []  # Will be wiped for each ext preventing redefinitions
       # Check ext_mappings first
-      if ext_mappings.has_key(ext) and (not ext_mappings.has_key('except') or base not in ext_mappings['except'])
+      if ext_mappings.has_key(ext) and (
+        not ext_mappings.has_key('except')
+        or base not in ext_mappings['except']
+      )
         extmap = ext_mappings[ext]
         if extmap.has_key('def')
           foreach _d : extmap['def']
