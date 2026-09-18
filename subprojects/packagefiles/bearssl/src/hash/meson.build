@@ -1,0 +1,16 @@
+src_lib += files(
+  'dig_oid.c',
+  'dig_size.c',
+  'ghash_ctmul32.c',
+  'ghash_ctmul64.c',
+  'ghash_ctmul.c',
+  'ghash_pclmul.c',
+  'ghash_pwr8.c',
+  'md5.c',
+  'md5sha1.c',
+  'mgf1.c',
+  'multihash.c',
+  'sha1.c',
+  'sha2big.c',
+  'sha2small.c',
+)
