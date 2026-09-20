@@ -80,3 +80,6 @@ else
     dependencies: gmock_dep,
   )
 endif
+
+meson.override_dependency('gmock', gmock_dep)
+meson.override_dependency('gmock_main', gmock_main_dep)
