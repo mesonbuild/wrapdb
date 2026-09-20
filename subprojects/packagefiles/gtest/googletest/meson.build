@@ -52,3 +52,6 @@ gtest_main_dep = declare_dependency(
   link_with: gtest_main_lib,
   dependencies: gtest_dep,
 )
+
+meson.override_dependency('gtest', gtest_dep)
+meson.override_dependency('gtest_main', gtest_main_dep)
