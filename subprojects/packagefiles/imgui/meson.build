@@ -25,6 +25,14 @@ sources = files(
 
 cpp = meson.get_compiler('cpp')
 dependencies = []
+additional_compiler_flags = []
+
+freetype_dep = dependency('freetype2', required: get_option('freetype'))
+if freetype_dep.found()
+  sources += files('misc/freetype/imgui_freetype.cpp')
+  additional_compiler_flags += '-DIMGUI_ENABLE_FREETYPE'
+  dependencies += freetype_dep
+endif
 
 # renderer backends
 dependencies += cpp.find_library(
@@ -197,6 +205,8 @@ if host_machine.system() == 'windows'
   )
 endif
 
+additional_compiler_flags += api
+
 # workaround issue (#14939) in Meson 1.8.4 - 1.9.0, where
 # default_options:['cpp_std=c++17'] doesn't work under certain circumstances
 override_opts = ['cpp_std=c++17']
@@ -204,7 +214,7 @@ override_opts = ['cpp_std=c++17']
 imgui = library(
   'imgui',
   sources,
-  cpp_args: api,
+  cpp_args: additional_compiler_flags,
   gnu_symbol_visibility: 'hidden',
   dependencies: dependencies,
   include_directories: include_dirs,
@@ -218,8 +228,10 @@ if host_machine.system() == 'windows'
   )
 endif
 
+additional_compiler_flags += api
+
 imgui_dep = declare_dependency(
-  compile_args: api,
+  compile_args: additional_compiler_flags,
   include_directories: include_dirs,
   link_with: imgui,
 )
