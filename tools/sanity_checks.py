@@ -176,6 +176,13 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
         'makedef.py',
         'stddef.h.in',
     },
+    'x265': {
+        'version.py',
+        'intrin.h',
+        'makever.py',
+        'primitives-placeholders.cpp',
+        'gcc15-workaround.cpp',
+    },
     'zlib-ng': {
         'get-version.py',
         'process-zconf.py',
