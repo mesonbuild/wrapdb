@@ -1,0 +1,8 @@
+[wrap-file]
+directory = iceberg-cpp-064d53bfe5f51d6a03fd14d15dbe95de1e2a0118
+source_url = https://github.com/apache/iceberg-cpp/archive/064d53bfe5f51d6a03fd14d15dbe95de1e2a0118.tar.gz
+source_filename = iceberg-cpp-064d53bfe5f51d6a03fd14d15dbe95de1e2a0118.tar.gz
+source_hash = 6cf8e5f5af41e9aaa8ae7ebe0e7e1c528d22c1dd1fce68c9b7f4087944cd9930
+
+[provide]
+dependency_names = iceberg
