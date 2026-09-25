@@ -1,0 +1,9 @@
+[wrap-file]
+directory = bearssl-0.6
+source_url = https://bearssl.org/bearssl-0.6.tar.gz
+source_filename = bearssl-0.6.tar.gz
+source_hash = 6705bba1714961b41a728dfc5debbe348d2966c117649392f8c8139efc83ff14
+patch_directory = bearssl
+
+[provide]
+dependency_names = bearssl
