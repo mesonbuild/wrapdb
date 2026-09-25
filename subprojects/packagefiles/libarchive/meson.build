@@ -343,15 +343,16 @@ if zstd_dep.found()
   cdata.set('HAVE_LIBZSTD', 1)
   cdata.set('HAVE_ZSTD_H', 1)
   deps += zstd_dep
-  foreach sym : ['ZSTD_compressStream', 'ZSTD_minCLevel']
-    if cc.has_header_symbol(
-      'zstd.h',
-      sym,
-      dependencies: zstd_dep,
-    )
-      cdata.set('HAVE_' + sym, 1)
-    endif
-  endforeach
+  # cc.has_header_symbol() rejects internal (subproject/wrap) dependencies,
+  # so use version comparison instead — this works for both external and
+  # internal zstd_dep alike.
+  zstd_version = zstd_dep.version()
+  if zstd_version == 'unknown' or zstd_version.version_compare('>=1.0.0')
+    cdata.set('HAVE_ZSTD_compressStream', 1)
+  endif
+  if zstd_version == 'unknown' or zstd_version.version_compare('>=1.4.0')
+    cdata.set('HAVE_ZSTD_minCLevel', 1)
+  endif
 endif
 
 lzma_dep = dependency(
