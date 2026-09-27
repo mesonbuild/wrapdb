@@ -19,5 +19,7 @@ subprojects/packagefiles/openssl/generator.sh
 
 Generated files in `generated-config` directory, after which you can try to build it. `create_release.py` will run it as part of the release process, so it doesn't need to be included in Git.
 
+When running on Windows, make sure to set the `PERL` environment variable to MSYS2 Perl (`/usr/bin/perl`). UCRT64 Perl etc.'s `system` command treat the argument as a process path, instead of spawning a shell.
+
 ## Acknowledgement
 This OpenSSL port wouldn't be possible without [Node.js project](https://github.com/nodejs/node) under [MIT license](https://github.com/nodejs/node/blob/master/LICENSE), whose OpenSSL build system was decomposed and heavily refactored.
