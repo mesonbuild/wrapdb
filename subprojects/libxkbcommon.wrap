@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libxkbcommon-xkbcommon-1.11.0
-source_url = https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-1.11.0.tar.gz
-source_filename = libxkbcommon-1.11.0.tar.xz
-source_hash = 78a6b14f16e9a55025978c252e53ce9e16a02bfdb929550b9a0db5af87db7e02
+directory = libxkbcommon-xkbcommon-1.13.2
+source_url = https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-1.13.2.tar.gz
+source_filename = libxkbcommon-1.13.2.tar.xz
+source_hash = acc4d5f7c3cbba5f9f8d08d8bdbeede84ecede46792f47929aa9321873385528
 
 [provide]
 dependency_names = xkbcommon, xkbcommon-x11, xkbregistry
