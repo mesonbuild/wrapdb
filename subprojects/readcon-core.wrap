@@ -1,0 +1,8 @@
+[wrap-file]
+directory = readcon-core-cxx-0.14.9
+source_url = https://github.com/lode-org/readcon-core/releases/download/v0.14.9/readcon-core-cxx-0.14.9.tar.gz
+source_filename = readcon-core-cxx-0.14.9.tar.gz
+source_hash = 94df61bccfe2518a95b76041cf9042ef9f331d781ca400de2bfef5c070e1309a
+
+[provide]
+dependency_names = readcon-core
