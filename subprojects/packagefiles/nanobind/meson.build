@@ -4,7 +4,7 @@ project(
   version: run_command(
     'src/version.py',
     check: true,
-  ).stdout().strip(),
+  ).stdout().split('\n')[0].strip(),
   meson_version: '>=1.0.0',
   default_options: [
     'cpp_std=c++17',
