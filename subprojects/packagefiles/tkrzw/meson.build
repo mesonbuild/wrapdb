@@ -1,13 +1,13 @@
 project(
   'tkrzw',
   'cpp',
-  version: '1.0.32',
+  version: '1.0.34',
   license: 'Apache-2.0',
   meson_version: '>=0.63.0',
   default_options: ['cpp_std=c++17', 'b_ndebug=true'],
 )
 
-libversion = '1.75.0'
+libversion = '1.77.0'
 
 cpp = meson.get_compiler('cpp')
 
