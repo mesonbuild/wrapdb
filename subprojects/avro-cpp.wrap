@@ -1,0 +1,10 @@
+[wrap-file]
+directory = avro-cpp-1.12.2
+source_url = https://dlcdn.apache.org/avro/avro-1.12.2/cpp/avro-cpp-1.12.2.tar.gz
+source_filename = avro-cpp-1.12.2.tar.gz
+source_hash = 5e4cea5d9dc59bbc0e3e1967fd8f8a86b4cb7c1452c4b252561b8137e949f6fd
+patch_directory = avro-cpp
+
+[provide]
+dependency_names = avro-cpp
+program_names = avrogencpp
