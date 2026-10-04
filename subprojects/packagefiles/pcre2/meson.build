@@ -3,14 +3,14 @@ project(
   'c',
   license: 'BSD-3-Clause WITH PCRE2-exception',
   meson_version: '>=0.56.0',
-  version: '10.48',
+  version: '10.49',
 )
 
-pcre2_date = '2026-08-31'
-pcre2_8_lib_version = '0.16.0'
-pcre2_16_lib_version = '0.16.0'
-pcre2_32_lib_version = '0.16.0'
-pcre2_posix_lib_version = '3.0.8'
+pcre2_date = '2026-09-28'
+pcre2_8_lib_version = '0.16.1'
+pcre2_16_lib_version = '0.16.1'
+pcre2_32_lib_version = '0.16.1'
+pcre2_posix_lib_version = '3.0.9'
 
 c_compiler = meson.get_compiler('c')
 
