@@ -1,8 +1,8 @@
 [wrap-file]
-directory = tkrzw-1.0.32
-source_url = https://dbmx.net/tkrzw/pkg/tkrzw-1.0.32.tar.gz
-source_filename = tkrzw-1.0.32.tar.gz
-source_hash = d3404dfac6898632b69780c0f0994c5f6ba962191a61c9b0f4b53ba8bb27731c
+directory = tkrzw-1.0.34
+source_url = https://dbmx.net/tkrzw/pkg/tkrzw-1.0.34.tar.gz
+source_filename = tkrzw-1.0.34.tar.gz
+source_hash = afe894c1532feda086b7a94672f412f801758cbe81431fd3c88514fa27ebe369
 patch_directory = tkrzw
 
 [provide]
