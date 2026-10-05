@@ -1,0 +1,12 @@
+option(
+    'tools',
+    type: 'boolean',
+    value: false,
+    description: 'Build brssl CLI tool',
+)
+option(
+    'tests',
+    type: 'boolean',
+    value: false,
+    description: 'Build tests',
+)
