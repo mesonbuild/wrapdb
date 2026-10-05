@@ -2,23 +2,44 @@ project(
   'lua',
   'c',
   license: 'MIT',
-  meson_version: '>=0.56.0',
+  meson_version: '>=0.64.0',
   version: '5.5.0',
   default_options: ['warning_level=2'],
 )
 
 lua_versions = meson.project_version().split('.')
 cc = meson.get_compiler('c')
+fs = import('fs')
 
 override_options = [
   'c_std=c99',
 ]
 
+build_as_cpp = get_option('lua_cpp')
+source_languages = ['c']
+
+if build_as_cpp
+  add_languages(
+    'cpp',
+    required: true,
+    native: false,
+  )
+  cxx = meson.get_compiler('cpp')
+  source_languages += ['cpp']
+endif
+
 # Skip bogus warning.
+warning_args = ['-Wno-string-plus-int', '-Wno-stringop-overflow']
 add_project_arguments(
-  cc.get_supported_arguments('-Wno-string-plus-int', '-Wno-stringop-overflow'),
+  cc.get_supported_arguments(warning_args),
   language: 'c',
 )
+if build_as_cpp
+  add_project_arguments(
+    cxx.get_supported_arguments(warning_args),
+    language: 'cpp',
+  )
+endif
 
 # Platform-specific defines.
 is_posix = host_machine.system() in [
@@ -36,12 +57,12 @@ is_posix = host_machine.system() in [
 if is_posix
   add_project_arguments(
     '-DLUA_USE_POSIX',
-    language: 'c',
+    language: source_languages,
   )
 elif get_option('default_library') != 'static' and host_machine.system() == 'windows'
   add_project_arguments(
     '-DLUA_BUILD_AS_DLL',
-    language: 'c',
+    language: source_languages,
   )
 endif
 
@@ -53,23 +74,16 @@ lua_lib_deps = [
   ),
 ]
 
-if meson.version().version_compare('>= 0.62')
-  dl_dep = dependency(
-    'dl',
-    required: get_option('loadlib'),
-  )
-else
-  dl_dep = cc.find_library(
-    'dl',
-    required: get_option('loadlib'),
-  )
-endif
+dl_dep = dependency(
+  'dl',
+  required: get_option('loadlib'),
+)
 
 if dl_dep.found()
   lua_lib_deps += dl_dep
   add_project_arguments(
     '-DLUA_USE_DLOPEN',
-    language: 'c',
+    language: source_languages,
   )
 endif
 
@@ -92,8 +106,7 @@ else
 endif
 
 # Targets.
-lua_lib = library(
-  'lua',
+lua_lib_sources = [
   'src/lapi.c',
   'src/lauxlib.c',
   'src/lbaselib.c',
@@ -126,7 +139,27 @@ lua_lib = library(
   'src/lutf8lib.c',
   'src/lvm.c',
   'src/lzio.c',
+]
+
+if build_as_cpp
+  lua_cpp_sources = []
+  foreach source : lua_lib_sources
+    source_parts = source.split('/')
+    source_name = source_parts[source_parts.length() - 1]
+    lua_cpp_sources += fs.copyfile(
+      source,
+      fs.replace_suffix(source_name, '.cpp'),
+    )
+  endforeach
+  lua_lib_sources = lua_cpp_sources
+endif
+
+inc = include_directories('src')
+lua_lib = library(
+  'lua',
+  lua_lib_sources,
   dependencies: lua_lib_deps,
+  include_directories: inc,
   version: meson.project_version(),
   soversion: lua_versions[0] + '.' + lua_versions[1],
   implicit_include_directories: false,
@@ -134,7 +167,6 @@ lua_lib = library(
   override_options: override_options,
 )
 
-inc = include_directories('src')
 lua_dep = declare_dependency(
   link_with: lua_lib,
   include_directories: inc,
@@ -146,7 +178,8 @@ meson.override_dependency(
   lua_dep,
 )
 
-if get_option('interpreter')
+# If building Lua as C++ is enabled, then disable interpreter.
+if get_option('interpreter') and not build_as_cpp
   lua_exe = executable(
     'lua',
     'src/lua.c',
