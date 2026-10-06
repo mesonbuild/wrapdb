@@ -5,7 +5,7 @@ project(
     'src/version.py',
     check: true,
   ).stdout().split('\n')[0].strip(),
-  meson_version: '>=1.0.0',
+  meson_version: '>=0.63.0',
   default_options: [
     'cpp_std=c++17',
     'b_ndebug=if-release',
