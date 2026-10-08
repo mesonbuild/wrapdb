@@ -1,5 +1,6 @@
 if host_machine.system() == 'windows'
   cdata.set('SDL_JOYSTICK_DINPUT', 1)
+  cdata.set('SDL_JOYSTICK_HIDAPI', 1)
   subdir('hidapi')
   subdir('windows')
   subdir('gdk')

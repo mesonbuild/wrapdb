@@ -226,6 +226,8 @@ foreach f : check_functions
   endif
 endforeach
 
+cdata.set('HAVE_HIDAPI', 1)
+
 sources = []
 
 cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
