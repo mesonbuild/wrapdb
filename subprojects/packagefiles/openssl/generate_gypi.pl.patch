@@ -35,6 +35,6 @@ diff --git a/openssl/config/generate_gypi.pl b/openssl/config/generate_gypi.pl
 +
  # Clean Up
  my $cmd2 ="cd $src_dir; make -f $makefile clean; make -f $makefile distclean;" .
--    "git clean -f $src_dir/crypto";
-+    "git clean -f crypto";
+-    "git clean -f $src_dir";
++    "git clean -f .";
  system($cmd2) == 0 or die "Error in system($cmd2)";
