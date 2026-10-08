@@ -395,6 +395,7 @@ elif host_machine.system() == 'windows'
     cdata.set('HAVE_GAMEINPUT_H', 1)
     cdata.set('SDL_JOYSTICK_GAMEINPUT', 1)
   endif
+  cdata.set('SDL_JOYSTICK_RAWINPUT', 1)
 
   cdata.set('SDL_TIMER_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
