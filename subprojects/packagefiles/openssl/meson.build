@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '3.0.10',
+  version: '3.5.9',
   license: 'Apache-2.0',
   meson_version: '>= 0.56',
   default_options: ['warning_level=1'],
@@ -32,6 +32,7 @@ include_directories = [
   'crypto/ec/curve448',
   'crypto/ec/curve448/arch_32',
   'providers/common/include',
+  'providers/fips/include',
   'providers/implementations/include',
 ]
 
