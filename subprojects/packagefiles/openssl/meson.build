@@ -47,6 +47,9 @@ defines = [
   # the real driver but that poses a security liability when an attacker
   # is able to create a malicious DLL in one of the default search paths.
   'OPENSSL_NO_HW',
+  # The legacy provider is built into libcrypto, so it must not define its
+  # own copies of the ERR functions.
+  'STATIC_LEGACY',
 ]
 c_args = []
 
