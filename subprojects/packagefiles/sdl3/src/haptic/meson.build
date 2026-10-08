@@ -9,4 +9,6 @@ else
   subdir('linux')
 endif
 
+subdir('hidapi')
+
 sources += files('SDL_haptic.c')
