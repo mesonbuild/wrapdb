@@ -309,6 +309,11 @@ if host_machine.system() == 'linux'
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
+  sdl_deps += dependency(
+    'libusb-1.0',
+    required: true,
+  )
+  cdata.set('SDL_HIDAPI_LIBUSB', 1)
   sdl_deps += dependency('libudev')
   sdl_deps += dependency('dbus-1')
   sdl_deps += dependency('libpipewire-0.3')
