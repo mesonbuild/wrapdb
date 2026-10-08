@@ -1,5 +1,5 @@
 experimental_view_test = {
-  'view.shared' : files('shared.cpp'),
+  'view.shared': files('shared.cpp'),
 }
 
 foreach name, sources : experimental_view_test
