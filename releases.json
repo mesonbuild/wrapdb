@@ -3269,6 +3269,14 @@
       "0.1.2-1"
     ]
   },
+  "minio-cpp": {
+    "dependency_names": [
+      "minio-cpp"
+    ],
+    "versions": [
+      "0.7.0-1"
+    ]
+  },
   "miniz": {
     "dependency_names": [
       "miniz"
