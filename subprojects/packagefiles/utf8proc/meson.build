@@ -19,11 +19,13 @@ cc = meson.get_compiler('c')
 fs = import('fs')
 pkg = import('pkgconfig')
 
+pkg_cflags = []
 if get_option('default_library') == 'static'
   add_project_arguments(
     '-DUTF8PROC_STATIC',
     language: 'c',
   )
+  pkg_cflags += '-DUTF8PROC_STATIC'
 endif
 
 add_project_arguments(
@@ -48,7 +50,7 @@ utf8proc_dep = declare_dependency(
 pkg.generate(
   utf8proc_lib,
   description: 'UTF8 processing',
-  extra_cflags: '-DUTF8PROC_EXPORTS',
+  extra_cflags: pkg_cflags,
   name: 'libutf8proc',
 )
 
