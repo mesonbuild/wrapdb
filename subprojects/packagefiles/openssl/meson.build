@@ -1,7 +1,7 @@
 project(
   'openssl',
   'c',
-  version: '3.0.10',
+  version: '3.5.9',
   license: 'Apache-2.0',
   meson_version: '>= 0.56',
   default_options: ['warning_level=1'],
@@ -32,6 +32,7 @@ include_directories = [
   'crypto/ec/curve448',
   'crypto/ec/curve448/arch_32',
   'providers/common/include',
+  'providers/fips/include',
   'providers/implementations/include',
 ]
 
@@ -46,6 +47,9 @@ defines = [
   # the real driver but that poses a security liability when an attacker
   # is able to create a malicious DLL in one of the default search paths.
   'OPENSSL_NO_HW',
+  # The legacy provider is built into libcrypto, so it must not define its
+  # own copies of the ERR functions.
+  'STATIC_LEGACY',
 ]
 c_args = []
 
