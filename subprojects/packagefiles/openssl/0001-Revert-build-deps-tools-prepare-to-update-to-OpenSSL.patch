@@ -1,0 +1,615 @@
+From f2302a8607f6c22eadf835ed931f815d9c461199 Mon Sep 17 00:00:00 2001
+From: "Amyspark" <amy@amyspark.me>
+Date: Thu, 20 Aug 2026 09:43:39 -0300
+Subject: [PATCH] Revert "build,deps,tools: prepare to update to OpenSSL 3.5"
+
+This change isn't actually used for Node 22.19.0, it is meant for the next LTS.
+
+This reverts commit b30a2117dc46a47129c2490173cdb4cef1b55dc1.
+---
+ Makefile                                  |  2 +-
+ deps/openssl/config/Makefile              | 18 +++---
+ deps/openssl/config/Makefile_VC-WIN32     | 42 ++------------
+ deps/openssl/config/Makefile_VC-WIN64-ARM | 45 +++------------
+ deps/openssl/config/Makefile_VC-WIN64A    | 70 +++--------------------
+ deps/openssl/config/generate_gypi.pl      | 18 ++----
+ deps/openssl/config/generate_headers.pl   |  2 -
+ deps/openssl/openssl_common.gypi          |  1 -
+ tools/dep_updaters/update-openssl.sh      | 10 ++--
+ 9 files changed, 41 insertions(+), 167 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 6d173a6332..915556b323 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1661,7 +1661,7 @@ HAS_DOCKER ?= $(shell command -v docker > /dev/null 2>&1; [ $$? -eq 0 ] && echo
+ 
+ .PHONY: gen-openssl
+ ifeq ($(HAS_DOCKER), 1)
+-DOCKER_COMMAND ?= docker run --rm -u $(shell id -u) -v $(PWD):/node
++DOCKER_COMMAND ?= docker run -it -v $(PWD):/node
+ IS_IN_WORKTREE = $(shell grep '^gitdir: ' $(PWD)/.git 2>/dev/null)
+ GIT_WORKTREE_COMMON = $(shell git rev-parse --git-common-dir)
+ DOCKER_COMMAND += $(if $(IS_IN_WORKTREE), -v $(GIT_WORKTREE_COMMON):$(GIT_WORKTREE_COMMON))
+diff --git a/deps/openssl/config/Makefile b/deps/openssl/config/Makefile
+index 8fbc201ec4..48d2af8001 100644
+--- a/deps/openssl/config/Makefile
++++ b/deps/openssl/config/Makefile
+@@ -37,11 +37,9 @@ OPSSL_SRC = ../openssl
+ # Header files generated with Configure
+ #INT_CFGS = bn_conf.h dso_conf.h
+ INT_CFG_DIR = $(OPSSL_SRC)/include/crypto
+-GEN_HEADERS = asn1 asn1t bio comp cmp cms conf configuration core_names crmf \
+-              crypto ct err ess fipskey lhash ocsp opensslv pkcs12 pkcs7 \
+-              safestack srp ssl ui x509_acert x509 x509v3 x509_vfy
+-
+-INTERNAL_GEN_HEADERS = param_names
++GEN_HEADERS = asn1 asn1t bio cmp cms configuration conf crmf crypto ct err    \
++              ess fipskey lhash ocsp opensslv pkcs12 pkcs7 safestack srp ssl  \
++	      ui x509 x509v3 x509_vfy conf
+ 
+ CRYPTO_GEN_HEADERS = bn_conf dso_conf
+ 
+@@ -54,24 +52,24 @@ all: $(ASM_ARCHS) $(NO_ASM_ARCHS) generate_headers
+ # Configure and generate openssl asm files for each archs
+ $(ASM_ARCHS):
+ 	cd $(OPSSL_SRC); $(NO_WARN_ENV) CC=$(CC) $(PERL) $(CONFIGURE) $(COPTS) $@;
+-	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}" "${INTERNAL_GEN_HEADERS}"
++	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}"
+ # Confgure asm_avx2 and generate upto avx2 support
+ 	cd $(OPSSL_SRC); $(NO_WARN_ENV) CC=$(FAKE_GCC) $(PERL) $(CONFIGURE) \
+ 	$(COPTS) $@;
+-	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) asm_avx2 $@ "${GEN_HEADERS}" "${CRYTO_GEN_HEADERS}" "${INTERNAL_GEN_HEADERS}"
++	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) asm_avx2 $@ "${GEN_HEADERS}" "${CRYTO_GEN_HEADERS}"
+ # Configure no-asm and generate no-asm sources
+ 	cd $(OPSSL_SRC); $(NO_WARN_ENV) $(PERL) $(CONFIGURE) $(COPTS) \
+ 	no-asm $@;
+-	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) no-asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}" "${INTERNAL_GEN_HEADERS}"
++	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) no-asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}"
+ 
+ $(NO_ASM_ARCHS):
+ # Configure no-asm and generate no-asm sources
+ 	cd $(OPSSL_SRC); $(NO_WARN_ENV) $(PERL) $(CONFIGURE) $(COPTS) \
+ 	no-asm $@;
+-	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) no-asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}" "${INTERNAL_GEN_HEADERS}"
++	$(PERL) -w -I$(OPSSL_SRC) $(GENERATE) no-asm $@ "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}"
+ 
+ generate_headers:
+-	@$(PERL) -w -I$(OPSSL_SRC) ./generate_headers.pl "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}" "${INTERNAL_GEN_HEADERS}"
++	@$(PERL) -w -I$(OPSSL_SRC) ./generate_headers.pl "${GEN_HEADERS}" "${CRYPTO_GEN_HEADERS}"
+ 
+ clean:
+ 	find archs \( -name \*.S -o -name \*.s -o -name \*.asm -o \
+diff --git a/deps/openssl/config/Makefile_VC-WIN32 b/deps/openssl/config/Makefile_VC-WIN32
+index bb843a0c14..fdbef72361 100644
+--- a/deps/openssl/config/Makefile_VC-WIN32
++++ b/deps/openssl/config/Makefile_VC-WIN32
+@@ -1,8 +1,8 @@
+ BLDDIR=.
+ PERL=perl
+ RM= rm -f
+-GENERATED_MANDATORY=crypto/params_idx.c include/crypto/bn_conf.h include/crypto/dso_conf.h include/internal/param_names.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/comp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/core_names.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_acert.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_ml_dsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_slh_dsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
+-GENERATED=apps/CA.pl apps/openssl.rc apps/progs.h apps/tsget.pl crypto/aes/aes-586.asm crypto/aes/aesni-x86.asm crypto/aes/vpaes-x86.asm crypto/bf/bf-586.asm crypto/bn/bn-586.asm crypto/bn/co-586.asm crypto/bn/x86-gf2m.asm crypto/bn/x86-mont.asm crypto/buildinf.h crypto/camellia/cmll-x86.asm crypto/chacha/chacha-x86.asm crypto/des/crypt586.asm crypto/des/des-586.asm crypto/ec/ecp_nistz256-x86.asm crypto/md5/md5-586.asm crypto/modes/ghash-x86.asm crypto/params_idx.c crypto/poly1305/poly1305-x86.asm crypto/rc4/rc4-586.asm crypto/ripemd/rmd-586.asm crypto/sha/sha1-586.asm crypto/sha/sha256-586.asm crypto/sha/sha512-586.asm crypto/whrlpool/wp-mmx.asm crypto/x86cpuid.asm engines/capi.def engines/dasync.def engines/e_padlock-x86.asm engines/ossltest.def engines/padlock.def libcrypto.def libcrypto.rc libssl.def libssl.rc test/buildtest_aes.c test/buildtest_asn1.c test/buildtest_asn1t.c test/buildtest_async.c test/buildtest_bio.c test/buildtest_blowfish.c test/buildtest_bn.c test/buildtest_buffer.c test/buildtest_camellia.c test/buildtest_cast.c test/buildtest_cmac.c test/buildtest_cms.c test/buildtest_comp.c test/buildtest_conf.c test/buildtest_conf_api.c test/buildtest_crypto.c test/buildtest_ct.c test/buildtest_des.c test/buildtest_dh.c test/buildtest_dsa.c test/buildtest_dtls1.c test/buildtest_e_os2.c test/buildtest_ebcdic.c test/buildtest_ec.c test/buildtest_ecdh.c test/buildtest_ecdsa.c test/buildtest_engine.c test/buildtest_evp.c test/buildtest_hmac.c test/buildtest_idea.c test/buildtest_kdf.c test/buildtest_lhash.c test/buildtest_md4.c test/buildtest_md5.c test/buildtest_mdc2.c test/buildtest_modes.c test/buildtest_obj_mac.c test/buildtest_objects.c test/buildtest_ocsp.c test/buildtest_opensslv.c test/buildtest_ossl_typ.c test/buildtest_pem.c test/buildtest_pem2.c test/buildtest_pkcs12.c test/buildtest_pkcs7.c test/buildtest_rand.c test/buildtest_rand_drbg.c test/buildtest_rc2.c test/buildtest_rc4.c test/buildtest_ripemd.c test/buildtest_rsa.c test/buildtest_safestack.c test/buildtest_seed.c test/buildtest_sha.c test/buildtest_srp.c test/buildtest_srtp.c test/buildtest_ssl.c test/buildtest_ssl2.c test/buildtest_stack.c test/buildtest_store.c test/buildtest_symhacks.c test/buildtest_tls1.c test/buildtest_ts.c test/buildtest_txt_db.c test/buildtest_ui.c test/buildtest_whrlpool.c test/buildtest_x509.c test/buildtest_x509_vfy.c test/buildtest_x509v3.c tools/c_rehash.pl providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_ml_dsa_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_slh_dsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c
++GENERATED_MANDATORY=include/crypto/bn_conf.h include/crypto/dso_conf.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
++GENERATED=apps/CA.pl apps/openssl.rc apps/progs.h apps/tsget.pl crypto/aes/aes-586.asm crypto/aes/aesni-x86.asm crypto/aes/vpaes-x86.asm crypto/bf/bf-586.asm crypto/bn/bn-586.asm crypto/bn/co-586.asm crypto/bn/x86-gf2m.asm crypto/bn/x86-mont.asm crypto/buildinf.h crypto/camellia/cmll-x86.asm crypto/chacha/chacha-x86.asm crypto/des/crypt586.asm crypto/des/des-586.asm crypto/ec/ecp_nistz256-x86.asm crypto/md5/md5-586.asm crypto/modes/ghash-x86.asm crypto/poly1305/poly1305-x86.asm crypto/rc4/rc4-586.asm crypto/ripemd/rmd-586.asm crypto/sha/sha1-586.asm crypto/sha/sha256-586.asm crypto/sha/sha512-586.asm crypto/whrlpool/wp-mmx.asm crypto/x86cpuid.asm engines/capi.def engines/dasync.def engines/e_padlock-x86.asm engines/ossltest.def engines/padlock.def libcrypto.def libcrypto.rc libssl.def libssl.rc test/buildtest_aes.c test/buildtest_asn1.c test/buildtest_asn1t.c test/buildtest_async.c test/buildtest_bio.c test/buildtest_blowfish.c test/buildtest_bn.c test/buildtest_buffer.c test/buildtest_camellia.c test/buildtest_cast.c test/buildtest_cmac.c test/buildtest_cms.c test/buildtest_comp.c test/buildtest_conf.c test/buildtest_conf_api.c test/buildtest_crypto.c test/buildtest_ct.c test/buildtest_des.c test/buildtest_dh.c test/buildtest_dsa.c test/buildtest_dtls1.c test/buildtest_e_os2.c test/buildtest_ebcdic.c test/buildtest_ec.c test/buildtest_ecdh.c test/buildtest_ecdsa.c test/buildtest_engine.c test/buildtest_evp.c test/buildtest_hmac.c test/buildtest_idea.c test/buildtest_kdf.c test/buildtest_lhash.c test/buildtest_md4.c test/buildtest_md5.c test/buildtest_mdc2.c test/buildtest_modes.c test/buildtest_obj_mac.c test/buildtest_objects.c test/buildtest_ocsp.c test/buildtest_opensslv.c test/buildtest_ossl_typ.c test/buildtest_pem.c test/buildtest_pem2.c test/buildtest_pkcs12.c test/buildtest_pkcs7.c test/buildtest_rand.c test/buildtest_rand_drbg.c test/buildtest_rc2.c test/buildtest_rc4.c test/buildtest_ripemd.c test/buildtest_rsa.c test/buildtest_safestack.c test/buildtest_seed.c test/buildtest_sha.c test/buildtest_srp.c test/buildtest_srtp.c test/buildtest_ssl.c test/buildtest_ssl2.c test/buildtest_stack.c test/buildtest_store.c test/buildtest_symhacks.c test/buildtest_tls1.c test/buildtest_ts.c test/buildtest_txt_db.c test/buildtest_ui.c test/buildtest_whrlpool.c test/buildtest_x509.c test/buildtest_x509_vfy.c test/buildtest_x509v3.c tools/c_rehash.pl providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c
+ 
+ # Variables starting with LIB_ are used to build library object files
+ # and shared libraries.
+@@ -42,10 +42,6 @@ include/crypto/dso_conf.h: include/crypto/dso_conf.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    -omakefile include/crypto/dso_conf.h.in > $@
+ 
+-include/internal/param_names.h: include/internal/param_names.h.in configdata.pm
+-	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+-	    -omakefile include/internal/param_names.h.in > $@
+-
+ include/openssl/asn1.h: include/openssl/asn1.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/asn1.h.in" > $@
+@@ -58,15 +54,9 @@ include/openssl/bio.h: include/openssl/bio.h.in configdata.pm
+ include/openssl/cmp.h: include/openssl/cmp.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cmp.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/cms.h: include/openssl/cms.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cms.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/conf.h.in" > $@
+@@ -76,9 +66,6 @@ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ include/openssl/configuration.h: include/openssl/configuration.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/configuration.h.in" > $@
+-include/openssl/core_names.h: include/openssl/core_names.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/core_names.h.in" > $@
+ include/openssl/crmf.h: include/openssl/crmf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/crmf.h.in" > $@
+@@ -130,9 +117,6 @@ include/openssl/ui.h: include/openssl/ui.h.in configdata.pm
+ include/openssl/x509.h: include/openssl/x509.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509.h.in" > $@
+-include/openssl/x509_acert.h: include/openssl/x509_acert.h.in configdata.pm
+-	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+-	    "-omakefile" "include/openssl/x509_acert.h.in" > $@
+ include/openssl/x509_vfy.h: include/openssl/x509_vfy.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509_vfy.h.in" > $@
+@@ -150,24 +134,18 @@ providers/common/include/prov/der_wrap.h: providers/common/include/prov/der_wrap
+ providers/common/include/prov/der_rsa.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_rsa.h.in > $@
+ 
+-providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_ecx.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ecx.h.in > $@
+ 
+-providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_sm2.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_sm2.h.in > $@
+ 
+-providers/common/include/prov/der_ec.h: providers/common/include/prov/der_ec.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ec.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ec.h.in > $@
+ 
+-providers/common/include/prov/der_digests.h: providers/common/include/prov/der_digests.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_digests.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_digests.h.in > $@
+ 
+-providers/common/include/prov/der_ml_dsa.h: providers/common/include/prov/der_ml_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ml_dsa.h.in > $@
+-
+-providers/common/include/prov/der_slh_dsa.h: providers/common/include/prov/der_slh_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_slh_dsa.h.in > $@
+-
+ apps/progs.h: apps/progs.pl configdata.pm
+ 	"$(PERL)" "apps/progs.pl" "$(APPS_OPENSSL)" > $@
+ 
+@@ -1980,8 +1958,6 @@ crypto/ocsp/libcrypto-shlib-v3_ocsp.d: "crypto/ocsp/v3_ocsp.c"
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) /Zs /showIncludes "crypto/ocsp/v3_ocsp.c" 2>&1 > crypto/ocsp/libcrypto-shlib-v3_ocsp.d
+ crypto/ocsp/libcrypto-shlib-v3_ocsp.obj: crypto/ocsp/libcrypto-shlib-v3_ocsp.d
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) -c $(COUTFLAG)$@ "crypto/ocsp/v3_ocsp.c"
+-crypto/params_idx.c: crypto/params_idx.c.in configdata.pm util/perl/OpenSSL/paramnames.pm
+-	"$(PERL)" "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-omakefile" crypto/params_idx.c.in > $@
+ crypto/pem/libcrypto-shlib-pem_all.d: "crypto/pem/pem_all.c"
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) /Zs /showIncludes "crypto/pem/pem_all.c" 2>&1 > crypto/pem/libcrypto-shlib-pem_all.d
+ crypto/pem/libcrypto-shlib-pem_all.obj: crypto/pem/libcrypto-shlib-pem_all.d
+@@ -5821,15 +5797,9 @@ providers/common/der/der_ec_gen.c: providers/common/der/der_ec_gen.c.in provider
+ providers/common/der/der_ecx_gen.c: providers/common/der/der_ecx_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ecx_gen.c.in > $@
+ 
+-providers/common/der/der_ml_dsa_gen.c: providers/common/der/der_ml_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ml_dsa_gen.c.in > $@
+-
+ providers/common/der/der_rsa_gen.c: providers/common/der/der_rsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_rsa_gen.c.in > $@
+ 
+-providers/common/der/der_slh_dsa_gen.c: providers/common/der/der_slh_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_slh_dsa_gen.c.in > $@
+-
+ providers/common/der/der_sm2_gen.c: providers/common/der/der_sm2_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_sm2_gen.c.in > $@
+ 
+diff --git a/deps/openssl/config/Makefile_VC-WIN64-ARM b/deps/openssl/config/Makefile_VC-WIN64-ARM
+index a0a8a6c3a3..52fc9cd9cf 100644
+--- a/deps/openssl/config/Makefile_VC-WIN64-ARM
++++ b/deps/openssl/config/Makefile_VC-WIN64-ARM
+@@ -16,8 +16,8 @@ MINOR=1.1
+ 
+ SHLIB_VERSION_NUMBER=1.1
+ 
+-GENERATED_MANDATORY=crypto/params_idx.c include/crypto/bn_conf.h include/crypto/dso_conf.h include/internal/param_names.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/comp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/core_names.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_acert.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_ml_dsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_slh_dsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
+-GENERATED=crypto/buildinf.h apps/progs.h crypto/params_idx.c providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c apps/progs.c providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_ml_dsa_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_slh_dsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c
++GENERATED_MANDATORY=include/crypto/bn_conf.h include/crypto/dso_conf.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
++GENERATED=crypto/buildinf.h apps/progs.h providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c apps/progs.c providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c
+ 
+ INSTALL_LIBS="libcrypto.lib" "libssl.lib"
+ INSTALL_SHLIBS="libcrypto-1_1-arm64.dll" "libssl-1_1-arm64.dll"
+@@ -138,9 +138,6 @@ apps/progs.h: apps/progs.c
+ apps/progs.c:
+ 	"$(PERL)" "apps/progs.pl" "-C" $(APPS_OPENSSL) > $@
+ 
+-crypto/params_idx.c: crypto/params_idx.c.in configdata.pm util/perl/OpenSSL/paramnames.pm
+-	"$(PERL)" "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-omakefile" crypto/params_idx.c.in > $@
+-
+ include/crypto/bn_conf.h:
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/crypto/bn_conf.h.in" > $@
+@@ -148,10 +145,6 @@ include/crypto/dso_conf.h:
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/crypto/dso_conf.h.in" > $@
+ 
+-include/internal/param_names.h: include/internal/param_names.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/internal/param_names.h.in" > $@
+-
+ include/openssl/asn1.h: include/openssl/asn1.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/asn1.h.in" > $@
+@@ -164,15 +157,9 @@ include/openssl/bio.h: include/openssl/bio.h.in configdata.pm
+ include/openssl/cmp.h: include/openssl/cmp.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cmp.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/cms.h: include/openssl/cms.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cms.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/conf.h.in" > $@
+@@ -182,9 +169,6 @@ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ include/openssl/configuration.h: include/openssl/configuration.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/configuration.h.in" > $@
+-include/openssl/core_names.h: include/openssl/core_names.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/core_names.h.in" > $@
+ include/openssl/crmf.h: include/openssl/crmf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/crmf.h.in" > $@
+@@ -236,9 +220,6 @@ include/openssl/ui.h: include/openssl/ui.h.in configdata.pm
+ include/openssl/x509.h: include/openssl/x509.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509.h.in" > $@
+-include/openssl/x509_acert.h: include/openssl/x509_acert.h.in configdata.pm
+-	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+-	    "-omakefile" "include/openssl/x509_acert.h.in" > $@
+ include/openssl/x509_vfy.h: include/openssl/x509_vfy.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509_vfy.h.in" > $@
+@@ -253,27 +234,21 @@ providers/common/include/prov/der_dsa.h: providers/common/include/prov/der_dsa.h
+ providers/common/include/prov/der_wrap.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_wrap.h.in > $@
+ 
+-providers/common/include/prov/der_rsa.h: providers/common/include/prov/der_rsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_rsa.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_rsa.h.in > $@
+ 
+-providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_ecx.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ecx.h.in > $@
+ 
+-providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_sm2.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_sm2.h.in > $@
+ 
+-providers/common/include/prov/der_ec.h: providers/common/include/prov/der_ec.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ec.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ec.h.in > $@
+ 
+-providers/common/include/prov/der_digests.h: providers/common/include/prov/der_digests.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_digests.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_digests.h.in > $@
+ 
+-providers/common/include/prov/der_ml_dsa.h: providers/common/include/prov/der_ml_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ml_dsa.h.in > $@
+-
+-providers/common/include/prov/der_slh_dsa.h: providers/common/include/prov/der_slh_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_slh_dsa.h.in > $@
+-
+ 
+ providers/common/der/der_digests_gen.c: providers/common/der/der_digests_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_digests_gen.c.in > $@
+@@ -287,15 +262,9 @@ providers/common/der/der_ec_gen.c: providers/common/der/der_ec_gen.c.in provider
+ providers/common/der/der_ecx_gen.c: providers/common/der/der_ecx_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ecx_gen.c.in > $@
+ 
+-providers/common/der/der_ml_dsa_gen.c: providers/common/der/der_ml_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ml_dsa_gen.c.in > $@
+-
+ providers/common/der/der_rsa_gen.c: providers/common/der/der_rsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_rsa_gen.c.in > $@
+ 
+-providers/common/der/der_slh_dsa_gen.c: providers/common/der/der_slh_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_slh_dsa_gen.c.in > $@
+-
+ providers/common/der/der_sm2_gen.c: providers/common/der/der_sm2_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_sm2_gen.c.in > $@
+ 
+diff --git a/deps/openssl/config/Makefile_VC-WIN64A b/deps/openssl/config/Makefile_VC-WIN64A
+index 5bc8263188..d8fde1e0f3 100644
+--- a/deps/openssl/config/Makefile_VC-WIN64A
++++ b/deps/openssl/config/Makefile_VC-WIN64A
+@@ -5,8 +5,8 @@ RM= rm -f
+ AS=nasm
+ ASFLAGS=-g
+ 
+-GENERATED_MANDATORY=crypto/params_idx.c include/crypto/bn_conf.h include/crypto/dso_conf.h include/internal/param_names.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/comp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/core_names.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_acert.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_ml_dsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_slh_dsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
+-GENERATED=apps/CA.pl apps/openssl.rc apps/progs.h apps/tsget.pl crypto/aes/aes-x86_64.asm crypto/aes/aesni-mb-x86_64.asm crypto/aes/aesni-sha1-x86_64.asm crypto/aes/aesni-sha256-x86_64.asm crypto/aes/aesni-x86_64.asm crypto/aesni-xts-avx512.asm crypto/aes/bsaes-x86_64.asm crypto/aes/vpaes-x86_64.asm crypto/bn/rsaz-avx2.asm crypto/bn/rsaz-2k-avx512.asm crypto/bn/rsaz-2k-avxifma.asm crypto/bn/rsaz-3k-avx512.asm crypto/bn/rsaz-3k-avxifma.asm crypto/bn/rsaz-4k-avx512.asm crypto/bn/rsaz-4k-avxifma.asm crypto/bn/rsaz-x86_64.asm crypto/bn/x86_64-gf2m.asm crypto/bn/x86_64-mont.asm crypto/bn/x86_64-mont5.asm crypto/buildinf.h crypto/camellia/cmll-x86_64.asm crypto/chacha/chacha-x86_64.asm crypto/ec/ecp_nistz256-x86_64.asm crypto/ec/x25519-x86_64.asm crypto/md5/md5-x86_64.asm crypto/modes/aes-gcm-avx512.asm crypto/modes/aesni-gcm-x86_64.asm crypto/modes/ghash-x86_64.asm crypto/params_idx.c crypto/poly1305/poly1305-x86_64.asm crypto/rc4/rc4-md5-x86_64.asm crypto/rc4/rc4-x86_64.asm crypto/sha/keccak1600-x86_64.asm crypto/sha/sha1-mb-x86_64.asm crypto/sha/sha1-x86_64.asm crypto/sha/sha256-mb-x86_64.asm crypto/sha/sha256-x86_64.asm crypto/sha/sha512-x86_64.asm crypto/uplink-x86_64.asm crypto/whrlpool/wp-x86_64.asm crypto/x86_64cpuid.asm engines/e_padlock-x86_64.asm libcrypto.def libcrypto.rc libssl.def libssl.rc test/buildtest_aes.c test/buildtest_asn1.c test/buildtest_asn1t.c test/buildtest_async.c test/buildtest_bio.c test/buildtest_blowfish.c test/buildtest_bn.c test/buildtest_buffer.c test/buildtest_camellia.c test/buildtest_cast.c test/buildtest_cmac.c test/buildtest_cms.c test/buildtest_comp.c test/buildtest_conf.c test/buildtest_conf_api.c test/buildtest_crypto.c test/buildtest_ct.c test/buildtest_des.c test/buildtest_dh.c test/buildtest_dsa.c test/buildtest_dtls1.c test/buildtest_e_os2.c test/buildtest_ebcdic.c test/buildtest_ec.c test/buildtest_ecdh.c test/buildtest_ecdsa.c test/buildtest_engine.c test/buildtest_evp.c test/buildtest_hmac.c test/buildtest_idea.c test/buildtest_kdf.c test/buildtest_lhash.c test/buildtest_md4.c test/buildtest_md5.c test/buildtest_mdc2.c test/buildtest_modes.c test/buildtest_obj_mac.c test/buildtest_objects.c test/buildtest_ocsp.c test/buildtest_opensslv.c test/buildtest_ossl_typ.c test/buildtest_pem.c test/buildtest_pem2.c test/buildtest_pkcs12.c test/buildtest_pkcs7.c test/buildtest_rand.c test/buildtest_rand_drbg.c test/buildtest_rc2.c test/buildtest_rc4.c test/buildtest_ripemd.c test/buildtest_rsa.c test/buildtest_safestack.c test/buildtest_seed.c test/buildtest_sha.c test/buildtest_srp.c test/buildtest_srtp.c test/buildtest_ssl.c test/buildtest_ssl2.c test/buildtest_stack.c test/buildtest_store.c test/buildtest_symhacks.c test/buildtest_tls1.c test/buildtest_ts.c test/buildtest_txt_db.c test/buildtest_ui.c test/buildtest_whrlpool.c test/buildtest_x509.c test/buildtest_x509_vfy.c test/buildtest_x509v3.c tools/c_rehash.pl providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_ml_dsa.c providers/common/der/der_rsa_gen.c providers/common/der/der_slh_dsa.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c
++GENERATED_MANDATORY=include/crypto/bn_conf.h include/crypto/dso_conf.h include/openssl/asn1.h include/openssl/asn1t.h include/openssl/bio.h include/openssl/cmp.h include/openssl/cms.h include/openssl/conf.h include/openssl/configuration.h include/openssl/crmf.h include/openssl/crypto.h include/openssl/ct.h include/openssl/err.h include/openssl/ess.h include/openssl/fipskey.h include/openssl/lhash.h include/openssl/ocsp.h include/openssl/opensslv.h include/openssl/pkcs12.h include/openssl/pkcs7.h include/openssl/safestack.h include/openssl/srp.h include/openssl/ssl.h include/openssl/ui.h include/openssl/x509.h include/openssl/x509_vfy.h include/openssl/x509v3.h providers/common/include/prov/der_digests.h providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_wrap.h
++GENERATED=apps/CA.pl apps/openssl.rc apps/progs.h apps/tsget.pl crypto/aes/aes-x86_64.asm crypto/aes/aesni-mb-x86_64.asm crypto/aes/aesni-sha1-x86_64.asm crypto/aes/aesni-sha256-x86_64.asm crypto/aes/aesni-x86_64.asm crypto/aes/bsaes-x86_64.asm crypto/aes/vpaes-x86_64.asm crypto/bn/rsaz-avx2.asm crypto/bn/rsaz-x86_64.asm crypto/bn/x86_64-gf2m.asm crypto/bn/x86_64-mont.asm crypto/bn/x86_64-mont5.asm crypto/buildinf.h crypto/camellia/cmll-x86_64.asm crypto/chacha/chacha-x86_64.asm crypto/ec/ecp_nistz256-x86_64.asm crypto/ec/x25519-x86_64.asm crypto/md5/md5-x86_64.asm crypto/modes/aesni-gcm-x86_64.asm crypto/modes/ghash-x86_64.asm crypto/poly1305/poly1305-x86_64.asm crypto/rc4/rc4-md5-x86_64.asm crypto/rc4/rc4-x86_64.asm crypto/sha/keccak1600-x86_64.asm crypto/sha/sha1-mb-x86_64.asm crypto/sha/sha1-x86_64.asm crypto/sha/sha256-mb-x86_64.asm crypto/sha/sha256-x86_64.asm crypto/sha/sha512-x86_64.asm crypto/uplink-x86_64.asm crypto/whrlpool/wp-x86_64.asm crypto/x86_64cpuid.asm engines/e_padlock-x86_64.asm libcrypto.def libcrypto.rc libssl.def libssl.rc test/buildtest_aes.c test/buildtest_asn1.c test/buildtest_asn1t.c test/buildtest_async.c test/buildtest_bio.c test/buildtest_blowfish.c test/buildtest_bn.c test/buildtest_buffer.c test/buildtest_camellia.c test/buildtest_cast.c test/buildtest_cmac.c test/buildtest_cms.c test/buildtest_comp.c test/buildtest_conf.c test/buildtest_conf_api.c test/buildtest_crypto.c test/buildtest_ct.c test/buildtest_des.c test/buildtest_dh.c test/buildtest_dsa.c test/buildtest_dtls1.c test/buildtest_e_os2.c test/buildtest_ebcdic.c test/buildtest_ec.c test/buildtest_ecdh.c test/buildtest_ecdsa.c test/buildtest_engine.c test/buildtest_evp.c test/buildtest_hmac.c test/buildtest_idea.c test/buildtest_kdf.c test/buildtest_lhash.c test/buildtest_md4.c test/buildtest_md5.c test/buildtest_mdc2.c test/buildtest_modes.c test/buildtest_obj_mac.c test/buildtest_objects.c test/buildtest_ocsp.c test/buildtest_opensslv.c test/buildtest_ossl_typ.c test/buildtest_pem.c test/buildtest_pem2.c test/buildtest_pkcs12.c test/buildtest_pkcs7.c test/buildtest_rand.c test/buildtest_rand_drbg.c test/buildtest_rc2.c test/buildtest_rc4.c test/buildtest_ripemd.c test/buildtest_rsa.c test/buildtest_safestack.c test/buildtest_seed.c test/buildtest_sha.c test/buildtest_srp.c test/buildtest_srtp.c test/buildtest_ssl.c test/buildtest_ssl2.c test/buildtest_stack.c test/buildtest_store.c test/buildtest_symhacks.c test/buildtest_tls1.c test/buildtest_ts.c test/buildtest_txt_db.c test/buildtest_ui.c test/buildtest_whrlpool.c test/buildtest_x509.c test/buildtest_x509_vfy.c test/buildtest_x509v3.c tools/c_rehash.pl providers/common/der/der_digests_gen.c providers/common/der/der_dsa_gen.c providers/common/der/der_ec_gen.c providers/common/der/der_ecx_gen.c providers/common/der/der_rsa_gen.c providers/common/der/der_sm2_gen.c providers/common/der/der_wrap_gen.c 
+ 
+ PERLASM_SCHEME= auto
+ APPS_OPENSSL=apps/openssl
+@@ -18,10 +18,6 @@ include/crypto/dso_conf.h: include/crypto/dso_conf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/crypto/dso_conf.h.in" > $@
+ 
+-include/internal/param_names.h: include/internal/param_names.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/internal/param_names.h.in" > $@
+-
+ include/openssl/asn1.h: include/openssl/asn1.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/asn1.h.in" > $@
+@@ -34,15 +30,9 @@ include/openssl/bio.h: include/openssl/bio.h.in configdata.pm
+ include/openssl/cmp.h: include/openssl/cmp.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cmp.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/cms.h: include/openssl/cms.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/cms.h.in" > $@
+-include/openssl/comp.h: include/openssl/comp.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/comp.h.in" > $@
+ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/conf.h.in" > $@
+@@ -52,9 +42,6 @@ include/openssl/conf.h: include/openssl/conf.h.in configdata.pm
+ include/openssl/configuration.h: include/openssl/configuration.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/configuration.h.in" > $@
+-include/openssl/core_names.h: include/openssl/core_names.h.in configdata.pm
+-	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+-	    "-omakefile" "include/openssl/core_names.h.in" > $@
+ include/openssl/crmf.h: include/openssl/crmf.h.in configdata.pm
+ 	"$(PERL)" "-I$(BLDDIR)" -Mconfigdata "util/dofile.pl" \
+ 	    "-omakefile" "include/openssl/crmf.h.in" > $@
+@@ -106,9 +93,6 @@ include/openssl/ui.h: include/openssl/ui.h.in configdata.pm
+ include/openssl/x509.h: include/openssl/x509.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509.h.in" > $@
+-include/openssl/x509_acert.h: include/openssl/x509_acert.h.in configdata.pm
+-	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+-	    "-omakefile" "include/openssl/x509_acert.h.in" > $@
+ include/openssl/x509_vfy.h: include/openssl/x509_vfy.h.in configdata.pm
+ 	$(PERL) -I$(BLDDIR) -Mconfigdata util/dofile.pl \
+ 	    "-omakefile" "include/openssl/x509_vfy.h.in" > $@
+@@ -122,26 +106,21 @@ providers/common/include/prov/der_dsa.h: providers/common/include/prov/der_dsa.h
+ providers/common/include/prov/der_wrap.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_wrap.h.in > $@
+ 
+-providers/common/include/prov/der_rsa.h: providers/common/include/prov/der_rsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_rsa.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_rsa.h.in > $@
+ 
+-providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_ecx.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ecx.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ecx.h.in > $@
+ 
+-providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_sm2.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_sm2.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_sm2.h.in > $@
+ 
+-providers/common/include/prov/der_ec.h: providers/common/include/prov/der_ec.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_ec.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ec.h.in > $@
+ 
+-providers/common/include/prov/der_digests.h: providers/common/include/prov/der_digests.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
++providers/common/include/prov/der_digests.h: providers/common/include/prov/der_wrap.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_digests.h.in > $@
+ 
+-providers/common/include/prov/der_ml_dsa.h: providers/common/include/prov/der_ml_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_ml_dsa.h.in > $@
+-
+-providers/common/include/prov/der_slh_dsa.h: providers/common/include/prov/der_slh_dsa.h.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/include/prov/der_slh_dsa.h.in > $@
+ 
+ 
+ apps/progs.h: apps/progs.c
+@@ -204,11 +183,6 @@ crypto/aes/aesni-x86_64.obj: "crypto/aes/aesni-x86_64.asm"
+ crypto/aes/aesni-x86_64.asm:
+ 	set ASM=$(AS)
+ 	"$(PERL)" "crypto/aes/asm/aesni-x86_64.pl" $(PERLASM_SCHEME) $@
+-crypto/aes/aesni-xts-avx512.obj: "crypto/aes/aesni-xts-avx512.asm"
+-	$(AS)  $(LIB_ASFLAGS) $(ASOUTFLAG)$@ "crypto/aes/aesni-xts-avx512.asm"
+-crypto/aes/aesni-xts-avx512.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/aes/asm/aesni-xts-avx512.pl" $(PERLASM_SCHEME) $@
+ crypto/aes/bsaes-x86_64.obj: "crypto/aes/bsaes-x86_64.asm"
+ 	$(AS)  $(LIB_ASFLAGS) $(ASOUTFLAG)$@ "crypto/aes/bsaes-x86_64.asm"
+ crypto/aes/bsaes-x86_64.asm:
+@@ -760,24 +734,9 @@ crypto/bn/rsaz-avx2.obj: "crypto/bn/rsaz-avx2.asm"
+ crypto/bn/rsaz-avx2.asm:
+ 	set ASM=$(AS)
+ 	"$(PERL)" "crypto/bn/asm/rsaz-avx2.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-2k-avx512.asm:
++crypto/bn/rsaz-avx512.asm:
+ 	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-2k-avx512.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-2k-avxifma.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-2k-avxifma.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-3k-avx512.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-3k-avx512.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-3k-avxifma.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-3k-avxifma.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-4k-avx512.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-4k-avx512.pl" $(PERLASM_SCHEME) $@
+-crypto/bn/rsaz-4k-avxifma.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/bn/asm/rsaz-4k-avxifma.pl" $(PERLASM_SCHEME) $@
++	"$(PERL)" "crypto/bn/asm/rsaz-avx512.pl" $(PERLASM_SCHEME) $@
+ crypto/bn/rsaz-x86_64.obj: "crypto/bn/rsaz-x86_64.asm"
+ 	$(AS)  $(LIB_ASFLAGS) $(ASOUTFLAG)$@ "crypto/bn/rsaz-x86_64.asm"
+ crypto/bn/rsaz-x86_64.asm:
+@@ -1857,9 +1816,6 @@ crypto/mem_sec.d: "crypto/mem_sec.c"
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) /Zs /showIncludes "crypto/mem_sec.c" 2>&1 > crypto/mem_sec.d
+ crypto/mem_sec.obj: crypto/mem_sec.d
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) -c $(COUTFLAG)$@ "crypto/mem_sec.c"
+-crypto/modes/aes-gcm-avx512.asm:
+-	set ASM=$(AS)
+-	"$(PERL)" "crypto/modes/asm/aes-gcm-avx512.pl" $(PERLASM_SCHEME) $@
+ crypto/modes/aesni-gcm-x86_64.obj: "crypto/modes/aesni-gcm-x86_64.asm"
+ 	$(AS)  $(LIB_ASFLAGS) $(ASOUTFLAG)$@ "crypto/modes/aesni-gcm-x86_64.asm"
+ crypto/modes/aesni-gcm-x86_64.asm:
+@@ -1994,8 +1950,6 @@ crypto/ocsp/v3_ocsp.d: "crypto/ocsp/v3_ocsp.c"
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) /Zs /showIncludes "crypto/ocsp/v3_ocsp.c" 2>&1 > crypto/ocsp/v3_ocsp.d
+ crypto/ocsp/v3_ocsp.obj: crypto/ocsp/v3_ocsp.d
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) -c $(COUTFLAG)$@ "crypto/ocsp/v3_ocsp.c"
+-crypto/params_idx.c: crypto/params_idx.c.in configdata.pm util/perl/OpenSSL/paramnames.pm
+-	"$(PERL)" "-I." "-Iutil/perl" "-Mconfigdata" "-MOpenSSL::paramnames" "util/dofile.pl" "-omakefile" crypto/params_idx.c.in > $@
+ crypto/pem/pem_all.d: "crypto/pem/pem_all.c"
+ 	$(CC)  $(LIB_CFLAGS) /I "." /I "crypto/include" /I "include" $(LIB_CPPFLAGS) /Zs /showIncludes "crypto/pem/pem_all.c" 2>&1 > crypto/pem/pem_all.d
+ crypto/pem/pem_all.obj: crypto/pem/pem_all.d
+@@ -3116,15 +3070,9 @@ providers/common/der/der_ec_gen.c: providers/common/der/der_ec_gen.c.in provider
+ providers/common/der/der_ecx_gen.c: providers/common/der/der_ecx_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ecx_gen.c.in > $@
+ 
+-providers/common/der/der_ml_dsa_gen.c: providers/common/der/der_ml_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_ml_dsa_gen.c.in > $@
+-
+ providers/common/der/der_rsa_gen.c: providers/common/der/der_rsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_rsa_gen.c.in > $@
+ 
+-providers/common/der/der_slh_dsa_gen.c: providers/common/der/der_slh_dsa_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+-	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_slh_dsa_gen.c.in > $@
+-
+ providers/common/der/der_sm2_gen.c: providers/common/der/der_sm2_gen.c.in providers/common/der/oids_to_c.pm configdata.pm providers/common/der/oids_to_c.pm
+ 	$(PERL) "-I." "-Iproviders/common/der" -Mconfigdata -Moids_to_c "util/dofile.pl" "-oMakefile" providers/common/der/der_sm2_gen.c.in > $@
+ 
+diff --git a/deps/openssl/config/generate_gypi.pl b/deps/openssl/config/generate_gypi.pl
+index 95373e5bc5..be7d357f68 100755
+--- a/deps/openssl/config/generate_gypi.pl
++++ b/deps/openssl/config/generate_gypi.pl
+@@ -48,15 +48,15 @@ my $makefile = $is_win ? "../config/Makefile_$arch": "Makefile";
+ # Generate arch dependent header files with Makefile
+ my $buildinf = "crypto/buildinf.h";
+ my $progs = "apps/progs.h";
+-my $prov_headers = "providers/common/include/prov/der_dsa.h providers/common/include/prov/der_ml_dsa.h providers/common/include/prov/der_slh_dsa.h providers/common/include/prov/der_wrap.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_digests.h";
++my $prov_headers = "providers/common/include/prov/der_dsa.h providers/common/include/prov/der_wrap.h providers/common/include/prov/der_rsa.h providers/common/include/prov/der_ecx.h providers/common/include/prov/der_sm2.h providers/common/include/prov/der_ec.h providers/common/include/prov/der_digests.h";
+ my $fips_ld = ($arch =~ m/linux/ ? "providers/fips.ld" : "");
+ my $cmd1 = "cd ../openssl; make -f $makefile clean build_generated $buildinf $progs $prov_headers $fips_ld;";
+ system($cmd1) == 0 or die "Error in system($cmd1)";
+ 
+ # Copy and move all arch dependent header files into config/archs
+ make_path("$base_dir/crypto/include/internal", "$base_dir/include/openssl",
+-	  "$base_dir/include/crypto", "$base_dir/include/internal",
+-	  "$base_dir/providers/common/include/prov", "$base_dir/apps",
++	  "$base_dir/include/crypto", "$base_dir/providers/common/include/prov",
++	  "$base_dir/apps",
+           {
+            error => \my $make_path_err});
+ if (@$make_path_err) {
+@@ -73,9 +73,6 @@ copy_headers(@openssl_dir_headers, 'openssl');
+ my @crypto_dir_headers = shift @ARGV;
+ copy_headers(@crypto_dir_headers, 'crypto');
+ 
+-my @internal_dir_headers = shift @ARGV;
+-copy_headers(@internal_dir_headers, 'internal');
+-
+ move("$src_dir/include/crypto/bn_conf.h",
+      "$base_dir/include/crypto/bn_conf.h") or die "Move failed: $!";
+ move("$src_dir/include/crypto/dso_conf.h",
+@@ -88,15 +85,8 @@ move("$src_dir/$progs",
+ copy("$src_dir/apps/progs.c",
+      "$base_dir/apps") or die "Copy failed: $!";
+ 
+-move("$src_dir/include/internal/param_names.h",
+-     "$base_dir/include/internal/param_names.h") or die "Move failed: $!";
+-
+ copy("$src_dir/providers/common/include/prov/der_dsa.h",
+      "$base_dir/providers/common/include/prov/") or die "Copy failed: $!";
+-copy("$src_dir/providers/common/include/prov/der_ml_dsa.h",
+-     "$base_dir/providers/common/include/prov/") or die "Copy failed: $!";
+-copy("$src_dir/providers/common/include/prov/der_slh_dsa.h",
+-     "$base_dir/providers/common/include/prov/") or die "Copy failed: $!";
+ copy("$src_dir/providers/common/include/prov/der_wrap.h",
+      "$base_dir/providers/common/include/prov/") or die "Copy failed: $!";
+ copy("$src_dir/providers/common/include/prov/der_rsa.h",
+@@ -373,7 +363,7 @@ close(CLGYPI);
+ 
+ # Clean Up
+ my $cmd2 ="cd $src_dir; make -f $makefile clean; make -f $makefile distclean;" .
+-    "git clean -f $src_dir";
++    "git clean -f $src_dir/crypto";
+ system($cmd2) == 0 or die "Error in system($cmd2)";
+ 
+ 
+diff --git a/deps/openssl/config/generate_headers.pl b/deps/openssl/config/generate_headers.pl
+index 55d63fb28e..9390ef668d 100755
+--- a/deps/openssl/config/generate_headers.pl
++++ b/deps/openssl/config/generate_headers.pl
+@@ -9,7 +9,6 @@ our $src_dir = "../openssl";
+ 
+ my @openssl_headers = shift @ARGV;
+ my @crypto_headers = shift @ARGV;
+-my @internal_headers = shift @ARGV;
+ 
+ my $include_tmpl = Text::Template->new(TYPE => 'FILE',
+                                        SOURCE => 'include.h.tmpl',
+@@ -26,7 +25,6 @@ my $include_no_asm_tmpl = Text::Template->new(TYPE => 'FILE',
+ 
+ gen_headers(@openssl_headers, 'openssl');
+ gen_headers(@crypto_headers, 'crypto');
+-gen_headers(@internal_headers, 'internal');
+ 
+ sub gen_headers {
+   my @headers = split / /, $_[0];
+diff --git a/deps/openssl/openssl_common.gypi b/deps/openssl/openssl_common.gypi
+index 0650cdc8a0..4312359e94 100644
+--- a/deps/openssl/openssl_common.gypi
++++ b/deps/openssl/openssl_common.gypi
+@@ -8,7 +8,6 @@
+     'openssl/crypto/ec/curve448',
+     'openssl/crypto/ec/curve448/arch_32',
+     'openssl/providers/common/include',
+-    'openssl/providers/fips/include',
+     'openssl/providers/implementations/include',
+     'config/',
+   ],
+diff --git a/tools/dep_updaters/update-openssl.sh b/tools/dep_updaters/update-openssl.sh
+index 29d72e8700..06fbf26670 100755
+--- a/tools/dep_updaters/update-openssl.sh
++++ b/tools/dep_updaters/update-openssl.sh
+@@ -11,7 +11,7 @@ cleanup() {
+ 
+ download() {
+   LATEST_TAG_NAME="$("$NODE" --input-type=module <<'EOF'
+-const res = await fetch('https://api.github.com/repos/openssl/openssl/git/matching-refs/tags/openssl-3.5');
++const res = await fetch('https://api.github.com/repos/openssl/openssl/git/matching-refs/tags/openssl-3.0');
+ if (!res.ok) throw new Error(`FetchError: ${res.status} ${res.statusText}`, { cause: res });
+ const releases = await res.json()
+ const latest = releases.at(-1);
+@@ -64,8 +64,10 @@ EOF
+ }
+ 
+ regenerate() {
+-  command -v docker >/dev/null 2>&1 || { echo >&2 "Error: 'docker' required but not installed."; exit 1; }
+-  command -v make >/dev/null 2>&1 || { echo >&2 "Error: 'make' required but not installed."; exit 1; }
++  command -v perl >/dev/null 2>&1 || { echo >&2 "Error: 'Perl' required but not installed."; exit 1; }
++  command -v nasm >/dev/null 2>&1 || { echo >&2 "Error: 'nasm' required but not installed."; exit 1; }
++  command -v as >/dev/null 2>&1 || { echo >&2 "Error: 'GNU as' required but not installed."; exit 1; }
++  perl -e "use Text::Template">/dev/null 2>&1 || { echo >&2 "Error: 'Text::Template' Perl module required but not installed."; exit 1; }
+ 
+   echo "Regenerating platform-dependent files..."
+ 
+@@ -74,7 +76,7 @@ regenerate() {
+   # See https://github.com/nodejs/node/blob/main/doc/contributing/maintaining/maintaining-openssl.md#2-execute-make-in-depsopensslconfig-directory
+   sed -i 's/#ifdef/%ifdef/g' "$DEPS_DIR/openssl/openssl/crypto/perlasm/x86asm.pl"
+   sed -i 's/#endif/%endif/g' "$DEPS_DIR/openssl/openssl/crypto/perlasm/x86asm.pl"
+-  make -C "$BASE_DIR" gen-openssl
++  make -C "$DEPS_DIR/openssl/config"
+ 
+   echo "All done!"
+   echo ""
+-- 
+2.55.0
+
