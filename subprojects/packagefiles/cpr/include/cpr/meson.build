@@ -20,3 +20,8 @@ configure_file(
   install_dir: get_option('includedir') / 'cpr',
   install_tag: 'devel',
 )
+
+install_headers(
+  'cprexport.h',
+  subdir: 'cpr',
+)
