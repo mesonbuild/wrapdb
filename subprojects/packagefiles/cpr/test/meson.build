@@ -12,6 +12,7 @@ tests = [
   #  'async',
   #  'callback',
   #  'connection_pool',
+  'curlholder',
   #  'delete',
   #  'download',
   'encoded_auth',
