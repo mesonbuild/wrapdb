@@ -177,6 +177,7 @@ depinc = include_directories('.')
 libarchive_dep = declare_dependency(
   include_directories: depinc,
   link_with: libarchive,
+  compile_args: libarchive_exported_flags,
 )
 meson.override_dependency('libarchive', libarchive_dep)
 
