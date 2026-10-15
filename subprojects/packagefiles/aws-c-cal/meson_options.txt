@@ -6,7 +6,13 @@ option(
 
 option(
     'ed25519_everywhere',
-    type: 'boolean',
-    value: false,
+    type: 'feature',
     description: 'Experimental feature to support ED25519 keygen on platforms that do not support it in os libs (i.e. win/mac)',
+)
+
+option(
+    'byo_crypto',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Set this if you want to provide your own cryptography implementation. This will cause the defaults to not be compiled.',
 )
