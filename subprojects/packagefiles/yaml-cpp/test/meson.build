@@ -2,13 +2,16 @@ gmock_dep = dependency(
   'gmock',
   required: get_option('tests'),
 )
+gtest_dep = dependency(
+  'gtest',
+  required: get_option('tests'),
+)
 
-if not gmock_dep.found()
+if not gmock_dep.found() or not gtest_dep.found()
   subdir_done()
 endif
 
 tests_src = files(
-  'binary_test.cpp',
   'integration/emitter_test.cpp',
   'integration/encoding_test.cpp',
   'integration/error_messages_test.cpp',
@@ -17,8 +20,10 @@ tests_src = files(
   'integration/handler_test.cpp',
   'integration/load_node_test.cpp',
   'integration/node_spec_test.cpp',
-  'main.cpp',
   'node/node_test.cpp',
+  'binary_test.cpp',
+  'fptostring_test.cpp',
+  'main.cpp',
   'ostream_wrapper_test.cpp',
   'parser_test.cpp',
   'regex_test.cpp',
@@ -33,7 +38,7 @@ yaml_cpp_tests_exe = executable(
   'yaml-cpp-tests',
   tests_src,
   include_directories: private_inc,
-  dependencies: [yaml_cpp_dep, gmock_dep],
+  dependencies: [yaml_cpp_dep, gmock_dep, gtest_dep],
   cpp_args: test_args,
   override_options: ['cpp_std=c++17'],
   build_by_default: false,

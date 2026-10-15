@@ -1,8 +1,8 @@
 [wrap-file]
-directory = yaml-cpp-0.8.0
-source_url = https://github.com/jbeder/yaml-cpp/archive/refs/tags/0.8.0.zip
-source_filename = yaml-cpp-0.8.0.zip
-source_hash = 334e80ab7b52e14c23f94e041c74bab0742f2281aad55f66be2f19f4b7747071
+directory = yaml-cpp-yaml-cpp-0.9.0
+source_url = https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.9.0.tar.gz
+source_filename = yaml-cpp-0.9.0.tar.gz
+source_hash = 25cb043240f828a8c51beb830569634bc7ac603978e0f69d6b63558dadefd49a
 patch_directory = yaml-cpp
 
 [provide]
