@@ -27,7 +27,10 @@ cpp = meson.get_compiler('cpp')
 dependencies = []
 additional_compiler_flags = []
 
-freetype_dep = dependency('freetype2', required: get_option('freetype'))
+freetype_dep = dependency(
+  'freetype2',
+  required: get_option('freetype'),
+)
 if freetype_dep.found()
   sources += files('misc/freetype/imgui_freetype.cpp')
   additional_compiler_flags += '-DIMGUI_ENABLE_FREETYPE'
