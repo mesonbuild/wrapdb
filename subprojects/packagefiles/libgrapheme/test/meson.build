@@ -1,4 +1,5 @@
 tests = [
+  'bidirectional',
   'case',
   'character',
   'line',

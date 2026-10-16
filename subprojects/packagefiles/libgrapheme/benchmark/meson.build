@@ -1,4 +1,12 @@
-benches = ['case', 'character', 'line', 'sentence', 'utf8-decode', 'word']
+benches = [
+  'bidirectional',
+  'case',
+  'character',
+  'line',
+  'sentence',
+  'utf8-decode',
+  'word',
+]
 
 libutf8proc_dep = dependency('libutf8proc')
 

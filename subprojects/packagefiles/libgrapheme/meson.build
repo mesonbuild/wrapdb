@@ -1,7 +1,7 @@
 project(
   'libgrapheme',
   'c',
-  version: '2.0.2',
+  version: '3.0.0',
   default_options: ['c_std=c99', 'warning_level=3', 'b_lundef=false'],
   meson_version: '>=0.57.0',
   license: 'ISC',
@@ -53,6 +53,8 @@ libgrapheme_dep = declare_dependency(
   link_with: libgrapheme,
   include_directories: include_directories('.'),
 )
+
+meson.override_dependency('libgrapheme', libgrapheme_dep)
 
 pkg_mod.generate(
   libgrapheme,

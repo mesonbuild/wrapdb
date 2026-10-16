@@ -1,5 +1,15 @@
 gendir = include_directories('.')
 gen_headers_tgt = {
+  'bidirectional-test': files(
+    '../data/BidiCharacterTest.txt',
+    '../data/BidiTest.txt',
+  ),
+  'bidirectional': files(
+    '../data/BidiBrackets.txt',
+    '../data/BidiMirroring.txt',
+    '../data/DerivedBidiClass.txt',
+    '../data/UnicodeData.txt',
+  ),
   'case': files(
     '../data/DerivedCoreProperties.txt',
     '../data/SpecialCasing.txt',
@@ -7,14 +17,14 @@ gen_headers_tgt = {
   ),
   'character': files(
     '../data/DerivedCoreProperties.txt',
-    '../data/GraphemeBreakProperty.txt',
     '../data/emoji-data.txt',
+    '../data/GraphemeBreakProperty.txt',
   ),
   'character-test': files('../data/GraphemeBreakTest.txt'),
   'line': files(
     '../data/EastAsianWidth.txt',
-    '../data/LineBreak.txt',
     '../data/emoji-data.txt',
+    '../data/LineBreak.txt',
   ),
   'line-test': files('../data/LineBreakTest.txt'),
   'sentence': files('../data/SentenceBreakProperty.txt'),
@@ -37,7 +47,7 @@ foreach exe_name, data_files : gen_headers_tgt
     hdr,
     output: hdr,
     depend_files: data_files,
-    command: [chdir_wrapper, exe],
+    command: ['python3', chdir_wrapper, exe],
     env: {
       'PROJECT_SOURCE_ROOT': meson.project_source_root(),
     },

@@ -1,9 +1,9 @@
 [wrap-file]
-directory = libgrapheme-2.0.2
-source_url = https://dl.suckless.org/libgrapheme/libgrapheme-2.0.2.tar.gz
-source_filename = libgrapheme-2.0.2.tar.gz
-source_hash = a68bbddde76bd55ba5d64116ce5e42a13df045c81c0852de9ab60896aa143125
+directory = libgrapheme-3.0.0
+source_url = https://dl.suckless.org/libgrapheme/libgrapheme-3.0.0.tar.gz
+source_filename = libgrapheme-3.0.0.tar.gz
+source_hash = 32585af73dda62fbcc0fed14f199aa1bc988ad01dad0bfbd06cf175d9cf3d68c
 patch_directory = libgrapheme
 
 [provide]
-libgrapheme = libgrapheme_dep
+dependency_names = libgrapheme
