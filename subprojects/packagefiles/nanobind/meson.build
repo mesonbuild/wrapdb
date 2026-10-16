@@ -21,6 +21,7 @@ py_dep = py.dependency()
 robin_map_dep = dependency(
   'tsl-robin-map',
   version: '>=1.4.0',
+  include_type: 'system',
 )
 
 incdir = include_directories('include')
