@@ -1,8 +1,8 @@
 [wrap-file]
-directory = quill-13.0.0
-source_url = https://github.com/odygrd/quill/archive/refs/tags/v13.0.0.tar.gz
-source_filename = quill-13.0.0.tar.gz
-source_hash = 88b4a1542125577a4d51cf444c51e34d63618c422ba6a4fa9bd23894b49d696b
+directory = quill-13.1.0
+source_url = https://github.com/odygrd/quill/archive/refs/tags/v13.1.0.tar.gz
+source_filename = quill-13.1.0.tar.gz
+source_hash = a08b93bafc7e712b28eb47e4a1ed9b60fc01ac7fad3ce269f1f100560a506a85
 
 [provide]
 dependency_names = quill
