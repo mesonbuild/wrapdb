@@ -1,7 +1,7 @@
 project(
   'cpr',
   'cpp',
-  version: '1.14.2',
+  version: '1.15.1',
   license: 'MIT',
   meson_version: '>=0.60.0',
 )
@@ -30,6 +30,7 @@ cpr_lib = library(
   include_directories: includes,
   sources: cpr_src,
   dependencies: [curl_dep, thread_dep],
+  cpp_args: ['-Dcpr_EXPORTS'],
   override_options: override_cpp,
   version: meson.project_version(),
   install: true,
