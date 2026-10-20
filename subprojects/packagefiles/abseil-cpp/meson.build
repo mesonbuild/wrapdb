@@ -12,6 +12,7 @@ cpp = meson.get_compiler('cpp')
 
 flags = cpp.get_supported_arguments(
   '/DNOMINMAX',
+  '/D_CRT_SECURE_NO_WARNINGS',
   '-Wcast-qual',
   '-Wconversion-null',
   '-Wmissing-declarations',
