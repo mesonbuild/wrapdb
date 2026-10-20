@@ -1632,6 +1632,12 @@
     ],
     "fatal_warnings": false
   },
+  "sol2" : {
+    "_comment": [
+      "provided meson.build file is incompatible with WrapDB"
+    ],
+    "ignore_upstream_meson": "3.5.0"
+  },
   "sparkcli": {
     "_comment": [
       "Outputs warnings about missing dependencies, but they are not required for the build"
