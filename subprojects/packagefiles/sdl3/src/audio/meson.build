@@ -1,14 +1,18 @@
-if host_machine.system() == 'windows'
-  cdata.set('SDL_AUDIO_DRIVER_DSOUND', 1)
-  #  cdata.set('SDL_AUDIO_DRIVER_WASAPI', 1)
-  subdir('directsound')
-  #  subdir('wasapi')
-elif host_machine.system() == 'darwin'
-  cdata.set('SDL_AUDIO_DRIVER_COREAUDIO', 1)
-  subdir('coreaudio')
+if 'audio' in enabled_subsystems
+  if host_machine.system() == 'windows'
+    cdata.set('SDL_AUDIO_DRIVER_DSOUND', 1)
+    #  cdata.set('SDL_AUDIO_DRIVER_WASAPI', 1)
+    subdir('directsound')
+    #  subdir('wasapi')
+  elif host_machine.system() == 'darwin'
+    cdata.set('SDL_AUDIO_DRIVER_COREAUDIO', 1)
+    subdir('coreaudio')
+  else
+    cdata.set('SDL_AUDIO_DRIVER_PIPEWIRE', 1)
+    subdir('pipewire')
+  endif
 else
-  cdata.set('SDL_AUDIO_DRIVER_PIPEWIRE', 1)
-  subdir('pipewire')
+  subdir('dummy')
 endif
 
 sources += files(

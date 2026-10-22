@@ -75,6 +75,73 @@ have_gcc_sync_lock_and_test = not have_gcc_atomics and cc.links(
 cdata.set10('HAVE_GCC_ATOMICS', have_gcc_atomics)
 cdata.set10('HAVE_GCC_SYNC_LOCK_TEST_AND_SET', have_gcc_sync_lock_and_test)
 
+core_subsystems = {
+  'audio': {
+    'deps': [],
+  },
+  'video': {
+    'deps': [],
+  },
+  'gpu': {
+    'deps': ['video'],
+  },
+  'render': {
+    'deps': ['video'],
+  },
+  'camera': {
+    'deps': ['video'],
+  },
+  'joystick': {
+    'deps': [],
+  },
+  'haptic': {
+    'deps': ['joystick'],  # Haptic requires some private functions from the joystick subsystem.
+  },
+  'hidapi': {
+    'deps': [],
+  },
+  'power': {
+    'deps': [],
+  },
+  'sensor': {
+    'deps': [],
+  },
+  'dialog': {
+    'deps': [],
+  },
+  'tray': {
+    'deps': [],
+  },
+}
+
+enabled_subsystems = []
+
+foreach ss_name, subsystem : core_subsystems
+  ss_enabled = get_option(f'use_@ss_name@').allowed()
+
+  if ss_enabled
+    require_deps = get_option(f'use_@ss_name@').enabled()
+    foreach dep : subsystem['deps']
+      have_dep = dep in enabled_subsystems
+      if require_deps and not have_dep
+        error(
+          f'Subsystem @ss_name@ requires subsystem @dep@, which is not enabled',
+        )
+      endif
+      ss_enabled = ss_enabled and have_dep
+    endforeach
+  endif
+
+  if ss_enabled
+    message('Subsystem "@0@" is ENABLED'.format(ss_name))
+    enabled_subsystems += ss_name
+  else
+    cdata.set('SDL_@0@_DISABLED'.format(ss_name.to_upper()), 1)
+    message('Subsystem "@0@" is DISABLED'.format(ss_name))
+  endif
+endforeach
+
+
 basic_headers = [
   ['float.h', 'HAVE_FLOAT_H'],
   ['stdarg.h', 'HAVE_STDARG_H'],

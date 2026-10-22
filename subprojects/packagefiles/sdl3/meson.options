@@ -1,3 +1,76 @@
+# Toggleable subsystems
+option(
+    'use_audio',
+    type: 'feature',
+    description: 'Enable the Audio subsystem',
+)
+
+option(
+    'use_video',
+    type: 'feature',
+    description: 'Enable the Video subsystem',
+)
+
+option(
+    'use_gpu',
+    type: 'feature',
+    description: 'Enable the GPU subsystem',
+)
+
+option(
+    'use_render',
+    type: 'feature',
+    description: 'Enable the Renderer subsystem',
+)
+
+option(
+    'use_camera',
+    type: 'feature',
+    description: 'Enable the Camery subsystem',
+)
+
+option(
+    'use_joystick',
+    type: 'feature',
+    description: 'Enable the Joystick subsystem',
+)
+
+option(
+    'use_haptic',
+    type: 'feature',
+    description: 'Enable the Haptic subsystem',
+)
+
+option(
+    'use_hidapi',
+    type: 'feature',
+    description: 'Enable the HIDAPI subsystem',
+)
+
+option(
+    'use_power',
+    type: 'feature',
+    description: 'Enable the Power subsystem',
+)
+
+option(
+    'use_sensor',
+    type: 'feature',
+    description: 'Enable the Sensor subsystem',
+)
+
+option(
+    'use_dialog',
+    type: 'feature',
+    description: 'Enable the Dialog subsystem',
+)
+
+option(
+    'use_tray',
+    type: 'feature',
+    description: 'Enable the Tray subsystem',
+)
+
 option(
     'use_gcc_atomics',
     type: 'feature',
