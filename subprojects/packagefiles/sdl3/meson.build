@@ -43,6 +43,38 @@ add_project_arguments(
   language: 'c',
 )
 
+use_gcc = cc.get_id() == 'gcc'
+use_clang = cc.get_id() == 'clang'
+use_msvc = cc.get_id() == 'msvc'
+gcc_atomics_supported = use_gcc or use_clang
+
+opt_gcc_atomics = get_option('use_gcc_atomics').require(gcc_atomics_supported)
+
+have_gcc_atomics = opt_gcc_atomics.allowed() and cc.links(
+  '''int main(int argc, char **argv) {
+        int a;
+        void *x, *y, *z;
+        __sync_lock_test_and_set(&a, 4);
+        __sync_lock_test_and_set(&x, y);
+        __sync_fetch_and_add(&a, 1);
+        __sync_bool_compare_and_swap(&a, 5, 10);
+        __sync_bool_compare_and_swap(&x, y, z);
+        return 0; }''',
+  name: 'gcc atomics test',
+)
+
+have_gcc_sync_lock_and_test = not have_gcc_atomics and cc.links(
+  '''int main(int argc, char **argv) {
+        int a;
+        __sync_lock_test_and_set(&a, 1);
+        __sync_lock_release(&a);
+        return 0; }''',
+  name: 'gcc __sync_lock_test_and_set() test',
+)
+
+cdata.set10('HAVE_GCC_ATOMICS', have_gcc_atomics)
+cdata.set10('HAVE_GCC_SYNC_LOCK_TEST_AND_SET', have_gcc_sync_lock_and_test)
+
 basic_headers = [
   ['float.h', 'HAVE_FLOAT_H'],
   ['stdarg.h', 'HAVE_STDARG_H'],
@@ -76,8 +108,6 @@ foreach i : basic_headers
 endforeach
 
 check_functions = [
-  # check token ['HAVE_GCC_ATOMICS']
-  # check token ['HAVE_GCC_SYNC_LOCK_TEST_AND_SET']
   # check token ['HAVE_LIBC']
   # check token ['HAVE_LIBC']
   ['HAVE_DLOPEN', 'dlopen', '#include<dlfcn.h>'],

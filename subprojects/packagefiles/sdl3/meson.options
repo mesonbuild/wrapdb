@@ -1,0 +1,5 @@
+option(
+    'use_gcc_atomics',
+    type: 'feature',
+    description: 'Use gcc builtin atomics',
+)
