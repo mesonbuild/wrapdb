@@ -1,5 +1,5 @@
 subdir('generic')
-if host_machine.system() == 'windows'
+if platform_is_windows
   subdir('windows')
 else
 endif

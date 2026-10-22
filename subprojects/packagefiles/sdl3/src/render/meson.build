@@ -2,11 +2,11 @@ if 'render' in enabled_subsystems
   subdir('gpu')
   subdir('software')
 
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     subdir('direct3d12')
     subdir('opengl')
     subdir('vulkan')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_apple
     subdir('metal')
     subdir('vulkan')
   else

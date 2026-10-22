@@ -1,8 +1,8 @@
 if 'gpu' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     subdir('d3d12')
     subdir('vulkan')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_apple
     subdir('metal')
     subdir('vulkan')
   else

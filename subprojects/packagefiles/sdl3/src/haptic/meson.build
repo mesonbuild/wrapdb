@@ -1,8 +1,8 @@
 if 'haptic' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     cdata.set('SDL_HAPTIC_DINPUT', 1)
     subdir('windows')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_apple
     cdata.set('SDL_HAPTIC_IOKIT', 1)
     subdir('darwin')
   else

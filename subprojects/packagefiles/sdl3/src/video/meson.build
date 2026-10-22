@@ -1,10 +1,10 @@
 subdir('yuv2rgb')
 
 if 'video' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     cdata.set('SDL_VIDEO_DRIVER_WINDOWS', 1)
     subdir('windows')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_macos
     cdata.set('SDL_VIDEO_DRIVER_COCOA', 1)
     subdir('cocoa')
   else

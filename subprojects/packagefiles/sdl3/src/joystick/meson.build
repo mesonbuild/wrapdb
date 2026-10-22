@@ -1,11 +1,11 @@
 if 'joystick' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     cdata.set('SDL_JOYSTICK_DINPUT', 1)
     cdata.set('SDL_JOYSTICK_HIDAPI', 1)
     subdir('hidapi')
     subdir('windows')
     subdir('gdk')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_macos
     cdata.set('SDL_JOYSTICK_IOKIT', 1)
     cdata.set('SDL_JOYSTICK_MFI', 1)
     subdir('apple')

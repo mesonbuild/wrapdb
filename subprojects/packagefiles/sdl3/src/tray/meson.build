@@ -1,7 +1,7 @@
 if 'tray' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     subdir('windows')
-  elif host_machine.system() == 'darwin'
+  elif platform_is_macos
     subdir('cocoa')
   else
     subdir('unix')

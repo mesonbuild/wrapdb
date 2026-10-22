@@ -43,6 +43,64 @@ add_project_arguments(
   language: 'c',
 )
 
+# BEGIN platform detection logic
+
+# FIXME: detect this properly
+platform_is_linux_desktop = (host_machine.system() == 'linux')
+platform_is_android = (host_machine.system() == 'android')
+platform_is_linux = platform_is_android or platform_is_linux_desktop
+
+platform_is_darwin = (host_machine.system() == 'darwin')
+# FIXME: detect this properly
+platform_is_macos = platform_is_darwin
+platform_is_ios = false
+
+platform_is_windows = (host_machine.system() == 'windows')
+# FIXME: detect this properly
+platform_is_win32 = platform_is_windows
+platform_is_winrt = false
+
+platform_is_vita = (host_machine.system() == 'vita')
+platform_is_os2 = (host_machine.system() == 'os2')
+
+platform_is_dragonflybsd = (host_machine.system() == 'dragonfly')
+platform_is_freebsd = (host_machine.system() == 'freebsd')
+platform_is_netbsd = (host_machine.system() == 'netbsd')
+platform_is_openbsd = (host_machine.system() == 'openbsd')
+
+platform_is_bsd = (
+  platform_is_dragonflybsd
+  or platform_is_freebsd
+  or platform_is_netbsd
+  or platform_is_openbsd
+)
+
+platform_is_haiku = (host_machine.system() == 'haiku')
+
+platform_is_emscripten = (host_machine.system() == 'emscripten')
+
+platform_is_psp = (host_machine.system() == 'psp')
+
+# FIXME: verify this
+platform_is_nacl = (host_machine.system() == 'nacl')
+
+# FIXME: darwin is technically a unix system, but we cannot differenciate between macOS and darwin
+platform_is_unixlike = (
+  platform_is_bsd
+  or platform_is_emscripten
+  or platform_is_haiku
+  or platform_is_linux
+)
+
+platform_is_apple = (
+  platform_is_macos
+  or platform_is_ios
+)
+
+platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
+
+# END platform detection logic
+
 use_gcc = cc.get_id() == 'gcc'
 use_clang = cc.get_id() == 'clang'
 use_msvc = cc.get_id() == 'msvc'
@@ -315,7 +373,7 @@ cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
 cdata.set('SDL_XKBCOMMON_VERSION_MINOR', 0)
 cdata.set('SDL_XKBCOMMON_VERSION_PATCH', 0)
 
-if host_machine.system() == 'darwin'
+if platform_is_apple
   add_languages(
     'objc',
     native: false,
@@ -326,7 +384,7 @@ if host_machine.system() == 'darwin'
   )
 endif
 
-if host_machine.system() == 'linux'
+if platform_is_linux
 
   ## some of these checks could be done via have include
   ## but it is done this way to be consistent from what CMake does
@@ -405,7 +463,7 @@ if host_machine.system() == 'linux'
   cdata.set('HAVE_DBUS_DBUS_H', 1)
   wayland_scanner = find_program('wayland-scanner')
   subdir('wayland-protocols')
-elif host_machine.system() == 'windows'
+elif platform_is_windows
 
   # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include
   have_xinput_header_code = '''
@@ -483,7 +541,7 @@ elif host_machine.system() == 'windows'
   sdl_deps += cc.find_library('setupapi')
   sdl_deps += cc.find_library('winmm')
   sdl_deps += cc.find_library('opengl32')
-elif host_machine.subsystem() == 'macos'
+elif platform_is_macos
   cdata.set('SDL_PLATFORM_APPLE', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
   cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)

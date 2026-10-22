@@ -1,7 +1,7 @@
 if 'hidapi' in enabled_subsystems
-  if host_machine.system() == 'windows'
+  if platform_is_windows
     subdir('windows')
-  elif host_machine.subsystem() == 'macos'
+  elif platform_is_macos
     #  subdir('mac')
   else
     subdir('linux')

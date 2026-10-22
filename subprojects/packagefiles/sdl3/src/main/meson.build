@@ -1,4 +1,4 @@
-if host_machine.system() == 'windows'
+if platform_is_windows
   subdir('windows')
   subdir('generic')
 else
