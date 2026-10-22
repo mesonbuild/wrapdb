@@ -93,6 +93,56 @@ option(
     description: 'Enable D-Bus support',
 )
 option(
+    'use_audio_disk',
+    type: 'feature',
+    description: 'Support the disk writer audio driver',
+)
+option(
+    'use_audio_dummy',
+    type: 'feature',
+    description: 'Support the dummy audio driver',
+)
+option(
+    'use_audio_oss',
+    type: 'feature',
+    description: 'Support the OSS audio API',
+)
+option(
+    'use_audio_alsa',
+    type: 'feature',
+    description: 'Support the ALSA audio API',
+)
+option(
+    'use_audio_jack',
+    type: 'feature',
+    description: 'Support the JACK audio API',
+)
+option(
+    'use_pipewire',
+    type: 'feature',
+    description: 'Use Pipewire audio',
+)
+option(
+    'use_audio_pulseaudio',
+    type: 'feature',
+    description: 'Use PulseAudio',
+)
+option(
+    'use_audio_sndio',
+    type: 'feature',
+    description: 'Use sndio audio API',
+)
+option(
+    'use_directx',
+    type: 'feature',
+    description: 'Use DirectX for Windows audio/video',
+)
+option(
+    'use_audio_wasapi',
+    type: 'feature',
+    description: 'Use the Windows WASAPI audio driver',
+)
+option(
     'use_hidapi_libusb',
     type: 'feature',
     description: 'Use libusb for low level joystick drivers',

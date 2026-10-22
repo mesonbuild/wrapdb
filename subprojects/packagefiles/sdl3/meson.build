@@ -112,6 +112,11 @@ hidapi_libusb_available = not (platform_is_apple or platform_is_android)
 
 gcc_atomics_supported = use_gcc or use_clang
 system_iconv_default = not (platform_is_windows or platform_is_apple)
+oss_default = platform_is_unixlike and not (
+  platform_is_linux
+  or platform_is_netbsd
+  or platform_is_openbsd
+)
 
 opt_gcc_atomics = get_option('use_gcc_atomics').require(gcc_atomics_supported)
 
@@ -224,12 +229,29 @@ if platform_is_apple
   sane_std = '#include <sys/types.h>\n' + sane_std
 endif
 
+sdl_audio = enabled_subsystems.contains('audio')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
 
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
 ).enabled()
 opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
+opt_audio_disk = get_option('use_audio_disk').require(sdl_audio)
+opt_audio_dummy = get_option('use_audio_dummy').require(sdl_audio)
+opt_audio_oss = get_option('use_audio_oss').require(
+  platform_is_unixlike and sdl_audio,
+)
+opt_audio_alsa = get_option('use_audio_alsa').require(sdl_audio)
+opt_audio_jack = get_option('use_audio_jack').require(sdl_audio)
+opt_pipewire = get_option('use_pipewire')
+opt_audio_pulseaudio = get_option('use_audio_pulseaudio').require(sdl_audio)
+opt_audio_sndio = get_option('use_audio_sndio').require(sdl_audio)
+opt_directx = get_option('use_directx').require(
+  sdl_audio and platform_is_windows,
+)
+opt_audio_wasapi = get_option('use_audio_wasapi').require(
+  sdl_audio and platform_is_windows,
+)
 opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
   sdl_hidapi and hidapi_libusb_available,
 )
@@ -255,9 +277,6 @@ basic_headers = [
   'wchar.h',
   'pthread_np.h',
   'linux/input.h',
-  'ddraw.h',
-  'dsound.h',
-  'dinput.h',
   'dlfcn.h',
   'pthread.h',
   'semaphore.h',
@@ -296,6 +315,14 @@ check_functions = '''
 if platform_is_windows
   check_functions += ' _copysign _fseeki64 _strrev _ui64toa _ultoa _wcsdup'
 
+  if opt_directx.allowed()
+    basic_headers += [
+      'ddraw.h',
+      'dsound.h',
+      'dinput.h',
+    ]
+  endif
+  basic_headers += 'mmdeviceapi.h'
   basic_headers += 'roapi.h'
   basic_headers += 'shellscalingapi.h'
   basic_headers += 'tpcshrd.h'
@@ -582,7 +609,6 @@ if platform_is_linux
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   sdl_deps += dependency('libudev')
-  sdl_deps += dependency('libpipewire-0.3')
   sdl_deps += dependency('wayland-client')
   sdl_deps += dependency('wayland-egl')
   sdl_deps += dependency('wayland-cursor')

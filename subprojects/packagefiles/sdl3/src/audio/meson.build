@@ -1,18 +1,115 @@
-if 'audio' in enabled_subsystems
-  if platform_is_windows
-    cdata.set('SDL_AUDIO_DRIVER_DSOUND', 1)
-    #  cdata.set('SDL_AUDIO_DRIVER_WASAPI', 1)
-    subdir('directsound')
-    #  subdir('wasapi')
-  elif platform_is_apple
-    cdata.set('SDL_AUDIO_DRIVER_COREAUDIO', 1)
-    subdir('coreaudio')
-  else
-    cdata.set('SDL_AUDIO_DRIVER_PIPEWIRE', 1)
-    subdir('pipewire')
+available_audio_drivers = {
+  'alsa': {},
+  'coreaudio': {},
+  'disk': {},
+  'dummy': {},
+  'dsound': {
+    'subdir': 'directsound',
+  },
+  'jack': {},
+  'oss': {
+    'subdir': 'dsp',
+  },
+  'pipewire': {},
+  'pulseaudio': {},
+  'netbsd': {},
+  'sndio': {},
+  'wasapi': {},
+}
+audio_drivers = ''
+
+if sdl_audio
+  if opt_audio_disk.allowed()
+    audio_drivers += ' disk'
   endif
-else
-  subdir('dummy')
+
+  if platform_is_netbsd
+    audio_drivers += ' netbsd'
+  endif
+
+  if opt_audio_oss.enable_auto_if(oss_default).enabled()
+    oss_available = cc.compiles(
+      '''
+      #include <sys/soundcard.h>
+      int main(int argc, char **argv) { int arg = SNDCTL_DSP_SETFRAGMENT; return 0; }''',
+    )
+    if oss_available
+      audio_drivers += ' oss'
+    endif
+  endif
+
+  if opt_audio_alsa.enable_auto_if(platform_is_unixlike).enabled()
+    alsa_dep = dependency(
+      'alsa',
+      required: opt_audio_alsa,
+    )
+    sdl_deps += alsa_dep
+    if alsa_dep.found()
+      audio_drivers += ' alsa'
+    endif
+  endif
+
+  if opt_audio_jack.enable_auto_if(platform_is_unixlike).enabled()
+    jack_dep = dependency(
+      'jack',
+      required: opt_audio_jack,
+    )
+    sdl_deps += jack_dep
+    if jack_dep.found()
+      audio_drivers += ' jack'
+    endif
+  endif
+
+  if opt_pipewire.enable_auto_if(platform_is_unixlike).enabled()
+    pipewire_dep = dependency(
+      'libpipewire-0.3',
+      required: opt_pipewire,
+    )
+    sdl_deps += pipewire_dep
+    if pipewire_dep.found()
+      audio_drivers += ' pipewire'
+    endif
+  endif
+
+  if opt_audio_pulseaudio.enable_auto_if(platform_is_unixlike).enabled()
+    pulseaudio_dep = dependency(
+      'libpulse-simple',
+      required: opt_audio_pulseaudio,
+    )
+    sdl_deps += pulseaudio_dep
+    if pulseaudio_dep.found()
+      audio_drivers += ' pulseaudio'
+    endif
+  endif
+
+  if opt_audio_sndio.enable_auto_if(platform_is_unixlike).enabled()
+    sndio_dep = dependency(
+      'sndio',
+      required: opt_audio_sndio,
+    )
+    sdl_deps += sndio_dep
+    if sndio_dep.found()
+      audio_drivers += ' sndio'
+    endif
+  endif
+
+  if platform_is_windows
+    if cdata.get('HAVE_DSOUND_H', 0) != 0
+      audio_drivers += ' dsound'
+    endif
+
+    if opt_audio_wasapi.allowed()
+      audio_drivers += ' wasapi'
+    endif
+  endif
+
+  if platform_is_apple
+    audio_drivers += ' coreaudio'
+  endif
+endif
+
+if opt_audio_dummy.allowed() or audio_drivers == ''
+  audio_drivers += ' dummy'
 endif
 
 sources += files(
@@ -25,3 +122,10 @@ sources += files(
   'SDL_mixer.c',
   'SDL_wave.c',
 )
+
+foreach ad : audio_drivers.split()
+  dir = available_audio_drivers[ad].get('subdir', ad)
+  ad_up = ad.to_upper()
+  cdata.set10(f'SDL_AUDIO_DRIVER_@ad_up@', true)
+  subdir(dir)
+endforeach
