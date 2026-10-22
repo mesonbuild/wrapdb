@@ -103,6 +103,11 @@ option(
     description: 'Support the dummy audio driver',
 )
 option(
+    'use_video_dummy',
+    type: 'feature',
+    description: 'Support the dummy video driver',
+)
+option(
     'use_audio_oss',
     type: 'feature',
     description: 'Support the OSS audio API',
@@ -133,6 +138,81 @@ option(
     description: 'Use sndio audio API',
 )
 option(
+    'use_video_x11',
+    type: 'feature',
+    description: 'Use X11 video driver',
+)
+option(
+    'use_video_x11_xcursor',
+    type: 'feature',
+    description: 'Enable Xcursor support',
+)
+option(
+    'use_video_x11_xdbe',
+    type: 'feature',
+    description: 'Enable Xdbe support',
+)
+option(
+    'use_video_x11_xinput',
+    type: 'feature',
+    description: 'Enable XInput support',
+)
+option(
+    'use_video_x11_xfixes',
+    type: 'feature',
+    description: 'Enable Xfixes support',
+)
+option(
+    'use_video_x11_xrandr',
+    type: 'feature',
+    description: 'Enable Xrandr support',
+)
+option(
+    'use_video_x11_xscrnsaver',
+    type: 'feature',
+    description: 'Enable Xscrnsaver support',
+)
+option(
+    'use_video_x11_xshape',
+    type: 'feature',
+    description: 'Enable XShape support',
+)
+option(
+    'use_video_x11_xsync',
+    type: 'feature',
+    description: 'Enable Xsync support',
+)
+option(
+    'use_video_x11_xtest',
+    type: 'feature',
+    description: 'Enable XTest support',
+)
+option(
+    'use_video_wayland',
+    type: 'feature',
+    description: 'Use Wayland video driver',
+)
+option(
+    'use_video_wayland_libdecor',
+    type: 'feature',
+    description: 'Use client-side window decorations on Wayland',
+)
+option(
+    'use_video_rpi',
+    type: 'feature',
+    description: 'Use Raspberry Pi video driver',
+)
+option(
+    'use_video_rockchip',
+    type: 'feature',
+    description: 'Use ROCKCHIP Hardware Acceleration video driver',
+)
+option(
+    'use_video_cocoa',
+    type: 'feature',
+    description: 'Use Cocoa video driver',
+)
+option(
     'use_directx',
     type: 'feature',
     description: 'Use DirectX for Windows audio/video',
@@ -141,6 +221,26 @@ option(
     'use_audio_wasapi',
     type: 'feature',
     description: 'Use the Windows WASAPI audio driver',
+)
+option(
+    'use_video_vivante',
+    type: 'feature',
+    description: 'Use Vivante EGL video driver',
+)
+option(
+    'use_video_metal',
+    type: 'feature',
+    description: 'Enable Metal support',
+)
+option(
+    'use_video_kmsdrm',
+    type: 'feature',
+    description: 'Use KMS DRM video driver',
+)
+option(
+    'use_video_offscreen',
+    type: 'feature',
+    description: 'Use offscreen video driver',
 )
 option(
     'use_hidapi_libusb',

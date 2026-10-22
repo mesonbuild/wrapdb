@@ -1,3 +1,4 @@
+cdata.set10('SDL_VIDEO_DRIVER_X11', true)
 
 sources += files(
   'edid-parse.c',
@@ -27,38 +28,64 @@ sources += files(
 )
 
 
+xi_dep = dependency(
+  'xi',
+  required: get_option('use_video_x11_xinput'),
+)
 xfixes_dep = dependency(
   'xfixes',
-  required: false,
+  required: get_option('use_video_x11_xfixes').require(xi_dep.found()),  # SDL3 uses Xfixes with XIBarrierReleasePointer
 )
 xcursor_dep = dependency(
   'xcursor',
-  required: false,
+  required: get_option('use_video_x11_xcursor'),
 )
 xrandr_dep = dependency(
   'xrandr',
-  required: false,
+  required: get_option('use_video_x11_xrandr'),
+)
+xscrnsaver_dep = dependency(
+  'xscrnsaver',
+  required: get_option('use_video_x11_xscrnsaver'),
+)
+xtst_dep = dependency(
+  'xtst',
+  required: get_option('use_video_x11_xtest'),
 )
 
-if xfixes_dep.found()
-  sdl_deps += xfixes_dep
-endif
-if xcursor_dep.found()
-  cdata.set('SDL_VIDEO_DRIVER_X11_XCURSOR', 1)
-  sdl_deps += xcursor_dep
-endif
-if xrandr_dep.found()
-  cdata.set('SDL_VIDEO_DRIVER_X11_XRANDR', 1)
-  sdl_deps += xrandr_dep
-endif
+cdata.set10('SDL_VIDEO_DRIVER_X11_XINPUT2', xi_dep.found())
+sdl_deps += xi_dep
+cdata.set10('SDL_VIDEO_DRIVER_X11_XFIXES', xfixes_dep.found())
+sdl_deps += xfixes_dep
+cdata.set10('SDL_VIDEO_DRIVER_X11_XCURSOR', xcursor_dep.found())
+sdl_deps += xcursor_dep
+cdata.set10('SDL_VIDEO_DRIVER_X11_XRANDR', xrandr_dep.found())
+sdl_deps += xrandr_dep
+cdata.set10('SDL_VIDEO_DRIVER_X11_XSCRNSAVER', xscrnsaver_dep.found())
+sdl_deps += xscrnsaver_dep
+cdata.set10('SDL_VIDEO_DRIVER_X11_XTEST', xtst_dep.found())
+sdl_deps += xtst_dep
 
 
-have_XSYNC_header = cc.has_header('X11/extensions/sync.h')
-have_XSS_header = cc.has_header('X11/extensions/scrnsaver.h')
-have_XSHAPE_header = cc.has_header('X11/extensions/shape.h')
-have_XTEST_header = cc.has_header('X11/extensions/XTest.h')
-have_XDBE_header = cc.has_header('X11/extensions/Xdbe.h')
+
+have_XSYNC_header = cc.has_header(
+  'X11/extensions/sync.h',
+  required: get_option('use_video_x11_xsync'),
+)
+have_XSHAPE_header = cc.has_header(
+  'X11/extensions/shape.h',
+  required: get_option('use_video_x11_xshape'),
+)
+have_XDBE_header = cc.has_header(
+  'X11/extensions/Xdbe.h',
+  required: get_option('use_video_x11_xdbe'),
+)
 have_XEXT_header = cc.has_header('X11/extensions/Xext.h')
+
+cdata.set10('SDL_VIDEO_DRIVER_X11_XSYNC', have_XSYNC_header)
+cdata.set10('SDL_VIDEO_DRIVER_X11_XSHAPE', have_XSHAPE_header)
+cdata.set10('SDL_VIDEO_DRIVER_X11_XDBE', have_XDBE_header)
+cdata.set10('SDL_VIDEO_DRIVER_X11_HAS_XKBLIB', cc.has_header('X11/XKBlib.h'))
 
 have_shmat_in_libc_code = '''
   #include <sys/shm.h>
@@ -96,67 +123,67 @@ endif
 
 # X11/XKBlib is not used within CMake script
 
+if xi_dep.found()
+  # X11 scroll info
+  have_XInput2_ScrollInfo_code = '''
+    #include <X11/Xlib.h>
+    #include <X11/Xproto.h>
+    #include <X11/extensions/XInput2.h>
+    XIScrollClassInfo *s;
+    int main(int argc, char **argv) {}
+  '''
+  have_XInput2_ScrollInfo = cc.compiles(
+    have_XInput2_ScrollInfo_code,
+    name: 'have XInput2 scrollinfo',
+  )
 
-# X11 scroll info
-have_XInput2_ScrollInfo_code = '''
-  #include <X11/Xlib.h>
-  #include <X11/Xproto.h>
-  #include <X11/extensions/XInput2.h>
-  XIScrollClassInfo *s;
-  int main(int argc, char **argv) {}
-'''
-have_XInput2_ScrollInfo = cc.compiles(
-  have_XInput2_ScrollInfo_code,
-  name: 'have XInput2 scrollinfo',
-)
+  if have_XInput2_ScrollInfo
+    cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_SCROLLINFO', 1)
+  endif
 
-if have_XInput2_ScrollInfo
-  cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_SCROLLINFO', 1)
+
+  # X11 multitouch
+
+  have_XInput2_multitouch_code = '''
+    #include <X11/Xlib.h>
+    #include <X11/Xproto.h>
+    #include <X11/extensions/XInput2.h>
+    int event_type = XI_TouchBegin;
+    XITouchClassInfo *t;
+    Status XIAllowTouchEvents(Display *a,int b,unsigned int c,Window d,int f) {
+      return (Status)0;
+    }
+    int main(int argc, char **argv) { return 0; }
+  '''
+  have_XInput2_multitouch = cc.compiles(
+    have_XInput2_multitouch_code,
+    name: 'have XInput2 multi-touch',
+  )
+
+  if have_XInput2_multitouch
+    cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH', 1)
+  endif
+
+
+  # X11 touch gestures
+
+  have_XInput2_gesture_code = '''
+    #include <X11/Xlib.h>
+    #include <X11/Xproto.h>
+    #include <X11/extensions/XInput2.h>
+    int event_type = XI_GesturePinchBegin;
+    XITouchClassInfo *t;
+    Status XIAllowTouchEvents(Display *a,int b,unsigned int c,Window d,int f) {
+      return (Status)0;
+    }
+    int main(int argc, char **argv) { return 0; }
+  '''
+  have_XInput2_gesture = cc.compiles(
+    have_XInput2_gesture_code,
+    name: 'have XInput2 touch gesture',
+  )
+
+  if have_XInput2_gesture
+    cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_GESTURE', 1)
+  endif
 endif
-
-
-# X11 multitouch
-
-have_XInput2_multitouch_code = '''
-  #include <X11/Xlib.h>
-  #include <X11/Xproto.h>
-  #include <X11/extensions/XInput2.h>
-  int event_type = XI_TouchBegin;
-  XITouchClassInfo *t;
-  Status XIAllowTouchEvents(Display *a,int b,unsigned int c,Window d,int f) {
-    return (Status)0;
-  }
-  int main(int argc, char **argv) { return 0; }
-'''
-have_XInput2_multitouch = cc.compiles(
-  have_XInput2_multitouch_code,
-  name: 'have XInput2 multi-touch',
-)
-
-if have_XInput2_multitouch
-  cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH', 1)
-endif
-
-
-# X11 touch gestures
-
-have_XInput2_gesture_code = '''
-  #include <X11/Xlib.h>
-  #include <X11/Xproto.h>
-  #include <X11/extensions/XInput2.h>
-  int event_type = XI_GesturePinchBegin;
-  XITouchClassInfo *t;
-  Status XIAllowTouchEvents(Display *a,int b,unsigned int c,Window d,int f) {
-    return (Status)0;
-  }
-  int main(int argc, char **argv) { return 0; }
-'''
-have_XInput2_gesture = cc.compiles(
-  have_XInput2_gesture_code,
-  name: 'have XInput2 touch gesture',
-)
-
-if have_XInput2_gesture
-  cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_GESTURE', 1)
-endif
-

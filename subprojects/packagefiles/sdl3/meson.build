@@ -99,6 +99,9 @@ platform_is_apple = (
 
 platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
 
+cpu_arm32 = target_machine.cpu_family() == 'arm'
+cpu_arm64 = target_machine.cpu_family() == 'aarch64'
+
 # END platform detection logic
 
 use_gcc = cc.get_id() == 'gcc'
@@ -231,6 +234,7 @@ endif
 
 sdl_audio = enabled_subsystems.contains('audio')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
+sdl_video = enabled_subsystems.contains('video')
 
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
@@ -238,6 +242,7 @@ opt_system_iconv = get_option('system_iconv').enable_auto_if(
 opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
 opt_audio_disk = get_option('use_audio_disk').require(sdl_audio)
 opt_audio_dummy = get_option('use_audio_dummy').require(sdl_audio)
+opt_video_dummy = get_option('use_video_dummy').require(sdl_video)
 opt_audio_oss = get_option('use_audio_oss').require(
   platform_is_unixlike and sdl_audio,
 )
@@ -246,12 +251,36 @@ opt_audio_jack = get_option('use_audio_jack').require(sdl_audio)
 opt_pipewire = get_option('use_pipewire')
 opt_audio_pulseaudio = get_option('use_audio_pulseaudio').require(sdl_audio)
 opt_audio_sndio = get_option('use_audio_sndio').require(sdl_audio)
+opt_video_x11 = get_option('use_video_x11').require(sdl_video)
+opt_video_wayland = get_option('use_video_wayland').require(sdl_video)
+opt_video_wayland_libdecor = get_option('use_video_wayland_libdecor').require(
+  opt_video_wayland.allowed(),
+)
+opt_video_rpi = get_option('use_video_rpi').require(
+  sdl_video and platform_is_unixlike and (
+    cpu_arm32
+    or cpu_arm64
+  ),
+)
+opt_video_rockchip = get_option('use_video_rockchip').require(
+  sdl_video and platform_is_unixlike and (
+    cpu_arm32
+    or cpu_arm64
+  ),
+)
+opt_video_cocoa = get_option('use_video_cocoa').require(platform_is_apple)
 opt_directx = get_option('use_directx').require(
-  sdl_audio and platform_is_windows,
+  (sdl_audio or sdl_video) and platform_is_windows,
 )
 opt_audio_wasapi = get_option('use_audio_wasapi').require(
   sdl_audio and platform_is_windows,
 )
+opt_video_vivante = get_option('use_video_vivante').require(
+  platform_is_unixlike and cpu_arm32,
+)
+opt_video_metal = get_option('use_video_metal').require(platform_is_apple)
+opt_video_kmsdrm = get_option('use_video_kmsdrm').require(sdl_video)
+opt_video_offscreen = get_option('use_video_offscreen')
 opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
   sdl_hidapi and hidapi_libusb_available,
 )
@@ -322,6 +351,7 @@ if platform_is_windows
       'dinput.h',
     ]
   endif
+  basic_headers += 'dxgi.h'
   basic_headers += 'mmdeviceapi.h'
   basic_headers += 'roapi.h'
   basic_headers += 'shellscalingapi.h'
@@ -534,6 +564,10 @@ cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
 cdata.set('SDL_XKBCOMMON_VERSION_MINOR', 0)
 cdata.set('SDL_XKBCOMMON_VERSION_PATCH', 0)
 
+cdata.set('SDL_LIBDECOR_VERSION_MAJOR', 0)
+cdata.set('SDL_LIBDECOR_VERSION_MINOR', 0)
+cdata.set('SDL_LIBDECOR_VERSION_PATCH', 0)
+
 if platform_is_apple
   add_languages(
     'objc',
@@ -609,13 +643,6 @@ if platform_is_linux
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   sdl_deps += dependency('libudev')
-  sdl_deps += dependency('wayland-client')
-  sdl_deps += dependency('wayland-egl')
-  sdl_deps += dependency('wayland-cursor')
-  xkbcommon_dep = dependency('xkbcommon')
-  sdl_deps += xkbcommon_dep
-  wayland_scanner = find_program('wayland-scanner')
-  subdir('wayland-protocols')
 elif platform_is_windows
 
   # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include
@@ -701,7 +728,6 @@ elif platform_is_macos
   cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
-  cdata.set('SDL_VIDEO_DRIVER_COCOA', 1)
   cdata.set('SDL_VIDEO_OPENGL_CGL', 1)
   cdata.set('SDL_VIDEO_OPENGL', 1)
   cdata.set('SDL_FSOPS_POSIX', 1)
@@ -709,11 +735,15 @@ elif platform_is_macos
   cdata.set('SDL_POWER_MACOSX', 1)
   cdata.set('SDL_VIDEO_RENDER_GPU', 1)
   cdata.set('SDL_GPU_VULKAN', 1)
-  cdata.set('SDL_GPU_METAL', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
-  cdata.set('SDL_VIDEO_METAL', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
+  cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
+  cdata.set10('SDL_GPU_METAL', cdata.get('SDL_VIDEO_METAL', 0) != 0)
+  apple_modules = []
+  if opt_video_metal.allowed()
+    apple_modules += ['Metal']
+  endif
   sdl_deps += dependency(
     'appleframeworks',
     modules: [
@@ -731,10 +761,9 @@ elif platform_is_macos
       'Foundation',
       'GameController',
       'IOKit',
-      'Metal',
       'QuartzCore',
       'UniformTypeIdentifiers',
-    ],
+    ] + apple_modules,
   )
 else
   error('Platform not yet supported.')
@@ -746,10 +775,10 @@ endif
 
 subdir('src')
 
-# FIXME, this is to work around a bug in upstream headers
-cdata.set('SDL_LIBDECOR_VERSION_MAJOR', 99)
-cdata.set('SDL_LIBDECOR_VERSION_MINOR', 99)
-cdata.set('SDL_LIBDECOR_VERSION_PATCH', 99)
+if cdata.get('SDL_VIDEO_DRIVER_WAYLAND', 0) != 0
+  wayland_scanner = find_program('wayland-scanner')
+  subdir('wayland-protocols')
+endif
 
 configure_file(
   input: 'include/build_config/SDL_build_config.h.cmake',

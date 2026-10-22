@@ -15,6 +15,32 @@ sources += files(
   'SDL_waylandwindow.c',
 )
 
+if opt_video_wayland_libdecor.allowed()
+  libdecor_dep = dependency(
+    'libdecor-0',
+    required: opt_video_wayland_libdecor,
+  )
+  have_libdecor = libdecor_dep.found() and cc.has_header(
+    'libdecor.h',
+    dependencies: libdecor_dep,
+  )
+  cdata.set10('HAVE_LIBDECOR_H', have_libdecor)
+
+  if have_libdecor
+    sdl_deps += libdecor_dep
+
+    # Libdecor doesn't provide internal version defines, so generate them here.
+    libdecor_version = libdecor_dep.version().split('.')
+    libdecor_major = libdecor_version[0].to_int()
+    libdecor_minor = libdecor_version[1].to_int()
+    libdecor_patch = libdecor_version[2].to_int()
+
+    cdata.set('SDL_LIBDECOR_VERSION_MAJOR', libdecor_major)
+    cdata.set('SDL_LIBDECOR_VERSION_MINOR', libdecor_minor)
+    cdata.set('SDL_LIBDECOR_VERSION_PATCH', libdecor_patch)
+  endif
+endif
+
 # parse XKB version to avoid issues within SDL3 config
 xkdbcommon_version = xkbcommon_dep.version().split('.')
 
