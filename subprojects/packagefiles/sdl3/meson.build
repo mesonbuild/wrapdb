@@ -242,13 +242,8 @@ basic_headers = [
   'dsound.h',
   'dinput.h',
   'dlfcn.h',
-  'unistd.h',
-  'setjmp.h',
-  'time.h',
-  'sys/sysctl.h',
   'pthread.h',
   'semaphore.h',
-  'poll.h',
   'sys/inotify.h',
 ]
 
@@ -256,88 +251,80 @@ check_functions = '''
   abs acos acosf asin asinf atan atan2 atan2f atanf atof atoi
   bcopy
   ceil ceilf copysign copysignf cos cosf
-  exp expf
-  fabs fabsf floor floorf fmod fmodf fseeko fseeko64
+  _Exit exp expf
+  fabs fabsf floor floorf fmod fmodf fopen64 fseeko fseeko64
   getenv
-  index
-  log log10 log10f logf
-  malloc memcmp memcpy memmove memset
-  pow putenv
-  rindex round
-  scalbn setenv sin sinf sqrt sqrtf sscanf strchr
-  strcmp strlcat strlcpy strlen strncmp strnlen
-  strrchr strstr strtod strtok_r strtol strtoll strtoul strtoull
+  _i64toa index itoa
+  log log10 log10f logf lround lroundf _ltoa
+  malloc memcmp memcpy memmove memset modf modff
+  pow powf putenv
+  rindex round roundf
+  scalbn scalbnf setenv sin sinf sqr sqrt sqrtf sscanf strchr
+  strcmp strlcat strlcpy strlen strncmp strnlen strpbrk
+  strrchr strstr strnstr strtod strtok_r strtol strtoll strtoul strtoull
+  tan tanf trunc truncf
   unsetenv
   vsnprintf vsscanf
+  wcsnlen wcscmp wcsdup wcslcat wcslcpy wcslen wcsncmp wcsstr wcstol
+
   dlopen
-  fdatasync
-  _strrev
-  isinf
-  isinff
-  isnan
-  isnanf
-  sigaction
-  sigtimedwait
-  setjmp
-  nanosleep
-  gmtime_r
-  sysconf
-  sysctlbyname
   clock_gettime
-  getpagesize
   pthread_setname_np
   pthread_set_name_np
   sem_timedwait
   poll
   inotify_init1
   '''
-# check token ['HAVE_GETHOSTNAME']
-# check token ['HAVE_WCSLEN']
-# check token ['HAVE_WCSNLEN']
-# check token ['HAVE_WCSLCPY']
-# check token ['HAVE_WCSLCAT']
-# check token ['HAVE_WCSSTR']
-# check token ['HAVE_WCSCMP']
-# check token ['HAVE_WCSNCMP']
-# check token ['HAVE_WCSTOL']
-# check token ['HAVE_STRPBRK']
-# check token ['HAVE_STRNSTR']
-# check token ['HAVE_ITOA']
-# check token ['HAVE__LTOA']
 # check token ['HAVE__UITOA']
-# check token ['HAVE__ULTOA']
-# check token ['HAVE__I64TOA']
-# check token ['HAVE__UI64TOA']
-# check token ['HAVE__COPYSIGN']
-# check token ['HAVE_ISINF_FLOAT_MACRO']
-# check token ['HAVE_ISNAN_FLOAT_MACRO']
-# check token ['HAVE_LROUND']
-# check token ['HAVE_LROUNDF']
-# check token ['HAVE_MODF']
-# check token ['HAVE_MODFF']
-# check token ['HAVE_POWF']
-# check token ['HAVE_ROUNDF']
-# check token ['HAVE_SCALBNF']
-# check token ['HAVE_TAN']
-# check token ['HAVE_TANF']
-# check token ['HAVE_TRUNC']
-# check token ['HAVE_TRUNCF']
-# check token ['HAVE__FSEEKI64']
-# check token ['HAVE_FOPEN64']
-# check token ['HAVE_MEMFD_CREATE']
-# check token ['HAVE_POSIX_FALLOCATE']
 # check token ['HAVE_SA_SIGACTION']
 # check token ['HAVE_ST_MTIM']
-# check token ['HAVE_LOCALTIME_R']
-# check token ['HAVE_NL_LANGINFO']
 # check token ['HAVE_ICONV']
-# check token ['HAVE_GETAUXVAL']
-# check token ['HAVE_ELF_AUX_INFO']
-# check token ['HAVE__EXIT']
 # check token ['HAVE_FCITX']
 # check token ['HAVE_INOTIFY']
 # check token ['HAVE_LIBUSB']
 # check token ['HAVE_O_CLOEXEC']
+
+if platform_is_windows
+  check_functions += ' _copysign _fseeki64 _strrev _ui64toa _ultoa _wcsdup'
+
+  basic_headers += 'roapi.h'
+  basic_headers += 'shellscalingapi.h'
+  basic_headers += 'tpcshrd.h'
+else
+  check_functions += ' strcasestr'
+
+  basic_headers += 'unistd.h'
+  check_functions += ' fdatasync gethostname getpagesize getresgid getresuid sysconf'
+
+  check_functions += ' sigaction sigtimedwait'
+
+  basic_headers += 'setjmp.h'
+  check_functions += ' setjmp'
+
+  basic_headers += 'time.h'
+  check_functions += ' nanosleep gmtime_r localtime_r'
+
+  basic_headers += 'langinfo.h'
+  check_functions += ' nl_langinfo'
+
+  basic_headers += 'sys/sysctl.h'
+  check_functions += ' sysctlbyname'
+
+  basic_headers += 'sys/auxv.h'
+  check_functions += ' getauxval elf_aux_info'
+
+  basic_headers += 'poll.h'
+  check_functions += ' ppoll'
+
+  basic_headers += 'sys/mman.h'
+  check_functions += ' memfd_create'
+
+  basic_headers += 'fcntl.h'
+  check_functions += ' posix_fallocate'
+
+  basic_headers += 'spawn.h'
+  check_functions += ' posix_spawn_file_actions_addchdir posix_spawn_file_actions_addchdir_np'
+endif
 
 found_headers = []
 
@@ -360,7 +347,52 @@ foreach f : check_functions.split()
     cc.has_function(
       f,
       prefix: headers_prefix,
-      dependencies: [sdl_deps],
+      dependencies: sdl_deps,
+    ),
+  )
+endforeach
+
+# Math function checks
+# (<math_fn>, <math_fn> handles float, <math_fn>f)
+foreach math_fn : ['isinf', 'isnan']
+  math_fn_define = math_fn.to_upper()
+  cdata.set10(
+    f'HAVE_@math_fn_define@',
+    cc.compiles(
+      f'''
+    #include <math.h>
+    int main() {
+      double d = 3.14159;
+      return @math_fn@(d);
+    } ''',
+      name: f'have @math_fn@',
+      dependencies: sdl_deps,
+    ),
+  )
+  cdata.set10(
+    f'HAVE_@math_fn_define@_FLOAT_MACRO',
+    cc.compiles(
+      f'''
+    #include <math.h>
+    int main() {
+      double f = 3.14159f;
+      return @math_fn@(f);
+    } ''',
+      name: f'@math_fn@ handles float',
+      dependencies: sdl_deps,
+    ),
+  )
+  cdata.set10(
+    f'HAVE_@math_fn_define@F',
+    cc.compiles(
+      f'''
+    #include <math.h>
+    int main() {
+      double f = 3.14159f;
+      return @math_fn@f(f);
+    } ''',
+      name: f'have @math_fn@f',
+      dependencies: sdl_deps,
     ),
   )
 endforeach
