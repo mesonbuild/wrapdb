@@ -272,7 +272,6 @@ check_functions = '''
   pthread_setname_np
   pthread_set_name_np
   sem_timedwait
-  poll
   inotify_init1
   '''
 # check token ['HAVE__UITOA']
