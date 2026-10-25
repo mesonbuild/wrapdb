@@ -147,6 +147,7 @@ basic_headers = [
   ['stdarg.h'],
   ['stddef.h'],
   ['stdint.h'],
+  ['alloca.h'],
   ['iconv.h'],
   ['inttypes.h'],
   ['limits.h'],
