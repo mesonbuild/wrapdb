@@ -142,6 +142,23 @@ foreach ss_name, subsystem : core_subsystems
 endforeach
 
 
+# Lets try to make the superproject std sane for SDL2
+# https://github.com/mesonbuild/meson/issues/1889
+sane_std = '''
+#define _DEFAULT_SOURCE
+#define _GNU_SOURCE
+#define _ISOC11_SOURCE
+#define _ISOC99_SOURCE
+#define _POSIX_C_SOURCE 200809L
+#define _XOPEN_SOURCE 700
+#undef __STRICT_ANSI__
+'''
+
+# Work around missing typedefs errors
+if platform_is_apple
+  sane_std = '#include <sys/types.h>\n' + sane_std
+endif
+
 basic_headers = [
   ['float.h'],
   ['stdarg.h'],
@@ -319,7 +336,7 @@ foreach f : check_functions
     'HAVE_@0@'.format(f.get(0).to_upper()),
     cc.has_function(
       f.get(0),
-      prefix: f.get(1),
+      prefix: sane_std + f.get(1),
       dependencies: [sdl_deps],
     ),
   )
