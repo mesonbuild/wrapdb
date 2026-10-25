@@ -143,33 +143,33 @@ endforeach
 
 
 basic_headers = [
-  ['float.h', 'HAVE_FLOAT_H'],
-  ['stdarg.h', 'HAVE_STDARG_H'],
-  ['stddef.h', 'HAVE_STDDEF_H'],
-  ['stdint.h', 'HAVE_STDINT_H'],
-  ['iconv.h', 'HAVE_ICONV_H'],
-  ['inttypes.h', 'HAVE_INTTYPES_H'],
-  ['limits.h', 'HAVE_LIMITS_H'],
-  ['malloc.h', 'HAVE_MALLOC_H'],
-  ['math.h', 'HAVE_MATH_H'],
-  ['memory.h', 'HAVE_MEMORY_H'],
-  ['signal.h', 'HAVE_SIGNAL_H'],
-  ['stdio.h', 'HAVE_STDIO_H'],
-  ['stdlib.h', 'HAVE_STDLIB_H'],
-  ['strings.h', 'HAVE_STRINGS_H'],
-  ['string.h', 'HAVE_STRING_H'],
-  ['sys/types.h', 'HAVE_SYS_TYPES_H'],
-  ['wchar.h', 'HAVE_WCHAR_H'],
-  ['pthread_np.h', 'HAVE_PTHREAD_NP_H'],
-  ['linux/input.h', 'HAVE_LINUX_INPUT_H'],
-  ['ddraw.h', 'HAVE_DDRAW_H'],
-  ['dsound.h', 'HAVE_DSOUND_H'],
-  ['dinput.h', 'HAVE_DINPUT_H'],
+  ['float.h'],
+  ['stdarg.h'],
+  ['stddef.h'],
+  ['stdint.h'],
+  ['iconv.h'],
+  ['inttypes.h'],
+  ['limits.h'],
+  ['malloc.h'],
+  ['math.h'],
+  ['memory.h'],
+  ['signal.h'],
+  ['stdio.h'],
+  ['stdlib.h'],
+  ['strings.h'],
+  ['string.h'],
+  ['sys/types.h'],
+  ['wchar.h'],
+  ['pthread_np.h'],
+  ['linux/input.h'],
+  ['ddraw.h'],
+  ['dsound.h'],
+  ['dinput.h'],
 ]
 
 foreach i : basic_headers
   hname = i[0]
-  define = i[1]
+  define = 'HAVE_@0@'.format(hname.underscorify().to_upper())
   cdata.set10(define, cc.has_header(hname))
 endforeach
 
