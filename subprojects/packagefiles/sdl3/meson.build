@@ -275,8 +275,6 @@ check_functions = '''
   inotify_init1
   '''
 # check token ['HAVE__UITOA']
-# check token ['HAVE_SA_SIGACTION']
-# check token ['HAVE_ST_MTIM']
 # check token ['HAVE_ICONV']
 # check token ['HAVE_FCITX']
 # check token ['HAVE_INOTIFY']
@@ -395,6 +393,23 @@ foreach math_fn : ['isinf', 'isnan']
     ),
   )
 endforeach
+
+cdata.set10(
+  'HAVE_SA_SIGACTION',
+  cc.has_member(
+    'struct sigaction',
+    'sa_sigaction',
+    prefix: headers_prefix,
+  ),
+)
+cdata.set10(
+  'HAVE_ST_MTIM',
+  cc.has_member(
+    'struct stat',
+    'st_mtim',
+    prefix: headers_prefix,
+  ),
+)
 
 cdata.set('HAVE_HIDAPI', 1)
 
