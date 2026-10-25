@@ -194,145 +194,143 @@ basic_headers = [
   ['sys/inotify.h'],
 ]
 
-check_functions = [
-  # check token ['HAVE_LIBC']
-  # check token ['HAVE_LIBC']
-  ['dlopen'],
-  ['malloc'],
-  ['fdatasync'],
-  ['getenv'],
-  # check token ['HAVE_GETHOSTNAME']
-  ['setenv'],
-  ['putenv'],
-  ['unsetenv'],
-  ['abs'],
-  ['bcopy'],
-  ['memset'],
-  ['memcpy'],
-  ['memmove'],
-  ['memcmp'],
-  # check token ['HAVE_WCSLEN']
-  # check token ['HAVE_WCSNLEN']
-  # check token ['HAVE_WCSLCPY']
-  # check token ['HAVE_WCSLCAT']
-  # check token ['HAVE_WCSSTR']
-  # check token ['HAVE_WCSCMP']
-  # check token ['HAVE_WCSNCMP']
-  # check token ['HAVE_WCSTOL']
-  ['strlen'],
-  ['strnlen'],
-  ['strlcpy'],
-  ['strlcat'],
-  # check token ['HAVE_STRPBRK']
-  ['_strrev'],
-  ['index'],
-  ['rindex'],
-  ['strchr'],
-  ['strrchr'],
-  ['strstr'],
-  # check token ['HAVE_STRNSTR']
-  ['strtok_r'],
-  # check token ['HAVE_ITOA']
-  # check token ['HAVE__LTOA']
-  # check token ['HAVE__UITOA']
-  # check token ['HAVE__ULTOA']
-  ['strtol'],
-  ['strtoul'],
-  # check token ['HAVE__I64TOA']
-  # check token ['HAVE__UI64TOA']
-  ['strtoll'],
-  ['strtoull'],
-  ['strtod'],
-  ['atoi'],
-  ['atof'],
-  ['strcmp'],
-  ['strncmp'],
-  ['vsscanf'],
-  ['vsnprintf'],
-  ['acos'],
-  ['acosf'],
-  ['asin'],
-  ['asinf'],
-  ['atan'],
-  ['atanf'],
-  ['atan2'],
-  ['atan2f'],
-  ['ceil'],
-  ['ceilf'],
-  ['copysign'],
-  ['copysignf'],
-  # check token ['HAVE__COPYSIGN']
-  ['cos'],
-  ['cosf'],
-  ['exp'],
-  ['expf'],
-  ['fabs'],
-  ['fabsf'],
-  ['floor'],
-  ['floorf'],
-  ['fmod'],
-  ['fmodf'],
-  ['isinf'],
-  ['isinff'],
-  # check token ['HAVE_ISINF_FLOAT_MACRO']
-  ['isnan'],
-  ['isnanf'],
-  # check token ['HAVE_ISNAN_FLOAT_MACRO']
-  ['log'],
-  ['logf'],
-  ['log10'],
-  ['log10f'],
-  # check token ['HAVE_LROUND']
-  # check token ['HAVE_LROUNDF']
-  # check token ['HAVE_MODF']
-  # check token ['HAVE_MODFF']
-  ['pow'],
-  # check token ['HAVE_POWF']
-  ['round'],
-  # check token ['HAVE_ROUNDF']
-  ['scalbn'],
-  # check token ['HAVE_SCALBNF']
-  ['sin'],
-  ['sinf'],
-  ['sqrt'],
-  ['sqrtf'],
-  # check token ['HAVE_TAN']
-  # check token ['HAVE_TANF']
-  # check token ['HAVE_TRUNC']
-  # check token ['HAVE_TRUNCF']
-  # check token ['HAVE__FSEEKI64']
-  # check token ['HAVE_FOPEN64']
-  ['fseeko'],
-  ['fseeko64'],
-  # check token ['HAVE_MEMFD_CREATE']
-  # check token ['HAVE_POSIX_FALLOCATE']
-  ['sigaction'],
-  ['sigtimedwait'],
-  # check token ['HAVE_SA_SIGACTION']
-  # check token ['HAVE_ST_MTIM']
-  ['setjmp'],
-  ['nanosleep'],
-  ['gmtime_r'],
-  # check token ['HAVE_LOCALTIME_R']
-  # check token ['HAVE_NL_LANGINFO']
-  ['sysconf'],
-  ['sysctlbyname'],
-  ['clock_gettime'],
-  ['getpagesize'],
-  # check token ['HAVE_ICONV']
-  ['pthread_setname_np'],
-  ['pthread_set_name_np'],
-  ['sem_timedwait'],
-  # check token ['HAVE_GETAUXVAL']
-  # check token ['HAVE_ELF_AUX_INFO']
-  ['poll'],
-  # check token ['HAVE__EXIT']
-  # check token ['HAVE_FCITX']
-  ['inotify_init1'],
-  # check token ['HAVE_INOTIFY']
-  # check token ['HAVE_LIBUSB']
-  # check token ['HAVE_O_CLOEXEC']
-]
+check_functions = '''
+  dlopen
+  malloc
+  fdatasync
+  getenv
+  setenv
+  putenv
+  unsetenv
+  abs
+  bcopy
+  memset
+  memcpy
+  memmove
+  memcmp
+  strlen
+  strnlen
+  strlcpy
+  strlcat
+  _strrev
+  index
+  rindex
+  strchr
+  strrchr
+  strstr
+  strtok_r
+  strtol
+  strtoul
+  strtoll
+  strtoull
+  strtod
+  atoi
+  atof
+  strcmp
+  strncmp
+  vsscanf
+  vsnprintf
+  acos
+  acosf
+  asin
+  asinf
+  atan
+  atanf
+  atan2
+  atan2f
+  ceil
+  ceilf
+  copysign
+  copysignf
+  cos
+  cosf
+  exp
+  expf
+  fabs
+  fabsf
+  floor
+  floorf
+  fmod
+  fmodf
+  isinf
+  isinff
+  isnan
+  isnanf
+  log
+  logf
+  log10
+  log10f
+  pow
+  round
+  scalbn
+  sin
+  sinf
+  sqrt
+  sqrtf
+  fseeko
+  fseeko64
+  sigaction
+  sigtimedwait
+  setjmp
+  nanosleep
+  gmtime_r
+  sysconf
+  sysctlbyname
+  clock_gettime
+  getpagesize
+  pthread_setname_np
+  pthread_set_name_np
+  sem_timedwait
+  poll
+  inotify_init1
+  '''
+# check token ['HAVE_GETHOSTNAME']
+# check token ['HAVE_WCSLEN']
+# check token ['HAVE_WCSNLEN']
+# check token ['HAVE_WCSLCPY']
+# check token ['HAVE_WCSLCAT']
+# check token ['HAVE_WCSSTR']
+# check token ['HAVE_WCSCMP']
+# check token ['HAVE_WCSNCMP']
+# check token ['HAVE_WCSTOL']
+# check token ['HAVE_STRPBRK']
+# check token ['HAVE_STRNSTR']
+# check token ['HAVE_ITOA']
+# check token ['HAVE__LTOA']
+# check token ['HAVE__UITOA']
+# check token ['HAVE__ULTOA']
+# check token ['HAVE__I64TOA']
+# check token ['HAVE__UI64TOA']
+# check token ['HAVE__COPYSIGN']
+# check token ['HAVE_ISINF_FLOAT_MACRO']
+# check token ['HAVE_ISNAN_FLOAT_MACRO']
+# check token ['HAVE_LROUND']
+# check token ['HAVE_LROUNDF']
+# check token ['HAVE_MODF']
+# check token ['HAVE_MODFF']
+# check token ['HAVE_POWF']
+# check token ['HAVE_ROUNDF']
+# check token ['HAVE_SCALBNF']
+# check token ['HAVE_TAN']
+# check token ['HAVE_TANF']
+# check token ['HAVE_TRUNC']
+# check token ['HAVE_TRUNCF']
+# check token ['HAVE__FSEEKI64']
+# check token ['HAVE_FOPEN64']
+# check token ['HAVE_MEMFD_CREATE']
+# check token ['HAVE_POSIX_FALLOCATE']
+# check token ['HAVE_SA_SIGACTION']
+# check token ['HAVE_ST_MTIM']
+# check token ['HAVE_LOCALTIME_R']
+# check token ['HAVE_NL_LANGINFO']
+# check token ['HAVE_ICONV']
+# check token ['HAVE_GETAUXVAL']
+# check token ['HAVE_ELF_AUX_INFO']
+# check token ['HAVE__EXIT']
+# check token ['HAVE_FCITX']
+# check token ['HAVE_INOTIFY']
+# check token ['HAVE_LIBUSB']
+# check token ['HAVE_O_CLOEXEC']
 
 found_headers = []
 
@@ -350,11 +348,11 @@ foreach h : found_headers
   headers_prefix += f'#include <@h@>\n'
 endforeach
 
-foreach f : check_functions
+foreach f : check_functions.split()
   cdata.set10(
-    'HAVE_@0@'.format(f.get(0).to_upper()),
+    'HAVE_@0@'.format(f.to_upper()),
     cc.has_function(
-      f.get(0),
+      f,
       prefix: headers_prefix,
       dependencies: [sdl_deps],
     ),
