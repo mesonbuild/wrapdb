@@ -183,31 +183,34 @@ basic_headers = [
   ['ddraw.h'],
   ['dsound.h'],
   ['dinput.h'],
+  ['dlfcn.h'],
+  ['unistd.h'],
+  ['setjmp.h'],
+  ['time.h'],
+  ['sys/sysctl.h'],
+  ['pthread.h'],
+  ['semaphore.h'],
+  ['poll.h'],
+  ['sys/inotify.h'],
 ]
-
-foreach i : basic_headers
-  hname = i[0]
-  define = 'HAVE_@0@'.format(hname.underscorify().to_upper())
-  cdata.set10(define, cc.has_header(hname))
-endforeach
 
 check_functions = [
   # check token ['HAVE_LIBC']
   # check token ['HAVE_LIBC']
-  ['dlopen', '#include<dlfcn.h>'],
-  ['malloc', '#include<stdlib.h>'],
-  ['fdatasync', '#include<unistd.h>'],
-  ['getenv', '#include<stdlib.h>'],
+  ['dlopen'],
+  ['malloc'],
+  ['fdatasync'],
+  ['getenv'],
   # check token ['HAVE_GETHOSTNAME']
-  ['setenv', '#include<stdlib.h>'],
-  ['putenv', '#include<stdlib.h>'],
-  ['unsetenv', '#include<stdlib.h>'],
-  ['abs', '#include<stdlib.h>'],
-  ['bcopy', '#include<strings.h>'],
-  ['memset', '#include<string.h>'],
-  ['memcpy', '#include<string.h>'],
-  ['memmove', '#include<string.h>'],
-  ['memcmp', '#include<string.h>'],
+  ['setenv'],
+  ['putenv'],
+  ['unsetenv'],
+  ['abs'],
+  ['bcopy'],
+  ['memset'],
+  ['memcpy'],
+  ['memmove'],
+  ['memcmp'],
   # check token ['HAVE_WCSLEN']
   # check token ['HAVE_WCSNLEN']
   # check token ['HAVE_WCSLCPY']
@@ -216,127 +219,143 @@ check_functions = [
   # check token ['HAVE_WCSCMP']
   # check token ['HAVE_WCSNCMP']
   # check token ['HAVE_WCSTOL']
-  ['strlen', '#include<string.h>'],
-  ['strnlen', '#include<string.h>'],
-  ['strlcpy', '#include<string.h>'],
-  ['strlcat', '#include<string.h>'],
+  ['strlen'],
+  ['strnlen'],
+  ['strlcpy'],
+  ['strlcat'],
   # check token ['HAVE_STRPBRK']
-  ['_strrev', '#include<string.h>'],
-  ['index', '#include<strings.h>'],
-  ['rindex', '#include<strings.h>'],
-  ['strchr', '#include<string.h>'],
-  ['strrchr', '#include<string.h>'],
-  ['strstr', '#include<string.h>'],
+  ['_strrev'],
+  ['index'],
+  ['rindex'],
+  ['strchr'],
+  ['strrchr'],
+  ['strstr'],
   # check token ['HAVE_STRNSTR']
-  ['strtok_r', '#include<string.h>'],
+  ['strtok_r'],
   # check token ['HAVE_ITOA']
   # check token ['HAVE__LTOA']
   # check token ['HAVE__UITOA']
   # check token ['HAVE__ULTOA']
-  ['strtol', '#include<stdlib.h>'],
-  ['strtoul', '#include<stdlib.h>'],
+  ['strtol'],
+  ['strtoul'],
   # check token ['HAVE__I64TOA']
   # check token ['HAVE__UI64TOA']
-  ['strtoll', '#include<stdlib.h>'],
-  ['strtoull', '#include<stdlib.h>'],
-  ['strtod', '#include<stdlib.h>'],
-  ['atoi', '#include<stdlib.h>'],
-  ['atof', '#include<stdlib.h>'],
-  ['strcmp', '#include<string.h>'],
-  ['strncmp', '#include<string.h>'],
-  ['vsscanf', '#include<stdio.h>'],
-  ['vsnprintf', '#include<stdio.h>'],
-  ['acos', '#include<math.h>'],
-  ['acosf', '#include<math.h>'],
-  ['asin', '#include<math.h>'],
-  ['asinf', '#include<math.h>'],
-  ['atan', '#include<math.h>'],
-  ['atanf', '#include<math.h>'],
-  ['atan2', '#include<math.h>'],
-  ['atan2f', '#include<math.h>'],
-  ['ceil', '#include<math.h>'],
-  ['ceilf', '#include<math.h>'],
-  ['copysign', '#include<math.h>'],
-  ['copysignf', '#include<math.h>'],
+  ['strtoll'],
+  ['strtoull'],
+  ['strtod'],
+  ['atoi'],
+  ['atof'],
+  ['strcmp'],
+  ['strncmp'],
+  ['vsscanf'],
+  ['vsnprintf'],
+  ['acos'],
+  ['acosf'],
+  ['asin'],
+  ['asinf'],
+  ['atan'],
+  ['atanf'],
+  ['atan2'],
+  ['atan2f'],
+  ['ceil'],
+  ['ceilf'],
+  ['copysign'],
+  ['copysignf'],
   # check token ['HAVE__COPYSIGN']
-  ['cos', '#include<math.h>'],
-  ['cosf', '#include<math.h>'],
-  ['exp', '#include<math.h>'],
-  ['expf', '#include<math.h>'],
-  ['fabs', '#include<math.h>'],
-  ['fabsf', '#include<math.h>'],
-  ['floor', '#include<math.h>'],
-  ['floorf', '#include<math.h>'],
-  ['fmod', '#include<math.h>'],
-  ['fmodf', '#include<math.h>'],
-  ['isinf', '#include<math.h>'],
-  ['isinff', '#include<math.h>'],
+  ['cos'],
+  ['cosf'],
+  ['exp'],
+  ['expf'],
+  ['fabs'],
+  ['fabsf'],
+  ['floor'],
+  ['floorf'],
+  ['fmod'],
+  ['fmodf'],
+  ['isinf'],
+  ['isinff'],
   # check token ['HAVE_ISINF_FLOAT_MACRO']
-  ['isnan', '#include<math.h>'],
-  ['isnanf', '#include<math.h>'],
+  ['isnan'],
+  ['isnanf'],
   # check token ['HAVE_ISNAN_FLOAT_MACRO']
-  ['log', '#include<math.h>'],
-  ['logf', '#include<math.h>'],
-  ['log10', '#include<math.h>'],
-  ['log10f', '#include<math.h>'],
+  ['log'],
+  ['logf'],
+  ['log10'],
+  ['log10f'],
   # check token ['HAVE_LROUND']
   # check token ['HAVE_LROUNDF']
   # check token ['HAVE_MODF']
   # check token ['HAVE_MODFF']
-  ['pow', '#include<math.h>'],
+  ['pow'],
   # check token ['HAVE_POWF']
-  ['round', '#include<math.h>'],
+  ['round'],
   # check token ['HAVE_ROUNDF']
-  ['scalbn', '#include<math.h>'],
+  ['scalbn'],
   # check token ['HAVE_SCALBNF']
-  ['sin', '#include<math.h>'],
-  ['sinf', '#include<math.h>'],
-  ['sqrt', '#include<math.h>'],
-  ['sqrtf', '#include<math.h>'],
+  ['sin'],
+  ['sinf'],
+  ['sqrt'],
+  ['sqrtf'],
   # check token ['HAVE_TAN']
   # check token ['HAVE_TANF']
   # check token ['HAVE_TRUNC']
   # check token ['HAVE_TRUNCF']
   # check token ['HAVE__FSEEKI64']
   # check token ['HAVE_FOPEN64']
-  ['fseeko', '#include<stdio.h>'],
-  ['fseeko64', '#include<stdio.h>'],
+  ['fseeko'],
+  ['fseeko64'],
   # check token ['HAVE_MEMFD_CREATE']
   # check token ['HAVE_POSIX_FALLOCATE']
-  ['sigaction', '#include<signal.h>'],
-  ['sigtimedwait', '#include<signal.h>'],
+  ['sigaction'],
+  ['sigtimedwait'],
   # check token ['HAVE_SA_SIGACTION']
   # check token ['HAVE_ST_MTIM']
-  ['setjmp', '#include<setjmp.h>'],
-  ['nanosleep', '#include<time.h>'],
-  ['gmtime_r', '#include<time.h>'],
+  ['setjmp'],
+  ['nanosleep'],
+  ['gmtime_r'],
   # check token ['HAVE_LOCALTIME_R']
   # check token ['HAVE_NL_LANGINFO']
-  ['sysconf', '#include<unistd.h>'],
-  ['sysctlbyname', '#include<sys/sysctl.h>'],
-  ['clock_gettime', '#include<time.h>'],
-  ['getpagesize', '#include<unistd.h>'],
+  ['sysconf'],
+  ['sysctlbyname'],
+  ['clock_gettime'],
+  ['getpagesize'],
   # check token ['HAVE_ICONV']
-  ['pthread_setname_np', '#include<pthread.h>'],
-  ['pthread_set_name_np', '#include<pthread.h>'],
-  ['sem_timedwait', '#include<semaphore.h>'],
+  ['pthread_setname_np'],
+  ['pthread_set_name_np'],
+  ['sem_timedwait'],
   # check token ['HAVE_GETAUXVAL']
   # check token ['HAVE_ELF_AUX_INFO']
-  ['poll', '#include<poll.h>'],
+  ['poll'],
   # check token ['HAVE__EXIT']
   # check token ['HAVE_FCITX']
-  ['inotify_init1', '#include<sys/inotify.h>'],
+  ['inotify_init1'],
   # check token ['HAVE_INOTIFY']
   # check token ['HAVE_LIBUSB']
   # check token ['HAVE_O_CLOEXEC']
 ]
+
+found_headers = []
+
+foreach i : basic_headers
+  hname = i[0]
+  define = 'HAVE_@0@'.format(hname.underscorify().to_upper())
+  if cc.has_header(hname)
+    cdata.set10(define, true)
+    found_headers += hname
+  endif
+endforeach
+
+headers_prefix = sane_std
+foreach h : found_headers
+  headers_prefix += f'#include <@h@>\n'
+endforeach
 
 foreach f : check_functions
   cdata.set10(
     'HAVE_@0@'.format(f.get(0).to_upper()),
     cc.has_function(
       f.get(0),
-      prefix: sane_std + f.get(1),
+      prefix: headers_prefix,
       dependencies: [sdl_deps],
     ),
   )
