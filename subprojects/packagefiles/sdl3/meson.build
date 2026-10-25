@@ -165,7 +165,6 @@ basic_headers = [
   ['ddraw.h', 'HAVE_DDRAW_H'],
   ['dsound.h', 'HAVE_DSOUND_H'],
   ['dinput.h', 'HAVE_DINPUT_H'],
-  ['signal.h', 'HAVE_SIGTIMEDWAIT'],
 ]
 
 foreach i : basic_headers
@@ -287,6 +286,7 @@ check_functions = [
   # check token ['HAVE_MEMFD_CREATE']
   # check token ['HAVE_POSIX_FALLOCATE']
   ['HAVE_SIGACTION', 'sigaction', '#include<signal.h>'],
+  ['HAVE_SIGTIMEDWAIT', 'sigtimedwait', '#include<signal.h>'],
   # check token ['HAVE_SA_SIGACTION']
   # check token ['HAVE_ST_MTIM']
   ['HAVE_SETJMP', 'setjmp', '#include<setjmp.h>'],
