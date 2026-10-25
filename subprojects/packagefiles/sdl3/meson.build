@@ -160,38 +160,38 @@ if platform_is_apple
 endif
 
 basic_headers = [
-  ['float.h'],
-  ['stdarg.h'],
-  ['stddef.h'],
-  ['stdint.h'],
-  ['alloca.h'],
-  ['iconv.h'],
-  ['inttypes.h'],
-  ['limits.h'],
-  ['malloc.h'],
-  ['math.h'],
-  ['memory.h'],
-  ['signal.h'],
-  ['stdio.h'],
-  ['stdlib.h'],
-  ['strings.h'],
-  ['string.h'],
-  ['sys/types.h'],
-  ['wchar.h'],
-  ['pthread_np.h'],
-  ['linux/input.h'],
-  ['ddraw.h'],
-  ['dsound.h'],
-  ['dinput.h'],
-  ['dlfcn.h'],
-  ['unistd.h'],
-  ['setjmp.h'],
-  ['time.h'],
-  ['sys/sysctl.h'],
-  ['pthread.h'],
-  ['semaphore.h'],
-  ['poll.h'],
-  ['sys/inotify.h'],
+  'float.h',
+  'stdarg.h',
+  'stddef.h',
+  'stdint.h',
+  'alloca.h',
+  'iconv.h',
+  'inttypes.h',
+  'limits.h',
+  'malloc.h',
+  'math.h',
+  'memory.h',
+  'signal.h',
+  'stdio.h',
+  'stdlib.h',
+  'strings.h',
+  'string.h',
+  'sys/types.h',
+  'wchar.h',
+  'pthread_np.h',
+  'linux/input.h',
+  'ddraw.h',
+  'dsound.h',
+  'dinput.h',
+  'dlfcn.h',
+  'unistd.h',
+  'setjmp.h',
+  'time.h',
+  'sys/sysctl.h',
+  'pthread.h',
+  'semaphore.h',
+  'poll.h',
+  'sys/inotify.h',
 ]
 
 check_functions = '''
@@ -283,8 +283,7 @@ check_functions = '''
 
 found_headers = []
 
-foreach i : basic_headers
-  hname = i[0]
+foreach hname : basic_headers
   define = 'HAVE_@0@'.format(hname.underscorify().to_upper())
   if cc.has_header(hname)
     cdata.set10(define, true)
