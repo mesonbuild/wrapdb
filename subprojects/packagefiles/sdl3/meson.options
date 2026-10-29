@@ -92,3 +92,8 @@ option(
     type: 'feature',
     description: 'Enable D-Bus support',
 )
+option(
+    'use_hidapi_libusb',
+    type: 'feature',
+    description: 'Use libusb for low level joystick drivers',
+)

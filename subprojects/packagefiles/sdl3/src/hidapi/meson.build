@@ -1,4 +1,4 @@
-if 'hidapi' in enabled_subsystems
+if sdl_hidapi
   if platform_is_windows
     subdir('windows')
   elif platform_is_macos

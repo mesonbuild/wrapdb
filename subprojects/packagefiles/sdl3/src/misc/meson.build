@@ -6,4 +6,4 @@ else
   subdir('unix')
 endif
 
-sources += files('SDL_url.c')
+sources += files('SDL_libusb.c', 'SDL_url.c')

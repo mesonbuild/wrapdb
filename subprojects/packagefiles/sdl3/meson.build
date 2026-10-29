@@ -104,6 +104,12 @@ platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
 use_gcc = cc.get_id() == 'gcc'
 use_clang = cc.get_id() == 'clang'
 use_msvc = cc.get_id() == 'msvc'
+
+# The hidraw support doesn't catch Xbox, PS4 and Nintendo controllers,
+#  so we'll just use libusb when it's available. libusb does not support iOS,
+#  so we default to yes on iOS.
+hidapi_libusb_available = not (platform_is_apple or platform_is_android)
+
 gcc_atomics_supported = use_gcc or use_clang
 system_iconv_default = not (platform_is_windows or platform_is_apple)
 
@@ -218,10 +224,15 @@ if platform_is_apple
   sane_std = '#include <sys/types.h>\n' + sane_std
 endif
 
+sdl_hidapi = enabled_subsystems.contains('hidapi')
+
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
 ).enabled()
 opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
+opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
+  sdl_hidapi and hidapi_libusb_available,
+)
 
 basic_headers = [
   'float.h',
@@ -281,7 +292,6 @@ check_functions = '''
   inotify_init
   inotify_init1
   '''
-# check token ['HAVE_LIBUSB']
 # check token ['HAVE_O_CLOEXEC']
 
 if platform_is_windows
@@ -473,6 +483,15 @@ cdata.set10(
   cdata.get('HAVE_SYS_INOTIFY_H', 0) != 0 and cdata.get('HAVE_INOTIFY_INIT', 0) != 0,
 )
 
+if opt_hidapi_libusb.allowed()
+  libusb_dep = dependency(
+    'libusb-1.0',
+    required: opt_hidapi_libusb,
+  )
+  cdata.set10('HAVE_LIBUSB', libusb_dep.found())
+  sdl_deps += libusb_dep
+endif
+
 cdata.set('HAVE_HIDAPI', 1)
 
 sources = []
@@ -555,11 +574,6 @@ if platform_is_linux
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
-  sdl_deps += dependency(
-    'libusb-1.0',
-    required: true,
-  )
-  cdata.set('SDL_HIDAPI_LIBUSB', 1)
   sdl_deps += dependency('libudev')
   sdl_deps += dependency('libpipewire-0.3')
   sdl_deps += dependency('wayland-client')
