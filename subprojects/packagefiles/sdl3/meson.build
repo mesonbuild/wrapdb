@@ -221,6 +221,7 @@ endif
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
 ).enabled()
+opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
 
 basic_headers = [
   'float.h',
@@ -280,7 +281,6 @@ check_functions = '''
   inotify_init1
   '''
 # check token ['HAVE__UITOA']
-# check token ['HAVE_FCITX']
 # check token ['HAVE_INOTIFY']
 # check token ['HAVE_LIBUSB']
 # check token ['HAVE_O_CLOEXEC']
@@ -450,6 +450,25 @@ if opt_system_iconv
   endif
 endif
 
+if opt_dbus.allowed()
+  dbus_dep = dependency(
+    'dbus-1',
+    required: opt_dbus,
+  ).partial_dependency(
+    compile_args: true,
+    includes: true,
+    sources: true,
+  )
+  dbus_available = dbus_dep.found() and cc.has_header(
+    'dbus/dbus.h',
+    dependencies: sdl_deps + [dbus_dep],
+  )
+  cdata.set10('HAVE_DBUS_DBUS_H', dbus_available)
+  cdata.set10('HAVE_FCITX', dbus_available)
+  sdl_deps += dbus_dep
+endif
+have_dbus = cdata.get('HAVE_DBUS_DBUS_H', 0) != 0
+
 cdata.set('HAVE_HIDAPI', 1)
 
 sources = []
@@ -538,14 +557,12 @@ if platform_is_linux
   )
   cdata.set('SDL_HIDAPI_LIBUSB', 1)
   sdl_deps += dependency('libudev')
-  sdl_deps += dependency('dbus-1')
   sdl_deps += dependency('libpipewire-0.3')
   sdl_deps += dependency('wayland-client')
   sdl_deps += dependency('wayland-egl')
   sdl_deps += dependency('wayland-cursor')
   xkbcommon_dep = dependency('xkbcommon')
   sdl_deps += xkbcommon_dep
-  cdata.set('HAVE_DBUS_DBUS_H', 1)
   wayland_scanner = find_program('wayland-scanner')
   subdir('wayland-protocols')
 elif platform_is_windows

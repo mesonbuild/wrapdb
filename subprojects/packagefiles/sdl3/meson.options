@@ -87,3 +87,8 @@ option(
     type: 'feature',
     description: 'Use gcc builtin atomics',
 )
+option(
+    'use_dbus',
+    type: 'feature',
+    description: 'Enable D-Bus support',
+)
