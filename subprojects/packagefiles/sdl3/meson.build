@@ -278,10 +278,10 @@ check_functions = '''
   pthread_setname_np
   pthread_set_name_np
   sem_timedwait
+  inotify_init
   inotify_init1
   '''
 # check token ['HAVE__UITOA']
-# check token ['HAVE_INOTIFY']
 # check token ['HAVE_LIBUSB']
 # check token ['HAVE_O_CLOEXEC']
 
@@ -468,6 +468,11 @@ if opt_dbus.allowed()
   sdl_deps += dbus_dep
 endif
 have_dbus = cdata.get('HAVE_DBUS_DBUS_H', 0) != 0
+
+cdata.set10(
+  'HAVE_INOTIFY',
+  cdata.get('HAVE_SYS_INOTIFY_H', 0) != 0 and cdata.get('HAVE_INOTIFY_INIT', 0) != 0,
+)
 
 cdata.set('HAVE_HIDAPI', 1)
 
