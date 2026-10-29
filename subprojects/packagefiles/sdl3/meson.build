@@ -292,7 +292,6 @@ check_functions = '''
   inotify_init
   inotify_init1
   '''
-# check token ['HAVE_O_CLOEXEC']
 
 if platform_is_windows
   check_functions += ' _copysign _fseeki64 _strrev _ui64toa _ultoa _wcsdup'
@@ -421,6 +420,16 @@ cdata.set10(
     'struct stat',
     'st_mtim',
     prefix: headers_prefix,
+  ),
+)
+cdata.set10(
+  'HAVE_O_CLOEXEC',
+  cc.compiles(
+    '''
+    #include <fcntl.h>
+    int flag = O_CLOEXEC;
+    int main(int argc, char **argv) { return 0; }''',
+    name: 'have O_CLOEXEC',
   ),
 )
 
