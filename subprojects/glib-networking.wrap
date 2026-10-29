@@ -1,5 +1,5 @@
 [wrap-file]
-directory = glib-networking-2.80.1
-source_url = https://download.gnome.org/sources/glib-networking/2.80/glib-networking-2.80.1.tar.xz
-source_filename = glib-networking-2.80.1.tar.xz
-source_hash = b80e2874157cd55071f1b6710fa0b911d5ac5de106a9ee2a4c9c7bee61782f8e
+directory = glib-networking-2.90.1
+source_url = https://download.gnome.org/sources/glib-networking/2.90/glib-networking-2.90.1.tar.xz
+source_filename = glib-networking-2.90.1.tar.xz
+source_hash = ea95636590098355a05e3027579dba1a9a950b05e456b2488ea03d82e4b6c18a
