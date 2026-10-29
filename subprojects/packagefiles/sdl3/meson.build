@@ -281,7 +281,6 @@ check_functions = '''
   inotify_init
   inotify_init1
   '''
-# check token ['HAVE__UITOA']
 # check token ['HAVE_LIBUSB']
 # check token ['HAVE_O_CLOEXEC']
 
