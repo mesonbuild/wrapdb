@@ -105,6 +105,7 @@ use_gcc = cc.get_id() == 'gcc'
 use_clang = cc.get_id() == 'clang'
 use_msvc = cc.get_id() == 'msvc'
 gcc_atomics_supported = use_gcc or use_clang
+system_iconv_default = not (platform_is_windows or platform_is_apple)
 
 opt_gcc_atomics = get_option('use_gcc_atomics').require(gcc_atomics_supported)
 
@@ -217,6 +218,10 @@ if platform_is_apple
   sane_std = '#include <sys/types.h>\n' + sane_std
 endif
 
+opt_system_iconv = get_option('system_iconv').enable_auto_if(
+  system_iconv_default,
+).enabled()
+
 basic_headers = [
   'float.h',
   'stdarg.h',
@@ -275,7 +280,6 @@ check_functions = '''
   inotify_init1
   '''
 # check token ['HAVE__UITOA']
-# check token ['HAVE_ICONV']
 # check token ['HAVE_FCITX']
 # check token ['HAVE_INOTIFY']
 # check token ['HAVE_LIBUSB']
@@ -410,6 +414,41 @@ cdata.set10(
     prefix: headers_prefix,
   ),
 )
+
+if opt_system_iconv
+  iconv_in_libc = cc.compiles(
+    '''
+    #define LIBICONV_PLUG 1 /* in case libiconv header is in include path */
+    #include <stddef.h>
+    #include <iconv.h>
+    int main(int argc, char **argv) {
+        return !iconv_open(NULL,NULL);
+    }''',
+    dependencies: sdl_deps,
+    name: 'iconv (libc)',
+  )
+  iconv_dep = dependency(
+    'iconv',
+    method: 'system',
+    required: false,
+  )
+  iconv_in_libiconv = cc.compiles(
+    '''
+    #include <stddef.h>
+    #include <iconv.h>
+    int main(int argc, char **argv) {
+        return !iconv_open(NULL,NULL);
+    }''',
+    dependencies: sdl_deps + [iconv_dep],
+    name: 'iconv (libiconv)',
+  )
+
+  cdata.set10('HAVE_ICONV', iconv_in_libc or iconv_in_libiconv)
+  if (iconv_in_libiconv and (get_option('libiconv') or not iconv_in_libc))
+    cdata.set10('SDL_USE_LIBICONV', true)
+    sdl_deps += iconv_dep
+  endif
+endif
 
 cdata.set('HAVE_HIDAPI', 1)
 

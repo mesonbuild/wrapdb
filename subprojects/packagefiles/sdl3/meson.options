@@ -72,6 +72,17 @@ option(
 )
 
 option(
+    'system_iconv',
+    type: 'feature',
+    description: 'Use iconv() from system-installed libraries',
+)
+option(
+    'libiconv',
+    type: 'boolean',
+    description: 'Prefer iconv() from libiconv, if available, over libc version',
+    value: false,
+)
+option(
     'use_gcc_atomics',
     type: 'feature',
     description: 'Use gcc builtin atomics',
