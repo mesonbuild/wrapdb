@@ -316,7 +316,14 @@ x86_64_base_dict = {
       '1': 'x86_64/cabs.S',
     },
   },
-  '?gemm3m': {},
+  '?gemm3m': {
+    'c': {
+      '_kernel': 'x86_64/cgemm3m_kernel_8x4_haswell.c',
+    },
+    'z': {
+      '_kernel': 'x86_64/zgemm3m_kernel_4x4_sse2.S',
+    },
+  },
   '?hemv': {
     'z': {
       '_U': 'x86_64/zsymv_U_sse2.S',
