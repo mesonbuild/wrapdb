@@ -236,6 +236,7 @@ sdl_audio = enabled_subsystems.contains('audio')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
 sdl_video = enabled_subsystems.contains('video')
 
+opt_dlopen_notes = get_option('dlopen_notes').require(platform_is_unixlike)
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
 ).enabled()
@@ -773,6 +774,24 @@ endif
 
 cdata.set10('DYNAPI_NEEDS_DLOPEN', platform_is_unixlike_or_apple)
 cdata.set10('SDL_LOADSO_DLOPEN', cdata.get('HAVE_DLOPEN', 0) != 0)
+
+if opt_dlopen_notes.allowed()
+  compiler_supports_elfnotes = cc.compiles(
+    '''
+    #ifndef __ELF__
+      ELF DL notes is only supported on ELF platforms
+    #endif
+    __attribute__ ((used,aligned(4),section(".note.dlopen"))) static const struct {
+      struct { int a; int b; int c; } hdr; char name[4]; __attribute__((aligned(4))) char json[24];
+    } dlnote = { { 4, 0x407c0c0aU, 16 }, "FDO", "[\"a\":{\"a\":\"1\",\"b\":\"2\"}]" };
+    int main(int argc, char *argv[]) {
+      return argc + dlnote.hdr.a;
+    }''',
+    name: 'compiler supports ELF notes',
+    required: opt_dlopen_notes,
+  )
+  cdata.set10('SDL_DISABLE_DLOPEN_NOTES', not compiler_supports_elfnotes)
+endif
 
 subdir('src')
 

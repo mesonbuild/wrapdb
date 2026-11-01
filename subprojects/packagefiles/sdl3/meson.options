@@ -72,6 +72,11 @@ option(
 )
 
 option(
+    'dlopen_notes',
+    type: 'feature',
+    description: 'Record dlopen dependencies in .note.dlopen section',
+)
+option(
     'system_iconv',
     type: 'feature',
     description: 'Use iconv() from system-installed libraries',
