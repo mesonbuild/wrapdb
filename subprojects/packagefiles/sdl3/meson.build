@@ -120,6 +120,7 @@ oss_default = platform_is_unixlike and not (
   or platform_is_netbsd
   or platform_is_openbsd
 )
+shared_available = not platform_is_emscripten
 
 opt_gcc_atomics = get_option('use_gcc_atomics').require(gcc_atomics_supported)
 
@@ -236,6 +237,7 @@ sdl_audio = enabled_subsystems.contains('audio')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
 sdl_video = enabled_subsystems.contains('video')
 
+opt_prefer_dlopen = get_option('prefer_dlopen').require(shared_available)
 opt_dlopen_notes = get_option('dlopen_notes').require(platform_is_unixlike)
 opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
@@ -248,14 +250,40 @@ opt_audio_oss = get_option('use_audio_oss').require(
   platform_is_unixlike and sdl_audio,
 )
 opt_audio_alsa = get_option('use_audio_alsa').require(sdl_audio)
+opt_audio_alsa_shared = get_option('use_audio_alsa_shared').require(
+  opt_audio_alsa.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_audio_jack = get_option('use_audio_jack').require(sdl_audio)
+opt_audio_jack_shared = get_option('use_audio_jack_shared').require(
+  opt_audio_jack.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_pipewire = get_option('use_pipewire')
+opt_pipewire_shared = get_option('use_pipewire_shared').require(
+  opt_pipewire.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_audio_pulseaudio = get_option('use_audio_pulseaudio').require(sdl_audio)
+opt_audio_pulseaudio_shared = get_option('use_audio_pulseaudio_shared').require(
+  opt_audio_pulseaudio.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_audio_sndio = get_option('use_audio_sndio').require(sdl_audio)
+opt_audio_sndio_shared = get_option('use_audio_sndio_shared').require(
+  opt_audio_sndio.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_video_x11 = get_option('use_video_x11').require(sdl_video)
+opt_video_x11_shared = get_option('use_video_x11_shared').require(
+  opt_video_x11.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_video_wayland = get_option('use_video_wayland').require(sdl_video)
+opt_video_wayland_shared = get_option('use_video_wayland_shared').require(
+  opt_video_wayland.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_video_wayland_libdecor = get_option('use_video_wayland_libdecor').require(
   opt_video_wayland.allowed(),
+)
+opt_video_wayland_libdecor_shared = get_option(
+  'use_video_wayland_libdecor_shared',
+).require(
+  opt_video_wayland_libdecor.allowed() and opt_video_wayland_shared.allowed() and opt_prefer_dlopen.allowed(),
 )
 opt_video_rpi = get_option('use_video_rpi').require(
   sdl_video and platform_is_unixlike and (
@@ -281,9 +309,15 @@ opt_video_vivante = get_option('use_video_vivante').require(
 )
 opt_video_metal = get_option('use_video_metal').require(platform_is_apple)
 opt_video_kmsdrm = get_option('use_video_kmsdrm').require(sdl_video)
+opt_video_kmsdrm_shared = get_option('use_video_kmsdrm_shared').require(
+  opt_video_kmsdrm.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_video_offscreen = get_option('use_video_offscreen')
 opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
   sdl_hidapi and hidapi_libusb_available,
+)
+opt_hidapi_libusb_shared = get_option('hidapi_libusb_shared').require(
+  opt_hidapi_libusb.allowed() and opt_prefer_dlopen.allowed(),
 )
 
 basic_headers = [
@@ -550,6 +584,8 @@ cdata.set10(
   cdata.get('HAVE_SYS_INOTIFY_H', 0) != 0 and cdata.get('HAVE_INOTIFY_INIT', 0) != 0,
 )
 
+dlopen_table = []
+
 if opt_hidapi_libusb.allowed()
   libusb_dep = dependency(
     'libusb-1.0',
@@ -557,6 +593,12 @@ if opt_hidapi_libusb.allowed()
   )
   cdata.set10('HAVE_LIBUSB', libusb_dep.found())
   sdl_deps += libusb_dep
+  dlopen_table += {
+    'option': opt_hidapi_libusb_shared,
+    'dep_var': 'libusb_dep',
+    'lib': 'usb-1.0',
+    'conf_var': 'SDL_LIBUSB_DYNAMIC',
+  }
 endif
 
 sources = []
@@ -798,6 +840,45 @@ subdir('src')
 if cdata.get('SDL_VIDEO_DRIVER_WAYLAND', 0) != 0
   wayland_scanner = find_program('wayland-scanner')
   subdir('wayland-protocols')
+endif
+
+if opt_prefer_dlopen.allowed()
+  find_dylib_name = find_program(
+    './find-dylib-name.py',
+    required: true,
+  )
+
+  foreach dep_entry : dlopen_table
+    opt = dep_entry['option']
+    if not opt.allowed()
+      continue
+    endif
+    dep = get_variable(dep_entry['dep_var'])
+    if dep.found()
+      r = run_command(
+        find_dylib_name,
+        dep_entry['lib'],
+        cc.cmd_array(),
+        check: false,
+      )
+
+      if r.returncode() == 0
+        lib = r.stdout().strip()
+        cdata.set_quoted(dep_entry['conf_var'], lib)
+        set_variable(
+          dep_entry['dep_var'],
+          dep.partial_dependency(
+            compile_args: true,
+            includes: true,
+            sources: true,
+          ),
+        )
+        message('Configured @0@ for dynamic loading'.format(lib))
+      elif opt.enabled()
+        error(f'Can\'t configure @lib@ for dynamic loading:', r.stderr())
+      endif
+    endif
+  endforeach
 endif
 
 configure_file(

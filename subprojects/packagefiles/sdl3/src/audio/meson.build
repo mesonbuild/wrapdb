@@ -46,6 +46,12 @@ if sdl_audio
     sdl_deps += alsa_dep
     if alsa_dep.found()
       audio_drivers += ' alsa'
+      dlopen_table += {
+        'option': opt_audio_alsa_shared,
+        'dep_var': 'alsa_dep',
+        'lib': 'asound',
+        'conf_var': 'SDL_AUDIO_DRIVER_ALSA_DYNAMIC',
+      }
     endif
   endif
 
@@ -57,6 +63,12 @@ if sdl_audio
     sdl_deps += jack_dep
     if jack_dep.found()
       audio_drivers += ' jack'
+      dlopen_table += {
+        'option': opt_audio_jack_shared,
+        'dep_var': 'jack_dep',
+        'lib': 'jack',
+        'conf_var': 'SDL_AUDIO_DRIVER_JACK_DYNAMIC',
+      }
     endif
   endif
 
@@ -68,6 +80,12 @@ if sdl_audio
     sdl_deps += pipewire_dep
     if pipewire_dep.found()
       audio_drivers += ' pipewire'
+      dlopen_table += {
+        'option': opt_pipewire_shared,
+        'dep_var': 'pipewire_dep',
+        'lib': 'pipewire-0.3',
+        'conf_var': 'SDL_AUDIO_DRIVER_PIPEWIRE_DYNAMIC',
+      }
     endif
   endif
 
@@ -79,6 +97,12 @@ if sdl_audio
     sdl_deps += pulseaudio_dep
     if pulseaudio_dep.found()
       audio_drivers += ' pulseaudio'
+      dlopen_table += {
+        'option': opt_audio_pulseaudio_shared,
+        'dep_var': 'pulseaudio_dep',
+        'lib': 'pulse-simple',
+        'conf_var': 'SDL_AUDIO_DRIVER_PULSEAUDIO_DYNAMIC',
+      }
     endif
   endif
 
@@ -90,6 +114,12 @@ if sdl_audio
     sdl_deps += sndio_dep
     if sndio_dep.found()
       audio_drivers += ' sndio'
+      dlopen_table += {
+        'option': opt_audio_sndio_shared,
+        'dep_var': 'sndio_dep',
+        'lib': 'sndio',
+        'conf_var': 'SDL_AUDIO_DRIVER_SNDIO_DYNAMIC',
+      }
     endif
   endif
 

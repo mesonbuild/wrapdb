@@ -90,6 +90,18 @@ if sdl_video
       sdl_deps += xext_dep
       sdl_deps += xproto_dep
       video_drivers += ' x11'
+      dlopen_table += {
+        'option': opt_video_x11_shared,
+        'dep_var': 'x11_dep',
+        'lib': 'X11',
+        'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC',
+      }
+      dlopen_table += {
+        'option': opt_video_x11_shared,
+        'dep_var': 'xext_dep',
+        'lib': 'Xext',
+        'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT',
+      }
     endif
   endif
 
@@ -116,6 +128,30 @@ if sdl_video
       sdl_deps += wayland_cursor_dep
       sdl_deps += xkbcommon_dep
       video_drivers += ' wayland'
+      dlopen_table += {
+        'option': opt_video_wayland_shared,
+        'dep_var': 'wayland_client_dep',
+        'lib': 'wayland-client',
+        'conf_var': 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC',
+      }
+      dlopen_table += {
+        'option': opt_video_wayland_shared,
+        'dep_var': 'wayland_egl_dep',
+        'lib': 'wayland-egl',
+        'conf_var': 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_EGL',
+      }
+      dlopen_table += {
+        'option': opt_video_wayland_shared,
+        'dep_var': 'wayland_cursor_dep',
+        'lib': 'wayland-cursor',
+        'conf_var': 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_CURSOR',
+      }
+      dlopen_table += {
+        'option': opt_video_wayland_shared,
+        'dep_var': 'xkbcommon_dep',
+        'lib': 'xkbcommon',
+        'conf_var': 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_XKBCOMMON',
+      }
     endif
   endif
 
@@ -132,6 +168,18 @@ if sdl_video
       sdl_deps += libdrm_dep
       sdl_deps += gbm_dep
       video_drivers += ' kmsdrm'
+      dlopen_table += {
+        'option': use_video_kmsdrm_shared,
+        'dep_var': 'libdrm_dep',
+        'lib': 'drm',
+        'conf_var': 'SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC',
+      }
+      dlopen_table += {
+        'option': use_video_kmsdrm_shared,
+        'dep_var': 'gbm_dep',
+        'lib': 'gbm',
+        'conf_var': 'SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC_GBM',
+      }
     endif
   endif
 

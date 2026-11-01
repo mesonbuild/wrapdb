@@ -38,6 +38,13 @@ if opt_video_wayland_libdecor.allowed()
     cdata.set('SDL_LIBDECOR_VERSION_MAJOR', libdecor_major)
     cdata.set('SDL_LIBDECOR_VERSION_MINOR', libdecor_minor)
     cdata.set('SDL_LIBDECOR_VERSION_PATCH', libdecor_patch)
+
+    dlopen_table += {
+      'option': opt_video_wayland_libdecor_shared,
+      'dep_var': 'libdecor_dep',
+      'lib': 'decor-0',
+      'conf_var': 'SDL_VIDEO_DRIVER_WAYLAND_DYNAMIC_LIBDECOR',
+    }
   endif
 endif
 

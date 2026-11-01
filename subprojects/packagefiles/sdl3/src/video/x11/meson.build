@@ -55,16 +55,64 @@ xtst_dep = dependency(
 
 cdata.set10('SDL_VIDEO_DRIVER_X11_XINPUT2', xi_dep.found())
 sdl_deps += xi_dep
+if xi_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xi_dep',
+    'lib': 'Xi',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2',
+  }
+endif
 cdata.set10('SDL_VIDEO_DRIVER_X11_XFIXES', xfixes_dep.found())
 sdl_deps += xfixes_dep
+if xfixes_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xfixes_dep',
+    'lib': 'Xfixes',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XFIXES',
+  }
+endif
 cdata.set10('SDL_VIDEO_DRIVER_X11_XCURSOR', xcursor_dep.found())
 sdl_deps += xcursor_dep
+if xcursor_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xcursor_dep',
+    'lib': 'Xcursor',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR',
+  }
+endif
 cdata.set10('SDL_VIDEO_DRIVER_X11_XRANDR', xrandr_dep.found())
 sdl_deps += xrandr_dep
+if xrandr_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xrandr_dep',
+    'lib': 'Xrandr',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XRANDR',
+  }
+endif
 cdata.set10('SDL_VIDEO_DRIVER_X11_XSCRNSAVER', xscrnsaver_dep.found())
 sdl_deps += xscrnsaver_dep
+if xscrnsaver_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xscrnsaver_dep',
+    'lib': 'Xss',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS',
+  }
+endif
 cdata.set10('SDL_VIDEO_DRIVER_X11_XTEST', xtst_dep.found())
 sdl_deps += xtst_dep
+if xtst_dep.found()
+  dlopen_table += {
+    'option': opt_video_x11_shared,
+    'dep_var': 'xtst_dep',
+    'lib': 'Xtst',
+    'conf_var': 'SDL_VIDEO_DRIVER_X11_DYNAMIC_XTEST',
+  }
+endif
 
 
 

@@ -72,6 +72,11 @@ option(
 )
 
 option(
+    'prefer_dlopen',
+    type: 'feature',
+    description: 'Load dependencies dynamically',
+)
+option(
     'dlopen_notes',
     type: 'feature',
     description: 'Record dlopen dependencies in .note.dlopen section',
@@ -123,9 +128,19 @@ option(
     description: 'Support the ALSA audio API',
 )
 option(
+    'use_audio_alsa_shared',
+    type: 'feature',
+    description: 'Dynamically load ALSA audio support',
+)
+option(
     'use_audio_jack',
     type: 'feature',
     description: 'Support the JACK audio API',
+)
+option(
+    'use_audio_jack_shared',
+    type: 'feature',
+    description: 'Dynamically load JACK audio support',
 )
 option(
     'use_pipewire',
@@ -133,9 +148,19 @@ option(
     description: 'Use Pipewire audio',
 )
 option(
+    'use_pipewire_shared',
+    type: 'feature',
+    description: 'Dynamically load Pipewire support',
+)
+option(
     'use_audio_pulseaudio',
     type: 'feature',
     description: 'Use PulseAudio',
+)
+option(
+    'use_audio_pulseaudio_shared',
+    type: 'feature',
+    description: 'Dynamically load PulseAudio support',
 )
 option(
     'use_audio_sndio',
@@ -143,9 +168,19 @@ option(
     description: 'Use sndio audio API',
 )
 option(
+    'use_audio_sndio_shared',
+    type: 'feature',
+    description: 'Dynamically load the sndio audio API',
+)
+option(
     'use_video_x11',
     type: 'feature',
     description: 'Use X11 video driver',
+)
+option(
+    'use_video_x11_shared',
+    type: 'feature',
+    description: 'Dynamically load X11 support',
 )
 option(
     'use_video_x11_xcursor',
@@ -198,9 +233,19 @@ option(
     description: 'Use Wayland video driver',
 )
 option(
+    'use_video_wayland_shared',
+    type: 'feature',
+    description: 'Dynamically load Wayland support',
+)
+option(
     'use_video_wayland_libdecor',
     type: 'feature',
     description: 'Use client-side window decorations on Wayland',
+)
+option(
+    'use_video_wayland_libdecor_shared',
+    type: 'feature',
+    description: 'Dynamically load libdecor support',
 )
 option(
     'use_video_rpi',
@@ -243,6 +288,11 @@ option(
     description: 'Use KMS DRM video driver',
 )
 option(
+    'use_video_kmsdrm_shared',
+    type: 'feature',
+    description: 'Dynamically load KMS DRM support',
+)
+option(
     'use_video_offscreen',
     type: 'feature',
     description: 'Use offscreen video driver',
@@ -251,4 +301,9 @@ option(
     'use_hidapi_libusb',
     type: 'feature',
     description: 'Use libusb for low level joystick drivers',
+)
+option(
+    'hidapi_libusb_shared',
+    type: 'feature',
+    description: 'Dynamically load libusb support',
 )
