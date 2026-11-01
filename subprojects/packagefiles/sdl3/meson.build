@@ -623,7 +623,6 @@ if platform_is_linux
   # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
-  cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_LINUX', 1)
@@ -725,7 +724,6 @@ elif platform_is_macos
   cdata.set('SDL_PLATFORM_APPLE', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
   cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)
-  cdata.set('SDL_LOADSO_DLOPEN', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
   cdata.set('SDL_VIDEO_OPENGL_CGL', 1)
@@ -772,6 +770,9 @@ endif
 if get_option('default_library') == 'both' and cc.get_argument_syntax() == 'msvc'
   error('default_library=both not supported when compiling with MSVC')
 endif
+
+cdata.set10('DYNAPI_NEEDS_DLOPEN', platform_is_unixlike_or_apple)
+cdata.set10('SDL_LOADSO_DLOPEN', cdata.get('HAVE_DLOPEN', 0) != 0)
 
 subdir('src')
 
