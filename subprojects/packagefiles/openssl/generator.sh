@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # Node.js version should bundle OpenSSL of matching version to one specified in wrap file
-node_version=v21.0.0
+node_version=v22.23.3
 openssl_version="$OPENSSL_VERSION"
 
 if [ -z "$openssl_version" ]; then
