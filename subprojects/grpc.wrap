@@ -6,8 +6,5 @@ source_hash = 916f88a34f06b56432611aaa8c55befee96d0a7b7d7457733b9deeacbc016f99
 patch_directory = grpc
 
 [provide]
-grpc = grpc_dep
-grpc_unsecure = grpc_unsecure_dep
-grpc++ = grpcpp_dep
-grpc++_unsecure = grpcpp_unsecure_dep
+dependency_names = grpc, grpc_unsecure, grpc++, grpc++_unsecure
 program_names = grpc_cpp_plugin, grpc_python_plugin, grpc_ruby_plugin, grpc_php_plugin, grpc_node_plugin
