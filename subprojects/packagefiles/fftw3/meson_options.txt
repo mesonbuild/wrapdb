@@ -1,0 +1,66 @@
+option(
+    'double',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the double precision library (fftw3)',
+)
+option(
+    'single',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the single precision library (fftw3f)',
+)
+option(
+    'long_double',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build the long double precision library (fftw3l)',
+)
+option(
+    'quad',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build the quadruple precision library (fftw3q), requires GCC on x86 or IA-64 and libquadmath',
+)
+option(
+    'threads',
+    type: 'feature',
+    value: 'auto',
+    description: 'Build the multi-threading support into the libraries',
+)
+option(
+    'sse2',
+    type: 'feature',
+    value: 'auto',
+    description: 'SSE2 codelets for x86 (single and double precision)',
+)
+option(
+    'avx',
+    type: 'feature',
+    value: 'auto',
+    description: 'AVX codelets for x86 (single and double precision)',
+)
+option(
+    'avx2',
+    type: 'feature',
+    value: 'auto',
+    description: 'AVX2/FMA codelets for x86 (single and double precision)',
+)
+option(
+    'avx512',
+    type: 'feature',
+    value: 'disabled',
+    description: 'AVX-512 codelets for x86_64 (single and double precision), requires AVX2',
+)
+option(
+    'neon',
+    type: 'feature',
+    value: 'auto',
+    description: 'NEON codelets for ARM (single and double precision on AArch64, single precision on 32-bit ARM)',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build the bench program and run it as a test suite',
+)
