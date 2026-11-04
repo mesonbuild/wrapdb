@@ -192,7 +192,7 @@ if host_cpu in ['x86', 'x86_64']
       'simd',
       simd_src,
       include_directories: [incdir, 'nasm', dir],
-      pic: get_option('default_library') != 'static',
+      pic: get_option('default_library') != 'static' or get_option('b_staticpic'),
     )
   endif
 elif host_cpu in ['arm', 'aarch64']
@@ -325,7 +325,7 @@ elif host_cpu in ['arm', 'aarch64']
       dir / 'jsimdcpu.c',
       simd_src_arm,
       neon_compat_h,
-      pic: get_option('default_library') != 'static',
+      pic: get_option('default_library') != 'static' or get_option('b_staticpic'),
       include_directories: [incdir, 'arm'],
       c_args: neon_flags,
     )
@@ -349,7 +349,7 @@ elif host_cpu in ['ppc', 'ppc64']
       'simd',
       simd_src_ppc,
       include_directories: [incdir, 'powerpc'],
-      pic: get_option('default_library') != 'static',
+      pic: get_option('default_library') != 'static' or get_option('b_staticpic'),
       c_args: '-maltivec',
     )
   endif
@@ -379,7 +379,7 @@ elif host_cpu == 'riscv64'
       'simd',
       simd_src_riscv,
       include_directories: [incdir, 'riscv64'],
-      pic: get_option('default_library') != 'static',
+      pic: get_option('default_library') != 'static' or get_option('b_staticpic'),
       c_args: '-march=rv64gcv',
     )
   endif
@@ -408,7 +408,7 @@ elif host_cpu == 'loongarch64'
       'simd',
       simd_src_mips64,
       include_directories: [incdir, 'mips64'],
-      pic: get_option('default_library') != 'static',
+      pic: get_option('default_library') != 'static' or get_option('b_staticpic'),
       c_args: [
         '-Wa,-mloongson-mmi,-mloongson-ext',
         cc.get_supported_arguments('-fno-strict-aliasing'),
