@@ -358,6 +358,7 @@ opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
 opt_hidapi_libusb_shared = get_option('hidapi_libusb_shared').require(
   opt_hidapi_libusb.allowed() and opt_prefer_dlopen.allowed(),
 )
+opt_libudev = get_option('libudev').require(platform_is_unixlike)
 
 basic_headers = [
   'float.h',
@@ -643,6 +644,27 @@ if opt_hidapi_libusb.allowed()
   }
 endif
 
+if opt_libudev.allowed()
+  libudev_dep = dependency(
+    'libudev',
+    required: opt_libudev,
+  )
+  have_libudev = libudev_dep.found() and cc.has_header(
+    'libudev.h',
+    dependencies: libudev_dep,
+  )
+  cdata.set10('HAVE_LIBUDEV_H', have_libudev)
+  if have_libudev
+    sdl_deps += libudev_dep
+    dlopen_table += {
+      'option': opt_libudev,
+      'dep_var': 'libudev_dep',
+      'lib': 'udev',
+      'conf_var': 'SDL_UDEV_DYNAMIC',
+    }
+  endif
+endif
+
 sources = []
 
 cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
@@ -678,7 +700,6 @@ if platform_is_linux
   cdata.set('SDL_POWER_LINUX', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
-  sdl_deps += dependency('libudev')
 elif platform_is_windows
 
   # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include

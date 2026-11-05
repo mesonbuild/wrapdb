@@ -377,3 +377,8 @@ option(
     type: 'feature',
     description: 'Dynamically load libusb support',
 )
+option(
+    'libudev',
+    type: 'feature',
+    description: 'Enable libudev support',
+)
