@@ -25,6 +25,7 @@ cpr_src = files(
   'sse.cpp',
   'ssl_ctx.cpp',
   'threadpool.cpp',
+  'threadpool_builtin.cpp',
   'timeout.cpp',
   'unix_socket.cpp',
   'util.cpp',
