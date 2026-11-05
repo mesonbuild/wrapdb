@@ -118,6 +118,16 @@ option(
     description: 'Support the dummy video driver',
 )
 option(
+    'use_video_opengl',
+    type: 'feature',
+    description: 'Include OpenGL support',
+)
+option(
+    'use_video_opengles',
+    type: 'feature',
+    description: 'Include OpenGL ES support',
+)
+option(
     'use_audio_oss',
     type: 'feature',
     description: 'Support the OSS audio API',

@@ -235,3 +235,16 @@ if xi_dep.found()
     cdata.set('SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_GESTURE', 1)
   endif
 endif
+
+if cdata.get('SDL_VIDEO_OPENGL', 0) != 0
+  # check OpenGL GLX support
+  have_opengl_glx_code = '''
+    #include <GL/glx.h>
+    int main(int argc, char** argv) { return 0; }
+  '''
+  have_opengl_glx = cc.compiles(
+    have_opengl_glx_code,
+    name: 'have OpenGL GLX support',
+  )
+  cdata.set10('SDL_VIDEO_OPENGL_GLX', have_opengl_glx)
+endif

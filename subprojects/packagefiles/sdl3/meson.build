@@ -246,6 +246,10 @@ opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
 opt_audio_disk = get_option('use_audio_disk').require(sdl_audio)
 opt_audio_dummy = get_option('use_audio_dummy').require(sdl_audio)
 opt_video_dummy = get_option('use_video_dummy').require(sdl_video)
+opt_video_opengl = get_option('use_video_opengl').require(
+  sdl_video and not platform_is_ios,
+)
+opt_video_opengles = get_option('use_video_opengles').require(sdl_video)
 opt_audio_oss = get_option('use_audio_oss').require(
   platform_is_unixlike and sdl_audio,
 )
@@ -636,41 +640,6 @@ if platform_is_linux
   ## but it is done this way to be consistent from what CMake does
   ## additionally these values are not defined in the config file
 
-  # check Kronos EGL support
-  have_opengl_egl_code = '''
-    #define EGL_API_FB
-    #define MESA_EGL_NO_X11_HEADERS
-    #define EGL_NO_X11
-    #include <EGL/egl.h>
-    #include <EGL/eglext.h>
-    int main (int argc, char** argv) { return 0; }
-  '''
-  have_opengl_egl = cc.compiles(
-    have_opengl_egl_code,
-    name: 'have OpenGL EGL support',
-  )
-  # check OpenGL GLX support
-  have_opengl_glx_code = '''
-    #include <GL/glx.h>
-    int main(int argc, char** argv) { return 0; }
-  '''
-  have_opengl_glx = cc.compiles(
-    have_opengl_glx_code,
-    name: 'have OpenGL GLX support',
-  )
-
-  # check OpenGL support
-  have_opengl_code = '''
-    #include <GL/gl.h>
-    #include <GL/glext.h>
-    int main(int argc, char** argv) { return 0; }
-  '''
-  have_opengl = cc.compiles(
-    have_opengl_code,
-    name: 'have OpenGL support',
-  )
-
-
   # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
@@ -678,16 +647,6 @@ if platform_is_linux
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_LINUX', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
-  if have_opengl_egl
-    cdata.set('SDL_VIDEO_OPENGL_EGL', 1)
-  endif
-  if have_opengl_glx
-    cdata.set('SDL_VIDEO_OPENGL_GLX', 1)
-  endif
-  if have_opengl
-    cdata.set('SDL_VIDEO_OPENGL', 1)
-    cdata.set('SDL_VIDEO_RENDER_OGL', 1)
-  endif
   cdata.set('SDL_GPU_VULKAN', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
@@ -748,9 +707,6 @@ elif platform_is_windows
   cdata.set('SDL_GPU_D3D12', 1)
   cdata.set('SDL_VIDEO_VULKAN', 1)
   cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
-  cdata.set('SDL_VIDEO_OPENGL', 1)
-  cdata.set('SDL_VIDEO_OPENGL_WGL', 1)
-  cdata.set('SDL_VIDEO_RENDER_OGL', 1)
 
   if have_xinput_header
     cdata.set('SDL_JOYSTICK_XINPUT', 1)
@@ -777,8 +733,6 @@ elif platform_is_macos
   cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
-  cdata.set('SDL_VIDEO_OPENGL_CGL', 1)
-  cdata.set('SDL_VIDEO_OPENGL', 1)
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_MACOSX', 1)
@@ -844,6 +798,8 @@ if opt_dlopen_notes.allowed()
 endif
 
 subdir('src')
+
+cdata.set10('SDL_VIDEO_RENDER_OGL', cdata.get('SDL_VIDEO_OPENGL', 0) != 0)
 
 if cdata.get('SDL_VIDEO_DRIVER_WAYLAND', 0) != 0
   wayland_scanner = find_program('wayland-scanner')

@@ -17,7 +17,7 @@ video_drivers = ''
 subdir('yuv2rgb')
 
 if sdl_video
-  want_egl = opt_video_vivante.allowed()
+  want_egl = opt_video_opengl.allowed() or opt_video_opengles.allowed() or opt_video_vivante.allowed()
 
   if opt_video_rpi.allowed()
     bcm_host_dep = dependency(
@@ -209,13 +209,58 @@ if sdl_video
     endif
   endif
 
-  if opt_video_cocoa.allowed()
-    video_drivers += ' cocoa'
+  if platform_is_unixlike
+    if opt_video_opengl.allowed()
+      # check OpenGL support
+      have_opengl_code = '''
+        #include <GL/gl.h>
+        #include <GL/glext.h>
+        int main(int argc, char** argv) { return 0; }
+      '''
+      have_opengl = cc.compiles(
+        have_opengl_code,
+        name: 'have OpenGL support',
+        required: opt_video_opengl,
+      )
+      cdata.set10('SDL_VIDEO_OPENGL', have_opengl)
+    endif
+    if opt_video_opengles.allowed()
+      have_glesv1 = cc.compiles(
+        '''
+          #include <GLES/gl.h>
+          #include <GLES/glext.h>
+          int main (int argc, char** argv) { return 0; }
+        ''',
+        name: 'have GLESv1 support',
+        required: opt_video_opengles,
+      )
+      cdata.set10('SDL_VIDEO_OPENGL_ES', have_glesv1)
+      have_glesv2 = cc.compiles(
+        '''
+          #include <GLES2/gl2.h>
+          #include <GLES2/gl2ext.h>
+          int main (int argc, char** argv) { return 0; }
+        ''',
+        name: 'have GLESv2 support',
+        required: opt_video_opengles,
+      )
+      cdata.set10('SDL_VIDEO_OPENGL_ES2', have_glesv2)
+    endif
   endif
 
   if platform_is_windows
     video_drivers += ' windows'
-  elif platform_is_ios
+
+    cdata.set10('SDL_VIDEO_OPENGL', opt_video_opengl.allowed())
+    cdata.set10('SDL_VIDEO_OPENGL_WGL', opt_video_opengl.allowed())
+  endif
+  if opt_video_cocoa.allowed()
+    video_drivers += ' cocoa'
+
+    cdata.set10('SDL_VIDEO_OPENGL', opt_video_opengl.allowed())
+    cdata.set10('SDL_VIDEO_OPENGL_CGL', opt_video_opengl.allowed())
+  endif
+  if platform_is_ios
     video_drivers += ' uikit'
   endif
 endif
