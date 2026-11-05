@@ -72,21 +72,14 @@ if sdl_audio
     endif
   endif
 
-  if opt_pipewire.enable_auto_if(platform_is_unixlike).enabled()
-    pipewire_dep = dependency(
-      'libpipewire-0.3',
-      required: opt_pipewire,
-    )
-    sdl_deps += pipewire_dep
-    if pipewire_dep.found()
-      audio_drivers += ' pipewire'
-      dlopen_table += {
-        'option': opt_pipewire_shared,
-        'dep_var': 'pipewire_dep',
-        'lib': 'pipewire-0.3',
-        'conf_var': 'SDL_AUDIO_DRIVER_PIPEWIRE_DYNAMIC',
-      }
-    endif
+  if have_pipewire
+    audio_drivers += ' pipewire'
+    dlopen_table += {
+      'option': opt_pipewire_shared,
+      'dep_var': 'pipewire_dep',
+      'lib': 'pipewire-0.3',
+      'conf_var': 'SDL_AUDIO_DRIVER_PIPEWIRE_DYNAMIC',
+    }
   endif
 
   if opt_audio_pulseaudio.enable_auto_if(platform_is_unixlike).enabled()

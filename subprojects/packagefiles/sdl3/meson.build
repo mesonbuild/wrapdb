@@ -234,6 +234,7 @@ if platform_is_apple
 endif
 
 sdl_audio = enabled_subsystems.contains('audio')
+sdl_camera = enabled_subsystems.contains('camera')
 sdl_gpu = enabled_subsystems.contains('gpu')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
 sdl_render = enabled_subsystems.contains('render')
@@ -350,6 +351,7 @@ opt_video_kmsdrm_shared = get_option('use_video_kmsdrm_shared').require(
   opt_video_kmsdrm.allowed() and opt_prefer_dlopen.allowed(),
 )
 opt_video_offscreen = get_option('use_video_offscreen')
+opt_camera_dummy = get_option('use_camera_dummy').require(sdl_camera)
 opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
   sdl_hidapi and hidapi_libusb_available,
 )
@@ -426,6 +428,7 @@ if platform_is_windows
   basic_headers += 'dxgi.h'
   basic_headers += 'dxgi1_5.h'
   basic_headers += 'dxgi1_6.h'
+  basic_headers += 'mfapi.h'
   basic_headers += 'mmdeviceapi.h'
   basic_headers += 'roapi.h'
   basic_headers += 'shellscalingapi.h'
@@ -809,6 +812,19 @@ if opt_dlopen_notes.allowed()
     required: opt_dlopen_notes,
   )
   cdata.set10('SDL_DISABLE_DLOPEN_NOTES', not compiler_supports_elfnotes)
+endif
+
+if (sdl_audio or sdl_camera) and opt_pipewire.enable_auto_if(
+  platform_is_unixlike,
+).enabled()
+  pipewire_dep = dependency(
+    'libpipewire-0.3',
+    required: opt_pipewire,
+  )
+  sdl_deps += pipewire_dep
+  have_pipewire = pipewire_dep.found()
+else
+  have_pipewire = false
 endif
 
 subdir('src')
