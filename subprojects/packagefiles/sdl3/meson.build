@@ -273,6 +273,14 @@ opt_video_x11 = get_option('use_video_x11').require(sdl_video)
 opt_video_x11_shared = get_option('use_video_x11_shared').require(
   opt_video_x11.allowed() and opt_prefer_dlopen.allowed(),
 )
+opt_fribidi = get_option('use_fribidi').require(opt_video_x11.allowed())
+opt_fribidi_shared = get_option('use_fribidi_shared').require(
+  opt_fribidi.allowed() and opt_prefer_dlopen.allowed(),
+)
+opt_libthai = get_option('use_libthai').require(opt_video_x11.allowed())
+opt_libthai_shared = get_option('use_libthai_shared').require(
+  opt_libthai.allowed() and opt_prefer_dlopen.allowed(),
+)
 opt_video_wayland = get_option('use_video_wayland').require(sdl_video)
 opt_video_wayland_shared = get_option('use_video_wayland_shared').require(
   opt_video_wayland.allowed() and opt_prefer_dlopen.allowed(),

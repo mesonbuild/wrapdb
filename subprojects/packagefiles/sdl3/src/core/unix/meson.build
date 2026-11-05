@@ -1,3 +1,41 @@
+fribidi_dep = dependency(
+  'fribidi',
+  required: opt_fribidi,
+)
+have_fribidi = fribidi_dep.found() and cc.has_header(
+  'fribidi.h',
+  dependencies: fribidi_dep,
+)
+cdata.set10('HAVE_FRIBIDI_H', have_fribidi)
+if have_fribidi
+  sdl_deps += fribidi_dep
+  dlopen_table += {
+    'option': opt_fribidi_shared,
+    'dep_var': 'fribidi_dep',
+    'lib': 'fribidi',
+    'conf_var': 'SDL_FRIBIDI_DYNAMIC',
+  }
+endif
+
+libthai_dep = dependency(
+  'libthai',
+  required: opt_libthai,
+)
+have_libthai = libthai_dep.found() and cc.has_header(
+  'libthai.h',
+  dependencies: libthai_dep,
+)
+cdata.set10('HAVE_LIBTHAI_H', have_libthai)
+if have_libthai
+  sdl_deps += libthai_dep
+  dlopen_table += {
+    'option': opt_libthai_shared,
+    'dep_var': 'libthai_dep',
+    'lib': 'thai',
+    'conf_var': 'SDL_LIBTHAI_DYNAMIC',
+  }
+endif
+
 sources += files(
   'SDL_appid.c',
   'SDL_fribidi.c',

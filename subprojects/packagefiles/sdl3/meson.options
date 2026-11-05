@@ -228,6 +228,26 @@ option(
     description: 'Enable XTest support',
 )
 option(
+    'use_fribidi',
+    type: 'feature',
+    description: 'Enable Fribidi support',
+)
+option(
+    'use_fribidi_shared',
+    type: 'feature',
+    description: 'Dynamically load Fribidi support',
+)
+option(
+    'use_libthai',
+    type: 'feature',
+    description: 'Enable Thai support',
+)
+option(
+    'use_libthai_shared',
+    type: 'feature',
+    description: 'Dynamically load Thai support',
+)
+option(
     'use_video_wayland',
     type: 'feature',
     description: 'Use Wayland video driver',
