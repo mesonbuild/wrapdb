@@ -236,6 +236,7 @@ endif
 sdl_audio = enabled_subsystems.contains('audio')
 sdl_gpu = enabled_subsystems.contains('gpu')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
+sdl_render = enabled_subsystems.contains('render')
 sdl_video = enabled_subsystems.contains('video')
 
 opt_prefer_dlopen = get_option('prefer_dlopen').require(shared_available)
@@ -317,6 +318,19 @@ opt_directx = get_option('use_directx').require(
 opt_audio_wasapi = get_option('use_audio_wasapi').require(
   sdl_audio and platform_is_windows,
 )
+opt_render_d3d = get_option('use_render_d3d').require(
+  sdl_render and opt_directx.allowed(),
+)
+opt_render_d3d11 = get_option('use_render_d3d11').require(
+  sdl_render and opt_directx.allowed(),
+)
+opt_render_d3d12 = get_option('use_render_d3d12').require(
+  sdl_render and opt_directx.allowed(),
+)
+opt_render_metal = get_option('use_render_metal').require(
+  sdl_render and platform_is_apple,
+)
+opt_render_gpu = get_option('use_render_gpu').require(sdl_render and sdl_gpu)
 opt_video_vivante = get_option('use_video_vivante').require(
   platform_is_unixlike and cpu_arm32,
 )
@@ -410,6 +424,7 @@ if platform_is_windows
     ]
   endif
   basic_headers += 'dxgi.h'
+  basic_headers += 'dxgi1_5.h'
   basic_headers += 'dxgi1_6.h'
   basic_headers += 'mmdeviceapi.h'
   basic_headers += 'roapi.h'
@@ -711,7 +726,6 @@ elif platform_is_windows
   cdata.set('SDL_PROCESS_WINDOWS', 1)
   cdata.set('SDL_SENSOR_WINDOWS', 1)
   cdata.set('SDL_POWER_WINDOWS', 1)
-  cdata.set('SDL_VIDEO_RENDER_D3D12', 1)
 
   if have_xinput_header
     cdata.set('SDL_JOYSTICK_XINPUT', 1)
@@ -741,7 +755,6 @@ elif platform_is_macos
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_MACOSX', 1)
-  cdata.set('SDL_VIDEO_RENDER_GPU', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
   apple_modules = []
@@ -799,9 +812,6 @@ if opt_dlopen_notes.allowed()
 endif
 
 subdir('src')
-
-cdata.set10('SDL_VIDEO_RENDER_OGL', cdata.get('SDL_VIDEO_OPENGL', 0) != 0)
-cdata.set10('SDL_VIDEO_RENDER_VULKAN', cdata.get('SDL_VIDEO_VULKAN', 0) != 0)
 
 if cdata.get('SDL_VIDEO_DRIVER_WAYLAND', 0) != 0
   wayland_scanner = find_program('wayland-scanner')

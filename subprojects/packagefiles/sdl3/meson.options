@@ -303,6 +303,31 @@ option(
     description: 'Use the Windows WASAPI audio driver',
 )
 option(
+    'use_render_d3d',
+    type: 'feature',
+    description: 'Enable the Direct3D 9 render driver',
+)
+option(
+    'use_render_d3d11',
+    type: 'feature',
+    description: 'Enable the Direct3D 11 render driver',
+)
+option(
+    'use_render_d3d12',
+    type: 'feature',
+    description: 'Enable the Direct3D 12 render driver',
+)
+option(
+    'use_render_metal',
+    type: 'feature',
+    description: 'Enable the Metal render driver',
+)
+option(
+    'use_render_gpu',
+    type: 'feature',
+    description: 'Enable the SDL_GPU render driver',
+)
+option(
     'use_video_vivante',
     type: 'feature',
     description: 'Use Vivante EGL video driver',
@@ -311,6 +336,11 @@ option(
     'use_video_vulkan',
     type: 'feature',
     description: 'Enable Vulkan support',
+)
+option(
+    'render_vulkan',
+    type: 'feature',
+    description: 'Enable the Vulkan render driver',
 )
 option(
     'use_video_metal',

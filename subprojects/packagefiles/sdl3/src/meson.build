@@ -18,7 +18,6 @@ subdir('main')
 subdir('misc')
 subdir('power')
 subdir('process')
-subdir('render')
 subdir('sensor')
 subdir('stdlib')
 subdir('storage')
@@ -30,6 +29,7 @@ subdir('video')
 
 # Uses some config values set up by video
 subdir('gpu')
+subdir('render')
 
 sources += files(
   'SDL.c',
