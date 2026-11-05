@@ -7,7 +7,6 @@ subdir('dialog')
 subdir('dynapi')
 subdir('events')
 subdir('filesystem')
-subdir('gpu')
 subdir('haptic')
 subdir('hidapi')
 subdir('io')
@@ -28,6 +27,9 @@ subdir('time')
 subdir('timer')
 subdir('tray')
 subdir('video')
+
+# Uses some config values set up by video
+subdir('gpu')
 
 sources += files(
   'SDL.c',

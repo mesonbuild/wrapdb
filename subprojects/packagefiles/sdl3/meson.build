@@ -234,6 +234,7 @@ if platform_is_apple
 endif
 
 sdl_audio = enabled_subsystems.contains('audio')
+sdl_gpu = enabled_subsystems.contains('gpu')
 sdl_hidapi = enabled_subsystems.contains('hidapi')
 sdl_video = enabled_subsystems.contains('video')
 
@@ -409,6 +410,7 @@ if platform_is_windows
     ]
   endif
   basic_headers += 'dxgi.h'
+  basic_headers += 'dxgi1_6.h'
   basic_headers += 'mmdeviceapi.h'
   basic_headers += 'roapi.h'
   basic_headers += 'shellscalingapi.h'
@@ -710,7 +712,6 @@ elif platform_is_windows
   cdata.set('SDL_SENSOR_WINDOWS', 1)
   cdata.set('SDL_POWER_WINDOWS', 1)
   cdata.set('SDL_VIDEO_RENDER_D3D12', 1)
-  cdata.set('SDL_GPU_D3D12', 1)
 
   if have_xinput_header
     cdata.set('SDL_JOYSTICK_XINPUT', 1)
@@ -743,7 +744,6 @@ elif platform_is_macos
   cdata.set('SDL_VIDEO_RENDER_GPU', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
-  cdata.set10('SDL_GPU_METAL', cdata.get('SDL_VIDEO_METAL', 0) != 0)
   apple_modules = []
   if opt_video_metal.allowed()
     apple_modules += ['Metal']
@@ -800,7 +800,6 @@ endif
 
 subdir('src')
 
-cdata.set10('SDL_GPU_VULKAN', cdata.get('SDL_VIDEO_VULKAN', 0) != 0)
 cdata.set10('SDL_VIDEO_RENDER_OGL', cdata.get('SDL_VIDEO_OPENGL', 0) != 0)
 cdata.set10('SDL_VIDEO_RENDER_VULKAN', cdata.get('SDL_VIDEO_VULKAN', 0) != 0)
 
