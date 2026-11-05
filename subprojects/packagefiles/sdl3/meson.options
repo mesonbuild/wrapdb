@@ -308,6 +308,11 @@ option(
     description: 'Use Vivante EGL video driver',
 )
 option(
+    'use_video_vulkan',
+    type: 'feature',
+    description: 'Enable Vulkan support',
+)
+option(
     'use_video_metal',
     type: 'feature',
     description: 'Enable Metal support',

@@ -265,6 +265,8 @@ if sdl_video
   endif
 endif
 
+cdata.set10('SDL_VIDEO_VULKAN', opt_video_vulkan.allowed())
+
 if opt_video_dummy.allowed() or video_drivers == ''
   video_drivers += ' dummy'
 endif

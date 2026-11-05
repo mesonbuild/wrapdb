@@ -319,6 +319,16 @@ opt_audio_wasapi = get_option('use_audio_wasapi').require(
 opt_video_vivante = get_option('use_video_vivante').require(
   platform_is_unixlike and cpu_arm32,
 )
+opt_video_vulkan = get_option('use_video_vulkan').require(
+  sdl_video and (
+    platform_is_android
+    or platform_is_apple
+    or platform_is_linux
+    or platform_is_freebsd
+    or platform_is_openbsd
+    or platform_is_windows
+  ),
+)
 opt_video_metal = get_option('use_video_metal').require(platform_is_apple)
 opt_video_kmsdrm = get_option('use_video_kmsdrm').require(sdl_video)
 opt_video_kmsdrm_shared = get_option('use_video_kmsdrm_shared').require(
@@ -647,9 +657,6 @@ if platform_is_linux
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_LINUX', 1)
   cdata.set('SDL_INPUT_LINUXEV', 1)
-  cdata.set('SDL_GPU_VULKAN', 1)
-  cdata.set('SDL_VIDEO_VULKAN', 1)
-  cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   sdl_deps += dependency('libudev')
 elif platform_is_windows
@@ -703,10 +710,7 @@ elif platform_is_windows
   cdata.set('SDL_SENSOR_WINDOWS', 1)
   cdata.set('SDL_POWER_WINDOWS', 1)
   cdata.set('SDL_VIDEO_RENDER_D3D12', 1)
-  cdata.set('SDL_GPU_VULKAN', 1)
   cdata.set('SDL_GPU_D3D12', 1)
-  cdata.set('SDL_VIDEO_VULKAN', 1)
-  cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
 
   if have_xinput_header
     cdata.set('SDL_JOYSTICK_XINPUT', 1)
@@ -737,9 +741,6 @@ elif platform_is_macos
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_MACOSX', 1)
   cdata.set('SDL_VIDEO_RENDER_GPU', 1)
-  cdata.set('SDL_GPU_VULKAN', 1)
-  cdata.set('SDL_VIDEO_VULKAN', 1)
-  cdata.set('SDL_VIDEO_RENDER_VULKAN', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
   cdata.set10('SDL_GPU_METAL', cdata.get('SDL_VIDEO_METAL', 0) != 0)
@@ -799,7 +800,9 @@ endif
 
 subdir('src')
 
+cdata.set10('SDL_GPU_VULKAN', cdata.get('SDL_VIDEO_VULKAN', 0) != 0)
 cdata.set10('SDL_VIDEO_RENDER_OGL', cdata.get('SDL_VIDEO_OPENGL', 0) != 0)
+cdata.set10('SDL_VIDEO_RENDER_VULKAN', cdata.get('SDL_VIDEO_VULKAN', 0) != 0)
 
 if cdata.get('SDL_VIDEO_DRIVER_WAYLAND', 0) != 0
   wayland_scanner = find_program('wayland-scanner')
