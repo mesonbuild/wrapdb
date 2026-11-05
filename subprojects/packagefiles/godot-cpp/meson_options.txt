@@ -1,7 +1,7 @@
 option(
-    'precision',
+    'api_version',
     type: 'combo',
-    choices: ['single', 'double'],
-    value: 'single',
-    description: 'floating point type for godot-cpp',
+    choices: ['4.3', '4.4', '4.5', '4.6', '4.7'],
+    value: '4.7',
+    description: 'The target API version for godot-cpp',
 )

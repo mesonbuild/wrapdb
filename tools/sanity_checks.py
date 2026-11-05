@@ -74,6 +74,7 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     },
     'godot-cpp' : {
          'meson-bindings-generator.py',
+         'meson_README.md',
      },
     'gumbo-parser': {
         'tokenizer.cc',
