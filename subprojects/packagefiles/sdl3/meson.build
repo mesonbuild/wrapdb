@@ -749,7 +749,7 @@ if platform_is_linux
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_SENSOR_DUMMY', 1)
   cdata.set('SDL_POWER_LINUX', 1)
-  cdata.set('SDL_INPUT_LINUXEV', 1)
+  cdata.set10('SDL_INPUT_LINUXEV', cdata.get('HAVE_LINUX_INPUT_H', 0) != 0)
   cdata.set('SDL_TIMER_UNIX', 1)
 elif platform_is_windows
   add_languages(
