@@ -17,6 +17,7 @@ sources += files(
   'SDL_hidapi_steam_hori.c',
   'SDL_hidapi_steam_triton.c',
   'SDL_hidapi_steamdeck.c',
+  'SDL_hidapi_switch2.c',
   'SDL_hidapi_switch.c',
   'SDL_hidapi_wii.c',
   'SDL_hidapi_xbox360.c',

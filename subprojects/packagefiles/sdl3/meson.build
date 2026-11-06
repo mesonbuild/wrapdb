@@ -313,6 +313,9 @@ opt_video_rockchip = get_option('use_video_rockchip').require(
   ),
 )
 opt_video_cocoa = get_option('use_video_cocoa').require(platform_is_apple)
+opt_joystick_xinput = get_option('use_joystick_xinput').require(
+  platform_is_windows,
+)
 opt_directx = get_option('use_directx').require(
   (sdl_audio or sdl_video) and platform_is_windows,
 )
@@ -358,6 +361,8 @@ opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
 opt_hidapi_libusb_shared = get_option('hidapi_libusb_shared').require(
   opt_hidapi_libusb.allowed() and opt_prefer_dlopen.allowed(),
 )
+opt_joystick_hidapi = get_option('use_joystick_hidapi').require(sdl_hidapi)
+opt_joystick_virtual = get_option('use_joystick_virtual').require(sdl_hidapi)
 opt_libudev = get_option('libudev').require(platform_is_unixlike)
 
 basic_headers = [
@@ -434,6 +439,52 @@ if platform_is_windows
   basic_headers += 'roapi.h'
   basic_headers += 'shellscalingapi.h'
   basic_headers += 'tpcshrd.h'
+
+  # Microsoft Windows GameInput is provided via the Microsoft Game Development Kit (GDK)
+  have_gameinput_header_code = '''
+    #include <stdbool.h>
+    #define COBJMACROS
+    #include <gameinput.h>
+    int main(int argc, char **argv) {  }
+  '''
+  cdata.set10(
+    'HAVE_GAMEINPUT_H',
+    cc.compiles(
+      have_gameinput_header_code,
+      name: 'have GameInput support',
+    ),
+  )
+
+  # Microsoft Windows gaming input header is provided by the Windows SDK (winrt)
+  have_windows_gaming_input_header_code = '''
+    #define COBJMACROS
+    #include <windows.gaming.input.h>
+    static __x_ABI_CWindows_CGaming_CInput_CIGamepadStatics2 *s2;
+    int main(int argc, char **argv) {  }
+  '''
+  cdata.set10(
+    'HAVE_WINDOWS_GAMING_INPUT_H',
+    cc.compiles(
+      have_windows_gaming_input_header_code,
+      name: 'have Windows Gaming Input support',
+    ),
+  )
+
+  if opt_joystick_xinput.allowed()
+    # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include
+    have_xinput_header_code = '''
+      #include <windows.h>
+      #include <xinput.h>
+      int main(int argc, char **argv) { }
+    '''
+    cdata.set10(
+      'HAVE_XINPUT_H',
+      cc.compiles(
+        have_xinput_header_code,
+        name: 'have XInput support',
+      ),
+    )
+  endif
 else
   check_functions += ' strcasestr'
 
@@ -701,46 +752,10 @@ if platform_is_linux
   cdata.set('SDL_INPUT_LINUXEV', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
 elif platform_is_windows
-
-  # XInput(legacy) is provided by the Microsoft DirectX SDK and requires windows header include
-  have_xinput_header_code = '''
-    #include <windows.h>
-    #include <xinput.h>
-    int main(int argc, char **argv) { }
-  '''
-  have_xinput_header = cc.compiles(
-    have_xinput_header_code,
-    name: 'have XInput support',
-  )
-
-  # Microsoft Windows gaming input header is provided by the Windows SDK (winrt)
-  have_windows_gaming_input_header_code = '''
-    #define COBJMACROS
-    #include <windows.gaming.input.h>
-    static __x_ABI_CWindows_CGaming_CInput_CIGamepadStatics2 *s2;
-    int main(int argc, char **argv) {  }
-  '''
-  have_windows_gaming_input_header = cc.compiles(
-    have_windows_gaming_input_header_code,
-    name: 'have Windows Gaming Input support',
-  )
-
-  # Microsoft Windows GameInput is provided via the Microsoft Game Development Kit (GDK)
-  have_gameinput_header_code = '''
-    #include <stdbool.h>
-    #define COBJMACROS
-    #include <gameinput.h>
-    int main(int argc, char **argv) {  }
-  '''
-  have_gameinput_header = cc.compiles(
-    have_gameinput_header_code,
-    name: 'have GameInput support',
-  )
   add_languages(
     'cpp',
     native: false,
   )
-
 
   cdata.set('SDL_PLATFORM_WIN32', 1)
   cdata.set('SDL_THREAD_WINDOWS', 1)
@@ -750,20 +765,6 @@ elif platform_is_windows
   cdata.set('SDL_PROCESS_WINDOWS', 1)
   cdata.set('SDL_SENSOR_WINDOWS', 1)
   cdata.set('SDL_POWER_WINDOWS', 1)
-
-  if have_xinput_header
-    cdata.set('SDL_JOYSTICK_XINPUT', 1)
-    cdata.set('HAVE_XINPUT', true)
-  endif
-  if have_windows_gaming_input_header
-    cdata.set('SDL_JOYSTICK_WGI', 1)
-  endif
-  if have_gameinput_header
-    cdata.set('HAVE_GAMEINPUT_H', 1)
-    cdata.set('SDL_JOYSTICK_GAMEINPUT', 1)
-  endif
-  cdata.set('SDL_JOYSTICK_RAWINPUT', 1)
-
   cdata.set('SDL_TIMER_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
