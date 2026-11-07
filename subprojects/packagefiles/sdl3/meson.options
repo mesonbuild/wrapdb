@@ -123,6 +123,11 @@ option(
     description: 'Support the dummy video driver',
 )
 option(
+    'use_ibus',
+    type: 'feature',
+    description: 'Enable IBus support',
+)
+option(
     'use_video_opengl',
     type: 'feature',
     description: 'Include OpenGL support',

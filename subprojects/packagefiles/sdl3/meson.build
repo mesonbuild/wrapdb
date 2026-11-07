@@ -250,6 +250,7 @@ opt_liburing = get_option('use_liburing').require(platform_is_unixlike)
 opt_audio_disk = get_option('use_audio_disk').require(sdl_audio)
 opt_audio_dummy = get_option('use_audio_dummy').require(sdl_audio)
 opt_video_dummy = get_option('use_video_dummy').require(sdl_video)
+opt_ibus = get_option('use_ibus').require(platform_is_unixlike)
 opt_video_opengl = get_option('use_video_opengl').require(
   sdl_video and not platform_is_ios,
 )
@@ -710,6 +711,25 @@ if opt_dbus.allowed()
   sdl_deps += dbus_dep
 endif
 have_dbus = cdata.get('HAVE_DBUS_DBUS_H', 0) != 0
+
+if opt_ibus.allowed()
+  ibus_dep = dependency(
+    'ibus-1.0',
+    required: opt_ibus,
+  ).partial_dependency(
+    compile_args: true,
+    includes: true,
+    sources: true,
+  )
+  ibus_available = ibus_dep.found() and cdata.get('HAVE_SYS_NOTIFY_H', 0) != 0 and cc.has_header(
+    'ibus/ibus.h',
+    dependencies: ibus_dep,
+  )
+  if ibus_available
+    cdata.set10('HAVE_IBUS_IBUS_H', ibus_available)
+    sdl_deps += ibus_dep
+  endif
+endif
 
 cdata.set10(
   'HAVE_INOTIFY',
