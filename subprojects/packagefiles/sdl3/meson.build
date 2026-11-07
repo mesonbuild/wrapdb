@@ -246,6 +246,7 @@ opt_system_iconv = get_option('system_iconv').enable_auto_if(
   system_iconv_default,
 ).enabled()
 opt_dbus = get_option('use_dbus').require(platform_is_unixlike)
+opt_liburing = get_option('use_liburing').require(platform_is_unixlike)
 opt_audio_disk = get_option('use_audio_disk').require(sdl_audio)
 opt_audio_dummy = get_option('use_audio_dummy').require(sdl_audio)
 opt_video_dummy = get_option('use_video_dummy').require(sdl_video)

@@ -103,6 +103,11 @@ option(
     description: 'Enable D-Bus support',
 )
 option(
+    'use_liburing',
+    type: 'feature',
+    description: 'Enable liburing support',
+)
+option(
     'use_audio_disk',
     type: 'feature',
     description: 'Support the disk writer audio driver',
