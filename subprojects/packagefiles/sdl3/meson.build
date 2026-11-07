@@ -748,7 +748,6 @@ if platform_is_linux
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set('SDL_THREAD_PTHREAD', 1)
   cdata.set('SDL_PROCESS_POSIX', 1)
-  cdata.set('SDL_POWER_LINUX', 1)
   cdata.set10('SDL_INPUT_LINUXEV', cdata.get('HAVE_LINUX_INPUT_H', 0) != 0)
   cdata.set('SDL_TIMER_UNIX', 1)
 elif platform_is_windows
@@ -763,7 +762,6 @@ elif platform_is_windows
   cdata.set('SDL_THREAD_GENERIC_RWLOCK_SUFFIX', 1)
   cdata.set('SDL_LOADSO_WINDOWS', 1)
   cdata.set('SDL_PROCESS_WINDOWS', 1)
-  cdata.set('SDL_POWER_WINDOWS', 1)
   cdata.set('SDL_TIMER_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
@@ -777,7 +775,6 @@ elif platform_is_macos
   cdata.set('SDL_PROCESS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
   cdata.set('SDL_FSOPS_POSIX', 1)
-  cdata.set('SDL_POWER_MACOSX', 1)
   cdata.set('SDL_TIMER_UNIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
   apple_modules = []
