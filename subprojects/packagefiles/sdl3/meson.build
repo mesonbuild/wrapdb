@@ -620,6 +620,42 @@ cdata.set10(
   ),
 )
 
+if platform_is_unixlike_or_apple
+  cdata.set('SDL_THREAD_PTHREAD', 1)
+  cdata.set10(
+    'SDL_THREAD_PTHREAD_RECURSIVE_MUTEX',
+    cc.compiles(
+      '''
+    #include <pthread.h>
+    int main(int argc, char **argv) {
+      pthread_mutexattr_t attr;
+      pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+      return 0;
+    }''',
+      name: 'have PTHREAD_MUTEX_RECURSIVE',
+    ),
+  )
+  if cdata.get('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 0) == 0
+    cdata.set10(
+      'SDL_THREAD_PTHREAD_RECURSIVE_MUTEX_NP',
+      cc.compiles(
+        '''
+      #include <pthread.h>
+      int main(int argc, char **argv) {
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+        return 0;
+      }''',
+        name: 'have PTHREAD_MUTEX_RECURSIVE_NP',
+      ),
+    )
+  endif
+elif platform_is_windows
+  cdata.set('SDL_THREAD_WINDOWS', 1)
+  cdata.set('SDL_THREAD_GENERIC_COND_SUFFIX', 1)
+  cdata.set('SDL_THREAD_GENERIC_RWLOCK_SUFFIX', 1)
+endif
+
 if opt_system_iconv
   iconv_in_libc = cc.compiles(
     '''
@@ -746,7 +782,6 @@ if platform_is_linux
 
   # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
-  cdata.set('SDL_THREAD_PTHREAD', 1)
   cdata.set10('SDL_INPUT_LINUXEV', cdata.get('HAVE_LINUX_INPUT_H', 0) != 0)
 elif platform_is_windows
   add_languages(
@@ -755,9 +790,6 @@ elif platform_is_windows
   )
 
   cdata.set('SDL_PLATFORM_WIN32', 1)
-  cdata.set('SDL_THREAD_WINDOWS', 1)
-  cdata.set('SDL_THREAD_GENERIC_COND_SUFFIX', 1)
-  cdata.set('SDL_THREAD_GENERIC_RWLOCK_SUFFIX', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
   sdl_deps += cc.find_library('setupapi')
@@ -765,8 +797,6 @@ elif platform_is_windows
   sdl_deps += cc.find_library('opengl32')
 elif platform_is_macos
   cdata.set('SDL_PLATFORM_APPLE', 1)
-  cdata.set('SDL_THREAD_PTHREAD', 1)
-  cdata.set('SDL_THREAD_PTHREAD_RECURSIVE_MUTEX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
