@@ -775,12 +775,6 @@ if platform_is_apple
 endif
 
 if platform_is_linux
-
-  ## some of these checks could be done via have include
-  ## but it is done this way to be consistent from what CMake does
-  ## additionally these values are not defined in the config file
-
-  # ideally this should have a check for compile like the cmake configuration, see sdlchecks.cmake
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set10('SDL_INPUT_LINUXEV', cdata.get('HAVE_LINUX_INPUT_H', 0) != 0)
 elif platform_is_windows
