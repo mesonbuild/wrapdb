@@ -358,6 +358,8 @@ opt_video_kmsdrm_shared = get_option('use_video_kmsdrm_shared').require(
 )
 opt_video_offscreen = get_option('use_video_offscreen')
 opt_camera_dummy = get_option('use_camera_dummy').require(sdl_camera)
+opt_backgrounding_signal = get_option('backgrounding_signal')
+opt_foregrounding_signal = get_option('foregrounding_signal')
 opt_hidapi_libusb = get_option('use_hidapi_libusb').require(
   sdl_hidapi and hidapi_libusb_available,
 )
@@ -937,6 +939,13 @@ if get_option('default_library') == 'shared'
   extra_args = ['-DDLL_EXPORT']
 else
   extra_args = []
+endif
+
+if opt_backgrounding_signal != 'OFF'
+  extra_args += f'-DSDL_BACKGROUNDING_SIGNAL=@opt_backgrounding_signal@'
+endif
+if opt_foregrounding_signal != 'OFF'
+  extra_args += f'-DSDL_FOREGROUNDING_SIGNAL=@opt_foregrounding_signal@'
 endif
 
 sdl_lib = library(

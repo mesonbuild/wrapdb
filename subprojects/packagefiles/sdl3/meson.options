@@ -389,6 +389,18 @@ option(
     description: 'Support the dummy camera driver',
 )
 option(
+    'backgrounding_signal',
+    type: 'string',
+    description: 'number to use for magic backgrounding signal or \'OFF\'',
+    value: 'OFF',
+)
+option(
+    'foregrounding_signal',
+    type: 'string',
+    description: 'number to use for magic foregrounding signal or \'OFF\'',
+    value: 'OFF',
+)
+option(
     'use_hidapi_libusb',
     type: 'feature',
     description: 'Use libusb for low level joystick drivers',
