@@ -363,6 +363,12 @@ option(
     description: 'Enable Metal support',
 )
 option(
+    'use_video_openvr',
+    type: 'feature',
+    description: 'Use OpenVR video driver',
+    value: 'disabled',
+)
+option(
     'use_video_kmsdrm',
     type: 'feature',
     description: 'Use KMS DRM video driver',

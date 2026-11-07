@@ -351,6 +351,7 @@ opt_video_vulkan = get_option('use_video_vulkan').require(
   ),
 )
 opt_video_metal = get_option('use_video_metal').require(platform_is_apple)
+opt_video_openvr = get_option('use_video_openvr')
 opt_video_kmsdrm = get_option('use_video_kmsdrm').require(sdl_video)
 opt_video_kmsdrm_shared = get_option('use_video_kmsdrm_shared').require(
   opt_video_kmsdrm.allowed() and opt_prefer_dlopen.allowed(),

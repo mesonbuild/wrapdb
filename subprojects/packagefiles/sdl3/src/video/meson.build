@@ -3,6 +3,7 @@ available_video_drivers = {
   'dummy': {},
   'kmsdrm': {},
   'offscreen': {},
+  'openvr': {},
   'rpi': {
     'subdir': 'raspberry',
   },
@@ -17,7 +18,7 @@ video_drivers = ''
 subdir('yuv2rgb')
 
 if sdl_video
-  want_egl = opt_video_opengl.allowed() or opt_video_opengles.allowed() or opt_video_vivante.allowed()
+  want_egl = opt_video_opengl.allowed() or opt_video_opengles.allowed() or opt_video_vivante.allowed() or opt_video_openvr.allowed()
 
   if opt_video_rpi.allowed()
     bcm_host_dep = dependency(
@@ -262,6 +263,10 @@ if sdl_video
   endif
   if platform_is_ios
     video_drivers += ' uikit'
+  endif
+
+  if opt_video_openvr.allowed()
+    video_drivers += ' openvr'
   endif
 endif
 
