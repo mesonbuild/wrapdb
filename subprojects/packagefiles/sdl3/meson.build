@@ -758,7 +758,6 @@ elif platform_is_windows
   cdata.set('SDL_THREAD_WINDOWS', 1)
   cdata.set('SDL_THREAD_GENERIC_COND_SUFFIX', 1)
   cdata.set('SDL_THREAD_GENERIC_RWLOCK_SUFFIX', 1)
-  cdata.set('SDL_LOADSO_WINDOWS', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
   sdl_deps += cc.find_library('setupapi')
@@ -805,7 +804,6 @@ if get_option('default_library') == 'both' and cc.get_argument_syntax() == 'msvc
 endif
 
 cdata.set10('DYNAPI_NEEDS_DLOPEN', platform_is_unixlike_or_apple)
-cdata.set10('SDL_LOADSO_DLOPEN', cdata.get('HAVE_DLOPEN', 0) != 0)
 
 if opt_dlopen_notes.allowed()
   compiler_supports_elfnotes = cc.compiles(
