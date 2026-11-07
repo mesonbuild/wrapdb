@@ -425,3 +425,9 @@ option(
     type: 'feature',
     description: 'Enable libudev support',
 )
+option(
+    'lean_and_mean',
+    type: 'boolean',
+    description: 'Build a lean SDL library with reduced graphics functionality',
+    value: false,
+)

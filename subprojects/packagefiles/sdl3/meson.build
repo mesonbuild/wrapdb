@@ -369,6 +369,7 @@ opt_hidapi_libusb_shared = get_option('hidapi_libusb_shared').require(
 opt_joystick_hidapi = get_option('use_joystick_hidapi').require(sdl_hidapi)
 opt_joystick_virtual = get_option('use_joystick_virtual').require(sdl_hidapi)
 opt_libudev = get_option('libudev').require(platform_is_unixlike)
+opt_lean_and_mean = get_option('lean_and_mean')
 
 basic_headers = [
   'float.h',
@@ -946,6 +947,9 @@ if opt_backgrounding_signal != 'OFF'
 endif
 if opt_foregrounding_signal != 'OFF'
   extra_args += f'-DSDL_FOREGROUNDING_SIGNAL=@opt_foregrounding_signal@'
+endif
+if opt_lean_and_mean
+  extra_args += '-DSDL_LEAN_AND_MEAN'
 endif
 
 sdl_lib = library(
