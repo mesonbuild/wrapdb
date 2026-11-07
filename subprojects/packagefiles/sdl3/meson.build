@@ -492,8 +492,6 @@ if opt_hidapi_libusb.allowed()
   sdl_deps += libusb_dep
 endif
 
-cdata.set('HAVE_HIDAPI', 1)
-
 sources = []
 
 cdata.set('SDL_XKBCOMMON_VERSION_MAJOR', 0)
