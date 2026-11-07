@@ -72,6 +72,77 @@ option(
 )
 
 option(
+    'use_assembly',
+    type: 'feature',
+    description: 'Enable assembly routines',
+)
+option(
+    'use_asm_avx',
+    type: 'feature',
+    description: 'Use AVX assembly routines',
+)
+option(
+    'use_asm_avx2',
+    type: 'feature',
+    description: 'Use AVX2 assembly routines',
+)
+option(
+    'use_asm_avx512f',
+    type: 'feature',
+    description: 'Use AVX512F assembly routines',
+)
+option(
+    'use_asm_sse',
+    type: 'feature',
+    description: 'Use SSE assembly routines',
+)
+option(
+    'use_asm_sse2',
+    type: 'feature',
+    description: 'Use SSE2 assembly routines',
+)
+option(
+    'use_asm_sse3',
+    type: 'feature',
+    description: 'Use SSE3 assembly routines',
+)
+option(
+    'use_asm_sse4_1',
+    type: 'feature',
+    description: 'Use SSE4.1 assembly routines',
+)
+option(
+    'use_asm_sse4_2',
+    type: 'feature',
+    description: 'Use SSE4.2 assembly routines',
+)
+option(
+    'use_asm_mmx',
+    type: 'feature',
+    description: 'Use MMX assembly routines',
+)
+option(
+    'use_asm_altivec',
+    type: 'feature',
+    description: 'Use Altivec assembly routines',
+)
+option(
+    'use_asm_armneon',
+    type: 'feature',
+    description: 'Use NEON assembly routines',
+)
+option(
+    'use_asm_lsx',
+    type: 'feature',
+    description: 'Use LSX assembly routines',
+)
+option(
+    'use_asm_lasx',
+    type: 'feature',
+    description: 'Use LASX assembly routines',
+)
+
+option(
     'prefer_dlopen',
     type: 'feature',
     description: 'Load dependencies dynamically',

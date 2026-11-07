@@ -101,6 +101,11 @@ platform_is_unixlike_or_apple = platform_is_unixlike or platform_is_apple
 
 cpu_arm32 = target_machine.cpu_family() == 'arm'
 cpu_arm64 = target_machine.cpu_family() == 'aarch64'
+cpu_loongarch64 = target_machine.cpu_family() == 'loongarch64'
+cpu_ppc32 = target_machine.cpu_family() == 'ppc'
+cpu_ppc64 = target_machine.cpu_family() == 'ppc64'
+cpu_x86 = target_machine.cpu_family() == 'x86'
+cpu_x64 = target_machine.cpu_family() == 'x86_64'
 
 # END platform detection logic
 
@@ -108,11 +113,25 @@ use_gcc = cc.get_id() == 'gcc'
 use_clang = cc.get_id() == 'clang'
 use_msvc = cc.get_id() == 'msvc'
 
+if platform_is_windows or use_msvc
+  add_languages(
+    'cpp',
+    native: false,
+  )
+  cpp_compiler = meson.get_compiler('cpp')
+endif
+
 # The hidraw support doesn't catch Xbox, PS4 and Nintendo controllers,
 #  so we'll just use libusb when it's available. libusb does not support iOS,
 #  so we default to yes on iOS.
 hidapi_libusb_available = not (platform_is_apple or platform_is_android)
 
+assembly_default = use_gcc or use_clang or (
+  use_msvc
+  and cpp_compiler.version().version_compare(
+  '>14.00',
+  )
+)
 gcc_atomics_supported = use_gcc or use_clang
 system_iconv_default = not (platform_is_windows or platform_is_apple)
 oss_default = platform_is_unixlike and not (
@@ -212,6 +231,202 @@ foreach ss_name, subsystem : core_subsystems
   else
     cdata.set('SDL_@0@_DISABLED'.format(ss_name.to_upper()), 1)
     message('Subsystem "@0@" is DISABLED'.format(ss_name))
+  endif
+endforeach
+
+opt_assembly = get_option('use_assembly').enable_auto_if(assembly_default).allowed()
+assembly_options = {
+  'avx': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <immintrin.h>
+      void floats_add(float *dest, float *a, float *b, unsigned size) {
+        for (; size >= 8; size -= 8, dest += 8, a += 8, b += 8) {
+          _mm256_storeu_ps(dest, _mm256_add_ps(_mm256_loadu_ps(a), _mm256_loadu_ps(b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        floats_add((float*)0, (float*)0, (float*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-mavx'],
+  },
+  'avx2': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <immintrin.h>
+      void ints_add(int *dest, int *a, int *b, unsigned size) {
+        for (; size >= 8; size -= 8, dest += 8, a += 8, b += 8) {
+          _mm256_storeu_si256((__m256i*)dest, _mm256_add_epi32(_mm256_loadu_si256((__m256i*)a), _mm256_loadu_si256((__m256i*)b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        ints_add((int*)0, (int*)0, (int*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-mavx2'],
+  },
+  'avx512f': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <immintrin.h>
+      void floats_add(float *dest, float *a, float *b, unsigned size) {
+        for (; size >= 16; size -= 16, dest += 16, a += 16, b += 16) {
+          _mm512_storeu_ps(dest, _mm512_add_ps(_mm512_loadu_ps(a), _mm512_loadu_ps(b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        floats_add((float*)0, (float*)0, (float*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-mavx512f'],
+  },
+  'sse': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <xmmintrin.h>
+      void floats_add(float *dest, float *a, float *b, unsigned size) {
+        for (; size >= 4; size -= 4, dest += 4, a += 4, b += 4) {
+          _mm_storeu_ps(dest, _mm_add_ps(_mm_loadu_ps(a), _mm_loadu_ps (b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        floats_add((float*)0, (float*)0, (float*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-msse'],
+  },
+  'sse2': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <emmintrin.h>
+      void doubles_add(double *dest, double *a, double *b, unsigned size) {
+        for (; size >= 4; size -= 4, dest += 4, a += 4, b += 4) {
+          _mm_store_pd(dest, _mm_add_pd(_mm_loadu_pd(a), _mm_loadu_pd(b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        doubles_add((double*)0, (double*)0, (double*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-msse2'],
+  },
+  'sse3': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <pmmintrin.h>
+      void ints_add(int *dest, int *a, int *b, unsigned size) {
+        for (; size >= 4; size -= 4, dest += 4, a += 4, b += 4) {
+          _mm_storeu_si128((__m128i*)dest, _mm_add_epi32(_mm_lddqu_si128((__m128i*)a), _mm_lddqu_si128((__m128i*)b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        ints_add((int*)0, (int*)0, (int*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-msse3'],
+  },
+  'sse4_1': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <smmintrin.h>
+      void ints_mul(int *dest, int *a, int *b, unsigned size) {
+        for (; size >= 4; size -= 4, dest += 4, a += 4, b += 4) {
+          _mm_storeu_si128((__m128i*)dest, _mm_mullo_epi32(_mm_lddqu_si128((__m128i*)a), _mm_lddqu_si128((__m128i*)b)));
+        }
+      }
+      int main(int argc, char **argv) {
+        ints_mul((int*)0, (int*)0, (int*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-msse4.1'],
+  },
+  'sse4_2': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <nmmintrin.h>
+      __m128i bitmask;
+      char data[16];
+      int main(int argc, char **argv) {
+        bitmask = _mm_cmpgt_epi64(_mm_set1_epi64x(0), _mm_loadu_si128((void*)data));
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-msse4.2'],
+  },
+  'mmx': {
+    'supported': cpu_x86 or cpu_x64,
+    'check_code': '''
+      #include <mmintrin.h>
+      void ints_add(int *dest, int *a, int *b, unsigned size) {
+        for (; size >= 2; size -= 2, dest += 2, a += 2, b += 2) {
+          *(__m64*)dest = _mm_add_pi32(*(__m64*)a, *(__m64*)b);
+        }
+      }
+      int main(int argc, char *argv[]) {
+        ints_add((int*)0, (int*)0, (int*)0, 0);
+        return 0;
+      }''',
+    'gcc_clang_flags': ['-mmmx'],
+  },
+  'altivec': {
+    'supported': cpu_ppc32 or cpu_ppc64,
+    'check_code': '''
+      #include <altivec.h>
+      vector unsigned int vzero() {
+          return vec_splat_u32(0);
+      }
+      int main(int argc, char **argv) { return 0; }''',
+  },
+  'armneon': {
+    'supported': cpu_arm32 or cpu_arm64,
+    'check_code': '''
+      #include <arm_neon.h>
+      void floats_add(float *dest, float *a, float *b, unsigned size) {
+        for (; size >= 4; size -= 4, dest += 4, a += 4, b += 4) {
+          vst1q_f32(dest, vaddq_f32(vld1q_f32(a), vld1q_f32(b)));
+        }
+      }
+      int main(int argc, char *argv[]) {
+        floats_add((float*)0, (float*)0, (float*)0, 0);
+        return 0;
+      }''',
+  },
+  'lsx': {
+    'supported': cpu_loongarch64,
+    'check_code': '''
+      #ifndef __loongarch_sx
+      #error Assembler CPP flag not enabled
+      #endif
+      int main(int argc, char **argv) { return 0; }''',
+    'gcc_clang_flags': ['-mlsx'],
+  },
+  'lasx': {
+    'supported': cpu_loongarch64,
+    'check_code': '''
+      #ifndef __loongarch_asx
+      #error Assembler CPP flag not enabled
+      #endif
+      int main(int argc, char **argv) { return 0; }''',
+    'gcc_clang_flags': ['-mlasx'],
+  },
+}
+foreach asm, asm_flags : assembly_options
+  compiler_flags = []
+  if use_gcc or use_clang
+    compiler_flags = asm_flags.get('gcc_clang_flags', [])
+  endif
+  asm_enabled = get_option(f'use_asm_@asm@').require(asm_flags.get('supported')).allowed() and cc.compiles(
+    asm_flags.get('check_code'),
+    args: compiler_flags,
+    name: f'@asm@ assembly',
+  )
+  asm_up = asm.to_upper()
+  cdata.set10(f'SDL_DISABLE_@asm_up@', not asm_enabled)
+  if asm_enabled
+    add_project_arguments(
+      compiler_flags,
+      language: 'c',
+    )
   endif
 endforeach
 
@@ -803,11 +1018,6 @@ if platform_is_linux
   cdata.set('SDL_PLATFORM_LINUX', 1)
   cdata.set10('SDL_INPUT_LINUXEV', cdata.get('HAVE_LINUX_INPUT_H', 0) != 0)
 elif platform_is_windows
-  add_languages(
-    'cpp',
-    native: false,
-  )
-
   cdata.set('SDL_PLATFORM_WIN32', 1)
   sdl_deps += cc.find_library('version')
   sdl_deps += cc.find_library('imm32')
