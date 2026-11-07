@@ -797,8 +797,6 @@ elif platform_is_windows
   sdl_deps += cc.find_library('opengl32')
 elif platform_is_macos
   cdata.set('SDL_PLATFORM_APPLE', 1)
-  cdata.set('SDL_FILESYSTEM_COCOA', 1)
-  cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set10('SDL_VIDEO_METAL', opt_video_metal.allowed())
   apple_modules = []
   if opt_video_metal.allowed()
