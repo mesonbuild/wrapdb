@@ -195,80 +195,29 @@ basic_headers = [
 ]
 
 check_functions = '''
-  dlopen
-  malloc
-  fdatasync
-  getenv
-  setenv
-  putenv
-  unsetenv
-  abs
+  abs acos acosf asin asinf atan atan2 atan2f atanf atof atoi
   bcopy
-  memset
-  memcpy
-  memmove
-  memcmp
-  strlen
-  strnlen
-  strlcpy
-  strlcat
-  _strrev
+  ceil ceilf copysign copysignf cos cosf
+  exp expf
+  fabs fabsf floor floorf fmod fmodf fseeko fseeko64
+  getenv
   index
-  rindex
-  strchr
-  strrchr
-  strstr
-  strtok_r
-  strtol
-  strtoul
-  strtoll
-  strtoull
-  strtod
-  atoi
-  atof
-  strcmp
-  strncmp
-  vsscanf
-  vsnprintf
-  acos
-  acosf
-  asin
-  asinf
-  atan
-  atanf
-  atan2
-  atan2f
-  ceil
-  ceilf
-  copysign
-  copysignf
-  cos
-  cosf
-  exp
-  expf
-  fabs
-  fabsf
-  floor
-  floorf
-  fmod
-  fmodf
+  log log10 log10f logf
+  malloc memcmp memcpy memmove memset
+  pow putenv
+  rindex round
+  scalbn setenv sin sinf sqrt sqrtf sscanf strchr
+  strcmp strlcat strlcpy strlen strncmp strnlen
+  strrchr strstr strtod strtok_r strtol strtoll strtoul strtoull
+  unsetenv
+  vsnprintf vsscanf
+  dlopen
+  fdatasync
+  _strrev
   isinf
   isinff
   isnan
   isnanf
-  log
-  logf
-  log10
-  log10f
-  pow
-  round
-  scalbn
-  sin
-  sinf
-  sqrt
-  sqrtf
-  fseeko
-  fseeko64
   sigaction
   sigtimedwait
   setjmp
