@@ -1,8 +1,8 @@
 [wrap-file]
-directory = godot-cpp-godot-4.5-stable
-source_url = https://github.com/godotengine/godot-cpp/archive/refs/tags/godot-4.5-stable.tar.gz
-source_filename = godot-cpp-4.5.tar.gz
-source_hash = ac78539c0042554c494ea419549d2de88758d448721aeb0e5d41129aa87e339c
+directory = godot-cpp-10.0.0-stable
+source_url = https://github.com/godotengine/godot-cpp/archive/refs/tags/10.0.0-stable.tar.gz
+source_filename = godot-cpp-10.0.0.tar.gz
+source_hash = ebbf64f0f8f8b8b66bc4bc4d3797db97f95b19cf0dfb5b3f8cf56683d9df7db4
 patch_directory = godot-cpp
 
 [provide]
