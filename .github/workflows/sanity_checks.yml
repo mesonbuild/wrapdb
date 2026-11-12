@@ -105,10 +105,10 @@ jobs:
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/s390x/apk.static#!sha256!609e729890c89a353c59d4130b764d590c8ff471126af14fabb4732bccc15792'
             selfhosted: true
           - platform: x86
-            runner: ubuntu-latest
+            runner: ubuntu-24.04
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/x86_64/apk.static#!sha256!c07bf5356eacc9dd7a8c56bc537f46702f007170287403299d52a04264e74b3c'
           - platform: x86_64
-            runner: ubuntu-latest
+            runner: ubuntu-24.04
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/x86_64/apk.static#!sha256!c07bf5356eacc9dd7a8c56bc537f46702f007170287403299d52a04264e74b3c'
 
   Ubuntu:
