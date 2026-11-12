@@ -1,21 +1,62 @@
-if host_machine.system() == 'windows'
-  cdata.set('SDL_JOYSTICK_DINPUT', 1)
-  cdata.set('SDL_JOYSTICK_HIDAPI', 1)
-  subdir('hidapi')
-  subdir('windows')
-  subdir('gdk')
-elif host_machine.system() == 'darwin'
-  cdata.set('SDL_JOYSTICK_IOKIT', 1)
-  cdata.set('SDL_JOYSTICK_MFI', 1)
-  subdir('apple')
-  subdir('darwin')
-else
-  cdata.set('SDL_JOYSTICK_LINUX', 1)
-  subdir('linux')
+available_joysticks = {
+  'dummy': {},
+  'gameinput': {
+    'subdir': 'gdk',
+  },
+  'hidapi': {},
+  'iokit': {
+    'subdir': 'darwin',
+  },
+  'linux': {},
+  'mfi': {
+    'subdir': 'apple',
+  },
+  'virtual': {},
+  'windows': {},
+}
+joysticks = ''
+
+if 'joystick' in enabled_subsystems
+  if opt_joystick_hidapi.allowed()
+    joysticks += ' hidapi'
+  endif
+
+  if platform_is_windows
+    cdata.set10('SDL_JOYSTICK_RAWINPUT', true)
+    cdata.set10('SDL_JOYSTICK_DINPUT', cdata.get('HAVE_DINPUT_H', 0) != 0)
+    cdata.set10('SDL_JOYSTICK_XINPUT', cdata.get('HAVE_XINPUT_H', 0) != 0)
+    cdata.set10(
+      'SDL_JOYSTICK_WGI',
+      cdata.get('HAVE_WINDOWS_GAMING_INPUT_H', 0) != 0,
+    )
+    if cdata.get('SDL_JOYSTICK_DINPUT', 0) != 0 or cdata.get(
+      'SDL_JOYSTICK_XINPUT',
+      0,
+    ) != 0 or cdata.get(
+      'SDL_JOYSTICK_WGI',
+      0,
+    ) != 0
+      joysticks += ' windows'
+    endif
+
+    if cdata.get('HAVE_GAMEINPUT_H', 0) != 0
+      joysticks += ' gameinput'
+    endif
+  elif platform_is_apple
+    joysticks += ' iokit'
+    joysticks += ' mfi'
+  elif platform_is_linux
+    joysticks += ' linux'
+  endif
 endif
 
-subdir('virtual')
-cdata.set('SDL_JOYSTICK_VIRTUAL', 1)
+if joysticks == ''
+  joysticks += ' dummy'
+endif
+# Upstream also builds dummy joystick if only virtual is enabled
+if 'joystick' in enabled_subsystems and opt_joystick_virtual.allowed()
+  joysticks += ' virtual'
+endif
 
 sources += files(
   'controller_type.c',
@@ -23,3 +64,18 @@ sources += files(
   'SDL_joystick.c',
   'SDL_steam_virtual_gamepad.c',
 )
+
+foreach j : joysticks.split()
+  dir = available_joysticks[j].get('subdir', j)
+  j_up = j.to_upper()
+  cdata.set10(f'SDL_JOYSTICK_@j_up@', true)
+  subdir(dir)
+endforeach
+
+enabled_joystick = ''
+foreach j : available_joysticks.keys()
+  j_up = j.to_upper()
+  if cdata.get(f'SDL_JOYSTICK_@j_up@', 0) != 0
+    enabled_joystick += f'@j@ '
+  endif
+endforeach

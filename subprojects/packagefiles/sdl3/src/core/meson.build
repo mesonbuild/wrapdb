@@ -1,6 +1,6 @@
-if host_machine.system() == 'windows'
+if platform_is_windows
   subdir('windows')
-elif host_machine.system() == 'darwin'
+elif platform_is_apple
   subdir('unix')
 else
   subdir('unix')

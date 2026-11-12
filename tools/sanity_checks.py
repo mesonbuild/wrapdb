@@ -161,6 +161,9 @@ PER_PROJECT_PERMITTED_FILES: dict[str, set[str]] = {
     'sdl2': {
         'find-dylib-name.py'
     },
+    'sdl3': {
+        'find-dylib-name.py'
+    },
     'soundtouch': {
         'afxres.h'
     },
