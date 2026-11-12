@@ -1,3 +1,4 @@
+enabled_render = ''
 if sdl_render
   subdir('software')  # enabled via headers
 
@@ -53,6 +54,13 @@ if sdl_render
     r_up = r.to_upper()
     cdata.set10(f'SDL_VIDEO_RENDER_@r_up@', true)
     subdir(dir)
+  endforeach
+
+  foreach r : available_renderers.keys()
+    r_up = r.to_upper()
+    if cdata.get(f'SDL_VIDEO_RENDER_@r_up@', 0) != 0
+      enabled_render += f'@r@ '
+    endif
   endforeach
 endif
 

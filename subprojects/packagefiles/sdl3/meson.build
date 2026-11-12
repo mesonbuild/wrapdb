@@ -1162,6 +1162,34 @@ if opt_lean_and_mean
   extra_args += '-DSDL_LEAN_AND_MEAN'
 endif
 
+summary_subsystem = {}
+foreach ss_name : core_subsystems.keys()
+  summary_subsystem += {
+    ss_name: ss_name in enabled_subsystems,
+  }
+endforeach
+summary(
+  summary_subsystem,
+  section: 'Subsystems',
+  bool_yn: true,
+)
+
+summary(
+  {
+    'Audio': enabled_audio,
+    'Camera': enabled_camera,
+    'GPU': enabled_gpu,
+    'Haptic': enabled_haptic,
+    'Joystick': enabled_joystick,
+    'Power': enabled_power,
+    'Render': enabled_render,
+    'Sensor': enabled_sensor,
+    'Video': enabled_video,
+  },
+  section: 'Drivers',
+  bool_yn: true,
+)
+
 sdl_lib = library(
   'SDL3',
   sources,

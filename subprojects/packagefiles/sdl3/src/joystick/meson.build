@@ -71,3 +71,11 @@ foreach j : joysticks.split()
   cdata.set10(f'SDL_JOYSTICK_@j_up@', true)
   subdir(dir)
 endforeach
+
+enabled_joystick = ''
+foreach j : available_joysticks.keys()
+  j_up = j.to_upper()
+  if cdata.get(f'SDL_JOYSTICK_@j_up@', 0) != 0
+    enabled_joystick += f'@j@ '
+  endif
+endforeach

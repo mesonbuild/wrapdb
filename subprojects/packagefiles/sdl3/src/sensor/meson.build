@@ -27,3 +27,11 @@ foreach s : sensors.split()
   cdata.set10(f'SDL_SENSOR_@s_up@', true)
   subdir(dir)
 endforeach
+
+enabled_sensor = ''
+foreach s : available_sensors.keys()
+  s_up = s.to_upper()
+  if cdata.get(f'SDL_SENSOR_@s_up@', 0) != 0
+    enabled_sensor += f'@s@ '
+  endif
+endforeach

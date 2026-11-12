@@ -38,3 +38,11 @@ foreach c : cameras.split()
   cdata.set10(f'SDL_CAMERA_DRIVER_@c_up@', true)
   subdir(dir)
 endforeach
+
+enabled_camera = ''
+foreach c : available_cameras.keys()
+  c_up = c.to_upper()
+  if cdata.get(f'SDL_CAMERA_DRIVER_@c_up@', 0) != 0
+    enabled_camera += f'@c@ '
+  endif
+endforeach

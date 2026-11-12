@@ -38,3 +38,11 @@ foreach h : haptic.split()
   cdata.set10(f'SDL_HAPTIC_@h_up@', true)
   subdir(dir)
 endforeach
+
+enabled_haptic = ''
+foreach h : available_haptic.keys()
+  h_up = h.to_upper()
+  if cdata.get(f'SDL_HAPTIC_@h_up@', 0) != 0
+    enabled_haptic += f'@h@ '
+  endif
+endforeach

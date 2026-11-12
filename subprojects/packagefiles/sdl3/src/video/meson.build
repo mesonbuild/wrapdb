@@ -308,3 +308,11 @@ foreach vd : video_drivers.split()
   cdata.set10(f'SDL_VIDEO_DRIVER_@vd_up@', true)
   subdir(dir)
 endforeach
+
+enabled_video = ''
+foreach vd : available_video_drivers.keys()
+  vd_up = vd.to_upper()
+  if cdata.get(f'SDL_VIDEO_DRIVER_@vd_up@', 0) != 0
+    enabled_video += f'@vd@ '
+  endif
+endforeach

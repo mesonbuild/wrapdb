@@ -1,3 +1,5 @@
+enabled_gpu = ''
+
 if sdl_gpu
   available_gpu_drivers = {
     'd3d12': {},
@@ -21,6 +23,13 @@ if sdl_gpu
     gd_up = gd.to_upper()
     cdata.set10(f'SDL_GPU_@gd_up@', true)
     subdir(dir)
+  endforeach
+
+  foreach gd : available_gpu_drivers.keys()
+    gd_up = gd.to_upper()
+    if cdata.get(f'SDL_GPU_@gd_up@', 0) != 0
+      enabled_gpu += f'@gd@ '
+    endif
   endforeach
 endif
 

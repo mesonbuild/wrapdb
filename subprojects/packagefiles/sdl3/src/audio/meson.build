@@ -152,3 +152,11 @@ foreach ad : audio_drivers.split()
   cdata.set10(f'SDL_AUDIO_DRIVER_@ad_up@', true)
   subdir(dir)
 endforeach
+
+enabled_audio = ''
+foreach ad : available_audio_drivers.keys()
+  ad_up = ad.to_upper()
+  if cdata.get(f'SDL_AUDIO_DRIVER_@ad_up@', 0) != 0
+    enabled_audio += f'@ad@ '
+  endif
+endforeach
