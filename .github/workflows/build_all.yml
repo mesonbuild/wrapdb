@@ -68,7 +68,7 @@ jobs:
           - platform: aarch64
             runner: ubuntu-24.04-arm
           - platform: ppc64le
-            runner: ubuntu-24.04-ppc64le
+            runner: ubuntu-24.04-ppc64le-p10
             selfhosted: true
           - platform: s390x
             runner: ubuntu-24.04-s390x
@@ -84,7 +84,7 @@ jobs:
             runner: ubuntu-24.04-arm
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/aarch64/apk.static#!sha256!a573ef057cff787b2a50b5f391ab89aea789fe30c238154d66726313a17e6f8a'
           - platform: ppc64le
-            runner: ubuntu-24.04-ppc64le
+            runner: ubuntu-24.04-ppc64le-p10
             apk-tools-url: 'https://gitlab.alpinelinux.org/api/v4/projects/5/packages/generic/v3.0.7/ppc64le/apk.static#!sha256!714c96431c7c821887148c55602e6aa17f0568805b4de4f381f562cee523fc2a'
             selfhosted: true
           - platform: s390x
