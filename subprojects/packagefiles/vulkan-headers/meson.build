@@ -2,7 +2,7 @@ project(
   'vulkan-headers',
   'c',
   license: 'Apache-2.0',
-  version: '1.4.346',
+  version: '1.4.368',
   meson_version: '>=0.56.0',
 )
 

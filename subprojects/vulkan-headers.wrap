@@ -1,8 +1,8 @@
 [wrap-file]
-directory = Vulkan-Headers-1.4.346
-source_url = https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.4.346.tar.gz
-source_filename = vulkan-headers-1.4.346.tar.gz
-source_hash = 5bb77f5d7b460e255a9e51affc00d64354986b55cf577d8eab28529cad01fc80
+directory = Vulkan-Headers-1.4.368
+source_url = https://github.com/KhronosGroup/Vulkan-Headers/archive/v1.4.368.tar.gz
+source_filename = vulkan-headers-1.4.368.tar.gz
+source_hash = 5c5c6f64fcce28a24cc934143a048707af036a858e4ed11d7f71fe016006ecda
 patch_directory = vulkan-headers
 
 [provide]
