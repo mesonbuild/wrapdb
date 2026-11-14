@@ -1,0 +1,9 @@
+[wrap-file]
+directory = volk-3.3.0
+source_url = https://github.com/gnuradio/volk/releases/download/v3.3.0/volk-3.3.0.tar.xz
+source_filename = volk-3.3.0.tar.xz
+source_hash = 10e9c26c8d9362f5cb14a58752116f4268dc107505a1d7f50efe4ba06d90982b
+patch_directory = volk
+
+[provide]
+dependency_names = volk
