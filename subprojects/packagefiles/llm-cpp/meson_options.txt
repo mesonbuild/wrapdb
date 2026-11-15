@@ -1,0 +1,12 @@
+option(
+    'curl',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Link libcurl, needed by the network headers (ab, agent, audio, batch, chat, embed, eval, finetune, rag, rank, stream, vision)',
+)
+option(
+    'tests',
+    type: 'feature',
+    value: 'disabled',
+    description: 'Build and run the offline examples and upstream tests',
+)

@@ -3101,6 +3101,14 @@
       "2.9.0-1"
     ]
   },
+  "llm-cpp": {
+    "dependency_names": [
+      "llm-cpp"
+    ],
+    "versions": [
+      "1.1.0-1"
+    ]
+  },
   "lmdb": {
     "dependency_names": [
       "lmdb"
