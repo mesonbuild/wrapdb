@@ -1,8 +1,8 @@
 [wrap-file]
-directory = llm-cpp-1.1.0
-source_url = https://github.com/Mattbusel/llm-cpp/archive/refs/tags/v1.1.0.tar.gz
-source_filename = llm-cpp-1.1.0.tar.gz
-source_hash = 64fd86d101d8ccbcefd9ac41aaf067ef2294de77c18d8746f0c267d14d1e71ca
+directory = llm-cpp-1.2.0
+source_url = https://github.com/Mattbusel/llm-cpp/archive/refs/tags/v1.2.0.tar.gz
+source_filename = llm-cpp-1.2.0.tar.gz
+source_hash = 08cda58c29ea66f392d03e15c674f1ab47e7c75f33a36f0dd5617beed1c1db72
 patch_directory = llm-cpp
 
 [provide]
