@@ -1,8 +1,8 @@
 [wrap-file]
-directory = libsrtp-2.8.1
-source_url = https://github.com/cisco/libsrtp/archive/refs/tags/v2.8.1.tar.gz
-source_filename = libsrtp-2.8.1.tar.gz
-source_hash = ef5569220749529d778013aae1178391d972570a2b4f7288dda22effa875b07c
+directory = libsrtp-2.8.2
+source_url = https://github.com/cisco/libsrtp/archive/refs/tags/v2.8.2.tar.gz
+source_filename = libsrtp-2.8.2.tar.gz
+source_hash = 02e8326e12381e27a205ded888a803c6ff55ec7be170cd5e5506251f731fee92
 
 [provide]
 libsrtp2 = libsrtp2_dep
