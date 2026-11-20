@@ -16,6 +16,13 @@ project(
 )
 
 cc = meson.get_compiler('cpp')
+c_compiler = meson.get_compiler('c')
+
+# Upb's macro-heavy code does not work with MSVC's legacy preprocessor.
+libupb_c_args = []
+if c_compiler.get_id() == 'msvc'
+  libupb_c_args += '/Zc:preprocessor'
+endif
 
 is_shared = (get_option('default_library') != 'static')
 is_msvc = (cc.get_argument_syntax() == 'msvc')
@@ -146,6 +153,7 @@ libupb_src = files(
 libupb = static_library(
   'upb',
   libupb_src,
+  c_args: libupb_c_args,
   include_directories: [upb_incdir, utf8_incdir],
   dependencies: [utf8_range_dep],
   gnu_symbol_visibility: 'hidden',

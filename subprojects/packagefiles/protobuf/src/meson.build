@@ -35,6 +35,14 @@ if meson.is_cross_build()
     'cpp',
     native: true,
   )
+  c_compiler_native = meson.get_compiler(
+    'c',
+    native: true,
+  )
+  native_c_args = []
+  if c_compiler_native.get_id() == 'msvc'
+    native_c_args += '/Zc:preprocessor'
+  endif
   protoc_native = executable(
     'protoc-native',
     sources: [
@@ -45,6 +53,7 @@ if meson.is_cross_build()
       libprotoc_src,
       protoc_src,
     ],
+    c_args: native_c_args,
     native: true,
     include_directories: [
       incdir,
