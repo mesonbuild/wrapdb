@@ -3,4 +3,3 @@ option(
     type: 'boolean',
     value: true,
 )
-

@@ -1,12 +1,10 @@
 [wrap-file]
-directory = protobuf-25.2
-source_url = https://github.com/protocolbuffers/protobuf/releases/download/v25.2/protobuf-25.2.tar.gz
-source_filename = protobuf-25.2.tar.gz
-source_hash = 8ff511a64fc46ee792d3fe49a5a1bcad6f7dc50dfbba5a28b0e5b979c17f9871
+directory = protobuf-36.2
+source_url = https://github.com/protocolbuffers/protobuf/releases/download/v36.2/protobuf-36.2.tar.gz
+source_filename = protobuf-36.2.tar.gz
+source_hash = 3d9642a662d10e68ebae5e53f14dcce5105684212d5078f8e0d47d1ab3ae6b64
 patch_directory = protobuf
 
 [provide]
-protobuf = protobuf_dep
-protobuf-lite = protobuf_lite_dep
-protoc = protoc_dep
+dependency_names = protobuf, protobuf-lite, protoc
 program_names = protoc
