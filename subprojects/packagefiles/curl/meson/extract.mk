@@ -1,39 +1,24 @@
-.PHONY: tests/libtest tests/server tests/unit
+.PHONY: tests/libtest tests/server tests/unit tests/tunit
 
-define extract_noinst_progs
-$$(foreach prog,$$(noinst_PROGRAMS),
-   $$(info $$(prog)
-      $$(filter-out %.h,
-         $$(call nodist_$$(prog)_SOURCES)
-         $$(call $$(prog)_SOURCES)
-      )
-      $$(call $$(prog)_CPPFLAGS) $$(call $$(prog)_LDADD)
-))
-endef
-extract_noinst_progs := $(strip $(extract_noinst_progs))
-
-define extract_libtest_progs
-$$(foreach prog,$$(LIBTESTPROGS),
-   $$(info $$(prog)
-      $$(filter-out %.h,
-         $$(call nodist_$$(prog)_SOURCES)
-         $$(call $$(prog)_SOURCES)
-      )
-      $$(call $$(prog)_CPPFLAGS) $$(call $$(prog)_LDADD)
-))
-endef
-extract_libtest_progs := $(strip $(extract_libtest_progs))
-
-define extract_rule
+# Variables shared by the unity bundle recipes (see tests/*/Makefile.am).
+define extract_bundle
 $(eval include $1/Makefile.inc)
-@$(eval $2)$(eval $3)
+$(info BUNDLE=$(BUNDLE))
+$(info FIRST_C=$(FIRST_C))
+$(info UTILS_C=$(UTILS_C))
+$(info CURLX_C=$(CURLX_C))
+$(info TOOLX_C=$(TOOLX_C))
+$(info TESTS_C=$(TESTS_C))
 endef
 
 tests/libtest:
-	$(call extract_rule,$@,TESTUTIL_LIBS = @TESTUTIL_LIBS@,$(extract_libtest_progs))
+	$(call extract_bundle,$@)
 
 tests/server:
-	$(call extract_rule,$@,,$(extract_noinst_progs))
+	$(call extract_bundle,$@)
 
 tests/unit:
-	$(call extract_rule,$@,,$$(foreach prog,$$(UNITPROGS),$$(info $$(prog) $$(prog).c $$(filter-out %.h,$$(UNITFILES)))))
+	$(call extract_bundle,$@)
+
+tests/tunit:
+	$(call extract_bundle,$@)

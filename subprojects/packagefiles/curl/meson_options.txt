@@ -13,11 +13,7 @@ option(
 )
 
 # Debugging.
-option(
-    'curldebug',
-    type: 'boolean',
-    value: false,
-)
+
 # Debug build only: use libuv for event-based tests.
 option(
     'libuv',
@@ -217,7 +213,7 @@ option(
 option(
     'gss-api-provider',
     type: 'array',
-    choices: ['gnu', 'mit', 'heimdal'],
+    choices: ['gnu', 'mit', 'heimdal', 'apple'],
 )
 
 # IDN.
@@ -282,14 +278,11 @@ option(
     'ssl',
     type: 'feature',
 )
-option(
-    'tls-srp',
-    type: 'feature',
-)
+
 option(
     'ssl-default-backend',
     type: 'combo',
-    choices: ['implicit', 'openssl', 'schannel', 'secure-transport'],
+    choices: ['implicit', 'openssl', 'schannel'],
 )
 # Backends.
 option(
@@ -299,11 +292,6 @@ option(
 # Windows only.
 option(
     'schannel',
-    type: 'feature',
-)
-# macOS only.
-option(
-    'secure-transport',
     type: 'feature',
 )
 
@@ -358,15 +346,7 @@ option(
     type: 'feature',
 )
 option(
-    'rtmp',
-    type: 'feature',
-)
-option(
     'rtsp',
-    type: 'feature',
-)
-option(
-    'smb',
     type: 'feature',
 )
 option(

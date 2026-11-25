@@ -1,16 +1,24 @@
 /* lib/curl_config.h.  Generated from meson/curl_config.h.meson by meson.  */
 
-/* to enable curl debug memory tracking */
-#mesondefine CURLDEBUG
+/* !checksrc! disable COPYRIGHT all */
 
-/* Location of default ca bundle */
+/* Location of default CA bundle */
 #mesondefine CURL_CA_BUNDLE
 
-/* define "1" to use built in CA store of SSL library */
+/* define "1" to use OpenSSL's built-in CA store */
 #mesondefine CURL_CA_FALLBACK
 
-/* Location of default ca path */
+/* If native CA store is enabled */
+#mesondefine CURL_CA_NATIVE
+
+/* Location of default CA path */
 #mesondefine CURL_CA_PATH
+
+/* If safe CA bundle search is enabled */
+#mesondefine CURL_CA_SEARCH_SAFE
+
+/* curl_debug_global_mem debug build */
+#mesondefine CURL_DEBUG_GLOBAL_MEM
 
 /* Default SSL backend */
 #mesondefine CURL_DEFAULT_SSL_BACKEND
@@ -18,7 +26,7 @@
 /* disable alt-svc */
 #mesondefine CURL_DISABLE_ALTSVC
 
-/* to disable AWS sig support */
+/* to disable aws-sigv4 support */
 #mesondefine CURL_DISABLE_AWS
 
 /* to disable basic authentication */
@@ -29,6 +37,9 @@
 
 /* disable local binding support */
 #mesondefine CURL_DISABLE_BINDLOCAL
+
+/* If unsafe CA bundle search in PATH on Windows is disabled */
+#mesondefine CURL_DISABLE_CA_SEARCH
 
 /* to disable cookies support */
 #mesondefine CURL_DISABLE_COOKIES
@@ -66,11 +77,17 @@
 /* to disable HTTP */
 #mesondefine CURL_DISABLE_HTTP
 
+/* to disable HTTP Message Signatures support */
+#mesondefine CURL_DISABLE_HTTPSIG
+
 /* disable HTTP authentication */
 #mesondefine CURL_DISABLE_HTTP_AUTH
 
 /* to disable IMAP */
 #mesondefine CURL_DISABLE_IMAP
+
+/* to disable IPFS */
+#mesondefine CURL_DISABLE_IPFS
 
 /* to disable kerberos authentication */
 #mesondefine CURL_DISABLE_KERBEROS_AUTH
@@ -96,10 +113,7 @@
 /* disable netrc parsing */
 #mesondefine CURL_DISABLE_NETRC
 
-/* to disable NTLM support */
-#mesondefine CURL_DISABLE_NTLM
-
-/* if the OpenSSL configuration won't be loaded automatically */
+/* if the OpenSSL configuration is not loaded automatically */
 #mesondefine CURL_DISABLE_OPENSSL_AUTO_LOAD_CONFIG
 
 /* disable date parsing */
@@ -117,17 +131,11 @@
 /* to disable RTSP */
 #mesondefine CURL_DISABLE_RTSP
 
-/* to disable IPFS */
-#mesondefine CURL_DISABLE_IPFS
-
 /* disable SHA-512/256 hash algorithm */
 #mesondefine CURL_DISABLE_SHA512_256
 
 /* disable DNS shuffling */
 #mesondefine CURL_DISABLE_SHUFFLE_DNS
-
-/* to disable SMB/CIFS */
-#mesondefine CURL_DISABLE_SMB
 
 /* to disable SMTP */
 #mesondefine CURL_DISABLE_SMTP
@@ -144,23 +152,29 @@
 /* to disable verbose strings */
 #mesondefine CURL_DISABLE_VERBOSE_STRINGS
 
-/* to disable WebSockets */
+/* disable WebSockets */
 #mesondefine CURL_DISABLE_WEBSOCKETS
+
+/* enable NTLM support */
+#mesondefine CURL_ENABLE_NTLM
 
 /* Definition to make a library symbol externally visible. */
 #mesondefine CURL_EXTERN_SYMBOL
 
+/* MIT Kerberos version */
+#mesondefine CURL_KRB5_VERSION
+
+/* cpu-machine-OS */
+#mesondefine CURL_OS
+
 /* built with multiple SSL backends */
 #mesondefine CURL_WITH_MULTI_SSL
-
-/* enable debug build options */
-#mesondefine DEBUGBUILD
 
 /* Define to the type of arg 2 for gethostname. */
 #mesondefine GETHOSTNAME_TYPE_ARG2
 
-/* Define to 1 if you have `ADDRESS_FAMILY' type. */
-#mesondefine HAVE_ADDRESS_FAMILY
+/* Define to 1 if you have the `accept4' function. */
+#mesondefine HAVE_ACCEPT4
 
 /* Define to 1 if you have the alarm function. */
 #mesondefine HAVE_ALARM
@@ -183,6 +197,9 @@
 /* if BROTLI is in use */
 #mesondefine HAVE_BROTLI
 
+/* Define to 1 if you have the <brotli/decode.h> header file. */
+#mesondefine HAVE_BROTLI_DECODE_H
+
 /* Define to 1 if you have the __builtin_available function. */
 #mesondefine HAVE_BUILTIN_AVAILABLE
 
@@ -199,20 +216,23 @@
 /* Define to 1 if you have the CloseSocket camel case function. */
 #mesondefine HAVE_CLOSESOCKET_CAMEL
 
-/* Define to 1 if you have the <crypto.h> header file. */
-#mesondefine HAVE_CRYPTO_H
-
-/* Define to 1 if you have the fseeko declaration. */
+/* Define to 1 if you have the fseeko declaration */
 #mesondefine HAVE_DECL_FSEEKO
 
-/* "Set if getpwuid_r() declaration is missing" */
-#mesondefine HAVE_DECL_GETPWUID_R_MISSING
+/* if you have the function DES_ecb_encrypt */
+#mesondefine HAVE_DES_ECB_ENCRYPT
 
-/* Define to 1 if you have the <dirent.h> header file. */
+/* if you have <dirent.h> */
 #mesondefine HAVE_DIRENT_H
 
-/* Define to 1 if you have the 'eventfd' function. */
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#mesondefine HAVE_DLFCN_H
+
+/* Define to 1 if you have the `eventfd' function. */
 #mesondefine HAVE_EVENTFD
+
+/* Define to 1 if you have the `fchmod' function. */
+#mesondefine HAVE_FCHMOD
 
 /* Define to 1 if you have the fcntl function. */
 #mesondefine HAVE_FCNTL
@@ -241,13 +261,10 @@
 /* fsetxattr() takes 6 args */
 #mesondefine HAVE_FSETXATTR_6
 
-/* Define to 1 if you have the ftruncate function. */
-#mesondefine HAVE_FTRUNCATE
-
 /* Define to 1 if you have a working getaddrinfo function. */
 #mesondefine HAVE_GETADDRINFO
 
-/* Define to 1 if the getaddrinfo function is threadsafe. */
+/* Define to 1 if the getaddrinfo function is thread-safe. */
 #mesondefine HAVE_GETADDRINFO_THREADSAFE
 
 /* Define to 1 if you have the `geteuid' function. */
@@ -301,8 +318,8 @@
 /* Define to 1 if you have a working gmtime_r function. */
 #mesondefine HAVE_GMTIME_R
 
-/* if you have the function gnutls_srp_verifier */
-#mesondefine HAVE_GNUTLS_SRP
+/* Define to 1 if you have the <gsasl.h> header file. */
+#mesondefine HAVE_GSASL_H
 
 /* if you have GSS-API libraries */
 #mesondefine HAVE_GSSAPI
@@ -313,8 +330,17 @@
 /* Define to 1 if you have the <gssapi/gssapi.h> header file. */
 #mesondefine HAVE_GSSAPI_GSSAPI_H
 
+/* Define to 1 if you have the <gssapi/gssapi_krb5.h> header file. */
+#mesondefine HAVE_GSSAPI_GSSAPI_KRB5_H
+
+/* if you have Apple GSS Framework */
+#mesondefine HAVE_GSSAPPLE
+
 /* if you have GNU GSS */
 #mesondefine HAVE_GSSGNU
+
+/* Define to 1 if you have the `gss_set_neg_mechs' function. */
+#mesondefine HAVE_GSS_SET_NEG_MECHS
 
 /* Define to 1 if you have the <idn2.h> header file. */
 #mesondefine HAVE_IDN2_H
@@ -325,11 +351,8 @@
 /* Define to 1 if you have the `if_nametoindex' function. */
 #mesondefine HAVE_IF_NAMETOINDEX
 
-/* Define to 1 if you have a IPv6 capable working inet_ntop function. */
-#mesondefine HAVE_INET_NTOP
-
-/* Define to 1 if you have a IPv6 capable working inet_pton function. */
-#mesondefine HAVE_INET_PTON
+/* Define to 1 if you have the <inttypes.h> header file. */
+#mesondefine HAVE_INTTYPES_H
 
 /* Define to 1 if you have the ioctlsocket function. */
 #mesondefine HAVE_IOCTLSOCKET
@@ -353,8 +376,26 @@
 /* Define to 1 if you have the <io.h> header file. */
 #mesondefine HAVE_IO_H
 
+/* Define to 1 if you have the lber.h header file. */
+#mesondefine HAVE_LBER_H
+
+/* Define to 1 if you have the ldap.h header file. */
+#mesondefine HAVE_LDAP_H
+
+/* Define to 1 if you have the `ldap_init_fd' function. */
+#mesondefine HAVE_LDAP_INIT_FD
+
 /* Use LDAPS implementation */
 #mesondefine HAVE_LDAP_SSL
+
+/* Define to 1 if you have the ldap_ssl.h header file. */
+#mesondefine HAVE_LDAP_SSL_H
+
+/* Define to 1 if you have the `ldap_url_parse' function. */
+#mesondefine HAVE_LDAP_URL_PARSE
+
+/* Define to 1 if you have the `brotlidec' library (-lbrotlidec). */
+#mesondefine HAVE_LIBBROTLIDEC
 
 /* Define to 1 if you have the <libgen.h> header file. */
 #mesondefine HAVE_LIBGEN_H
@@ -362,8 +403,23 @@
 /* Define to 1 if you have the `idn2' library (-lidn2). */
 #mesondefine HAVE_LIBIDN2
 
+/* Define to 1 if you have the <libpsl.h> header file. */
+#mesondefine HAVE_LIBPSL_H
+
+/* Define to 1 if you have the `ssh' library (-lssh). */
+#mesondefine HAVE_LIBSSH
+
+/* Define to 1 if you have the `ssh2' library (-lssh2). */
+#mesondefine HAVE_LIBSSH2
+
+/* Define to 1 if you have the `ssl' library (-lssl). */
+#mesondefine HAVE_LIBSSL
+
 /* if zlib is available */
 #mesondefine HAVE_LIBZ
+
+/* Define to 1 if you have the `zstd' library (-lzstd). */
+#mesondefine HAVE_LIBZSTD
 
 /* Define to 1 if you have the <linux/tcp.h> header file. */
 #mesondefine HAVE_LINUX_TCP_H
@@ -371,17 +427,23 @@
 /* Define to 1 if you have the <locale.h> header file. */
 #mesondefine HAVE_LOCALE_H
 
-/* Define to 1 if the compiler supports the 'long long' data type. */
-#mesondefine HAVE_LONGLONG
+/* Define to 1 if you have a working localtime_r function. */
+#mesondefine HAVE_LOCALTIME_R
 
 /* Define to 1 if you have the `mach_absolute_time' function. */
 #mesondefine HAVE_MACH_ABSOLUTE_TIME
 
+/* Define to 1 if you have the `mbedtls_des_crypt_ecb' function. */
+#mesondefine HAVE_MBEDTLS_DES_CRYPT_ECB
+
 /* Define to 1 if you have the memrchr function or macro. */
 #mesondefine HAVE_MEMRCHR
 
-/* Define to 1 if you have the MSG_NOSIGNAL flag. */
-#mesondefine HAVE_MSG_NOSIGNAL
+/* Define to 1 if you have the `memset_explicit' function. */
+#mesondefine HAVE_MEMSET_EXPLICIT
+
+/* Define to 1 if you have the memset_s function. */
+#mesondefine HAVE_MEMSET_S
 
 /* Define to 1 if you have the <netdb.h> header file. */
 #mesondefine HAVE_NETDB_H
@@ -392,6 +454,9 @@
 /* Define to 1 if you have the <netinet/in.h> header file. */
 #mesondefine HAVE_NETINET_IN_H
 
+/* Define to 1 if you have the <netinet/ip.h> header file. */
+#mesondefine HAVE_NETINET_IP_H
+
 /* Define to 1 if you have the <netinet/tcp.h> header file. */
 #mesondefine HAVE_NETINET_TCP_H
 
@@ -401,25 +466,44 @@
 /* Define to 1 if you have the <net/if.h> header file. */
 #mesondefine HAVE_NET_IF_H
 
-/* if you have an old MIT Kerberos version, lacking GSS_C_NT_HOSTBASED_SERVICE
-   */
-#mesondefine HAVE_OLD_GSSMIT
+/* Define to 1 if you have the <nghttp2/nghttp2.h> header file. */
+#mesondefine HAVE_NGHTTP2_NGHTTP2_H
 
-/* Define to 1 if you have the `opendir' function. */
+/* Define to 1 if you have the <nghttp3/nghttp3.h> header file. */
+#mesondefine HAVE_NGHTTP3_NGHTTP3_H
+
+/* Define to 1 if you have the <ngtcp2/ngtcp2_crypto.h> header file. */
+#mesondefine HAVE_NGTCP2_NGTCP2_CRYPTO_H
+
+/* Define to 1 if you have the <ngtcp2/ngtcp2.h> header file. */
+#mesondefine HAVE_NGTCP2_NGTCP2_H
+
+/* if you have opendir */
 #mesondefine HAVE_OPENDIR
 
-/* if you have the functions SSL_CTX_set_srp_username and
-   SSL_CTX_set_srp_password */
-#mesondefine HAVE_OPENSSL_SRP
+/* Define to 1 if you have the <openssl/crypto.h> header file. */
+#mesondefine HAVE_OPENSSL_CRYPTO_H
 
-/* Define to 1 if you have the <pem.h> header file. */
-#mesondefine HAVE_PEM_H
+/* Define to 1 if you have the <openssl/err.h> header file. */
+#mesondefine HAVE_OPENSSL_ERR_H
+
+/* Define to 1 if you have the <openssl/pem.h> header file. */
+#mesondefine HAVE_OPENSSL_PEM_H
+
+/* Define to 1 if you have the <openssl/rsa.h> header file. */
+#mesondefine HAVE_OPENSSL_RSA_H
+
+/* Define to 1 if you have the <openssl/ssl.h> header file. */
+#mesondefine HAVE_OPENSSL_SSL_H
 
 /* Define to 1 if you have the `pipe' function. */
 #mesondefine HAVE_PIPE
 
-/* If you have a fine poll */
-#mesondefine HAVE_POLL_FINE
+/* Define to 1 if you have the `pipe2' function. */
+#mesondefine HAVE_PIPE2
+
+/* Define to 1 if you have the `poll' function. */
+#mesondefine HAVE_POLL
 
 /* Define to 1 if you have the <poll.h> header file. */
 #mesondefine HAVE_POLL_H
@@ -430,9 +514,6 @@
 /* Define to 1 if you have the <proto/bsdsocket.h> header file. */
 #mesondefine HAVE_PROTO_BSDSOCKET_H
 
-/* if you have <pthread.h> */
-#mesondefine HAVE_PTHREAD_H
-
 /* Define to 1 if you have the <pwd.h> header file. */
 #mesondefine HAVE_PWD_H
 
@@ -442,41 +523,32 @@
 /* Define to 1 if you have the <quiche.h> header file. */
 #mesondefine HAVE_QUICHE_H
 
+/* Define to 1 if you have the `realpath' function. */
+#mesondefine HAVE_REALPATH
+
 /* Define to 1 if you have the recv function. */
 #mesondefine HAVE_RECV
 
-/* Define to 1 if you have the <rsa.h> header file. */
-#mesondefine HAVE_RSA_H
-
-/* Define to 1 if you have the sa_family_t type. */
+/* Define to 1 if symbol `sa_family_t' exists */
 #mesondefine HAVE_SA_FAMILY_T
 
 /* Define to 1 if you have the `sched_yield' function. */
 #mesondefine HAVE_SCHED_YIELD
 
-/* Define to 1 if you have the select function. */
-#mesondefine HAVE_SELECT
-
 /* Define to 1 if you have the send function. */
 #mesondefine HAVE_SEND
+
+/* Define to 1 if you have the `sendmmsg' function. */
+#mesondefine HAVE_SENDMMSG
 
 /* Define to 1 if you have the `sendmsg' function. */
 #mesondefine HAVE_SENDMSG
 
-/* Define to 1 if you have the <setjmp.h> header file. */
-#mesondefine HAVE_SETJMP_H
-
 /* Define to 1 if you have the `setlocale' function. */
 #mesondefine HAVE_SETLOCALE
 
-/* Define to 1 if you have the `setmode' function. */
-#mesondefine HAVE_SETMODE
-
 /* Define to 1 if you have the `setrlimit' function. */
 #mesondefine HAVE_SETRLIMIT
-
-/* Define to 1 if you have a working setsockopt SO_NONBLOCK function. */
-#mesondefine HAVE_SETSOCKOPT_SO_NONBLOCK
 
 /* Define to 1 if you have the sigaction function. */
 #mesondefine HAVE_SIGACTION
@@ -490,9 +562,6 @@
 /* Define to 1 if you have the sigsetjmp function or macro. */
 #mesondefine HAVE_SIGSETJMP
 
-/* Define to 1 if you have the `snprintf' function. */
-#mesondefine HAVE_SNPRINTF
-
 /* Define to 1 if struct sockaddr_in6 has the sin6_scope_id member */
 #mesondefine HAVE_SOCKADDR_IN6_SIN6_SCOPE_ID
 
@@ -505,11 +574,24 @@
 /* Define to 1 if you have the `SSL_set0_wbio' function. */
 #mesondefine HAVE_SSL_SET0_WBIO
 
+/* Define to 1 if you have the `SSL_set1_ech_config_list' function. */
+#mesondefine HAVE_SSL_SET1_ECH_CONFIG_LIST
+
+/* Define to 1 if you have the `SSL_set_quic_tls_cbs' function. */
+#mesondefine HAVE_SSL_SET_QUIC_TLS_CBS
+
+/* Define to 1 if you have the `SSL_set_quic_use_legacy_codepoint' function.
+   */
+#mesondefine HAVE_SSL_SET_QUIC_USE_LEGACY_CODEPOINT
+
 /* Define to 1 if you have the <stdatomic.h> header file. */
 #mesondefine HAVE_STDATOMIC_H
 
 /* Define to 1 if you have the <stdbool.h> header file. */
 #mesondefine HAVE_STDBOOL_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#mesondefine HAVE_STDINT_H
 
 /* Define to 1 if you have the <stdio.h> header file. */
 #mesondefine HAVE_STDIO_H
@@ -522,9 +604,6 @@
 
 /* Define to 1 if you have the strcmpi function. */
 #mesondefine HAVE_STRCMPI
-
-/* Define to 1 if you have the strdup function. */
-#mesondefine HAVE_STRDUP
 
 /* Define to 1 if you have the strerror_r function. */
 #mesondefine HAVE_STRERROR_R
@@ -540,12 +619,6 @@
 
 /* Define to 1 if you have the <stropts.h> header file. */
 #mesondefine HAVE_STROPTS_H
-
-/* Define to 1 if you have the strtok_r function. */
-#mesondefine HAVE_STRTOK_R
-
-/* Define to 1 if you have the strtoll function. */
-#mesondefine HAVE_STRTOLL
 
 /* if struct sockaddr_storage is defined */
 #mesondefine HAVE_STRUCT_SOCKADDR_STORAGE
@@ -577,17 +650,11 @@
 /* Define to 1 if you have the <sys/select.h> header file. */
 #mesondefine HAVE_SYS_SELECT_H
 
-/* Define to 1 if you have the <sys/socket.h> header file. */
-#mesondefine HAVE_SYS_SOCKET_H
-
 /* Define to 1 if you have the <sys/sockio.h> header file. */
 #mesondefine HAVE_SYS_SOCKIO_H
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #mesondefine HAVE_SYS_STAT_H
-
-/* Define to 1 if you have the <sys/time.h> header file. */
-#mesondefine HAVE_SYS_TIME_H
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #mesondefine HAVE_SYS_TYPES_H
@@ -598,8 +665,8 @@
 /* Define to 1 if you have the <sys/utime.h> header file. */
 #mesondefine HAVE_SYS_UTIME_H
 
-/* Define to 1 if you have the <sys/wait.h> header file. */
-#mesondefine HAVE_SYS_WAIT_H
+/* Define to 1 if you have the <sys/xattr.h> header file. */
+#mesondefine HAVE_SYS_XATTR_H
 
 /* Define to 1 if you have the <termios.h> header file. */
 #mesondefine HAVE_TERMIOS_H
@@ -607,8 +674,14 @@
 /* Define to 1 if you have the <termio.h> header file. */
 #mesondefine HAVE_TERMIO_H
 
+/* if POSIX pthreads are supported */
+#mesondefine HAVE_THREADS_POSIX
+
 /* Define this if time_t is unsigned */
 #mesondefine HAVE_TIME_T_UNSIGNED
+
+/* Define to 1 if you have the <unicode/uidna.h> header file. */
+#mesondefine HAVE_UNICODE_UIDNA_H
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #mesondefine HAVE_UNISTD_H
@@ -625,14 +698,24 @@
 /* Define to 1 if you have the <uv.h> header file. */
 #mesondefine HAVE_UV_H
 
-/* if you have wolfSSL_DES_ecb_encrypt */
-#mesondefine HAVE_WOLFSSL_DES_ECB_ENCRYPT
+/* Define to 1 if you have the `wc_Des_EcbEncrypt' function. */
+#mesondefine HAVE_WC_DES_ECBENCRYPT
 
-/* if you have wolfSSL_BIO_set_shutdown */
-#mesondefine HAVE_WOLFSSL_FULL_BIO
+/* Define to 1 if you have the `wolfSSL_BIO_new' function. */
+#mesondefine HAVE_WOLFSSL_BIO_NEW
+
+/* Define to 1 if you have the `wolfSSL_BIO_set_shutdown' function. */
+#mesondefine HAVE_WOLFSSL_BIO_SET_SHUTDOWN
+
+/* Define to 1 if you have the `wolfSSL_CTX_GenerateEchConfig' function. */
+#mesondefine HAVE_WOLFSSL_CTX_GENERATEECHCONFIG
 
 /* Define to 1 if you have the `wolfSSL_get_peer_certificate' function. */
 #mesondefine HAVE_WOLFSSL_GET_PEER_CERTIFICATE
+
+/* Define to 1 if you have the `wolfSSL_set_quic_use_legacy_codepoint'
+   function. */
+#mesondefine HAVE_WOLFSSL_SET_QUIC_USE_LEGACY_CODEPOINT
 
 /* Define to 1 if you have the `wolfSSL_UseALPN' function. */
 #mesondefine HAVE_WOLFSSL_USEALPN
@@ -643,8 +726,14 @@
 /* if libzstd is in use */
 #mesondefine HAVE_ZSTD
 
-/* Define to 1 if you have the `_fseeki64' function. */
-#mesondefine HAVE__FSEEKI64
+/* Define to 1 if you have the <zstd.h> header file. */
+#mesondefine HAVE_ZSTD_H
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#mesondefine LT_OBJDIR
+
+/* Define to 1 if you need the lber.h header file even with ldap.h */
+#mesondefine NEED_LBER_H
 
 /* Define to 1 if _REENTRANT preprocessor symbol must be defined. */
 #mesondefine NEED_REENTRANT
@@ -652,11 +741,29 @@
 /* Define to 1 if _THREAD_SAFE preprocessor symbol must be defined. */
 #mesondefine NEED_THREAD_SAFE
 
-/* cpu-machine-OS */
-#mesondefine CURL_OS
+/* openssl with new QUIC API */
+#mesondefine OPENSSL_QUIC_API2
 
-/* a suitable file to read random data from */
-#mesondefine RANDOM_FILE
+/* Name of package */
+#mesondefine PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#mesondefine PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#mesondefine PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#mesondefine PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#mesondefine PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#mesondefine PACKAGE_URL
+
+/* Define to the version of this package. */
+#mesondefine PACKAGE_VERSION
 
 /* Size of curl_off_t in number of bytes */
 #mesondefine SIZEOF_CURL_OFF_T
@@ -687,14 +794,20 @@
 /* if AmiSSL is in use */
 #mesondefine USE_AMISSL
 
+/* to use Apple fast UDP (SYS_recvmsg_x, SYS_sendmsg_x) */
+#mesondefine USE_APPLE_FAST_UDP
+
 /* if AppleIDN */
 #mesondefine USE_APPLE_IDN
+
+/* enable Apple OS certificate validation */
+#mesondefine USE_APPLE_SECTRUST
 
 /* Define to enable c-ares support */
 #mesondefine USE_ARES
 
-/* if BearSSL is enabled */
-#mesondefine USE_BEARSSL
+/* if libbacktrace is in use */
+#mesondefine USE_BACKTRACE
 
 /* if ECH support is available */
 #mesondefine USE_ECH
@@ -705,19 +818,19 @@
 /* GSASL support enabled */
 #mesondefine USE_GSASL
 
+/* enable HTTPS RR support */
+#mesondefine USE_HTTPSRR
+
 /* Define if you want to enable IPv6 support */
 #mesondefine USE_IPV6
 
-/* PSL support enabled */
+/* if libpsl is in use */
 #mesondefine USE_LIBPSL
 
-/* if librtmp is in use */
-#mesondefine USE_LIBRTMP
-
-/* if libSSH is in use */
+/* if libssh is in use */
 #mesondefine USE_LIBSSH
 
-/* if libSSH2 is in use */
+/* if libssh2 is in use */
 #mesondefine USE_LIBSSH2
 
 /* if libuv is in use */
@@ -725,9 +838,6 @@
 
 /* if mbedTLS is enabled */
 #mesondefine USE_MBEDTLS
-
-/* if msh3 is in use */
-#mesondefine USE_MSH3
 
 /* if nghttp2 is in use */
 #mesondefine USE_NGHTTP2
@@ -744,32 +854,32 @@
 /* if OpenSSL is in use */
 #mesondefine USE_OPENSSL
 
-/* if openssl QUIC is in use */
-#mesondefine USE_OPENSSL_QUIC
+/* if HTTP/3 proxy support is available */
+#mesondefine USE_PROXY_HTTP3
 
 /* if quiche is in use */
 #mesondefine USE_QUICHE
 
-/* if rustls is enabled */
+/* if you want c-ares for DNS lookup */
+#mesondefine USE_RESOLV_ARES
+
+/* if you want threaded DNS lookup */
+#mesondefine USE_RESOLV_THREADED
+
+/* if Rustls is enabled */
 #mesondefine USE_RUSTLS
 
 /* to enable Windows native SSL/TLS support */
 #mesondefine USE_SCHANNEL
 
-/* enable Secure Transport */
-#mesondefine USE_SECTRANSP
-
-/* if you want POSIX threaded DNS lookup */
-#mesondefine USE_THREADS_POSIX
-
-/* if you want Win32 threaded DNS lookup */
-#mesondefine USE_THREADS_WIN32
-
-/* Use TLS-SRP authentication */
-#mesondefine USE_TLS_SRP
+/* if SSL session export support is available */
+#mesondefine USE_SSLS_EXPORT
 
 /* Use Unix domain sockets */
 #mesondefine USE_UNIX_SOCKETS
+
+/* if Watt-32 is in use */
+#mesondefine USE_WATT32
 
 /* Define to 1 if you are building a Windows target with crypto API support.
    */
@@ -778,45 +888,31 @@
 /* Define to 1 if you have the `normaliz' (WinIDN) library (-lnormaliz). */
 #mesondefine USE_WIN32_IDN
 
-/* Define to 1 if you are building a Windows target with large file support.
-   */
-#mesondefine USE_WIN32_LARGE_FILES
-
 /* Use Windows LDAP implementation */
 #mesondefine USE_WIN32_LDAP
-
-/* Define to 1 if you are building a Windows target without large file
-   support. */
-#mesondefine USE_WIN32_SMALL_FILES
 
 /* to enable SSPI support */
 #mesondefine USE_WINDOWS_SSPI
 
-/* if wolfSSH is in use */
-#mesondefine USE_WOLFSSH
-
 /* if wolfSSL is enabled */
 #mesondefine USE_WOLFSSL
 
+/* Version number of package */
+#mesondefine VERSION
+
 /* Define to 1 if OS is AIX. */
 #ifndef _ALL_SOURCE
-#mesondefine _ALL_SOURCE
+#  undef _ALL_SOURCE
 #endif
+
+/* Number of bits in a file offset, on hosts where this is settable. */
+#mesondefine _FILE_OFFSET_BITS
 
 /* Define for large files, on AIX-style hosts. */
 #mesondefine _LARGE_FILES
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #mesondefine const
-
-/* Type to use in place of in_addr_t when system does not provide it. */
-#mesondefine in_addr_t
-
-/* Define to `__inline__' or `__inline' if that's what the C compiler
-   calls it, or to nothing if 'inline' is not supported under any name.  */
-#ifndef __cplusplus
-#mesondefine inline
-#endif
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #mesondefine size_t
