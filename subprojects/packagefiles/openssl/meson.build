@@ -60,13 +60,13 @@ if asm_opt.disabled()
 else
   gas_or_nasm = (
     find_program(
-    'as',
+      'as',
       required: false,
-      ).found()
+    ).found()
     or find_program(
-    'nasm',
+      'nasm',
       required: false,
-      ).found()
+    ).found()
   )
 endif
 
@@ -201,6 +201,17 @@ elif asm_opt.enabled()
   )
 else
   asm = 'no-asm'
+endif
+
+# The x86_64 `asm` configs contain AVX-IFMA instructions, which require
+# binutils >= 2.40 or LLVM >= 16 to assemble. With an older assembler use the
+# `asm_avx2` configs, which OpenSSL generates without the AVX-512 and AVX-IFMA
+# code paths.
+if asm == 'asm' and is_x86_64 and not compiler.compiles(
+  'void f(void) { __asm__("{vex} vpmadd52luq 0(%rsi), %ymm1, %ymm3"); }',
+  name: 'assembler supports AVX-IFMA',
+)
+  asm = 'asm_avx2'
 endif
 
 if asm == 'no-asm'
