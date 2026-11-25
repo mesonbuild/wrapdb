@@ -45,8 +45,15 @@ find config/archs -iname '*.s' -exec sh -c "$cmd" _ignored {} \;
 rm -rf ../../../generated-config/archs/aix*
 # 32-bit s390x supported in Meson
 rm -rf ../../../generated-config/archs/linux32-s390x
-# This is for old gas/nasm versions, we do not care about them
-rm -rf ../../../generated-config/archs/*/asm_avx2
+# The `asm_avx2` configs are for assemblers too old for the `asm` ones. They
+# only differ from the `asm` ones on x86_64 (see `meson.build`), and Windows
+# does not use either
+for dir in ../../../generated-config/archs/*/asm_avx2; do
+  case "$dir" in
+    */linux-x86_64/*|*/BSD-x86_64/*|*/darwin64-x86_64-cc/*|*/solaris64-x86_64-gcc/*) ;;
+    *) rm -rf "$dir" ;;
+  esac
+done
 # Remove build info files, we use hardcoded deterministic one instead
 rm -rf ../../../generated-config/archs/*/*/crypto/buildinf.h
 
