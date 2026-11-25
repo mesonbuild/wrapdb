@@ -134,7 +134,8 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update
-          sudo apt-get -y install build-essential ninja-build license-expression
+          sudo apt-get -y install build-essential ninja-build
+          python3 -m pip install license-expression
           python3 -m pip install --pre meson
 
       - name: Restore sources
