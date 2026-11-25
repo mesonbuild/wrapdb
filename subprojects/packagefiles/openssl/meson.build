@@ -58,16 +58,15 @@ asm_opt = get_option('asm')
 if asm_opt.disabled()
   gas_or_nasm = false
 else
-  gas_or_nasm = (
-    find_program(
-      'as',
-      required: false,
-    ).found()
-    or find_program(
-      'nasm',
-      required: false,
-    ).found()
+  gas = find_program(
+    'as',
+    required: false,
   )
+  nasm = find_program(
+    'nasm',
+    required: false,
+  )
+  gas_or_nasm = gas.found() or nasm.found()
 endif
 
 is_bsd = host_machine.system() in ['dragonfly', 'freebsd', 'netbsd', 'openbsd']
