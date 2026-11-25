@@ -640,7 +640,7 @@ class TestReleases(unittest.TestCase):
         if debian_packages and is_debianlike():
             do_install('Debian', ['sudo', 'apt-get', '-y', 'install', '--no-install-recommends'], debian_packages)
         elif brew_packages and is_macos():
-            do_install('Homebrew', ['brew', 'install', '--quiet'], brew_packages)
+            do_install('Homebrew', ['brew', 'install', '-y', '--quiet'], brew_packages)
             if is_ci():
                 # Ensure binaries from keg-only formulas are available (e.g. bison).
                 out = subprocess.check_output(['brew', '--prefix'] + brew_packages)
