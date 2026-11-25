@@ -3,7 +3,7 @@ project(
   'c',
   meson_version: '>=0.56.0',
   license: 'MIT',
-  version: '3.5.3',
+  version: '3.7.1',
 )
 
 mi_sources = []
@@ -13,27 +13,40 @@ mi_static_args = []
 mi_shared_args = []
 
 mi_sources += files(
+  'src/alloc/alloc-aligned.c',
+  # 'src/alloc/free.c',
+  'src/alloc/alloc-generic.c',
+  # 'src/alloc/alloc-override.c',
+  'src/alloc/alloc-posix.c',
+  'src/alloc/alloc.c',
+  'src/alloc/page-queue.c',
+  'src/alloc/page.c',
+  'src/arena/arena-alloc.c',
+  'src/arena/arena-heap.c',
+  'src/arena/arena-page-alloc.c',
+  'src/arena/arena-page.c',
+  'src/arena/arena.c',
+  'src/arena/bitmap-chunk.c',
+  'src/arena/bitmap.c',
+  'src/heap/heap.c',
+  'src/heap/page-map.c',
+  'src/heap/process.c',
+  'src/heap/subproc.c',
+  'src/heap/theap.c',
+  'src/prim/os.c',
   'src/prim/prim-tls.c',
   'src/prim/prim.c',
-  'src/alloc-aligned.c',
-  'src/alloc-posix.c',
-  'src/alloc.c',
-  'src/arena.c',
-  'src/bitmap.c',
-  'src/heap.c',
-  'src/init.c',
-  'src/libc.c',
-  'src/options.c',
-  'src/os.c',
-  'src/page-map.c',
-  'src/page.c',
-  'src/random.c',
-  'src/sample-guarded.c',
-  'src/sample-profile.c',
-  'src/stats.c',
-  'src/subproc.c',
-  'src/theap.c',
-  'src/threadlocal.c',
+  'src/profile/pprof-os.c',
+  'src/profile/pprof-write.c',
+  'src/profile/pprof.c',
+  'src/profile/sample-guarded.c',
+  'src/profile/sample-profile.c',
+  'src/util/libc.c',
+  'src/util/memid.c',
+  'src/util/options.c',
+  'src/util/random.c',
+  'src/util/stats.c',
+  'src/util/threadlocal.c',
 )
 
 # System libraries
@@ -68,7 +81,7 @@ tls_model = get_option('tl_model')
 if tls_model == 'PTHREADS'
   mi_args += ['-DMI_TLS_MODEL_PTHREADS=1']
 elif tls_model == 'FIXED'
-  mi_args += ['-DMI_TLS_MODEL=FIXED=1']
+  mi_args += ['-DMI_TLS_MODEL_FIXED=1']
 elif tls_model == 'LOCAL' or tls_model == 'LOCAL_DYNAMIC'
   mi_args += ['-DMI_TLS_MODEL_LOCAL=1']
 elif tls_model == 'WIN32'
