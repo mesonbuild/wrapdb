@@ -69,7 +69,7 @@ jobs:
         run: |
           - platform: aarch64
             runner: ubuntu-24.04-arm
-            python: 3.8
+            python: 3.10
           - platform: ppc64le
             runner: ubuntu-24.04-ppc64le-p10
             selfhosted: true
@@ -134,12 +134,7 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update
-          sudo apt-get -y install build-essential ninja-build
-          if [ "${{ matrix.python }}" != 3.8 ]; then
-              # Older license-expression packages compatible with 3.8 also
-              # have bugs; just skip the license check there
-              python3 -m pip install license-expression
-          fi
+          sudo apt-get -y install build-essential ninja-build license-expression
           python3 -m pip install --pre meson
 
       - name: Restore sources
