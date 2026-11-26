@@ -1,10 +1,10 @@
 [wrap-file]
-directory = glib-2.90.1
+directory = glib-2.90.2
 
-source_url = https://download.gnome.org/sources/glib/2.90/glib-2.90.1.tar.xz
-source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/glib/2.90/glib-2.90.1.tar.xz
-source_filename = glib-2.90.1.tar.xz
-source_hash = 93c941aa17d5eb1d53fe838365f29a8b4e539c222a256d974ec8f30fc413e396
+source_url = https://download.gnome.org/sources/glib/2.90/glib-2.90.2.tar.xz
+source_fallback_url = https://ftp.acc.umu.se/pub/gnome/sources/glib/2.90/glib-2.90.2.tar.xz
+source_filename = glib-2.90.2.tar.xz
+source_hash = edf473b4f5ee70a31d2410622ee605dc4a2c8c46dbc0ec53c9abbaf3960232fd
 
 [provide]
 dependency_names = gthread-2.0, gobject-2.0, gmodule-no-export-2.0, gmodule-export-2.0, gmodule-2.0, glib-2.0, gio-2.0, gio-windows-2.0, gio-unix-2.0
