@@ -1,0 +1,9 @@
+[wrap-file]
+directory = aws-lc-1.67.0
+source_url = https://github.com/aws/aws-lc/archive/refs/tags/v1.67.0.tar.gz
+source_filename = aws-lc-1.67.0.tar.gz
+source_hash = e592fc107d2376cc820b01b394f718cc1ef2ab92f12a4960a2294c621bc5df66
+patch_directory = aws-lc
+
+[provide]
+dependency_names = libcrypto-awslc, libssl-awslc
