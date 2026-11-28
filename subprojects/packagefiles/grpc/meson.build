@@ -22,6 +22,11 @@ is_darwin = host_machine.system() == 'darwin'
 is_windows = host_machine.system() == 'windows'
 cpp = meson.get_compiler('cpp')
 
+add_project_arguments(
+  cpp.get_supported_arguments('-Wno-missing-template-arg-list-after-template-kw'),
+  language: 'cpp',
+)
+
 absl_algorithm_container_dep = dependency('absl_algorithm_container')
 absl_any_invocable_dep = dependency('absl_any_invocable')
 absl_base_dep = dependency('absl_base')
@@ -70,7 +75,12 @@ protoc_dep = dependency(
   required: false,
 )
 if not protoc_dep.found()
-  protoc_dep = cpp.find_library('protoc')  # pkgconfig version does not provide protoc.pc
+  # pkgconfig version does not provide protoc.pc
+  if host_machine.system() == 'windows'
+    protoc_dep = cpp.find_library('libprotoc')
+  else
+    protoc_dep = cpp.find_library('protoc')
+  endif
 endif
 re2_dep = dependency('re2')
 winsock_dep = is_windows ? [
@@ -1013,6 +1023,7 @@ grpc_unsecure_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [gpr_dep, libcares_dep],
 )
+meson.override_dependency('grpc_unsecure', grpc_unsecure_dep)
 
 libupb_json_lib = library(
   'upb_json_lib',
@@ -1913,6 +1924,7 @@ grpc_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [gpr_dep, libcares_dep],
 )
+meson.override_dependency('grpc', grpc_dep)
 
 libgrpcpp_unsecure = library(
   'grpc++_unsecure',
@@ -1973,6 +1985,7 @@ grpcpp_unsecure_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [grpc_unsecure_dep],
 )
+meson.override_dependency('grpc++_unsecure', grpcpp_unsecure_dep)
 
 libgrpcpp = library(
   'grpc++',
@@ -2067,6 +2080,7 @@ grpcpp_dep = declare_dependency(
   include_directories: common_include_dirs,
   dependencies: [grpc_dep],
 )
+meson.override_dependency('grpc++', grpcpp_dep)
 
 libgrpcpp_alts = library(
   'grpc++_alts',
