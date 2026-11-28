@@ -22,6 +22,7 @@ configure_file(
 libtest_targets = []
 server_targets = []
 unit_targets = []
+tunit_targets = []
 
 subdir('log')
 
@@ -32,8 +33,9 @@ makefile_extractions = (
     'server': '',
   } + (
     build_unittests.found() ? {
-    'unit': '',
-  } : {}
+      'unit': '',
+      'tunit': '',
+    } : {}
   )
 )
 foreach _subdir : makefile_extractions.keys()
@@ -75,6 +77,8 @@ _disabled_tests += '!flaky'
 _disabled_tests += '!1177'
 # We don't build man pages either.
 _disabled_tests += ['!1139', '!1140', '!1173']
+# Test 537 can exceed its allocation limit when the hard file-descriptor limit is high.
+_disabled_tests += '!537'
 if not fs.exists('errorcodes.pl')
   # Missing in git checkout.
   _disabled_tests += '!1477'
@@ -84,7 +88,7 @@ if host_machine.system() == 'darwin'
   # source analysis tests from succeeding.
   _disabled_tests += ['!1119', '!1167']
 endif
-if not get_option('curldebug')
+if not get_option('debug')
   _disabled_tests += [
     '!356',
     '!358',
@@ -126,12 +130,18 @@ _kwargs = {
     # No valgrind.
     '-n',
     # Print log file contents on failure.
-    '-p',
-    # Verbose.
+    '-p',  # Verbose.
     # '-v',
     _disabled_tests,
   ],
-  'depends': [curl_exe, libtest_targets, server_targets, unit_targets],
+  'depends': [
+    curl_exe,
+    curlinfo_exe,
+    libtest_targets,
+    server_targets,
+    unit_targets,
+    tunit_targets,
+  ],
   'env': _env,
   'is_parallel': false,
   'timeout': 0,

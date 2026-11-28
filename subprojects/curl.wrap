@@ -1,9 +1,9 @@
 [wrap-file]
-directory = curl-8.12.1
-source_url = https://github.com/curl/curl/releases/download/curl-8_12_1/curl-8.12.1.tar.xz
-source_fallback_url = https://curl.se/download/curl-8.12.1.tar.xz
-source_filename = curl-8.12.1.tar.xz
-source_hash = 0341f1ed97a26c811abaebd37d62b833956792b7607ea3f15d001613c76de202
+directory = curl-8.23.0
+source_url = https://github.com/curl/curl/releases/download/curl-8_23_0/curl-8.23.0.tar.xz
+source_fallback_url = https://curl.se/download/curl-8.23.0.tar.xz
+source_filename = curl-8.23.0.tar.xz
+source_hash = 8dadd7d2536a314f982ad05a651b713f426bf7d02cc2c76cffb9796f2218e6c5
 patch_directory = curl
 
 [provide]
