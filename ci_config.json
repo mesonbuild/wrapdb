@@ -1733,6 +1733,14 @@
       "tinyfsm:build_examples=true"
     ]
   },
+  "volk": {
+    "build_options": [
+      "volk:tests=enabled"
+    ],
+    "python_packages": [
+      "mako"
+    ]
+  },
   "wayland": {
     "_comment": [
       "- relies on Linux-specific APIs",
