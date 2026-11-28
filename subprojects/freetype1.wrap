@@ -1,0 +1,11 @@
+[wrap-file]
+directory = freetype-1.4
+source_url = https://sourceforge.net/projects/gnuwin32/files/freetype/1.4/libttf-1.4-src.zip/download#
+source_filename = libttf-1.4-src.zip
+source_hash = 533341269bdded2619622222e79af8af066b98b9183dbafda663907daabef309
+lead_directory_missing = true
+
+patch_directory = freetype1
+
+[provide]
+freetype1 = ttf_dep
