@@ -361,6 +361,25 @@
       "windows": false
     }
   },
+  "fftw3": {
+    "_comment": [
+      "- Build every precision so all provided dependencies are checked",
+      "- fftw3q needs GCC on x86 or IA-64 with libquadmath, not available everywhere",
+      "- MSYS2 gcc ships the libquadmath import library but the DLL is in libquadmath,",
+      "  which gcc-libs pulls in. In the clang environments gcc-libs is provided by libc++."
+    ],
+    "build_options": [
+      "fftw3:long_double=enabled",
+      "fftw3:quad=auto",
+      "fftw3:tests=enabled"
+    ],
+    "msys_packages": [
+      "gcc-libs"
+    ],
+    "skip_dependency_check": [
+      "fftw3q"
+    ]
+  },
   "fluidsynth": {
     "_comment": [
       "- making glib subproject build warning free on cl and clang-cl at the same time seems to not be possible"
