@@ -4,8 +4,8 @@ project(
 )
 
 if (
-  meson.version().version_compare('<1.9.2') and
-  meson.version().version_compare('>=1.8.4')
+  meson.version().version_compare('<1.9.2')
+  and meson.version().version_compare('>=1.8.4')
 )
   # ensure c_std= and cpp_std= are not ignored in subprojects on < 1.9.1
   # https://github.com/mesonbuild/meson/issues/14939
