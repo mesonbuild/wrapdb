@@ -1080,10 +1080,12 @@
       "xkbregistry"
     ],
     "alpine_packages": [
-      "bison"
+      "bison",
+      "xkeyboard-config"
     ],
     "brew_packages": [
-      "bison"
+      "bison",
+      "xkeyboard-config"
     ],
     "choco_packages": [
       "winflexbison3"
