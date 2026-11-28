@@ -1,9 +1,9 @@
 [wrap-file]
-source_url = https://github.com/eyalz800/zpp_bits/archive/refs/tags/v4.5.1.tar.gz
-directory = zpp_bits-4.5.1
-source_filename = zpp_bits-4.5.1.tar.gz
-source_hash = 2589469c86700264e4746b3efb0319b6911f2b9899fbd7cefddb6a01a7001f3b
+source_url = https://github.com/eyalz800/zpp_bits/archive/refs/tags/v4.7.7.tar.gz
+directory = zpp_bits-4.7.7
+source_filename = zpp_bits-4.7.7.tar.gz
+source_hash = cb813308e51ad1922c6578759202927c3efa4588227fd9f182934bf1f38ecd4c
 patch_directory = zpp_bits
 
 [provide]
-zpp_bits = zpp_bits_dep
+dependency_names = zpp_bits
