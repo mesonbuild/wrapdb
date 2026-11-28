@@ -6,6 +6,8 @@ project(
   meson_version: '>=0.56.0',
 )
 
+libarchive_exported_flags = []
+
 cdata = configuration_data()
 cdata.set('VERSION', meson.project_version())
 cdata.set('BSDCAT_VERSION_STRING', meson.project_version())
@@ -25,6 +27,7 @@ add_project_arguments(
 )
 if host_machine.system() == 'windows'
   if get_option('default_library') == 'static'
+    libarchive_exported_flags += '-DLIBARCHIVE_STATIC'
     add_project_arguments(
       '-DLIBARCHIVE_STATIC',
       language: 'c',
