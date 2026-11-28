@@ -1,0 +1,5 @@
+option(
+    'tests',
+    type: 'feature',
+    description: 'Build test programs',
+)
