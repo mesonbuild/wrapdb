@@ -1,0 +1,504 @@
+# Toggleable subsystems
+option(
+    'use_audio',
+    type: 'feature',
+    description: 'Enable the Audio subsystem',
+)
+
+option(
+    'use_video',
+    type: 'feature',
+    description: 'Enable the Video subsystem',
+)
+
+option(
+    'use_gpu',
+    type: 'feature',
+    description: 'Enable the GPU subsystem',
+)
+
+option(
+    'use_render',
+    type: 'feature',
+    description: 'Enable the Renderer subsystem',
+)
+
+option(
+    'use_camera',
+    type: 'feature',
+    description: 'Enable the Camery subsystem',
+)
+
+option(
+    'use_joystick',
+    type: 'feature',
+    description: 'Enable the Joystick subsystem',
+)
+
+option(
+    'use_haptic',
+    type: 'feature',
+    description: 'Enable the Haptic subsystem',
+)
+
+option(
+    'use_hidapi',
+    type: 'feature',
+    description: 'Enable the HIDAPI subsystem',
+)
+
+option(
+    'use_power',
+    type: 'feature',
+    description: 'Enable the Power subsystem',
+)
+
+option(
+    'use_sensor',
+    type: 'feature',
+    description: 'Enable the Sensor subsystem',
+)
+
+option(
+    'use_dialog',
+    type: 'feature',
+    description: 'Enable the Dialog subsystem',
+)
+
+option(
+    'use_tray',
+    type: 'feature',
+    description: 'Enable the Tray subsystem',
+)
+
+option(
+    'use_assembly',
+    type: 'feature',
+    description: 'Enable assembly routines',
+)
+option(
+    'use_asm_avx',
+    type: 'feature',
+    description: 'Use AVX assembly routines',
+)
+option(
+    'use_asm_avx2',
+    type: 'feature',
+    description: 'Use AVX2 assembly routines',
+)
+option(
+    'use_asm_avx512f',
+    type: 'feature',
+    description: 'Use AVX512F assembly routines',
+)
+option(
+    'use_asm_sse',
+    type: 'feature',
+    description: 'Use SSE assembly routines',
+)
+option(
+    'use_asm_sse2',
+    type: 'feature',
+    description: 'Use SSE2 assembly routines',
+)
+option(
+    'use_asm_sse3',
+    type: 'feature',
+    description: 'Use SSE3 assembly routines',
+)
+option(
+    'use_asm_sse4_1',
+    type: 'feature',
+    description: 'Use SSE4.1 assembly routines',
+)
+option(
+    'use_asm_sse4_2',
+    type: 'feature',
+    description: 'Use SSE4.2 assembly routines',
+)
+option(
+    'use_asm_mmx',
+    type: 'feature',
+    description: 'Use MMX assembly routines',
+)
+option(
+    'use_asm_altivec',
+    type: 'feature',
+    description: 'Use Altivec assembly routines',
+)
+option(
+    'use_asm_armneon',
+    type: 'feature',
+    description: 'Use NEON assembly routines',
+)
+option(
+    'use_asm_lsx',
+    type: 'feature',
+    description: 'Use LSX assembly routines',
+)
+option(
+    'use_asm_lasx',
+    type: 'feature',
+    description: 'Use LASX assembly routines',
+)
+
+option(
+    'prefer_dlopen',
+    type: 'feature',
+    description: 'Load dependencies dynamically',
+)
+option(
+    'dlopen_notes',
+    type: 'feature',
+    description: 'Record dlopen dependencies in .note.dlopen section',
+)
+option(
+    'system_iconv',
+    type: 'feature',
+    description: 'Use iconv() from system-installed libraries',
+)
+option(
+    'libiconv',
+    type: 'boolean',
+    description: 'Prefer iconv() from libiconv, if available, over libc version',
+    value: false,
+)
+option(
+    'use_gcc_atomics',
+    type: 'feature',
+    description: 'Use gcc builtin atomics',
+)
+option(
+    'use_dbus',
+    type: 'feature',
+    description: 'Enable D-Bus support',
+)
+option(
+    'use_liburing',
+    type: 'feature',
+    description: 'Enable liburing support',
+)
+option(
+    'use_audio_disk',
+    type: 'feature',
+    description: 'Support the disk writer audio driver',
+)
+option(
+    'use_audio_dummy',
+    type: 'feature',
+    description: 'Support the dummy audio driver',
+)
+option(
+    'use_video_dummy',
+    type: 'feature',
+    description: 'Support the dummy video driver',
+)
+option(
+    'use_ibus',
+    type: 'feature',
+    description: 'Enable IBus support',
+)
+option(
+    'use_video_opengl',
+    type: 'feature',
+    description: 'Include OpenGL support',
+)
+option(
+    'use_video_opengles',
+    type: 'feature',
+    description: 'Include OpenGL ES support',
+)
+option(
+    'use_audio_oss',
+    type: 'feature',
+    description: 'Support the OSS audio API',
+)
+option(
+    'use_audio_alsa',
+    type: 'feature',
+    description: 'Support the ALSA audio API',
+)
+option(
+    'use_audio_alsa_shared',
+    type: 'feature',
+    description: 'Dynamically load ALSA audio support',
+)
+option(
+    'use_audio_jack',
+    type: 'feature',
+    description: 'Support the JACK audio API',
+)
+option(
+    'use_audio_jack_shared',
+    type: 'feature',
+    description: 'Dynamically load JACK audio support',
+)
+option(
+    'use_pipewire',
+    type: 'feature',
+    description: 'Use Pipewire audio',
+)
+option(
+    'use_pipewire_shared',
+    type: 'feature',
+    description: 'Dynamically load Pipewire support',
+)
+option(
+    'use_audio_pulseaudio',
+    type: 'feature',
+    description: 'Use PulseAudio',
+)
+option(
+    'use_audio_pulseaudio_shared',
+    type: 'feature',
+    description: 'Dynamically load PulseAudio support',
+)
+option(
+    'use_audio_sndio',
+    type: 'feature',
+    description: 'Use sndio audio API',
+)
+option(
+    'use_audio_sndio_shared',
+    type: 'feature',
+    description: 'Dynamically load the sndio audio API',
+)
+option(
+    'use_video_x11',
+    type: 'feature',
+    description: 'Use X11 video driver',
+)
+option(
+    'use_video_x11_shared',
+    type: 'feature',
+    description: 'Dynamically load X11 support',
+)
+option(
+    'use_video_x11_xcursor',
+    type: 'feature',
+    description: 'Enable Xcursor support',
+)
+option(
+    'use_video_x11_xdbe',
+    type: 'feature',
+    description: 'Enable Xdbe support',
+)
+option(
+    'use_video_x11_xinput',
+    type: 'feature',
+    description: 'Enable XInput support',
+)
+option(
+    'use_video_x11_xfixes',
+    type: 'feature',
+    description: 'Enable Xfixes support',
+)
+option(
+    'use_video_x11_xrandr',
+    type: 'feature',
+    description: 'Enable Xrandr support',
+)
+option(
+    'use_video_x11_xscrnsaver',
+    type: 'feature',
+    description: 'Enable Xscrnsaver support',
+)
+option(
+    'use_video_x11_xshape',
+    type: 'feature',
+    description: 'Enable XShape support',
+)
+option(
+    'use_video_x11_xsync',
+    type: 'feature',
+    description: 'Enable Xsync support',
+)
+option(
+    'use_video_x11_xtest',
+    type: 'feature',
+    description: 'Enable XTest support',
+)
+option(
+    'use_fribidi',
+    type: 'feature',
+    description: 'Enable Fribidi support',
+)
+option(
+    'use_fribidi_shared',
+    type: 'feature',
+    description: 'Dynamically load Fribidi support',
+)
+option(
+    'use_libthai',
+    type: 'feature',
+    description: 'Enable Thai support',
+)
+option(
+    'use_libthai_shared',
+    type: 'feature',
+    description: 'Dynamically load Thai support',
+)
+option(
+    'use_video_wayland',
+    type: 'feature',
+    description: 'Use Wayland video driver',
+)
+option(
+    'use_video_wayland_shared',
+    type: 'feature',
+    description: 'Dynamically load Wayland support',
+)
+option(
+    'use_video_wayland_libdecor',
+    type: 'feature',
+    description: 'Use client-side window decorations on Wayland',
+)
+option(
+    'use_video_wayland_libdecor_shared',
+    type: 'feature',
+    description: 'Dynamically load libdecor support',
+)
+option(
+    'use_video_rpi',
+    type: 'feature',
+    description: 'Use Raspberry Pi video driver',
+)
+option(
+    'use_video_rockchip',
+    type: 'feature',
+    description: 'Use ROCKCHIP Hardware Acceleration video driver',
+)
+option(
+    'use_video_cocoa',
+    type: 'feature',
+    description: 'Use Cocoa video driver',
+)
+option(
+    'use_directx',
+    type: 'feature',
+    description: 'Use DirectX for Windows audio/video',
+)
+option(
+    'use_joystick_xinput',
+    type: 'feature',
+    description: 'Use Xinput for Windows',
+)
+option(
+    'use_audio_wasapi',
+    type: 'feature',
+    description: 'Use the Windows WASAPI audio driver',
+)
+option(
+    'use_render_d3d',
+    type: 'feature',
+    description: 'Enable the Direct3D 9 render driver',
+)
+option(
+    'use_render_d3d11',
+    type: 'feature',
+    description: 'Enable the Direct3D 11 render driver',
+)
+option(
+    'use_render_d3d12',
+    type: 'feature',
+    description: 'Enable the Direct3D 12 render driver',
+)
+option(
+    'use_render_metal',
+    type: 'feature',
+    description: 'Enable the Metal render driver',
+)
+option(
+    'use_render_gpu',
+    type: 'feature',
+    description: 'Enable the SDL_GPU render driver',
+)
+option(
+    'use_video_vivante',
+    type: 'feature',
+    description: 'Use Vivante EGL video driver',
+)
+option(
+    'use_video_vulkan',
+    type: 'feature',
+    description: 'Enable Vulkan support',
+)
+option(
+    'render_vulkan',
+    type: 'feature',
+    description: 'Enable the Vulkan render driver',
+)
+option(
+    'use_video_metal',
+    type: 'feature',
+    description: 'Enable Metal support',
+)
+option(
+    'use_video_openvr',
+    type: 'feature',
+    description: 'Use OpenVR video driver',
+    value: 'disabled',
+)
+option(
+    'use_video_kmsdrm',
+    type: 'feature',
+    description: 'Use KMS DRM video driver',
+)
+option(
+    'use_video_kmsdrm_shared',
+    type: 'feature',
+    description: 'Dynamically load KMS DRM support',
+)
+option(
+    'use_video_offscreen',
+    type: 'feature',
+    description: 'Use offscreen video driver',
+)
+option(
+    'use_camera_dummy',
+    type: 'feature',
+    description: 'Support the dummy camera driver',
+)
+option(
+    'backgrounding_signal',
+    type: 'string',
+    description: 'number to use for magic backgrounding signal or \'OFF\'',
+    value: 'OFF',
+)
+option(
+    'foregrounding_signal',
+    type: 'string',
+    description: 'number to use for magic foregrounding signal or \'OFF\'',
+    value: 'OFF',
+)
+option(
+    'use_hidapi_libusb',
+    type: 'feature',
+    description: 'Use libusb for low level joystick drivers',
+)
+option(
+    'hidapi_libusb_shared',
+    type: 'feature',
+    description: 'Dynamically load libusb support',
+)
+option(
+    'use_joystick_hidapi',
+    type: 'feature',
+    description: 'Use HIDAPI for low level joystick drivers',
+)
+option(
+    'use_joystick_virtual',
+    type: 'feature',
+    description: 'Enable the virtual-joystick driver',
+)
+option(
+    'libudev',
+    type: 'feature',
+    description: 'Enable libudev support',
+)
+option(
+    'lean_and_mean',
+    type: 'boolean',
+    description: 'Build a lean SDL library with reduced graphics functionality',
+    value: false,
+)

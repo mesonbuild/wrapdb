@@ -1,11 +1,36 @@
-if host_machine.system() == 'windows'
-  subdir('d3d12')
-  subdir('vulkan')
-elif host_machine.system() == 'darwin'
-  subdir('metal')
-  subdir('vulkan')
-else
-  subdir('vulkan')
+enabled_gpu = ''
+
+if sdl_gpu
+  available_gpu_drivers = {
+    'd3d12': {},
+    'metal': {},
+    'vulkan': {},
+  }
+  gpu_drivers = ''
+
+  if cdata.get('HAVE_DXGI1_6_H', 0) != 0
+    gpu_drivers += ' d3d12'
+  endif
+  if cdata.get('SDL_VIDEO_METAL', 0) != 0
+    gpu_drivers += ' metal'
+  endif
+  if cdata.get('SDL_VIDEO_VULKAN', 0) != 0
+    gpu_drivers += ' vulkan'
+  endif
+
+  foreach gd : gpu_drivers.split()
+    dir = available_gpu_drivers[gd].get('subdir', gd)
+    gd_up = gd.to_upper()
+    cdata.set10(f'SDL_GPU_@gd_up@', true)
+    subdir(dir)
+  endforeach
+
+  foreach gd : available_gpu_drivers.keys()
+    gd_up = gd.to_upper()
+    if cdata.get(f'SDL_GPU_@gd_up@', 0) != 0
+      enabled_gpu += f'@gd@ '
+    endif
+  endforeach
 endif
 
 sources += files('SDL_gpu.c')

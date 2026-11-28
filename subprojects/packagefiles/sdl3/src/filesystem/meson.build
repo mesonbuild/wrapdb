@@ -1,8 +1,8 @@
-if host_machine.system() == 'windows'
+if platform_is_windows
   cdata.set('SDL_FSOPS_WINDOWS', 1)
   cdata.set('SDL_FILESYSTEM_WINDOWS', 1)
   subdir('windows')
-elif host_machine.system() == 'darwin'
+elif platform_is_macos
   cdata.set('SDL_FSOPS_POSIX', 1)
   cdata.set('SDL_FILESYSTEM_COCOA', 1)
   subdir('cocoa')

@@ -1,10 +1,10 @@
 sources += files('SDL_locale.c')
 
-if host_machine.system() == 'windows'
+if platform_is_windows
   subdir('windows')
-elif host_machine.system() == 'darwin'
+elif platform_is_apple
   subdir('macos')
-elif host_machine.system() == 'linux'
+elif platform_is_linux
   subdir('unix')
 else
   error('Platform not supported yet.')

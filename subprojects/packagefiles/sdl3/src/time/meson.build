@@ -1,4 +1,4 @@
-if host_machine.system() == 'windows'
+if platform_is_windows
   cdata.set('SDL_TIME_WINDOWS', 1)
   subdir('windows')
 else
