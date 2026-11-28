@@ -1,0 +1,9 @@
+[wrap-file]
+directory = llm-cpp-1.2.1
+source_url = https://github.com/Mattbusel/llm-cpp/archive/refs/tags/v1.2.1.tar.gz
+source_filename = llm-cpp-1.2.1.tar.gz
+source_hash = f73d50054de810dc1adf2e6608fddc82045b341eaf0de22acddc9062e3346fe4
+patch_directory = llm-cpp
+
+[provide]
+dependency_names = llm-cpp

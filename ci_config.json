@@ -1149,6 +1149,11 @@
     ],
     "ignore_upstream_meson": "1.1.7"
   },
+  "llm-cpp": {
+    "build_options": [
+      "llm-cpp:tests=enabled"
+    ]
+  },
   "lmdb": {
     "_comment": "Tests are disabled by default",
     "build_options": [
