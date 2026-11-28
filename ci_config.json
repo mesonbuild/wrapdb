@@ -1814,6 +1814,10 @@
       "yaml-cpp:tests=enabled"
     ]
   },
+  "zstd": {
+    "_comment": "CI requires us to bump the minimum Meson version when copying the root config into WrapDB, causing warnings on version conditionals in sub-configs",
+    "fatal_warnings": false
+  },
   "zycore": {
     "build_options": [
       "zycore:examples=enabled",

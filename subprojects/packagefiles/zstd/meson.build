@@ -19,12 +19,12 @@ project(
     # c++11 standard is useful for pzstd
     'cpp_std=c++11',
     'warning_level=3',
-    # -Wdocumentation does not actually pass, nor do the test binaries,
-    # so this isn't safe
-    #'werror=true'
+      # -Wdocumentation does not actually pass, nor do the test binaries,
+      # so this isn't safe
+      #'werror=true'
   ],
-  version: '1.5.7',
-  meson_version: '>=0.50.0',
+  version: '1.6.0',
+  meson_version: '>=0.63.0',
 )
 
 cc = meson.get_compiler('c')
