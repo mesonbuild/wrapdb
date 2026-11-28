@@ -1,4 +1,3 @@
-
 sha256_nist_test_case_1
 sha256_nist_test_case_2
 sha256_nist_test_case_3
@@ -86,6 +85,7 @@ ecdsa_signature_encode_helper_roundtrip
 ecdsa_export_sec1_roundtrip
 ecdsa_export_pkcs8_roundtrip
 ecdsa_export_spki_roundtrip
+ecdsa_signature_decode_helper
 rsa_encryption_roundtrip_pkcs1_from_user
 rsa_encryption_roundtrip_oaep_sha256_from_user
 rsa_encryption_roundtrip_oaep_sha512_from_user
