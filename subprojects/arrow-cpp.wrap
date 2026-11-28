@@ -1,11 +1,10 @@
 [wrap-file]
-directory = apache-arrow-21.0.0
-source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=arrow/arrow-21.0.0/apache-arrow-21.0.0.tar.gz
-source_fallback_url = https://github.com/apache/arrow/releases/download/apache-arrow-21.0.0/apache-arrow-21.0.0.tar.gz
-source_filename = apache-arrow-21.0.0.tar.gz
-source_hash = 5d3f8db7e72fb9f65f4785b7a1634522e8d8e9657a445af53d4a34a3849857b5
+directory = apache-arrow-22.0.0
+source_url = https://www.apache.org/dyn/closer.lua?action=download&filename=arrow/arrow-22.0.0/apache-arrow-22.0.0.tar.gz
+source_fallback_url = https://github.com/apache/arrow/releases/download/apache-arrow-22.0.0/apache-arrow-22.0.0.tar.gz
+source_filename = apache-arrow-22.0.0.tar.gz
+source_hash = 131250cd24dec0cddde04e2ad8c9e2bc43edc5e84203a81cf71cf1a33a6e7e0f
 patch_directory = arrow-cpp
 
 [provide]
-arrow = arrow_dep
-arrow-compute = arrow_compute_dep
+dependency_names = arrow, arrow-acero, arrow-compute, arrow-csv, arrow-filesystem, arrow-json, arrow-testing, arrow-tensorflow
