@@ -1,0 +1,10 @@
+[wrap-file]
+directory = libzmq-4.3.5
+source_url = https://github.com/zeromq/libzmq/archive/refs/tags/v4.3.5.tar.gz
+source_filename = libzmq-4.3.5.tar.gz
+source_hash = 6c972d1e6a91a0ecd79c3236f04cf0126f2f4dfbbad407d72b4606a7ba93f9c6
+patch_directory = libzmq
+diff_files = libzmq/fix-mingw-afunixh.diff
+
+[provide]
+libzmq = libzmq_dep
